@@ -1,0 +1,31 @@
+# DOMAIN — Glosario de dominio del camping
+
+Este vocabulario ES la ventaja competitiva: un producto genérico de hoteles no modela bien nada de esto. El modelo de datos, la API y la UI hablan este idioma.
+
+| Término | Definición para el modelo |
+|---|---|
+| **Parcela** (`unit_type.kind = 'pitch'`) | Terreno donde el cliente monta su equipo (tienda, caravana, autocaravana). Atributos: m², tipo de suelo, sombra, electricidad (amperios), acceso, servicios propios sí/no. |
+| **Alojamiento** (`kind = 'lodging'`) | Unidad construida: bungalow, mobil-home, glamping, safari tent. Camas, capacidad, baños, mascotas. |
+| **Tipo de unidad** (`unit_types`) | Agrupación comercial ("Bungalow 4 pax vista mar"). **El cliente reserva un tipo; el camping asigna una unidad.** |
+| **Unidad** (`units`) | La parcela o alojamiento físico concreto, con código (p.ej. "P-047"). |
+| **Asignación** | Dar unidad física a una reserva. Manual o automática (criterio: minimizar huecos). Reasignable sin cancelar. **El planning del dashboard vive de esto.** |
+| **Solicitud** (`enquiries`) | Petición sin inventario bloqueado, sin precio cerrado, sin unidad. Tabla propia, no un booking en borrador (invariantes distintas). Estados: new → contacted → quoted → converted \| lost. Conversión a reserva = acción explícita. Se guarda en TODOS los niveles. |
+| **Temporada** (`seasons_calendar`) | Rango de fechas con reglas propias: precio, estancia mínima, días de entrada. Las temporadas se solapan y resuelven **por prioridad**. |
+| **Plan tarifario** (`rate_plans`) | Base (parcela/alojamiento) + N personas incluidas + persona extra + niño + electricidad + mascota + vehículo extra. Por tipo de unidad y temporada. |
+| **Estancia mínima / máxima** | Por temporada y tipo. Ej.: julio-agosto mínimo 7 noches en bungalow. Estancia que cruza temporadas → aplica la más restrictiva. |
+| **Día de entrada fijo** (`arrival_days`) | Restricción de alta temporada: p.ej. solo sábados. También `departure_days`. |
+| **Tasa turística** | Impuesto por persona y noche, con exenciones por edad, liquidado y mostrado aparte (`tourist_tax_cents`). Varía por comunidad autónoma. |
+| **Fianza** (`deposit_cents`) | Depósito reembolsable. **No es ingreso**: no se mezcla con el total. |
+| **Canon / larga estancia** | Parcela alquilada por temporada o año. No pasa por el motor diario pero **bloquea inventario** (`inventory_blocks.reason = 'longstay'`). |
+| **ACSI / clubs** | Descuento por carnet en temporada baja. Regla condicional en `rate_rules`. |
+| **Extras** | Ropa de cama, limpieza final, nevera, parking extra, late checkout… Por estancia, por noche o por persona. Pueden ser obligatorios. |
+| **Cierre de temporada** | Fuera de fechas de apertura no es "sin disponibilidad": es **"cerrado"**. Mensaje distinto en la UI. |
+| **Overbooking controlado** | Vender por tipo por encima de unidades físicas contando con reasignación. Configurable; **off por defecto**. |
+| **Bloqueo** (`inventory_blocks`) | Unidad o tipo fuera de venta por mantenimiento, propietario, larga estancia o decisión manual. |
+| **Planning / tape chart** | Rejilla unidades × días del dashboard. La pantalla que recepción mira 200 veces al día. Elemento firma del producto. |
+
+## Reglas transversales
+
+- **Precio**: nunca un número suelto. Siempre `price_breakdown` (JSON) auditable — cada céntimo explicable a un cliente enfadado. Todo en céntimos, entero.
+- **Fechas**: `YYYY-MM-DD` sin zona horaria; `date_from` inclusive, `date_to` **exclusive** (el día de salida se libera).
+- **Ocupación**: los niños exentos de tasa turística **sí cuentan para capacidad**.

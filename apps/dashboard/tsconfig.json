@@ -1,0 +1,4 @@
+{
+  "extends": "@logic-camp/tsconfig/react.json",
+  "include": ["src/**/*", "vite.config.ts"]
+}

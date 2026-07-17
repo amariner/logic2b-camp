@@ -1,0 +1,4 @@
+{
+  "extends": "@logic-camp/tsconfig/workers.json",
+  "include": ["src/**/*.ts"]
+}

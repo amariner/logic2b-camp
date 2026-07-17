@@ -1,0 +1,16 @@
+// Config de DESARROLLO LOCAL del API (wrangler dev).
+// Cada tenant despliega con su propio wrangler.jsonc en tenants/{slug}/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "logic-camp-api-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "vars": { "TENANT_SLUG": "dev" },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "logic-camp-dev",
+      "database_id": "local-dev"
+    }
+  ]
+}
