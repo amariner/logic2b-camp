@@ -3,6 +3,8 @@ dist/
 .astro/
 .turbo/
 .wrangler/
+.wrangler-demo/
+tenants/*/seed.sql
 .dev.vars
 *.local
 .DS_Store

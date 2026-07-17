@@ -1,6 +1,323 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { index, integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
-// Fase 0: solo el marcador de versión de esquema. El modelo real (§4) es Fase 1.
+// Esquema de UNA instancia (cada camping tiene su propia D1 — ver ADR 0002).
+// Dinero: céntimos enteros. Fechas de estancia: 'YYYY-MM-DD', from inclusive / to EXCLUSIVE.
+
+// ---------- Tipos JSON ----------
+
+export type Occupancy = {
+  adults: number;
+  /** Edades de los niños: necesarias para tasa turística y capacidad */
+  childrenAges: number[];
+  pets: number;
+  vehicles: number;
+};
+
+export type PriceLine = {
+  /** clave i18n del concepto, p.ej. 'price.base', 'price.extra_person' */
+  concept: string;
+  /** detalle auditable: noches, unidades, tarifa aplicada, temporada… */
+  detail: Record<string, string | number>;
+  amountCents: number;
+};
+
+export type PriceBreakdown = {
+  lines: PriceLine[];
+  totalCents: number;
+  touristTaxCents: number;
+  currency: string;
+};
+
+export type I18nText = Partial<Record<'es' | 'ca' | 'en' | 'fr' | 'de' | 'nl', string>>;
+
+export type ContactInfo = {
+  name: string;
+  email: string;
+  phone?: string;
+  locale?: string;
+};
+
+// ---------- Instancia ----------
+
+export const tenants = sqliteTable('tenants', {
+  id: text('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  name: text('name').notNull(),
+  tier: integer('tier').notNull(), // 1..4
+  timezone: text('timezone').notNull(),
+  currency: text('currency').notNull(),
+  locales: text('locales', { mode: 'json' }).$type<string[]>().notNull(),
+  modules: text('modules', { mode: 'json' }).$type<Record<string, unknown>>().notNull(),
+});
+
+// ---------- Calendario e inventario ----------
+
+export const seasonsCalendar = sqliteTable(
+  'seasons_calendar',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    name: text('name').notNull(),
+    dateFrom: text('date_from').notNull(),
+    dateTo: text('date_to').notNull(),
+    priority: integer('priority').notNull().default(0),
+    isOpen: integer('is_open', { mode: 'boolean' }).notNull().default(true),
+  },
+  (t) => [index('seasons_dates_idx').on(t.dateFrom, t.dateTo)],
+);
+
+export const unitTypes = sqliteTable('unit_types', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull(),
+  kind: text('kind', { enum: ['pitch', 'lodging'] }).notNull(),
+  nameI18n: text('name_i18n', { mode: 'json' }).$type<I18nText>().notNull(),
+  capacityMin: integer('capacity_min').notNull().default(1),
+  capacityMax: integer('capacity_max').notNull(),
+  includedPersons: integer('included_persons').notNull(),
+  features: text('features', { mode: 'json' }).$type<Record<string, unknown>>().notNull(),
+  photos: text('photos', { mode: 'json' }).$type<string[]>().notNull(),
+});
+
+export const units = sqliteTable(
+  'units',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    unitTypeId: text('unit_type_id')
+      .notNull()
+      .references(() => unitTypes.id),
+    code: text('code').notNull(),
+    attributes: text('attributes', { mode: 'json' }).$type<Record<string, unknown>>().notNull(),
+    status: text('status', { enum: ['active', 'inactive'] })
+      .notNull()
+      .default('active'),
+  },
+  (t) => [uniqueIndex('units_code_uq').on(t.code), index('units_type_idx').on(t.unitTypeId)],
+);
+
+// ---------- Tarifas ----------
+
+export const ratePlans = sqliteTable(
+  'rate_plans',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    unitTypeId: text('unit_type_id')
+      .notNull()
+      .references(() => unitTypes.id),
+    seasonId: text('season_id')
+      .notNull()
+      .references(() => seasonsCalendar.id),
+    baseCents: integer('base_cents').notNull(),
+    extraPersonCents: integer('extra_person_cents').notNull().default(0),
+    childCents: integer('child_cents').notNull().default(0),
+    petCents: integer('pet_cents').notNull().default(0),
+    electricityCents: integer('electricity_cents').notNull().default(0),
+    vehicleCents: integer('vehicle_cents').notNull().default(0),
+    minStay: integer('min_stay').notNull().default(1),
+    maxStay: integer('max_stay'),
+    /** 0=domingo … 6=sábado; null/[] = cualquier día */
+    arrivalDays: text('arrival_days', { mode: 'json' }).$type<number[]>(),
+    departureDays: text('departure_days', { mode: 'json' }).$type<number[]>(),
+  },
+  (t) => [index('rate_plans_type_season_idx').on(t.unitTypeId, t.seasonId)],
+);
+
+export type RateRuleConditions = Record<string, unknown>;
+export type RateRuleDiscount =
+  | { type: 'percent'; value: number }
+  | { type: 'fixed_cents'; value: number };
+
+export const rateRules = sqliteTable('rate_rules', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull(),
+  type: text('type', {
+    enum: ['early_booking', 'last_minute', 'long_stay', 'acsi', 'promo'],
+  }).notNull(),
+  conditions: text('conditions', { mode: 'json' }).$type<RateRuleConditions>().notNull(),
+  discount: text('discount', { mode: 'json' }).$type<RateRuleDiscount>().notNull(),
+  stackable: integer('stackable', { mode: 'boolean' }).notNull().default(false),
+  priority: integer('priority').notNull().default(0),
+});
+
+export const extras = sqliteTable('extras', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull(),
+  nameI18n: text('name_i18n', { mode: 'json' }).$type<I18nText>().notNull(),
+  priceCents: integer('price_cents').notNull(),
+  per: text('per', { enum: ['stay', 'night', 'person'] }).notNull(),
+  required: integer('required', { mode: 'boolean' }).notNull().default(false),
+});
+
+export const inventoryBlocks = sqliteTable(
+  'inventory_blocks',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    unitId: text('unit_id').references(() => units.id),
+    unitTypeId: text('unit_type_id').references(() => unitTypes.id),
+    dateFrom: text('date_from').notNull(),
+    dateTo: text('date_to').notNull(),
+    reason: text('reason', { enum: ['maintenance', 'owner', 'longstay', 'manual'] }).notNull(),
+  },
+  (t) => [
+    index('blocks_unit_dates_idx').on(t.unitId, t.dateFrom, t.dateTo),
+    index('blocks_type_dates_idx').on(t.unitTypeId, t.dateFrom, t.dateTo),
+  ],
+);
+
+// ---------- Solicitudes (tabla propia, NO bookings en borrador — ADR 0002) ----------
+
+export const enquiries = sqliteTable(
+  'enquiries',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    status: text('status', { enum: ['new', 'contacted', 'quoted', 'converted', 'lost'] })
+      .notNull()
+      .default('new'),
+    dateFrom: text('date_from'),
+    dateTo: text('date_to'),
+    occupancy: text('occupancy', { mode: 'json' }).$type<Occupancy>(),
+    unitTypeId: text('unit_type_id').references(() => unitTypes.id),
+    message: text('message').notNull(),
+    contact: text('contact', { mode: 'json' }).$type<ContactInfo>().notNull(),
+    locale: text('locale').notNull(),
+    source: text('source').notNull(),
+    convertedBookingId: text('converted_booking_id'),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [index('enquiries_status_idx').on(t.status)],
+);
+
+// ---------- Reservas ----------
+
+export const bookings = sqliteTable(
+  'bookings',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    code: text('code').notNull(),
+    status: text('status', {
+      enum: ['pending', 'confirmed', 'cancelled', 'no_show', 'completed'],
+    }).notNull(),
+    channel: text('channel', { enum: ['web', 'phone', 'walkin', 'import'] }).notNull(),
+    dateFrom: text('date_from').notNull(),
+    dateTo: text('date_to').notNull(),
+    unitTypeId: text('unit_type_id')
+      .notNull()
+      .references(() => unitTypes.id),
+    unitId: text('unit_id').references(() => units.id),
+    occupancy: text('occupancy', { mode: 'json' }).$type<Occupancy>().notNull(),
+    extras: text('extras', { mode: 'json' })
+      .$type<{ extraId: string; qty: number; amountCents: number }[]>()
+      .notNull(),
+    priceBreakdown: text('price_breakdown', { mode: 'json' }).$type<PriceBreakdown>().notNull(),
+    totalCents: integer('total_cents').notNull(),
+    paidCents: integer('paid_cents').notNull().default(0),
+    touristTaxCents: integer('tourist_tax_cents').notNull().default(0),
+    depositCents: integer('deposit_cents').notNull().default(0),
+    notes: text('notes'),
+    locale: text('locale').notNull(),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  },
+  (t) => [
+    uniqueIndex('bookings_code_uq').on(t.code),
+    index('bookings_type_dates_idx').on(t.unitTypeId, t.dateFrom, t.dateTo),
+    index('bookings_unit_dates_idx').on(t.unitId, t.dateFrom, t.dateTo),
+    index('bookings_status_idx').on(t.status),
+  ],
+);
+
+export const guests = sqliteTable('guests', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull(),
+  name: text('name').notNull(),
+  surname: text('surname').notNull(),
+  docType: text('doc_type', { enum: ['dni', 'nie', 'passport', 'other'] }),
+  docNumber: text('doc_number'),
+  birthdate: text('birthdate'),
+  nationality: text('nationality'),
+  email: text('email'),
+  phone: text('phone'),
+  address: text('address'),
+  gdprConsentAt: text('gdpr_consent_at'),
+});
+
+export const bookingGuests = sqliteTable(
+  'booking_guests',
+  {
+    bookingId: text('booking_id')
+      .notNull()
+      .references(() => bookings.id),
+    guestId: text('guest_id')
+      .notNull()
+      .references(() => guests.id),
+    isLead: integer('is_lead', { mode: 'boolean' }).notNull().default(false),
+  },
+  (t) => [uniqueIndex('booking_guests_uq').on(t.bookingId, t.guestId)],
+);
+
+export const payments = sqliteTable(
+  'payments',
+  {
+    id: text('id').primaryKey(),
+    bookingId: text('booking_id')
+      .notNull()
+      .references(() => bookings.id),
+    provider: text('provider', { enum: ['stripe', 'redsys', 'manual', 'none'] }).notNull(),
+    providerRef: text('provider_ref'),
+    /** Con signo: reembolso = negativo. sum(amount_cents) == bookings.paid_cents */
+    amountCents: integer('amount_cents').notNull(),
+    status: text('status', { enum: ['pending', 'succeeded', 'failed', 'refunded'] }).notNull(),
+    raw: text('raw', { mode: 'json' }).$type<Record<string, unknown>>(),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [index('payments_booking_idx').on(t.bookingId)],
+);
+
+// ---------- Operación ----------
+
+export const notificationsLog = sqliteTable('notifications_log', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull(),
+  bookingId: text('booking_id').references(() => bookings.id),
+  enquiryId: text('enquiry_id').references(() => enquiries.id),
+  channel: text('channel', { enum: ['email', 'whatsapp'] }).notNull(),
+  template: text('template').notNull(),
+  status: text('status', { enum: ['queued', 'sent', 'failed', 'disabled'] }).notNull(),
+  attempts: integer('attempts').notNull().default(0),
+  sentAt: text('sent_at'),
+});
+
+export const users = sqliteTable(
+  'users',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    email: text('email').notNull(),
+    role: text('role', { enum: ['owner', 'manager', 'reception', 'readonly'] }).notNull(),
+  },
+  (t) => [uniqueIndex('users_email_uq').on(t.email)],
+);
+
+export const auditLog = sqliteTable(
+  'audit_log',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    userId: text('user_id').references(() => users.id),
+    entity: text('entity').notNull(),
+    entityId: text('entity_id').notNull(),
+    action: text('action').notNull(),
+    diff: text('diff', { mode: 'json' }).$type<Record<string, unknown>>(),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [index('audit_entity_idx').on(t.entity, t.entityId)],
+);
+
+// Marcador de versión de esquema (desde Fase 0)
 export const meta = sqliteTable('meta', {
   key: text('key').primaryKey(),
   value: text('value').notNull(),

@@ -4,12 +4,26 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 0 · Fundaciones — scaffold hecho, deploy pendiente de credenciales
-- **Último `/check`**: ✅ verde 2026-07-17 (28/28 tareas)
-- **Repo**: https://github.com/amariner/logic2b-camp (push hecho 2026-07-17)
-- **Siguiente paso**: (1) `wrangler login` + `pnpm exec wrangler d1 create logic-camp-demo` (rellenar `database_id` en `tenants/demo/wrangler.jsonc`) + `pnpm --filter @logic-camp/api deploy:demo`; (3) secrets `CLOUDFLARE_*` y var `DEPLOY_DEMO_ENABLED=true` en GitHub. Con `/health` respondiendo en camp.logic2b.com, Fase 0 cerrada → siguiente sesión: **Fase 1 (modelo de datos)**, ADR primero.
+- **Fase actual**: 1 ✅ hecha · Siguiente: **Fase 2 — Motor de disponibilidad y precios** (la fase crítica), ADR primero, tests antes que implementación (7 casos límite de §9)
+- **Último `/check`**: ✅ verde 2026-07-17 (31/31 tareas)
+- **Repo**: https://github.com/amariner/logic2b-camp
+- **Cloudflare**: login OK (ojo: el proxy corporativo rompe wrangler — ejecutar con `env -u HTTP_PROXY -u HTTPS_PROXY …`). D1 `logic-camp-demo` creada, migrada y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*`.
+- **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 3 — 2026-07-17 · Fase 1 · Modelo de datos
+
+**Hecho**
+- `docs/adr/0002-modelo-de-datos.md`
+- `packages/db/src/schema.ts`: las 16 tablas de §4 tipadas (JSON tipado: Occupancy, PriceBreakdown…), índices de disponibilidad, migración única `0000_modelo-datos.sql`
+- Seed demo Cala Sereno en `tenants/demo/seed.ts`: generador puro y determinista (fecha ancla → listo para reset nocturno Fase 10). 83 unidades (60 parcelas/4 tipos, 18 bungalow-mobil/3 tipos, 5 glamping), 3 temporadas solapadas por prioridad, 12 extras, 3 reglas, 40 reservas con casos límite (cruce de temporadas, 28 noches, grupo 8 pax con niño exento de tasa, cancelada, no-show, sin asignar), 15 solicitudes en 5 estados, bloqueos (mantenimiento + longstay)
+- 10 tests Vitest del seed, incluyendo invariantes: sin solapes por unidad, `sum(payments)==paid_cents`, desglose==total, precio por tramos
+- `pnpm db:reset` / `pnpm db:seed` (D1 local en `.wrangler-demo/`); `tenants/*` añadido al workspace
+- D1 **remota** migrada y sembrada; Worker demo desplegado (falta solo el DNS)
+
+**Decisiones**: ver ADR 0002 (IDs texto, tenant_id documental, payments con signo, enquiries tabla propia).
+**`/check`**: ✅ verde (31/31)
 
 ### Sesión 2 — 2026-07-17 · Fase 0 · Scaffold del monorepo
 

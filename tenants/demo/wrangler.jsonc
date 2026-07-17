@@ -8,6 +8,11 @@
   "vars": { "TENANT_SLUG": "demo" },
   "routes": [{ "pattern": "camp.logic2b.com/api/*", "zone_name": "logic2b.com" }],
   "d1_databases": [
-    { "binding": "DB", "database_name": "logic-camp-demo", "database_id": "41a7fe70-6385-445b-b7ae-6133442cf91f" }
+    {
+      "binding": "DB",
+      "database_name": "logic-camp-demo",
+      "database_id": "41a7fe70-6385-445b-b7ae-6133442cf91f",
+      "migrations_dir": "../../packages/db/migrations"
+    }
   ]
 }
