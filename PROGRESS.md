@@ -6,7 +6,8 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 - **Fase actual**: 0 · Fundaciones — scaffold hecho, deploy pendiente de credenciales
 - **Último `/check`**: ✅ verde 2026-07-17 (28/28 tareas)
-- **Siguiente paso**: (1) Andreu: crear repo GitHub privado `logic-camp` y `git remote add origin … && git push -u origin main`; (2) `wrangler login` + `pnpm exec wrangler d1 create logic-camp-demo` (rellenar `database_id` en `tenants/demo/wrangler.jsonc`) + `pnpm --filter @logic-camp/api deploy:demo`; (3) secrets `CLOUDFLARE_*` y var `DEPLOY_DEMO_ENABLED=true` en GitHub. Con `/health` respondiendo en camp.logic2b.com, Fase 0 cerrada → siguiente sesión: **Fase 1 (modelo de datos)**, ADR primero.
+- **Repo**: https://github.com/amariner/logic2b-camp (push hecho 2026-07-17)
+- **Siguiente paso**: (1) `wrangler login` + `pnpm exec wrangler d1 create logic-camp-demo` (rellenar `database_id` en `tenants/demo/wrangler.jsonc`) + `pnpm --filter @logic-camp/api deploy:demo`; (3) secrets `CLOUDFLARE_*` y var `DEPLOY_DEMO_ENABLED=true` en GitHub. Con `/health` respondiendo en camp.logic2b.com, Fase 0 cerrada → siguiente sesión: **Fase 1 (modelo de datos)**, ADR primero.
 
 ## Sesiones
 
