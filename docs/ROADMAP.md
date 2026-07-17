@@ -31,7 +31,7 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 | 0 · Fundaciones | 🟨 Casi hecho | 2026-07-17 | Scaffold completo, `pnpm check` verde (28/28). Pendiente SOLO: deploy real a camp.logic2b.com (falta `wrangler login` + D1 demo + secrets GitHub). ADR 0001 |
 | 1 · Modelo de datos | ✅ Hecho | 2026-07-17 | 16 tablas Drizzle (ADR 0002), seed Cala Sereno (83 uds, 40 reservas, 15 solicitudes) determinista con tests de invariantes, `db:reset`/`db:seed` operativos, D1 remota migrada+sembrada |
 | 2 · Motor ★ | ✅ Hecho | 2026-07-17 | `packages/core` puro (ADR 0003): availability con reasignación implícita, quote por tramos con desglose, validateStay acumulativo, assignUnit menos-huecos, reglas, tasa por política, cancelación por tramos, registro de extensiones. 47 tests (7 casos límite incluidos) |
-| 3 · API | ⬜ Pendiente | | |
+| 3 · API | 🟨 Sesión 1/2 hecha | 2026-07-17 | API pública completa (ADR 0004): availability/quote/enquiries/bookings con precio en servidor, idempotencia, rate limit, RPC tipado, 11 tests integración D1 real + fuga cruzada A↛B. Pendiente sesión 2: Better Auth + endpoints privados (/planning, CRUD, /reports, /settings) |
 | 4 · Web pública + niveles | ⬜ Pendiente | | |
 | 5 · Flujo de reserva | ⬜ Pendiente | | |
 | 6 · Dashboard | ⬜ Pendiente | | |

@@ -12,9 +12,14 @@
     "deploy:demo": "wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
   },
   "dependencies": {
-    "hono": "^4.8.0"
+    "@logic-camp/core": "workspace:*",
+    "@logic-camp/db": "workspace:*",
+    "drizzle-orm": "^0.44.7",
+    "hono": "^4.8.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.9.14",
     "@cloudflare/workers-types": "^4.20250705.0",
     "@logic-camp/tsconfig": "workspace:*",
     "vitest": "^3.2.0",

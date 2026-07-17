@@ -1,0 +1,11 @@
+// Config SOLO para tests: dos D1 locales para el test de fuga cruzada entre tenants.
+{
+  "name": "logic-camp-api-test",
+  "main": "../src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "vars": { "TENANT_SLUG": "alfa" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "test-a", "database_id": "test-a" },
+    { "binding": "DB_B", "database_name": "test-b", "database_id": "test-b" }
+  ]
+}

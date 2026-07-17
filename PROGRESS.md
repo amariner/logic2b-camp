@@ -4,13 +4,26 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 2 ✅ hecha · Siguiente: **Fase 3 — API** (Hono: endpoints públicos/privados, Better Auth, tenant por host → binding D1, test de fuga cruzada), ADR primero
+- **Fase actual**: 3 🟨 sesión 1/2 hecha (API pública) · Siguiente: **Fase 3 sesión 2 — Better Auth + endpoints privados** (`/planning`, CRUD reservas/solicitudes/tarifas, `/reports`, `/settings`, roles owner/manager/reception/readonly)
 - **Último `/check`**: ✅ verde 2026-07-17 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (ojo: el proxy corporativo rompe wrangler — ejecutar con `env -u HTTP_PROXY -u HTTPS_PROXY …`). D1 `logic-camp-demo` creada, migrada y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*`.
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 5 — 2026-07-17 · Fase 3 (1/2) · API pública
+
+**Hecho**
+- `docs/adr/0004-api-publica.md`
+- `apps/api` reestructurada: `schemas.ts` (Zod), `tenant.ts` (contexto por binding + rate limit 60/min), `data.ts` (filas→dominio), `routes/public.ts`, `app.ts`, `client.ts` (RPC `hono/client`)
+- Endpoints: `GET /api/availability` (precio en servidor, closed≠unavailable), `POST /api/quote` (desglose + extras obligatorios + tasa), `POST /api/enquiries` (guarda SIEMPRE), `POST /api/bookings` (revalida, re-cotiza en servidor, asigna unidad, batch atómico, **Idempotency-Key** vía tabla `meta`), `GET /api/bookings/:code?email=`
+- Tests de integración con `@cloudflare/vitest-pool-workers@0.9.14` (¡la 0.18 requiere Vitest 4 — no subir!): D1 real ×2 con migraciones reales, 11 tests incl. back-to-back (to exclusive), idempotencia, 409 agotado y **fuga cruzada A↛B** (invariante 5)
+- Worker demo redesplegado con la API nueva
+
+**Decisiones**: aislamiento por binding = un Worker por tenant (el middleware no elige DB, la trae el entorno). Config test propia `test/wrangler.test.jsonc` con DB y DB_B.
+**Pendiente fase**: sesión 2 — Better Auth + rutas privadas.
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 4 — 2026-07-17 · Fase 2 ★ · Motor de disponibilidad y precios
 
