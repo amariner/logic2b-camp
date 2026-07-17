@@ -4,13 +4,24 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 1 ✅ hecha · Siguiente: **Fase 2 — Motor de disponibilidad y precios** (la fase crítica), ADR primero, tests antes que implementación (7 casos límite de §9)
-- **Último `/check`**: ✅ verde 2026-07-17 (31/31 tareas)
+- **Fase actual**: 2 ✅ hecha · Siguiente: **Fase 3 — API** (Hono: endpoints públicos/privados, Better Auth, tenant por host → binding D1, test de fuga cruzada), ADR primero
+- **Último `/check`**: ✅ verde 2026-07-17 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (ojo: el proxy corporativo rompe wrangler — ejecutar con `env -u HTTP_PROXY -u HTTPS_PROXY …`). D1 `logic-camp-demo` creada, migrada y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*`.
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 4 — 2026-07-17 · Fase 2 ★ · Motor de disponibilidad y precios
+
+**Hecho**
+- `docs/adr/0003-motor-core.md`
+- `packages/core` puro (sin I/O, sin Drizzle): `searchAvailability` (disponibilidad por tipo con reasignación implícita — comprobación por noche, exacta para intervalos), `quote` (desglose por tramos de temporada, sum(lines)==total por construcción), `applyRules` (stackables + mejor exclusiva, descuentos como líneas negativas), `validateStay` (acumula todos los errores, códigos i18n), `assignUnit` (menos huecos, con alternativas), `calculateTouristTax` (política como dato: valencia/catalunya/none), `calculateCancellationRefund` (tramos), `createExtensionRegistry` (los 11 hooks de §3)
+- Tests ANTES que implementación: `edge-cases.test.ts` con los 7 casos que rompen productos genéricos + `engine.test.ts` por módulo. **47 tests verdes**
+- Distinción cerrado ≠ sin disponibilidad en todo el motor (`closed` / `ClosedError`)
+
+**Decisiones**: tipos de dominio propios del core (no los de Drizzle) — ADR 0003.
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 3 — 2026-07-17 · Fase 1 · Modelo de datos
 
