@@ -5,6 +5,7 @@
   "name": "logic-camp-demo",
   "main": "../../apps/api/src/index.ts",
   "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
   "vars": { "TENANT_SLUG": "demo" },
   "routes": [{ "pattern": "camp.logic2b.com/api/*", "zone_name": "logic2b.com" }],
   "d1_databases": [

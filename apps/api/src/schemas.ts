@@ -57,6 +57,72 @@ export const bookingRequestSchema = z.object({
   notes: z.string().max(2000).optional(),
 });
 
+// ---------- Privado (/api/admin — ADR 0005) ----------
+
+export const planningQuerySchema = z.object({ from: isoDate, to: isoDate });
+
+export const bookingsListQuerySchema = z.object({
+  status: z.enum(['pending', 'confirmed', 'cancelled', 'no_show', 'completed']).optional(),
+  from: isoDate.optional(),
+  to: isoDate.optional(),
+  /** búsqueda por código de reserva (prefijo) */
+  q: z.string().max(40).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+
+export const adminBookingCreateSchema = bookingRequestSchema.extend({
+  channel: z.enum(['phone', 'walkin']).default('phone'),
+});
+
+/** Acciones tipadas sobre una reserva: transición, reasignación o nota. */
+export const bookingActionSchema = z.discriminatedUnion('action', [
+  z.object({ action: z.literal('confirm') }),
+  z.object({ action: z.literal('cancel') }),
+  z.object({ action: z.literal('no_show') }),
+  z.object({ action: z.literal('complete') }),
+  z.object({ action: z.literal('reassign'), unitId: z.string().min(1) }),
+  z.object({ action: z.literal('note'), notes: z.string().max(2000) }),
+]);
+
+export const enquiryPatchSchema = z.object({
+  status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']),
+});
+
+export const ratePatchSchema = z
+  .object({
+    baseCents: z.number().int().min(0),
+    extraPersonCents: z.number().int().min(0),
+    childCents: z.number().int().min(0),
+    petCents: z.number().int().min(0),
+    electricityCents: z.number().int().min(0),
+    vehicleCents: z.number().int().min(0),
+    minStay: z.number().int().min(1),
+    maxStay: z.number().int().min(1).nullable(),
+    arrivalDays: z.array(z.number().int().min(0).max(6)).nullable(),
+    departureDays: z.array(z.number().int().min(0).max(6)).nullable(),
+  })
+  .partial();
+
+export const reportsQuerySchema = z.object({ from: isoDate, to: isoDate });
+
+export const settingsPatchSchema = z
+  .object({
+    name: z.string().min(1).max(200),
+    timezone: z.string().min(1).max(60),
+    currency: z.string().length(3),
+    locales: z.array(z.string().min(2).max(5)).min(1),
+    modules: z.record(z.string(), z.unknown()),
+  })
+  .partial();
+
+export const userCreateSchema = z.object({
+  email: z.string().email().max(200),
+  password: z.string().min(8).max(128),
+  name: z.string().min(1).max(200),
+  role: z.enum(['owner', 'manager', 'reception', 'readonly']),
+});
+
 export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>;
 export type QuoteRequest = z.infer<typeof quoteRequestSchema>;
 export type EnquiryRequest = z.infer<typeof enquiryRequestSchema>;

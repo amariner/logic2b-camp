@@ -4,13 +4,28 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 3 🟨 sesión 1/2 hecha (API pública) · Siguiente: **Fase 3 sesión 2 — Better Auth + endpoints privados** (`/planning`, CRUD reservas/solicitudes/tarifas, `/reports`, `/settings`, roles owner/manager/reception/readonly)
-- **Último `/check`**: ✅ verde 2026-07-17 (32/32 tareas)
+- **Fase actual**: 3 ✅ completa · Siguiente: **Fase 4 — Web pública + niveles** (Astro, widget en héroe nivel 3, formulario→enquiries, degradación por nivel, SEO). Ojo: la fase pide plan de diseño ANTES de código y PARAR a validarlo.
+- **Último `/check`**: ✅ verde 2026-07-18 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
-- **Cloudflare**: login OK (ojo: el proxy corporativo rompe wrangler — ejecutar con `env -u HTTP_PROXY -u HTTPS_PROXY …`). D1 `logic-camp-demo` creada, migrada y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*`.
+- **Cloudflare**: login OK. D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*` y `AUTH_SECRET` puesto.
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 6 — 2026-07-18 · Fase 3 (2/2) · Better Auth + API privada
+
+**Hecho**
+- `docs/adr/0005-auth-privada.md`
+- Better Auth 1.6 sobre la MISMA tabla `users` (adaptador Drizzle, D1 del binding): migración `0001_auth.sql` (users ampliada + sessions/accounts/verifications), instancia por petición en `auth.ts`, registro público desactivado, provisión en servidor (`provisionUser`), `requireRole` con jerarquía readonly<reception<manager<owner
+- `routes/admin.ts` (`/api/admin`): `/planning` (el SELECT del tape chart), bookings (lista/detalle/alta manual phone|walkin/acciones tipadas confirm|cancel|no_show|complete|reassign|note), enquiries, rates, `/reports` (ocupación/ingresos/llegadas), `/settings`, users (solo owner). Toda mutación escribe `audit_log`
+- `bookings.ts`: creación de reserva extraída y compartida público↔manual (mismo motor, precio en servidor)
+- 13 tests de integración nuevos (24 total): 401/403, registro cerrado, fuga cruzada de sesión A↛B, **invariante 3** (cambiar tarifa no toca reserva confirmada) e **invariante 4** (cancelar libera inventario), reasignación con solape 409
+- Seed demo: 4 usuarios (uno por rol) con credencial `calasereno` (hash scrypt constante ⇒ determinista); `db:reset && db:seed` verificado con 0001
+- Remoto: migración 0001 aplicada, D1 re-sembrada, `AUTH_SECRET` puesto, Worker redesplegado
+
+**Decisiones**: una sola tabla de usuario (nada de espejo), sesiones revocables en D1 (no JWT), jerarquía de roles como Record — ver ADR 0005. Nota técnica: better-auth arrastra `kysely` y duplicaba los tipos de drizzle-orm; se unifica con `kysely` como devDep de `packages/db`.
+**Pendiente**: nada de la fase. `AUTH_SECRET` en CI/despliegues nuevos.
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 5 — 2026-07-17 · Fase 3 (1/2) · API pública
 

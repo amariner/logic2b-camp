@@ -70,6 +70,7 @@ export type SeedData = {
   booking_guests: Row[];
   payments: (Row & { booking_id: string; amount_cents: number })[];
   users: Row[];
+  accounts: Row[];
 };
 
 // ---------- generador ----------
@@ -352,17 +353,39 @@ export function generateSeed(anchorYear: number): SeedData {
     });
   });
 
+  // Usuarios del dashboard, uno por rol. Contraseña demo: "calasereno" —
+  // hash scrypt de Better Auth precomputado (constante ⇒ seed determinista, ADR 0005).
+  const DEMO_PASSWORD_HASH =
+    '931abc0463c0d2df6516487fdc25c1b3:d6bac2bf4c8ad0619f9355e39697834c72f0381a538bcb36beba1890b6fb90831ccd3fe61de0378819d76ea71806f198efa575673fab62a4a2f012be4bfc164a';
+  const authTs = Date.parse(`${anchor}T00:00:00.000Z`);
   const users: Row[] = [
-    { id: 'usr_owner', tenant_id: T, email: 'direccion@calasereno.example', role: 'owner' },
-    { id: 'usr_recepcion', tenant_id: T, email: 'recepcion@calasereno.example', role: 'reception' },
-  ];
+    { id: 'usr_owner', tenant_id: T, email: 'direccion@calasereno.example', role: 'owner', name: 'Dirección' },
+    { id: 'usr_manager', tenant_id: T, email: 'gerencia@calasereno.example', role: 'manager', name: 'Gerencia' },
+    { id: 'usr_recepcion', tenant_id: T, email: 'recepcion@calasereno.example', role: 'reception', name: 'Recepción' },
+    { id: 'usr_consulta', tenant_id: T, email: 'consulta@calasereno.example', role: 'readonly', name: 'Consulta' },
+  ].map((u) => ({ ...u, email_verified: true, image: null, created_at: authTs, updated_at: authTs }));
+  const accounts: Row[] = users.map((u) => ({
+    id: `acc_${String(u.id).slice(4)}`,
+    user_id: u.id,
+    account_id: u.id,
+    provider_id: 'credential',
+    password: DEMO_PASSWORD_HASH,
+    access_token: null,
+    refresh_token: null,
+    id_token: null,
+    access_token_expires_at: null,
+    refresh_token_expires_at: null,
+    scope: null,
+    created_at: authTs,
+    updated_at: authTs,
+  }));
 
   return {
     anchor,
     tenants: [{ id: T, slug: 'demo', name: 'Camping Cala Sereno', tier: 3, timezone: 'Europe/Madrid', currency: 'EUR', locales: ['es', 'ca', 'en', 'fr', 'de', 'nl'], modules: { web: true, booking: 'instant', dashboard: 'full', payments: 'stripe' } }],
     seasons_calendar: seasons.map((s) => ({ ...s, tenant_id: T })),
     unit_types, units, rate_plans, rate_rules, extras, inventory_blocks,
-    enquiries, bookings, guests, booking_guests, payments, users,
+    enquiries, bookings, guests, booking_guests, payments, users, accounts,
   };
 }
 
@@ -385,6 +408,7 @@ export function seedToSql(data: SeedData): string {
     ['payments', data.payments],
     ['enquiries', data.enquiries],
     ['users', data.users],
+    ['accounts', data.accounts],
   ];
   for (const [table, rows] of tables) {
     if (!rows.length) continue;

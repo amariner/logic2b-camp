@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { index, integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 // Esquema de UNA instancia (cada camping tiene su propia D1 — ver ADR 0002).
@@ -291,6 +292,8 @@ export const notificationsLog = sqliteTable('notifications_log', {
   sentAt: text('sent_at'),
 });
 
+// Tabla ÚNICA de usuario: la de dominio Y la de Better Auth (ADR 0005).
+// name/email_verified/image/created_at/updated_at son los campos que exige Better Auth.
 export const users = sqliteTable(
   'users',
   {
@@ -298,9 +301,65 @@ export const users = sqliteTable(
     tenantId: text('tenant_id').notNull(),
     email: text('email').notNull(),
     role: text('role', { enum: ['owner', 'manager', 'reception', 'readonly'] }).notNull(),
+    name: text('name').notNull().default(''),
+    emailVerified: integer('email_verified', { mode: 'boolean' }).notNull().default(false),
+    image: text('image'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().default(sql`0`),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull().default(sql`0`),
   },
   (t) => [uniqueIndex('users_email_uq').on(t.email)],
 );
+
+// ---------- Auth (Better Auth — ADR 0005) ----------
+
+export const sessions = sqliteTable(
+  'sessions',
+  {
+    id: text('id').primaryKey(),
+    token: text('token').notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
+    expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull(),
+    ipAddress: text('ip_address'),
+    userAgent: text('user_agent'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (t) => [uniqueIndex('sessions_token_uq').on(t.token), index('sessions_user_idx').on(t.userId)],
+);
+
+export const accounts = sqliteTable(
+  'accounts',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
+    accountId: text('account_id').notNull(),
+    providerId: text('provider_id').notNull(),
+    /** hash scrypt de Better Auth para providerId='credential' — nunca en `users` */
+    password: text('password'),
+    accessToken: text('access_token'),
+    refreshToken: text('refresh_token'),
+    idToken: text('id_token'),
+    accessTokenExpiresAt: integer('access_token_expires_at', { mode: 'timestamp_ms' }),
+    refreshTokenExpiresAt: integer('refresh_token_expires_at', { mode: 'timestamp_ms' }),
+    scope: text('scope'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
+  },
+  (t) => [index('accounts_user_idx').on(t.userId)],
+);
+
+export const verifications = sqliteTable('verifications', {
+  id: text('id').primaryKey(),
+  identifier: text('identifier').notNull(),
+  value: text('value').notNull(),
+  expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' }),
+  updatedAt: integer('updated_at', { mode: 'timestamp_ms' }),
+});
 
 export const auditLog = sqliteTable(
   'audit_log',

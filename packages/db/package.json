@@ -19,6 +19,7 @@
     "@cloudflare/workers-types": "^4.20250705.0",
     "@logic-camp/tsconfig": "workspace:*",
     "drizzle-kit": "^0.31.0",
+    "kysely": "^0.29.4",
     "typescript": "^5.8.0"
   }
 }

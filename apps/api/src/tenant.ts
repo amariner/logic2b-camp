@@ -8,6 +8,8 @@ import type { MiddlewareHandler } from 'hono';
 export type Bindings = {
   DB: D1Database;
   TENANT_SLUG?: string;
+  /** wrangler secret en producción; en dev/test hay fallback (ADR 0005) */
+  AUTH_SECRET?: string;
 };
 
 export type TenantContext = {
