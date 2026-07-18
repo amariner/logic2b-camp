@@ -10,11 +10,19 @@
     "build": "astro build"
   },
   "dependencies": {
-    "astro": "^5.12.0"
+    "@astrojs/react": "^4.4.2",
+    "@logic-camp/config": "workspace:*",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^5.12.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@logic-camp/tsconfig": "workspace:*",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^5.8.0"
   }
 }

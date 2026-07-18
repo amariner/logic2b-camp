@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import { getContent, media, mode } from '../lib/content';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const c = getContent(locale);
+const instant = mode === 'instant';
+// regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle no lo arrastra
+const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default : null;
+---
+
+<Base locale={locale} path="/">
+  {/* héroe nivel 3: el mostrador ES el héroe · héroe nivel 1: la promesa + una acción */}
+  {instant ? (
+    <section class="relative">
+      <div class="relative h-[82svh] min-h-130 overflow-hidden">
+        <img
+          src={media['hero-dia']}
+          alt=""
+          class="lc-settle absolute inset-0 h-full w-full object-cover"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-hueso/70 via-hueso/20 to-transparent"></div>
+        <div class="relative mx-auto flex h-full max-w-7xl items-center px-5 md:px-8">
+          <h1 class="font-display max-w-3xl text-[clamp(2.6rem,7vw,6.5rem)] leading-[0.98] font-semibold tracking-tight text-balance">
+            {c.hero3.titulo}
+          </h1>
+        </div>
+      </div>
+
+      {/* el mostrador, solapado sobre la foto y sticky después */}
+      <div class="sticky top-14 z-40 mx-auto -mt-16 max-w-5xl px-5 md:px-8">
+        {HeroMostrador && <HeroMostrador labels={c.mostrador} typeNames={c.tipos.nombres} locale={locale} />}
+      </div>
+      <p class="mx-auto mt-5 max-w-5xl px-5 text-[13px] text-tinta-suave md:px-8">{c.hero3.prueba}</p>
+    </section>
+  ) : (
+    <section class="relative">
+      <div class="relative h-[88svh] min-h-130 overflow-hidden">
+        <img
+          src={media['hero-anochecer']}
+          alt=""
+          class="lc-settle absolute inset-0 h-full w-full object-cover"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-tinta/35"></div>
+        <div class="relative mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-8 px-5 text-center md:px-8">
+          <h1 class="font-display max-w-4xl text-[clamp(2.6rem,6.5vw,6rem)] leading-[1.02] font-semibold tracking-tight text-hueso text-balance">
+            {c.hero1.titulo}
+          </h1>
+          <a
+            href="#contacto"
+            class="rounded-(--lc-radius) bg-hueso px-8 py-3.5 text-[15px] font-semibold text-tinta transition-colors hover:bg-arena-suave"
+          >
+            {c.hero1.cta} →
+          </a>
+        </div>
+      </div>
+      {/* ticker lento de datos */}
+      <div class="overflow-hidden border-b border-arena/60 py-3" aria-hidden="true">
+        <div class="lc-ticker flex w-max gap-10 text-[13px] tracking-wide text-tinta-suave uppercase">
+          {[...c.ticker, ...c.ticker, ...c.ticker].map((t) => (
+            <span class="flex items-center gap-10"><span>{t}</span><span class="text-arena">·</span></span>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ───────── Maneras de quedarse ───────── -->
+  <section id="alojamientos" class="mx-auto max-w-7xl scroll-mt-20 px-5 py-24 md:px-8 md:py-32">
+    <div class="mb-12 flex max-w-3xl flex-col gap-3">
+      <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight">{c.tipos.titulo}</h2>
+      <p class="text-[15px] text-tinta-suave">{c.tipos.subtitulo}</p>
+    </div>
+    <div class="grid gap-8 md:grid-cols-3">
+      {c.tipos.cards.map((card) => (
+        <article class="group flex flex-col gap-4">
+          <div class="overflow-hidden rounded-(--lc-radius-lg)">
+            <img
+              src={media[card.foto]}
+              alt={card.nombre}
+              loading="lazy"
+              class="aspect-3/2 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <h3 class="font-display text-[19px] font-semibold">{card.nombre}</h3>
+            <p class="text-[14px] leading-relaxed text-tinta-suave">{card.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ───────── firma: sombra de pino (materia, no vector) ───────── -->
+  <div
+    class="h-24 w-full bg-cover bg-center"
+    style={`background-image: url(${media['textura-lona']})`}
+    role="presentation"
+  ></div>
+
+  <!-- ───────── El entorno ───────── -->
+  <section id="entorno" class="mx-auto grid max-w-7xl scroll-mt-20 gap-10 px-5 py-24 md:grid-cols-2 md:items-center md:px-8 md:py-32">
+    <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight text-balance">
+      {c.entorno.titulo}
+    </h2>
+    <p class="text-[16px] leading-relaxed text-tinta-suave">{c.entorno.texto}</p>
+  </section>
+
+  <!-- ───────── Solicitud → enquiries (TODOS los niveles) ───────── -->
+  <section id="contacto" class="border-t border-arena/60 bg-arena-suave/50">
+    <div class="mx-auto grid max-w-7xl scroll-mt-20 gap-10 px-5 py-24 md:grid-cols-[1fr_1.2fr] md:px-8 md:py-32">
+      <div class="flex flex-col gap-3">
+        <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight">{c.form.titulo}</h2>
+        <p class="text-[15px] text-tinta-suave">{c.form.subtitulo}</p>
+      </div>
+      <form id="lc-enquiry" class="flex flex-col gap-4" novalidate>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="flex flex-col gap-1.5">
+            <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.nombre}</span>
+            <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.email}</span>
+            <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          </label>
+        </div>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.fechas}</span>
+          <input name="dates" placeholder="12 → 19 ago" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+        </label>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.mensaje}</span>
+          <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"></textarea>
+        </label>
+        <button
+          type="submit"
+          class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
+          data-label={c.form.enviar}
+          data-sending={c.form.enviando}
+        >
+          {c.form.enviar}
+        </button>
+        <p data-status class="hidden text-[14px] font-medium" data-ok={c.form.ok} data-error={c.form.error}></p>
+      </form>
+    </div>
+  </section>
+
+  <script define:vars={{ locale }}>
+    // vanilla a propósito: el formulario funciona en TODOS los niveles sin motor
+    const form = document.getElementById('lc-enquiry');
+    const btn = form.querySelector('button[type=submit]');
+    const status = form.querySelector('[data-status]');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      btn.disabled = true;
+      btn.textContent = btn.dataset.sending;
+      status.classList.add('hidden');
+      try {
+        const dates = data.get('dates');
+        const res = await fetch('/api/enquiries', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            message: dates ? `${data.get('message')}\n\n[${dates}]` : data.get('message'),
+            contact: { name: data.get('name'), email: data.get('email') },
+            locale,
+            source: 'web',
+          }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        status.textContent = status.dataset.ok;
+        status.style.color = 'var(--lc-pino)';
+        form.reset();
+      } catch {
+        status.textContent = status.dataset.error;
+        status.style.color = 'var(--lc-mar)';
+      } finally {
+        status.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = btn.dataset.label;
+      }
+    });
+  </script>
+</Base>

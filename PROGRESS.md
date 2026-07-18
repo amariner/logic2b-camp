@@ -4,13 +4,30 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 3 ✅ completa · Siguiente: **Fase 4 — Web pública + niveles** (Astro, widget en héroe nivel 3, formulario→enquiries, degradación por nivel, SEO). Ojo: la fase pide plan de diseño ANTES de código y PARAR a validarlo.
+- **Fase actual**: 4 🟨 sesión 1/3 (diseño validado + home con mostrador) · Siguiente: **Fase 4 sesión 2** — páginas restantes (alojamientos+detalle, instalaciones, entorno, tarifas, contacto, blog), idiomas ca/fr/de/nl, sitemap, Lighthouse ≥95, servir la web desde camp.logic2b.com.
 - **Último `/check`**: ✅ verde 2026-07-18 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK. D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con ruta `camp.logic2b.com/api/*` y `AUTH_SECRET` puesto.
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 7 — 2026-07-18 · Fase 4 (1/3) · Diseño + home con mostrador
+
+**Hecho**
+- ADR 0006 (plan de diseño validado por Andreu): paleta 5 hex (tinta/hueso/pino/arena/mar), Clash Display + Inter self-host, wireframes de los dos héroes, elemento firma "el mostrador"
+- 6 assets fotográficos con Higgsfield (Nano Banana Pro 4K héroes 21:9, Soul 2.0 tarjetas/textura), optimizados a WebP (86MB→2.2MB) en `tenants/demo/content/media/`
+- `apps/web` real: Astro 5 + islas React + Tailwind v4. Alias `@tenant` resuelto en build (TENANT=slug), tokens en `tenants/demo/theme.css` (@theme de Tailwind mapea variables → cambiar el fichero re-viste todo)
+- `packages/config`: `TenantWebConfig` + `bookingMode()` (nivel→comportamiento)
+- Home completa ES+EN: héroe nivel 3 con **Mostrador** (fechas+huéspedes → GET /api/availability real, resultados en página, sticky) · héroe nivel 1 (anochecer + promesa + ticker) · tarjetas de tipos · separador de lona (firma secundaria) · entorno · formulario→POST /api/enquiries (vanilla JS, todos los niveles)
+- **Regla dura verificada**: TIER=1 build → 0 islas, 0 JS referenciado en el HTML (wrapper HeroMostrador.astro con import dinámico)
+- SEO: hreflang es/en/x-default, canonical, OG, JSON-LD Campground+LodgingBusiness
+- Verificado en navegador: mostrador devuelve 8 tipos con precios del servidor (114/138/177€…), enquiry aparece en la D1 local
+- `.claude/launch.json`: servidores `api` (wrangler dev + D1 local sembrada) y `web` (astro dev, proxy /api→8787)
+
+**Decisiones**: @astrojs/react v4 (la v6 es de Astro 6/vite8 y rompe el dev server); tenant en build via alias, no runtime (Fase 9 revisará)
+**Pendiente fase**: páginas restantes (alojamientos+detalle, instalaciones, entorno, tarifas, contacto, blog), 4 idiomas más (ca/fr/de/nl), sitemap, Lighthouse ≥95, deploy de la web a camp.logic2b.com (ahora solo /api/* pasa por el Worker)
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 6 — 2026-07-18 · Fase 3 (2/2) · Better Auth + API privada
 

@@ -1,4 +1,10 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    // el typecheck se hace contra el tenant demo; en build el alias lo fija TENANT=
+    "paths": { "@tenant/*": ["../../tenants/demo/*"] }
+  },
   "include": [".astro/types.d.ts", "src/**/*"]
 }

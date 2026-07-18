@@ -1,0 +1,103 @@
+{
+  "seo": {
+    "title": "Camping Cala Sereno — sleep under the pines, 300 m from the cove",
+    "description": "Family campsite on the Castellón coast. Pitches shaded by century-old pines, bungalows and glamping. Open March to October."
+  },
+  "nav": {
+    "alojamientos": "Stay",
+    "entorno": "The area",
+    "tarifas": "Rates",
+    "contacto": "Contact"
+  },
+  "hero3": {
+    "titulo": "Sleep under the pines, 300 m from the cove.",
+    "prueba": "83 pitches & lodgings · open March–October · families since 1974"
+  },
+  "hero1": {
+    "titulo": "The holidays that come back on their own, every year.",
+    "cta": "Write to us"
+  },
+  "ticker": [
+    "80 pitches under the pines",
+    "the cove 300 m away",
+    "families since 1974",
+    "dogs welcome",
+    "open March – October"
+  ],
+  "mostrador": {
+    "llegada": "Check-in",
+    "salida": "Check-out",
+    "huespedes": "Guests",
+    "adultos": "adults",
+    "ninos": "children",
+    "adulto": "adult",
+    "nino": "child",
+    "buscar": "Check availability",
+    "buscando": "Searching…",
+    "desde": "from",
+    "porEstancia": "per stay",
+    "unidadesLibres": "left",
+    "quedanPocas": "only a few left",
+    "agotado": "No availability on those dates",
+    "cerrado": "Closed on those dates — we open on 15 March",
+    "noEntra": "Not available for that group",
+    "error": "We couldn't check availability. Please try again.",
+    "fechasInvalidas": "Check the dates: check-out must be after check-in.",
+    "reservar": "Book"
+  },
+  "tipos": {
+    "titulo": "Ways to stay",
+    "subtitulo": "You book the type; we assign the exact pitch, the way it's always been done.",
+    "nombres": {
+      "ut_std": "Standard Pitch",
+      "ut_conf": "Comfort Pitch",
+      "ut_prem": "Premium Pitch",
+      "ut_moto": "Moto Pitch",
+      "ut_bung4": "Bungalow 4",
+      "ut_bung6": "Bungalow 6",
+      "ut_mobil": "Mobile home",
+      "ut_glamp": "Glamping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Pitches",
+        "desc": "Compacted sand, Aleppo pine shade and your canvas. From 70 to 120 m², with 6 to 16 A hook-ups.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalows & mobile homes",
+        "desc": "Wood, porch and air-con. For 4 or 6, the cove a short stroll away.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glamping",
+        "desc": "Raw canvas, a real bed and the sea between the trunks. No spare sockets.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "The cove first, the campsite second",
+    "texto": "Cala Sereno exists because the cove existed first: 300 metres of pine forest separate it from the pitches. Inland Castellón at your back, trails that start at reception and market towns ten minutes away."
+  },
+  "form": {
+    "titulo": "Write to us",
+    "subtitulo": "We reply within a day. In season, sooner.",
+    "nombre": "Name",
+    "email": "Email",
+    "fechas": "Approximate dates (optional)",
+    "mensaje": "What do you need?",
+    "enviar": "Send enquiry",
+    "enviando": "Sending…",
+    "ok": "Received. We'll get back to you very soon.",
+    "error": "It couldn't be sent. Try again or give us a call."
+  },
+  "footer": {
+    "aviso": "Family campsite on the Castellón coast",
+    "legal": "Legal notice",
+    "privacidad": "Privacy"
+  }
+}

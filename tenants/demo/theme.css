@@ -1,0 +1,22 @@
+/* Tokens de identidad del tenant (ADR 0006). Cambiar este fichero re-viste TODA la web. */
+:root {
+  /* paleta — 5 hex nombrados */
+  --lc-tinta: #0e1512; /* texto e iconos */
+  --lc-hueso: #f4f2ec; /* fondo global */
+  --lc-pino: #1f4d3a; /* ÚNICO color de acción */
+  --lc-arena: #c9b99a; /* bordes, fills suaves */
+  --lc-mar: #2e6e73; /* enlaces, info */
+
+  /* derivados (nunca colores nuevos) */
+  --lc-pino-oscuro: #163a2c;
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+
+  /* tipografía */
+  --lc-font-display: 'Clash Display', system-ui, sans-serif;
+  --lc-font-text: 'Inter', system-ui, sans-serif;
+
+  /* forma */
+  --lc-radius: 2px;
+  --lc-radius-lg: 4px;
+}

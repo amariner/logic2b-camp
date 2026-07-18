@@ -32,7 +32,7 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 | 1 · Modelo de datos | ✅ Hecho | 2026-07-17 | 16 tablas Drizzle (ADR 0002), seed Cala Sereno (83 uds, 40 reservas, 15 solicitudes) determinista con tests de invariantes, `db:reset`/`db:seed` operativos, D1 remota migrada+sembrada |
 | 2 · Motor ★ | ✅ Hecho | 2026-07-17 | `packages/core` puro (ADR 0003): availability con reasignación implícita, quote por tramos con desglose, validateStay acumulativo, assignUnit menos-huecos, reglas, tasa por política, cancelación por tramos, registro de extensiones. 47 tests (7 casos límite incluidos) |
 | 3 · API | ✅ Hecho | 2026-07-18 | Sesión 1 (ADR 0004): API pública con precio en servidor, idempotencia, rate limit, RPC tipado. Sesión 2 (ADR 0005): Better Auth sobre la tabla `users` (D1 del binding), roles jerárquicos, /api/admin (planning, bookings con acciones tipadas, enquiries, rates, reports, settings, users), audit_log, alta manual compartiendo motor. 24 tests integración D1 real: fuga cruzada de datos Y de sesión A↛B, invariantes 3 y 4. Desplegado en la demo con login verificado en producción |
-| 4 · Web pública + niveles | ⬜ Pendiente | | |
+| 4 · Web pública + niveles | 🟨 Sesión 1/3 hecha | 2026-07-18 | ADR 0006 (diseño validado) + assets Higgsfield. Home ES/EN nivel 3 (héroe + mostrador real sticky contra /api/availability) y nivel 1 (héroe distinto, 0 JS de motor verificado en build), formulario→enquiries, tokens theme.css por tenant, hreflang+JSON-LD. Pendiente: resto de páginas, 4 idiomas, sitemap, Lighthouse, deploy web |
 | 5 · Flujo de reserva | ⬜ Pendiente | | |
 | 6 · Dashboard | ⬜ Pendiente | | |
 | 7 · Notificaciones | ⬜ Pendiente | | |

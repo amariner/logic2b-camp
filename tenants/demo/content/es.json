@@ -1,0 +1,103 @@
+{
+  "seo": {
+    "title": "Camping Cala Sereno — dormir bajo los pinos, a 300 m de la cala",
+    "description": "Camping familiar en la costa de Castellón. Parcelas a la sombra de pinos centenarios, bungalows y glamping. Abierto de marzo a octubre."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos",
+    "entorno": "El entorno",
+    "tarifas": "Tarifas",
+    "contacto": "Contacto"
+  },
+  "hero3": {
+    "titulo": "Dormir bajo los pinos, a 300 m de la cala.",
+    "prueba": "83 parcelas y alojamientos · abierto marzo–octubre · familias desde 1974"
+  },
+  "hero1": {
+    "titulo": "Las vacaciones que vuelven solas cada año.",
+    "cta": "Escríbenos"
+  },
+  "ticker": [
+    "80 parcelas bajo los pinos",
+    "la cala a 300 m",
+    "familias desde 1974",
+    "perros bienvenidos",
+    "abierto marzo – octubre"
+  ],
+  "mostrador": {
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "huespedes": "Huéspedes",
+    "adultos": "adultos",
+    "ninos": "niños",
+    "adulto": "adulto",
+    "nino": "niño",
+    "buscar": "Ver disponibilidad",
+    "buscando": "Buscando…",
+    "desde": "desde",
+    "porEstancia": "por estancia",
+    "unidadesLibres": "libres",
+    "quedanPocas": "quedan pocas",
+    "agotado": "Sin disponibilidad en esas fechas",
+    "cerrado": "Cerrado en esas fechas — abrimos el 15 de marzo",
+    "noEntra": "No disponible para ese grupo",
+    "error": "No hemos podido consultar la disponibilidad. Prueba de nuevo.",
+    "fechasInvalidas": "Revisa las fechas: la salida debe ser posterior a la llegada.",
+    "reservar": "Reservar"
+  },
+  "tipos": {
+    "titulo": "Maneras de quedarse",
+    "subtitulo": "Se reserva el tipo; la parcela exacta te la asignamos nosotros, como se ha hecho siempre.",
+    "nombres": {
+      "ut_std": "Parcela Estándar",
+      "ut_conf": "Parcela Confort",
+      "ut_prem": "Parcela Premium",
+      "ut_moto": "Parcela Moto",
+      "ut_bung4": "Bungalow 4",
+      "ut_bung6": "Bungalow 6",
+      "ut_mobil": "Mobil-home",
+      "ut_glamp": "Glamping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Parcelas",
+        "desc": "Arena compactada, sombra de pino carrasco y tu lona. De 70 a 120 m², con electricidad de 6 a 16 A.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalows y mobil-homes",
+        "desc": "Madera, porche y aire acondicionado. Para 4 o 6, con la cala a un paseo corto.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glamping",
+        "desc": "Lona cruda, cama de verdad y el mar entre los troncos. Sin enchufes de más.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "La cala primero, el camping después",
+    "texto": "Cala Sereno existe porque existía la cala: 300 metros de pinada la separan de las parcelas. Castellón de interior a la espalda, senderos que salen andando desde recepción y pueblos con mercado a diez minutos."
+  },
+  "form": {
+    "titulo": "Escríbenos",
+    "subtitulo": "Te contestamos en menos de un día. En temporada, antes.",
+    "nombre": "Nombre",
+    "email": "Email",
+    "fechas": "Fechas aproximadas (opcional)",
+    "mensaje": "¿Qué necesitas?",
+    "enviar": "Enviar solicitud",
+    "enviando": "Enviando…",
+    "ok": "Recibido. Te contestamos muy pronto.",
+    "error": "No se ha podido enviar. Prueba otra vez o llámanos."
+  },
+  "footer": {
+    "aviso": "Camping familiar en la costa de Castellón",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad"
+  }
+}

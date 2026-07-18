@@ -1,0 +1,80 @@
+---
+import { config, getContent, localePath } from '../lib/content';
+import '../styles/global.css';
+
+interface Props {
+  locale: string;
+  /** ruta sin prefijo de idioma, para hreflang */
+  path?: string;
+}
+
+const { locale, path = '/' } = Astro.props;
+const c = getContent(locale);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['Campground', 'LodgingBusiness'],
+  name: config.name,
+  url: config.domain,
+  telephone: config.contact.phone,
+  email: config.contact.email,
+  address: { '@type': 'PostalAddress', streetAddress: config.contact.address },
+};
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{c.seo.title}</title>
+    <meta name="description" content={c.seo.description} />
+    <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    {config.locales.map((l) => (
+      <link rel="alternate" hreflang={l} href={`${config.domain}${localePath(l, path)}`} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={`${config.domain}${path}`} />
+    <link rel="canonical" href={`${config.domain}${localePath(locale, path)}`} />
+    <meta property="og:title" content={c.seo.title} />
+    <meta property="og:description" content={c.seo.description} />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-h-screen bg-hueso text-tinta antialiased">
+    <header class="fixed inset-x-0 top-0 z-50 bg-hueso/90 backdrop-blur-sm">
+      <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 md:px-8">
+        <a href={localePath(locale)} class="font-display text-[15px] font-semibold tracking-[0.14em] uppercase">
+          {config.name.replace('Camping ', '')}
+        </a>
+        <div class="flex items-center gap-6 text-[13px] font-medium text-tinta-suave">
+          <a href="#alojamientos" class="hidden transition-colors hover:text-tinta sm:block">{c.nav.alojamientos}</a>
+          <a href="#entorno" class="hidden transition-colors hover:text-tinta sm:block">{c.nav.entorno}</a>
+          <a href="#contacto" class="transition-colors hover:text-tinta">{c.nav.contacto}</a>
+          <span class="flex gap-2 border-l border-arena pl-4 uppercase">
+            {config.locales.map((l) => (
+              <a
+                href={localePath(l, path)}
+                class:list={['transition-colors hover:text-tinta', l === locale && 'text-tinta underline underline-offset-4']}
+                aria-current={l === locale ? 'true' : undefined}
+              >
+                {l}
+              </a>
+            ))}
+          </span>
+        </div>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="border-t border-arena/60">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-10 text-[13px] text-tinta-suave md:flex-row md:items-center md:justify-between md:px-8">
+        <p>
+          <span class="font-display font-semibold tracking-[0.14em] uppercase text-tinta">{config.name}</span>
+          <span class="ml-3">{c.footer.aviso}</span>
+        </p>
+        <p class="tnum">{config.contact.phone} · {config.contact.email}</p>
+      </div>
+    </footer>
+  </body>
+</html>

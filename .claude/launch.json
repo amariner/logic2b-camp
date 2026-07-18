@@ -2,9 +2,25 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "ecom-dev",
+      "name": "api",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "/Users/es00500546/Desktop/Proyectos/ecom.logic2b.com", "dev"],
+      "runtimeArgs": [
+        "exec",
+        "wrangler",
+        "dev",
+        "--config",
+        "tenants/demo/wrangler.jsonc",
+        "--persist-to",
+        ".wrangler-demo",
+        "--port",
+        "8787"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@logic-camp/web", "dev", "--", "--port", "4321"],
       "port": 4321
     }
   ]

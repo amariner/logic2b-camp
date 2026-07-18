@@ -1,0 +1,18 @@
+---
+/**
+ * Wrapper del mostrador: el import estático de la isla vive AQUÍ.
+ * Home lo importa dinámicamente solo en nivel 3 — si no se renderiza,
+ * Astro no descubre la isla y el bundle no arrastra el motor (regla dura).
+ */
+import Mostrador from './Mostrador';
+
+interface Props {
+  labels: Record<string, string>;
+  typeNames: Record<string, string>;
+  locale: string;
+}
+
+const { labels, typeNames, locale } = Astro.props;
+---
+
+<Mostrador client:load labels={labels} typeNames={typeNames} locale={locale} />

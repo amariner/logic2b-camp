@@ -10,6 +10,7 @@
     "seed:sql": "tsx write-seed.ts"
   },
   "dependencies": {
+    "@logic-camp/config": "workspace:*",
     "@logic-camp/db": "workspace:*"
   },
   "devDependencies": {

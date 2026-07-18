@@ -1,0 +1,79 @@
+/* Estilos globales de la web pública (ADR 0006). Los tokens viven en el tenant. */
+@import 'tailwindcss';
+@import '@tenant/theme.css';
+
+@theme {
+  --color-tinta: var(--lc-tinta);
+  --color-hueso: var(--lc-hueso);
+  --color-pino: var(--lc-pino);
+  --color-pino-oscuro: var(--lc-pino-oscuro);
+  --color-arena: var(--lc-arena);
+  --color-arena-suave: var(--lc-arena-suave);
+  --color-mar: var(--lc-mar);
+  --color-tinta-suave: var(--lc-tinta-suave);
+  --font-display: var(--lc-font-display);
+  --font-text: var(--lc-font-text);
+  --radius-lc: var(--lc-radius);
+  --radius-lc-lg: var(--lc-radius-lg);
+}
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('/fonts/ClashDisplay-Variable.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+html {
+  background: var(--lc-hueso);
+  color: var(--lc-tinta);
+  font-family: var(--lc-font-text);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--lc-pino);
+  color: var(--lc-hueso);
+}
+
+/* foco visible SIEMPRE (la usuaria real navega con teclado) */
+:focus-visible {
+  outline: 2px solid var(--lc-pino);
+  outline-offset: 2px;
+}
+
+/* precios y fechas: números tabulares */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ticker del héroe nivel 1 */
+@keyframes lc-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.lc-ticker {
+  animation: lc-ticker 36s linear infinite;
+}
+
+/* las fotos respiran una vez al entrar */
+@keyframes lc-settle {
+  from { transform: scale(1.04); }
+  to { transform: scale(1); }
+}
+.lc-settle {
+  animation: lc-settle 1.8s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .lc-ticker, .lc-settle { animation: none; }
+}
