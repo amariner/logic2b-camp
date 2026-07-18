@@ -28,7 +28,7 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 | Fase | Estado | Fecha | Notas |
 |---|---|---|---|
 | Pre (sesión 1: documentación §1 BRIEF) | ✅ Hecho | 2026-07-17 | CLAUDE.md + docs + commands generados; dudas abiertas abajo |
-| 0 · Fundaciones | 🟨 Casi hecho | 2026-07-17 | Scaffold completo, `pnpm check` verde (28/28). Pendiente SOLO: deploy real a camp.logic2b.com (falta `wrangler login` + D1 demo + secrets GitHub). ADR 0001 |
+| 0 · Fundaciones | ✅ Hecho | 2026-07-18 | Scaffold completo (ADR 0001). `wrangler login` OK, D1 demo creada, Worker desplegado y **`camp.logic2b.com/api/health` responde en producción**. Pendiente menor (no bloquea): secrets `CLOUDFLARE_API_TOKEN`/`ACCOUNT_ID` + `DEPLOY_DEMO_ENABLED=true` en GitHub para CI |
 | 1 · Modelo de datos | ✅ Hecho | 2026-07-17 | 16 tablas Drizzle (ADR 0002), seed Cala Sereno (83 uds, 40 reservas, 15 solicitudes) determinista con tests de invariantes, `db:reset`/`db:seed` operativos, D1 remota migrada+sembrada |
 | 2 · Motor ★ | ✅ Hecho | 2026-07-17 | `packages/core` puro (ADR 0003): availability con reasignación implícita, quote por tramos con desglose, validateStay acumulativo, assignUnit menos-huecos, reglas, tasa por política, cancelación por tramos, registro de extensiones. 47 tests (7 casos límite incluidos) |
 | 3 · API | ✅ Hecho | 2026-07-18 | Sesión 1 (ADR 0004): API pública con precio en servidor, idempotencia, rate limit, RPC tipado. Sesión 2 (ADR 0005): Better Auth sobre la tabla `users` (D1 del binding), roles jerárquicos, /api/admin (planning, bookings con acciones tipadas, enquiries, rates, reports, settings, users), audit_log, alta manual compartiendo motor. 24 tests integración D1 real: fuga cruzada de datos Y de sesión A↛B, invariantes 3 y 4. Desplegado en la demo con login verificado en producción |
@@ -49,18 +49,51 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 
 ## Decisiones pendientes (bloquean avance)
 
-1. Git/GitHub: el directorio no es repo; el super prompt pide repo privado `logic-camp`. ¿`git init` aquí + remoto, o clonar y mover?
-2. Prerrequisitos §5 sin verificar: nameservers logic2b.com en Cloudflare, Workers Paid, Resend verificado, `wrangler login`, token API con scopes.
-3. Confirmar que la "demo" pedida = tenant `demo` (Cala Sereno) del roadmap, no un prototipo aparte.
+1. ~~Git/GitHub~~ → resuelto 2026-07-18: repo `github.com/amariner/logic2b-camp`, rama `main`, push operativo.
+2. ~~`wrangler login`~~ → resuelto 2026-07-18: sesión OAuth con permisos completos; DNS de `camp` resolviendo (health y login responden en producción). Queda por verificar: Resend (dominio + API key) para Fase 7 y secrets de GitHub para CI.
+3. ~~Confirmar demo~~ → confirmado: la demo ES el tenant `demo` (Cala Sereno).
+4. Indexación de la demo: ¿`camp.logic2b.com` se indexa en Google (es la herramienta de ventas) o `noindex` hasta que esté pulida? Propuesta: `noindex` hasta cerrar Fase 10, luego indexar. Decidir con Andreu.
+
+## Pulido de la demo (camp.logic2b.com) — lista de remates
+
+> La demo es LA herramienta de ventas (§0). Esta lista concentra lo que la deja "de premio", cada punto asignado a su fase. Criterio: un director de camping debe poder recorrerla en el móvil desde el primer email comercial y pensar "esto es más serio que mi web actual".
+
+**Fase 4 (siguiente sesión, en orden):**
+- [ ] Servir la web Astro desde `camp.logic2b.com/` con **Workers Assets en el mismo Worker del API** (hoy el dominio solo enruta `/api/*`). Un deploy = web + API.
+- [ ] Páginas restantes: alojamientos (+detalle por tipo con galería y ficha técnica desde la DB), instalaciones, entorno, tarifas (tabla por temporada desde `rate_plans`), contacto, blog cableado.
+- [ ] 2ª tanda de fotos Higgsfield: 2-3 por tipo de alojamiento (detalle interior/exterior), instalaciones (piscina, restaurante, baños), 1 OG image 1200×630.
+- [ ] Idiomas ca/fr/de/nl completos + selector accesible; sitemap.xml y robots.txt por tenant.
+- [ ] Imágenes responsive (`srcset` AVIF/WebP por tamaño) y `preload` del héroe → Lighthouse ≥95 en las 4 métricas, móvil y desktop.
+- [ ] Favicon + touch icons con la marca del tenant; página 404 propia con foto y enlace al mostrador.
+- [ ] Mostrador: skeleton de carga, mensaje "cerrado" con la fecha REAL de apertura leída de `seasons_calendar` (no hardcodeada), deep-link de búsqueda (`/?from=…&to=…` reproducible para compartir).
+
+**Fase 5 (hace la demo "completa" de verdad):**
+- [ ] Funnel de reserva enlazado desde el botón "Reservar" de cada resultado del mostrador, con estado en URL y bloqueo temporal 15 min.
+- [ ] Página de confirmación con desglose imprimible + gestión por código+email (ya existe el endpoint).
+
+**Fase 6:**
+- [ ] El planning con los datos del seed debe verse ESPECTACULAR en la primera demo: 83 unidades × agosto lleno, colores por estado, bloqueos visibles.
+
+**Fase 10 (remates de demo puros):**
+- [ ] Reset nocturno por cron con **fechas relativas a hoy** (jamás una demo con reservas caducadas).
+- [ ] Acceso al dashboard demo sin registro (readonly con excepciones para tocar el planning).
+- [ ] Conmutador de nivel 1/3 en vivo en la misma URL (enseñar Camp Web al pequeño, Camp Reservas al grande).
+- [ ] Banner discreto "entorno de demostración" + datos con historia (nombres plausibles, solicitudes en 4 idiomas, una reserva de grupo, un no-show).
+- [ ] `DEMO-SCRIPT.md`: guion de 12 minutos con el recorrido exacto de venta.
+- [ ] Cloudflare Web Analytics en la demo: saber qué páginas mira un prospecto tras el email comercial.
+
+**Transversal (cada sesión que toque la web):**
+- [ ] Accesibilidad AA real: foco visible, contraste verificado, navegación por teclado del mostrador, `prefers-reduced-motion`.
+- [ ] Probar SIEMPRE a 1366px y en móvil 375px antes de cerrar sesión.
 
 ## Cómo retomar una sesión
 
-1. `cd /Users/es00500546/Desktop/Proyectos/camp.logic2b.com`
+1. `cd /Users/andreumariner/Desktop/proyectos/logic-camp`
 2. Leer `PROGRESS.md`, `CLAUDE.md` y este ROADMAP.
-3. Continuar la primera fase en ⬜: ADR primero, una fase por sesión, `/check` verde, actualizar esta tabla y `PROGRESS.md`, cerrar con `/session-close`.
+3. Continuar la primera fase en ⬜/🟨: ADR primero, una fase por sesión, `/check` verde, actualizar esta tabla y `PROGRESS.md`, cerrar con `/session-close`.
 
 ## Orden de ataque (~6h/semana)
 
-- **Semanas 1–6** → Fases 0–3 + Fase 4 parcial (héroe + widget + un tipo de alojamiento) = **demo que vende**.
+- **Semanas 1–6** → Fases 0–3 + Fase 4 parcial (héroe + widget + un tipo de alojamiento) = **demo que vende**. ← estamos aquí (adelantados: Fases 0–3 completas y home nivel 3 funcionando)
 - **Semanas 7–10** → Fase 4 completa + Fase 9 en nivel 1 = **primer camping real en producción**.
 - **Semanas 11+** → Fases 5–8, cuando el primer camping pida el motor.
