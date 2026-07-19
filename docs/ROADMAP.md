@@ -63,7 +63,7 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 - [x] Páginas restantes: alojamientos (+detalle por tipo con galería y ficha técnica desde la DB), instalaciones, entorno, tarifas (tabla por temporada desde `rate_plans`), contacto, blog cableado.
 - [ ] 2ª tanda de fotos Higgsfield: **6 generadas** (interiores, piscina, restaurante, premium, autocaravana — IDs en PROGRESS) pendientes de descargar en local; faltan baños y 2ª foto por tipo si se quiere más densidad. OG image ya generada desde el héroe.
 - [x] Idiomas ca/fr/de/nl completos + selector accesible; sitemap.xml y robots.txt por tenant.
-- [x] Imágenes responsive (`srcset` AVIF/WebP por tamaño) y `preload` del héroe. *(La auditoría Lighthouse ≥95 queda para cuando esté desplegado)*
+- [x] Imágenes responsive (`srcset` AVIF/WebP por tamaño) y `preload` del héroe → **Lighthouse ≥95 verificado en local contra el Worker real** (home móvil 96, home/detalle/tarifas 100 en todo; fuentes subseteadas). Falta solo re-medir en producción tras el deploy.
 - [x] Favicon + touch icons con la marca del tenant; página 404 propia con foto y enlace al inicio.
 - [x] Mostrador: skeleton de carga, mensaje "cerrado" con la fecha REAL de apertura servida por la API desde `seasons_calendar`, deep-link de búsqueda (`/?from=…&to=…`) bidireccional.
 

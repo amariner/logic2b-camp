@@ -4,13 +4,23 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 4 🟨 sesión 2/3 (web completa 6 idiomas + Workers Assets) · Siguiente: **Fase 4 sesión 3** — redesplegar la demo (`pnpm --filter @logic-camp/api deploy:demo` sirve ya web+API), descargar la 2ª tanda de fotos Higgsfield (IDs abajo), auditoría Lighthouse ≥95 contra producción y remates que salgan de verla desplegada.
+- **Fase actual**: 4 🟨 sesión 2/3 hecha + Lighthouse local ≥95 · Siguiente: **(1) Andreu valida el ADR 0007** (flujo de reserva — está PROPUESTO, sin código), **(2) Fase 4 remates locales**: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción. Con el ADR validado, empezar Fase 5 sesión 13.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 9 — 2026-07-19 · Fase 4 (remates) · Lighthouse ≥95 local + ADR 0007 propuesto
+
+**Hecho**
+- **Lighthouse contra el Worker local** (assets reales, red y CPU emuladas): home desktop **100/100/100/100**, detalle glamping móvil **100**, tarifas desktop **100**, home móvil **96/100/100/100**. Objetivo ≥95 cumplido en todo lo auditado
+- Los dos arreglos que lo consiguieron: **fuentes subseteadas** con fonttools a latín+latín-ext+signos (Inter 352→101 KB, Clash 29→23 KB — el render del héroe pasaba 2,1 s esperando ancho de banda) y **imágenes**: héroe webp calidad 60, separador de lona 287→~60 KB como `<img loading="lazy">`
+- `.claude/launch.json`: el server `api` crea `apps/web/dist` si falta (wrangler dev con assets exige que exista el directorio)
+- **`docs/adr/0007-flujo-de-reserva.md` PROPUESTO** (Fase 5): funnel en apps/web con isla por paso, estado en URL, `inventory_holds` por tipo con expiración perezosa + primer Cron Trigger, gestión código+email (ver/cancelar/modificar re-cotizado), E2E Playwright feliz + 3 infelices, reparto sesiones 13–15. **Sin código de Fase 5 — esperando validación**
+
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 8 — 2026-07-19 · Fase 4 (2/3) · Web completa, 6 idiomas, Workers Assets
 

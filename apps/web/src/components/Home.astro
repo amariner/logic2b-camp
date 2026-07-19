@@ -20,8 +20,14 @@ const hero = await getImage({
   src: heroSrc,
   widths: [828, 1280, 1920, 2560],
   format: 'webp',
+  quality: 60,
 });
-const lona = await getImage({ src: images['textura-lona']!, width: 1600, format: 'webp' });
+const lona = await getImage({
+  src: images['textura-lona']!,
+  width: 1200,
+  format: 'webp',
+  quality: 50,
+});
 ---
 
 <Base locale={locale} path="/">
@@ -137,7 +143,9 @@ const lona = await getImage({ src: images['textura-lona']!, width: 1600, format:
   </section>
 
   <!-- ───────── firma: sombra de pino (materia, no vector) ───────── -->
-  <div class="h-24 w-full bg-cover bg-center" style={`background-image: url(${lona.src})`} role="presentation"></div>
+  <div class="h-24 w-full overflow-hidden" role="presentation">
+    <img src={lona.src} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+  </div>
 
   <!-- ───────── El entorno ───────── -->
   <section id="entorno" class="mx-auto grid max-w-7xl scroll-mt-20 gap-10 px-5 py-24 md:grid-cols-2 md:items-center md:px-8 md:py-32">

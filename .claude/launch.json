@@ -3,17 +3,10 @@
   "configurations": [
     {
       "name": "api",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "bash",
       "runtimeArgs": [
-        "exec",
-        "wrangler",
-        "dev",
-        "--config",
-        "tenants/demo/wrangler.jsonc",
-        "--persist-to",
-        ".wrangler-demo",
-        "--port",
-        "8787"
+        "-lc",
+        "mkdir -p apps/web/dist && pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787"
       ],
       "port": 8787
     },
