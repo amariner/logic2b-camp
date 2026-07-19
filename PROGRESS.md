@@ -13,6 +13,16 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 23 — 2026-07-19 · Fase 10 (adelantado) · `docs/DEMO-SCRIPT.md`
+
+**Hecho** (continuación de la misma sesión cloud)
+- `docs/DEMO-SCRIPT.md`: guion de venta de 12 minutos, minuto a minuto (mostrador → reserva completa con hold y reembolso previsto → multi-idioma+móvil → selector de temas explicado como atrezzo comercial, no feature del cliente → planning con DnD y ficha → modo lite → informes/clientes/log de notificaciones → el argumento de seguridad de D1 por camping → niveles y cierre), más variantes según interlocutor (camping pequeño escéptico / camping grande con Excel / interlocutor técnico) y qué NO enseñar todavía (cobro real, reenvío de notificaciones, reset nocturno) para no prometer de más.
+- Grounded en datos reales del seed y sesiones anteriores (credenciales de demo verificadas por curl en la sesión 22, temas de ADR 0009, ancla de temporada de `tenants/demo/seed.ts`) — nada inventado.
+- Adelantado de Fase 10 a propósito: es puro documento, no depende de ningún código pendiente de esa fase (reset nocturno, dashboard readonly, conmutador de nivel, Storybook) — mismo criterio que el selector de temas en la sesión 14.
+- `docs/ROADMAP.md`: ítem de Fase 10 marcado hecho
+
+**`/check`**: ✅ verde (38/38, sin cambios de código)
+
 ### Sesión 22 — 2026-07-19 · BACKLOG 7.x · Log de notificaciones en el dashboard
 
 **Hecho** (continuación de la misma sesión cloud: "sigue perfilando... sin parar")

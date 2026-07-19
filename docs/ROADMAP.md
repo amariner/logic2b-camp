@@ -83,7 +83,7 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 - [ ] Acceso al dashboard demo sin registro (readonly con excepciones para tocar el planning).
 - [ ] Conmutador de nivel 1/3 en vivo en la misma URL (enseñar Camp Web al pequeño, Camp Reservas al grande).
 - [ ] Banner discreto "entorno de demostración" + datos con historia (nombres plausibles, solicitudes en 4 idiomas, una reserva de grupo, un no-show).
-- [ ] `DEMO-SCRIPT.md`: guion de 12 minutos con el recorrido exacto de venta.
+- [x] `DEMO-SCRIPT.md`: guion de 12 minutos con el recorrido exacto de venta — hecho 2026-07-19 (sesión 22, sin esperar al resto de Fase 10: es puramente documental, no depende de código pendiente).
 - [ ] Cloudflare Web Analytics en la demo: saber qué páginas mira un prospecto tras el email comercial.
 
 **Transversal (cada sesión que toque la web):**
