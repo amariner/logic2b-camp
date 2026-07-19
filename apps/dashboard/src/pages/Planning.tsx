@@ -484,9 +484,7 @@ export default function Planning() {
         )}
       </div>
 
-      {openId && data && (
-        <BookingPanel bookingId={openId} units={data.units} onClose={closePanel} />
-      )}
+      {openId && data && <BookingPanel bookingId={openId} onClose={closePanel} />}
     </div>
   );
 }

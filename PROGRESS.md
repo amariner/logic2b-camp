@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesiones 1–3/5 (planning con DnD + ficha) · Siguiente: **Fase 6 sesión 18** — solicitudes + llegadas = modo lite (bandeja de enquiries con cambio de estado, lista de llegadas/salidas del día). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard **+ selector de temas nuevo**), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesiones 1–4/5 (planning + DnD + ficha + modo lite) · Siguiente: **Fase 6 sesión 19** — lista completa de reservas con búsqueda + alta manual desde el panel + inventario/tarifas. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard **+ temas + solicitudes + llegadas**), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,19 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 15 — 2026-07-19 · Fase 6 (4/5) · Solicitudes + llegadas = modo lite
+
+**Hecho**
+- **API**: `GET /api/admin/bookings` gana `arrivalsOn`/`departuresOn` (igualdad exacta con `date_from`/`date_to` — salida = día que se libera, exclusivo) y devuelve `unitCode` + `leadName` por join (unidad y titular a la vista en las listas). `GET /bookings/:id` devuelve `unitCode`. Nuevo `GET /api/admin/catalog` (tipos+unidades, para selects y nombres). **34 tests** (+2: llegadas/salidas con titular, catálogo)
+- **Bandeja de solicitudes** (`/admin/#/solicitudes`): filtros por estado con recuento (Todas·15 / Nueva·4 / …), fila expandible con mensaje completo, contacto clicable (mailto/tel), idioma y origen; **acciones de siguiente paso natural** (nueva→contactada|perdida, contactada→presupuestada|perdida, presupuestada→convertida|perdida, perdida→reabrir) sobre el PATCH existente auditado. Chips `sol-*` con los tokens
+- **Llegadas/salidas del día** (`/admin/#/llegadas`): día navegable (hoy/←/→/calendario), dos columnas con titular, unidad, pax·noches, estado y **pendiente de cobro destacado** (la cifra del check-in) o "Pagada"; canceladas fuera; click en fila → **BookingPanel reutilizado**
+- `BookingPanel` simplificado: ya no necesita la prop `units` (el detalle trae `unitCode`)
+- **Verificado en navegador contra el Worker real**: 15 solicitudes, filtro Nueva 4→3 tras marcar contactada (mensaje `role=status`), llegadas 1-ago = 3+3 con pendientes correctos, ficha desde fila y Esc devuelve el foco; 0 errores JS. Seed restaurado después
+- `docs/FUNCIONALIDADES.md` al día (§6.7 llegadas, §6.8 bandeja)
+
+**Pendiente fase**: sesión 19 (lista de reservas + alta manual UI + inventario/tarifas), sesión 20 (clientes/informes/ajustes). El "calendario de ocupación manual" del lite queda con el planning (ya cubre la lectura)
+**`/check`**: ✅ verde (32/32) · API 34/34
 
 ### Sesión 14 — 2026-07-19 · Demo comercial · Selector de temas (ADR 0009) + docs de funcionalidades
 

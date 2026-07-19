@@ -16,8 +16,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
 import { t } from './i18n';
+import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
 import Planning from './pages/Planning';
+import Solicitudes from './pages/Solicitudes';
 import './styles.css';
 
 const queryClient = new QueryClient();
@@ -41,6 +43,18 @@ function Shell() {
             className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
           >
             {t('nav.planning')}
+          </Link>
+          <Link
+            to="/llegadas"
+            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+          >
+            {t('nav.llegadas')}
+          </Link>
+          <Link
+            to="/solicitudes"
+            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+          >
+            {t('nav.solicitudes')}
           </Link>
         </nav>
         <div className="ml-auto flex items-center gap-3 text-[13px]">
@@ -67,9 +81,19 @@ const planningRoute = createRoute({
   path: '/',
   component: Planning,
 });
+const llegadasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/llegadas',
+  component: Llegadas,
+});
+const solicitudesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/solicitudes',
+  component: Solicitudes,
+});
 
 const router = createRouter({
-  routeTree: rootRoute.addChildren([planningRoute]),
+  routeTree: rootRoute.addChildren([planningRoute, llegadasRoute, solicitudesRoute]),
   history: createHashHistory(),
 });
 

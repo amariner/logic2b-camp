@@ -144,3 +144,23 @@ html {
   color: var(--lc-tinta-suave);
   border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
 }
+
+/* chips de estado de solicitud (bandeja): nueva pide atención, perdida se apaga */
+.lc-chip.sol-new {
+  background: var(--lc-pino);
+}
+.lc-chip.sol-contacted {
+  background: var(--lc-mar);
+}
+.lc-chip.sol-quoted {
+  background: var(--lc-arena);
+  color: var(--lc-tinta);
+}
+.lc-chip.sol-converted {
+  background: var(--lc-tinta-suave);
+}
+.lc-chip.sol-lost {
+  background: transparent;
+  color: var(--lc-tinta-suave);
+  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+}

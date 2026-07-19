@@ -97,6 +97,7 @@ export type BookingDetail = {
   dateTo: string;
   unitTypeId: string;
   unitId: string | null;
+  unitCode: string | null;
   occupancy: { adults: number; childrenAges: number[]; pets: number; vehicles: number };
   priceBreakdown: {
     lines: PriceLine[];
@@ -114,3 +115,46 @@ export type BookingDetail = {
   guests: BookingGuest[];
   payments: BookingPayment[];
 };
+
+// ---------- tipos de /api/admin/bookings (lista) ----------
+
+export type BookingListItem = {
+  id: string;
+  code: string;
+  status: BookingDetail['status'];
+  channel: BookingDetail['channel'];
+  dateFrom: string;
+  dateTo: string;
+  unitTypeId: string;
+  unitId: string | null;
+  unitCode: string | null;
+  leadName: string | null;
+  occupancy: { adults: number; childrenAges: number[]; pets: number; vehicles: number };
+  totalCents: number;
+  paidCents: number;
+  notes: string | null;
+  createdAt: string;
+};
+
+// ---------- tipos de /api/admin/enquiries ----------
+
+export type EnquiryStatus = 'new' | 'contacted' | 'quoted' | 'converted' | 'lost';
+
+export type EnquiryItem = {
+  id: string;
+  status: EnquiryStatus;
+  dateFrom: string | null;
+  dateTo: string | null;
+  occupancy: { adults: number; childrenAges: number[]; pets: number; vehicles: number } | null;
+  unitTypeId: string | null;
+  message: string;
+  contact: { name: string; email: string; phone?: string; locale?: string };
+  locale: string;
+  source: string;
+  convertedBookingId: string | null;
+  createdAt: string;
+};
+
+// ---------- tipos de /api/admin/catalog ----------
+
+export type Catalog = { unitTypes: PlanningUnitType[]; units: PlanningUnit[] };

@@ -174,7 +174,23 @@ Las sesiones son revocables al instante (un empleado que se va deja de entrar HO
 
 Cada acción de gestión (confirmar, cancelar, reasignar, cambiar una tarifa, tocar los ajustes…) escribe **quién, qué y cuándo** en un registro de auditoría inalterable. Cuando dentro de seis meses alguien pregunte "¿quién movió esta reserva?", habrá respuesta.
 
-### 6.7 Informes
+### 6.7 Las llegadas y salidas del día
+
+La hoja de trabajo de recepción cada mañana, en una pantalla:
+
+- **Quién llega y quién sale** el día elegido (hoy por defecto; se navega con flechas o calendario), con titular, unidad asignada, personas y noches.
+- **Qué queda por cobrar**: cada llegada muestra su pendiente de pago destacado — la información clave en el momento del check-in — o "Pagada" si está al corriente.
+- Un clic en cualquier fila abre la **ficha completa** de la reserva con sus acciones, sin cambiar de pantalla.
+
+### 6.8 La bandeja de solicitudes
+
+Las peticiones de la web, trabajables por estados:
+
+- Filtros con recuento: **nueva → contactada → presupuestada → convertida / perdida**. De un vistazo se ve cuántas piden atención.
+- Cada solicitud se expande para leer el **mensaje completo** y contactar con un clic (email y teléfono son enlaces directos), con su idioma y origen.
+- Los botones ofrecen solo el **siguiente paso natural** del flujo (una nueva se marca contactada o perdida; una presupuestada, convertida o perdida; una perdida puede reabrirse). Cada cambio queda auditado.
+
+### 6.9 Informes
 
 Primer bloque disponible: **ocupación por tipo** (noches ocupadas sobre capacidad), **ingresos** del periodo (total y cobrado) y **llegadas/salidas**. Se amplía en las próximas fases.
 
@@ -184,7 +200,7 @@ Primer bloque disponible: **ocupación por tipo** (noches ocupadas sobre capacid
 
 El formulario de la web guarda cada petición con sus fechas, ocupación y mensaje — **en todos los niveles**, incluso cuando solo se reenvía por email. Es el historial comercial del camping.
 
-En el panel, la bandeja de solicitudes las gestiona por estados: **nueva → contactada → presupuestada → convertida / perdida**. Una solicitud es una petición, no una reserva a medias: no bloquea inventario ni tiene precio cerrado hasta que recepción la convierte explícitamente.
+En el panel, la bandeja de solicitudes (§6.8) las gestiona por estados: **nueva → contactada → presupuestada → convertida / perdida**. Una solicitud es una petición, no una reserva a medias: no bloquea inventario ni tiene precio cerrado hasta que recepción la convierte explícitamente.
 
 ---
 
@@ -205,7 +221,7 @@ Con fecha en el plan de trabajo, no humo:
 |---|---|
 | **Notificaciones** | Emails automáticos en los 6 idiomas (confirmación, recordatorio de llegada, aviso de solicitud…) con remitente del dominio del camping, activables una a una sin tocar código |
 | **Pagos online** | Stripe **y Redsys** (la pasarela de los bancos españoles), con modos: sin cobro / señal / total / con fianza. Reembolsos desde la ficha. Un camping puede operar sin pasarela y activarla después |
-| **Modo lite completo** | Bandeja + llegadas del día + calendario manual para el nivel Camp Solicitudes |
+| **Gestión ampliada** | Lista completa de reservas con búsqueda, gestión de inventario y tarifas desde el panel, conversión directa de solicitud a reserva |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
 | **Demo autolimpiable** | La demo comercial se reinicia cada noche con fechas siempre vigentes |
 

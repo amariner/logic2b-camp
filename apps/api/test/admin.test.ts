@@ -53,10 +53,30 @@ let readonly = '';
 beforeAll(async () => {
   await seedTenant(env.DB, 'alfa');
   await seedTenant(env.DB_B, 'beta');
-  await provisionUser(envA, { email: 'owner@alfa.test', password: 'secreto123', name: 'Owner', role: 'owner' });
-  await provisionUser(envA, { email: 'manager@alfa.test', password: 'secreto123', name: 'Manager', role: 'manager' });
-  await provisionUser(envA, { email: 'recepcion@alfa.test', password: 'secreto123', name: 'Recepción', role: 'reception' });
-  await provisionUser(envA, { email: 'readonly@alfa.test', password: 'secreto123', name: 'Solo Lectura', role: 'readonly' });
+  await provisionUser(envA, {
+    email: 'owner@alfa.test',
+    password: 'secreto123',
+    name: 'Owner',
+    role: 'owner',
+  });
+  await provisionUser(envA, {
+    email: 'manager@alfa.test',
+    password: 'secreto123',
+    name: 'Manager',
+    role: 'manager',
+  });
+  await provisionUser(envA, {
+    email: 'recepcion@alfa.test',
+    password: 'secreto123',
+    name: 'Recepción',
+    role: 'reception',
+  });
+  await provisionUser(envA, {
+    email: 'readonly@alfa.test',
+    password: 'secreto123',
+    name: 'Solo Lectura',
+    role: 'readonly',
+  });
   owner = await signIn('owner@alfa.test', 'secreto123');
   manager = await signIn('manager@alfa.test', 'secreto123');
   reception = await signIn('recepcion@alfa.test', 'secreto123');
@@ -113,14 +133,20 @@ describe('reservas privadas', () => {
   it('readonly no puede crear → 403; reception sí → 201 con canal phone', async () => {
     const forbidden = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-01', '2026-09-04')), headers: { 'content-type': 'application/json', cookie: readonly } },
+      {
+        ...json(bookingBody('2026-09-01', '2026-09-04')),
+        headers: { 'content-type': 'application/json', cookie: readonly },
+      },
       envA,
     );
     expect(forbidden.status).toBe(403);
 
     const res = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-01', '2026-09-04')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-09-01', '2026-09-04')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     expect(res.status).toBe(201);
@@ -138,15 +164,60 @@ describe('reservas privadas', () => {
     expect(found?.channel).toBe('phone');
   });
 
+  it('llegadas/salidas del día: arrivalsOn/departuresOn filtran por fecha exacta y traen unitCode', async () => {
+    const res = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-10-05', '2026-10-08')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
+      envA,
+    );
+    expect(res.status).toBe(201);
+    const { id } = (await res.json()) as { id: string };
+
+    type Item = { id: string; unitCode: string | null };
+    const fetchItems = async (query: string) => {
+      const r = await app.request(
+        `/api/admin/bookings?${query}`,
+        { headers: { cookie: readonly } },
+        envA,
+      );
+      expect(r.status).toBe(200);
+      return ((await r.json()) as { items: Item[] }).items;
+    };
+
+    const llegadas = await fetchItems('arrivalsOn=2026-10-05');
+    const encontrada = llegadas.find((b) => b.id === id) as
+      (Item & { leadName: string | null }) | undefined;
+    expect(encontrada).toBeDefined();
+    // la creación asigna unidad → el join la trae para pintarla en la lista
+    expect(encontrada?.unitCode).toBeTruthy();
+    // el titular sale en la lista (la recepcionista pregunta "¿a nombre de quién?")
+    expect(encontrada?.leadName).toContain('Mostrador');
+
+    // date_to es exclusivo: la salida es el día que la unidad se libera
+    expect((await fetchItems('departuresOn=2026-10-08')).some((b) => b.id === id)).toBe(true);
+    expect((await fetchItems('arrivalsOn=2026-10-06')).some((b) => b.id === id)).toBe(false);
+    expect((await fetchItems('departuresOn=2026-10-05')).some((b) => b.id === id)).toBe(false);
+  });
+
   it('transición inválida → 409', async () => {
     const res = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-05', '2026-09-07')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-09-05', '2026-09-07')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     const { id } = (await res.json()) as { id: string };
     // confirmed → confirm no es transición válida
-    const bad = await app.request(`/api/admin/bookings/${id}`, patch({ action: 'confirm' }, reception), envA);
+    const bad = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'confirm' }, reception),
+      envA,
+    );
     expect(bad.status).toBe(409);
   });
 
@@ -154,7 +225,10 @@ describe('reservas privadas', () => {
     const mk = () =>
       app.request(
         '/api/admin/bookings',
-        { ...json(bookingBody('2026-09-10', '2026-09-13')), headers: { 'content-type': 'application/json', cookie: reception } },
+        {
+          ...json(bookingBody('2026-09-10', '2026-09-13')),
+          headers: { 'content-type': 'application/json', cookie: reception },
+        },
         envA,
       );
     // llenar las 3 unidades
@@ -167,7 +241,11 @@ describe('reservas privadas', () => {
     const full = await mk();
     expect(full.status).toBe(409);
 
-    const cancel = await app.request(`/api/admin/bookings/${ids[0]}`, patch({ action: 'cancel' }, reception), envA);
+    const cancel = await app.request(
+      `/api/admin/bookings/${ids[0]}`,
+      patch({ action: 'cancel' }, reception),
+      envA,
+    );
     expect(cancel.status).toBe(200);
     expect(((await cancel.json()) as { status: string }).status).toBe('cancelled');
 
@@ -178,13 +256,19 @@ describe('reservas privadas', () => {
   it('reasignación: a unidad ocupada 409, a unidad libre 200', async () => {
     const r1 = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-20', '2026-09-23')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-09-20', '2026-09-23')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     const b1 = (await r1.json()) as { id: string; unitId: string };
     const r2 = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-20', '2026-09-23')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-09-20', '2026-09-23')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     const b2 = (await r2.json()) as { id: string; unitId: string };
@@ -211,7 +295,10 @@ describe('tarifas', () => {
   it('invariante 3: cambiar una tarifa no modifica una reserva confirmada', async () => {
     const res = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-10-01', '2026-10-04')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-10-01', '2026-10-04')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     const booking = (await res.json()) as { id: string; totalCents: number };
@@ -220,39 +307,75 @@ describe('tarifas', () => {
     // reception no puede tocar tarifas
     const forbidden = await app.request(
       '/api/admin/rates/rp_alfa_0',
-      { method: 'PUT', headers: { 'content-type': 'application/json', cookie: reception }, body: JSON.stringify({ baseCents: 9999 }) },
+      {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json', cookie: reception },
+        body: JSON.stringify({ baseCents: 9999 }),
+      },
       envA,
     );
     expect(forbidden.status).toBe(403);
 
     const updated = await app.request(
       '/api/admin/rates/rp_alfa_0',
-      { method: 'PUT', headers: { 'content-type': 'application/json', cookie: manager }, body: JSON.stringify({ baseCents: 9999 }) },
+      {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json', cookie: manager },
+        body: JSON.stringify({ baseCents: 9999 }),
+      },
       envA,
     );
     expect(updated.status).toBe(200);
     expect(((await updated.json()) as { baseCents: number }).baseCents).toBe(9999);
 
     // la reserva guardada NO cambia: el desglose almacenado es la verdad
-    const detail = await app.request(`/api/admin/bookings/${booking.id}`, { headers: { cookie: readonly } }, envA);
-    const stored = (await detail.json()) as { totalCents: number; priceBreakdown: { totalCents: number } };
+    const detail = await app.request(
+      `/api/admin/bookings/${booking.id}`,
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    const stored = (await detail.json()) as {
+      totalCents: number;
+      priceBreakdown: { totalCents: number };
+    };
     expect(stored.totalCents).toBe(7500);
     expect(stored.priceBreakdown.totalCents).toBe(7500);
 
     // …pero una cotización nueva sí usa la tarifa nueva
     const q = await app.request(
       '/api/quote',
-      json({ unitTypeId: 'ut_std', dateFrom: '2026-10-05', dateTo: '2026-10-06', occupancy: { adults: 2, childrenAges: [], pets: 0, vehicles: 1 } }),
+      json({
+        unitTypeId: 'ut_std',
+        dateFrom: '2026-10-05',
+        dateTo: '2026-10-06',
+        occupancy: { adults: 2, childrenAges: [], pets: 0, vehicles: 1 },
+      }),
       envA,
     );
-    expect(((await q.json()) as { breakdown: { totalCents: number } }).breakdown.totalCents).toBe(9999 + 1500);
+    expect(((await q.json()) as { breakdown: { totalCents: number } }).breakdown.totalCents).toBe(
+      9999 + 1500,
+    );
 
     // restaurar para no contaminar otros tests
     await app.request(
       '/api/admin/rates/rp_alfa_0',
-      { method: 'PUT', headers: { 'content-type': 'application/json', cookie: manager }, body: JSON.stringify({ baseCents: 2000 }) },
+      {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json', cookie: manager },
+        body: JSON.stringify({ baseCents: 2000 }),
+      },
       envA,
     );
+  });
+});
+
+describe('catálogo', () => {
+  it('devuelve tipos y unidades (readonly puede)', async () => {
+    const res = await app.request('/api/admin/catalog', { headers: { cookie: readonly } }, envA);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { unitTypes: unknown[]; units: unknown[] };
+    expect(body.unitTypes.length).toBeGreaterThan(0);
+    expect(body.units.length).toBeGreaterThan(0);
   });
 });
 
@@ -260,15 +383,27 @@ describe('solicitudes', () => {
   it('lista y transiciona estado', async () => {
     const created = await app.request(
       '/api/enquiries',
-      json({ message: '¿Tenéis hueco en agosto?', contact: { name: 'Ana', email: 'ana@example.com' }, locale: 'es' }),
+      json({
+        message: '¿Tenéis hueco en agosto?',
+        contact: { name: 'Ana', email: 'ana@example.com' },
+        locale: 'es',
+      }),
       envA,
     );
     const { id } = (await created.json()) as { id: string };
 
-    const res = await app.request(`/api/admin/enquiries/${id}`, patch({ status: 'contacted' }, reception), envA);
+    const res = await app.request(
+      `/api/admin/enquiries/${id}`,
+      patch({ status: 'contacted' }, reception),
+      envA,
+    );
     expect(res.status).toBe(200);
 
-    const list = await app.request('/api/admin/enquiries?status=contacted', { headers: { cookie: readonly } }, envA);
+    const list = await app.request(
+      '/api/admin/enquiries?status=contacted',
+      { headers: { cookie: readonly } },
+      envA,
+    );
     const body = (await list.json()) as { items: { id: string }[] };
     expect(body.items.some((e) => e.id === id)).toBe(true);
   });
@@ -279,7 +414,10 @@ describe('informes y ajustes', () => {
     // autocontenido: el storage se aísla por test, la reserva se crea aquí
     const created = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody('2026-09-01', '2026-09-04')), headers: { 'content-type': 'application/json', cookie: reception } },
+      {
+        ...json(bookingBody('2026-09-01', '2026-09-04')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
       envA,
     );
     expect(created.status).toBe(201);
@@ -308,7 +446,11 @@ describe('informes y ajustes', () => {
     );
     expect(forbidden.status).toBe(403);
 
-    const res = await app.request('/api/admin/settings', patch({ name: 'Camping Renombrado' }, manager), envA);
+    const res = await app.request(
+      '/api/admin/settings',
+      patch({ name: 'Camping Renombrado' }, manager),
+      envA,
+    );
     expect(res.status).toBe(200);
     expect(((await res.json()) as { name: string }).name).toBe('Camping Renombrado');
   });
@@ -316,7 +458,12 @@ describe('informes y ajustes', () => {
 
 describe('usuarios (solo owner)', () => {
   it('manager no puede crear usuarios; owner sí y el nuevo puede entrar', async () => {
-    const newUser = { email: 'nueva@alfa.test', password: 'secreto123', name: 'Nueva', role: 'reception' as const };
+    const newUser = {
+      email: 'nueva@alfa.test',
+      password: 'secreto123',
+      name: 'Nueva',
+      role: 'reception' as const,
+    };
 
     const forbidden = await app.request(
       '/api/admin/users',

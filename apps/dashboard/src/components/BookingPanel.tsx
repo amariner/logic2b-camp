@@ -5,7 +5,7 @@
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { apiGet, apiPatch, type BookingDetail, type PlanningUnit } from '../api';
+import { apiGet, apiPatch, type BookingDetail } from '../api';
 import { t, tDyn } from '../i18n';
 
 /** Espejo de TRANSITIONS del servidor: qué botones enseñar por estado. */
@@ -34,11 +34,9 @@ const conceptLabel = (concept: string) =>
 
 export default function BookingPanel({
   bookingId,
-  units,
   onClose,
 }: {
   bookingId: string;
-  units: PlanningUnit[];
   onClose: () => void;
 }) {
   const qc = useQueryClient();
@@ -103,7 +101,7 @@ export default function BookingPanel({
 
   const lead = data?.guests.find((g) => g.isLead) ?? data?.guests[0];
   const companions = data?.guests.filter((g) => g !== lead) ?? [];
-  const unitCode = data?.unitId ? units.find((u) => u.id === data.unitId)?.code : null;
+  const unitCode = data?.unitCode ?? null;
   const n = data ? noches(data.dateFrom, data.dateTo) : 0;
   const pax = data ? data.occupancy.adults + data.occupancy.childrenAges.length : 0;
   const pendingCents = data ? data.totalCents - data.paidCents : 0;

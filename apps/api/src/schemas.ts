@@ -89,6 +89,10 @@ export const bookingsListQuerySchema = z.object({
   status: z.enum(['pending', 'confirmed', 'cancelled', 'no_show', 'completed']).optional(),
   from: isoDate.optional(),
   to: isoDate.optional(),
+  /** día exacto de llegada (date_from ==) — la pantalla de llegadas */
+  arrivalsOn: isoDate.optional(),
+  /** día exacto de salida (date_to ==, exclusivo: ese día la unidad se libera) */
+  departuresOn: isoDate.optional(),
   /** búsqueda por código de reserva (prefijo) */
   q: z.string().max(40).optional(),
   page: z.coerce.number().int().min(1).default(1),

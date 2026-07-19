@@ -25,7 +25,10 @@ import {
 const TAX_POLICY = TAX_POLICIES.valencia!;
 
 /** Transiciones de estado permitidas. Lo que no está aquí, es 409. */
-const TRANSITIONS: Record<string, { from: string[]; to: 'confirmed' | 'cancelled' | 'no_show' | 'completed' }> = {
+const TRANSITIONS: Record<
+  string,
+  { from: string[]; to: 'confirmed' | 'cancelled' | 'no_show' | 'completed' }
+> = {
   confirm: { from: ['pending'], to: 'confirmed' },
   cancel: { from: ['pending', 'confirmed'], to: 'cancelled' },
   no_show: { from: ['confirmed'], to: 'no_show' },
@@ -63,7 +66,8 @@ export const adminRoutes = new Hono<AuthEnv>()
   // ---------- Planning (el SELECT del tape chart — Fase 6 solo pinta) ----------
   .get('/planning', async (c) => {
     const parsed = planningQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const { from, to } = parsed.data;
     if (from >= to) return c.json({ error: 'invalid_dates' }, 400);
     const db = c.get('tenant').db;
@@ -93,16 +97,29 @@ export const adminRoutes = new Hono<AuthEnv>()
       db
         .select()
         .from(schema.inventoryBlocks)
-        .where(and(lt(schema.inventoryBlocks.dateFrom, to), gt(schema.inventoryBlocks.dateTo, from))),
+        .where(
+          and(lt(schema.inventoryBlocks.dateFrom, to), gt(schema.inventoryBlocks.dateTo, from)),
+        ),
     ]);
 
     return c.json({ from, to, unitTypes: types, units, bookings, blocks });
   })
 
+  // ---------- Catálogo (tipos + unidades: estable, para selects y nombres) ----------
+  .get('/catalog', async (c) => {
+    const db = c.get('tenant').db;
+    const [types, units] = await Promise.all([
+      db.select().from(schema.unitTypes),
+      db.select().from(schema.units).orderBy(schema.units.code),
+    ]);
+    return c.json({ unitTypes: types, units });
+  })
+
   // ---------- Reservas ----------
   .get('/bookings', async (c) => {
     const parsed = bookingsListQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const q = parsed.data;
     const db = c.get('tenant').db;
 
@@ -110,17 +127,41 @@ export const adminRoutes = new Hono<AuthEnv>()
       ...(q.status ? [eq(schema.bookings.status, q.status)] : []),
       ...(q.from ? [gt(schema.bookings.dateTo, q.from)] : []),
       ...(q.to ? [lt(schema.bookings.dateFrom, q.to)] : []),
+      ...(q.arrivalsOn ? [eq(schema.bookings.dateFrom, q.arrivalsOn)] : []),
+      ...(q.departuresOn ? [eq(schema.bookings.dateTo, q.departuresOn)] : []),
       ...(q.q ? [like(schema.bookings.code, `${q.q}%`)] : []),
     ];
     const rows = await db
-      .select()
+      .select({
+        booking: schema.bookings,
+        unitCode: schema.units.code,
+        leadName: schema.guests.name,
+        leadSurname: schema.guests.surname,
+      })
       .from(schema.bookings)
+      .leftJoin(schema.units, eq(schema.bookings.unitId, schema.units.id))
+      .leftJoin(
+        schema.bookingGuests,
+        and(
+          eq(schema.bookingGuests.bookingId, schema.bookings.id),
+          eq(schema.bookingGuests.isLead, true),
+        ),
+      )
+      .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
       .where(filters.length ? and(...filters) : undefined)
       .orderBy(desc(schema.bookings.createdAt))
       .limit(q.pageSize)
       .offset((q.page - 1) * q.pageSize);
 
-    return c.json({ page: q.page, pageSize: q.pageSize, items: rows });
+    return c.json({
+      page: q.page,
+      pageSize: q.pageSize,
+      items: rows.map((r) => ({
+        ...r.booking,
+        unitCode: r.unitCode,
+        leadName: r.leadName ? `${r.leadName} ${r.leadSurname ?? ''}`.trim() : null,
+      })),
+    });
   })
 
   .get('/bookings/:id', async (c) => {
@@ -137,16 +178,28 @@ export const adminRoutes = new Hono<AuthEnv>()
       ? await db
           .select()
           .from(schema.guests)
-          .where(inArray(schema.guests.id, links.map((l) => l.guestId)))
+          .where(
+            inArray(
+              schema.guests.id,
+              links.map((l) => l.guestId),
+            ),
+          )
       : [];
     const payments = await db
       .select()
       .from(schema.payments)
       .where(eq(schema.payments.bookingId, id));
+    const unit = booking.unitId
+      ? (await db.select().from(schema.units).where(eq(schema.units.id, booking.unitId)))[0]
+      : undefined;
 
     return c.json({
       ...booking,
-      guests: guests.map((g) => ({ ...g, isLead: links.find((l) => l.guestId === g.id)?.isLead ?? false })),
+      unitCode: unit?.code ?? null,
+      guests: guests.map((g) => ({
+        ...g,
+        isLead: links.find((l) => l.guestId === g.id)?.isLead ?? false,
+      })),
       payments,
     });
   })
@@ -164,9 +217,17 @@ export const adminRoutes = new Hono<AuthEnv>()
       taxPolicy: TAX_POLICY,
     });
     if (result.ok && result.status === 201) {
-      await audit(tenant.db, tenant.slug, c.get('user').id, 'booking', String(result.body.id), 'create', {
-        channel,
-      });
+      await audit(
+        tenant.db,
+        tenant.slug,
+        c.get('user').id,
+        'booking',
+        String(result.body.id),
+        'create',
+        {
+          channel,
+        },
+      );
     }
     return c.json(result.body, result.status);
   })
@@ -192,9 +253,12 @@ export const adminRoutes = new Hono<AuthEnv>()
     }
 
     if (action.action === 'reassign') {
-      const unit = (await db.select().from(schema.units).where(eq(schema.units.id, action.unitId)))[0];
+      const unit = (
+        await db.select().from(schema.units).where(eq(schema.units.id, action.unitId))
+      )[0];
       if (!unit || unit.status !== 'active') return c.json({ error: 'unknown_unit' }, 404);
-      if (unit.unitTypeId !== booking.unitTypeId) return c.json({ error: 'unit_type_mismatch' }, 409);
+      if (unit.unitTypeId !== booking.unitTypeId)
+        return c.json({ error: 'unit_type_mismatch' }, 409);
 
       // solape con otras reservas vivas de esa unidad (from inclusive, to exclusive)
       const clash = await db
@@ -236,7 +300,10 @@ export const adminRoutes = new Hono<AuthEnv>()
     // la disponibilidad se calcula sobre reservas vivas, y el estado cambia aquí.
     const t = TRANSITIONS[action.action]!;
     if (!t.from.includes(booking.status)) {
-      return c.json({ error: 'invalid_transition', from: booking.status, action: action.action }, 409);
+      return c.json(
+        { error: 'invalid_transition', from: booking.status, action: action.action },
+        409,
+      );
     }
     await db
       .update(schema.bookings)
@@ -308,14 +375,17 @@ export const adminRoutes = new Hono<AuthEnv>()
 
     await db.update(schema.ratePlans).set(parsed.data).where(eq(schema.ratePlans.id, id));
     await audit(db, tenant.slug, c.get('user').id, 'rate_plan', id, 'update', parsed.data);
-    const updated = (await db.select().from(schema.ratePlans).where(eq(schema.ratePlans.id, id)))[0];
+    const updated = (
+      await db.select().from(schema.ratePlans).where(eq(schema.ratePlans.id, id))
+    )[0];
     return c.json(updated);
   })
 
   // ---------- Informes ----------
   .get('/reports', async (c) => {
     const parsed = reportsQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const { from, to } = parsed.data;
     if (from >= to) return c.json({ error: 'invalid_dates' }, 400);
     const db = c.get('tenant').db;
@@ -348,9 +418,7 @@ export const adminRoutes = new Hono<AuthEnv>()
 
     const occupancy = types.map((t) => {
       const unitCount = units.filter((u) => u.unitTypeId === t.id).length;
-      const occupied = rows
-        .filter((b) => b.unitTypeId === t.id)
-        .reduce((s, b) => s + clip(b), 0);
+      const occupied = rows.filter((b) => b.unitTypeId === t.id).reduce((s, b) => s + clip(b), 0);
       const capacity = unitCount * rangeNights;
       return {
         unitTypeId: t.id,
@@ -400,7 +468,9 @@ export const adminRoutes = new Hono<AuthEnv>()
 
     await db.update(schema.tenants).set(parsed.data).where(eq(schema.tenants.id, row.id));
     await audit(db, tenant.slug, c.get('user').id, 'tenant', row.id, 'settings', parsed.data);
-    const updated = (await db.select().from(schema.tenants).where(eq(schema.tenants.id, row.id)))[0];
+    const updated = (
+      await db.select().from(schema.tenants).where(eq(schema.tenants.id, row.id))
+    )[0];
     return c.json(updated);
   })
 
