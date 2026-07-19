@@ -11,7 +11,8 @@
     "blog": "Notebook",
     "contacto": "Contact",
     "menu": "Menu",
-    "idioma": "Language"
+    "idioma": "Language",
+    "tema": "Style"
   },
   "hero3": {
     "titulo": "Sleep under the pines, 300 m from the cove.",
@@ -469,5 +470,11 @@
       "noDisponible": "No availability for those dates.",
       "error": "The change couldn't be applied."
     }
+  },
+  "temas": {
+    "pinada": "Pines",
+    "mar": "Sea",
+    "garriga": "Scrub",
+    "nit": "Night"
   }
 }

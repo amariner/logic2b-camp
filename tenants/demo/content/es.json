@@ -11,7 +11,8 @@
     "blog": "Cuaderno",
     "contacto": "Contacto",
     "menu": "Menú",
-    "idioma": "Idioma"
+    "idioma": "Idioma",
+    "tema": "Estilo"
   },
   "hero3": {
     "titulo": "Dormir bajo los pinos, a 300 m de la cala.",
@@ -469,5 +470,11 @@
       "noDisponible": "No hay disponibilidad para esas fechas.",
       "error": "No se ha podido aplicar el cambio."
     }
+  },
+  "temas": {
+    "pinada": "Pinada",
+    "mar": "Mar",
+    "garriga": "Garriga",
+    "nit": "Noche"
   }
 }

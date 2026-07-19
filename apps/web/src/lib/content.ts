@@ -15,6 +15,8 @@ export type NamedItem = { id: string; nombre: string; desc: string };
 export type Content = {
   seo: Seo;
   nav: Record<string, string>;
+  /** nombres de los temas de demo (ADR 0009); solo la demo los define */
+  temas?: Record<string, string>;
   hero3: { titulo: string; prueba: string };
   hero1: { titulo: string; cta: string };
   ticker: string[];

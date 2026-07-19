@@ -11,7 +11,8 @@
     "blog": "Notitieboek",
     "contacto": "Contact",
     "menu": "Menu",
-    "idioma": "Taal"
+    "idioma": "Taal",
+    "tema": "Stijl"
   },
   "hero3": {
     "titulo": "Slapen onder de pijnbomen, 300 m van de baai.",
@@ -469,5 +470,11 @@
       "noDisponible": "Geen beschikbaarheid voor die data.",
       "error": "De wijziging kon niet worden toegepast."
     }
+  },
+  "temas": {
+    "pinada": "Dennen",
+    "mar": "Zee",
+    "garriga": "Garrigue",
+    "nit": "Nacht"
   }
 }

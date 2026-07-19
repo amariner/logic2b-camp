@@ -11,7 +11,8 @@
     "blog": "Carnet",
     "contacto": "Contact",
     "menu": "Menu",
-    "idioma": "Langue"
+    "idioma": "Langue",
+    "tema": "Style"
   },
   "hero3": {
     "titulo": "Dormir sous les pins, à 300 m de la crique.",
@@ -469,5 +470,11 @@
       "noDisponible": "Pas de disponibilité à ces dates.",
       "error": "Le changement n'a pas pu être appliqué."
     }
+  },
+  "temas": {
+    "pinada": "Pinède",
+    "mar": "Mer",
+    "garriga": "Garrigue",
+    "nit": "Nuit"
   }
 }

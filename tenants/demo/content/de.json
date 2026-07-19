@@ -11,7 +11,8 @@
     "blog": "Notizbuch",
     "contacto": "Kontakt",
     "menu": "Menü",
-    "idioma": "Sprache"
+    "idioma": "Sprache",
+    "tema": "Stil"
   },
   "hero3": {
     "titulo": "Unter Pinien schlafen, 300 m von der Bucht.",
@@ -469,5 +470,11 @@
       "noDisponible": "Keine Verfügbarkeit für diese Daten.",
       "error": "Die Änderung konnte nicht angewendet werden."
     }
+  },
+  "temas": {
+    "pinada": "Pinien",
+    "mar": "Meer",
+    "garriga": "Garrigue",
+    "nit": "Nacht"
   }
 }

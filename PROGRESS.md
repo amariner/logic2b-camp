@@ -4,13 +4,28 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesiones 1–3/5 (planning con DnD + ficha) · Siguiente: **Fase 6 sesión 18** — solicitudes + llegadas = modo lite (bandeja de enquiries con cambio de estado, lista de llegadas/salidas del día). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesiones 1–3/5 (planning con DnD + ficha) · Siguiente: **Fase 6 sesión 18** — solicitudes + llegadas = modo lite (bandeja de enquiries con cambio de estado, lista de llegadas/salidas del día). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard **+ selector de temas nuevo**), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 14 — 2026-07-19 · Demo comercial · Selector de temas (ADR 0009) + docs de funcionalidades
+
+**Hecho** (petición directa de Andreu en sesión: temas para enseñar la demo en varios estilos + documentación de cara al cliente)
+- **ADR 0009**: temas = bloques `[data-theme]` en el `theme.css` del tenant (los derivados `color-mix` se recalculan solos → un tema son ~6 variables, cero cambios en componentes). Demo-only tras `config.demoThemes` — sin el flag no se renderiza ni un byte. Mismas fuentes en todos (cambiar tipografía = pagar Lighthouse).
+- **4 temas** dentro del territorio y fuera del antimodelo: `pinada` (actual, defecto), `mar` (posidonia/roca húmeda), `garriga` (oliva/tierra seca) y `nit` (**modo oscuro completo** con `color-scheme: dark` — la prueba de fuego del sistema de tokens). Botón "Ver disponibilidad" en nit ~5.5:1 AA.
+- **Selector sin islas** en la cabecera: `<details>` nativo como el de idioma, swatches que pintan el color de acción de cada tema vía el propio bloque de tokens (`.lc-swatch[data-swatch]` comparte selector — sin duplicar hex), `aria-pressed`, script inline anti-FOUC en `<head>` + persistencia `localStorage`. OJO Astro: las expresiones dentro de `<script is:inline>` NO se evalúan — hay que usar `set:html` (el primer intento emitía el JS como cadena inerte).
+- i18n en los 6 content JSONs (`nav.tema` + bloque `temas`); `TenantWebConfig.demoThemes?: string[]`; tipo `Content.temas?`.
+- **`docs/FUNCIONALIDADES.md`**: guía completa de cara al cliente — niveles, web (idiomas/SEO/rendimiento/temas), mostrador, funnel con holds, autogestión, precios explicables, dashboard (planning/DnD/ficha/roles/auditoría), solicitudes, seguridad (D1 por camping), roadmap honesto y ficha técnica. Mantener al día con cada feature nueva.
+- **Verificado en navegador contra el Worker real**: 4 temas cambian en vivo (fondos comprobados por computed style), persisten entre páginas (localStorage), vuelta al defecto limpia (atributo y storage fuera), `aria-pressed` marca el activo, 0 errores JS. **Regla dura re-verificada**: build TIER=1 → 121 páginas, 0 islas, selector presente (es vanilla).
+- BACKLOG: `?tema=x` por URL y tematizar el dashboard (ambos Fase 10).
+
+**Decisiones**: ver ADR 0009 (demo-only, un cliente real tiene UN tema; el selector es atrezzo comercial, no feature)
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 13 — 2026-07-19 · Fase 6 (3/5) · Ficha de reserva: panel lateral con acciones tipadas
 

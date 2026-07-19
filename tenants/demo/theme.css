@@ -20,3 +20,47 @@
   --lc-radius: 2px;
   --lc-radius-lg: 4px;
 }
+
+/* ---------- Temas de demostración (ADR 0009) ----------
+   Solo la demo comercial los usa (config.demoThemes). Un cliente real tiene UN tema: el suyo.
+   Cada tema redefine las 5 base + hover; los derivados (color-mix) se recalculan solos. */
+
+/* mar — posidonia, roca húmeda */
+:root[data-theme='mar'],
+.lc-swatch[data-swatch='mar'] {
+  --lc-tinta: #0c1418;
+  --lc-hueso: #f2f5f4;
+  --lc-pino: #14555e;
+  --lc-arena: #a9bcb9;
+  --lc-mar: #1f4d3a;
+  --lc-pino-oscuro: #0e3f47;
+}
+
+/* garriga — oliva, romero, tierra seca */
+:root[data-theme='garriga'],
+.lc-swatch[data-swatch='garriga'] {
+  --lc-tinta: #191509;
+  --lc-hueso: #f7f3e8;
+  --lc-pino: #55531d;
+  --lc-arena: #d3c29a;
+  --lc-mar: #7c5024;
+  --lc-pino-oscuro: #3e3d14;
+}
+
+/* nit — acampada de noche (la prueba de fuego: modo oscuro con los mismos tokens) */
+:root[data-theme='nit'],
+.lc-swatch[data-swatch='nit'] {
+  color-scheme: dark;
+  --lc-tinta: #ece7dc;
+  --lc-hueso: #131815;
+  --lc-pino: #4a9d77;
+  --lc-arena: #3a4640;
+  --lc-mar: #6fb3ba;
+  /* en oscuro el hover aclara, no oscurece */
+  --lc-pino-oscuro: #5fb187;
+}
+
+/* muestra del tema por defecto (los demás heredan su bloque) */
+.lc-swatch[data-swatch='pinada'] {
+  --lc-pino: #1f4d3a;
+}

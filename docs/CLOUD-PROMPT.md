@@ -37,3 +37,4 @@ Trabajas en **LOGIC CAMP**, el SaaS de Logic2B para campings (web + reservas + g
 
 - Actualiza la línea de "usuarios demo" o el estado de despliegue si cambian.
 - Si se añade un entorno nuevo (Resend, Stripe test…), añádelo al bloque de entorno con su secret.
+- `docs/FUNCIONALIDADES.md` es la guía de cara al cliente: cada sesión que añada funcionalidad visible debe actualizarla antes de cerrar.

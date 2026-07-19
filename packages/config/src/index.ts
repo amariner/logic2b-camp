@@ -14,6 +14,11 @@ export type TenantWebConfig = {
   defaultLocale: string;
   domain: string;
   contact: { email: string; phone: string; address: string };
+  /**
+   * SOLO demo comercial (ADR 0009): temas alternativos seleccionables en vivo.
+   * El primero es el de defecto. Sin este campo, el selector no se renderiza.
+   */
+  demoThemes?: string[];
 };
 
 /** Nivel → comportamiento del héroe y del bundle (regla dura: nivel 1 sin motor). */

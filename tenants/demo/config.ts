@@ -13,6 +13,8 @@ export const config: TenantWebConfig = {
     phone: '+34 964 000 000',
     address: 'Partida Cala Sereno s/n, 12500 Castellón',
   },
+  // atrezzo comercial (ADR 0009): la demo se re-viste en vivo delante del cliente
+  demoThemes: ['pinada', 'mar', 'garriga', 'nit'],
 };
 
 export default config;

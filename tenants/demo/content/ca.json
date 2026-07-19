@@ -11,7 +11,8 @@
     "blog": "Quadern",
     "contacto": "Contacte",
     "menu": "Menú",
-    "idioma": "Idioma"
+    "idioma": "Idioma",
+    "tema": "Estil"
   },
   "hero3": {
     "titulo": "Dormir sota els pins, a 300 m de la cala.",
@@ -469,5 +470,11 @@
       "noDisponible": "No hi ha disponibilitat per a eixes dates.",
       "error": "No s'ha pogut aplicar el canvi."
     }
+  },
+  "temas": {
+    "pinada": "Pinada",
+    "mar": "Mar",
+    "garriga": "Garriga",
+    "nit": "Nit"
   }
 }

@@ -86,6 +86,17 @@ html {
   display: none;
 }
 
+/* muestra de color del selector de temas de demo (ADR 0009):
+   pinta el color de acción del tema que indique data-swatch (o el activo, sin atributo) */
+.lc-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--lc-pino);
+  border: 1px solid color-mix(in srgb, var(--lc-tinta) 30%, transparent);
+}
+
 /* prosa del cuaderno (sin plugin de tipografía: solo lo que usamos) */
 .lc-prose {
   font-size: 16px;

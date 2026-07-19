@@ -74,6 +74,10 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 **Fase 6:**
 - [ ] El planning con los datos del seed debe verse ESPECTACULAR en la primera demo: 83 unidades × agosto lleno, colores por estado, bloqueos visibles.
 
+**Adelantados (hechos fuera de su fase):**
+- [x] **Selector de temas en vivo** (ADR 0009, sesión 14): 4 estilos (pinada/mar/garriga/noche) para enseñar "tu marca, un fichero" delante del cliente. Demo-only tras `config.demoThemes`.
+- [x] `docs/FUNCIONALIDADES.md`: guía comercial detallada de todas las funcionalidades (sesión 14) — mantener al día.
+
 **Fase 10 (remates de demo puros):**
 - [ ] Reset nocturno por cron con **fechas relativas a hoy** (jamás una demo con reservas caducadas).
 - [ ] Acceso al dashboard demo sin registro (readonly con excepciones para tocar el planning).
