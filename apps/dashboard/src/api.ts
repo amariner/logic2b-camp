@@ -203,6 +203,69 @@ export type RatePlan = {
 
 export type RatesData = { ratePlans: RatePlan[]; seasons: Season[] };
 
+// ---------- tipos de /api/admin/guests (clientes) ----------
+
+export type GuestListItem = {
+  id: string;
+  name: string;
+  surname: string;
+  email: string | null;
+  phone: string | null;
+  docType: string | null;
+  docNumber: string | null;
+  nationality: string | null;
+  bookingsCount: number;
+  lastStay: string | null;
+};
+
+export type GuestBooking = {
+  id: string;
+  code: string;
+  status: BookingDetail['status'];
+  dateFrom: string;
+  dateTo: string;
+  totalCents: number;
+  channel: BookingDetail['channel'];
+  isLead: boolean;
+};
+
+export type GuestDetail = Omit<GuestListItem, 'bookingsCount' | 'lastStay'> & {
+  address: string | null;
+  gdprConsentAt: string | null;
+  bookings: GuestBooking[];
+};
+
+// ---------- tipos de /api/admin/reports ----------
+
+export type ReportsData = {
+  from: string;
+  to: string;
+  nights: number;
+  occupancy: {
+    unitTypeId: string;
+    units: number;
+    occupiedNights: number;
+    capacityNights: number;
+    occupancyPct: number;
+  }[];
+  revenue: { totalCents: number; paidCents: number; bookings: number };
+  arrivals: number;
+  departures: number;
+};
+
+// ---------- tipos de /api/admin/settings ----------
+
+export type TenantSettings = {
+  id: string;
+  slug: string;
+  name: string;
+  tier: number;
+  timezone: string;
+  currency: string;
+  locales: string[];
+  modules: Record<string, unknown>;
+};
+
 // ---------- tipos de POST /api/quote (cotización en vivo del alta manual) ----------
 
 export type QuoteResponse = {

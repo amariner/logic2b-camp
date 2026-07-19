@@ -5,7 +5,7 @@
  */
 import { TAX_POLICIES } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
-import { and, desc, eq, gt, inArray, like, lt, ne } from 'drizzle-orm';
+import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { provisionUser, requireRole, type AuthEnv } from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
@@ -14,6 +14,7 @@ import {
   bookingActionSchema,
   bookingsListQuerySchema,
   enquiryPatchSchema,
+  guestsListQuerySchema,
   planningQuerySchema,
   ratePatchSchema,
   reportsQuerySchema,
@@ -340,6 +341,114 @@ export const adminRoutes = new Hono<AuthEnv>()
     });
     // Fase 8: cancelación con reembolso según política (calculateCancellationRefund)
     return c.json({ id, status: t.to });
+  })
+
+  // ---------- Clientes (guests): la memoria comercial del camping ----------
+  .get('/guests', async (c) => {
+    const parsed = guestsListQuerySchema.safeParse(c.req.query());
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    const { q, page, pageSize } = parsed.data;
+    const db = c.get('tenant').db;
+
+    const filter = q
+      ? or(
+          like(schema.guests.name, `%${q}%`),
+          like(schema.guests.surname, `%${q}%`),
+          like(schema.guests.email, `%${q}%`),
+        )
+      : undefined;
+    const rows = await db
+      .select()
+      .from(schema.guests)
+      .where(filter)
+      .orderBy(schema.guests.surname, schema.guests.name)
+      .limit(pageSize)
+      .offset((page - 1) * pageSize);
+
+    // historial agregado SOLO de la página pedida (dos consultas cortas, no un join N×M)
+    const ids = rows.map((r) => r.id);
+    const links = ids.length
+      ? await db
+          .select({
+            guestId: schema.bookingGuests.guestId,
+            bookingId: schema.bookingGuests.bookingId,
+          })
+          .from(schema.bookingGuests)
+          .where(inArray(schema.bookingGuests.guestId, ids))
+      : [];
+    const bookingIds = [...new Set(links.map((l) => l.bookingId))];
+    const stays = bookingIds.length
+      ? await db
+          .select({
+            id: schema.bookings.id,
+            dateFrom: schema.bookings.dateFrom,
+            status: schema.bookings.status,
+          })
+          .from(schema.bookings)
+          .where(inArray(schema.bookings.id, bookingIds))
+      : [];
+    const stayById = new Map(stays.map((s) => [s.id, s]));
+
+    return c.json({
+      page,
+      pageSize,
+      items: rows.map((g) => {
+        const own = links
+          .filter((l) => l.guestId === g.id)
+          .map((l) => stayById.get(l.bookingId))
+          .filter((s): s is NonNullable<typeof s> => Boolean(s))
+          .filter((s) => s.status !== 'cancelled');
+        return {
+          ...g,
+          bookingsCount: own.length,
+          lastStay: own.reduce<string | null>(
+            (max, s) => (max === null || s.dateFrom > max ? s.dateFrom : max),
+            null,
+          ),
+        };
+      }),
+    });
+  })
+
+  .get('/guests/:id', async (c) => {
+    const db = c.get('tenant').db;
+    const id = c.req.param('id');
+    const guest = (await db.select().from(schema.guests).where(eq(schema.guests.id, id)))[0];
+    if (!guest) return c.json({ error: 'not_found' }, 404);
+
+    const links = await db
+      .select()
+      .from(schema.bookingGuests)
+      .where(eq(schema.bookingGuests.guestId, id));
+    const bookings = links.length
+      ? await db
+          .select({
+            id: schema.bookings.id,
+            code: schema.bookings.code,
+            status: schema.bookings.status,
+            dateFrom: schema.bookings.dateFrom,
+            dateTo: schema.bookings.dateTo,
+            totalCents: schema.bookings.totalCents,
+            channel: schema.bookings.channel,
+          })
+          .from(schema.bookings)
+          .where(
+            inArray(
+              schema.bookings.id,
+              links.map((l) => l.bookingId),
+            ),
+          )
+          .orderBy(desc(schema.bookings.dateFrom))
+      : [];
+
+    return c.json({
+      ...guest,
+      bookings: bookings.map((b) => ({
+        ...b,
+        isLead: links.find((l) => l.bookingId === b.id)?.isLead ?? false,
+      })),
+    });
   })
 
   // ---------- Solicitudes ----------

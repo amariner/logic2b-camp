@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesiones 1–5/5 hechas salvo remate (falta sesión 20: clientes/informes/ajustes) · Siguiente: **Fase 6 sesión 20** — ficha de clientes con historial, informes en pantalla (los datos ya los sirve `/api/admin/reports`) y ajustes del tenant. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el dashboard ya tiene 6 pantallas), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 ✅ COMPLETA (9 pantallas) · Siguiente: **Fase 7 — Notificaciones** (ADR primero: React Email 6 idiomas, Resend multidominio, Queues+Cron, `notifications_log`, ajustes por tenant; falta la API key de Resend → capa con driver y activación por secret). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 17 — 2026-07-19 · Fase 6 (cierre) · Clientes + informes + ajustes
+
+**Hecho**
+- **API**: `GET /api/admin/guests` (búsqueda contiene en nombre/apellidos/email, paginada, con `bookingsCount` y `lastStay` agregados solo para la página — dos consultas cortas, no un join N×M) y `GET /guests/:id` (ficha + historial con `isLead`). **36 tests** (+1; ojo: `isolatedStorage` de vitest-pool-workers aísla el storage POR TEST — lo que un test crea no existe en el siguiente; el test crea su propia reserva)
+- **Clientes** (`/admin/#/clientes`): buscador en servidor, tabla (nombre/contacto/documento/nº reservas/última estancia), panel de ficha con contacto clicable, RGPD con fecha e **historial de reservas → click abre la ficha operativa** (BookingPanel reemplaza el panel; cerrar vuelve al cliente)
+- **Informes** (`/admin/#/informes`): presets este mes / próximo / 3 meses; tiles de titular (ocupación global calculada de la capacidad real, ingresos por llegada, cobrado, llegadas, salidas) y **ocupación por tipo como medidor de un solo tono** (pino sobre arena-suave, texto en tinta, % + noches en title/aria)
+- **Ajustes** (`/admin/#/ajustes`): nombre/zona/moneda editables (PATCH auditado, gerencia), nivel e idiomas en lectura con nota de que se cambian con Logic2B
+- **Nav refactorizada** a lista (9 pantallas, orden operativo: día a día primero, configuración al final), email oculto <xl para que quepa a 1366px
+- **Verificado en navegador contra el Worker real como gerencia**: búsqueda "dubois"→2, ficha con salto a CS-2026-0015, informes con 8 medidores y cambio de rango, ajustes guardados y verificados; 0 errores JS. Seed restaurado
+- `docs/FUNCIONALIDADES.md`: §6.11 clientes, §6.12 informes, §6.13 ajustes
+
+**La Fase 6 queda COMPLETA**: planning ★ con DnD y ficha, llegadas, solicitudes, reservas con alta manual, clientes, informes, inventario, tarifas y ajustes — 9 pantallas operativas
+**`/check`**: ✅ verde (32/32) · API 36/36
 
 ### Sesión 16 — 2026-07-19 · Fase 6 (5/5 parcial) · Reservas + alta manual + inventario + tarifas
 

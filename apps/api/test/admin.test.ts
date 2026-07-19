@@ -436,6 +436,45 @@ describe('inventario', () => {
   });
 });
 
+describe('clientes', () => {
+  it('busca por nombre y devuelve historial con recuento', async () => {
+    // el storage se aísla por test: el titular se crea aquí mismo
+    const created = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-09-25', '2026-09-27')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
+      envA,
+    );
+    expect(created.status).toBe(201);
+
+    const res = await app.request(
+      '/api/admin/guests?q=Mostrador',
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      items: { id: string; name: string; bookingsCount: number; lastStay: string | null }[];
+    };
+    expect(body.items.length).toBeGreaterThan(0);
+    const guest = body.items[0]!;
+    expect(guest.bookingsCount).toBeGreaterThan(0);
+    expect(guest.lastStay).toBeTruthy();
+
+    const detail = await app.request(
+      `/api/admin/guests/${guest.id}`,
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    expect(detail.status).toBe(200);
+    const d = (await detail.json()) as { bookings: { code: string; isLead: boolean }[] };
+    expect(d.bookings.length).toBeGreaterThan(0);
+    expect(d.bookings[0]!.isLead).toBe(true);
+  });
+});
+
 describe('solicitudes', () => {
   it('lista y transiciona estado', async () => {
     const created = await app.request(

@@ -200,9 +200,17 @@ Las unidades físicas del camping, agrupadas por tipo. Gerencia puede **dar de b
 
 Los planes de precio por temporada y tipo, editables en línea desde el panel (base por noche, persona extra, niño, mascota, electricidad, vehículo, estancia mínima) — en euros, guardado por fila, solo gerencia. Y la garantía del sistema bien visible: **cambiar una tarifa nunca modifica una reserva ya confirmada**.
 
-### 6.11 Informes
+### 6.11 Clientes
 
-Primer bloque disponible: **ocupación por tipo** (noches ocupadas sobre capacidad), **ingresos** del periodo (total y cobrado) y **llegadas/salidas**. Se amplía en las próximas fases.
+La memoria comercial del camping: buscador por nombre o email sobre todos los huéspedes, con su documento, número de estancias y **última estancia** a la vista. La ficha de cada cliente muestra su contacto (email y teléfono clicables), el consentimiento RGPD con fecha y el **historial completo de reservas** — y desde cualquier reserva del historial se salta a su ficha operativa con un clic.
+
+### 6.12 Informes
+
+Los números del periodo con un clic (este mes, el próximo, los próximos 3 meses): **ocupación global**, **ingresos y cobrado** (atribuidos por llegada), llegadas y salidas — y la **ocupación por tipo** con su medidor, unidades y noches ocupadas sobre capacidad. Se amplía con series temporales en próximas fases.
+
+### 6.13 Ajustes
+
+Los datos operativos del camping editables por gerencia (nombre, zona horaria, moneda), con el nivel de producto y los idiomas contratados a la vista. Todo cambio queda auditado.
 
 ---
 
@@ -231,7 +239,7 @@ Con fecha en el plan de trabajo, no humo:
 |---|---|
 | **Notificaciones** | Emails automáticos en los 6 idiomas (confirmación, recordatorio de llegada, aviso de solicitud…) con remitente del dominio del camping, activables una a una sin tocar código |
 | **Pagos online** | Stripe **y Redsys** (la pasarela de los bancos españoles), con modos: sin cobro / señal / total / con fianza. Reembolsos desde la ficha. Un camping puede operar sin pasarela y activarla después |
-| **Gestión ampliada** | Ficha de cliente con historial, informes ampliados, ajustes del camping desde el panel, conversión directa de solicitud a reserva |
+| **Gestión ampliada** | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
 | **Demo autolimpiable** | La demo comercial se reinicia cada noche con fechas siempre vigentes |
 

@@ -16,6 +16,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
 import { t } from './i18n';
+import Ajustes from './pages/Ajustes';
+import Clientes from './pages/Clientes';
+import Informes from './pages/Informes';
 import Inventario from './pages/Inventario';
 import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
@@ -27,6 +30,19 @@ import './styles.css';
 
 const queryClient = new QueryClient();
 
+/** Orden operativo: lo de cada día primero, la configuración al final. */
+const NAV = [
+  ['/', 'nav.planning'],
+  ['/llegadas', 'nav.llegadas'],
+  ['/solicitudes', 'nav.solicitudes'],
+  ['/reservas', 'nav.reservas'],
+  ['/clientes', 'nav.clientes'],
+  ['/informes', 'nav.informes'],
+  ['/inventario', 'nav.inventario'],
+  ['/tarifas', 'nav.tarifas'],
+  ['/ajustes', 'nav.ajustes'],
+] as const;
+
 function Shell() {
   const session = useSession();
   const signOut = useSignOut();
@@ -36,50 +52,23 @@ function Shell() {
 
   return (
     <div className="flex h-screen flex-col">
-      <header className="flex h-11 shrink-0 items-center gap-5 border-b border-arena/60 px-4">
-        <span className="text-[13px] font-semibold tracking-[0.14em] uppercase">
+      <header className="flex h-11 shrink-0 items-center gap-4 border-b border-arena/60 px-4">
+        <span className="text-[13px] font-semibold tracking-[0.14em] whitespace-nowrap uppercase">
           {t('app.nombre')}
         </span>
-        <nav className="flex items-center gap-4 text-[13px] font-medium text-tinta-suave">
-          <Link
-            to="/"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.planning')}
-          </Link>
-          <Link
-            to="/llegadas"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.llegadas')}
-          </Link>
-          <Link
-            to="/solicitudes"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.solicitudes')}
-          </Link>
-          <Link
-            to="/reservas"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.reservas')}
-          </Link>
-          <Link
-            to="/inventario"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.inventario')}
-          </Link>
-          <Link
-            to="/tarifas"
-            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
-          >
-            {t('nav.tarifas')}
-          </Link>
+        <nav className="flex items-center gap-3.5 overflow-x-auto text-[13px] font-medium whitespace-nowrap text-tinta-suave">
+          {NAV.map(([to, key]) => (
+            <Link
+              key={to}
+              to={to}
+              className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+            >
+              {t(key)}
+            </Link>
+          ))}
         </nav>
-        <div className="ml-auto flex items-center gap-3 text-[13px]">
-          <span className="text-tinta-suave">{session.data.user.email}</span>
+        <div className="ml-auto flex shrink-0 items-center gap-3 text-[13px]">
+          <span className="hidden text-tinta-suave xl:inline">{session.data.user.email}</span>
           <button
             type="button"
             onClick={() => signOut.mutate()}
@@ -97,46 +86,20 @@ function Shell() {
 }
 
 const rootRoute = createRootRoute({ component: Shell });
-const planningRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: Planning,
-});
-const llegadasRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/llegadas',
-  component: Llegadas,
-});
-const solicitudesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/solicitudes',
-  component: Solicitudes,
-});
-const reservasRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/reservas',
-  component: Reservas,
-});
-const inventarioRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/inventario',
-  component: Inventario,
-});
-const tarifasRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/tarifas',
-  component: Tarifas,
-});
+const routes = [
+  createRoute({ getParentRoute: () => rootRoute, path: '/', component: Planning }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/llegadas', component: Llegadas }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/solicitudes', component: Solicitudes }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/reservas', component: Reservas }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/clientes', component: Clientes }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/informes', component: Informes }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/inventario', component: Inventario }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/tarifas', component: Tarifas }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/ajustes', component: Ajustes }),
+] as const;
 
 const router = createRouter({
-  routeTree: rootRoute.addChildren([
-    planningRoute,
-    llegadasRoute,
-    solicitudesRoute,
-    reservasRoute,
-    inventarioRoute,
-    tarifasRoute,
-  ]),
+  routeTree: rootRoute.addChildren(routes),
   history: createHashHistory(),
 });
 

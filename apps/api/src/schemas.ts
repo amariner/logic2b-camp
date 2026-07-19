@@ -121,6 +121,13 @@ export const unitPatchSchema = z.object({
   status: z.enum(['active', 'inactive']),
 });
 
+export const guestsListQuerySchema = z.object({
+  /** búsqueda por nombre, apellidos o email (contiene) */
+  q: z.string().max(100).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+
 export const ratePatchSchema = z
   .object({
     baseCents: z.number().int().min(0),
