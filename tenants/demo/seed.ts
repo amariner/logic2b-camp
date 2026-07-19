@@ -869,6 +869,8 @@ export function generateSeed(anchorYear: number): SeedData {
           // cambiar a 'deposit'/'full' es solo este objeto + los secrets del Worker,
           // sin deploy de código — mismo criterio que RESEND_API_KEY en Fase 7.
           payments: { provider: 'stripe', mode: 'none' },
+          // Comunitat Valenciana (ADR 0012 §1 — antes hardcodeado en public.ts/admin.ts)
+          taxPolicy: 'valencia',
           notifications: {
             notifyTo: 'recepcion@calasereno.example',
             from: 'Camping Cala Sereno <reservas@calasereno.example>',

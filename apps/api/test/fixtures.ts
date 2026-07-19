@@ -15,6 +15,7 @@ export async function seedTenant(d1: D1Database, slug: string) {
     locales: ['es', 'en'],
     modules: {
       booking: 'instant',
+      taxPolicy: 'valencia',
       notifications: {
         notifyTo: 'recepcion@alfa.test',
         from: `Camping ${slug} <reservas@${slug}.test>`,

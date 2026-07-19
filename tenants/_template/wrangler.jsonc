@@ -1,0 +1,29 @@
+// Plantilla de alta (ADR 0012 §4). Copia a tenants/{slug}/wrangler.jsonc y
+// sustituye TODOS los __TODO__ — database_id/kv id se rellenan al crear los
+// recursos reales (wrangler d1 create logic-camp-{slug}), NUNCA a mano.
+{
+  "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
+  "name": "logic-camp-__SLUG__",
+  "main": "../../apps/api/src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": { "TENANT_SLUG": "__SLUG__" },
+  // solo hace falta si el nivel es 3+ (funnel con holds — purga cada 15 min, ADR 0007).
+  // "triggers": { "crons": ["*/15 * * * *"] },
+  "routes": [{ "pattern": "__DOMINIO__/*", "zone_name": "__ZONA__" }],
+  "assets": {
+    // construir la web ANTES de desplegar (un deploy = web + API, igual que la demo)
+    "directory": "../../apps/web/dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "logic-camp-__SLUG__",
+      "database_id": "__TODO_DATABASE_ID__",
+      "migrations_dir": "../../packages/db/migrations"
+    }
+  ]
+}

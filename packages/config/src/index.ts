@@ -1,6 +1,8 @@
 /**
- * Config de tenant que consume la web pública (Fase 4).
- * El TenantConfig completo (pagos, notificaciones, dominios…) llega en Fase 9.
+ * Config de tenant que consume la web pública (Fase 4) en BUILD time.
+ * El `TenantConfig` de request time (política de tasa/cancelación — pagos y
+ * notificaciones se quedan en sus paquetes, ver ADR 0012) vive en
+ * `./tenant-config` y lo consume `apps/api`.
  */
 
 export type BookingMode = 'none' | 'enquiry' | 'instant';
@@ -27,3 +29,13 @@ export function bookingMode(tier: TenantWebConfig['tier']): BookingMode {
   if (tier === 2) return 'enquiry';
   return 'none';
 }
+
+export {
+  cancellationPolicySchema,
+  DEFAULT_CANCELLATION_POLICY,
+  loadTenantConfig,
+  taxPolicySchema,
+  type CancellationPolicyConfig,
+  type TaxPolicyName,
+  type TenantConfig,
+} from './tenant-config';

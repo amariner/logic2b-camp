@@ -1,0 +1,5 @@
+{
+  "extends": "@logic-camp/tsconfig/base.json",
+  "compilerOptions": { "lib": ["ES2023"], "types": ["node"] },
+  "include": ["*.ts", "custom/**/*.ts"]
+}

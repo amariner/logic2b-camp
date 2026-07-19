@@ -4,14 +4,28 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 8 ✅ HECHA (v1 — `payments:'none'` hasta tener credenciales de Stripe/Redsys) · Siguiente: **Fase 9 — Instancias + asistente** (`TenantConfig`, resolución por host, `custom/`, `pnpm new:camping`) o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 9 🟨 PARCIAL (ver ADR 0012 — `TenantConfig`+`_template`+`ONBOARDING.md` hechos; `packages/cli` y el tenant de prueba real bloqueados por credenciales de Cloudflare) · Siguiente: sesión con Andreu presente para `packages/cli` + alta real, o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
-- **Último `/check`**: ✅ verde 2026-07-19 (34/34 tareas)
+- **Último `/check`**: ✅ verde 2026-07-19 (37/37 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 20 — 2026-07-19 · Fase 9 (parcial) · Instancias, TenantConfig, `_template` (ADR 0012)
+
+**Hecho** (ADR 0012 aceptado por delegación explícita en sesión cloud, continuación de la sesión 19)
+- **`packages/config`**: `TenantConfig` (tasa turística + política de cancelación, con `loadTenantConfig` que valida y cae a defaults seguros sin lanzar nunca) + 4 tests. Deliberadamente NO incluye `payments`/`notifications` — esos ya tienen dueño propio con más matices (ADR 0010/0011) y forzarlos aquí habría sido una abstracción de más.
+- **`apps/api/src/tenant-config.ts`**: envoltorio que añade la lectura de D1. Sustituye `TAX_POLICY`/`CANCEL_POLICY`, dos constantes **idénticas y duplicadas a mano** en `public.ts` Y `admin.ts` con el comentario "de TenantConfig en Fase 9" desde la Fase 3 — ahora se leen del tenant en las 7 llamadas donde se usaban. `notify.ts`: el idioma del aviso interno de solicitudes deja de ser `'es'` fijo (usa `TenantConfig.locales[0]`). Seed demo y fixtures de test declaran `taxPolicy:'valencia'` explícitamente (antes invisible). **49/49 tests siguen en verde** tras el cambio — verificado, no asumido.
+- **`tenants/_template/`**: `config.ts`, `theme.css`, `content/{6 idiomas}.json` (todas las claves de la web como `__TODO__` — un `grep` te dice qué falta), `custom/hooks.ts` (no-op documentado, sin conectar aún), `seed.ts`+`write-seed.ts`+`data.ts` (mínimo: 1 temporada, 1 tipo, 3 unidades, 1 owner con contraseña `cambia-esta-clave` — **hash scrypt real**, calculado con `better-auth/crypto` y verificado con `verifyPassword` antes de fijarlo, no inventado), `wrangler.jsonc` parametrizado, `README.md` con checklist de alta. `pnpm --filter @tenant/_template typecheck/lint` limpios; `write-seed.ts` genera un `seed.sql` válido de verdad (verificado a mano).
+- **`docs/ONBOARDING.md`**: primer borrador — capas 1 (mecánica)/2 (interpretativa, `/new-camping`)/3 (dashboard, no construida), qué NO se automatiza y por qué, checklist de verificación.
+- **Deliberadamente NO hecho esta sesión** (ver ADR 0012 §5-6, con motivo explícito): registro de extensiones (Fase 2, `createExtensionRegistry`, sigue sin instanciarse — no hay todavía ningún `custom/` real que lo necesite, conectar seis ficheros para que operen sobre un registro perpetuamente vacío es diseñar para lo hipotético); `packages/cli`/`pnpm new:camping`; crear de verdad un tenant de prueba — estas dos últimas implican `wrangler d1 create`/`deploy`/DNS **contra la cuenta real de Cloudflare de Logic2B**, una acción con impacto fuera del repo que esta sesión no tiene ni credenciales ni mandato explícito para ejecutar sin Andreu presente.
+- Intento de descargar las 6 fotos Higgsfield pendientes de la sesión 8: localizados los 6 UUIDs completos en el historial de la cuenta (contenido verificado contra el nombre esperado), pero la descarga sigue bloqueada por la misma política de red del contenedor (403 en el CONNECT a `cloudfront.net`, confirmado en el proxy) — **mismo bloqueo que hace 11 sesiones**, no se generó nada nuevo ni se dejaron ficheros a medias. UUIDs completos anotados en BACKLOG para la próxima sesión con salida de red permitida.
+- `docs/ROADMAP.md`/`BACKLOG.md`/`ONBOARDING.md` al día
+
+**Pendiente de Andreu**: token de Cloudflare con los scopes de §5 del super prompt + estar presente (o delegar explícitamente) en la sesión que implemente `packages/cli` y ejecute la primera alta real; decidir el primer camping candidato
+**`/check`**: ✅ verde (37/37) · API 49/49 · config 4/4 · `_template` typecheck/lint limpios
 
 ### Sesión 19 — 2026-07-19 · Fase 8 · Pagos (ADR 0011)
 

@@ -3,7 +3,7 @@
  * readonly=GETs · reception=operativa · manager=tarifas/ajustes · owner=usuarios.
  * Toda mutación deja rastro en audit_log.
  */
-import { calculateCancellationRefund, TAX_POLICIES, type CancellationPolicy } from '@logic-camp/core';
+import { calculateCancellationRefund, TAX_POLICIES } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
 import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
@@ -24,17 +24,7 @@ import {
   unitPatchSchema,
   userCreateSchema,
 } from '../schemas';
-
-/** Política de tasa del tenant — de TenantConfig en Fase 9; demo = valencia */
-const TAX_POLICY = TAX_POLICIES.valencia!;
-/** Política de cancelación del tenant — de TenantConfig en Fase 9; sobre lo PAGADO */
-const CANCEL_POLICY: CancellationPolicy = {
-  tiers: [
-    { minDaysBefore: 30, refundPct: 100 },
-    { minDaysBefore: 7, refundPct: 50 },
-    { minDaysBefore: 0, refundPct: 0 },
-  ],
-};
+import { loadTenantConfig } from '../tenant-config';
 
 /** Transiciones de estado permitidas. Lo que no está aquí, es 409. */
 const TRANSITIONS: Record<
@@ -247,10 +237,11 @@ export const adminRoutes = new Hono<AuthEnv>()
     const { channel, ...body } = parsed.data;
 
     const tenant = c.get('tenant');
+    const tenantConfig = await loadTenantConfig(tenant.db);
     const result = await createBooking(tenant, body, {
       channel,
       idemKey: c.req.header('Idempotency-Key'),
-      taxPolicy: TAX_POLICY,
+      taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
     });
     if (result.ok && result.status === 201) {
       await audit(
@@ -388,7 +379,7 @@ export const adminRoutes = new Hono<AuthEnv>()
     if (t.to === 'cancelled') {
       const refund = calculateCancellationRefund(
         { dateFrom: booking.dateFrom, paidCents: booking.paidCents },
-        CANCEL_POLICY,
+        (await loadTenantConfig(db)).cancellationPolicy,
         nowIso().slice(0, 10),
       );
       const refundOutcome = await executeRefund(db, c.env, id, refund.refundCents);

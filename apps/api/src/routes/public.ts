@@ -7,7 +7,6 @@ import {
   searchAvailability,
   TAX_POLICIES,
   validateStay,
-  type CancellationPolicy,
   type Occupancy,
 } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
@@ -27,18 +26,9 @@ import {
   quoteRequestSchema,
 } from '../schemas';
 import type { Env } from '../tenant';
+import { loadTenantConfig } from '../tenant-config';
 
 const CURRENCY = 'EUR';
-/** Política de tasa del tenant — de TenantConfig en Fase 9; demo = valencia */
-const TAX_POLICY = TAX_POLICIES.valencia!;
-/** Política de cancelación del tenant — de TenantConfig en Fase 9; sobre lo PAGADO */
-const CANCEL_POLICY: CancellationPolicy = {
-  tiers: [
-    { minDaysBefore: 30, refundPct: 100 },
-    { minDaysBefore: 7, refundPct: 50 },
-    { minDaysBefore: 0, refundPct: 0 },
-  ],
-};
 /** Vida del bloqueo temporal del funnel (ADR 0007) */
 const HOLD_TTL_MS = 15 * 60 * 1000;
 
@@ -142,7 +132,7 @@ export const publicRoutes = new Hono<Env>()
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const body = parsed.data;
     const db = c.get('tenant').db;
-    const data = await loadEngineData(db);
+    const [data, tenantConfig] = await Promise.all([loadEngineData(db), loadTenantConfig(db)]);
 
     const unitType = data.unitTypes.find((t) => t.id === body.unitTypeId);
     if (!unitType) return c.json({ error: 'unknown_unit_type' }, 404);
@@ -173,7 +163,11 @@ export const publicRoutes = new Hono<Env>()
         currency: CURRENCY,
         withElectricity: body.withElectricity,
       });
-      const touristTaxCents = calculateTouristTax(body.occupancy, result.nights, TAX_POLICY);
+      const touristTaxCents = calculateTouristTax(
+        body.occupancy,
+        result.nights,
+        TAX_POLICIES[tenantConfig.taxPolicy]!,
+      );
       return c.json({
         ...result,
         breakdown: { ...result.breakdown, touristTaxCents },
@@ -286,11 +280,13 @@ export const publicRoutes = new Hono<Env>()
     const parsed = bookingRequestSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
 
+    const tenant = c.get('tenant');
+    const tenantConfig = await loadTenantConfig(tenant.db);
     // toda la lógica vive en createBooking, compartida con el alta manual del dashboard (ADR 0005)
-    const result = await createBooking(c.get('tenant'), parsed.data, {
+    const result = await createBooking(tenant, parsed.data, {
       channel: 'web',
       idemKey: c.req.header('Idempotency-Key'),
-      taxPolicy: TAX_POLICY,
+      taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
       env: c.env,
       webOrigin: new URL(c.req.url).origin,
     });
@@ -311,14 +307,15 @@ export const publicRoutes = new Hono<Env>()
   .get('/bookings/:code', async (c) => {
     const email = c.req.query('email');
     if (!email) return c.json({ error: 'email_required' }, 400);
-    const booking = await findBookingByCodeEmail(c.get('tenant').db, c.req.param('code'), email);
+    const db = c.get('tenant').db;
+    const booking = await findBookingByCodeEmail(db, c.req.param('code'), email);
     if (!booking) return c.json({ error: 'not_found' }, 404);
 
     // previsión de cancelación: el titular ve el importe ANTES de confirmar
     const cancellation = ACTIVE_STATUSES.includes(booking.status)
       ? calculateCancellationRefund(
           { dateFrom: booking.dateFrom, paidCents: booking.paidCents },
-          CANCEL_POLICY,
+          (await loadTenantConfig(db)).cancellationPolicy,
           nowIso().slice(0, 10),
         )
       : null;
@@ -353,7 +350,7 @@ export const publicRoutes = new Hono<Env>()
 
     const refund = calculateCancellationRefund(
       { dateFrom: booking.dateFrom, paidCents: booking.paidCents },
-      CANCEL_POLICY,
+      (await loadTenantConfig(db)).cancellationPolicy,
       nowIso().slice(0, 10),
     );
     const ts = nowIso();
@@ -405,7 +402,11 @@ export const publicRoutes = new Hono<Env>()
     }
 
     const now = nowIso();
-    const [data, holds] = await Promise.all([loadEngineData(db), loadLiveHolds(db, now)]);
+    const [data, holds, tenantConfig] = await Promise.all([
+      loadEngineData(db),
+      loadLiveHolds(db, now),
+      loadTenantConfig(db),
+    ]);
     const unitType = data.unitTypes.find((t) => t.id === booking.unitTypeId)!;
     const occupancy = booking.occupancy;
 
@@ -462,7 +463,11 @@ export const publicRoutes = new Hono<Env>()
       if (e instanceof ClosedError) return c.json({ error: 'closed' }, 422);
       throw e;
     }
-    const touristTaxCents = calculateTouristTax(occupancy, result.nights, TAX_POLICY);
+    const touristTaxCents = calculateTouristTax(
+      occupancy,
+      result.nights,
+      TAX_POLICIES[tenantConfig.taxPolicy]!,
+    );
 
     const assignment = assignUnit({
       unitTypeId: unitType.id,

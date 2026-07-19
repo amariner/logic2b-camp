@@ -24,7 +24,7 @@ Un único código base. Subir de nivel = **cambiar config**, nunca un proyecto n
 // tenants/{slug}/config.ts (forma orientativa; se cierra en Fase 9)
 tier1: { web: true,  booking: 'email',   dashboard: false }
 tier2: { web: true,  booking: 'request', dashboard: 'lite' }
-tier3: { web: true,  booking: 'instant', dashboard: 'full', payments: 'stripe'|'redsys'|'none' }
+tier3: { web: true,  booking: 'instant', dashboard: 'full', payments: { provider: 'stripe'|'redsys'|'none', mode: 'none'|'deposit'|'full' } } // forma real desde ADR 0011
 tier4: { web: false, booking: 'instant', dashboard: 'full' }  // NO CONSTRUIR AÚN
 ```
 

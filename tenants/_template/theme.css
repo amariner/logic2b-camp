@@ -1,0 +1,30 @@
+/* Tokens de identidad del tenant (ADR 0006). Cambiar este fichero re-viste
+   TODA la web — no toques componentes para cambiar la marca.
+   TODO: sustituye estos 5 hex por la paleta real del camping (dirección
+   visual: territorio real, no plantilla — ver CLAUDE.md "Dirección visual"). */
+:root {
+  /* paleta — 5 hex nombrados, ni más ni menos */
+  --lc-tinta: #14140f; /* TODO: texto e iconos — oscuro, casi negro */
+  --lc-hueso: #f5f3ee; /* TODO: fondo global — claro, cálido */
+  --lc-pino: #2a5c46; /* TODO: ÚNICO color de acción (botones, enlaces principales) */
+  --lc-arena: #c8ba9c; /* TODO: bordes, fills suaves */
+  --lc-mar: #2e6e73; /* TODO: enlaces secundarios, estados de info */
+
+  /* derivados — NUNCA colores nuevos, siempre color-mix de los 5 de arriba */
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 82%, black);
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+
+  /* tipografía — TODO: mantener Clash Display/Inter (ya optimizadas y
+     subseteadas para Lighthouse ≥95) salvo que el camping tenga marca propia
+     con tipografía ya comprada; cambiar tipografía = volver a pagar Lighthouse. */
+  --lc-font-display: 'Clash Display', system-ui, sans-serif;
+  --lc-font-text: 'Inter', system-ui, sans-serif;
+
+  /* forma */
+  --lc-radius: 2px;
+  --lc-radius-lg: 4px;
+}
+
+/* Ningún tema alternativo aquí: los temas [data-theme] son atrezzo exclusivo
+   de la demo comercial (ADR 0009). Un cliente real tiene UN tema: éste. */

@@ -16,6 +16,7 @@ import {
 } from '@logic-camp/notifications';
 import type { Context } from 'hono';
 import { nowIso, uid } from './bookings';
+import { loadTenantConfig } from './tenant-config';
 import type { TenantContext } from './tenant';
 
 /** Remitente de plataforma hasta que el tenant verifique su dominio en Resend. */
@@ -223,7 +224,7 @@ type EnquiryReq = {
 };
 
 /** Aviso al camping + acuse al solicitante (en SU idioma). */
-export function notifyEnquiry(
+export async function notifyEnquiry(
   c: NotifyContext,
   enquiryId: string,
   req: EnquiryReq,
@@ -238,9 +239,11 @@ export function notifyEnquiry(
     persons: req.occupancy ? req.occupancy.adults + req.occupancy.childrenAges.length : undefined,
     message: req.message,
   };
+  // idioma de la casa (ADR 0012): el primero de los locales del tenant, no 'es' fijo
+  const tenant = c.get('tenant') as TenantContext;
+  const houseLocale = (await loadTenantConfig(tenant.db)).locales[0] ?? 'es';
   return notifyAfter(c, [
-    // al camping, en el idioma de la casa (v1: es — TenantConfig F9 traerá el suyo)
-    { payload: { kind: 'enquiry_received', data }, to: null, locale: 'es', enquiryId },
+    { payload: { kind: 'enquiry_received', data }, to: null, locale: houseLocale, enquiryId },
     {
       payload: { kind: 'enquiry_autoreply', data },
       to: req.contact.email,

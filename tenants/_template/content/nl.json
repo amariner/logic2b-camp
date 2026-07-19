@@ -1,0 +1,485 @@
+{
+  "seo": {
+    "title": "__TODO__",
+    "description": "__TODO__"
+  },
+  "nav": {
+    "alojamientos": "__TODO__",
+    "instalaciones": "__TODO__",
+    "entorno": "__TODO__",
+    "tarifas": "__TODO__",
+    "blog": "__TODO__",
+    "contacto": "__TODO__",
+    "menu": "__TODO__",
+    "idioma": "__TODO__",
+    "tema": "__TODO__"
+  },
+  "hero3": {
+    "titulo": "__TODO__",
+    "prueba": "__TODO__"
+  },
+  "hero1": {
+    "titulo": "__TODO__",
+    "cta": "__TODO__"
+  },
+  "ticker": [
+    "__TODO__",
+    "__TODO__",
+    "__TODO__",
+    "__TODO__",
+    "__TODO__"
+  ],
+  "mostrador": {
+    "llegada": "__TODO__",
+    "salida": "__TODO__",
+    "huespedes": "__TODO__",
+    "adultos": "__TODO__",
+    "ninos": "__TODO__",
+    "adulto": "__TODO__",
+    "nino": "__TODO__",
+    "buscar": "__TODO__",
+    "buscando": "__TODO__",
+    "desde": "__TODO__",
+    "porEstancia": "__TODO__",
+    "unidadesLibres": "__TODO__",
+    "quedanPocas": "__TODO__",
+    "agotado": "__TODO__",
+    "cerrado": "__TODO__",
+    "cerradoEl": "__TODO__",
+    "noEntra": "__TODO__",
+    "error": "__TODO__",
+    "fechasInvalidas": "__TODO__",
+    "reservar": "__TODO__"
+  },
+  "tipos": {
+    "titulo": "__TODO__",
+    "subtitulo": "__TODO__",
+    "verTodo": "__TODO__",
+    "nombres": {
+      "ut_std": "__TODO__",
+      "ut_conf": "__TODO__",
+      "ut_prem": "__TODO__",
+      "ut_moto": "__TODO__",
+      "ut_bung4": "__TODO__",
+      "ut_bung6": "__TODO__",
+      "ut_mobil": "__TODO__",
+      "ut_glamp": "__TODO__"
+    },
+    "cards": [
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__",
+        "foto": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__",
+        "foto": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__",
+        "foto": "__TODO__"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "__TODO__",
+    "texto": "__TODO__"
+  },
+  "form": {
+    "titulo": "__TODO__",
+    "subtitulo": "__TODO__",
+    "nombre": "__TODO__",
+    "email": "__TODO__",
+    "fechas": "__TODO__",
+    "mensaje": "__TODO__",
+    "enviar": "__TODO__",
+    "enviando": "__TODO__",
+    "ok": "__TODO__",
+    "error": "__TODO__"
+  },
+  "footer": {
+    "aviso": "__TODO__",
+    "legal": "__TODO__",
+    "privacidad": "__TODO__"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "desdeNoche": "__TODO__",
+    "verFicha": "__TODO__",
+    "consultar": "__TODO__",
+    "volver": "__TODO__",
+    "parcelas": "__TODO__",
+    "alojados": "__TODO__",
+    "fichas": {
+      "ut_std": "__TODO__",
+      "ut_conf": "__TODO__",
+      "ut_prem": "__TODO__",
+      "ut_moto": "__TODO__",
+      "ut_bung4": "__TODO__",
+      "ut_bung6": "__TODO__",
+      "ut_mobil": "__TODO__",
+      "ut_glamp": "__TODO__"
+    },
+    "ficha": {
+      "capacidad": "__TODO__",
+      "personas": "__TODO__",
+      "personasIncluidas": "__TODO__",
+      "superficie": "__TODO__",
+      "electricidad": "__TODO__",
+      "sombra": "__TODO__",
+      "sombraParcial": "__TODO__",
+      "sombraTotal": "__TODO__",
+      "camas": "__TODO__",
+      "banos": "__TODO__",
+      "aire": "__TODO__",
+      "mascotas": "__TODO__",
+      "si": "__TODO__",
+      "no": "__TODO__",
+      "unidades": "__TODO__",
+      "tarifasTitulo": "__TODO__",
+      "estanciaMin": "__TODO__",
+      "estanciaMin1": "__TODO__",
+      "llegadaSabado": "__TODO__",
+      "notaPrecios": "__TODO__"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "items": [
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      },
+      {
+        "id": "__TODO__",
+        "nombre": "__TODO__",
+        "desc": "__TODO__"
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "secciones": [
+      {
+        "titulo": "__TODO__",
+        "texto": "__TODO__"
+      },
+      {
+        "titulo": "__TODO__",
+        "texto": "__TODO__"
+      },
+      {
+        "titulo": "__TODO__",
+        "texto": "__TODO__"
+      },
+      {
+        "titulo": "__TODO__",
+        "texto": "__TODO__"
+      }
+    ],
+    "distancias": {
+      "titulo": "__TODO__",
+      "items": [
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        },
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        },
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        },
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        },
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        },
+        {
+          "lugar": "__TODO__",
+          "valor": "__TODO__"
+        }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "tabla": {
+      "tipo": "__TODO__",
+      "noche": "__TODO__"
+    },
+    "temporadas": {
+      "sea_apertura": "__TODO__",
+      "sea_media": "__TODO__",
+      "sea_alta": "__TODO__"
+    },
+    "suplementos": {
+      "titulo": "__TODO__",
+      "personaExtra": "__TODO__",
+      "nino": "__TODO__",
+      "electricidad": "__TODO__",
+      "vehiculo": "__TODO__",
+      "mascota": "__TODO__"
+    },
+    "extras": {
+      "titulo": "__TODO__",
+      "por": {
+        "person": "__TODO__",
+        "night": "__TODO__",
+        "stay": "__TODO__"
+      },
+      "nombres": {
+        "ext_sabanas": "__TODO__",
+        "ext_toallas": "__TODO__",
+        "ext_limpieza": "__TODO__",
+        "ext_nevera": "__TODO__",
+        "ext_parking2": "__TODO__",
+        "ext_late": "__TODO__",
+        "ext_cuna": "__TODO__",
+        "ext_trona": "__TODO__",
+        "ext_bbq": "__TODO__",
+        "ext_wifi": "__TODO__",
+        "ext_hielo": "__TODO__",
+        "ext_pack": "__TODO__"
+      }
+    },
+    "condiciones": {
+      "titulo": "__TODO__",
+      "items": [
+        "__TODO__",
+        "__TODO__",
+        "__TODO__",
+        "__TODO__",
+        "__TODO__"
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "datos": {
+      "titulo": "__TODO__",
+      "direccion": "__TODO__",
+      "telefono": "__TODO__",
+      "email": "__TODO__"
+    },
+    "horario": {
+      "titulo": "__TODO__",
+      "texto": "__TODO__"
+    },
+    "llegar": {
+      "titulo": "__TODO__",
+      "texto": "__TODO__"
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "leerMas": "__TODO__",
+    "volver": "__TODO__",
+    "vacio": "__TODO__"
+  },
+  "noEncontrada": {
+    "titulo": "__TODO__",
+    "texto": "__TODO__",
+    "cta": "__TODO__"
+  },
+  "reservar": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "elegir": "__TODO__",
+    "noches": "__TODO__",
+    "detalle": {
+      "estancia": "__TODO__",
+      "extras": "__TODO__",
+      "incluido": "__TODO__",
+      "electricidad": "__TODO__",
+      "desglose": "__TODO__",
+      "tasaNota": "__TODO__",
+      "total": "__TODO__",
+      "continuar": "__TODO__",
+      "volver": "__TODO__",
+      "error": "__TODO__"
+    },
+    "titular": {
+      "titulo": "__TODO__",
+      "hold": "__TODO__",
+      "holdCaducado": "__TODO__",
+      "nombre": "__TODO__",
+      "email": "__TODO__",
+      "telefono": "__TODO__",
+      "notas": "__TODO__",
+      "condiciones": "__TODO__",
+      "confirmar": "__TODO__",
+      "confirmando": "__TODO__",
+      "agotado": "__TODO__",
+      "error": "__TODO__"
+    },
+    "conceptos": {
+      "price.base": "__TODO__",
+      "price.extra_person": "__TODO__",
+      "price.child": "__TODO__",
+      "price.pet": "__TODO__",
+      "price.electricity": "__TODO__",
+      "price.vehicle": "__TODO__",
+      "discount.early_booking": "__TODO__",
+      "discount.long_stay": "__TODO__",
+      "discount.acsi": "__TODO__"
+    },
+    "errores": {
+      "stay.closed": "__TODO__",
+      "stay.min_stay": "__TODO__",
+      "stay.max_stay": "__TODO__",
+      "stay.arrival_day": "__TODO__",
+      "stay.departure_day": "__TODO__",
+      "stay.capacity": "__TODO__",
+      "stay.capacity_min": "__TODO__",
+      "stay.no_adults": "__TODO__",
+      "stay.no_pets": "__TODO__",
+      "stay.no_electricity": "__TODO__",
+      "stay.no_rate": "__TODO__",
+      "stay.invalid_dates": "__TODO__"
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "__TODO__",
+      "description": "__TODO__"
+    },
+    "titulo": "__TODO__",
+    "nueva": "__TODO__",
+    "buscar": {
+      "intro": "__TODO__",
+      "codigo": "__TODO__",
+      "email": "__TODO__",
+      "ver": "__TODO__",
+      "buscando": "__TODO__",
+      "noEncontrada": "__TODO__"
+    },
+    "estado": {
+      "pending": "__TODO__",
+      "confirmed": "__TODO__",
+      "cancelled": "__TODO__",
+      "no_show": "__TODO__",
+      "completed": "__TODO__"
+    },
+    "campos": {
+      "llegada": "__TODO__",
+      "salida": "__TODO__",
+      "alojamiento": "__TODO__",
+      "huespedes": "__TODO__",
+      "noches": "__TODO__",
+      "total": "__TODO__",
+      "pagado": "__TODO__",
+      "tasa": "__TODO__"
+    },
+    "imprimir": "__TODO__",
+    "cancelar": {
+      "boton": "__TODO__",
+      "aviso": "__TODO__",
+      "confirmar": "__TODO__",
+      "volver": "__TODO__",
+      "hecha": "__TODO__",
+      "error": "__TODO__"
+    },
+    "modificar": {
+      "boton": "__TODO__",
+      "titulo": "__TODO__",
+      "nota": "__TODO__",
+      "aplicar": "__TODO__",
+      "aplicando": "__TODO__",
+      "hecho": "__TODO__",
+      "noDisponible": "__TODO__",
+      "error": "__TODO__"
+    },
+    "pago": {
+      "esperando": "__TODO__",
+      "cancelado": "__TODO__",
+      "pendiente": "__TODO__"
+    }
+  },
+  "temas": {
+    "pinada": "__TODO__",
+    "mar": "__TODO__",
+    "garriga": "__TODO__",
+    "nit": "__TODO__"
+  }
+}

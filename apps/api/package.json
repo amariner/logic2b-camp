@@ -12,6 +12,7 @@
     "deploy:demo": "pnpm --filter @logic-camp/web build && pnpm --filter @logic-camp/dashboard build && rm -rf ../web/dist/admin && cp -r ../dashboard/dist ../web/dist/admin && wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
   },
   "dependencies": {
+    "@logic-camp/config": "workspace:*",
     "@logic-camp/core": "workspace:*",
     "@logic-camp/db": "workspace:*",
     "better-auth": "^1.6.23",
