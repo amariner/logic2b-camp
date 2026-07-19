@@ -83,7 +83,15 @@ export const publicRoutes = new Hono<Env>()
       };
     });
 
-    return c.json({ from: q.from, to: q.to, results: items });
+    // fechas cerradas: la próxima apertura REAL sale de seasons_calendar, nunca hardcodeada
+    const opensOn = items.some((i) => i.status === 'closed')
+      ? (data.seasons
+          .filter((s) => s.isOpen && s.dateFrom > q.from)
+          .map((s) => s.dateFrom)
+          .sort()[0] ?? null)
+      : null;
+
+    return c.json({ from: q.from, to: q.to, opensOn, results: items });
   })
 
   .post('/quote', async (c) => {

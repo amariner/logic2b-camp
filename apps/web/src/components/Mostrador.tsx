@@ -2,8 +2,9 @@
  * El MOSTRADOR ★ — elemento firma del nivel 3 (ADR 0006).
  * Widget de disponibilidad real contra GET /api/availability. Isla React única;
  * el nivel 1 no la incluye en el bundle (la página no la renderiza).
+ * Deep-link: /?from=YYYY-MM-DD&to=YYYY-MM-DD&adults=2&children=1 reproduce la búsqueda.
  */
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 type Labels = Record<string, string>;
 
@@ -17,6 +18,8 @@ type ResultItem = {
   currency: string;
 };
 
+type Query = { from: string; to: string; adults: number; children: number };
+
 type Props = {
   labels: Labels;
   typeNames: Record<string, string>;
@@ -29,8 +32,14 @@ const plus = (days: number) => {
   return d.toISOString().slice(0, 10);
 };
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
 const eur = (cents: number, locale: string) =>
-  new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(cents / 100);
+  new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0,
+  }).format(cents / 100);
 
 export default function Mostrador({ labels, typeNames, locale }: Props) {
   const [from, setFrom] = useState(plus(14));
@@ -39,32 +48,73 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
   const [children, setChildren] = useState(0);
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [results, setResults] = useState<ResultItem[]>([]);
+  const [opensOn, setOpensOn] = useState<string | null>(null);
 
   const datesOk = from < to;
 
-  const search = useCallback(async () => {
-    if (!datesOk) return;
+  const runSearch = useCallback(async (q: Query) => {
     setState('loading');
+    // búsqueda compartible/recuperable: la URL ES el estado
+    const qs = new URLSearchParams({
+      from: q.from,
+      to: q.to,
+      adults: String(q.adults),
+      children: String(q.children),
+    });
+    window.history.replaceState(
+      null,
+      '',
+      `${window.location.pathname}?${qs}${window.location.hash}`,
+    );
     try {
-      const qs = new URLSearchParams({ from, to, adults: String(adults), children: String(children) });
       const res = await fetch(`/api/availability?${qs}`);
       if (!res.ok) throw new Error(String(res.status));
-      const body = (await res.json()) as { results: ResultItem[] };
+      const body = (await res.json()) as { opensOn: string | null; results: ResultItem[] };
       setResults(body.results);
+      setOpensOn(body.opensOn ?? null);
       setState('done');
     } catch {
       setState('error');
     }
-  }, [from, to, adults, children, datesOk]);
+  }, []);
+
+  // deep-link: al cargar, si la URL trae fechas válidas se reproduce la búsqueda
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pFrom = params.get('from');
+    const pTo = params.get('to');
+    if (!pFrom || !pTo || !ISO_DATE.test(pFrom) || !ISO_DATE.test(pTo) || pFrom >= pTo) return;
+    const pAdults = Math.min(12, Math.max(1, Number(params.get('adults')) || 2));
+    const pChildren = Math.min(10, Math.max(0, Number(params.get('children')) || 0));
+    setFrom(pFrom);
+    setTo(pTo);
+    setAdults(pAdults);
+    setChildren(pChildren);
+    void runSearch({ from: pFrom, to: pTo, adults: pAdults, children: pChildren });
+  }, [runSearch]);
 
   const guestsLabel = useMemo(() => {
     const a = `${adults} ${adults === 1 ? labels.adulto : labels.adultos}`;
     return children > 0 ? `${a}, ${children} ${children === 1 ? labels.nino : labels.ninos}` : a;
   }, [adults, children, labels]);
 
-  const closed = state === 'done' && results.length > 0 && results.every((r) => r.status === 'closed');
+  const closed =
+    state === 'done' && results.length > 0 && results.every((r) => r.status === 'closed');
   const available = results.filter((r) => r.status === 'available' && r.totalPriceCents !== null);
   const soldOut = state === 'done' && !closed && available.length === 0;
+
+  // "cerrado" con la fecha REAL de apertura que devuelve la API (seasons_calendar)
+  const closedMessage = useMemo(() => {
+    if (!opensOn) return labels.cerrado;
+    const date = new Date(`${opensOn}T12:00:00Z`);
+    const sameYear = date.getUTCFullYear() === new Date().getFullYear();
+    const texto = new Intl.DateTimeFormat(locale, {
+      day: 'numeric',
+      month: 'long',
+      ...(sameYear ? {} : { year: 'numeric' }),
+    }).format(date);
+    return (labels.cerradoEl ?? labels.cerrado ?? '').replace('{fecha}', texto);
+  }, [opensOn, labels, locale]);
 
   return (
     <div>
@@ -73,11 +123,13 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
         className="flex flex-col gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/15 bg-hueso shadow-[0_24px_60px_-30px_rgba(14,21,18,0.45)] sm:flex-row"
         onSubmit={(e) => {
           e.preventDefault();
-          void search();
+          if (datesOk) void runSearch({ from, to, adults, children });
         }}
       >
         <label className="flex flex-1 flex-col gap-1 bg-hueso px-4 py-3">
-          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">{labels.llegada}</span>
+          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.llegada}
+          </span>
           <input
             type="date"
             required
@@ -88,7 +140,9 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
           />
         </label>
         <label className="flex flex-1 flex-col gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 sm:border-t-0 sm:border-l">
-          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">{labels.salida}</span>
+          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.salida}
+          </span>
           <input
             type="date"
             required
@@ -99,12 +153,26 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
           />
         </label>
         <div className="flex flex-1 flex-col gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 sm:border-t-0 sm:border-l">
-          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">{labels.huespedes}</span>
+          <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.huespedes}
+          </span>
           <div className="flex items-center gap-3 text-[15px] font-medium">
             <span className="tnum min-w-0 truncate">{guestsLabel}</span>
             <span className="ml-auto flex items-center gap-1">
-              <Stepper value={adults} min={1} max={12} onChange={setAdults} label={labels.adultos} />
-              <Stepper value={children} min={0} max={10} onChange={setChildren} label={labels.ninos} />
+              <Stepper
+                value={adults}
+                min={1}
+                max={12}
+                onChange={setAdults}
+                label={labels.adultos}
+              />
+              <Stepper
+                value={children}
+                min={0}
+                max={10}
+                onChange={setChildren}
+                label={labels.ninos}
+              />
             </span>
           </div>
         </div>
@@ -119,18 +187,40 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
 
       {!datesOk && <p className="mt-3 text-[13px] text-mar">{labels.fechasInvalidas}</p>}
       {state === 'error' && <p className="mt-3 text-[13px] text-mar">{labels.error}</p>}
-      {closed && <p className="mt-4 text-[15px] font-medium">{labels.cerrado}</p>}
+      {closed && <p className="mt-4 text-[15px] font-medium">{closedMessage}</p>}
       {soldOut && <p className="mt-4 text-[15px] font-medium">{labels.agotado}</p>}
 
+      {/* skeleton mientras responde la API: la página no salta */}
+      {state === 'loading' && (
+        <ul
+          aria-busy="true"
+          className="mt-5 grid gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/10 bg-tinta/10 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {[0, 1, 2].map((i) => (
+            <li key={i} className="flex flex-col gap-2.5 bg-hueso p-5">
+              <span className="flex items-baseline justify-between gap-2">
+                <span className="lc-skeleton h-4 w-28 rounded-(--lc-radius)" />
+                <span className="lc-skeleton h-4 w-16 rounded-(--lc-radius)" />
+              </span>
+              <span className="lc-skeleton h-3 w-20 rounded-(--lc-radius)" />
+            </li>
+          ))}
+        </ul>
+      )}
+
       {/* resultados EN la página, sin salto */}
-      {available.length > 0 && (
+      {state !== 'loading' && available.length > 0 && (
         <ul className="mt-5 grid gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/10 bg-tinta/10 sm:grid-cols-2 lg:grid-cols-3">
           {available.map((r) => (
             <li key={r.unitTypeId} className="flex flex-col gap-1 bg-hueso p-5">
               <div className="flex items-baseline justify-between gap-2">
-                <h3 className="font-display text-[17px] font-semibold">{typeNames[r.unitTypeId] ?? r.unitTypeId}</h3>
+                <h3 className="font-display text-[17px] font-semibold">
+                  {typeNames[r.unitTypeId] ?? r.unitTypeId}
+                </h3>
                 <p className="tnum text-right text-[17px] font-semibold">
-                  <span className="mr-1 text-[11px] font-normal text-tinta-suave">{labels.desde}</span>
+                  <span className="mr-1 text-[11px] font-normal text-tinta-suave">
+                    {labels.desde}
+                  </span>
                   {eur(r.totalPriceCents!, locale)}
                 </p>
               </div>
@@ -139,7 +229,9 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
                 {r.availableUnits <= 3 ? (
                   <span className="font-medium text-mar">{labels.quedanPocas}</span>
                 ) : (
-                  <span className="tnum">{r.availableUnits} {labels.unidadesLibres}</span>
+                  <span className="tnum">
+                    {r.availableUnits} {labels.unidadesLibres}
+                  </span>
                 )}
               </p>
             </li>

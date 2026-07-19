@@ -1,0 +1,342 @@
+{
+  "seo": {
+    "title": "Càmping Cala Sereno — dormir sota els pins, a 300 m de la cala",
+    "description": "Càmping familiar a la costa de Castelló. Parcel·les a l'ombra de pins centenaris, bungalous i glàmping. Obert de març a octubre."
+  },
+  "nav": {
+    "alojamientos": "Allotjaments",
+    "instalaciones": "Instal·lacions",
+    "entorno": "L'entorn",
+    "tarifas": "Tarifes",
+    "blog": "Quadern",
+    "contacto": "Contacte",
+    "menu": "Menú",
+    "idioma": "Idioma"
+  },
+  "hero3": {
+    "titulo": "Dormir sota els pins, a 300 m de la cala.",
+    "prueba": "83 parcel·les i allotjaments · obert març–octubre · famílies des de 1974"
+  },
+  "hero1": {
+    "titulo": "Les vacances que tornen soles cada any.",
+    "cta": "Escriu-nos"
+  },
+  "ticker": [
+    "80 parcel·les sota els pins",
+    "la cala a 300 m",
+    "famílies des de 1974",
+    "gossos benvinguts",
+    "obert març – octubre"
+  ],
+  "mostrador": {
+    "llegada": "Arribada",
+    "salida": "Eixida",
+    "huespedes": "Hostes",
+    "adultos": "adults",
+    "ninos": "xiquets",
+    "adulto": "adult",
+    "nino": "xiquet",
+    "buscar": "Veure disponibilitat",
+    "buscando": "Buscant…",
+    "desde": "des de",
+    "porEstancia": "per estada",
+    "unidadesLibres": "lliures",
+    "quedanPocas": "en queden poques",
+    "agotado": "Sense disponibilitat en eixes dates",
+    "cerrado": "Tancat en eixes dates",
+    "cerradoEl": "Tancat en eixes dates — obrim el {fecha}",
+    "noEntra": "No disponible per a eixe grup",
+    "error": "No hem pogut consultar la disponibilitat. Torna-ho a provar.",
+    "fechasInvalidas": "Revisa les dates: l'eixida ha de ser posterior a l'arribada.",
+    "reservar": "Reservar"
+  },
+  "tipos": {
+    "titulo": "Maneres de quedar-se",
+    "subtitulo": "Es reserva el tipus; la parcel·la exacta te l'assignem nosaltres, com s'ha fet sempre.",
+    "verTodo": "Veure tots els allotjaments",
+    "nombres": {
+      "ut_std": "Parcel·la Estàndard",
+      "ut_conf": "Parcel·la Confort",
+      "ut_prem": "Parcel·la Premium Mar",
+      "ut_moto": "Parcel·la Autocaravana",
+      "ut_bung4": "Bungalou 4",
+      "ut_bung6": "Bungalou 6 Vista Mar",
+      "ut_mobil": "Mobil-home",
+      "ut_glamp": "Glàmping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Parcel·les",
+        "desc": "Arena compactada, ombra de pi blanc i la teua lona. De 70 a 120 m², amb electricitat de 6 a 16 A.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalous i mobil-homes",
+        "desc": "Fusta, porxe i aire condicionat. Per a 4 o 6, amb la cala a un passeig curt.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glàmping",
+        "desc": "Lona crua, llit de veritat i el mar entre els troncs. Sense endolls de més.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "La cala primer, el càmping després",
+    "texto": "Cala Sereno existeix perquè existia la cala: 300 metres de pinada la separen de les parcel·les. El Castelló d'interior a l'esquena, senders que ixen a peu des de recepció i pobles amb mercat a deu minuts."
+  },
+  "form": {
+    "titulo": "Escriu-nos",
+    "subtitulo": "Et contestem en menys d'un dia. En temporada, abans.",
+    "nombre": "Nom",
+    "email": "Email",
+    "fechas": "Dates aproximades (opcional)",
+    "mensaje": "Què necessites?",
+    "enviar": "Enviar sol·licitud",
+    "enviando": "Enviant…",
+    "ok": "Rebut. Et contestem molt prompte.",
+    "error": "No s'ha pogut enviar. Prova una altra vegada o telefona'ns."
+  },
+  "footer": {
+    "aviso": "Càmping familiar a la costa de Castelló",
+    "legal": "Avís legal",
+    "privacidad": "Privacitat"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Allotjaments — parcel·les, bungalous i glàmping | Càmping Cala Sereno",
+      "description": "Huit maneres de quedar-se sota els pins: parcel·les de 70 a 100 m², bungalous amb porxe, mobil-homes i tendes de glàmping. Preus i fitxes tècniques."
+    },
+    "titulo": "Allotjaments",
+    "intro": "Huit maneres de dormir sota els pins. Es reserva el tipus; la unitat exacta te l'assignem nosaltres en arribar, com s'ha fet sempre.",
+    "desdeNoche": "des de {precio}/nit",
+    "verFicha": "Veure fitxa",
+    "consultar": "Consultar disponibilitat",
+    "volver": "Tots els allotjaments",
+    "parcelas": "Parcel·les",
+    "alojados": "Allotjaments",
+    "fichas": {
+      "ut_std": "La parcel·la de sempre: arena compactada, ombra parcial de pi blanc i lloc per a tenda o caravana amb la lona fora.",
+      "ut_conf": "Més metres i ombra total. L'elèctrica de 10 A aguanta nevera i aire de la caravana sense pensar-s'ho.",
+      "ut_prem": "La primera línia del càmping: el mar es veu entre els troncs i la brisa arriba sola. S'esgoten primer.",
+      "ut_moto": "Pensada per a autocaravanes: accés ample, sòl ferm anivellat i connexió de 10 A a peu de parcel·la.",
+      "ut_bung4": "Fusta clara, porxe amb ombra i dues habitacions. El clàssic per a quatre que no volen muntar res.",
+      "ut_bung6": "El gran de la família: tres habitacions, dos banys i el mar des del porxe. Arribada en dissabte a l'agost.",
+      "ut_mobil": "Mobil-home amb tot resolt: cuina completa, bany i aire. L'únic allotjament on admetem mascota.",
+      "ut_glamp": "Lona crua sobre tarima, llit de veritat i llum càlida. Sense aire condicionat a propòsit: la pinada ho fa."
+    },
+    "ficha": {
+      "capacidad": "Capacitat",
+      "personas": "persones",
+      "personasIncluidas": "{n} incloses en el preu",
+      "superficie": "Superfície",
+      "electricidad": "Electricitat",
+      "sombra": "Ombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Habitacions",
+      "banos": "Banys",
+      "aire": "Aire condicionat",
+      "mascotas": "Mascotes",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unitats d'este tipus",
+      "tarifasTitulo": "Preu per nit",
+      "estanciaMin": "estada mínima {n} nits",
+      "estanciaMin1": "sense estada mínima",
+      "llegadaSabado": "arribada en dissabte",
+      "notaPrecios": "Preu base per nit amb {n} persones incloses. El preu final es calcula sempre en buscar dates."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Instal·lacions — piscina, restaurant i serveis | Càmping Cala Sereno",
+      "description": "Piscina entre pins, restaurant de temporada sota la lona, supermercat, sanitaris renovats i accés directe a la cala. Tot a pas d'ombra."
+    },
+    "titulo": "Instal·lacions",
+    "intro": "El necessari per a no agafar el cotxe en tota la setmana, i res que faça soroll: el luxe ací és l'ombra i el sòl ferm.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Piscina entre pins",
+        "desc": "Oberta de maig a setembre, amb zona de poca profunditat i hamaques sota la pinada. L'aigua a l'ombra a mitja vesprada."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurant i bar",
+        "desc": "De temporada, sota la lona gran: arrossos per encàrrec, peix del dia i el café de després de la cala. Terrassa d'arena compactada."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Supermercat",
+        "desc": "Pa i premsa pel matí, gel tot el dia, fruita dels pobles del costat. De març a octubre."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Sanitaris",
+        "desc": "Dos blocs renovats amb aigua calenta sense horari, cabina familiar i bany accessible. Neteja tres vegades al dia a l'estiu."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Bugaderia",
+        "desc": "Llavadores i assecadores amb fitxa, pila per a la roba delicada i estenedor a l'ombra, que la lona ho agraeix."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Zona infantil",
+        "desc": "Parc de fusta sota els pins i esplanada de jocs on cada vesprada s'organitza el partit de sempre."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Pàdel i multiesport",
+        "desc": "Pista de pàdel, frontó i una porteria que ha vist tres generacions. Reserva en recepció, pales incloses."
+      },
+      {
+        "id": "cala",
+        "nombre": "Accés a la cala",
+        "desc": "Sender propi de 300 m entre pinada, amb dutxa en tornar. Sense creuar cap carretera: els xiquets van sols."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepció i wifi",
+        "desc": "Recepció de 8 a 22 en temporada, wifi en zones comunes i en la majoria de parcel·les. I consell honest de la comarca."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "L'entorn — la cala, els senders i els pobles | Càmping Cala Sereno",
+      "description": "Una cala de còdols a 300 m, senders que ixen de recepció, pobles amb mercat a deu minuts i l'interior de Castelló darrere."
+    },
+    "titulo": "L'entorn",
+    "intro": "Cala Sereno existeix perquè existia la cala. Tota la resta — els senders, els pobles, els arrossos — estava abans que nosaltres.",
+    "secciones": [
+      {
+        "titulo": "La cala",
+        "texto": "Tres-cents metres de sender propi entre pinada i estàs en una cala de còdols i aigua clara, orientada a llevant: pel matí el sol, a partir de les cinc l'ombra del penya-segat. Al juliol i l'agost hi ha socorrista; la resta de l'any és dels que matinen."
+      },
+      {
+        "titulo": "Senders",
+        "texto": "De recepció ixen tres senders senyalitzats: el de la cala (10 minuts), el del far pel penya-segat (una hora justa, per a la posta de sol) i el que puja al pinar alt, on a l'abril fa olor de romer i es veu tota la badia."
+      },
+      {
+        "titulo": "Els pobles",
+        "texto": "A deu minuts amb cotxe hi ha dos pobles amb mercat setmanal, forn de llenya i bars on l'esmorzar va de veres. El dimarts, mercat gran: fruita de l'horta, oli de la cooperativa i la parada d'encurtits que ens té conquerits."
+      },
+      {
+        "titulo": "Menjar",
+        "texto": "La comarca és d'arròs melós i peix de llotja. Pregunteu en recepció: tenim la llista curta dels llocs on mengem nosaltres, amb telèfon i nom propi. En temporada convé telefonar la vespra."
+      }
+    ],
+    "distancias": {
+      "titulo": "A mà",
+      "items": [
+        { "lugar": "La cala", "valor": "300 m a peu" },
+        { "lugar": "Primer poble amb mercat", "valor": "10 min amb cotxe" },
+        { "lugar": "Farmàcia i centre de salut", "valor": "12 min amb cotxe" },
+        { "lugar": "Estació de tren", "valor": "20 min amb cotxe" },
+        { "lugar": "Aeroport de Castelló", "valor": "35 min amb cotxe" },
+        { "lugar": "Peníscola i el seu castell", "valor": "30 min amb cotxe" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifes per temporada | Càmping Cala Sereno",
+      "description": "Preus per nit de parcel·les, bungalous i glàmping en temporada d'obertura, mitjana i alta. Suplements, extres i taxa turística, sense sorpreses."
+    },
+    "titulo": "Tarifes",
+    "intro": "Preu per nit, IVA inclòs, segons temporada. El preu final es calcula sempre en buscar dates — el que veus al mostrador és el que pagues.",
+    "tabla": {
+      "tipo": "Allotjament",
+      "noche": "€/nit"
+    },
+    "temporadas": {
+      "sea_apertura": "Obertura",
+      "sea_media": "Mitjana",
+      "sea_alta": "Alta"
+    },
+    "suplementos": {
+      "titulo": "Suplements de parcel·la (per nit)",
+      "personaExtra": "Persona a partir de la {n}a",
+      "nino": "Xiquet (3–12 anys)",
+      "electricidad": "Electricitat",
+      "vehiculo": "Segon vehicle",
+      "mascota": "Mascota"
+    },
+    "extras": {
+      "titulo": "Extres",
+      "por": {
+        "person": "per persona",
+        "night": "per nit",
+        "stay": "per estada"
+      },
+      "nombres": {
+        "ext_sabanas": "Roba de llit",
+        "ext_toallas": "Tovalloles",
+        "ext_limpieza": "Neteja final (allotjaments)",
+        "ext_nevera": "Nevera de parcel·la",
+        "ext_parking2": "Segon vehicle",
+        "ext_late": "Eixida tardana",
+        "ext_cuna": "Bressol de bebé",
+        "ext_trona": "Trona",
+        "ext_bbq": "Kit de barbacoa",
+        "ext_wifi": "WiFi premium",
+        "ext_hielo": "Bossa de gel diària",
+        "ext_pack": "Pack de benvinguda"
+      }
+    },
+    "condiciones": {
+      "titulo": "Bo de saber",
+      "items": [
+        "Estada mínima: 3 nits en parcel·la i 7 en allotjament durant la temporada alta; 2 nits en temporada mitjana.",
+        "Els bungalous i mobil-homes entren en dissabte durant la temporada alta.",
+        "Taxa turística de la Comunitat Valenciana a banda: es calcula per persona i nit, amb menors exempts.",
+        "Reservant amb 60 dies d'antelació: 10 % de descompte. Estades de 14 nits o més: 8 % addicional.",
+        "La fiança dels allotjaments es torna íntegra en revisar la unitat el dia d'eixida."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacte i com arribar | Càmping Cala Sereno",
+      "description": "Escriu-nos, telefona'ns o vine a veure'ns: Partida Cala Sereno s/n, Castelló. Et contestem en menys d'un dia; en temporada, abans."
+    },
+    "titulo": "Contacte",
+    "intro": "Som de contestar ràpid i de telèfon amb nom. Si escrius hui, demà tens resposta — en temporada, quasi sempre el mateix dia.",
+    "datos": {
+      "titulo": "On estem",
+      "direccion": "Adreça",
+      "telefono": "Telèfon",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepció",
+      "texto": "De 8:00 a 22:00 en temporada (març–octubre). Arribades a partir de les 13:00 en parcel·la i de les 16:00 en allotjament; eixides abans de les 12:00."
+    },
+    "llegar": {
+      "titulo": "Com arribar",
+      "texto": "Eixida 43 de l'AP-7 i huit minuts de carretera comarcal seguint els senyals del far. Amb tren, estació a 20 minuts: avisa i coordinem taxi. El desviament al càmping està senyalitzat — si el navegador dubta, mana el senyal marró."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Quadern del càmping | Càmping Cala Sereno",
+      "description": "Notes de temporada escrites des de recepció: la cala, els senders, els mercats i la vida sota els pins."
+    },
+    "titulo": "Quadern",
+    "intro": "Notes de temporada escrites des de recepció. Sense algoritme: el que contaríem al mostrador si hi haguera temps.",
+    "leerMas": "Llegir",
+    "volver": "Totes les notes",
+    "vacio": "Prompte hi haurà notes en esta llengua. De moment, estan en castellà."
+  },
+  "noEncontrada": {
+    "titulo": "Esta pàgina se n'ha anat a la cala",
+    "texto": "L'adreça no existeix o ha canviat de lloc. L'important segueix on sempre: les dates, els pins i el mostrador.",
+    "cta": "Tornar a l'inici"
+  }
+}

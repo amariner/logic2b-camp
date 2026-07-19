@@ -1,15 +1,20 @@
 ---
-import { config, getContent, localePath } from '../lib/content';
+import { config, getContent, localePath, media } from '../lib/content';
 import '../styles/global.css';
 
 interface Props {
   locale: string;
-  /** ruta sin prefijo de idioma, para hreflang */
+  /** ruta sin prefijo de idioma, para hreflang y el selector */
   path?: string;
+  /** SEO por página; sin ellos se usa el de la home */
+  title?: string;
+  description?: string;
 }
 
-const { locale, path = '/' } = Astro.props;
+const { locale, path = '/', title, description } = Astro.props;
 const c = getContent(locale);
+const pageTitle = title ?? c.seo.title;
+const pageDescription = description ?? c.seo.description;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -20,60 +25,130 @@ const jsonLd = {
   email: config.contact.email,
   address: { '@type': 'PostalAddress', streetAddress: config.contact.address },
 };
+
+const navLinks = [
+  ['/alojamientos', c.nav.alojamientos],
+  ['/instalaciones', c.nav.instalaciones],
+  ['/entorno', c.nav.entorno],
+  ['/tarifas', c.nav.tarifas],
+  ['/blog', c.nav.blog],
+  ['/contacto', c.nav.contacto],
+] as const;
 ---
 
 <html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{c.seo.title}</title>
-    <meta name="description" content={c.seo.description} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
     <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    {media['favicon'] && <link rel="icon" type="image/svg+xml" href={media['favicon']} />}
+    {media['apple-touch-icon'] && <link rel="apple-touch-icon" href={media['apple-touch-icon']} />}
     {config.locales.map((l) => (
       <link rel="alternate" hreflang={l} href={`${config.domain}${localePath(l, path)}`} />
     ))}
     <link rel="alternate" hreflang="x-default" href={`${config.domain}${path}`} />
     <link rel="canonical" href={`${config.domain}${localePath(locale, path)}`} />
-    <meta property="og:title" content={c.seo.title} />
-    <meta property="og:description" content={c.seo.description} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={config.name} />
+    <meta property="og:locale" content={locale} />
+    {media['og'] && <meta property="og:image" content={`${config.domain}${media['og']}`} />}
+    {media['og'] && <meta name="twitter:card" content="summary_large_image" />}
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-hueso text-tinta antialiased">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:rounded-(--lc-radius) focus:bg-pino focus:px-4 focus:py-2 focus:text-hueso"
+    >
+      {c.nav.menu} ↓
+    </a>
     <header class="fixed inset-x-0 top-0 z-50 bg-hueso/90 backdrop-blur-sm">
-      <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 md:px-8">
+      <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
         <a href={localePath(locale)} class="font-display text-[15px] font-semibold tracking-[0.14em] uppercase">
           {config.name.replace('Camping ', '')}
         </a>
-        <div class="flex items-center gap-6 text-[13px] font-medium text-tinta-suave">
-          <a href="#alojamientos" class="hidden transition-colors hover:text-tinta sm:block">{c.nav.alojamientos}</a>
-          <a href="#entorno" class="hidden transition-colors hover:text-tinta sm:block">{c.nav.entorno}</a>
-          <a href="#contacto" class="transition-colors hover:text-tinta">{c.nav.contacto}</a>
-          <span class="flex gap-2 border-l border-arena pl-4 uppercase">
-            {config.locales.map((l) => (
-              <a
-                href={localePath(l, path)}
-                class:list={['transition-colors hover:text-tinta', l === locale && 'text-tinta underline underline-offset-4']}
-                aria-current={l === locale ? 'true' : undefined}
-              >
-                {l}
-              </a>
+
+        <div class="flex items-center gap-5">
+          {/* nav completa en pantallas grandes */}
+          <div class="hidden items-center gap-5 text-[13px] font-medium text-tinta-suave lg:flex">
+            {navLinks.map(([href, label]) => (
+              <a href={localePath(locale, href)} class="transition-colors hover:text-tinta">{label}</a>
             ))}
-          </span>
+          </div>
+
+          {/* selector de idioma: nativo, accesible, sin JS */}
+          <details class="lc-menu relative">
+            <summary
+              class="flex cursor-pointer items-center gap-1 text-[13px] font-medium text-tinta uppercase"
+              aria-label={c.nav.idioma}
+            >
+              {locale}<span aria-hidden="true" class="text-[10px] text-tinta-suave">▾</span>
+            </summary>
+            <ul class="absolute right-0 top-full z-50 mt-2 min-w-28 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
+              {config.locales.map((l) => (
+                <li>
+                  <a
+                    href={localePath(l, path)}
+                    class:list={[
+                      'block px-4 py-1.5 text-[13px] uppercase transition-colors hover:bg-arena-suave',
+                      l === locale ? 'font-semibold text-tinta' : 'text-tinta-suave',
+                    ]}
+                    aria-current={l === locale ? 'true' : undefined}
+                  >
+                    {l}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+
+          {/* menú móvil */}
+          <details class="lc-menu relative lg:hidden">
+            <summary class="cursor-pointer text-[13px] font-medium text-tinta">{c.nav.menu}</summary>
+            <ul class="absolute right-0 top-full z-50 mt-2 min-w-48 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
+              {navLinks.map(([href, label]) => (
+                <li>
+                  <a
+                    href={localePath(locale, href)}
+                    class="block px-4 py-2 text-[14px] text-tinta-suave transition-colors hover:bg-arena-suave hover:text-tinta"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
         </div>
       </nav>
     </header>
 
-    <slot />
+    <main id="contenido">
+      <slot />
+    </main>
 
     <footer class="border-t border-arena/60">
-      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-10 text-[13px] text-tinta-suave md:flex-row md:items-center md:justify-between md:px-8">
-        <p>
-          <span class="font-display font-semibold tracking-[0.14em] uppercase text-tinta">{config.name}</span>
-          <span class="ml-3">{c.footer.aviso}</span>
+      <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 md:px-8">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <p class="max-w-xs">
+            <span class="font-display text-[14px] font-semibold tracking-[0.14em] uppercase">{config.name}</span>
+            <span class="mt-1 block text-[13px] text-tinta-suave">{c.footer.aviso}</span>
+          </p>
+          <nav class="grid grid-cols-2 gap-x-10 gap-y-1.5 text-[13px] text-tinta-suave sm:grid-cols-3">
+            {navLinks.map(([href, label]) => (
+              <a href={localePath(locale, href)} class="transition-colors hover:text-tinta">{label}</a>
+            ))}
+          </nav>
+        </div>
+        <p class="tnum text-[13px] text-tinta-suave">
+          {config.contact.address} · {config.contact.phone} · {config.contact.email}
         </p>
-        <p class="tnum">{config.contact.phone} · {config.contact.email}</p>
       </div>
     </footer>
   </body>

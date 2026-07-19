@@ -1,0 +1,11 @@
+---
+import Entorno from '../../components/paginas/Entorno.astro';
+import { extraLocales } from '../../lib/content';
+
+export function getStaticPaths() {
+  return extraLocales.map((lang) => ({ params: { lang } }));
+}
+const { lang } = Astro.params;
+---
+
+<Entorno locale={lang!} />

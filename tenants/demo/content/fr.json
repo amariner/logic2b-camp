@@ -1,0 +1,342 @@
+{
+  "seo": {
+    "title": "Camping Cala Sereno — dormir sous les pins, à 300 m de la crique",
+    "description": "Camping familial sur la côte de Castellón, Espagne. Emplacements à l'ombre de pins centenaires, bungalows et glamping. Ouvert de mars à octobre."
+  },
+  "nav": {
+    "alojamientos": "Hébergements",
+    "instalaciones": "Équipements",
+    "entorno": "Les environs",
+    "tarifas": "Tarifs",
+    "blog": "Carnet",
+    "contacto": "Contact",
+    "menu": "Menu",
+    "idioma": "Langue"
+  },
+  "hero3": {
+    "titulo": "Dormir sous les pins, à 300 m de la crique.",
+    "prueba": "83 emplacements et hébergements · ouvert mars–octobre · des familles depuis 1974"
+  },
+  "hero1": {
+    "titulo": "Les vacances qui reviennent toutes seules, chaque année.",
+    "cta": "Écrivez-nous"
+  },
+  "ticker": [
+    "80 emplacements sous les pins",
+    "la crique à 300 m",
+    "des familles depuis 1974",
+    "chiens bienvenus",
+    "ouvert mars – octobre"
+  ],
+  "mostrador": {
+    "llegada": "Arrivée",
+    "salida": "Départ",
+    "huespedes": "Voyageurs",
+    "adultos": "adultes",
+    "ninos": "enfants",
+    "adulto": "adulte",
+    "nino": "enfant",
+    "buscar": "Voir les disponibilités",
+    "buscando": "Recherche…",
+    "desde": "dès",
+    "porEstancia": "par séjour",
+    "unidadesLibres": "disponibles",
+    "quedanPocas": "il en reste peu",
+    "agotado": "Aucune disponibilité à ces dates",
+    "cerrado": "Fermé à ces dates",
+    "cerradoEl": "Fermé à ces dates — nous ouvrons le {fecha}",
+    "noEntra": "Non disponible pour ce groupe",
+    "error": "Impossible de consulter les disponibilités. Réessayez.",
+    "fechasInvalidas": "Vérifiez les dates : le départ doit être postérieur à l'arrivée.",
+    "reservar": "Réserver"
+  },
+  "tipos": {
+    "titulo": "Façons de rester",
+    "subtitulo": "On réserve le type ; l'emplacement exact, c'est nous qui l'attribuons, comme on l'a toujours fait.",
+    "verTodo": "Voir tous les hébergements",
+    "nombres": {
+      "ut_std": "Emplacement Standard",
+      "ut_conf": "Emplacement Confort",
+      "ut_prem": "Emplacement Premium Mer",
+      "ut_moto": "Emplacement Camping-car",
+      "ut_bung4": "Bungalow 4",
+      "ut_bung6": "Bungalow 6 Vue Mer",
+      "ut_mobil": "Mobil-home",
+      "ut_glamp": "Glamping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Emplacements",
+        "desc": "Sable compacté, ombre de pin d'Alep et votre toile. De 70 à 120 m², avec électricité de 6 à 16 A.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalows et mobil-homes",
+        "desc": "Du bois, une terrasse couverte et la climatisation. Pour 4 ou 6, la crique à quelques pas.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glamping",
+        "desc": "Toile écrue, un vrai lit et la mer entre les troncs. Sans prises superflues.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "La crique d'abord, le camping ensuite",
+    "texto": "Cala Sereno existe parce que la crique existait : 300 mètres de pinède la séparent des emplacements. L'arrière-pays de Castellón dans le dos, des sentiers qui partent à pied de la réception et des villages avec marché à dix minutes."
+  },
+  "form": {
+    "titulo": "Écrivez-nous",
+    "subtitulo": "Nous répondons en moins d'une journée. En saison, plus vite.",
+    "nombre": "Nom",
+    "email": "Email",
+    "fechas": "Dates approximatives (facultatif)",
+    "mensaje": "De quoi avez-vous besoin ?",
+    "enviar": "Envoyer la demande",
+    "enviando": "Envoi…",
+    "ok": "Bien reçu. Nous vous répondons très vite.",
+    "error": "L'envoi a échoué. Réessayez ou appelez-nous."
+  },
+  "footer": {
+    "aviso": "Camping familial sur la côte de Castellón",
+    "legal": "Mentions légales",
+    "privacidad": "Confidentialité"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Hébergements — emplacements, bungalows et glamping | Camping Cala Sereno",
+      "description": "Huit façons de rester sous les pins : emplacements de 70 à 100 m², bungalows avec terrasse, mobil-homes et tentes glamping. Prix et fiches techniques."
+    },
+    "titulo": "Hébergements",
+    "intro": "Huit façons de dormir sous les pins. On réserve le type ; l'unité exacte, nous l'attribuons à votre arrivée, comme on l'a toujours fait.",
+    "desdeNoche": "dès {precio}/nuit",
+    "verFicha": "Voir la fiche",
+    "consultar": "Consulter les disponibilités",
+    "volver": "Tous les hébergements",
+    "parcelas": "Emplacements",
+    "alojados": "Hébergements",
+    "fichas": {
+      "ut_std": "L'emplacement de toujours : sable compacté, ombre partielle de pin d'Alep et de la place pour tente ou caravane, auvent déployé.",
+      "ut_conf": "Plus de mètres et une ombre totale. Le branchement 10 A supporte frigo et climatisation de la caravane sans hésiter.",
+      "ut_prem": "Le premier rang du camping : la mer se voit entre les troncs et la brise arrive toute seule. Ils partent en premier.",
+      "ut_moto": "Pensé pour les camping-cars : accès large, sol ferme et nivelé, branchement 10 A au pied de l'emplacement.",
+      "ut_bung4": "Bois clair, terrasse ombragée et deux chambres. Le classique pour quatre qui ne veulent rien monter.",
+      "ut_bung6": "Le grand de la famille : trois chambres, deux salles de bain et la mer depuis la terrasse. Arrivée le samedi en août.",
+      "ut_mobil": "Mobil-home tout résolu : cuisine complète, salle de bain et climatisation. Le seul hébergement où les animaux sont admis.",
+      "ut_glamp": "Toile écrue sur caillebotis, un vrai lit et une lumière chaude. Pas de climatisation, exprès : la pinède s'en charge."
+    },
+    "ficha": {
+      "capacidad": "Capacité",
+      "personas": "personnes",
+      "personasIncluidas": "{n} incluses dans le prix",
+      "superficie": "Surface",
+      "electricidad": "Électricité",
+      "sombra": "Ombre",
+      "sombraParcial": "partielle",
+      "sombraTotal": "totale",
+      "camas": "Chambres",
+      "banos": "Salles de bain",
+      "aire": "Climatisation",
+      "mascotas": "Animaux",
+      "si": "oui",
+      "no": "non",
+      "unidades": "{n} unités de ce type",
+      "tarifasTitulo": "Prix par nuit",
+      "estanciaMin": "séjour minimum {n} nuits",
+      "estanciaMin1": "sans séjour minimum",
+      "llegadaSabado": "arrivée le samedi",
+      "notaPrecios": "Prix de base par nuit avec {n} personnes incluses. Le prix final est toujours calculé lors de la recherche de dates."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Équipements — piscine, restaurant et services | Camping Cala Sereno",
+      "description": "Piscine entre les pins, restaurant de saison sous la toile, épicerie, sanitaires rénovés et accès direct à la crique. Tout à un pas d'ombre."
+    },
+    "titulo": "Équipements",
+    "intro": "Le nécessaire pour ne pas toucher la voiture de la semaine, et rien qui fasse du bruit : ici, le luxe c'est l'ombre et le sol ferme.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Piscine entre les pins",
+        "desc": "Ouverte de mai à septembre, avec zone peu profonde et transats sous la pinède. L'eau passe à l'ombre en milieu d'après-midi."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurant et bar",
+        "desc": "De saison, sous la grande toile : riz sur commande, poisson du jour et le café d'après la crique. Terrasse en sable compacté."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Épicerie",
+        "desc": "Pain et presse le matin, glace toute la journée, fruits des villages voisins. De mars à octobre."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Sanitaires",
+        "desc": "Deux blocs rénovés avec eau chaude sans horaire, cabine familiale et salle de bain accessible. Nettoyage trois fois par jour l'été."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Laverie",
+        "desc": "Machines et sèche-linge à jeton, bac pour le linge délicat et étendoir à l'ombre — la toile vous dira merci."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Aire de jeux",
+        "desc": "Jeux en bois sous les pins et une esplanade où le match de toujours s'organise chaque soir."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Padel et multisport",
+        "desc": "Piste de padel, fronton et un but qui a vu trois générations. Réservation à la réception, raquettes incluses."
+      },
+      {
+        "id": "cala",
+        "nombre": "Accès à la crique",
+        "desc": "Sentier privé de 300 m dans la pinède, douche au retour. Aucune route à traverser : les enfants y vont seuls."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Réception et wifi",
+        "desc": "Réception de 8 h à 22 h en saison, wifi dans les zones communes et sur la plupart des emplacements. Et de bons conseils, honnêtes, sur la région."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Les environs — la crique, les sentiers et les villages | Camping Cala Sereno",
+      "description": "Une crique de galets à 300 m, des sentiers au départ de la réception, des villages avec marché à dix minutes et l'arrière-pays de Castellón derrière."
+    },
+    "titulo": "Les environs",
+    "intro": "Cala Sereno existe parce que la crique existait. Tout le reste — les sentiers, les villages, les riz — était là avant nous.",
+    "secciones": [
+      {
+        "titulo": "La crique",
+        "texto": "Trois cents mètres de sentier privé dans la pinède et vous voilà sur une crique de galets à l'eau claire, orientée au levant : le soleil le matin, l'ombre de la falaise à partir de cinq heures. Surveillée en juillet et août ; le reste de l'année, elle appartient aux lève-tôt."
+      },
+      {
+        "titulo": "Sentiers",
+        "texto": "Trois sentiers balisés partent de la réception : celui de la crique (10 minutes), celui du phare par la falaise (une bonne heure, idéal au coucher du soleil) et celui qui monte à la pinède haute, où avril sent le romarin et où toute la baie se découvre."
+      },
+      {
+        "titulo": "Les villages",
+        "texto": "À dix minutes en voiture, deux villages avec marché hebdomadaire, four à bois et des bars où le casse-croûte de la matinée est une affaire sérieuse. Le mardi, grand marché : fruits du potager, huile de la coopérative et le stand de pickles qui nous a conquis."
+      },
+      {
+        "titulo": "Manger",
+        "texto": "La région est celle du riz crémeux et du poisson de la criée. Demandez à la réception : nous avons la courte liste des endroits où nous mangeons nous-mêmes, avec téléphone et prénom. En saison, appelez la veille."
+      }
+    ],
+    "distancias": {
+      "titulo": "À portée",
+      "items": [
+        { "lugar": "La crique", "valor": "300 m à pied" },
+        { "lugar": "Premier village avec marché", "valor": "10 min en voiture" },
+        { "lugar": "Pharmacie et centre de santé", "valor": "12 min en voiture" },
+        { "lugar": "Gare ferroviaire", "valor": "20 min en voiture" },
+        { "lugar": "Aéroport de Castellón", "valor": "35 min en voiture" },
+        { "lugar": "Peñíscola et son château", "valor": "30 min en voiture" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifs par saison | Camping Cala Sereno",
+      "description": "Prix par nuit des emplacements, bungalows et glamping en saison d'ouverture, moyenne et haute. Suppléments, extras et taxe de séjour, sans surprises."
+    },
+    "titulo": "Tarifs",
+    "intro": "Prix par nuit, TVA incluse, selon la saison. Le prix final est toujours calculé lors de la recherche de dates — ce que montre le comptoir est ce que vous payez.",
+    "tabla": {
+      "tipo": "Hébergement",
+      "noche": "€/nuit"
+    },
+    "temporadas": {
+      "sea_apertura": "Ouverture",
+      "sea_media": "Moyenne",
+      "sea_alta": "Haute"
+    },
+    "suplementos": {
+      "titulo": "Suppléments emplacement (par nuit)",
+      "personaExtra": "Personne à partir de la {n}ᵉ",
+      "nino": "Enfant (3–12 ans)",
+      "electricidad": "Électricité",
+      "vehiculo": "Deuxième véhicule",
+      "mascota": "Animal"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": {
+        "person": "par personne",
+        "night": "par nuit",
+        "stay": "par séjour"
+      },
+      "nombres": {
+        "ext_sabanas": "Linge de lit",
+        "ext_toallas": "Serviettes",
+        "ext_limpieza": "Ménage final (hébergements)",
+        "ext_nevera": "Frigo d'emplacement",
+        "ext_parking2": "Deuxième véhicule",
+        "ext_late": "Départ tardif",
+        "ext_cuna": "Lit bébé",
+        "ext_trona": "Chaise haute",
+        "ext_bbq": "Kit barbecue",
+        "ext_wifi": "WiFi premium",
+        "ext_hielo": "Sac de glace quotidien",
+        "ext_pack": "Pack de bienvenue"
+      }
+    },
+    "condiciones": {
+      "titulo": "Bon à savoir",
+      "items": [
+        "Séjour minimum : 3 nuits en emplacement et 7 en hébergement pendant la haute saison ; 2 nuits en saison moyenne.",
+        "Les bungalows et mobil-homes arrivent le samedi pendant la haute saison.",
+        "Taxe de séjour de la Communauté valencienne en sus : calculée par personne et par nuit, mineurs exonérés.",
+        "En réservant 60 jours à l'avance : 10 % de remise. Séjours de 14 nuits ou plus : 8 % supplémentaires.",
+        "La caution des hébergements est restituée intégralement après vérification de l'unité le jour du départ."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contact et accès | Camping Cala Sereno",
+      "description": "Écrivez-nous, appelez-nous ou venez nous voir : Partida Cala Sereno s/n, Castellón, Espagne. Réponse en moins d'une journée ; en saison, plus vite."
+    },
+    "titulo": "Contact",
+    "intro": "Nous répondons vite et notre téléphone a un prénom derrière. Écrivez aujourd'hui, réponse demain — en saison, souvent le jour même.",
+    "datos": {
+      "titulo": "Où nous sommes",
+      "direccion": "Adresse",
+      "telefono": "Téléphone",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Réception",
+      "texto": "De 8 h à 22 h en saison (mars–octobre). Arrivées à partir de 13 h en emplacement et de 16 h en hébergement ; départs avant 12 h."
+    },
+    "llegar": {
+      "titulo": "Comment venir",
+      "texto": "Sortie 43 de l'AP-7, puis huit minutes de route locale en suivant les panneaux du phare. En train, gare à 20 minutes : prévenez-nous et nous coordonnons un taxi. La bifurcation du camping est signalée — si le GPS hésite, fiez-vous au panneau marron."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Le carnet du camping | Camping Cala Sereno",
+      "description": "Notes de saison écrites depuis la réception : la crique, les sentiers, les marchés et la vie sous les pins."
+    },
+    "titulo": "Carnet",
+    "intro": "Notes de saison écrites depuis la réception. Sans algorithme : ce qu'on vous raconterait au comptoir s'il y avait le temps.",
+    "leerMas": "Lire",
+    "volver": "Toutes les notes",
+    "vacio": "Des notes dans cette langue arrivent bientôt. Pour l'instant, elles sont en espagnol."
+  },
+  "noEncontrada": {
+    "titulo": "Cette page est partie à la crique",
+    "texto": "L'adresse n'existe pas ou a changé de place. L'essentiel reste où il a toujours été : les dates, les pins et le comptoir.",
+    "cta": "Retour à l'accueil"
+  }
+}

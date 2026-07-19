@@ -1,0 +1,342 @@
+{
+  "seo": {
+    "title": "Camping Cala Sereno — unter Pinien schlafen, 300 m von der Bucht",
+    "description": "Familiencampingplatz an der Küste von Castellón, Spanien. Stellplätze im Schatten hundertjähriger Pinien, Bungalows und Glamping. Geöffnet März bis Oktober."
+  },
+  "nav": {
+    "alojamientos": "Unterkünfte",
+    "instalaciones": "Einrichtungen",
+    "entorno": "Die Umgebung",
+    "tarifas": "Preise",
+    "blog": "Notizbuch",
+    "contacto": "Kontakt",
+    "menu": "Menü",
+    "idioma": "Sprache"
+  },
+  "hero3": {
+    "titulo": "Unter Pinien schlafen, 300 m von der Bucht.",
+    "prueba": "83 Stellplätze und Unterkünfte · geöffnet März–Oktober · Familien seit 1974"
+  },
+  "hero1": {
+    "titulo": "Der Urlaub, der jedes Jahr von allein wiederkommt.",
+    "cta": "Schreiben Sie uns"
+  },
+  "ticker": [
+    "80 Stellplätze unter Pinien",
+    "die Bucht 300 m entfernt",
+    "Familien seit 1974",
+    "Hunde willkommen",
+    "geöffnet März – Oktober"
+  ],
+  "mostrador": {
+    "llegada": "Anreise",
+    "salida": "Abreise",
+    "huespedes": "Gäste",
+    "adultos": "Erwachsene",
+    "ninos": "Kinder",
+    "adulto": "Erwachsener",
+    "nino": "Kind",
+    "buscar": "Verfügbarkeit prüfen",
+    "buscando": "Suche…",
+    "desde": "ab",
+    "porEstancia": "pro Aufenthalt",
+    "unidadesLibres": "frei",
+    "quedanPocas": "nur noch wenige",
+    "agotado": "Keine Verfügbarkeit an diesen Daten",
+    "cerrado": "An diesen Daten geschlossen",
+    "cerradoEl": "An diesen Daten geschlossen — wir öffnen am {fecha}",
+    "noEntra": "Für diese Gruppe nicht verfügbar",
+    "error": "Verfügbarkeit konnte nicht geprüft werden. Bitte erneut versuchen.",
+    "fechasInvalidas": "Daten prüfen: Die Abreise muss nach der Anreise liegen.",
+    "reservar": "Buchen"
+  },
+  "tipos": {
+    "titulo": "Arten zu bleiben",
+    "subtitulo": "Gebucht wird der Typ; den genauen Stellplatz weisen wir zu, wie es immer gemacht wurde.",
+    "verTodo": "Alle Unterkünfte ansehen",
+    "nombres": {
+      "ut_std": "Standard-Stellplatz",
+      "ut_conf": "Komfort-Stellplatz",
+      "ut_prem": "Premium-Stellplatz Meer",
+      "ut_moto": "Wohnmobil-Stellplatz",
+      "ut_bung4": "Bungalow 4",
+      "ut_bung6": "Bungalow 6 Meerblick",
+      "ut_mobil": "Mobilheim",
+      "ut_glamp": "Glamping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Stellplätze",
+        "desc": "Verdichteter Sand, Schatten der Aleppo-Kiefer und Ihre eigene Plane. 70 bis 120 m², Strom von 6 bis 16 A.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalows und Mobilheime",
+        "desc": "Holz, Veranda und Klimaanlage. Für 4 oder 6, die Bucht einen kurzen Spaziergang entfernt.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glamping",
+        "desc": "Rohes Segeltuch, ein echtes Bett und das Meer zwischen den Stämmen. Ohne überflüssige Steckdosen.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Zuerst die Bucht, dann der Campingplatz",
+    "texto": "Cala Sereno gibt es, weil es die Bucht schon gab: 300 Meter Pinienwald trennen sie von den Stellplätzen. Das Hinterland von Castellón im Rücken, Wanderwege direkt ab der Rezeption und Dörfer mit Markt in zehn Minuten."
+  },
+  "form": {
+    "titulo": "Schreiben Sie uns",
+    "subtitulo": "Wir antworten in weniger als einem Tag. In der Saison schneller.",
+    "nombre": "Name",
+    "email": "E-Mail",
+    "fechas": "Ungefähre Daten (optional)",
+    "mensaje": "Was brauchen Sie?",
+    "enviar": "Anfrage senden",
+    "enviando": "Wird gesendet…",
+    "ok": "Angekommen. Wir melden uns sehr bald.",
+    "error": "Senden fehlgeschlagen. Versuchen Sie es erneut oder rufen Sie uns an."
+  },
+  "footer": {
+    "aviso": "Familiencampingplatz an der Küste von Castellón",
+    "legal": "Impressum",
+    "privacidad": "Datenschutz"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Unterkünfte — Stellplätze, Bungalows und Glamping | Camping Cala Sereno",
+      "description": "Acht Arten, unter Pinien zu bleiben: Stellplätze von 70 bis 100 m², Bungalows mit Veranda, Mobilheime und Glampingzelte. Preise und technische Daten."
+    },
+    "titulo": "Unterkünfte",
+    "intro": "Acht Arten, unter Pinien zu schlafen. Gebucht wird der Typ; die genaue Einheit weisen wir bei der Ankunft zu, wie es immer gemacht wurde.",
+    "desdeNoche": "ab {precio}/Nacht",
+    "verFicha": "Details ansehen",
+    "consultar": "Verfügbarkeit prüfen",
+    "volver": "Alle Unterkünfte",
+    "parcelas": "Stellplätze",
+    "alojados": "Unterkünfte",
+    "fichas": {
+      "ut_std": "Der klassische Stellplatz: verdichteter Sand, Halbschatten der Aleppo-Kiefer und Platz für Zelt oder Wohnwagen mit ausgefahrener Markise.",
+      "ut_conf": "Mehr Quadratmeter und voller Schatten. Der 10-A-Anschluss schafft Kühlschrank und Klimaanlage des Wohnwagens ohne Zögern.",
+      "ut_prem": "Die erste Reihe des Platzes: Das Meer zeigt sich zwischen den Stämmen, die Brise kommt von allein. Sie sind zuerst weg.",
+      "ut_moto": "Für Wohnmobile gedacht: breite Zufahrt, fester ebener Boden und 10-A-Anschluss direkt am Platz.",
+      "ut_bung4": "Helles Holz, schattige Veranda und zwei Schlafzimmer. Der Klassiker für vier, die nichts aufbauen wollen.",
+      "ut_bung6": "Das Flaggschiff der Familie: drei Schlafzimmer, zwei Bäder und das Meer von der Veranda. Anreise samstags im August.",
+      "ut_mobil": "Mobilheim mit allem gelöst: komplette Küche, Bad und Klimaanlage. Die einzige Unterkunft, in der Haustiere willkommen sind.",
+      "ut_glamp": "Rohes Segeltuch auf Holzdeck, ein echtes Bett und warmes Licht. Absichtlich ohne Klimaanlage: Das erledigt der Pinienwald."
+    },
+    "ficha": {
+      "capacidad": "Kapazität",
+      "personas": "Personen",
+      "personasIncluidas": "{n} im Preis inbegriffen",
+      "superficie": "Fläche",
+      "electricidad": "Strom",
+      "sombra": "Schatten",
+      "sombraParcial": "teilweise",
+      "sombraTotal": "voll",
+      "camas": "Schlafzimmer",
+      "banos": "Bäder",
+      "aire": "Klimaanlage",
+      "mascotas": "Haustiere",
+      "si": "ja",
+      "no": "nein",
+      "unidades": "{n} Einheiten dieses Typs",
+      "tarifasTitulo": "Preis pro Nacht",
+      "estanciaMin": "Mindestaufenthalt {n} Nächte",
+      "estanciaMin1": "kein Mindestaufenthalt",
+      "llegadaSabado": "Anreise samstags",
+      "notaPrecios": "Grundpreis pro Nacht mit {n} inbegriffenen Personen. Der Endpreis wird immer bei der Datumssuche berechnet."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Einrichtungen — Pool, Restaurant und Services | Camping Cala Sereno",
+      "description": "Pool zwischen Pinien, Saisonrestaurant unter Segeltuch, Laden, renovierte Sanitäranlagen und direkter Zugang zur Bucht. Alles einen schattigen Spaziergang entfernt."
+    },
+    "titulo": "Einrichtungen",
+    "intro": "Alles Nötige, um das Auto die ganze Woche stehen zu lassen — und nichts, das Lärm macht: Luxus heißt hier Schatten und fester Boden.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Pool zwischen Pinien",
+        "desc": "Geöffnet Mai bis September, mit Flachbereich und Liegen unter den Pinien. Ab dem Nachmittag liegt das Wasser im Schatten."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurant und Bar",
+        "desc": "Saisonal, unter dem großen Segeltuch: Reisgerichte auf Bestellung, Fisch des Tages und der Kaffee nach der Bucht. Terrasse auf verdichtetem Sand."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Laden",
+        "desc": "Brot und Zeitungen am Morgen, Eis den ganzen Tag, Obst aus den Nachbardörfern. März bis Oktober."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Sanitäranlagen",
+        "desc": "Zwei renovierte Blöcke mit Warmwasser rund um die Uhr, Familienkabine und barrierefreiem Bad. Im Sommer dreimal täglich gereinigt."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Waschküche",
+        "desc": "Waschmaschinen und Trockner mit Münze, Becken für Empfindliches und Wäscheleine im Schatten — die Plane dankt es."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Spielplatz",
+        "desc": "Holzspielplatz unter den Pinien und ein freier Platz, auf dem sich jeden Abend das übliche Spiel organisiert."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Padel und Multisport",
+        "desc": "Padelplatz, Frontonwand und ein Tor, das drei Generationen gesehen hat. Reservierung an der Rezeption, Schläger inklusive."
+      },
+      {
+        "id": "cala",
+        "nombre": "Zugang zur Bucht",
+        "desc": "Eigener 300-m-Pfad durch den Pinienwald, mit Dusche auf dem Rückweg. Keine Straße zu überqueren: Die Kinder gehen allein."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Rezeption und WLAN",
+        "desc": "Rezeption von 8 bis 22 Uhr in der Saison, WLAN in den Gemeinschaftsbereichen und auf den meisten Stellplätzen. Dazu ehrlicher Rat aus der Gegend."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Die Umgebung — Bucht, Wege und Dörfer | Camping Cala Sereno",
+      "description": "Eine Kieselbucht 300 m entfernt, Wanderwege ab der Rezeption, Marktdörfer in zehn Minuten und das Hinterland von Castellón dahinter."
+    },
+    "titulo": "Die Umgebung",
+    "intro": "Cala Sereno gibt es, weil es die Bucht schon gab. Alles andere — die Wege, die Dörfer, die Reisgerichte — war vor uns da.",
+    "secciones": [
+      {
+        "titulo": "Die Bucht",
+        "texto": "Dreihundert Meter eigener Pfad durch den Pinienwald, und Sie stehen an einer Kieselbucht mit klarem Wasser, nach Osten ausgerichtet: morgens Sonne, ab fünf Uhr der Schatten der Steilküste. Im Juli und August mit Rettungsschwimmer; den Rest des Jahres gehört sie den Frühaufstehern."
+      },
+      {
+        "titulo": "Wanderwege",
+        "texto": "Von der Rezeption starten drei markierte Wege: der zur Bucht (10 Minuten), der zum Leuchtturm über die Steilküste (eine gute Stunde, am schönsten zum Sonnenuntergang) und der Aufstieg zum hohen Pinienhain, wo der April nach Rosmarin duftet und sich die ganze Bucht öffnet."
+      },
+      {
+        "titulo": "Die Dörfer",
+        "texto": "Zehn Autominuten entfernt liegen zwei Dörfer mit Wochenmarkt, Holzofenbäckerei und Bars, in denen das Vormittags-Almuerzo ernst genommen wird. Dienstags großer Markt: Obst aus den Gärten, Öl der Kooperative und der Stand mit Eingelegtem, der uns erobert hat."
+      },
+      {
+        "titulo": "Essen",
+        "texto": "Die Gegend steht für cremigen Reis und Fisch aus der Auktionshalle. Fragen Sie an der Rezeption: Wir führen die kurze Liste der Orte, an denen wir selbst essen, mit Telefonnummer und Vornamen. In der Saison am Vortag anrufen."
+      }
+    ],
+    "distancias": {
+      "titulo": "In Reichweite",
+      "items": [
+        { "lugar": "Die Bucht", "valor": "300 m zu Fuß" },
+        { "lugar": "Nächstes Dorf mit Markt", "valor": "10 Min. mit dem Auto" },
+        { "lugar": "Apotheke und Gesundheitszentrum", "valor": "12 Min. mit dem Auto" },
+        { "lugar": "Bahnhof", "valor": "20 Min. mit dem Auto" },
+        { "lugar": "Flughafen Castellón", "valor": "35 Min. mit dem Auto" },
+        { "lugar": "Peñíscola und seine Burg", "valor": "30 Min. mit dem Auto" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Preise nach Saison | Camping Cala Sereno",
+      "description": "Nachtpreise für Stellplätze, Bungalows und Glamping in Eröffnungs-, Mittel- und Hochsaison. Zuschläge, Extras und Kurtaxe, ohne Überraschungen."
+    },
+    "titulo": "Preise",
+    "intro": "Preis pro Nacht, inkl. MwSt., je nach Saison. Der Endpreis wird immer bei der Datumssuche berechnet — was der Schalter zeigt, ist, was Sie zahlen.",
+    "tabla": {
+      "tipo": "Unterkunft",
+      "noche": "€/Nacht"
+    },
+    "temporadas": {
+      "sea_apertura": "Eröffnung",
+      "sea_media": "Mittel",
+      "sea_alta": "Hoch"
+    },
+    "suplementos": {
+      "titulo": "Stellplatz-Zuschläge (pro Nacht)",
+      "personaExtra": "Person ab der {n}.",
+      "nino": "Kind (3–12 Jahre)",
+      "electricidad": "Strom",
+      "vehiculo": "Zweites Fahrzeug",
+      "mascota": "Haustier"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": {
+        "person": "pro Person",
+        "night": "pro Nacht",
+        "stay": "pro Aufenthalt"
+      },
+      "nombres": {
+        "ext_sabanas": "Bettwäsche",
+        "ext_toallas": "Handtücher",
+        "ext_limpieza": "Endreinigung (Unterkünfte)",
+        "ext_nevera": "Stellplatz-Kühlschrank",
+        "ext_parking2": "Zweites Fahrzeug",
+        "ext_late": "Später Check-out",
+        "ext_cuna": "Babybett",
+        "ext_trona": "Hochstuhl",
+        "ext_bbq": "Grill-Set",
+        "ext_wifi": "Premium-WLAN",
+        "ext_hielo": "Tägliche Eistüte",
+        "ext_pack": "Willkommenspaket"
+      }
+    },
+    "condiciones": {
+      "titulo": "Gut zu wissen",
+      "items": [
+        "Mindestaufenthalt: 3 Nächte auf Stellplätzen und 7 in Unterkünften während der Hochsaison; 2 Nächte in der Mittelsaison.",
+        "Bungalows und Mobilheime reisen in der Hochsaison samstags an.",
+        "Die valencianische Kurtaxe kommt hinzu: pro Person und Nacht, Minderjährige befreit.",
+        "Bei Buchung 60 Tage im Voraus: 10 % Rabatt. Aufenthalte ab 14 Nächten: zusätzlich 8 %.",
+        "Die Kaution der Unterkünfte wird nach Prüfung der Einheit am Abreisetag vollständig zurückerstattet."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Kontakt und Anfahrt | Camping Cala Sereno",
+      "description": "Schreiben Sie uns, rufen Sie an oder kommen Sie vorbei: Partida Cala Sereno s/n, Castellón, Spanien. Antwort in weniger als einem Tag; in der Saison schneller."
+    },
+    "titulo": "Kontakt",
+    "intro": "Wir antworten schnell, und hinter unserem Telefon steht ein Name. Schreiben Sie heute, morgen haben Sie Antwort — in der Saison meist noch am selben Tag.",
+    "datos": {
+      "titulo": "Wo wir sind",
+      "direccion": "Adresse",
+      "telefono": "Telefon",
+      "email": "E-Mail"
+    },
+    "horario": {
+      "titulo": "Rezeption",
+      "texto": "8:00 bis 22:00 Uhr in der Saison (März–Oktober). Anreise ab 13:00 Uhr auf Stellplätzen und ab 16:00 Uhr in Unterkünften; Abreise vor 12:00 Uhr."
+    },
+    "llegar": {
+      "titulo": "Anfahrt",
+      "texto": "Ausfahrt 43 der AP-7, dann acht Minuten Landstraße den Leuchtturmschildern folgend. Mit dem Zug: Bahnhof in 20 Minuten — sagen Sie Bescheid, wir organisieren ein Taxi. Die Abzweigung zum Campingplatz ist ausgeschildert; wenn das Navi zögert, gilt das braune Schild."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Das Notizbuch des Campingplatzes | Camping Cala Sereno",
+      "description": "Saisonnotizen von der Rezeption: die Bucht, die Wege, die Märkte und das Leben unter den Pinien."
+    },
+    "titulo": "Notizbuch",
+    "intro": "Saisonnotizen, geschrieben an der Rezeption. Ohne Algorithmus: was wir am Schalter erzählen würden, wenn Zeit wäre.",
+    "leerMas": "Lesen",
+    "volver": "Alle Notizen",
+    "vacio": "Notizen in dieser Sprache kommen bald. Bis dahin gibt es sie auf Spanisch."
+  },
+  "noEncontrada": {
+    "titulo": "Diese Seite ist zur Bucht gegangen",
+    "texto": "Die Adresse existiert nicht oder ist umgezogen. Das Wichtige ist, wo es immer war: die Daten, die Pinien und der Schalter.",
+    "cta": "Zurück zum Anfang"
+  }
+}

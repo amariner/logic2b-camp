@@ -5,7 +5,7 @@ export const config: TenantWebConfig = {
   slug: 'demo',
   name: 'Camping Cala Sereno',
   tier: 3,
-  locales: ['es', 'en'],
+  locales: ['es', 'ca', 'en', 'fr', 'de', 'nl'],
   defaultLocale: 'es',
   domain: 'https://camp.logic2b.com',
   contact: {

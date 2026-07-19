@@ -1,0 +1,11 @@
+---
+import BlogPost from '../../../components/paginas/BlogPost.astro';
+import { extraLocales, postSlugs } from '../../../lib/content';
+
+export function getStaticPaths() {
+  return extraLocales.flatMap((lang) => postSlugs.map((slug) => ({ params: { lang, slug } })));
+}
+const { lang, slug } = Astro.params;
+---
+
+<BlogPost locale={lang!} slug={slug!} />

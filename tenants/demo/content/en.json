@@ -1,17 +1,21 @@
 {
   "seo": {
     "title": "Camping Cala Sereno — sleep under the pines, 300 m from the cove",
-    "description": "Family campsite on the Castellón coast. Pitches shaded by century-old pines, bungalows and glamping. Open March to October."
+    "description": "Family campsite on the Castellón coast, Spain. Pitches in the shade of century-old pines, bungalows and glamping. Open March to October."
   },
   "nav": {
-    "alojamientos": "Stay",
+    "alojamientos": "Accommodation",
+    "instalaciones": "Facilities",
     "entorno": "The area",
     "tarifas": "Rates",
-    "contacto": "Contact"
+    "blog": "Notebook",
+    "contacto": "Contact",
+    "menu": "Menu",
+    "idioma": "Language"
   },
   "hero3": {
     "titulo": "Sleep under the pines, 300 m from the cove.",
-    "prueba": "83 pitches & lodgings · open March–October · families since 1974"
+    "prueba": "83 pitches and lodgings · open March–October · families since 1974"
   },
   "hero1": {
     "titulo": "The holidays that come back on their own, every year.",
@@ -25,8 +29,8 @@
     "open March – October"
   ],
   "mostrador": {
-    "llegada": "Check-in",
-    "salida": "Check-out",
+    "llegada": "Arrival",
+    "salida": "Departure",
     "huespedes": "Guests",
     "adultos": "adults",
     "ninos": "children",
@@ -36,25 +40,27 @@
     "buscando": "Searching…",
     "desde": "from",
     "porEstancia": "per stay",
-    "unidadesLibres": "left",
+    "unidadesLibres": "available",
     "quedanPocas": "only a few left",
     "agotado": "No availability on those dates",
-    "cerrado": "Closed on those dates — we open on 15 March",
+    "cerrado": "Closed on those dates",
+    "cerradoEl": "Closed on those dates — we open on {fecha}",
     "noEntra": "Not available for that group",
     "error": "We couldn't check availability. Please try again.",
-    "fechasInvalidas": "Check the dates: check-out must be after check-in.",
+    "fechasInvalidas": "Check the dates: departure must be after arrival.",
     "reservar": "Book"
   },
   "tipos": {
     "titulo": "Ways to stay",
     "subtitulo": "You book the type; we assign the exact pitch, the way it's always been done.",
+    "verTodo": "See all accommodation",
     "nombres": {
       "ut_std": "Standard Pitch",
       "ut_conf": "Comfort Pitch",
-      "ut_prem": "Premium Pitch",
-      "ut_moto": "Moto Pitch",
+      "ut_prem": "Premium Sea Pitch",
+      "ut_moto": "Motorhome Pitch",
       "ut_bung4": "Bungalow 4",
-      "ut_bung6": "Bungalow 6",
+      "ut_bung6": "Sea View Bungalow 6",
       "ut_mobil": "Mobile home",
       "ut_glamp": "Glamping"
     },
@@ -62,26 +68,26 @@
       {
         "id": "parcelas",
         "nombre": "Pitches",
-        "desc": "Compacted sand, Aleppo pine shade and your canvas. From 70 to 120 m², with 6 to 16 A hook-ups.",
+        "desc": "Compacted sand, Aleppo pine shade and your own canvas. From 70 to 120 m², with 6 to 16 A electricity.",
         "foto": "tipo-parcela"
       },
       {
         "id": "bungalows",
         "nombre": "Bungalows & mobile homes",
-        "desc": "Wood, porch and air-con. For 4 or 6, the cove a short stroll away.",
+        "desc": "Wood, a porch and air conditioning. For 4 or 6, with the cove a short walk away.",
         "foto": "tipo-bungalow"
       },
       {
         "id": "glamping",
         "nombre": "Glamping",
-        "desc": "Raw canvas, a real bed and the sea between the trunks. No spare sockets.",
+        "desc": "Raw canvas, a real bed and the sea between the trunks. No unnecessary plugs.",
         "foto": "tipo-glamping"
       }
     ]
   },
   "entorno": {
     "titulo": "The cove first, the campsite second",
-    "texto": "Cala Sereno exists because the cove existed first: 300 metres of pine forest separate it from the pitches. Inland Castellón at your back, trails that start at reception and market towns ten minutes away."
+    "texto": "Cala Sereno exists because the cove existed first: 300 metres of pine wood separate it from the pitches. Inland Castellón at your back, trails that start on foot from reception, and market towns ten minutes away."
   },
   "form": {
     "titulo": "Write to us",
@@ -99,5 +105,238 @@
     "aviso": "Family campsite on the Castellón coast",
     "legal": "Legal notice",
     "privacidad": "Privacy"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Accommodation — pitches, bungalows & glamping | Camping Cala Sereno",
+      "description": "Eight ways to stay under the pines: 70–100 m² pitches, bungalows with a porch, mobile homes and glamping tents. Prices and full details."
+    },
+    "titulo": "Accommodation",
+    "intro": "Eight ways to sleep under the pines. You book the type; we assign the exact unit when you arrive, the way it's always been done.",
+    "desdeNoche": "from {precio}/night",
+    "verFicha": "See details",
+    "consultar": "Check availability",
+    "volver": "All accommodation",
+    "parcelas": "Pitches",
+    "alojados": "Lodgings",
+    "fichas": {
+      "ut_std": "The classic pitch: compacted sand, partial Aleppo pine shade and room for a tent or caravan with the awning out.",
+      "ut_conf": "More square metres and full shade. The 10 A hook-up runs the fridge and the caravan's air-con without a second thought.",
+      "ut_prem": "The campsite's front row: the sea shows between the trunks and the breeze arrives on its own. These go first.",
+      "ut_moto": "Made for motorhomes: wide access, firm level ground and a 10 A hook-up right on the pitch.",
+      "ut_bung4": "Light wood, a shaded porch and two bedrooms. The classic for four who don't want to pitch anything.",
+      "ut_bung6": "The family flagship: three bedrooms, two bathrooms and the sea from the porch. Saturday arrivals in August.",
+      "ut_mobil": "A mobile home with everything solved: full kitchen, bathroom and air-con. The only lodging where pets are welcome.",
+      "ut_glamp": "Raw canvas on a deck, a real bed and warm light. No air conditioning on purpose: the pine wood does the job."
+    },
+    "ficha": {
+      "capacidad": "Capacity",
+      "personas": "people",
+      "personasIncluidas": "{n} included in the price",
+      "superficie": "Surface",
+      "electricidad": "Electricity",
+      "sombra": "Shade",
+      "sombraParcial": "partial",
+      "sombraTotal": "full",
+      "camas": "Bedrooms",
+      "banos": "Bathrooms",
+      "aire": "Air conditioning",
+      "mascotas": "Pets",
+      "si": "yes",
+      "no": "no",
+      "unidades": "{n} units of this type",
+      "tarifasTitulo": "Price per night",
+      "estanciaMin": "minimum stay {n} nights",
+      "estanciaMin1": "no minimum stay",
+      "llegadaSabado": "Saturday arrival",
+      "notaPrecios": "Base price per night with {n} people included. The final price is always calculated when you search for dates."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Facilities — pool, restaurant & services | Camping Cala Sereno",
+      "description": "A pool among the pines, a seasonal restaurant under canvas, a shop, renovated washrooms and direct access to the cove. All a shady stroll apart."
+    },
+    "titulo": "Facilities",
+    "intro": "Everything you need to leave the car parked all week, and nothing noisy: the luxury here is shade and firm ground.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Pool among the pines",
+        "desc": "Open May to September, with a shallow end and loungers under the pine canopy. The water falls into shade by mid-afternoon."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurant & bar",
+        "desc": "Seasonal, under the big canvas: rice dishes to order, fish of the day and the coffee after the cove. Terrace on compacted sand."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Shop",
+        "desc": "Bread and papers in the morning, ice all day, fruit from the villages next door. March to October."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Washrooms",
+        "desc": "Two renovated blocks with hot water at all hours, a family cabin and an accessible bathroom. Cleaned three times a day in summer."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Laundry",
+        "desc": "Token washers and dryers, a sink for delicates and a clothesline in the shade — your canvas will thank you."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Playground",
+        "desc": "A wooden playground under the pines and an open field where the usual match gets organised every evening."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Padel & sports",
+        "desc": "A padel court, a fronton wall and a goal that has seen three generations. Book at reception, rackets included."
+      },
+      {
+        "id": "cala",
+        "nombre": "Access to the cove",
+        "desc": "Our own 300 m path through the pine wood, with a shower on the way back. No roads to cross: kids go on their own."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Reception & wifi",
+        "desc": "Reception open 8 to 22 in season, wifi in common areas and most pitches. Plus honest local advice."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "The area — the cove, the trails and the towns | Camping Cala Sereno",
+      "description": "A pebble cove 300 m away, trails starting at reception, market towns ten minutes away and inland Castellón behind."
+    },
+    "titulo": "The area",
+    "intro": "Cala Sereno exists because the cove existed first. Everything else — the trails, the towns, the rice dishes — was here before us.",
+    "secciones": [
+      {
+        "titulo": "The cove",
+        "texto": "Three hundred metres of our own path through the pine wood and you're on a pebble cove with clear water, facing east: sun in the morning, cliff shade from five o'clock. There's a lifeguard in July and August; the rest of the year it belongs to early risers."
+      },
+      {
+        "titulo": "Trails",
+        "texto": "Three marked trails leave from reception: the cove path (10 minutes), the lighthouse path along the cliff (a good hour, best at sunset) and the climb to the high pine wood, where April smells of rosemary and the whole bay opens up."
+      },
+      {
+        "titulo": "The towns",
+        "texto": "Ten minutes by car there are two towns with a weekly market, a wood-fired bakery and bars where the mid-morning almuerzo is serious business. Tuesday is the big market: orchard fruit, cooperative olive oil and the pickle stall that has us conquered."
+      },
+      {
+        "titulo": "Eating",
+        "texto": "This is a land of soupy rice and fish straight from the market. Ask at reception: we keep a short list of the places where we eat ourselves, with phone numbers and first names. In season, call the day before."
+      }
+    ],
+    "distancias": {
+      "titulo": "Close by",
+      "items": [
+        { "lugar": "The cove", "valor": "300 m on foot" },
+        { "lugar": "Nearest market town", "valor": "10 min by car" },
+        { "lugar": "Pharmacy & health centre", "valor": "12 min by car" },
+        { "lugar": "Train station", "valor": "20 min by car" },
+        { "lugar": "Castellón airport", "valor": "35 min by car" },
+        { "lugar": "Peñíscola and its castle", "valor": "30 min by car" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Rates by season | Camping Cala Sereno",
+      "description": "Nightly prices for pitches, bungalows and glamping in opening, mid and high season. Supplements, extras and tourist tax, no surprises."
+    },
+    "titulo": "Rates",
+    "intro": "Price per night, VAT included, by season. The final price is always calculated when you search for dates — what the front desk shows is what you pay.",
+    "tabla": {
+      "tipo": "Accommodation",
+      "noche": "€/night"
+    },
+    "temporadas": {
+      "sea_apertura": "Opening",
+      "sea_media": "Mid",
+      "sea_alta": "High"
+    },
+    "suplementos": {
+      "titulo": "Pitch supplements (per night)",
+      "personaExtra": "Person from the {n}th",
+      "nino": "Child (3–12 years)",
+      "electricidad": "Electricity",
+      "vehiculo": "Second vehicle",
+      "mascota": "Pet"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": {
+        "person": "per person",
+        "night": "per night",
+        "stay": "per stay"
+      },
+      "nombres": {
+        "ext_sabanas": "Bed linen",
+        "ext_toallas": "Towels",
+        "ext_limpieza": "Final cleaning (lodgings)",
+        "ext_nevera": "Pitch fridge",
+        "ext_parking2": "Second vehicle",
+        "ext_late": "Late checkout",
+        "ext_cuna": "Baby cot",
+        "ext_trona": "High chair",
+        "ext_bbq": "BBQ kit",
+        "ext_wifi": "Premium WiFi",
+        "ext_hielo": "Daily ice bag",
+        "ext_pack": "Welcome pack"
+      }
+    },
+    "condiciones": {
+      "titulo": "Good to know",
+      "items": [
+        "Minimum stay: 3 nights on pitches and 7 in lodgings during high season; 2 nights in mid season.",
+        "Bungalows and mobile homes check in on Saturdays during high season.",
+        "The Valencian tourist tax is charged separately: per person per night, with children exempt.",
+        "Book 60 days ahead for a 10% discount. Stays of 14 nights or more: an extra 8%.",
+        "Lodging deposits are returned in full after the unit is checked on departure day."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contact & how to get here | Camping Cala Sereno",
+      "description": "Write, call or come and see us: Partida Cala Sereno s/n, Castellón, Spain. We reply within a day; in season, sooner."
+    },
+    "titulo": "Contact",
+    "intro": "We answer fast and our phone has a name behind it. Write today and you'll hear back tomorrow — in season, usually the same day.",
+    "datos": {
+      "titulo": "Where we are",
+      "direccion": "Address",
+      "telefono": "Phone",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Reception",
+      "texto": "8:00 to 22:00 in season (March–October). Arrivals from 13:00 on pitches and 16:00 in lodgings; departures before 12:00."
+    },
+    "llegar": {
+      "titulo": "How to get here",
+      "texto": "Exit 43 off the AP-7, then eight minutes on the local road following the lighthouse signs. By train, the station is 20 minutes away: let us know and we'll arrange a taxi. The campsite turn-off is signposted — if the sat-nav hesitates, trust the brown sign."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "The campsite notebook | Camping Cala Sereno",
+      "description": "Season notes written from reception: the cove, the trails, the markets and life under the pines."
+    },
+    "titulo": "Notebook",
+    "intro": "Season notes written from reception. No algorithm: what we'd tell you at the front desk if there were time.",
+    "leerMas": "Read",
+    "volver": "All notes",
+    "vacio": "Notes in this language are coming soon. For now, they're in Spanish."
+  },
+  "noEncontrada": {
+    "titulo": "This page went down to the cove",
+    "texto": "That address doesn't exist or has moved. The important things are where they've always been: the dates, the pines and the front desk.",
+    "cta": "Back to the start"
   }
 }

@@ -1,6 +1,8 @@
 ---
+import { getImage, Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { getContent, media, mode } from '../lib/content';
+import { getContent, images, localePath, mode } from '../lib/content';
+import EnquiryForm from './EnquiryForm.astro';
 
 interface Props {
   locale: string;
@@ -11,15 +13,36 @@ const c = getContent(locale);
 const instant = mode === 'instant';
 // regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle no lo arrastra
 const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default : null;
+
+// héroe = LCP: srcset webp + preload en <head> (Lighthouse ≥95)
+const heroSrc = instant ? images['hero-dia']! : images['hero-anochecer']!;
+const hero = await getImage({
+  src: heroSrc,
+  widths: [828, 1280, 1920, 2560],
+  format: 'webp',
+});
+const lona = await getImage({ src: images['textura-lona']!, width: 1600, format: 'webp' });
 ---
 
 <Base locale={locale} path="/">
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    imagesrcset={hero.srcSet.attribute}
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
   {/* héroe nivel 3: el mostrador ES el héroe · héroe nivel 1: la promesa + una acción */}
   {instant ? (
     <section class="relative">
       <div class="relative h-[82svh] min-h-130 overflow-hidden">
         <img
-          src={media['hero-dia']}
+          src={hero.src}
+          srcset={hero.srcSet.attribute}
+          sizes="100vw"
+          width={heroSrc.width}
+          height={heroSrc.height}
           alt=""
           class="lc-settle absolute inset-0 h-full w-full object-cover"
           fetchpriority="high"
@@ -33,7 +56,7 @@ const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default 
       </div>
 
       {/* el mostrador, solapado sobre la foto y sticky después */}
-      <div class="sticky top-14 z-40 mx-auto -mt-16 max-w-5xl px-5 md:px-8">
+      <div id="mostrador" class="sticky top-14 z-40 mx-auto -mt-16 max-w-5xl scroll-mt-20 px-5 md:px-8">
         {HeroMostrador && <HeroMostrador labels={c.mostrador} typeNames={c.tipos.nombres} locale={locale} />}
       </div>
       <p class="mx-auto mt-5 max-w-5xl px-5 text-[13px] text-tinta-suave md:px-8">{c.hero3.prueba}</p>
@@ -42,7 +65,11 @@ const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default 
     <section class="relative">
       <div class="relative h-[88svh] min-h-130 overflow-hidden">
         <img
-          src={media['hero-anochecer']}
+          src={hero.src}
+          srcset={hero.srcSet.attribute}
+          sizes="100vw"
+          width={heroSrc.width}
+          height={heroSrc.height}
           alt=""
           class="lc-settle absolute inset-0 h-full w-full object-cover"
           fetchpriority="high"
@@ -79,11 +106,15 @@ const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default 
     </div>
     <div class="grid gap-8 md:grid-cols-3">
       {c.tipos.cards.map((card) => (
-        <article class="group flex flex-col gap-4">
+        <a href={localePath(locale, '/alojamientos')} class="group flex flex-col gap-4">
           <div class="overflow-hidden rounded-(--lc-radius-lg)">
-            <img
-              src={media[card.foto]}
+            <Picture
+              src={images[card.foto]!}
               alt={card.nombre}
+              widths={[400, 800, 1200]}
+              sizes="(min-width: 768px) 33vw, 100vw"
+              formats={['avif', 'webp']}
+            fallbackFormat="webp"
               loading="lazy"
               class="aspect-3/2 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
@@ -92,24 +123,36 @@ const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default 
             <h3 class="font-display text-[19px] font-semibold">{card.nombre}</h3>
             <p class="text-[14px] leading-relaxed text-tinta-suave">{card.desc}</p>
           </div>
-        </article>
+        </a>
       ))}
     </div>
+    <p class="mt-10">
+      <a
+        href={localePath(locale, '/alojamientos')}
+        class="text-[14px] font-semibold text-pino underline underline-offset-4 transition-colors hover:text-pino-oscuro"
+      >
+        {c.tipos.verTodo} →
+      </a>
+    </p>
   </section>
 
   <!-- ───────── firma: sombra de pino (materia, no vector) ───────── -->
-  <div
-    class="h-24 w-full bg-cover bg-center"
-    style={`background-image: url(${media['textura-lona']})`}
-    role="presentation"
-  ></div>
+  <div class="h-24 w-full bg-cover bg-center" style={`background-image: url(${lona.src})`} role="presentation"></div>
 
   <!-- ───────── El entorno ───────── -->
   <section id="entorno" class="mx-auto grid max-w-7xl scroll-mt-20 gap-10 px-5 py-24 md:grid-cols-2 md:items-center md:px-8 md:py-32">
     <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight text-balance">
       {c.entorno.titulo}
     </h2>
-    <p class="text-[16px] leading-relaxed text-tinta-suave">{c.entorno.texto}</p>
+    <div class="flex flex-col gap-5">
+      <p class="text-[16px] leading-relaxed text-tinta-suave">{c.entorno.texto}</p>
+      <a
+        href={localePath(locale, '/entorno')}
+        class="text-[14px] font-semibold text-pino underline underline-offset-4 transition-colors hover:text-pino-oscuro"
+      >
+        {c.nav.entorno} →
+      </a>
+    </div>
   </section>
 
   <!-- ───────── Solicitud → enquiries (TODOS los niveles) ───────── -->
@@ -119,74 +162,7 @@ const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default 
         <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight">{c.form.titulo}</h2>
         <p class="text-[15px] text-tinta-suave">{c.form.subtitulo}</p>
       </div>
-      <form id="lc-enquiry" class="flex flex-col gap-4" novalidate>
-        <div class="grid gap-4 sm:grid-cols-2">
-          <label class="flex flex-col gap-1.5">
-            <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.nombre}</span>
-            <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
-          </label>
-          <label class="flex flex-col gap-1.5">
-            <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.email}</span>
-            <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
-          </label>
-        </div>
-        <label class="flex flex-col gap-1.5">
-          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.fechas}</span>
-          <input name="dates" placeholder="12 → 19 ago" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
-        </label>
-        <label class="flex flex-col gap-1.5">
-          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{c.form.mensaje}</span>
-          <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"></textarea>
-        </label>
-        <button
-          type="submit"
-          class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
-          data-label={c.form.enviar}
-          data-sending={c.form.enviando}
-        >
-          {c.form.enviar}
-        </button>
-        <p data-status class="hidden text-[14px] font-medium" data-ok={c.form.ok} data-error={c.form.error}></p>
-      </form>
+      <EnquiryForm locale={locale} form={c.form} />
     </div>
   </section>
-
-  <script define:vars={{ locale }}>
-    // vanilla a propósito: el formulario funciona en TODOS los niveles sin motor
-    const form = document.getElementById('lc-enquiry');
-    const btn = form.querySelector('button[type=submit]');
-    const status = form.querySelector('[data-status]');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-      const data = new FormData(form);
-      btn.disabled = true;
-      btn.textContent = btn.dataset.sending;
-      status.classList.add('hidden');
-      try {
-        const dates = data.get('dates');
-        const res = await fetch('/api/enquiries', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            message: dates ? `${data.get('message')}\n\n[${dates}]` : data.get('message'),
-            contact: { name: data.get('name'), email: data.get('email') },
-            locale,
-            source: 'web',
-          }),
-        });
-        if (!res.ok) throw new Error(String(res.status));
-        status.textContent = status.dataset.ok;
-        status.style.color = 'var(--lc-pino)';
-        form.reset();
-      } catch {
-        status.textContent = status.dataset.error;
-        status.style.color = 'var(--lc-mar)';
-      } finally {
-        status.classList.remove('hidden');
-        btn.disabled = false;
-        btn.textContent = btn.dataset.label;
-      }
-    });
-  </script>
 </Base>

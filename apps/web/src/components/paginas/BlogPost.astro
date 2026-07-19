@@ -1,0 +1,52 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { config, fecha, getContent, getPost, images, localePath } from '../../lib/content';
+
+interface Props {
+  locale: string;
+  slug: string;
+}
+const { locale, slug } = Astro.props;
+const c = getContent(locale);
+const post = getPost(slug, locale);
+if (!post) throw new Error(`Post no encontrado: ${slug}`);
+const { Content, frontmatter } = post;
+const foto = frontmatter.photo ? images[frontmatter.photo] : undefined;
+---
+
+<Base
+  locale={locale}
+  path={`/blog/${slug}`}
+  title={`${frontmatter.title} | ${config.name}`}
+  description={frontmatter.description}
+>
+  <article class="mx-auto max-w-3xl px-5 pt-28 pb-24 md:pt-36">
+    <p class="mb-8">
+      <a href={localePath(locale, '/blog')} class="text-[13px] font-medium text-tinta-suave transition-colors hover:text-tinta">
+        ← {c.blog.volver}
+      </a>
+    </p>
+    <time datetime={frontmatter.date} class="tnum text-[12px] tracking-wide text-tinta-suave uppercase">
+      {fecha(frontmatter.date, locale, { day: 'numeric', month: 'long', year: 'numeric' })}
+    </time>
+    <h1 class="font-display mt-3 mb-6 text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] font-semibold tracking-tight text-balance">
+      {frontmatter.title}
+    </h1>
+    {foto && (
+      <Picture
+        src={foto}
+        alt=""
+        widths={[640, 1024, 1600]}
+        sizes="(min-width: 768px) 48rem, 100vw"
+        formats={['avif', 'webp']}
+            fallbackFormat="webp"
+        loading="eager"
+        class="mb-8 aspect-21/9 w-full rounded-(--lc-radius-lg) object-cover"
+      />
+    )}
+    <div class="lc-prose">
+      <Content />
+    </div>
+  </article>
+</Base>

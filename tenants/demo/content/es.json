@@ -5,9 +5,13 @@
   },
   "nav": {
     "alojamientos": "Alojamientos",
+    "instalaciones": "Instalaciones",
     "entorno": "El entorno",
     "tarifas": "Tarifas",
-    "contacto": "Contacto"
+    "blog": "Cuaderno",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "idioma": "Idioma"
   },
   "hero3": {
     "titulo": "Dormir bajo los pinos, a 300 m de la cala.",
@@ -39,7 +43,8 @@
     "unidadesLibres": "libres",
     "quedanPocas": "quedan pocas",
     "agotado": "Sin disponibilidad en esas fechas",
-    "cerrado": "Cerrado en esas fechas — abrimos el 15 de marzo",
+    "cerrado": "Cerrado en esas fechas",
+    "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
     "noEntra": "No disponible para ese grupo",
     "error": "No hemos podido consultar la disponibilidad. Prueba de nuevo.",
     "fechasInvalidas": "Revisa las fechas: la salida debe ser posterior a la llegada.",
@@ -48,13 +53,14 @@
   "tipos": {
     "titulo": "Maneras de quedarse",
     "subtitulo": "Se reserva el tipo; la parcela exacta te la asignamos nosotros, como se ha hecho siempre.",
+    "verTodo": "Ver todos los alojamientos",
     "nombres": {
       "ut_std": "Parcela Estándar",
       "ut_conf": "Parcela Confort",
-      "ut_prem": "Parcela Premium",
-      "ut_moto": "Parcela Moto",
+      "ut_prem": "Parcela Premium Mar",
+      "ut_moto": "Parcela Autocaravana",
       "ut_bung4": "Bungalow 4",
-      "ut_bung6": "Bungalow 6",
+      "ut_bung6": "Bungalow 6 Vista Mar",
       "ut_mobil": "Mobil-home",
       "ut_glamp": "Glamping"
     },
@@ -99,5 +105,238 @@
     "aviso": "Camping familiar en la costa de Castellón",
     "legal": "Aviso legal",
     "privacidad": "Privacidad"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Alojamientos — parcelas, bungalows y glamping | Camping Cala Sereno",
+      "description": "Ocho maneras de quedarse bajo los pinos: parcelas de 70 a 100 m², bungalows con porche, mobil-homes y tiendas glamping. Precios y fichas técnicas."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Ocho maneras de dormir bajo los pinos. Se reserva el tipo; la unidad exacta te la asignamos nosotros al llegar, como se ha hecho siempre.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Consultar disponibilidad",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Alojamientos",
+    "fichas": {
+      "ut_std": "La parcela de siempre: arena compactada, sombra parcial de pino carrasco y sitio para tienda o caravana con la lona fuera.",
+      "ut_conf": "Más metros y sombra total. La eléctrica de 10 A aguanta nevera y aire de la caravana sin pensárselo.",
+      "ut_prem": "La primera línea del camping: el mar se ve entre los troncos y la brisa llega sola. Se agotan primero.",
+      "ut_moto": "Pensada para autocaravanas: acceso ancho, suelo firme nivelado y conexión de 10 A a pie de parcela.",
+      "ut_bung4": "Madera clara, porche con sombra y dos habitaciones. El clásico para cuatro que no quiere montar nada.",
+      "ut_bung6": "El grande de la familia: tres habitaciones, dos baños y el mar desde el porche. Llegada en sábado en agosto.",
+      "ut_mobil": "Mobil-home con todo resuelto: cocina completa, baño y aire. El único alojamiento donde admitimos mascota.",
+      "ut_glamp": "Lona cruda sobre tarima, cama de verdad y luz cálida. Sin aire acondicionado a propósito: la pinada lo hace."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Habitaciones",
+      "banos": "Baños",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Precio por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio base por noche con {n} personas incluidas. El precio final se calcula siempre al buscar fechas."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Instalaciones — piscina, restaurante y servicios | Camping Cala Sereno",
+      "description": "Piscina entre pinos, restaurante de temporada bajo la lona, supermercado, sanitarios renovados y acceso directo a la cala. Todo a paso de sombra."
+    },
+    "titulo": "Instalaciones",
+    "intro": "Lo necesario para no coger el coche en toda la semana, y nada que haga ruido: el lujo aquí es la sombra y el suelo firme.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Piscina entre pinos",
+        "desc": "Abierta de mayo a septiembre, con zona de poca profundidad y hamacas bajo la pinada. El agua a la sombra a media tarde."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurante y bar",
+        "desc": "De temporada, bajo la lona grande: arroces por encargo, pescado del día y el café de después de la cala. Terraza de arena compactada."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Supermercado",
+        "desc": "Pan y prensa por la mañana, hielo todo el día, fruta de los pueblos de al lado. De marzo a octubre."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Sanitarios",
+        "desc": "Dos bloques renovados con agua caliente sin horario, cabina familiar y baño accesible. Limpieza tres veces al día en verano."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Lavandería",
+        "desc": "Lavadoras y secadoras con ficha, pila para lo delicado y tendedero a la sombra, que la lona lo agradece."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Zona infantil",
+        "desc": "Parque de madera bajo los pinos y explanada de juegos donde cada tarde se organiza el partido de siempre."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Pádel y multideporte",
+        "desc": "Pista de pádel, frontón y una portería que ha visto tres generaciones. Reserva en recepción, palas incluidas."
+      },
+      {
+        "id": "cala",
+        "nombre": "Acceso a la cala",
+        "desc": "Sendero propio de 300 m entre pinada, con ducha al volver. Sin cruzar ninguna carretera: los niños van solos."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción y wifi",
+        "desc": "Recepción de 8 a 22 en temporada, wifi en zonas comunes y en la mayoría de parcelas. Y consejo honesto de la comarca."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "El entorno — la cala, los senderos y los pueblos | Camping Cala Sereno",
+      "description": "Una cala de canto rodado a 300 m, senderos que salen de recepción, pueblos con mercado a diez minutos y el interior de Castellón detrás."
+    },
+    "titulo": "El entorno",
+    "intro": "Cala Sereno existe porque existía la cala. Todo lo demás — los senderos, los pueblos, los arroces — estaba antes que nosotros.",
+    "secciones": [
+      {
+        "titulo": "La cala",
+        "texto": "Trescientos metros de sendero propio entre pinada y estás en una cala de canto rodado y agua clara, orientada a levante: por la mañana el sol, a partir de las cinco la sombra del acantilado. En julio y agosto hay socorrista; el resto del año es de los que madrugan."
+      },
+      {
+        "titulo": "Senderos",
+        "texto": "De recepción salen tres senderos señalizados: el de la cala (10 minutos), el del faro por el acantilado (una hora justa, para la puesta de sol) y el que sube al pinar alto, donde en abril huele a romero y se ve toda la bahía."
+      },
+      {
+        "titulo": "Los pueblos",
+        "texto": "A diez minutos en coche hay dos pueblos con mercado semanal, horno de leña y bares donde el almuerzo va en serio. El martes, mercado grande: fruta de la huerta, aceite de la cooperativa y el puesto de encurtidos que nos tiene conquistados."
+      },
+      {
+        "titulo": "Comer",
+        "texto": "La comarca es de arroz melós y pescado de lonja. Preguntad en recepción: tenemos la lista corta de los sitios donde comemos nosotros, con teléfono y nombre propio. En temporada conviene llamar la víspera."
+      }
+    ],
+    "distancias": {
+      "titulo": "A mano",
+      "items": [
+        { "lugar": "La cala", "valor": "300 m a pie" },
+        { "lugar": "Primer pueblo con mercado", "valor": "10 min en coche" },
+        { "lugar": "Farmacia y centro de salud", "valor": "12 min en coche" },
+        { "lugar": "Estación de tren", "valor": "20 min en coche" },
+        { "lugar": "Aeropuerto de Castellón", "valor": "35 min en coche" },
+        { "lugar": "Peñíscola y su castillo", "valor": "30 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas por temporada | Camping Cala Sereno",
+      "description": "Precios por noche de parcelas, bungalows y glamping en temporada de apertura, media y alta. Suplementos, extras y tasa turística, sin sorpresas."
+    },
+    "titulo": "Tarifas",
+    "intro": "Precio por noche, IVA incluido, según temporada. El precio final se calcula siempre al buscar fechas — lo que ves en el mostrador es lo que pagas.",
+    "tabla": {
+      "tipo": "Alojamiento",
+      "noche": "€/noche"
+    },
+    "temporadas": {
+      "sea_apertura": "Apertura",
+      "sea_media": "Media",
+      "sea_alta": "Alta"
+    },
+    "suplementos": {
+      "titulo": "Suplementos de parcela (por noche)",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
+      "nombres": {
+        "ext_sabanas": "Ropa de cama",
+        "ext_toallas": "Toallas",
+        "ext_limpieza": "Limpieza final (alojamientos)",
+        "ext_nevera": "Nevera de parcela",
+        "ext_parking2": "Segundo vehículo",
+        "ext_late": "Salida tardía",
+        "ext_cuna": "Cuna de bebé",
+        "ext_trona": "Trona",
+        "ext_bbq": "Kit de barbacoa",
+        "ext_wifi": "WiFi premium",
+        "ext_hielo": "Bolsa de hielo diaria",
+        "ext_pack": "Pack de bienvenida"
+      }
+    },
+    "condiciones": {
+      "titulo": "Bueno saberlo",
+      "items": [
+        "Estancia mínima: 3 noches en parcela y 7 en alojamiento durante la temporada alta; 2 noches en temporada media.",
+        "Los bungalows y mobil-homes entran en sábado durante la temporada alta.",
+        "Tasa turística de la Comunitat Valenciana aparte: se calcula por persona y noche, con menores exentos.",
+        "Reservando con 60 días de antelación: 10 % de descuento. Estancias de 14 noches o más: 8 % adicional.",
+        "La fianza de los alojamientos se devuelve íntegra al revisar la unidad el día de salida."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacto y cómo llegar | Camping Cala Sereno",
+      "description": "Escríbenos, llámanos o ven a vernos: Partida Cala Sereno s/n, Castellón. Te contestamos en menos de un día; en temporada, antes."
+    },
+    "titulo": "Contacto",
+    "intro": "Somos de contestar rápido y de teléfono con nombre. Si escribes hoy, mañana tienes respuesta — en temporada, casi siempre el mismo día.",
+    "datos": {
+      "titulo": "Dónde estamos",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "De 8:00 a 22:00 en temporada (marzo–octubre). Llegadas a partir de las 13:00 en parcela y de las 16:00 en alojamiento; salidas antes de las 12:00."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "Salida 43 de la AP-7 y ocho minutos de carretera comarcal siguiendo las señales del faro. En tren, estación a 20 minutos: avisa y coordinamos taxi. El desvío al camping está señalizado — si el navegador duda, manda la señal marrón."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Cuaderno del camping | Camping Cala Sereno",
+      "description": "Notas de temporada escritas desde recepción: la cala, los senderos, los mercados y la vida bajo los pinos."
+    },
+    "titulo": "Cuaderno",
+    "intro": "Notas de temporada escritas desde recepción. Sin algoritmo: lo que contaríamos en el mostrador si hubiera tiempo.",
+    "leerMas": "Leer",
+    "volver": "Todas las notas",
+    "vacio": "Pronto habrá notas en este idioma. De momento, están en castellano."
+  },
+  "noEncontrada": {
+    "titulo": "Esta página se ha ido a la cala",
+    "texto": "La dirección no existe o ha cambiado de sitio. Lo importante sigue donde siempre: las fechas, los pinos y el mostrador.",
+    "cta": "Volver al inicio"
   }
 }

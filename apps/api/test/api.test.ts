@@ -40,8 +40,17 @@ describe('GET /api/availability', () => {
 
   it('fuera de temporada devuelve closed, no unavailable', async () => {
     const res = await app.request('/api/availability?from=2026-12-01&to=2026-12-04', {}, envA);
-    const body = (await res.json()) as { results: { status: string }[] };
+    const body = (await res.json()) as { opensOn: string | null; results: { status: string }[] };
     expect(body.results[0]!.status).toBe('closed');
+    // sin temporada futura en el calendario: no se inventa fecha de apertura
+    expect(body.opensOn).toBeNull();
+  });
+
+  it('cerrado antes de la apertura anuncia la fecha real de seasons_calendar', async () => {
+    const res = await app.request('/api/availability?from=2026-01-10&to=2026-01-13', {}, envA);
+    const body = (await res.json()) as { opensOn: string | null; results: { status: string }[] };
+    expect(body.results[0]!.status).toBe('closed');
+    expect(body.opensOn).toBe('2026-03-15');
   });
 
   it('valida la query', async () => {

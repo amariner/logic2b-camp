@@ -1,0 +1,342 @@
+{
+  "seo": {
+    "title": "Camping Cala Sereno — slapen onder de pijnbomen, 300 m van de baai",
+    "description": "Familiecamping aan de kust van Castellón, Spanje. Plaatsen in de schaduw van eeuwenoude pijnbomen, bungalows en glamping. Open van maart tot oktober."
+  },
+  "nav": {
+    "alojamientos": "Accommodaties",
+    "instalaciones": "Voorzieningen",
+    "entorno": "De omgeving",
+    "tarifas": "Tarieven",
+    "blog": "Notitieboek",
+    "contacto": "Contact",
+    "menu": "Menu",
+    "idioma": "Taal"
+  },
+  "hero3": {
+    "titulo": "Slapen onder de pijnbomen, 300 m van de baai.",
+    "prueba": "83 plaatsen en accommodaties · open maart–oktober · families sinds 1974"
+  },
+  "hero1": {
+    "titulo": "De vakantie die elk jaar vanzelf terugkomt.",
+    "cta": "Schrijf ons"
+  },
+  "ticker": [
+    "80 plaatsen onder de pijnbomen",
+    "de baai op 300 m",
+    "families sinds 1974",
+    "honden welkom",
+    "open maart – oktober"
+  ],
+  "mostrador": {
+    "llegada": "Aankomst",
+    "salida": "Vertrek",
+    "huespedes": "Gasten",
+    "adultos": "volwassenen",
+    "ninos": "kinderen",
+    "adulto": "volwassene",
+    "nino": "kind",
+    "buscar": "Beschikbaarheid bekijken",
+    "buscando": "Zoeken…",
+    "desde": "vanaf",
+    "porEstancia": "per verblijf",
+    "unidadesLibres": "vrij",
+    "quedanPocas": "nog maar enkele",
+    "agotado": "Geen beschikbaarheid op die data",
+    "cerrado": "Gesloten op die data",
+    "cerradoEl": "Gesloten op die data — we openen op {fecha}",
+    "noEntra": "Niet beschikbaar voor die groep",
+    "error": "We konden de beschikbaarheid niet opvragen. Probeer het opnieuw.",
+    "fechasInvalidas": "Controleer de data: het vertrek moet na de aankomst liggen.",
+    "reservar": "Boeken"
+  },
+  "tipos": {
+    "titulo": "Manieren om te blijven",
+    "subtitulo": "Je boekt het type; de exacte plaats wijzen wij toe, zoals het altijd is gegaan.",
+    "verTodo": "Alle accommodaties bekijken",
+    "nombres": {
+      "ut_std": "Standaardplaats",
+      "ut_conf": "Comfortplaats",
+      "ut_prem": "Premium Zeeplaats",
+      "ut_moto": "Camperplaats",
+      "ut_bung4": "Bungalow 4",
+      "ut_bung6": "Bungalow 6 Zeezicht",
+      "ut_mobil": "Stacaravan",
+      "ut_glamp": "Glamping"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Kampeerplaatsen",
+        "desc": "Aangestampt zand, schaduw van Aleppo-dennen en je eigen doek. Van 70 tot 120 m², met stroom van 6 tot 16 A.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "bungalows",
+        "nombre": "Bungalows en stacaravans",
+        "desc": "Hout, een veranda en airco. Voor 4 of 6, met de baai op een korte wandeling.",
+        "foto": "tipo-bungalow"
+      },
+      {
+        "id": "glamping",
+        "nombre": "Glamping",
+        "desc": "Ruw canvas, een echt bed en de zee tussen de stammen. Zonder overbodige stopcontacten.",
+        "foto": "tipo-glamping"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Eerst de baai, dan de camping",
+    "texto": "Cala Sereno bestaat omdat de baai er al was: 300 meter dennenbos scheidt haar van de plaatsen. Het binnenland van Castellón in de rug, wandelpaden die te voet vanaf de receptie vertrekken en dorpen met markt op tien minuten."
+  },
+  "form": {
+    "titulo": "Schrijf ons",
+    "subtitulo": "We antwoorden binnen een dag. In het seizoen sneller.",
+    "nombre": "Naam",
+    "email": "E-mail",
+    "fechas": "Geschatte data (optioneel)",
+    "mensaje": "Wat heb je nodig?",
+    "enviar": "Aanvraag versturen",
+    "enviando": "Versturen…",
+    "ok": "Ontvangen. We antwoorden heel snel.",
+    "error": "Versturen is niet gelukt. Probeer opnieuw of bel ons."
+  },
+  "footer": {
+    "aviso": "Familiecamping aan de kust van Castellón",
+    "legal": "Juridische kennisgeving",
+    "privacidad": "Privacy"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Accommodaties — plaatsen, bungalows en glamping | Camping Cala Sereno",
+      "description": "Acht manieren om onder de pijnbomen te verblijven: plaatsen van 70 tot 100 m², bungalows met veranda, stacaravans en glampingtenten. Prijzen en technische fiches."
+    },
+    "titulo": "Accommodaties",
+    "intro": "Acht manieren om onder de pijnbomen te slapen. Je boekt het type; de exacte eenheid wijzen wij toe bij aankomst, zoals het altijd is gegaan.",
+    "desdeNoche": "vanaf {precio}/nacht",
+    "verFicha": "Bekijk fiche",
+    "consultar": "Beschikbaarheid bekijken",
+    "volver": "Alle accommodaties",
+    "parcelas": "Kampeerplaatsen",
+    "alojados": "Accommodaties",
+    "fichas": {
+      "ut_std": "De vertrouwde plaats: aangestampt zand, halfschaduw van Aleppo-dennen en ruimte voor tent of caravan met de luifel uit.",
+      "ut_conf": "Meer vierkante meters en volledige schaduw. De 10 A-aansluiting trekt koelkast en airco van de caravan zonder aarzelen.",
+      "ut_prem": "De eerste rij van de camping: de zee schemert tussen de stammen en de bries komt vanzelf. Deze zijn het eerst weg.",
+      "ut_moto": "Gemaakt voor campers: brede toegang, stevige vlakke grond en een 10 A-aansluiting aan de plaats.",
+      "ut_bung4": "Licht hout, een schaduwrijke veranda en twee slaapkamers. De klassieker voor vier die niets willen opzetten.",
+      "ut_bung6": "Het vlaggenschip van de familie: drie slaapkamers, twee badkamers en de zee vanaf de veranda. Aankomst op zaterdag in augustus.",
+      "ut_mobil": "Een stacaravan met alles geregeld: complete keuken, badkamer en airco. De enige accommodatie waar huisdieren welkom zijn.",
+      "ut_glamp": "Ruw canvas op een vlonder, een echt bed en warm licht. Expres zonder airco: het dennenbos doet het werk."
+    },
+    "ficha": {
+      "capacidad": "Capaciteit",
+      "personas": "personen",
+      "personasIncluidas": "{n} inbegrepen in de prijs",
+      "superficie": "Oppervlakte",
+      "electricidad": "Stroom",
+      "sombra": "Schaduw",
+      "sombraParcial": "gedeeltelijk",
+      "sombraTotal": "volledig",
+      "camas": "Slaapkamers",
+      "banos": "Badkamers",
+      "aire": "Airconditioning",
+      "mascotas": "Huisdieren",
+      "si": "ja",
+      "no": "nee",
+      "unidades": "{n} eenheden van dit type",
+      "tarifasTitulo": "Prijs per nacht",
+      "estanciaMin": "minimaal verblijf {n} nachten",
+      "estanciaMin1": "geen minimaal verblijf",
+      "llegadaSabado": "aankomst op zaterdag",
+      "notaPrecios": "Basisprijs per nacht met {n} personen inbegrepen. De eindprijs wordt altijd berekend bij het zoeken naar data."
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Voorzieningen — zwembad, restaurant en services | Camping Cala Sereno",
+      "description": "Een zwembad tussen de pijnbomen, een seizoensrestaurant onder zeildoek, een winkel, gerenoveerd sanitair en directe toegang tot de baai. Alles op een schaduwrijke wandeling."
+    },
+    "titulo": "Voorzieningen",
+    "intro": "Alles om de auto de hele week te laten staan, en niets dat lawaai maakt: luxe is hier schaduw en stevige grond.",
+    "items": [
+      {
+        "id": "piscina",
+        "nombre": "Zwembad tussen de pijnbomen",
+        "desc": "Open van mei tot september, met ondiep gedeelte en ligstoelen onder het dennendak. Het water ligt halverwege de middag in de schaduw."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurant en bar",
+        "desc": "Seizoensgebonden, onder het grote zeildoek: rijstgerechten op bestelling, vis van de dag en de koffie na de baai. Terras op aangestampt zand."
+      },
+      {
+        "id": "supermercado",
+        "nombre": "Winkel",
+        "desc": "Brood en kranten 's ochtends, ijs de hele dag, fruit uit de dorpen ernaast. Van maart tot oktober."
+      },
+      {
+        "id": "sanitarios",
+        "nombre": "Sanitair",
+        "desc": "Twee gerenoveerde blokken met warm water zonder tijden, een familiecabine en een toegankelijke badkamer. In de zomer drie keer per dag schoongemaakt."
+      },
+      {
+        "id": "lavanderia",
+        "nombre": "Wasserette",
+        "desc": "Wasmachines en drogers met munt, een wasbak voor het fijne goed en een waslijn in de schaduw — het doek is je dankbaar."
+      },
+      {
+        "id": "infantil",
+        "nombre": "Speeltuin",
+        "desc": "Houten speeltuin onder de pijnbomen en een veld waar elke avond de vaste wedstrijd wordt georganiseerd."
+      },
+      {
+        "id": "deportes",
+        "nombre": "Padel en multisport",
+        "desc": "Padelbaan, frontonmuur en een doel dat drie generaties heeft gezien. Reserveren bij de receptie, rackets inbegrepen."
+      },
+      {
+        "id": "cala",
+        "nombre": "Toegang tot de baai",
+        "desc": "Eigen pad van 300 m door het dennenbos, met een douche op de terugweg. Geen weg over te steken: kinderen gaan alleen."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Receptie en wifi",
+        "desc": "Receptie van 8 tot 22 uur in het seizoen, wifi in de gemeenschappelijke zones en op de meeste plaatsen. Plus eerlijk advies over de streek."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "De omgeving — de baai, de paden en de dorpen | Camping Cala Sereno",
+      "description": "Een kiezelbaai op 300 m, wandelpaden vanaf de receptie, marktdorpen op tien minuten en het binnenland van Castellón erachter."
+    },
+    "titulo": "De omgeving",
+    "intro": "Cala Sereno bestaat omdat de baai er al was. Al het andere — de paden, de dorpen, de rijstgerechten — was er vóór ons.",
+    "secciones": [
+      {
+        "titulo": "De baai",
+        "texto": "Driehonderd meter eigen pad door het dennenbos en je staat op een kiezelbaai met helder water, gericht op het oosten: 's ochtends zon, vanaf vijf uur de schaduw van de klif. In juli en augustus is er een badmeester; de rest van het jaar is ze van de vroege vogels."
+      },
+      {
+        "titulo": "Wandelpaden",
+        "texto": "Vanaf de receptie vertrekken drie bewegwijzerde paden: dat van de baai (10 minuten), dat van de vuurtoren langs de klif (een klein uur, op z'n mooist bij zonsondergang) en de klim naar het hoge dennenbos, waar april naar rozemarijn ruikt en de hele baai zich opent."
+      },
+      {
+        "titulo": "De dorpen",
+        "texto": "Op tien minuten rijden liggen twee dorpen met een wekelijkse markt, een houtoven en bars waar het ochtend-almuerzo serieus wordt genomen. Dinsdag grote markt: fruit uit de moestuin, olie van de coöperatie en de augurkenkraam die ons heeft veroverd."
+      },
+      {
+        "titulo": "Eten",
+        "texto": "De streek is er een van smeuïge rijst en vis van de afslag. Vraag bij de receptie: we hebben het korte lijstje van de plekken waar we zelf eten, met telefoonnummer en voornaam. In het seizoen: bel een dag van tevoren."
+      }
+    ],
+    "distancias": {
+      "titulo": "Binnen handbereik",
+      "items": [
+        { "lugar": "De baai", "valor": "300 m te voet" },
+        { "lugar": "Eerste dorp met markt", "valor": "10 min met de auto" },
+        { "lugar": "Apotheek en gezondheidscentrum", "valor": "12 min met de auto" },
+        { "lugar": "Treinstation", "valor": "20 min met de auto" },
+        { "lugar": "Luchthaven Castellón", "valor": "35 min met de auto" },
+        { "lugar": "Peñíscola en zijn kasteel", "valor": "30 min met de auto" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarieven per seizoen | Camping Cala Sereno",
+      "description": "Prijzen per nacht voor plaatsen, bungalows en glamping in openings-, midden- en hoogseizoen. Toeslagen, extra's en toeristenbelasting, zonder verrassingen."
+    },
+    "titulo": "Tarieven",
+    "intro": "Prijs per nacht, incl. btw, per seizoen. De eindprijs wordt altijd berekend bij het zoeken naar data — wat de balie toont, is wat je betaalt.",
+    "tabla": {
+      "tipo": "Accommodatie",
+      "noche": "€/nacht"
+    },
+    "temporadas": {
+      "sea_apertura": "Opening",
+      "sea_media": "Midden",
+      "sea_alta": "Hoog"
+    },
+    "suplementos": {
+      "titulo": "Toeslagen kampeerplaats (per nacht)",
+      "personaExtra": "Persoon vanaf de {n}e",
+      "nino": "Kind (3–12 jaar)",
+      "electricidad": "Stroom",
+      "vehiculo": "Tweede voertuig",
+      "mascota": "Huisdier"
+    },
+    "extras": {
+      "titulo": "Extra's",
+      "por": {
+        "person": "per persoon",
+        "night": "per nacht",
+        "stay": "per verblijf"
+      },
+      "nombres": {
+        "ext_sabanas": "Beddengoed",
+        "ext_toallas": "Handdoeken",
+        "ext_limpieza": "Eindschoonmaak (accommodaties)",
+        "ext_nevera": "Koelkast op de plaats",
+        "ext_parking2": "Tweede voertuig",
+        "ext_late": "Laat vertrek",
+        "ext_cuna": "Babybed",
+        "ext_trona": "Kinderstoel",
+        "ext_bbq": "Barbecueset",
+        "ext_wifi": "Premium wifi",
+        "ext_hielo": "Dagelijkse zak ijs",
+        "ext_pack": "Welkomstpakket"
+      }
+    },
+    "condiciones": {
+      "titulo": "Goed om te weten",
+      "items": [
+        "Minimaal verblijf: 3 nachten op plaatsen en 7 in accommodaties tijdens het hoogseizoen; 2 nachten in het middenseizoen.",
+        "Bungalows en stacaravans komen in het hoogseizoen op zaterdag aan.",
+        "De Valenciaanse toeristenbelasting komt apart: per persoon per nacht, minderjarigen vrijgesteld.",
+        "Boek 60 dagen vooruit voor 10% korting. Verblijven van 14 nachten of meer: 8% extra.",
+        "De borg van de accommodaties wordt volledig terugbetaald na controle van de eenheid op de vertrekdag."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contact en route | Camping Cala Sereno",
+      "description": "Schrijf, bel of kom langs: Partida Cala Sereno s/n, Castellón, Spanje. We antwoorden binnen een dag; in het seizoen sneller."
+    },
+    "titulo": "Contact",
+    "intro": "We antwoorden snel en achter onze telefoon zit een naam. Schrijf vandaag en morgen heb je antwoord — in het seizoen meestal dezelfde dag nog.",
+    "datos": {
+      "titulo": "Waar we zijn",
+      "direccion": "Adres",
+      "telefono": "Telefoon",
+      "email": "E-mail"
+    },
+    "horario": {
+      "titulo": "Receptie",
+      "texto": "Van 8:00 tot 22:00 in het seizoen (maart–oktober). Aankomst vanaf 13:00 op plaatsen en 16:00 in accommodaties; vertrek vóór 12:00."
+    },
+    "llegar": {
+      "titulo": "Route",
+      "texto": "Afslag 43 van de AP-7 en acht minuten provinciale weg, de borden van de vuurtoren volgend. Met de trein: station op 20 minuten — geef een seintje en we regelen een taxi. De afslag naar de camping is bewegwijzerd; twijfelt de navigatie, volg dan het bruine bord."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Het notitieboek van de camping | Camping Cala Sereno",
+      "description": "Seizoensnotities geschreven vanaf de receptie: de baai, de paden, de markten en het leven onder de pijnbomen."
+    },
+    "titulo": "Notitieboek",
+    "intro": "Seizoensnotities geschreven vanaf de receptie. Zonder algoritme: wat we je aan de balie zouden vertellen als er tijd was.",
+    "leerMas": "Lezen",
+    "volver": "Alle notities",
+    "vacio": "Notities in deze taal komen eraan. Voorlopig zijn ze in het Spaans."
+  },
+  "noEncontrada": {
+    "titulo": "Deze pagina is naar de baai vertrokken",
+    "texto": "Het adres bestaat niet of is verhuisd. Het belangrijkste is waar het altijd was: de data, de pijnbomen en de balie.",
+    "cta": "Terug naar het begin"
+  }
+}

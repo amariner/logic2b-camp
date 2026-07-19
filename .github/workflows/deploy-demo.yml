@@ -14,7 +14,12 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Deploy demo worker
+      - name: Build web (tenant demo)
+        if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
+        run: pnpm --filter @logic-camp/web build
+        env:
+          TENANT: demo
+      - name: Deploy demo worker (web + API)
         if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
         working-directory: apps/api
         run: pnpm exec wrangler deploy --config ../../tenants/demo/wrangler.jsonc

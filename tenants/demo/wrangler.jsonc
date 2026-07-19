@@ -1,4 +1,5 @@
 // Tenant DEMO — Camping Cala Sereno → camp.logic2b.com
+// Un solo Worker sirve web (Workers Assets, dist de Astro) + API. Un deploy = web + API.
 // database_id y kv id reales se rellenan al crear los recursos (wrangler d1 create logic-camp-demo).
 {
   "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
@@ -7,7 +8,15 @@
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": { "TENANT_SLUG": "demo" },
-  "routes": [{ "pattern": "camp.logic2b.com/api/*", "zone_name": "logic2b.com" }],
+  "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
+  "assets": {
+    // construir la web ANTES de desplegar: pnpm --filter @logic-camp/api deploy:demo lo hace
+    "directory": "../../apps/web/dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    // la API pasa SIEMPRE por el Worker aunque exista un fichero con esa ruta
+    "run_worker_first": ["/api/*"]
+  },
   "d1_databases": [
     {
       "binding": "DB",

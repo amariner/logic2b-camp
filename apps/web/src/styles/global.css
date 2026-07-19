@@ -77,3 +77,57 @@ html {
   html { scroll-behavior: auto; }
   .lc-ticker, .lc-settle { animation: none; }
 }
+
+/* menús nativos <details> del header (idioma + móvil) */
+.lc-menu > summary {
+  list-style: none;
+}
+.lc-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* prosa del cuaderno (sin plugin de tipografía: solo lo que usamos) */
+.lc-prose {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--lc-tinta);
+}
+.lc-prose p {
+  margin-block: 1.1em;
+}
+.lc-prose strong {
+  font-weight: 600;
+}
+.lc-prose h2,
+.lc-prose h3 {
+  font-family: var(--lc-font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-block: 1.6em 0.5em;
+  font-size: 1.35em;
+}
+.lc-prose ul,
+.lc-prose ol {
+  margin-block: 1.1em;
+  padding-inline-start: 1.4em;
+}
+.lc-prose ul {
+  list-style: disc;
+}
+.lc-prose a {
+  color: var(--lc-mar);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* skeleton del mostrador */
+@keyframes lc-pulse {
+  50% { opacity: 0.45; }
+}
+.lc-skeleton {
+  animation: lc-pulse 1.6s ease-in-out infinite;
+  background: var(--lc-arena-suave);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lc-skeleton { animation: none; }
+}

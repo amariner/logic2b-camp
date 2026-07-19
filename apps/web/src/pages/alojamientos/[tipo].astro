@@ -1,0 +1,11 @@
+---
+import AlojamientoDetalle from '../../components/paginas/AlojamientoDetalle.astro';
+import { config, data } from '../../lib/content';
+
+export function getStaticPaths() {
+  return data.unitTypes.map((t) => ({ params: { tipo: t.id } }));
+}
+const { tipo } = Astro.params;
+---
+
+<AlojamientoDetalle locale={config.defaultLocale} unitTypeId={tipo!} />

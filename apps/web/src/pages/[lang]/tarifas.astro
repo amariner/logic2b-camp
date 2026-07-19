@@ -1,0 +1,11 @@
+---
+import Tarifas from '../../components/paginas/Tarifas.astro';
+import { extraLocales } from '../../lib/content';
+
+export function getStaticPaths() {
+  return extraLocales.map((lang) => ({ params: { lang } }));
+}
+const { lang } = Astro.params;
+---
+
+<Tarifas locale={lang!} />

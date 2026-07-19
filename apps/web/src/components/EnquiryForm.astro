@@ -1,0 +1,81 @@
+---
+/**
+ * Formulario de solicitud → POST /api/enquiries.
+ * Vanilla a propósito: funciona en TODOS los niveles sin motor (regla dura).
+ */
+interface Props {
+  locale: string;
+  form: Record<string, string>;
+  /** id único si hubiera dos formularios en la misma página */
+  id?: string;
+}
+const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
+---
+
+<form id={uid} class="flex flex-col gap-4" novalidate>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class="flex flex-col gap-1.5">
+      <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.nombre}</span>
+      <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+    </label>
+    <label class="flex flex-col gap-1.5">
+      <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.email}</span>
+      <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+    </label>
+  </div>
+  <label class="flex flex-col gap-1.5">
+    <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
+    <input name="dates" placeholder="12 → 19 ago" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+  </label>
+  <label class="flex flex-col gap-1.5">
+    <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.mensaje}</span>
+    <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"></textarea>
+  </label>
+  <button
+    type="submit"
+    class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
+    data-label={f.enviar}
+    data-sending={f.enviando}
+  >
+    {f.enviar}
+  </button>
+  <p data-status class="hidden text-[14px] font-medium" data-ok={f.ok} data-error={f.error}></p>
+</form>
+
+<script define:vars={{ locale, uid }}>
+  const form = document.getElementById(uid);
+  const btn = form.querySelector('button[type=submit]');
+  const status = form.querySelector('[data-status]');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    btn.disabled = true;
+    btn.textContent = btn.dataset.sending;
+    status.classList.add('hidden');
+    try {
+      const dates = data.get('dates');
+      const res = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: dates ? `${data.get('message')}\n\n[${dates}]` : data.get('message'),
+          contact: { name: data.get('name'), email: data.get('email') },
+          locale,
+          source: 'web',
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      status.textContent = status.dataset.ok;
+      status.style.color = 'var(--lc-pino)';
+      form.reset();
+    } catch {
+      status.textContent = status.dataset.error;
+      status.style.color = 'var(--lc-mar)';
+    } finally {
+      status.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = btn.dataset.label;
+    }
+  });
+</script>

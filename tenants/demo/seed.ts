@@ -45,15 +45,71 @@ const q = (v: unknown): string => {
 // ---------- tipos del seed ----------
 
 type Row = Record<string, unknown>;
+
+// Tablas tipadas: la web pública las consume en build (tenants/demo/data.ts)
+// — misma fuente de verdad que la D1, tarifas y fichas no pueden divergir.
+export type SeedSeason = {
+  id: string;
+  tenant_id: string;
+  name: string;
+  date_from: string;
+  date_to: string;
+  priority: number;
+  is_open: boolean;
+};
+export type SeedUnitType = {
+  id: string;
+  tenant_id: string;
+  kind: 'pitch' | 'lodging';
+  name_i18n: { es: string; en: string };
+  capacity_min: number;
+  capacity_max: number;
+  included_persons: number;
+  features: {
+    m2?: number;
+    electricityAmps?: number;
+    shade?: string;
+    pets?: boolean;
+    beds?: number;
+    bathrooms?: number;
+    airCon?: boolean;
+  };
+  photos: string[];
+};
+export type SeedRatePlan = {
+  id: string;
+  tenant_id: string;
+  unit_type_id: string;
+  season_id: string;
+  base_cents: number;
+  extra_person_cents: number;
+  child_cents: number;
+  pet_cents: number;
+  electricity_cents: number;
+  vehicle_cents: number;
+  min_stay: number;
+  max_stay: number | null;
+  arrival_days: number[] | null;
+  departure_days: number[] | null;
+};
+export type SeedExtra = {
+  id: string;
+  tenant_id: string;
+  name_i18n: { es: string; en: string };
+  price_cents: number;
+  per: 'person' | 'stay' | 'night';
+  required: boolean;
+};
+
 export type SeedData = {
   anchor: string;
   tenants: Row[];
-  seasons_calendar: Row[];
-  unit_types: Row[];
+  seasons_calendar: SeedSeason[];
+  unit_types: SeedUnitType[];
   units: Row[];
-  rate_plans: Row[];
+  rate_plans: SeedRatePlan[];
   rate_rules: Row[];
-  extras: Row[];
+  extras: SeedExtra[];
   inventory_blocks: Row[];
   enquiries: Row[];
   bookings: (Row & {
@@ -104,7 +160,7 @@ export function generateSeed(anchorYear: number): SeedData {
     { id: 'ut_glamp', kind: 'lodging', es: 'Tienda Glamping', en: 'Glamping Tent', capMax: 4, incl: 2, count: 5, beds: 2, baths: 0, base: [6000, 8500, 12500] },
   ] as const;
 
-  const unit_types: Row[] = unitTypeDefs.map((d) => ({
+  const unit_types: SeedUnitType[] = unitTypeDefs.map((d) => ({
     id: d.id,
     tenant_id: T,
     kind: d.kind,
@@ -135,7 +191,7 @@ export function generateSeed(anchorYear: number): SeedData {
   }
 
   // --- planes: un plan por tipo × temporada ---
-  const rate_plans: Row[] = [];
+  const rate_plans: SeedRatePlan[] = [];
   unitTypeDefs.forEach((d) => {
     seasons.forEach((s, si) => {
       rate_plans.push({
@@ -143,9 +199,9 @@ export function generateSeed(anchorYear: number): SeedData {
         tenant_id: T,
         unit_type_id: d.id,
         season_id: s.id,
-        base_cents: d.base[si],
-        extra_person_cents: d.kind === 'pitch' ? [450, 550, 700][si] : 0,
-        child_cents: d.kind === 'pitch' ? [300, 350, 450][si] : 0,
+        base_cents: d.base[si]!,
+        extra_person_cents: d.kind === 'pitch' ? [450, 550, 700][si]! : 0,
+        child_cents: d.kind === 'pitch' ? [300, 350, 450][si]! : 0,
         pet_cents: 350,
         electricity_cents: d.kind === 'pitch' ? 550 : 0,
         vehicle_cents: d.kind === 'pitch' ? 400 : 0,
@@ -177,7 +233,7 @@ export function generateSeed(anchorYear: number): SeedData {
     ['ext_hielo', 'Bolsa de hielo diaria', 'Daily ice bag', 200, 'night', false],
     ['ext_pack', 'Pack bienvenida', 'Welcome pack', 1200, 'stay', false],
   ] as const;
-  const extras: Row[] = extrasDefs.map(([id, es, en, price, per, required]) => ({
+  const extras: SeedExtra[] = extrasDefs.map(([id, es, en, price, per, required]) => ({
     id, tenant_id: T, name_i18n: { es, en }, price_cents: price, per, required,
   }));
 

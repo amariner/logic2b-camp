@@ -1,0 +1,147 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { config, data, eur, fecha, fill, getContent, localePath, mode } from '../../lib/content';
+import { galeriaTipo } from '../../lib/fotos';
+import PageIntro from '../PageIntro.astro';
+
+interface Props {
+  locale: string;
+  unitTypeId: string;
+}
+const { locale, unitTypeId } = Astro.props;
+const c = getContent(locale);
+const a = c.alojamientos;
+const f = a.ficha;
+
+const tipo = data.unitTypes.find((t) => t.id === unitTypeId);
+if (!tipo) throw new Error(`Tipo desconocido: ${unitTypeId}`);
+const nombre = c.tipos.nombres[tipo.id] ?? tipo.id;
+const planes = data.ratePlans.filter((p) => p.unit_type_id === tipo.id);
+const planPorTemporada = (seasonId: string) => planes.find((p) => p.season_id === seasonId);
+const galeria = galeriaTipo(tipo.id);
+const path = `/alojamientos/${tipo.id}`;
+
+// ficha técnica desde los MISMOS datos que la D1 (nada inventado)
+const filas: [string, string][] = [
+  [f.capacidad!, `${tipo.capacity_max} ${f.personas} · ${fill(f.personasIncluidas!, { n: tipo.included_persons })}`],
+  ...(tipo.features.m2 ? [[f.superficie!, `${tipo.features.m2} m²`] as [string, string]] : []),
+  ...(tipo.features.electricityAmps
+    ? [[f.electricidad!, `${tipo.features.electricityAmps} A`] as [string, string]]
+    : []),
+  ...(tipo.features.shade
+    ? [[f.sombra!, tipo.features.shade === 'total' ? f.sombraTotal! : f.sombraParcial!] as [string, string]]
+    : []),
+  ...(tipo.features.beds ? [[f.camas!, String(tipo.features.beds)] as [string, string]] : []),
+  ...(tipo.features.bathrooms ? [[f.banos!, String(tipo.features.bathrooms)] as [string, string]] : []),
+  ...(tipo.kind === 'lodging' ? [[f.aire!, tipo.features.airCon ? f.si! : f.no!] as [string, string]] : []),
+  [f.mascotas!, tipo.features.pets ? f.si! : f.no!],
+];
+
+// schema.org por tipo, con oferta "desde"
+const desde = Math.min(...planes.map((p) => p.base_cents));
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': tipo.kind === 'pitch' ? 'CampingPitch' : 'Accommodation',
+  name: `${nombre} — ${config.name}`,
+  description: a.fichas[tipo.id],
+  occupancy: { '@type': 'QuantitativeValue', maxValue: tipo.capacity_max },
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'EUR',
+    price: (desde / 100).toFixed(2),
+    availability: 'https://schema.org/InStock',
+  },
+};
+
+const ctaHref = mode === 'instant' ? `${localePath(locale)}#mostrador` : localePath(locale, '/contacto');
+---
+
+<Base locale={locale} path={path} title={`${nombre} | ${config.name}`} description={a.fichas[tipo.id]}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <PageIntro titulo={nombre} intro={a.fichas[tipo.id]} />
+
+  <section class="mx-auto max-w-7xl px-5 pb-24 md:px-8">
+    <p class="mb-8 -mt-4">
+      <a
+        href={localePath(locale, '/alojamientos')}
+        class="text-[13px] font-medium text-tinta-suave transition-colors hover:text-tinta"
+      >
+        ← {a.volver}
+      </a>
+    </p>
+
+    <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+      {/* galería */}
+      <div class="flex flex-col gap-4">
+        {galeria.map((foto, i) => (
+          <Picture
+            src={foto}
+            alt={`${nombre} — ${i + 1}`}
+            widths={[640, 1024, 1600]}
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            class="aspect-3/2 w-full rounded-(--lc-radius-lg) object-cover"
+          />
+        ))}
+      </div>
+
+      {/* ficha + tarifas */}
+      <div class="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
+        <dl class="grid grid-cols-[auto_1fr] gap-x-8 gap-y-2.5 text-[14px]">
+          {filas.map(([k, v]) => (
+            <Fragment>
+              <dt class="font-medium text-tinta-suave">{k}</dt>
+              <dd class="tnum text-right font-medium">{v}</dd>
+            </Fragment>
+          ))}
+        </dl>
+        <p class="text-[12px] text-tinta-suave">{fill(f.unidades!, { n: tipo.unitCount })}</p>
+
+        <div>
+          <h2 class="font-display mb-3 text-[15px] font-semibold">{f.tarifasTitulo}</h2>
+          <ul class="flex flex-col divide-y divide-arena/50 border-y border-arena/50">
+            {data.seasons.map((s) => {
+              const plan = planPorTemporada(s.id);
+              if (!plan) return null;
+              return (
+                <li class="flex items-baseline justify-between gap-3 py-2.5 text-[14px]">
+                  <span>
+                    {c.tarifas.temporadas[s.id] ?? s.name}
+                    <span class="tnum ml-2 text-[12px] text-tinta-suave">
+                      {fecha(s.date_from, locale, { day: 'numeric', month: 'short' })} – {fecha(s.date_to, locale, { day: 'numeric', month: 'short' })}
+                    </span>
+                  </span>
+                  <span class="tnum text-right font-semibold whitespace-nowrap">{eur(plan.base_cents, locale)}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <ul class="mt-3 flex flex-col gap-1 text-[12px] text-tinta-suave">
+            {data.seasons.map((s) => {
+              const plan = planPorTemporada(s.id);
+              if (!plan || plan.min_stay === 1) return null;
+              return (
+                <li>
+                  {c.tarifas.temporadas[s.id] ?? s.name}: {fill(f.estanciaMin!, { n: plan.min_stay })}
+                  {plan.arrival_days?.includes(6) ? ` · ${f.llegadaSabado}` : ''}
+                </li>
+              );
+            })}
+            <li>{fill(f.notaPrecios!, { n: tipo.included_persons })}</li>
+          </ul>
+        </div>
+
+        <a
+          href={ctaHref}
+          class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
+        >
+          {a.consultar} →
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+---
+/** Cabecera editorial de las páginas interiores (el héroe queda para la home). */
+interface Props {
+  titulo: string;
+  intro?: string;
+}
+const { titulo, intro } = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-5 pt-28 pb-10 md:px-8 md:pt-36 md:pb-14">
+  <h1 class="font-display max-w-3xl text-[clamp(2.2rem,5vw,4rem)] leading-[1.02] font-semibold tracking-tight text-balance">
+    {titulo}
+  </h1>
+  {intro && <p class="mt-5 max-w-2xl text-[16px] leading-relaxed text-tinta-suave">{intro}</p>}
+</section>

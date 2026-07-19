@@ -1,0 +1,57 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { getContent, images } from '../../lib/content';
+import PageIntro from '../PageIntro.astro';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const c = getContent(locale);
+const p = c.entornoPagina;
+---
+
+<Base locale={locale} path="/entorno" title={p.seo.title} description={p.seo.description}>
+  <PageIntro titulo={p.titulo} intro={p.intro} />
+
+  <section class="mx-auto max-w-7xl px-5 pb-16 md:px-8">
+    <Picture
+      src={images['hero-dia']!}
+      alt=""
+      widths={[828, 1280, 1920, 2560]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+            fallbackFormat="webp"
+      loading="eager"
+      class="aspect-21/9 w-full rounded-(--lc-radius-lg) object-cover"
+    />
+  </section>
+
+  <section class="mx-auto grid max-w-7xl gap-x-16 gap-y-12 px-5 pb-16 md:grid-cols-2 md:px-8">
+    {p.secciones.map((s) => (
+      <article class="flex max-w-xl flex-col gap-3">
+        <h2 class="font-display text-[clamp(1.4rem,2.5vw,1.9rem)] leading-tight font-semibold tracking-tight">
+          {s.titulo}
+        </h2>
+        <p class="text-[15px] leading-relaxed text-tinta-suave">{s.texto}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="border-t border-arena/60 bg-arena-suave/50">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <h2 class="font-display mb-6 text-[13px] font-semibold tracking-[0.14em] text-tinta-suave uppercase">
+        {p.distancias.titulo}
+      </h2>
+      <dl class="grid gap-x-10 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+        {p.distancias.items.map((d) => (
+          <div class="flex items-baseline justify-between gap-4 border-b border-arena/50 pb-2.5 text-[14px]">
+            <dt>{d.lugar}</dt>
+            <dd class="tnum font-medium whitespace-nowrap">{d.valor}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</Base>
