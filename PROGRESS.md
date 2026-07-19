@@ -4,14 +4,31 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 9 🟨 PARCIAL (ver ADR 0012 — `TenantConfig`+`_template`+`ONBOARDING.md` hechos; `packages/cli` y el tenant de prueba real bloqueados por credenciales de Cloudflare) · Siguiente: sesión con Andreu presente para `packages/cli` + alta real, o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
+- **Fase actual**: 9 🟨 PARCIAL (ver ADR 0012 — `TenantConfig`+`_template`+`ONBOARDING.md`+`packages/cli` hechos; solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
-- **Último `/check`**: ✅ verde 2026-07-19 (37/37 tareas)
+- **Último `/check`**: ✅ verde 2026-07-19 (38/38 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 21 — 2026-07-19 · Fase 9 (continuación) · `packages/cli` — `pnpm new:camping` (ADR 0012 §7)
+
+**Hecho** (petición de Andreu en sesión cloud: "sigue perfilando... sin parar... con tu criterio cierra temas")
+- **`packages/cli`**: implementada la parte pura de la Capa 1 del alta que ADR 0012 §5 dejó explícitamente declarada como segura de construir sin credenciales ("se puede escribir y testear su lógica de plantillas sin ejecutar un solo comando contra Cloudflare"):
+  - `scaffold.ts` — `scaffoldTenant()` copia `tenants/_template` → `tenants/{slug}` sustituyendo los tokens de identidad (`__SLUG__`/`__NOMBRE_DEL_CAMPING__`/`__DOMINIO__`/`__ZONA__`/`__DIRECCION__` opcional) SOLO en `config.ts`/`seed.ts`/`wrangler.jsonc`/`package.json` — el resto (`content/*.json`, `custom/hooks.ts`, `data.ts`) se copia intacto porque su contenido es Capa 2 (interpretación del material real del cliente, no mecánica). Valida el slug (formato + reservados) y no sobrescribe un tenant existente. Genera un `README.md` de estado propio (no el instruccional de `_template`) y reporta qué `__TODO__` de contenido quedan y si falta el `database_id` real.
+  - `plan.ts` — `infraPlan()` pura: los 8 pasos de infraestructura real (crear D1, migrar, sembrar, construir, desplegar, DNS) como datos, en el orden correcto que exigen sus dependencias.
+  - `infra.ts` — `runInfraPlan()`, el único punto que puede tocar Cloudflare de verdad: doble candado deliberado, `--apply` en la CLI Y `LOGIC_CAMP_ALLOW_INFRA=1` en el entorno, ninguno basta solo. **No se ha invocado ni una vez contra la cuenta real** — sigue exactamente igual de bloqueado que antes de esta sesión, solo que ahora el código de la Capa 1 mecánica ya no hay que escribirlo a mano el día que haya credenciales.
+  - `cli.ts` — `pnpm new:camping <slug> --name --domain [--zone] [--address] [--apply]`.
+- **17 tests** contra el `_template` real del repo. Atrapado y arreglado un bug real durante el propio desarrollo: `walk()` seguía los symlinks de `node_modules` de pnpm (workspace) y arrastraba miles de ficheros del store (`5006 ficheros` en el primer smoke test) — arreglado excluyendo `node_modules`/`.turbo`/`dist`/`.wrangler`. También corregido un efecto colateral en `tenants/_template/wrangler.jsonc`: su comentario de cabecera citaba literalmente `__TODO__`/`__SLUG__` como texto documental, y la sustitución de tokens (ciega a propósito, sin parsear comentarios) lo dejaba con texto sin sentido en el tenant generado.
+- **Verificado de extremo a extremo, no solo con tests**: `pnpm new:camping smoke-test --name "Camping Smoke Test" --domain smoketest.example.com --zone example.com` → 16 ficheros, plan de 8 pasos impreso, nada ejecutado sin `--apply`; `pnpm --filter @tenant/smoke-test typecheck && lint` limpios sobre el tenant generado; tenant de prueba borrado después, no queda en el repo.
+- `docs/adr/0012-instancias-custom-asistente.md` §7 (addendum), `docs/ROADMAP.md` y `docs/BACKLOG.md` al día
+- **`pnpm check`**: ✅ verde (38/38, todo el monorepo con el paquete nuevo)
+
+**Sigue pendiente de Fase 9** (sin cambios de fondo, ver ADR 0012 §5): crear un tenant de prueba REAL contra la cuenta de Cloudflare y probar `runInfraPlan --apply` por primera vez — bloqueado por credenciales (`CLOUDFLARE_API_TOKEN` con los scopes de §5 del super prompt) y por mandato explícito de Andreu, no por código. Registro de extensiones (`custom/`) sigue diseñado sin conectar — se conecta cuando el primer `custom/` real lo necesite.
+**Pendiente de Andreu**: token de Cloudflare + decidir el primer camping candidato + estar presente en la sesión que ejecute el primer `--apply` real
+**`/check`**: ✅ verde (38/38) · cli 17/17
 
 ### Sesión 20 — 2026-07-19 · Fase 9 (parcial) · Instancias, TenantConfig, `_template` (ADR 0012)
 

@@ -63,11 +63,23 @@ Capa 1 (CLI) automatiza lo mecánico (D1, migración, seed, `wrangler.jsonc`, Wo
 - ✅ `tenants/_template/` completo (ficheros, sin ninguna infraestructura creada).
 - ✅ `docs/ONBOARDING.md` (primer borrador — el manual de la tarde).
 - ⬜ Registro de extensiones conectado en `apps/api`: diseñado en §3, sin implementar — no hay todavía ningún `custom/` real que lo necesite.
-- ⬜ `packages/cli` (`pnpm new:camping`): diseñado aquí, sin implementar.
+- ✅ `packages/cli` (`pnpm new:camping`) — **sesión 21** (ver §7): la parte pura implementada y testeada; la ejecución real contra Cloudflare sigue bloqueada por el mismo motivo.
 - ⬜ Crear de verdad un tenant de prueba nivel 1: bloqueado por credenciales/mandato, ver §5.
 
 ## Consecuencias
 
-- El código pierde los comentarios "esto es de TenantConfig en Fase 9" que tenía la política de tasa/cancelación — o se resuelve, o se anota explícitamente en BACKLOG con motivo (los que quedan: registro de extensiones y `packages/cli`, ambos anotados arriba).
-- Riesgo aceptado: sin `packages/cli`, sin `custom/` conectado y sin un tenant de prueba real, "menos de una tarde" sigue sin verificarse de punta a punta — queda como el criterio de "hecho" real de esta fase, pendiente de sesión con Andreu presente.
+- El código pierde los comentarios "esto es de TenantConfig en Fase 9" que tenía la política de tasa/cancelación — o se resuelve, o se anota explícitamente en BACKLOG con motivo (el que queda: registro de extensiones, ver arriba).
+- Riesgo aceptado: sin `custom/` conectado y sin un tenant de prueba real, "menos de una tarde" sigue sin verificarse de punta a punta — queda como el criterio de "hecho" real de esta fase, pendiente de sesión con Andreu presente. `packages/cli` reduce el riesgo (la parte mecánica ya no es manual) pero no lo elimina.
 - Pendiente de Andreu: token de Cloudflare con los scopes de §5, decidir el primer camping candidato para el tenant de prueba y el primer `custom/` real, y estar presente (o delegar explícitamente) en la sesión que ejecute altas reales.
+
+## 7. Addendum (sesión 21) — `packages/cli` implementado
+
+Confirmando lo previsto en §5 ("se puede escribir y testear su lógica de plantillas sin ejecutar un solo comando contra Cloudflare — eso sí es seguro"): esta sesión implementa la parte pura de `pnpm new:camping`, sin tocar ninguna cuenta real.
+
+- **`scaffold.ts`**: copia `tenants/_template` → `tenants/{slug}` sustituyendo los tokens de identidad (`__SLUG__`/`__NOMBRE_DEL_CAMPING__`/`__DOMINIO__`/`__ZONA__`/`__DIRECCION__` opcional) SOLO en los 4 ficheros que los llevan (`config.ts`, `seed.ts`, `wrangler.jsonc`, `package.json`) — `content/*.json`, `custom/hooks.ts` y `data.ts` se copian byte a byte porque sus TODOs son Capa 2 (interpretar el material real del cliente), no mecánicos. Genera un `README.md` de estado propio del tenant (no copia el de `_template`, que es instruccional). Valida el slug (regex + reservados `_template`/`demo`) y rechaza sobrescribir un tenant existente. Reporta qué queda pendiente: `__TODO__` de contenido por fichero y si `database_id` sigue sin la D1 real.
+- **`plan.ts`**: `infraPlan()` — función pura, la checklist de comandos de la Capa 1 (crear D1, migrar, sembrar, construir, desplegar, DNS) como datos, en el orden correcto. No ejecuta nada.
+- **`infra.ts`**: `runInfraPlan()` — el único punto que puede tocar Cloudflare de verdad, con doble candado deliberado (ninguno basta solo): flag `--apply` en la CLI Y `LOGIC_CAMP_ALLOW_INFRA=1` en el entorno. Sin los dos, lanza `InfraNotConfirmedError` antes de invocar un solo `spawnSync`.
+- **`cli.ts`** (`pnpm new:camping <slug> --name … --domain … [--zone …] [--address …] [--apply]`): entrypoint que encadena las tres piezas e imprime el estado en cada paso.
+- **17 tests** (`scaffold.test.ts`/`plan.test.ts`/`infra.test.ts`) contra el `_template` real del repo — incluye el bug real que atrapó la propia sesión: `walk()` seguía symlinks de `node_modules` (pnpm) y arrastraba miles de ficheros del store; arreglado excluyendo `node_modules`/`.turbo`/`dist`/`.wrangler` del recorrido. Verificado además a mano: `pnpm new:camping smoke-test --name … --domain …` seguido de `pnpm --filter @tenant/smoke-test typecheck && lint`, ambos limpios, tenant de prueba borrado después.
+- Efecto colateral corregido en `tenants/_template/wrangler.jsonc`: su comentario de cabecera mencionaba literalmente `__TODO__`/`__SLUG__` como texto documental — la sustitución de tokens (deliberadamente ciega, sin parseo de comentarios) lo convertía en texto sin sentido en el tenant generado. Reescrito para no citar los tokens por nombre.
+- **Sigue sin implementar**: la ejecución real de `runInfraPlan()` contra la cuenta de Cloudflare — sigue bloqueada por falta de credenciales y mandato, exactamente igual que antes de esta sesión. Nada en `--apply` se ha invocado nunca contra la cuenta real.
