@@ -58,6 +58,8 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 | **B3** | Landing de producto (venta al CEO) | Sitio comercial nuevo que vende Logic Camp al dueño de camping: qué es, los 4 niveles (`TIERS.md`) como escalera de precio, web + gestor, el planning como pieza estrella, enlace a la demo viva (`camp.logic2b.com`), captación de contacto/solicitud de demo. 100% marca Logic2B. Multi-idioma. | Un director de camping entiende la propuesta y pide demo sin llamada previa; enlaza demo + docs; SEO/OG propios |
 | **B4** | Documentación de producto | Docs de Logic Camp con layout del DS: guía de la recepcionista (operar el gestor), guía del dueño (niveles, qué incluye cada uno), y ficha técnica para el "informático de confianza". Reutiliza/alinea con `FUNCIONALIDADES.md` y `ONBOARDING.md`. | Un cliente resuelve dudas de uso sin escribir a soporte; enlazada desde landing y dashboard |
 
+**Estado del Frente B** (2026-07-19): **B0-lite + B3 HECHOS y en vivo** (ADR 0016 aceptado). `packages/ui` con tokens/tema/isotipo; `apps/site` con la landing (es/en/ca) sirviéndose en `camp.logic2b.com/`; demo movida a `/demo/` (routing por prefijo, `localePath` consciente del `base`); `POST /api/leads`. `pnpm check` verde (41/41). Pendientes: **B1** (reskin del dashboard a Logic2B UI), **B2** (estructura Logic2B en la web de tenant), **B4** (documentación) — cada uno con su ADR. Remates de B3 en BACKLOG (OG image real, capturas del planning reales, fr/de/nl, re-correr E2E del funnel bajo `/demo/`).
+
 ### Detalle por fase (checklists — se afinan en cada ADR)
 
 **B0 · Fundación del DS Logic2B**

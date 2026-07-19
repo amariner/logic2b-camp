@@ -4,6 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Frente B (marca Logic2B + landing de producto + docs)**: abierto 2026-07-19. **B0-lite + B3 HECHOS y en vivo** (ADR 0016): `packages/ui` con tema/tokens/isotipo Logic2B; `apps/site` = landing de producto (es/en/ca) sirviéndose en `camp.logic2b.com/`; demo movida a `camp.logic2b.com/demo/` (routing por prefijo en el mismo Worker, `localePath` consciente del `base`); `POST /api/leads`. Deploy manual con `pnpm --filter @logic-camp/api deploy:demo` (ahora compone site+web+dashboard, migra y despliega). Pendientes B1 (dashboard→Logic2B UI), B2 (web de tenant), B4 (docs) + remates en BACKLOG. Contrato de marca en `docs/BRAND.md`.
 - **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). BACKLOG 7.x y 8.x cerrados en la misma sesión cloud (ADR 0014 + ADR 0015): cron de aviso de reservas `pending` colgadas y recordatorio de llegada al huésped, ambos genéricos para cualquier tenant con pagos (no solo la demo). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (38/38 tareas)
@@ -12,6 +13,22 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 28 — 2026-07-19 · Andreu presente · Frente B: marca Logic2B + landing de producto (ADR 0016)
+
+**Contexto**: sesión de revisión con Andreu. (1) Se detectó que `main` local estaba en Fase 4 (21 commits atrás) → sincronizado. (2) La demo `camp.logic2b.com` estaba CAÍDA (web+dashboard 404, D1 sin migrar) → arreglada en vivo (deploy manual + 2 migraciones remotas). (3) Se decidió **deploy manual** (CI descartado: la sesión OAuth no puede crear API token, 403/9109) y `deploy:demo` ahora migra. (4) Andreu pidió alinear la marca con Logic2B y, sobre todo, **crear la landing de producto que faltaba** (vender Logic Camp al director de camping, distinta de la demo del camping ficticio) + documentación.
+
+**Hecho**
+- `docs/BRAND.md` + `docs/brand/logo-mark.svg`: contrato de marca Logic2B extraído del CSS real de `ui.logic2b.com` (shadcn "neutral": Inter Variable + Space Grotesk, tokens oklch light/dark, radius 10px, isotipo).
+- `docs/ROADMAP.md`: **Frente B** (B0–B4) en paralelo a las 12 fases, con checklist y decisiones (landing en `/`, demo a `/demo/`, deploy manual).
+- ADR 0016 (aceptado por Andreu): landing de producto + fundación DS B0-lite + routing por prefijo.
+- **B0-lite**: `packages/ui` (antes vacío) con `theme.css` (tokens Logic2B), fuentes self-hosted, isotipo. Lo consumirá el dashboard en B1.
+- **B3 landing** (`apps/site`, Astro, marca Logic2B): héroe, problema, producto (web+gestor), planning pieza estrella, 4 niveles (TIERS), alta en una tarde, FAQ, formulario "pedir demo". i18n es/en/ca, SEO/OG/hreflang/sitemap/robots, indexable.
+- `POST /api/leads` (`apps/api/src/routes/leads.ts`): lead por email (reusa Resend), sin tabla ni tocar `enquiries`.
+- **Routing** `/demo/`: `apps/web` gana `base` configurable (`BASE_PATH=/demo`); `localePath` consciente del `base` → funnel/nav/canonical/hreflang/sitemap bajo `/demo/` con un cambio; demo `noindex` bajo `/demo/`. `wrangler.jsonc` sirve el bundle compuesto (`apps/site/dist`); `deploy:demo` compone site+web(base)+dashboard → migra → deploy.
+- **Verificado**: `pnpm check` verde (41/41, API 59/59); bundle compuesto servido en local (/ landing, /demo/ Cala Sereno, /admin/ dashboard, /demo/alojamientos con base); **desplegado y en vivo** (/ landing, /demo/ demo, /admin/ dashboard, `/api/leads` → `{ok:true}`, todo 200 tras refrescar caché de borde).
+
+**`/check`**: ✅ verde (41/41)
 
 ### Sesión 27 — 2026-07-19 · BACKLOG 7.x · ADR 0015 — recordatorio de llegada
 

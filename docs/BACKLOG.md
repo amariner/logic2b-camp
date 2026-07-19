@@ -22,3 +22,11 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [10] Cloudflare Web Analytics en la demo — necesita un token real del panel de Cloudflare, mismo bloqueo que Resend/Stripe/Redsys en fases anteriores — 2026-07-19
 - [10] `ui.logic2b.com` / Storybook — es su propio objetivo de Fase 10 (paquete nuevo, deploy propio), no cabe como añadido de la sesión del reset nocturno sin diluir "una sesión, un objetivo" — 2026-07-19
 - [10] Reset nocturno v2: recalcular el ancla para que "hoy" caiga siempre dentro de la ventana de llegadas/salidas del día, no solo mitad de temporada alta del año en curso — exige redistribuir `generateSeed` con una franja de reservas alrededor de la fecha real además del bloque histórico de temporada alta, tocando lógica con 10 tests calibrados sobre el ancla fija; declarado fuera de v1 en ADR 0013 §1 — 2026-07-19
+- [B3] OG image real de la landing (hoy `og:image` apunta al isotipo SVG como placeholder) — generar una social card con la marca Logic2B — 2026-07-19
+- [B3] Sustituir la maqueta CSS del planning en la landing por captura/animación REAL del tape chart de la demo — 2026-07-19
+- [B3] Idiomas fr/de/nl de la landing (hoy es/en/ca) — mismos ficheros `apps/site/src/content/{lang}.json` — 2026-07-19
+- [B3] Re-correr el E2E de Playwright del funnel de reserva contra la demo bajo `/demo/` (verificado por HTML generado y `pnpm check`, pero el flujo interactivo completo no se ha re-ejecutado en vivo) — 2026-07-19
+- [B] Actualizar `docs/DEMO-SCRIPT.md`: las URLs de la demo pasan de `camp.logic2b.com/` a `camp.logic2b.com/demo/` (ADR 0016) — 2026-07-19
+- [B1] Reskin del dashboard a Logic2B UI (su ADR): componentes shadcn en `packages/ui`, sidebar agrupada, isotipo, radius 10px, planning con tokens del DS — 2026-07-19
+- [B2] Estructura Logic2B en la web de tenant + isotipo "powered by Logic2B" en el pie (su ADR) — 2026-07-19
+- [B4] Documentación de producto con marca Logic2B (su ADR) — 2026-07-19
