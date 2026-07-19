@@ -2,7 +2,7 @@
 
 > Objetivo de negocio (ADR 0012, §7 del super prompt): que dar de alta un camping cueste **una tarde**, no tres días. Este documento es el manual; si en algún punto hay que improvisar algo que no está aquí, el manual no está terminado — corrígelo antes de seguir.
 
-Primer borrador (sesión de Fase 9 en curso — ver `docs/adr/0012-instancias-custom-asistente.md`). **Todavía no ejecutado de punta a punta contra un tenant real**: eso es el criterio de "hecho" de esta fase, pendiente de una sesión con Andreu presente y sus credenciales de Cloudflare.
+Ver `docs/adr/0012-instancias-custom-asistente.md` (§1-6 diseño y estado, §7 `packages/cli`). **Todavía no ejecutado de punta a punta contra un tenant real**: eso es el criterio de "hecho" de esta fase, pendiente de una sesión con Andreu presente y sus credenciales de Cloudflare — la Capa 1 mecánica ya está automatizada (ver abajo), lo que falta es solo infraestructura real y mandato para tocarla.
 
 ## Antes de empezar
 
@@ -13,13 +13,15 @@ Necesitas (§5 del super prompt):
 
 ## Los tres capas del alta
 
-### Capa 1 — mecánica (hoy a mano; `pnpm new:camping` la automatizará cuando exista `packages/cli`)
+### Capa 1 — mecánica (automatizada por `pnpm new:camping`, `packages/cli`)
 
-1. `cp -r tenants/_template tenants/{slug}` y sigue el checklist de `tenants/_template/README.md` — es la fuente de verdad operativa, este documento es el resumen narrativo.
-2. Rellena `config.ts`, `theme.css`, `content/{lang}.json` (borra los idiomas que no aplican), `wrangler.jsonc`.
-3. Infraestructura real: `wrangler d1 create logic-camp-{slug}` → migra → siembra (con los datos de la Capa 2, no los de ejemplo) → construye la web con `TENANT={slug}` → despliega → DNS.
+1. `pnpm new:camping {slug} --name "Nombre real" --domain dominio.com [--zone zona.com] [--address "..."]` — copia `tenants/_template` a `tenants/{slug}` y rellena `config.ts`, `seed.ts`, `wrangler.jsonc` y `package.json` con la identidad (slug/nombre/dominio/zona) sola. Imprime qué queda pendiente: los `__TODO__` de `content/{lang}.json` (Capa 2, borra los idiomas que no aplican) y que `database_id` sigue sin la D1 real.
+2. El mismo comando imprime el plan de infraestructura (Capa 3 de este documento) en el orden correcto — no hace falta memorizarlo ni tenerlo en otro sitio.
+3. Ejecutar ese plan de verdad contra Cloudflare requiere `--apply` **y** `LOGIC_CAMP_ALLOW_INFRA=1` en el entorno (doble candado deliberado, ver ADR 0012 §7) — sin los dos, no toca la cuenta real. Esto es lo único de la Capa 1 que sigue sin poder hacerse sin las credenciales de §5 y a Andreu presente.
 4. Secrets según los módulos contratados: `RESEND_API_KEY` (notificaciones), `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` o `REDSYS_MERCHANT_KEY` (pagos, ADR 0011) — nunca en `config.ts`, siempre `wrangler secret put`.
 5. Cambia la contraseña del owner sembrado antes de dar el acceso al cliente.
+
+El checklist completo, fichero a fichero, sigue en `tenants/_template/README.md` — este documento es el resumen narrativo, aquel es la fuente de verdad operativa.
 
 ### Capa 2 — interpretativa (el margen de Logic2B — slash command `/new-camping`)
 
