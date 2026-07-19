@@ -222,7 +222,19 @@ En el panel, la bandeja de solicitudes (§6.8) las gestiona por estados: **nueva
 
 ---
 
-## 8. Seguridad y datos
+## 8. Notificaciones por email
+
+El sistema avisa solo, en el idioma de cada cual:
+
+- **Al camping**: aviso de cada solicitud nueva en su buzón interno.
+- **Al cliente**: acuse de recibo de su solicitud, **confirmación de reserva** con el código, el desglose completo y un botón para gestionarla, y confirmación de **cancelación** con el reembolso previsto — cada uno en el idioma en que navegó (los 6 soportados).
+- **Control total desde Ajustes**: cada notificación se activa o desactiva al momento, sin despliegue, con el remitente del dominio del camping y el buzón interno configurables.
+- **Todo queda registrado**: cada email (enviado, fallido o desactivado) deja rastro consultable — nunca la duda de "¿le llegó?".
+- Robustez: el envío ocurre después de responder; un problema del proveedor de email jamás afecta a una reserva.
+
+*Nota: el envío real por camping se activa al verificar su dominio de correo (proceso de alta con Logic2B).*
+
+## 9. Seguridad y datos
 
 - **Una base de datos por camping. Física, no lógica.** Los datos de un camping no comparten base con los de ningún otro: la fuga cruzada no es que esté prohibida — es que **no hay camino** por el que pueda ocurrir. Hay un test automático explícito que lo verifica en cada entrega.
 - Infraestructura en el borde (Cloudflare): la web responde rápido desde el punto más cercano al visitante, en Alemania o en Argentina.
@@ -231,13 +243,12 @@ En el panel, la bandeja de solicitudes (§6.8) las gestiona por estados: **nueva
 
 ---
 
-## 9. Qué está en camino
+## 10. Qué está en camino
 
 Con fecha en el plan de trabajo, no humo:
 
 | Módulo | Qué añade |
 |---|---|
-| **Notificaciones** | Emails automáticos en los 6 idiomas (confirmación, recordatorio de llegada, aviso de solicitud…) con remitente del dominio del camping, activables una a una sin tocar código |
 | **Pagos online** | Stripe **y Redsys** (la pasarela de los bancos españoles), con modos: sin cobro / señal / total / con fianza. Reembolsos desde la ficha. Un camping puede operar sin pasarela y activarla después |
 | **Gestión ampliada** | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
@@ -245,7 +256,7 @@ Con fecha en el plan de trabajo, no humo:
 
 ---
 
-## 10. Ficha técnica (para el informático de confianza)
+## 11. Ficha técnica (para el informático de confianza)
 
 | | |
 |---|---|

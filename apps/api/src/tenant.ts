@@ -10,6 +10,8 @@ export type Bindings = {
   TENANT_SLUG?: string;
   /** wrangler secret en producción; en dev/test hay fallback (ADR 0005) */
   AUTH_SECRET?: string;
+  /** wrangler secret; sin él las notificaciones quedan 'disabled' (ADR 0010) */
+  RESEND_API_KEY?: string;
 };
 
 export type TenantContext = {

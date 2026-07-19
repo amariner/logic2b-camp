@@ -9,6 +9,7 @@ import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { provisionUser, requireRole, type AuthEnv } from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
+import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import {
   adminBookingCreateSchema,
   bookingActionSchema,
@@ -254,6 +255,11 @@ export const adminRoutes = new Hono<AuthEnv>()
           channel,
         },
       );
+      await notifyBookingConfirmed(
+        c,
+        body,
+        result.body as Parameters<typeof notifyBookingConfirmed>[2],
+      );
     }
     return c.json(result.body, result.status);
   })
@@ -339,7 +345,17 @@ export const adminRoutes = new Hono<AuthEnv>()
       from: booking.status,
       to: t.to,
     });
-    // Fase 8: cancelación con reembolso según política (calculateCancellationRefund)
+    // cancelación desde el mostrador → email al titular (Fase 8: reembolso real)
+    if (t.to === 'cancelled') {
+      const lead = (
+        await db
+          .select({ email: schema.guests.email })
+          .from(schema.bookingGuests)
+          .innerJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
+          .where(and(eq(schema.bookingGuests.bookingId, id), eq(schema.bookingGuests.isLead, true)))
+      )[0];
+      if (lead?.email) await notifyBookingCancelled(c, booking, lead.email);
+    }
     return c.json({ id, status: t.to });
   })
 

@@ -266,6 +266,16 @@ const es = {
   'aju.errorGuardar': 'No se han podido guardar (¿permisos de gerencia?).',
   'aju.nota':
     'El nivel de producto y los idiomas se cambian con Logic2B (afectan al despliegue de la web).',
+  'aju.notificaciones': 'Notificaciones por email',
+  'aju.notifNota':
+    'Se activan y desactivan al momento, sin despliegue. El envío real requiere el dominio verificado en Resend (lo gestiona Logic2B); mientras tanto quedan registradas como desactivadas.',
+  'aju.notifFrom': 'Remitente (From)',
+  'aju.notifTo': 'Buzón interno de avisos',
+  'aju.guardarNotif': 'Guardar notificaciones',
+  'notif.enquiry_received': 'Aviso al camping de solicitud nueva',
+  'notif.enquiry_autoreply': 'Acuse de recibo al solicitante',
+  'notif.booking_confirmed': 'Confirmación de reserva al cliente',
+  'notif.booking_cancelled': 'Cancelación de reserva al cliente',
   'bloqueo.maintenance': 'Mantenimiento',
   'bloqueo.owner': 'Propietario',
   'bloqueo.longstay': 'Larga estancia',

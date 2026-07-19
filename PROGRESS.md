@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 ✅ COMPLETA (9 pantallas) · Siguiente: **Fase 7 — Notificaciones** (ADR primero: React Email 6 idiomas, Resend multidominio, Queues+Cron, `notifications_log`, ajustes por tenant; falta la API key de Resend → capa con driver y activación por secret). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 7 ✅ HECHA (v1 sin envío real — se activa con `RESEND_API_KEY`) · Siguiente: **Fase 8 — Pagos** (ADR primero: `PaymentProvider` stripe/redsys/none, modos, webhooks idempotentes) o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 18 — 2026-07-19 · Fase 7 · Notificaciones (ADR 0010)
+
+**Hecho** (ADR 0010 aceptado por delegación explícita en sesión cloud)
+- **`packages/notifications`** (puro, sin DB): tipos de evento, diccionarios de email en 6 idiomas (+ etiquetas de conceptos del desglose), plantillas como funciones `(payload, lang) → {subject, html, text}` con layout de marca sin webfonts, `resendSender` (POST HTTP, sin SDK) y `noopSender`. **6 tests** (idiomas, céntimos formateados, escape XSS, fallback de idioma)
+- **`apps/api/notify.ts`**: único punto que toca `notifications_log` — lee `modules.notifications` del tenant, decide (on/off por evento SIN deploy), renderiza, envía y registra sent/failed/**disabled** (sin `RESEND_API_KEY` no sale nada y queda constancia). `waitUntil` tras responder; en tests se espera inline
+- **4 eventos** enganchados: `enquiry_received` (al buzón del camping) + `enquiry_autoreply` (al solicitante en SU idioma) en el POST público; `booking_confirmed` (web Y alta manual, con desglose traducido y botón de gestión) ; `booking_cancelled` (gestión web con reembolso previsto Y acción del dashboard, buscando el email del titular)
+- **Ajustes**: sección de notificaciones con 4 toggles + remitente + buzón interno (PATCH auditado). Seed y fixtures con config
+- **38 tests API** (+2: solicitud deja 2 filas en el log con status disabled; reserva web deja `booking_confirmed` y cancelar añade `booking_cancelled`)
+- **Verificado contra el Worker real**: solicitud FR por curl → 2 filas en el log; reserva CA creada y cancelada → sus 2 filas; toggles guardan y persisten tras recargar; previews HTML de los emails generadas. Seed restaurado
+- Desviaciones documentadas en el ADR: plantillas HTML puras (React Email en BACKLOG), `waitUntil` en vez de Queues (BACKLOG), idioma del aviso interno fijo a es hasta TenantConfig (F9)
+
+**Pendiente de Andreu**: verificar dominio en Resend y `wrangler secret put RESEND_API_KEY` — con eso los emails salen sin tocar código
+**`/check`**: ✅ verde (33/33) · API 38/38 · notifications 6/6
 
 ### Sesión 17 — 2026-07-19 · Fase 6 (cierre) · Clientes + informes + ajustes
 

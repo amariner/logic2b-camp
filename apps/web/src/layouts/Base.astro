@@ -41,8 +41,15 @@ const navLinks = [
 const demoThemes = config.demoThemes ?? [];
 const defaultTheme = demoThemes[0];
 
-// aplica el tema guardado ANTES del primer paint (anti-FOUC)
-const themeBootScript = `try{var t=localStorage.getItem('lc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`;
+// aplica el tema ANTES del primer paint (anti-FOUC). ?tema=x en la URL
+// gana y se persiste: el comercial envía enlaces con el tema puesto.
+const themeBootScript = `try{
+var v=${JSON.stringify(demoThemes)};
+var p=new URLSearchParams(location.search).get('tema');
+if(p&&v.indexOf(p)>-1){if(p===v[0]){localStorage.removeItem('lc-theme')}else{localStorage.setItem('lc-theme',p)}}
+var t=localStorage.getItem('lc-theme');
+if(t&&v.indexOf(t)>-1)document.documentElement.dataset.theme=t;
+}catch(e){}`;
 
 // interacción del selector: cambia el atributo, persiste y marca el activo
 const themeMenuScript = `

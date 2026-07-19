@@ -1,6 +1,7 @@
 /** Tests de integración de la API pública contra D1 real (workerd). */
 import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
+import { eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { app } from '../src/app';
 import { seedTenant } from './fixtures';
@@ -126,6 +127,70 @@ describe('POST /api/enquiries', () => {
     const { id } = (await res.json()) as { id: string };
     const rows = await createDb(env.DB).select().from(schema.enquiries);
     expect(rows.some((r) => r.id === id && r.status === 'new')).toBe(true);
+  });
+
+  it('notificaciones (ADR 0010): deja rastro en notifications_log; sin API key = disabled', async () => {
+    const res = await app.request(
+      '/api/enquiries',
+      json({
+        message: 'Avec électricité svp',
+        contact: { name: 'Luc', email: 'luc@example.com' },
+        locale: 'fr',
+      }),
+      envA,
+    );
+    expect(res.status).toBe(201);
+    const { id } = (await res.json()) as { id: string };
+    const log = await createDb(env.DB)
+      .select()
+      .from(schema.notificationsLog)
+      .where(eq(schema.notificationsLog.enquiryId, id));
+    // aviso al camping + acuse al solicitante
+    expect(log.map((l) => l.template).sort()).toEqual(['enquiry_autoreply', 'enquiry_received']);
+    // sin RESEND_API_KEY en el entorno de test: no se envía nada y queda constancia
+    expect(log.every((l) => l.status === 'disabled' && l.channel === 'email')).toBe(true);
+  });
+});
+
+describe('notificaciones de reserva (ADR 0010)', () => {
+  it('crear por la web deja booking_confirmed en el log; cancelar deja booking_cancelled', async () => {
+    const create = await app.request(
+      '/api/bookings',
+      json({
+        unitTypeId: 'ut_std',
+        dateFrom: '2026-09-14',
+        dateTo: '2026-09-17',
+        occupancy: { adults: 2, childrenAges: [], pets: 0, vehicles: 1 },
+        extraIds: [],
+        holder: { name: 'Eva Serra', email: 'eva@example.com' },
+        locale: 'ca',
+      }),
+      envA,
+    );
+    expect(create.status).toBe(201);
+    const { id, code } = (await create.json()) as { id: string; code: string };
+
+    const db = createDb(env.DB);
+    const afterCreate = await db
+      .select()
+      .from(schema.notificationsLog)
+      .where(eq(schema.notificationsLog.bookingId, id));
+    expect(afterCreate.map((l) => l.template)).toEqual(['booking_confirmed']);
+
+    const cancel = await app.request(
+      `/api/bookings/${code}/cancel`,
+      json({ email: 'eva@example.com' }),
+      envA,
+    );
+    expect(cancel.status).toBe(200);
+    const afterCancel = await db
+      .select()
+      .from(schema.notificationsLog)
+      .where(eq(schema.notificationsLog.bookingId, id));
+    expect(afterCancel.map((l) => l.template).sort()).toEqual([
+      'booking_cancelled',
+      'booking_confirmed',
+    ]);
   });
 });
 

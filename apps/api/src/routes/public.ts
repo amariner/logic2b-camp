@@ -15,6 +15,7 @@ import { and, eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from '../data';
+import { notifyBookingCancelled, notifyBookingConfirmed, notifyEnquiry } from '../notify';
 import {
   availabilityQuerySchema,
   bookingCancelSchema,
@@ -276,7 +277,7 @@ export const publicRoutes = new Hono<Env>()
       source: body.source,
       createdAt: nowIso(),
     });
-    // Fase 7: hook onEnquiryReceived → email Resend
+    await notifyEnquiry(c, id, body);
     return c.json({ id, status: 'new' }, 201);
   })
 
@@ -290,6 +291,13 @@ export const publicRoutes = new Hono<Env>()
       idemKey: c.req.header('Idempotency-Key'),
       taxPolicy: TAX_POLICY,
     });
+    if (result.ok && result.status === 201) {
+      await notifyBookingConfirmed(
+        c,
+        parsed.data,
+        result.body as Parameters<typeof notifyBookingConfirmed>[2],
+      );
+    }
     return c.json(result.body, result.status);
   })
 
@@ -364,7 +372,8 @@ export const publicRoutes = new Hono<Env>()
         createdAt: ts,
       }),
     ]);
-    // Fase 7: hook onBookingCancelled → email · Fase 8: ejecución real del reembolso
+    // Fase 8: ejecución real del reembolso
+    await notifyBookingCancelled(c, booking, parsed.data.email, refund.refundCents);
     return c.json({ code: booking.code, status: 'cancelled', refund });
   })
 

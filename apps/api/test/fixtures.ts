@@ -13,7 +13,13 @@ export async function seedTenant(d1: D1Database, slug: string) {
     timezone: 'Europe/Madrid',
     currency: 'EUR',
     locales: ['es', 'en'],
-    modules: { booking: 'instant' },
+    modules: {
+      booking: 'instant',
+      notifications: {
+        notifyTo: 'recepcion@alfa.test',
+        from: `Camping ${slug} <reservas@${slug}.test>`,
+      },
+    },
   });
 
   await db.insert(schema.seasonsCalendar).values([

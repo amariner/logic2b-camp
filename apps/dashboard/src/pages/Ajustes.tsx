@@ -114,8 +114,110 @@ export default function Ajustes() {
           >
             {t('aju.guardar')}
           </button>
+
+          <Notificaciones data={data} onSaved={() => setMsg({ text: t('aju.guardado') })} />
         </form>
       )}
     </div>
+  );
+}
+
+/** on/off por evento SIN deploy (ADR 0010): edita modules.notifications vía el PATCH auditado. */
+const EVENTOS = [
+  'enquiry_received',
+  'enquiry_autoreply',
+  'booking_confirmed',
+  'booking_cancelled',
+] as const;
+
+type NotifConfig = {
+  enabled?: Partial<Record<(typeof EVENTOS)[number], boolean>>;
+  from?: string;
+  notifyTo?: string;
+};
+
+function Notificaciones({ data, onSaved }: { data: TenantSettings; onSaved: () => void }) {
+  const qc = useQueryClient();
+  const actual = (data.modules.notifications ?? {}) as NotifConfig;
+  const [draft, setDraft] = useState<NotifConfig | null>(null); // null = sin cambios
+  const config = draft ?? actual;
+  const [error, setError] = useState(false);
+
+  const guardar = useMutation({
+    mutationFn: (next: NotifConfig) =>
+      apiPatch('/api/admin/settings', { modules: { ...data.modules, notifications: next } }),
+    onSuccess: () => {
+      setDraft(null);
+      setError(false);
+      onSaved();
+      void qc.invalidateQueries({ queryKey: ['settings'] });
+    },
+    onError: () => setError(true),
+  });
+
+  const label = 'text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase';
+  const input =
+    'w-full max-w-sm rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1.5 text-[13px]';
+
+  return (
+    <fieldset className="mt-2 flex flex-col gap-2 border-t border-arena/60 pt-4">
+      <legend className="lc-panel-h float-left w-full">{t('aju.notificaciones')}</legend>
+      <p className="text-[12px] text-tinta-suave">{t('aju.notifNota')}</p>
+      {EVENTOS.map((ev) => (
+        <label key={ev} className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={config.enabled?.[ev] ?? true}
+            onChange={(e) =>
+              setDraft({
+                ...config,
+                enabled: { ...config.enabled, [ev]: e.target.checked },
+              })
+            }
+          />
+          {t(`notif.${ev}`)}
+        </label>
+      ))}
+      <div>
+        <label htmlFor="aju-notif-from" className={label}>
+          {t('aju.notifFrom')}
+        </label>
+        <input
+          id="aju-notif-from"
+          type="text"
+          placeholder="Camping X <reservas@campingx.com>"
+          value={config.from ?? ''}
+          onChange={(e) => setDraft({ ...config, from: e.target.value })}
+          className={input}
+        />
+      </div>
+      <div>
+        <label htmlFor="aju-notif-to" className={label}>
+          {t('aju.notifTo')}
+        </label>
+        <input
+          id="aju-notif-to"
+          type="email"
+          value={config.notifyTo ?? ''}
+          onChange={(e) => setDraft({ ...config, notifyTo: e.target.value })}
+          className={input}
+        />
+      </div>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          disabled={draft === null || guardar.isPending}
+          onClick={() => draft && guardar.mutate(draft)}
+          className="w-fit rounded-(--lc-radius) border border-pino bg-pino px-3 py-1.5 font-semibold text-hueso hover:bg-pino-oscuro disabled:opacity-40"
+        >
+          {t('aju.guardarNotif')}
+        </button>
+        {error && (
+          <span role="status" className="text-[12px] font-medium text-mar">
+            {t('aju.errorGuardar')}
+          </span>
+        )}
+      </div>
+    </fieldset>
   );
 }
