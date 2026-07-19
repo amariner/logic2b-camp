@@ -59,3 +59,58 @@ export type PlanningData = {
   bookings: PlanningBooking[];
   blocks: PlanningBlock[];
 };
+
+// ---------- tipos de /api/admin/bookings/:id (la ficha) ----------
+
+export type PriceLine = {
+  concept: string;
+  detail: Record<string, string | number>;
+  amountCents: number;
+};
+
+export type BookingGuest = {
+  id: string;
+  name: string;
+  surname: string;
+  email: string | null;
+  phone: string | null;
+  docType: string | null;
+  docNumber: string | null;
+  isLead: boolean;
+};
+
+export type BookingPayment = {
+  id: string;
+  provider: 'stripe' | 'redsys' | 'manual' | 'none';
+  /** Con signo: reembolso = negativo. sum == paidCents */
+  amountCents: number;
+  status: 'pending' | 'succeeded' | 'failed' | 'refunded';
+  createdAt: string;
+};
+
+export type BookingDetail = {
+  id: string;
+  code: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'no_show' | 'completed';
+  channel: 'web' | 'phone' | 'walkin' | 'import';
+  dateFrom: string;
+  dateTo: string;
+  unitTypeId: string;
+  unitId: string | null;
+  occupancy: { adults: number; childrenAges: number[]; pets: number; vehicles: number };
+  priceBreakdown: {
+    lines: PriceLine[];
+    totalCents: number;
+    touristTaxCents: number;
+    currency: string;
+  };
+  totalCents: number;
+  paidCents: number;
+  touristTaxCents: number;
+  depositCents: number;
+  notes: string | null;
+  locale: string;
+  createdAt: string;
+  guests: BookingGuest[];
+  payments: BookingPayment[];
+};

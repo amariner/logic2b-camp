@@ -15,6 +15,7 @@ import {
   type PlanningData,
   type PlanningUnit,
 } from '../api';
+import BookingPanel from '../components/BookingPanel';
 import { t } from '../i18n';
 
 const DAY_MS = 86_400_000;
@@ -212,11 +213,17 @@ export default function Planning() {
     d.el.style.zIndex = '';
     d.el.style.opacity = '';
     if (d.moved && d.targetUnitId) reassign.mutate({ id: d.bookingId, unitId: d.targetUnitId });
+    else if (!d.moved) openPanel(d.bookingId, d.el); // un click (sin drag) abre la ficha
     dragRef.current = null;
   };
 
-  // teclado: ↑/↓ mueve la reserva a la unidad adyacente del MISMO tipo
+  // teclado: ↑/↓ reasigna a la unidad adyacente del MISMO tipo · Enter/Espacio abre la ficha
   const onBarKeyDown = (e: React.KeyboardEvent, b: PlanningBooking, sourceUnitId: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openPanel(b.id, e.currentTarget as HTMLElement);
+      return;
+    }
     if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
     e.preventDefault();
     if (!data) return;
@@ -224,6 +231,19 @@ export default function Planning() {
     const idx = sameType.findIndex((u) => u.id === sourceUnitId);
     const next = sameType[idx + (e.key === 'ArrowDown' ? 1 : -1)];
     if (next) reassign.mutate({ id: b.id, unitId: next.id });
+  };
+
+  // ---------- ficha (sesión 17): panel lateral, el foco vuelve a quien la abrió ----------
+  const [openId, setOpenId] = useState<string | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const openPanel = (bookingId: string, opener: HTMLElement) => {
+    openerRef.current = opener;
+    setOpenId(bookingId);
+  };
+  const closePanel = () => {
+    setOpenId(null);
+    openerRef.current?.focus();
+    openerRef.current = null;
   };
 
   const days = useMemo(
@@ -248,209 +268,224 @@ export default function Planning() {
   const isWeekend = (d: string) => [0, 6].includes(new Date(`${d}T12:00:00Z`).getUTCDay());
 
   return (
-    <div className="flex h-full flex-col">
-      {/* barra de mando: fechas, zoom, datos a la vista */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-arena/60 px-4 py-2.5">
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => setAnchor(addDays(anchor, -zoom.days))}
-            aria-label="←"
-            className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={() => setAnchor(iso(new Date()))}
-            className="rounded-(--lc-radius) border border-tinta/20 px-3 py-1 text-[13px] font-semibold hover:bg-arena-suave"
-          >
-            {t('planning.hoy')}
-          </button>
-          <button
-            type="button"
-            onClick={() => setAnchor(addDays(anchor, zoom.days))}
-            aria-label="→"
-            className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
-          >
-            →
-          </button>
-        </div>
-        <input
-          type="date"
-          value={anchor}
-          onChange={(e) => e.target.value && setAnchor(e.target.value)}
-          className="tnum rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
-        />
-        <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
-          {ZOOMS.map((z) => (
+    <div className="flex h-full">
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* barra de mando: fechas, zoom, datos a la vista */}
+        <div className="flex flex-wrap items-center gap-3 border-b border-arena/60 px-4 py-2.5">
+          <div className="flex items-center gap-1">
             <button
-              key={z.id}
               type="button"
-              onClick={() => setZoomId(z.id)}
-              className={`px-3 py-1 ${z.id === zoomId ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
-              aria-pressed={z.id === zoomId}
+              onClick={() => setAnchor(addDays(anchor, -zoom.days))}
+              aria-label="←"
+              className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
             >
-              {t(`planning.${z.id}`)}
+              ←
             </button>
-          ))}
-        </div>
-        {dndMsg && (
-          <p
-            role="status"
-            className={`text-[12px] font-medium ${dndMsg.error ? 'text-mar' : 'text-pino'}`}
-          >
-            {dndMsg.text}
-          </p>
-        )}
-        {data && (
-          <p className="tnum ml-auto text-[12px] text-tinta-suave">
-            {t('planning.unidades', { n: data.units.length })} ·{' '}
-            {t('planning.reservas', { n: data.bookings.length })}
-          </p>
-        )}
-      </div>
-
-      {/* bandeja sin asignar: nada se pierde de vista */}
-      {byUnit.unassigned.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 bg-arena-suave/50 px-4 py-2">
-          <span className="text-[12px] font-semibold tracking-wide text-tinta-suave uppercase">
-            {t('planning.sinAsignar')}
-          </span>
-          {byUnit.unassigned.map((b) => (
-            <span
-              key={b.id}
-              title={`${b.code} · ${b.dateFrom} → ${b.dateTo}`}
-              className={`lc-bar st-${b.status}`}
-              style={{ position: 'static', display: 'inline-block' }}
+            <button
+              type="button"
+              onClick={() => setAnchor(iso(new Date()))}
+              className="rounded-(--lc-radius) border border-tinta/20 px-3 py-1 text-[13px] font-semibold hover:bg-arena-suave"
             >
-              {b.code}
-            </span>
-          ))}
+              {t('planning.hoy')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setAnchor(addDays(anchor, zoom.days))}
+              aria-label="→"
+              className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
+            >
+              →
+            </button>
+          </div>
+          <input
+            type="date"
+            value={anchor}
+            onChange={(e) => e.target.value && setAnchor(e.target.value)}
+            className="tnum rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
+          />
+          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+            {ZOOMS.map((z) => (
+              <button
+                key={z.id}
+                type="button"
+                onClick={() => setZoomId(z.id)}
+                className={`px-3 py-1 ${z.id === zoomId ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+                aria-pressed={z.id === zoomId}
+              >
+                {t(`planning.${z.id}`)}
+              </button>
+            ))}
+          </div>
+          {dndMsg && (
+            <p
+              role="status"
+              className={`text-[12px] font-medium ${dndMsg.error ? 'text-mar' : 'text-pino'}`}
+            >
+              {dndMsg.text}
+            </p>
+          )}
+          {data && (
+            <p className="tnum ml-auto text-[12px] text-tinta-suave">
+              {t('planning.unidades', { n: data.units.length })} ·{' '}
+              {t('planning.reservas', { n: data.bookings.length })}
+            </p>
+          )}
         </div>
-      )}
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('planning.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('planning.error')}</p>}
+        {/* bandeja sin asignar: nada se pierde de vista */}
+        {byUnit.unassigned.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 bg-arena-suave/50 px-4 py-2">
+            <span className="text-[12px] font-semibold tracking-wide text-tinta-suave uppercase">
+              {t('planning.sinAsignar')}
+            </span>
+            {byUnit.unassigned.map((b) => (
+              <button
+                key={b.id}
+                type="button"
+                title={`${b.code} · ${b.dateFrom} → ${b.dateTo}`}
+                className={`lc-bar st-${b.status} cursor-pointer`}
+                style={{ position: 'static', display: 'inline-block' }}
+                onClick={(e) => openPanel(b.id, e.currentTarget)}
+              >
+                {b.code}
+              </button>
+            ))}
+          </div>
+        )}
 
-      {data && (
-        <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto">
-          <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
-            {/* cabecera sticky: meses + días */}
-            <div className="sticky top-0 z-30 bg-hueso" style={{ width: LABEL_W + gridW }}>
-              <div className="flex border-b border-arena/60" style={{ paddingLeft: LABEL_W }}>
-                {days.map((d, i) => {
-                  const first = i === 0 || d.endsWith('-01');
-                  return (
+        {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('planning.cargando')}</p>}
+        {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('planning.error')}</p>}
+
+        {data && (
+          <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto">
+            <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
+              {/* cabecera sticky: meses + días */}
+              <div className="sticky top-0 z-30 bg-hueso" style={{ width: LABEL_W + gridW }}>
+                <div className="flex border-b border-arena/60" style={{ paddingLeft: LABEL_W }}>
+                  {days.map((d, i) => {
+                    const first = i === 0 || d.endsWith('-01');
+                    return (
+                      <div
+                        key={d}
+                        className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-tinta-suave uppercase"
+                        style={{ width: zoom.cellW, height: 16 }}
+                      >
+                        {first ? monthLabel(d) : ''}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex border-b-2 border-tinta/20" style={{ paddingLeft: LABEL_W }}>
+                  {days.map((d) => (
                     <div
                       key={d}
-                      className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-tinta-suave uppercase"
-                      style={{ width: zoom.cellW, height: 16 }}
+                      className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-tinta-suave'}`}
+                      style={{ width: zoom.cellW }}
                     >
-                      {first ? monthLabel(d) : ''}
+                      {dayLabel(d)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* filas virtualizadas */}
+              <div
+                ref={rowsRef}
+                style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+              >
+                {virtualizer.getVirtualItems().map((vi) => {
+                  const row = rows[vi.index]!;
+                  return (
+                    <div
+                      key={row.id}
+                      style={{
+                        position: 'absolute',
+                        top: vi.start,
+                        height: vi.size,
+                        width: LABEL_W + gridW,
+                      }}
+                    >
+                      {row.kind === 'group' ? (
+                        <div
+                          className="flex h-full items-end border-b border-arena/60 bg-hueso pb-0.5"
+                          style={{ paddingLeft: 8 }}
+                        >
+                          <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-tinta-suave uppercase">
+                            {row.label}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex h-full border-b border-arena/40">
+                          <div
+                            className="tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-arena/60 bg-hueso px-2 text-[12px] font-medium"
+                            style={{ width: LABEL_W }}
+                          >
+                            {row.unit.code}
+                          </div>
+                          <div
+                            className="relative"
+                            data-unit-row={row.unit.id}
+                            style={{ width: gridW }}
+                          >
+                            {/* sombreado de fin de semana */}
+                            {days.map((d, i) =>
+                              isWeekend(d) ? (
+                                <div
+                                  key={d}
+                                  className="lc-weekend absolute inset-y-0"
+                                  style={{ left: i * zoom.cellW, width: zoom.cellW }}
+                                />
+                              ) : null,
+                            )}
+                            {/* bloqueos */}
+                            {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
+                              const g = barGeometry(blk.dateFrom, blk.dateTo);
+                              return g ? (
+                                <div
+                                  key={blk.id}
+                                  className="lc-block"
+                                  style={g}
+                                  title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo}`}
+                                >
+                                  {t(`bloqueo.${blk.reason}`)}
+                                </div>
+                              ) : null;
+                            })}
+                            {/* reservas */}
+                            {(byUnit.bookings.get(row.unit.id) ?? []).map((b) => {
+                              const g = barGeometry(b.dateFrom, b.dateTo);
+                              const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
+                              return g ? (
+                                <div
+                                  key={b.id}
+                                  tabIndex={0}
+                                  className={`lc-bar lc-grab st-${b.status}`}
+                                  style={g}
+                                  title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
+                                  onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
+                                  onPointerMove={onBarPointerMove}
+                                  onPointerUp={onBarPointerUp}
+                                  onPointerCancel={onBarPointerUp}
+                                  onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
+                                >
+                                  {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
+                                </div>
+                              ) : null;
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
               </div>
-              <div className="flex border-b-2 border-tinta/20" style={{ paddingLeft: LABEL_W }}>
-                {days.map((d) => (
-                  <div
-                    key={d}
-                    className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-tinta-suave'}`}
-                    style={{ width: zoom.cellW }}
-                  >
-                    {dayLabel(d)}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* filas virtualizadas */}
-            <div ref={rowsRef} style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-              {virtualizer.getVirtualItems().map((vi) => {
-                const row = rows[vi.index]!;
-                return (
-                  <div
-                    key={row.id}
-                    style={{
-                      position: 'absolute',
-                      top: vi.start,
-                      height: vi.size,
-                      width: LABEL_W + gridW,
-                    }}
-                  >
-                    {row.kind === 'group' ? (
-                      <div
-                        className="flex h-full items-end border-b border-arena/60 bg-hueso pb-0.5"
-                        style={{ paddingLeft: 8 }}
-                      >
-                        <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-tinta-suave uppercase">
-                          {row.label}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex h-full border-b border-arena/40">
-                        <div
-                          className="tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-arena/60 bg-hueso px-2 text-[12px] font-medium"
-                          style={{ width: LABEL_W }}
-                        >
-                          {row.unit.code}
-                        </div>
-                        <div className="relative" data-unit-row={row.unit.id} style={{ width: gridW }}>
-                          {/* sombreado de fin de semana */}
-                          {days.map((d, i) =>
-                            isWeekend(d) ? (
-                              <div
-                                key={d}
-                                className="lc-weekend absolute inset-y-0"
-                                style={{ left: i * zoom.cellW, width: zoom.cellW }}
-                              />
-                            ) : null,
-                          )}
-                          {/* bloqueos */}
-                          {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
-                            const g = barGeometry(blk.dateFrom, blk.dateTo);
-                            return g ? (
-                              <div
-                                key={blk.id}
-                                className="lc-block"
-                                style={g}
-                                title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo}`}
-                              >
-                                {t(`bloqueo.${blk.reason}`)}
-                              </div>
-                            ) : null;
-                          })}
-                          {/* reservas */}
-                          {(byUnit.bookings.get(row.unit.id) ?? []).map((b) => {
-                            const g = barGeometry(b.dateFrom, b.dateTo);
-                            const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
-                            return g ? (
-                              <div
-                                key={b.id}
-                                tabIndex={0}
-                                className={`lc-bar lc-grab st-${b.status}`}
-                                style={g}
-                                title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
-                                onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
-                                onPointerMove={onBarPointerMove}
-                                onPointerUp={onBarPointerUp}
-                                onPointerCancel={onBarPointerUp}
-                                onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
-                              >
-                                {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
-                              </div>
-                            ) : null;
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
             </div>
           </div>
-        </div>
+        )}
+      </div>
+
+      {openId && data && (
+        <BookingPanel bookingId={openId} units={data.units} onClose={closePanel} />
       )}
     </div>
   );

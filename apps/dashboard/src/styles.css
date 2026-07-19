@@ -105,3 +105,42 @@ html {
 .lc-weekend {
   background: color-mix(in srgb, var(--lc-arena) 16%, transparent);
 }
+
+/* ---------- ficha de reserva (panel lateral) ---------- */
+
+.lc-panel-h {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lc-tinta-suave);
+  margin-bottom: 4px;
+}
+
+/* chip de estado: mismos colores que las barras del planning */
+.lc-chip {
+  border-radius: var(--lc-radius);
+  color: var(--lc-hueso);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  padding-inline: 6px;
+}
+.lc-chip.st-confirmed {
+  background: var(--lc-pino);
+}
+.lc-chip.st-pending {
+  background: var(--lc-arena);
+  color: var(--lc-tinta);
+}
+.lc-chip.st-no_show {
+  background: var(--lc-mar);
+}
+.lc-chip.st-completed {
+  background: var(--lc-tinta-suave);
+}
+.lc-chip.st-cancelled {
+  background: transparent;
+  color: var(--lc-tinta-suave);
+  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+}

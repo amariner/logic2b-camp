@@ -4,13 +4,26 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesiones 1–2/5 (planning con DnD de reasignación) · Siguiente: **Fase 6 sesión 17 (resto)** — panel lateral de ficha de reserva con acciones tipadas (confirm/cancel/no_show/note) y después sesión 18 (solicitudes + llegadas = modo lite). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesiones 1–3/5 (planning con DnD + ficha) · Siguiente: **Fase 6 sesión 18** — solicitudes + llegadas = modo lite (bandeja de enquiries con cambio de estado, lista de llegadas/salidas del día). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 13 — 2026-07-19 · Fase 6 (3/5) · Ficha de reserva: panel lateral con acciones tipadas
+
+**Hecho**
+- **Panel lateral no modal** (`components/BookingPanel.tsx`) sobre el planning: click en una barra (sin drag, el umbral de 4px distingue), Enter/Espacio con la barra enfocada, o click en un chip de la bandeja "sin asignar" (ahora botones). Esc cierra desde cualquier sitio (listener a nivel de documento — el foco puede salir del panel al deshabilitarse un botón) y el foco vuelve a quien la abrió
+- **Contenido**: código + chip de estado (mismos tokens que las barras), estancia (fechas→noches, ocupación con edades, unidad, canal, creada), titular y acompañantes, **desglose auditable línea a línea** (conceptos i18n con `tDyn` de fallback, descuentos en negativo en pino), total/tasa/fianza/pagado/**pendiente de pago** en mar, pagos con signo, notas editables (acción `note`, botón deshabilitado si no hay cambio)
+- **Acciones tipadas** contra `PATCH /api/admin/bookings/:id`: espejo cliente de TRANSITIONS del servidor (pending→confirm|cancel, confirmed→cancel|no_show|complete) — solo se ofrecen las que aplican, el servidor valida SIEMPRE. Cancelar exige **doble confirmación inline** ("¿Seguro? Sí, cancelar"). Éxito → mensaje `role=status` + invalidación de ficha y planning
+- Tipos `BookingDetail`/`BookingGuest`/`BookingPayment`/`PriceLine` en el cliente; ~60 claves i18n nuevas
+- **Verificado en navegador contra el Worker real** (build servido desde `/admin/` del Worker — el login via proxy Vite da 403 de origen, nota abajo): abrir ficha (868,00 € de desglose correcto), guardar nota, Esc, confirmar una pendiente (chip y barra del planning pasan a pino), cancelar con doble confirmación (la barra desaparece = inventario liberado), 0 errores JS. Seed restaurado después
+
+**Decisiones**: panel no modal (se sigue viendo el planning al lado); en dev el dashboard se prueba servido por el Worker (mismo origen que Better Auth), el `vite dev` con proxy queda para iterar UI sin sesión
+**Pendiente fase**: sesiones 18–20 (solicitudes+llegadas=lite, reservas/inventario/tarifas, clientes/informes/ajustes)
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 12 — 2026-07-19 · Fase 6 (2/5, parcial) · Drag & drop de reasignación en el planning
 
