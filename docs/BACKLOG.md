@@ -30,3 +30,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [B1] Reskin del dashboard a Logic2B UI (su ADR): componentes shadcn en `packages/ui`, sidebar agrupada, isotipo, radius 10px, planning con tokens del DS — 2026-07-19
 - [B2] Estructura Logic2B en la web de tenant + isotipo "powered by Logic2B" en el pie (su ADR) — 2026-07-19
 - [B4] Documentación de producto con marca Logic2B (su ADR) — 2026-07-19
+- ~~[B1] Reskin del dashboard a Logic2B UI~~ → hecho 2026-07-20 (ADR 0017): sidebar agrupada plegable con isotipo, tokens/fuentes del DS, planning con el mapa de colores aprobado. Verificado en vivo. Quedan dos remates abajo.
+- [B1] Rename literal de las clases del dashboard: hoy los nombres camping (`bg-pino`, `text-tinta-suave`, `border-arena`…) puentean a tokens del DS vía `@theme` en `styles.css` (ADR 0017); reescribirlos a `bg-primary`/`text-muted-foreground`/`border-border` para que el código no mienta. ~400 usos en 15 ficheros — 2026-07-20
+- [B1] Sidebar del dashboard en móvil (375px): hoy queda como rail de iconos; un off-canvas real (Sheet) con botón hamburguesa sería más cómodo. Añadir el primitivo Sheet a `packages/ui` — 2026-07-20
+- [B1] Adoptar los primitivos de `packages/ui` (Card/Badge/Input/Table…) en las 11 pantallas del dashboard de forma incremental (hoy solo el shell usa Button/LogoMark; el resto sigue con markup propio ya tematizado por tokens) — 2026-07-20
