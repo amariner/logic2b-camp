@@ -77,6 +77,7 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ## Dirección visual
 
+- **Dos marcas, no confundirlas** (ver `docs/BRAND.md`): el **producto Logic2B** (dashboard, landing de venta, docs) lleva marca **Logic2B** — shadcn/ui neutro, Inter Variable + Space Grotesk, isotipo `docs/brand/logo-mark.svg`, radius 10px, tokens oklch de `ui.logic2b.com`. La **web pública de cada camping** lleva la marca del **tenant** (mediterránea, ADR 0006), con isotipo discreto "powered by Logic2B" en el pie. El plan de alineación es el **Frente B** de `docs/ROADMAP.md`.
 - **Antimodelo**: SaaS azul isométrico Y TAMBIÉN el look crema+serif+terracota. Ambos gastados.
 - **Territorio**: camping mediterráneo real — pino carrasco, sombra, lona, arena compactada. Materia, no vector.
 - Landing nivel 3: el héroe es el **widget de disponibilidad funcionando de verdad**. Nivel 1: héroe distinto (sin motor).
