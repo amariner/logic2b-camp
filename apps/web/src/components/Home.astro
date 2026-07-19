@@ -63,7 +63,14 @@ const lona = await getImage({
 
       {/* el mostrador, solapado sobre la foto y sticky después */}
       <div id="mostrador" class="sticky top-14 z-40 mx-auto -mt-16 max-w-5xl scroll-mt-20 px-5 md:px-8">
-        {HeroMostrador && <HeroMostrador labels={c.mostrador} typeNames={c.tipos.nombres} locale={locale} />}
+        {HeroMostrador && (
+          <HeroMostrador
+            labels={c.mostrador}
+            typeNames={c.tipos.nombres}
+            locale={locale}
+            reservarBase={localePath(locale, '/reservar')}
+          />
+        )}
       </div>
       <p class="mx-auto mt-5 max-w-5xl px-5 text-[13px] text-tinta-suave md:px-8">{c.hero3.prueba}</p>
     </section>

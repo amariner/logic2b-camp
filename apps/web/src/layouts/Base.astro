@@ -9,9 +9,11 @@ interface Props {
   /** SEO por página; sin ellos se usa el de la home */
   title?: string;
   description?: string;
+  /** páginas de proceso (funnel, resguardo): fuera de los buscadores */
+  noindex?: boolean;
 }
 
-const { locale, path = '/', title, description } = Astro.props;
+const { locale, path = '/', title, description, noindex = false } = Astro.props;
 const c = getContent(locale);
 const pageTitle = title ?? c.seo.title;
 const pageDescription = description ?? c.seo.description;
@@ -42,6 +44,7 @@ const navLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="preload" href="/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
     {media['favicon'] && <link rel="icon" type="image/svg+xml" href={media['favicon']} />}

@@ -235,12 +235,30 @@
     "distancias": {
       "titulo": "A mà",
       "items": [
-        { "lugar": "La cala", "valor": "300 m a peu" },
-        { "lugar": "Primer poble amb mercat", "valor": "10 min amb cotxe" },
-        { "lugar": "Farmàcia i centre de salut", "valor": "12 min amb cotxe" },
-        { "lugar": "Estació de tren", "valor": "20 min amb cotxe" },
-        { "lugar": "Aeroport de Castelló", "valor": "35 min amb cotxe" },
-        { "lugar": "Peníscola i el seu castell", "valor": "30 min amb cotxe" }
+        {
+          "lugar": "La cala",
+          "valor": "300 m a peu"
+        },
+        {
+          "lugar": "Primer poble amb mercat",
+          "valor": "10 min amb cotxe"
+        },
+        {
+          "lugar": "Farmàcia i centre de salut",
+          "valor": "12 min amb cotxe"
+        },
+        {
+          "lugar": "Estació de tren",
+          "valor": "20 min amb cotxe"
+        },
+        {
+          "lugar": "Aeroport de Castelló",
+          "valor": "35 min amb cotxe"
+        },
+        {
+          "lugar": "Peníscola i el seu castell",
+          "valor": "30 min amb cotxe"
+        }
       ]
     }
   },
@@ -338,5 +356,118 @@
     "titulo": "Esta pàgina se n'ha anat a la cala",
     "texto": "L'adreça no existeix o ha canviat de lloc. L'important segueix on sempre: les dates, els pins i el mostrador.",
     "cta": "Tornar a l'inici"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Reservar | Càmping Cala Sereno",
+      "description": "Reserva parcel·la, bungalou o glàmping amb el preu final calculat al moment. Sense comptes ni sorpreses: tries dates, confirmes i llest."
+    },
+    "titulo": "Reservar",
+    "intro": "Tria dates i grup: el preu que veus és el final, calculat pel mostrador.",
+    "elegir": "Triar",
+    "noches": "{n} nits",
+    "detalle": {
+      "estancia": "La teua estada",
+      "extras": "Extres",
+      "incluido": "inclòs",
+      "electricidad": "Electricitat",
+      "desglose": "Desglossament del preu",
+      "tasaNota": "Taxa turística: {importe}, es liquida en recepció.",
+      "total": "Total",
+      "continuar": "Continuar",
+      "volver": "Tornar als resultats",
+      "error": "No hem pogut calcular el preu. Torna-ho a provar."
+    },
+    "titular": {
+      "titulo": "A nom de qui la posem?",
+      "hold": "Unitat guardada per a tu durant {min}",
+      "holdCaducado": "El bloqueig temporal ha caducat — en confirmar tornarem a comprovar la disponibilitat.",
+      "nombre": "Nom i cognoms",
+      "email": "Email",
+      "telefono": "Telèfon (opcional)",
+      "notas": "Res que hàgem de saber? (opcional)",
+      "condiciones": "Accepte les condicions de reserva i la política de cancel·lació.",
+      "confirmar": "Confirmar la reserva",
+      "confirmando": "Confirmant…",
+      "agotado": "S'acaba d'ocupar l'última unitat. No s'ha cobrat res — prova altres dates.",
+      "error": "No s'ha pogut confirmar la reserva. Torna-ho a provar."
+    },
+    "conceptos": {
+      "price.base": "Estada",
+      "price.extra_person": "Persones addicionals",
+      "price.child": "Xiquets",
+      "price.pet": "Mascotes",
+      "price.electricity": "Electricitat",
+      "price.vehicle": "Vehicle addicional",
+      "discount.early_booking": "Descompte per reserva anticipada",
+      "discount.long_stay": "Descompte per estada llarga",
+      "discount.acsi": "Descompte ACSI"
+    },
+    "errores": {
+      "stay.closed": "Tancat en eixes dates.",
+      "stay.min_stay": "Estada mínima de {minStay} nits en eixes dates.",
+      "stay.max_stay": "Estada màxima de {maxStay} nits.",
+      "stay.arrival_day": "En eixes dates l'arribada és en dissabte.",
+      "stay.departure_day": "Dia d'eixida no permés en eixes dates.",
+      "stay.capacity": "Eixe allotjament admet {capacityMax} persones com a màxim.",
+      "stay.capacity_min": "Ocupació mínima de {capacityMin} persones.",
+      "stay.no_adults": "Cal almenys un adult.",
+      "stay.no_pets": "Eixe allotjament no admet mascotes.",
+      "stay.no_electricity": "Eixa parcel·la no té connexió elèctrica.",
+      "stay.no_rate": "No hi ha tarifa publicada per a part de l'estada.",
+      "stay.invalid_dates": "Revisa les dates."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "La teua reserva | Càmping Cala Sereno",
+      "description": "Consulta, imprimeix, canvia o cancel·la la teua reserva amb el codi i el teu email. Sense comptes ni contrasenyes."
+    },
+    "titulo": "La teua reserva",
+    "nueva": "Reserva confirmada. Esta pàgina és el teu resguard — guarda-la o imprimeix-la.",
+    "buscar": {
+      "intro": "Introdueix el codi de la reserva i l'email del titular.",
+      "codigo": "Codi de reserva",
+      "email": "Email del titular",
+      "ver": "Veure la meua reserva",
+      "buscando": "Buscant…",
+      "noEncontrada": "No trobem cap reserva amb eixe codi i eixe email."
+    },
+    "estado": {
+      "pending": "Pendent",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancel·lada",
+      "no_show": "No presentada",
+      "completed": "Completada"
+    },
+    "campos": {
+      "llegada": "Arribada",
+      "salida": "Eixida",
+      "alojamiento": "Allotjament",
+      "huespedes": "Hostes",
+      "noches": "Nits",
+      "total": "Total",
+      "pagado": "Pagat",
+      "tasa": "Taxa turística (en recepció)"
+    },
+    "imprimir": "Imprimir",
+    "cancelar": {
+      "boton": "Cancel·lar la reserva",
+      "aviso": "Amb l'antelació actual ({dias} dies) es torna el {pct} % del que s'ha pagat: {importe}.",
+      "confirmar": "Sí, cancel·lar definitivament",
+      "volver": "Mantindre la reserva",
+      "hecha": "Reserva cancel·lada.",
+      "error": "No s'ha pogut cancel·lar. Torna-ho a provar o telefona'ns."
+    },
+    "modificar": {
+      "boton": "Canviar dates",
+      "titulo": "Noves dates",
+      "nota": "El preu es recalcula sencer amb les tarifes vigents.",
+      "aplicar": "Aplicar el canvi",
+      "aplicando": "Aplicant…",
+      "hecho": "Dates actualitzades. Nou total: {importe}.",
+      "noDisponible": "No hi ha disponibilitat per a eixes dates.",
+      "error": "No s'ha pogut aplicar el canvi."
+    }
   }
 }

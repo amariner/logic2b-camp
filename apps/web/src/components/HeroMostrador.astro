@@ -10,9 +10,16 @@ interface Props {
   labels: Record<string, string>;
   typeNames: Record<string, string>;
   locale: string;
+  reservarBase?: string;
 }
 
-const { labels, typeNames, locale } = Astro.props;
+const { labels, typeNames, locale, reservarBase } = Astro.props;
 ---
 
-<Mostrador client:load labels={labels} typeNames={typeNames} locale={locale} />
+<Mostrador
+  client:load
+  labels={labels}
+  typeNames={typeNames}
+  locale={locale}
+  reservarBase={reservarBase}
+/>

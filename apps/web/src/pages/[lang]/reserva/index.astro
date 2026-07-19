@@ -1,0 +1,26 @@
+---
+import { config, extraLocales, localePath, mode } from '../../../lib/content';
+
+const Reserva = mode === 'instant' ? (await import('../../../components/paginas/Reserva.astro')).default : null;
+
+export function getStaticPaths() {
+  return extraLocales.map((lang) => ({ params: { lang } }));
+}
+const { lang } = Astro.params;
+---
+
+{
+  Reserva ? (
+    <Reserva locale={lang!} />
+  ) : (
+    <html lang={lang}>
+      <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="refresh" content={`0;url=${localePath(lang!)}`} />
+        <meta name="robots" content="noindex" />
+        <title>{config.name}</title>
+      </head>
+      <body />
+    </html>
+  )
+}

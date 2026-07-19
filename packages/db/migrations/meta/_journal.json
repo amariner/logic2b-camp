@@ -15,6 +15,13 @@
       "when": 1784407803685,
       "tag": "0001_auth",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784435492835,
+      "tag": "0002_inventory-holds",
+      "breakpoints": true
     }
   ]
 }

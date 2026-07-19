@@ -1,0 +1,36 @@
+---
+/** Pasos 4–5 del funnel: titular + confirmación con hold de 15 min. */
+import Base from '../../layouts/Base.astro';
+import { config, data, getContent, localePath } from '../../lib/content';
+import FunnelTitular from '../funnel/FunnelTitular';
+import PageIntro from '../PageIntro.astro';
+
+interface Props {
+  locale: string;
+  unitTypeId: string;
+}
+const { locale, unitTypeId } = Astro.props;
+const c = getContent(locale);
+const r = c.reservar;
+
+const tipo = data.unitTypes.find((t) => t.id === unitTypeId);
+if (!tipo) throw new Error(`Tipo desconocido: ${unitTypeId}`);
+const nombre = c.tipos.nombres[tipo.id] ?? tipo.id;
+const path = `/reservar/${tipo.id}/titular`;
+---
+
+<Base locale={locale} path={path} title={`${r.titular.titulo} | ${config.name}`} description={r.seo.description} noindex>
+  <PageIntro titulo={r.titular.titulo!} />
+  <section class="mx-auto max-w-7xl px-5 pb-24 md:px-8">
+    <FunnelTitular
+      client:load
+      locale={locale}
+      unitTypeId={tipo.id}
+      typeName={nombre}
+      labels={{ titular: r.titular, detalle: r.detalle, noches: r.noches }}
+      reservarPath={localePath(locale, '/reservar')}
+      detallePath={localePath(locale, `/reservar/${tipo.id}`)}
+      reservaPath={localePath(locale, '/reserva')}
+    />
+  </section>
+</Base>

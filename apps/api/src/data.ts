@@ -6,13 +6,14 @@ import type {
   Block,
   BookingSpan,
   ExtraSelection,
+  Hold,
   RatePlan,
   Season,
   Unit,
   UnitType,
 } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
-import { inArray } from 'drizzle-orm';
+import { gt, inArray } from 'drizzle-orm';
 
 export type EngineData = {
   seasons: Season[];
@@ -90,6 +91,21 @@ export async function loadEngineData(db: Db): Promise<EngineData> {
       departureDays: p.departureDays,
     })),
   };
+}
+
+/** Holds vivos del funnel (ADR 0007). Expiración perezosa: los caducados no se cargan. */
+export async function loadLiveHolds(db: Db, now: string): Promise<Hold[]> {
+  const rows = await db
+    .select()
+    .from(schema.inventoryHolds)
+    .where(gt(schema.inventoryHolds.expiresAt, now));
+  return rows.map((h) => ({
+    id: h.id,
+    unitTypeId: h.unitTypeId,
+    dateFrom: h.dateFrom,
+    dateTo: h.dateTo,
+    expiresAt: h.expiresAt,
+  }));
 }
 
 export async function loadExtras(db: Db, ids: string[]): Promise<ExtraSelection[]> {

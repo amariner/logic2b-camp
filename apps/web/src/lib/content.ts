@@ -70,6 +70,28 @@ export type Content = {
   };
   blog: { seo: Seo; titulo: string; intro: string; leerMas: string; volver: string; vacio: string };
   noEncontrada: { titulo: string; texto: string; cta: string };
+  reservar: {
+    seo: Seo;
+    titulo: string;
+    intro: string;
+    elegir: string;
+    noches: string;
+    detalle: Record<string, string>;
+    titular: Record<string, string>;
+    conceptos: Record<string, string>;
+    errores: Record<string, string>;
+  };
+  reserva: {
+    seo: Seo;
+    titulo: string;
+    nueva: string;
+    buscar: Record<string, string>;
+    estado: Record<string, string>;
+    campos: Record<string, string>;
+    imprimir: string;
+    cancelar: Record<string, string>;
+    modificar: Record<string, string>;
+  };
 };
 
 export const config: TenantWebConfig = tenantConfig;

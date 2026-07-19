@@ -1,0 +1,26 @@
+---
+/** Paso 1 del funnel: resultados. El mostrador con botón "Reservar" por tipo. */
+import Base from '../../layouts/Base.astro';
+import { getContent, localePath } from '../../lib/content';
+import HeroMostrador from '../HeroMostrador.astro';
+import PageIntro from '../PageIntro.astro';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const c = getContent(locale);
+const r = c.reservar;
+---
+
+<Base locale={locale} path="/reservar" title={r.seo.title} description={r.seo.description} noindex>
+  <PageIntro titulo={r.titulo} intro={r.intro} />
+  <section class="mx-auto max-w-5xl px-5 pb-24 md:px-8">
+    <HeroMostrador
+      labels={c.mostrador}
+      typeNames={c.tipos.nombres}
+      locale={locale}
+      reservarBase={localePath(locale, '/reservar')}
+    />
+  </section>
+</Base>

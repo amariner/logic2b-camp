@@ -1,0 +1,12 @@
+---
+import ReservarTitular from '../../../../components/paginas/ReservarTitular.astro';
+import { data, extraLocales, mode } from '../../../../lib/content';
+
+export function getStaticPaths() {
+  if (mode !== 'instant') return [];
+  return extraLocales.flatMap((lang) => data.unitTypes.map((t) => ({ params: { lang, tipo: t.id } })));
+}
+const { lang, tipo } = Astro.params;
+---
+
+<ReservarTitular locale={lang!} unitTypeId={tipo!} />

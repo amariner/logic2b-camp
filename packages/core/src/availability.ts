@@ -4,6 +4,7 @@ import type {
   AvailabilityResult,
   Block,
   BookingSpan,
+  Hold,
   IsoDate,
   Season,
   Unit,
@@ -18,6 +19,10 @@ export type AvailabilitySearchInput = {
   bookings: BookingSpan[];
   blocks: Block[];
   seasons: Season[];
+  /** holds vivos del funnel (ADR 0007); requiere `now` para descartar caducados */
+  holds?: Hold[];
+  /** ISO datetime del "ahora" — inyectado para mantener el motor puro */
+  now?: string;
 };
 
 /** Estados que ocupan inventario */
@@ -35,10 +40,16 @@ export function searchAvailability(input: AvailabilitySearchInput): Availability
   const nights = eachNight(dateFrom, dateTo);
   const closed = segmentStay(dateFrom, dateTo, seasons) === null;
 
+  // expiración perezosa: un hold caducado no ocupa aunque el cron no lo haya purgado
+  const liveHolds = (input.holds ?? []).filter(
+    (h) => (!input.now || h.expiresAt > input.now) && rangesOverlap(h.dateFrom, h.dateTo, dateFrom, dateTo),
+  );
+
   return input.unitTypes.map((type) => {
     if (closed) return { unitTypeId: type.id, availableUnits: 0, status: 'closed' as const };
 
     const typeUnits = input.units.filter((u) => u.unitTypeId === type.id && u.status === 'active');
+    const typeHolds = liveHolds.filter((h) => h.unitTypeId === type.id);
     const typeBookings = input.bookings.filter(
       (b) =>
         b.unitTypeId === type.id &&
@@ -62,7 +73,8 @@ export function searchAvailability(input: AvailabilitySearchInput): Availability
         if (!(blk.dateFrom <= nightTo && nightTo < blk.dateTo)) continue;
         blocked += blk.unitId ? 1 : typeUnits.length;
       }
-      const free = typeUnits.length - occupied - blocked;
+      const held = typeHolds.filter((h) => h.dateFrom <= nightTo && nightTo < h.dateTo).length;
+      const free = typeUnits.length - occupied - blocked - held;
       if (free < minFree) minFree = free;
     }
 

@@ -235,12 +235,30 @@
     "distancias": {
       "titulo": "Binnen handbereik",
       "items": [
-        { "lugar": "De baai", "valor": "300 m te voet" },
-        { "lugar": "Eerste dorp met markt", "valor": "10 min met de auto" },
-        { "lugar": "Apotheek en gezondheidscentrum", "valor": "12 min met de auto" },
-        { "lugar": "Treinstation", "valor": "20 min met de auto" },
-        { "lugar": "Luchthaven Castellón", "valor": "35 min met de auto" },
-        { "lugar": "Peñíscola en zijn kasteel", "valor": "30 min met de auto" }
+        {
+          "lugar": "De baai",
+          "valor": "300 m te voet"
+        },
+        {
+          "lugar": "Eerste dorp met markt",
+          "valor": "10 min met de auto"
+        },
+        {
+          "lugar": "Apotheek en gezondheidscentrum",
+          "valor": "12 min met de auto"
+        },
+        {
+          "lugar": "Treinstation",
+          "valor": "20 min met de auto"
+        },
+        {
+          "lugar": "Luchthaven Castellón",
+          "valor": "35 min met de auto"
+        },
+        {
+          "lugar": "Peñíscola en zijn kasteel",
+          "valor": "30 min met de auto"
+        }
       ]
     }
   },
@@ -338,5 +356,118 @@
     "titulo": "Deze pagina is naar de baai vertrokken",
     "texto": "Het adres bestaat niet of is verhuisd. Het belangrijkste is waar het altijd was: de data, de pijnbomen en de balie.",
     "cta": "Terug naar het begin"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Boeken | Camping Cala Sereno",
+      "description": "Boek een plaats, bungalow of glampingtent met de eindprijs direct berekend. Geen accounts, geen verrassingen: data kiezen, bevestigen, klaar."
+    },
+    "titulo": "Boeken",
+    "intro": "Kies data en gezelschap: de prijs die je ziet is definitief, berekend door de balie.",
+    "elegir": "Kiezen",
+    "noches": "{n} nachten",
+    "detalle": {
+      "estancia": "Jouw verblijf",
+      "extras": "Extra's",
+      "incluido": "inbegrepen",
+      "electricidad": "Stroom",
+      "desglose": "Prijsspecificatie",
+      "tasaNota": "Toeristenbelasting: {importe}, te voldoen bij de receptie.",
+      "total": "Totaal",
+      "continuar": "Doorgaan",
+      "volver": "Terug naar de resultaten",
+      "error": "We konden de prijs niet berekenen. Probeer het opnieuw."
+    },
+    "titular": {
+      "titulo": "Op wiens naam zetten we hem?",
+      "hold": "Eenheid voor je vastgehouden gedurende {min}",
+      "holdCaducado": "De tijdelijke blokkering is verlopen — bij het bevestigen controleren we de beschikbaarheid opnieuw.",
+      "nombre": "Voor- en achternaam",
+      "email": "E-mail",
+      "telefono": "Telefoon (optioneel)",
+      "notas": "Iets dat we moeten weten? (optioneel)",
+      "condiciones": "Ik accepteer de boekingsvoorwaarden en het annuleringsbeleid.",
+      "confirmar": "Boeking bevestigen",
+      "confirmando": "Bevestigen…",
+      "agotado": "De laatste eenheid is net bezet. Er is niets afgeschreven — probeer andere data.",
+      "error": "De boeking kon niet worden bevestigd. Probeer het opnieuw."
+    },
+    "conceptos": {
+      "price.base": "Verblijf",
+      "price.extra_person": "Extra personen",
+      "price.child": "Kinderen",
+      "price.pet": "Huisdieren",
+      "price.electricity": "Stroom",
+      "price.vehicle": "Extra voertuig",
+      "discount.early_booking": "Vroegboekkorting",
+      "discount.long_stay": "Langverblijfkorting",
+      "discount.acsi": "ACSI-korting"
+    },
+    "errores": {
+      "stay.closed": "Gesloten op die data.",
+      "stay.min_stay": "Minimaal verblijf van {minStay} nachten op die data.",
+      "stay.max_stay": "Maximaal verblijf van {maxStay} nachten.",
+      "stay.arrival_day": "Op die data is de aankomst op zaterdag.",
+      "stay.departure_day": "Vertrekdag niet toegestaan op die data.",
+      "stay.capacity": "Die accommodatie biedt plaats aan maximaal {capacityMax} personen.",
+      "stay.capacity_min": "Minimale bezetting van {capacityMin} personen.",
+      "stay.no_adults": "Er is minstens één volwassene nodig.",
+      "stay.no_pets": "Die accommodatie staat geen huisdieren toe.",
+      "stay.no_electricity": "Die plaats heeft geen stroomaansluiting.",
+      "stay.no_rate": "Geen gepubliceerd tarief voor een deel van het verblijf.",
+      "stay.invalid_dates": "Controleer de data."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Jouw boeking | Camping Cala Sereno",
+      "description": "Bekijk, print, wijzig of annuleer je boeking met je code en e-mail. Geen accounts, geen wachtwoorden."
+    },
+    "titulo": "Jouw boeking",
+    "nueva": "Boeking bevestigd. Deze pagina is je bewijs — bewaar of print hem.",
+    "buscar": {
+      "intro": "Voer de boekingscode en het e-mailadres van de hoofdboeker in.",
+      "codigo": "Boekingscode",
+      "email": "E-mail hoofdboeker",
+      "ver": "Mijn boeking bekijken",
+      "buscando": "Zoeken…",
+      "noEncontrada": "Geen boeking gevonden met die code en dat e-mailadres."
+    },
+    "estado": {
+      "pending": "In afwachting",
+      "confirmed": "Bevestigd",
+      "cancelled": "Geannuleerd",
+      "no_show": "Niet verschenen",
+      "completed": "Afgerond"
+    },
+    "campos": {
+      "llegada": "Aankomst",
+      "salida": "Vertrek",
+      "alojamiento": "Accommodatie",
+      "huespedes": "Gasten",
+      "noches": "Nachten",
+      "total": "Totaal",
+      "pagado": "Betaald",
+      "tasa": "Toeristenbelasting (bij de receptie)"
+    },
+    "imprimir": "Printen",
+    "cancelar": {
+      "boton": "Boeking annuleren",
+      "aviso": "Met de huidige termijn ({dias} dagen) wordt {pct}% van het betaalde terugbetaald: {importe}.",
+      "confirmar": "Ja, definitief annuleren",
+      "volver": "Boeking behouden",
+      "hecha": "Boeking geannuleerd.",
+      "error": "Annuleren is niet gelukt. Probeer opnieuw of bel ons."
+    },
+    "modificar": {
+      "boton": "Data wijzigen",
+      "titulo": "Nieuwe data",
+      "nota": "De prijs wordt volledig herberekend tegen de geldende tarieven.",
+      "aplicar": "Wijziging toepassen",
+      "aplicando": "Toepassen…",
+      "hecho": "Data bijgewerkt. Nieuw totaal: {importe}.",
+      "noDisponible": "Geen beschikbaarheid voor die data.",
+      "error": "De wijziging kon niet worden toegepast."
+    }
   }
 }

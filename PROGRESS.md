@@ -4,13 +4,28 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 4 🟨 sesión 2/3 hecha + Lighthouse local ≥95 · Siguiente: **(1) Andreu valida el ADR 0007** (flujo de reserva — está PROPUESTO, sin código), **(2) Fase 4 remates locales**: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción. Con el ADR validado, empezar Fase 5 sesión 13.
+- **Fase actual**: 5 ✅ (flujo de reserva completo con E2E) · Siguiente: **Fase 6 — Dashboard** (ADR primero: enfoque de virtualización y DnD del planning ★). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 10 — 2026-07-19 · Fase 5 · Flujo de reserva completo (ADR 0007)
+
+**Hecho** (ADR 0007 aceptado por delegación explícita de Andreu en sesión)
+- **Motor**: `searchAvailability` acepta `holds` + `now` (expiración perezosa) — 4 tests nuevos ANTES de implementar (51 total). Tipo `Hold` en el dominio
+- **Modelo**: tabla `inventory_holds` (migración 0002 con drizzle-kit), hold por TIPO, índices por tipo/fechas y por expiración
+- **API**: `POST/DELETE /api/holds` (valida estancia + disponibilidad, TTL 15 min), availability y bookings cuentan holds vivos, `createBooking` consume el hold EN el mismo batch que crea la reserva (y rechaza hold caducado/ajeno con 409), `GET /bookings/:code` devuelve previsión de cancelación, `POST /bookings/:code/cancel` (libera inventario, auditado) y `/modify` (re-cotización COMPLETA en servidor, 409 si no cabe, desglose nuevo auditable). Primer **Cron Trigger** (purga de holds cada 15 min). 7 tests de integración nuevos (32 total)
+- **Web**: funnel `/reservar` (resultados=mostrador con botón Reservar) → `/reservar/{tipo}` (extras + desglose EN VIVO del servidor, errores i18n del motor) → `/reservar/{tipo}/titular` (hold al entrar con contador mm:ss, liberación con `pagehide` si se abandona) → confirmación en `/reserva?code&email&nueva=1` (resguardo imprimible con @media print). Gestión completa: ver, **cancelar con el reembolso a la vista**, **cambiar fechas** re-cotizado. 6 idiomas (bloques `reservar`/`reserva` en los JSONs), noindex en páginas de proceso, Idempotency-Key = hold
+- **Regla dura re-verificada**: TIER=1 → 121 páginas, **0 islas** en todo el sitio, `/reservar` y `/reserva` degradan a redirección sin JS; los 8×2 pasos por tipo ni se generan
+- **E2E Playwright** (`apps/web/e2e`, `pnpm e2e`, webServer wrangler): camino feliz (buscar→extras→hold→confirmar→**aparece en /api/admin/planning** ✅ criterio de fase→modificar→cancelar) + 3 infelices: tipo agotado entre pasos, hold caducado al confirmar (reintento revalida sin perder el formulario), estancia inválida en alta (mín. 7 noches + sábado). **4/4 verdes** contra el Worker real
+- Verificado también a mano en navegador: reserva CS-2026-785715 creada, modificada (nuevo total del servidor) y cancelada, 0 errores JS
+
+**Decisiones**: hold por tipo (no por unidad — la asignación sigue libre para el planning); gestión en `/reserva?code=…` (query, no segmento — salida estática); sin hold también se puede confirmar (el hold protege la UX, el servidor siempre revalida)
+**Pendiente**: pago real (Fase 8: la pantalla confirma directo con `payments:'none'`); emails (Fase 7, hooks anotados)
+**`/check`**: ✅ verde (32/32) · E2E 4/4
 
 ### Sesión 9 — 2026-07-19 · Fase 4 (remates) · Lighthouse ≥95 local + ADR 0007 propuesto
 

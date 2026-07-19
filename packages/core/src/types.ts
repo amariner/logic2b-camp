@@ -70,6 +70,16 @@ export type Block = {
   reason: 'maintenance' | 'owner' | 'longstay' | 'manual';
 };
 
+/** Bloqueo temporal del funnel (ADR 0007): por TIPO, expira solo. */
+export type Hold = {
+  id: string;
+  unitTypeId: string;
+  dateFrom: IsoDate;
+  dateTo: IsoDate;
+  /** ISO datetime; caducado ⇒ se ignora SIEMPRE (expiración perezosa) */
+  expiresAt: string;
+};
+
 export type RatePlan = {
   unitTypeId: string;
   seasonId: string;

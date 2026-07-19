@@ -1,0 +1,13 @@
+---
+import ReservarDetalle from '../../../components/paginas/ReservarDetalle.astro';
+import { config, data, mode } from '../../../lib/content';
+
+// nivel sin motor → estas rutas no existen (0 páginas, 0 islas)
+export function getStaticPaths() {
+  if (mode !== 'instant') return [];
+  return data.unitTypes.map((t) => ({ params: { tipo: t.id } }));
+}
+const { tipo } = Astro.params;
+---
+
+<ReservarDetalle locale={config.defaultLocale} unitTypeId={tipo!} />

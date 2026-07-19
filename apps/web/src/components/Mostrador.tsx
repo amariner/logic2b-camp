@@ -24,6 +24,8 @@ type Props = {
   labels: Labels;
   typeNames: Record<string, string>;
   locale: string;
+  /** base del funnel (p.ej. /reservar): cada resultado gana su botón "Reservar" */
+  reservarBase?: string;
 };
 
 const plus = (days: number) => {
@@ -41,7 +43,7 @@ const eur = (cents: number, locale: string) =>
     minimumFractionDigits: 0,
   }).format(cents / 100);
 
-export default function Mostrador({ labels, typeNames, locale }: Props) {
+export default function Mostrador({ labels, typeNames, locale, reservarBase }: Props) {
   const [from, setFrom] = useState(plus(14));
   const [to, setTo] = useState(plus(17));
   const [adults, setAdults] = useState(2);
@@ -234,6 +236,14 @@ export default function Mostrador({ labels, typeNames, locale }: Props) {
                   </span>
                 )}
               </p>
+              {reservarBase && (
+                <a
+                  href={`${reservarBase}/${r.unitTypeId}?${new URLSearchParams({ from, to, adults: String(adults), children: String(children) })}`}
+                  className="mt-2 self-start rounded-(--lc-radius) bg-pino px-4 py-1.5 text-[13px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
+                >
+                  {labels.reservar} →
+                </a>
+              )}
             </li>
           ))}
         </ul>

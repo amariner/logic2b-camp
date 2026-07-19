@@ -235,12 +235,30 @@
     "distancias": {
       "titulo": "À portée",
       "items": [
-        { "lugar": "La crique", "valor": "300 m à pied" },
-        { "lugar": "Premier village avec marché", "valor": "10 min en voiture" },
-        { "lugar": "Pharmacie et centre de santé", "valor": "12 min en voiture" },
-        { "lugar": "Gare ferroviaire", "valor": "20 min en voiture" },
-        { "lugar": "Aéroport de Castellón", "valor": "35 min en voiture" },
-        { "lugar": "Peñíscola et son château", "valor": "30 min en voiture" }
+        {
+          "lugar": "La crique",
+          "valor": "300 m à pied"
+        },
+        {
+          "lugar": "Premier village avec marché",
+          "valor": "10 min en voiture"
+        },
+        {
+          "lugar": "Pharmacie et centre de santé",
+          "valor": "12 min en voiture"
+        },
+        {
+          "lugar": "Gare ferroviaire",
+          "valor": "20 min en voiture"
+        },
+        {
+          "lugar": "Aéroport de Castellón",
+          "valor": "35 min en voiture"
+        },
+        {
+          "lugar": "Peñíscola et son château",
+          "valor": "30 min en voiture"
+        }
       ]
     }
   },
@@ -338,5 +356,118 @@
     "titulo": "Cette page est partie à la crique",
     "texto": "L'adresse n'existe pas ou a changé de place. L'essentiel reste où il a toujours été : les dates, les pins et le comptoir.",
     "cta": "Retour à l'accueil"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Réserver | Camping Cala Sereno",
+      "description": "Réservez emplacement, bungalow ou glamping avec le prix final calculé à l'instant. Sans compte, sans surprises : dates, confirmation, c'est fait."
+    },
+    "titulo": "Réserver",
+    "intro": "Choisissez dates et voyageurs : le prix affiché est le prix final, calculé par le comptoir.",
+    "elegir": "Choisir",
+    "noches": "{n} nuits",
+    "detalle": {
+      "estancia": "Votre séjour",
+      "extras": "Extras",
+      "incluido": "inclus",
+      "electricidad": "Électricité",
+      "desglose": "Détail du prix",
+      "tasaNota": "Taxe de séjour : {importe}, réglée à la réception.",
+      "total": "Total",
+      "continuar": "Continuer",
+      "volver": "Retour aux résultats",
+      "error": "Impossible de calculer le prix. Réessayez."
+    },
+    "titular": {
+      "titulo": "Au nom de qui ?",
+      "hold": "Unité gardée pour vous pendant {min}",
+      "holdCaducado": "Le blocage temporaire a expiré — nous revérifierons la disponibilité à la confirmation.",
+      "nombre": "Nom et prénom",
+      "email": "Email",
+      "telefono": "Téléphone (facultatif)",
+      "notas": "Quelque chose à savoir ? (facultatif)",
+      "condiciones": "J'accepte les conditions de réservation et la politique d'annulation.",
+      "confirmar": "Confirmer la réservation",
+      "confirmando": "Confirmation…",
+      "agotado": "La dernière unité vient d'être prise. Rien n'a été débité — essayez d'autres dates.",
+      "error": "La réservation n'a pas pu être confirmée. Réessayez."
+    },
+    "conceptos": {
+      "price.base": "Séjour",
+      "price.extra_person": "Personnes supplémentaires",
+      "price.child": "Enfants",
+      "price.pet": "Animaux",
+      "price.electricity": "Électricité",
+      "price.vehicle": "Véhicule supplémentaire",
+      "discount.early_booking": "Remise réservation anticipée",
+      "discount.long_stay": "Remise long séjour",
+      "discount.acsi": "Remise ACSI"
+    },
+    "errores": {
+      "stay.closed": "Fermé à ces dates.",
+      "stay.min_stay": "Séjour minimum de {minStay} nuits à ces dates.",
+      "stay.max_stay": "Séjour maximum de {maxStay} nuits.",
+      "stay.arrival_day": "À ces dates, l'arrivée se fait le samedi.",
+      "stay.departure_day": "Jour de départ non autorisé à ces dates.",
+      "stay.capacity": "Cet hébergement accueille {capacityMax} personnes au maximum.",
+      "stay.capacity_min": "Occupation minimale de {capacityMin} personnes.",
+      "stay.no_adults": "Il faut au moins un adulte.",
+      "stay.no_pets": "Cet hébergement n'accepte pas les animaux.",
+      "stay.no_electricity": "Cet emplacement n'a pas de branchement électrique.",
+      "stay.no_rate": "Pas de tarif publié pour une partie du séjour.",
+      "stay.invalid_dates": "Vérifiez les dates."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Votre réservation | Camping Cala Sereno",
+      "description": "Consultez, imprimez, modifiez ou annulez votre réservation avec votre code et votre email. Sans compte ni mot de passe."
+    },
+    "titulo": "Votre réservation",
+    "nueva": "Réservation confirmée. Cette page est votre justificatif — gardez-la ou imprimez-la.",
+    "buscar": {
+      "intro": "Saisissez le code de réservation et l'email du titulaire.",
+      "codigo": "Code de réservation",
+      "email": "Email du titulaire",
+      "ver": "Voir ma réservation",
+      "buscando": "Recherche…",
+      "noEncontrada": "Aucune réservation trouvée avec ce code et cet email."
+    },
+    "estado": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée",
+      "no_show": "Non présenté",
+      "completed": "Terminée"
+    },
+    "campos": {
+      "llegada": "Arrivée",
+      "salida": "Départ",
+      "alojamiento": "Hébergement",
+      "huespedes": "Voyageurs",
+      "noches": "Nuits",
+      "total": "Total",
+      "pagado": "Payé",
+      "tasa": "Taxe de séjour (à la réception)"
+    },
+    "imprimir": "Imprimer",
+    "cancelar": {
+      "boton": "Annuler la réservation",
+      "aviso": "Avec le préavis actuel ({dias} jours), {pct} % du montant payé est remboursé : {importe}.",
+      "confirmar": "Oui, annuler définitivement",
+      "volver": "Garder la réservation",
+      "hecha": "Réservation annulée.",
+      "error": "L'annulation a échoué. Réessayez ou appelez-nous."
+    },
+    "modificar": {
+      "boton": "Changer les dates",
+      "titulo": "Nouvelles dates",
+      "nota": "Le prix est entièrement recalculé aux tarifs en vigueur.",
+      "aplicar": "Appliquer le changement",
+      "aplicando": "Application…",
+      "hecho": "Dates mises à jour. Nouveau total : {importe}.",
+      "noDisponible": "Pas de disponibilité à ces dates.",
+      "error": "Le changement n'a pas pu être appliqué."
+    }
   }
 }

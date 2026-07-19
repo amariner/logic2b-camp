@@ -1,0 +1,63 @@
+---
+/** Pasos 2–3 del funnel: detalle del tipo + extras con desglose vivo del servidor. */
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { config, data, getContent, localePath } from '../../lib/content';
+import { fotoTipo } from '../../lib/fotos';
+import FunnelDetalle from '../funnel/FunnelDetalle';
+import PageIntro from '../PageIntro.astro';
+
+interface Props {
+  locale: string;
+  unitTypeId: string;
+}
+const { locale, unitTypeId } = Astro.props;
+const c = getContent(locale);
+const r = c.reservar;
+
+const tipo = data.unitTypes.find((t) => t.id === unitTypeId);
+if (!tipo) throw new Error(`Tipo desconocido: ${unitTypeId}`);
+const nombre = c.tipos.nombres[tipo.id] ?? tipo.id;
+const path = `/reservar/${tipo.id}`;
+
+const extrasCatalog = data.extras.map((e) => ({
+  id: e.id,
+  priceCents: e.price_cents,
+  per: e.per,
+  required: e.required,
+}));
+const hasElectricity =
+  tipo.kind === 'pitch' &&
+  data.ratePlans.some((p) => p.unit_type_id === tipo.id && p.electricity_cents > 0);
+---
+
+<Base locale={locale} path={path} title={`${r.titulo}: ${nombre} | ${config.name}`} description={c.alojamientos.fichas[tipo.id]} noindex>
+  <PageIntro titulo={nombre} intro={c.alojamientos.fichas[tipo.id]} />
+  <section class="mx-auto max-w-7xl px-5 pb-24 md:px-8">
+    <div class="mb-8 max-w-xl">
+      <Picture
+        src={fotoTipo(tipo.id)}
+        alt={nombre}
+        widths={[640, 1024]}
+        sizes="(min-width: 768px) 36rem, 100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        loading="eager"
+        class="aspect-21/9 w-full rounded-(--lc-radius-lg) object-cover"
+      />
+    </div>
+    <FunnelDetalle
+      client:load
+      locale={locale}
+      unitTypeId={tipo.id}
+      labels={{ detalle: r.detalle, conceptos: r.conceptos, errores: r.errores, noches: r.noches }}
+      extrasCatalog={extrasCatalog}
+      extrasNombres={c.tarifas.extras.nombres}
+      extrasPor={c.tarifas.extras.por}
+      mostrador={c.mostrador}
+      hasElectricity={hasElectricity}
+      reservarPath={localePath(locale, '/reservar')}
+      titularPath={localePath(locale, `/reservar/${tipo.id}/titular`)}
+    />
+  </section>
+</Base>

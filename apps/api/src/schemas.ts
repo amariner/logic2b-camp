@@ -55,6 +55,30 @@ export const bookingRequestSchema = z.object({
   holder: contactSchema,
   locale: z.string().min(2).max(5).default('es'),
   notes: z.string().max(2000).optional(),
+  /** hold del funnel a consumir en la misma transacción (ADR 0007) */
+  holdId: z.string().max(40).optional(),
+});
+
+// ---------- Funnel (ADR 0007) ----------
+
+export const holdRequestSchema = z.object({
+  unitTypeId: z.string().min(1),
+  dateFrom: isoDate,
+  dateTo: isoDate,
+  occupancy: occupancySchema.optional(),
+});
+
+export const bookingCancelSchema = z.object({
+  email: z.string().email().max(200),
+});
+
+export const bookingModifySchema = z.object({
+  email: z.string().email().max(200),
+  dateFrom: isoDate,
+  dateTo: isoDate,
+  extraIds: z.array(z.string()).max(20).default([]),
+  withElectricity: z.boolean().default(false),
+  needsElectricity: z.boolean().default(false),
 });
 
 // ---------- Privado (/api/admin — ADR 0005) ----------
@@ -127,3 +151,5 @@ export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>;
 export type QuoteRequest = z.infer<typeof quoteRequestSchema>;
 export type EnquiryRequest = z.infer<typeof enquiryRequestSchema>;
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
+export type HoldRequest = z.infer<typeof holdRequestSchema>;
+export type BookingModify = z.infer<typeof bookingModifySchema>;

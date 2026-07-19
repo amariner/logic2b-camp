@@ -1,0 +1,12 @@
+---
+import ReservarDetalle from '../../../../components/paginas/ReservarDetalle.astro';
+import { data, extraLocales, mode } from '../../../../lib/content';
+
+export function getStaticPaths() {
+  if (mode !== 'instant') return [];
+  return extraLocales.flatMap((lang) => data.unitTypes.map((t) => ({ params: { lang, tipo: t.id } })));
+}
+const { lang, tipo } = Astro.params;
+---
+
+<ReservarDetalle locale={lang!} unitTypeId={tipo!} />

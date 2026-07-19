@@ -167,6 +167,29 @@ export const inventoryBlocks = sqliteTable(
   ],
 );
 
+// Bloqueo temporal del funnel (ADR 0007): por TIPO, 15 min, expiración perezosa + cron.
+// Un hold vivo resta 1 a la disponibilidad de su tipo; se consume en el mismo batch
+// que crea la reserva o muere solo.
+export const inventoryHolds = sqliteTable(
+  'inventory_holds',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    unitTypeId: text('unit_type_id')
+      .notNull()
+      .references(() => unitTypes.id),
+    dateFrom: text('date_from').notNull(),
+    dateTo: text('date_to').notNull(),
+    occupancy: text('occupancy', { mode: 'json' }).$type<Occupancy>(),
+    expiresAt: text('expires_at').notNull(),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [
+    index('holds_type_dates_idx').on(t.unitTypeId, t.dateFrom, t.dateTo),
+    index('holds_expires_idx').on(t.expiresAt),
+  ],
+);
+
 // ---------- Solicitudes (tabla propia, NO bookings en borrador — ADR 0002) ----------
 
 export const enquiries = sqliteTable(

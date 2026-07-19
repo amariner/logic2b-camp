@@ -1,0 +1,22 @@
+---
+import { config, localePath, mode } from '../../lib/content';
+
+const Reserva = mode === 'instant' ? (await import('../../components/paginas/Reserva.astro')).default : null;
+const locale = config.defaultLocale;
+---
+
+{
+  Reserva ? (
+    <Reserva locale={locale} />
+  ) : (
+    <html lang={locale}>
+      <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="refresh" content={`0;url=${localePath(locale)}`} />
+        <meta name="robots" content="noindex" />
+        <title>{config.name}</title>
+      </head>
+      <body />
+    </html>
+  )
+}

@@ -235,12 +235,30 @@
     "distancias": {
       "titulo": "In Reichweite",
       "items": [
-        { "lugar": "Die Bucht", "valor": "300 m zu Fuß" },
-        { "lugar": "Nächstes Dorf mit Markt", "valor": "10 Min. mit dem Auto" },
-        { "lugar": "Apotheke und Gesundheitszentrum", "valor": "12 Min. mit dem Auto" },
-        { "lugar": "Bahnhof", "valor": "20 Min. mit dem Auto" },
-        { "lugar": "Flughafen Castellón", "valor": "35 Min. mit dem Auto" },
-        { "lugar": "Peñíscola und seine Burg", "valor": "30 Min. mit dem Auto" }
+        {
+          "lugar": "Die Bucht",
+          "valor": "300 m zu Fuß"
+        },
+        {
+          "lugar": "Nächstes Dorf mit Markt",
+          "valor": "10 Min. mit dem Auto"
+        },
+        {
+          "lugar": "Apotheke und Gesundheitszentrum",
+          "valor": "12 Min. mit dem Auto"
+        },
+        {
+          "lugar": "Bahnhof",
+          "valor": "20 Min. mit dem Auto"
+        },
+        {
+          "lugar": "Flughafen Castellón",
+          "valor": "35 Min. mit dem Auto"
+        },
+        {
+          "lugar": "Peñíscola und seine Burg",
+          "valor": "30 Min. mit dem Auto"
+        }
       ]
     }
   },
@@ -338,5 +356,118 @@
     "titulo": "Diese Seite ist zur Bucht gegangen",
     "texto": "Die Adresse existiert nicht oder ist umgezogen. Das Wichtige ist, wo es immer war: die Daten, die Pinien und der Schalter.",
     "cta": "Zurück zum Anfang"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Buchen | Camping Cala Sereno",
+      "description": "Stellplatz, Bungalow oder Glamping mit sofort berechnetem Endpreis buchen. Ohne Konto, ohne Überraschungen: Daten wählen, bestätigen, fertig."
+    },
+    "titulo": "Buchen",
+    "intro": "Daten und Gruppe wählen: Der angezeigte Preis ist der Endpreis, berechnet vom Schalter.",
+    "elegir": "Wählen",
+    "noches": "{n} Nächte",
+    "detalle": {
+      "estancia": "Ihr Aufenthalt",
+      "extras": "Extras",
+      "incluido": "inbegriffen",
+      "electricidad": "Strom",
+      "desglose": "Preisaufschlüsselung",
+      "tasaNota": "Kurtaxe: {importe}, wird an der Rezeption beglichen.",
+      "total": "Gesamt",
+      "continuar": "Weiter",
+      "volver": "Zurück zu den Ergebnissen",
+      "error": "Der Preis konnte nicht berechnet werden. Bitte erneut versuchen."
+    },
+    "titular": {
+      "titulo": "Auf wessen Namen?",
+      "hold": "Einheit für Sie reserviert für {min}",
+      "holdCaducado": "Die temporäre Sperre ist abgelaufen — beim Bestätigen prüfen wir die Verfügbarkeit erneut.",
+      "nombre": "Vor- und Nachname",
+      "email": "E-Mail",
+      "telefono": "Telefon (optional)",
+      "notas": "Etwas, das wir wissen sollten? (optional)",
+      "condiciones": "Ich akzeptiere die Buchungsbedingungen und die Stornierungsrichtlinie.",
+      "confirmar": "Buchung bestätigen",
+      "confirmando": "Wird bestätigt…",
+      "agotado": "Die letzte Einheit wurde gerade vergeben. Es wurde nichts abgebucht — versuchen Sie andere Daten.",
+      "error": "Die Buchung konnte nicht bestätigt werden. Bitte erneut versuchen."
+    },
+    "conceptos": {
+      "price.base": "Aufenthalt",
+      "price.extra_person": "Zusätzliche Personen",
+      "price.child": "Kinder",
+      "price.pet": "Haustiere",
+      "price.electricity": "Strom",
+      "price.vehicle": "Zusätzliches Fahrzeug",
+      "discount.early_booking": "Frühbucherrabatt",
+      "discount.long_stay": "Langzeitrabatt",
+      "discount.acsi": "ACSI-Rabatt"
+    },
+    "errores": {
+      "stay.closed": "An diesen Daten geschlossen.",
+      "stay.min_stay": "Mindestaufenthalt von {minStay} Nächten an diesen Daten.",
+      "stay.max_stay": "Maximalaufenthalt von {maxStay} Nächten.",
+      "stay.arrival_day": "An diesen Daten ist die Anreise samstags.",
+      "stay.departure_day": "Abreisetag an diesen Daten nicht möglich.",
+      "stay.capacity": "Diese Unterkunft fasst höchstens {capacityMax} Personen.",
+      "stay.capacity_min": "Mindestbelegung von {capacityMin} Personen.",
+      "stay.no_adults": "Mindestens ein Erwachsener wird benötigt.",
+      "stay.no_pets": "Diese Unterkunft erlaubt keine Haustiere.",
+      "stay.no_electricity": "Dieser Stellplatz hat keinen Stromanschluss.",
+      "stay.no_rate": "Für einen Teil des Aufenthalts ist kein Tarif veröffentlicht.",
+      "stay.invalid_dates": "Daten prüfen."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Ihre Buchung | Camping Cala Sereno",
+      "description": "Buchung mit Code und E-Mail einsehen, drucken, ändern oder stornieren. Ohne Konto, ohne Passwort."
+    },
+    "titulo": "Ihre Buchung",
+    "nueva": "Buchung bestätigt. Diese Seite ist Ihr Beleg — speichern oder drucken Sie sie.",
+    "buscar": {
+      "intro": "Buchungscode und E-Mail des Inhabers eingeben.",
+      "codigo": "Buchungscode",
+      "email": "E-Mail des Inhabers",
+      "ver": "Meine Buchung ansehen",
+      "buscando": "Suche…",
+      "noEncontrada": "Keine Buchung mit diesem Code und dieser E-Mail gefunden."
+    },
+    "estado": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "no_show": "Nicht erschienen",
+      "completed": "Abgeschlossen"
+    },
+    "campos": {
+      "llegada": "Anreise",
+      "salida": "Abreise",
+      "alojamiento": "Unterkunft",
+      "huespedes": "Gäste",
+      "noches": "Nächte",
+      "total": "Gesamt",
+      "pagado": "Bezahlt",
+      "tasa": "Kurtaxe (an der Rezeption)"
+    },
+    "imprimir": "Drucken",
+    "cancelar": {
+      "boton": "Buchung stornieren",
+      "aviso": "Bei der aktuellen Frist ({dias} Tage) werden {pct} % des Gezahlten erstattet: {importe}.",
+      "confirmar": "Ja, endgültig stornieren",
+      "volver": "Buchung behalten",
+      "hecha": "Buchung storniert.",
+      "error": "Stornierung fehlgeschlagen. Versuchen Sie es erneut oder rufen Sie uns an."
+    },
+    "modificar": {
+      "boton": "Daten ändern",
+      "titulo": "Neue Daten",
+      "nota": "Der Preis wird vollständig zu den aktuellen Tarifen neu berechnet.",
+      "aplicar": "Änderung anwenden",
+      "aplicando": "Wird angewendet…",
+      "hecho": "Daten aktualisiert. Neuer Gesamtbetrag: {importe}.",
+      "noDisponible": "Keine Verfügbarkeit für diese Daten.",
+      "error": "Die Änderung konnte nicht angewendet werden."
+    }
   }
 }

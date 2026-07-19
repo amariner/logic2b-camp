@@ -235,12 +235,30 @@
     "distancias": {
       "titulo": "Close by",
       "items": [
-        { "lugar": "The cove", "valor": "300 m on foot" },
-        { "lugar": "Nearest market town", "valor": "10 min by car" },
-        { "lugar": "Pharmacy & health centre", "valor": "12 min by car" },
-        { "lugar": "Train station", "valor": "20 min by car" },
-        { "lugar": "Castellón airport", "valor": "35 min by car" },
-        { "lugar": "Peñíscola and its castle", "valor": "30 min by car" }
+        {
+          "lugar": "The cove",
+          "valor": "300 m on foot"
+        },
+        {
+          "lugar": "Nearest market town",
+          "valor": "10 min by car"
+        },
+        {
+          "lugar": "Pharmacy & health centre",
+          "valor": "12 min by car"
+        },
+        {
+          "lugar": "Train station",
+          "valor": "20 min by car"
+        },
+        {
+          "lugar": "Castellón airport",
+          "valor": "35 min by car"
+        },
+        {
+          "lugar": "Peñíscola and its castle",
+          "valor": "30 min by car"
+        }
       ]
     }
   },
@@ -338,5 +356,118 @@
     "titulo": "This page went down to the cove",
     "texto": "That address doesn't exist or has moved. The important things are where they've always been: the dates, the pines and the front desk.",
     "cta": "Back to the start"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Book | Camping Cala Sereno",
+      "description": "Book a pitch, bungalow or glamping tent with the final price calculated on the spot. No accounts, no surprises: pick dates, confirm, done."
+    },
+    "titulo": "Book",
+    "intro": "Pick dates and party size: the price you see is final, calculated by the front desk.",
+    "elegir": "Choose",
+    "noches": "{n} nights",
+    "detalle": {
+      "estancia": "Your stay",
+      "extras": "Extras",
+      "incluido": "included",
+      "electricidad": "Electricity",
+      "desglose": "Price breakdown",
+      "tasaNota": "Tourist tax: {importe}, settled at reception.",
+      "total": "Total",
+      "continuar": "Continue",
+      "volver": "Back to results",
+      "error": "We couldn't calculate the price. Please try again."
+    },
+    "titular": {
+      "titulo": "Whose name goes on it?",
+      "hold": "Unit held for you for {min}",
+      "holdCaducado": "The temporary hold has expired — we'll re-check availability when you confirm.",
+      "nombre": "Full name",
+      "email": "Email",
+      "telefono": "Phone (optional)",
+      "notas": "Anything we should know? (optional)",
+      "condiciones": "I accept the booking conditions and the cancellation policy.",
+      "confirmar": "Confirm booking",
+      "confirmando": "Confirming…",
+      "agotado": "The last unit was just taken. Nothing has been charged — try other dates.",
+      "error": "The booking couldn't be confirmed. Please try again."
+    },
+    "conceptos": {
+      "price.base": "Stay",
+      "price.extra_person": "Additional people",
+      "price.child": "Children",
+      "price.pet": "Pets",
+      "price.electricity": "Electricity",
+      "price.vehicle": "Additional vehicle",
+      "discount.early_booking": "Early booking discount",
+      "discount.long_stay": "Long stay discount",
+      "discount.acsi": "ACSI discount"
+    },
+    "errores": {
+      "stay.closed": "Closed on those dates.",
+      "stay.min_stay": "Minimum stay of {minStay} nights on those dates.",
+      "stay.max_stay": "Maximum stay of {maxStay} nights.",
+      "stay.arrival_day": "Arrivals are on Saturdays on those dates.",
+      "stay.departure_day": "Departure day not allowed on those dates.",
+      "stay.capacity": "That accommodation sleeps up to {capacityMax} people.",
+      "stay.capacity_min": "Minimum occupancy of {capacityMin} people.",
+      "stay.no_adults": "At least one adult is needed.",
+      "stay.no_pets": "That accommodation doesn't allow pets.",
+      "stay.no_electricity": "That pitch has no electric hook-up.",
+      "stay.no_rate": "No published rate for part of the stay.",
+      "stay.invalid_dates": "Check the dates."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Your booking | Camping Cala Sereno",
+      "description": "View, print, change or cancel your booking with your code and email. No accounts, no passwords."
+    },
+    "titulo": "Your booking",
+    "nueva": "Booking confirmed. This page is your receipt — save it or print it.",
+    "buscar": {
+      "intro": "Enter the booking code and the holder's email.",
+      "codigo": "Booking code",
+      "email": "Holder's email",
+      "ver": "View my booking",
+      "buscando": "Searching…",
+      "noEncontrada": "We couldn't find a booking with that code and email."
+    },
+    "estado": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "no_show": "No show",
+      "completed": "Completed"
+    },
+    "campos": {
+      "llegada": "Arrival",
+      "salida": "Departure",
+      "alojamiento": "Accommodation",
+      "huespedes": "Guests",
+      "noches": "Nights",
+      "total": "Total",
+      "pagado": "Paid",
+      "tasa": "Tourist tax (at reception)"
+    },
+    "imprimir": "Print",
+    "cancelar": {
+      "boton": "Cancel the booking",
+      "aviso": "With the current notice ({dias} days), {pct}% of what you paid is refunded: {importe}.",
+      "confirmar": "Yes, cancel for good",
+      "volver": "Keep the booking",
+      "hecha": "Booking cancelled.",
+      "error": "It couldn't be cancelled. Try again or give us a call."
+    },
+    "modificar": {
+      "boton": "Change dates",
+      "titulo": "New dates",
+      "nota": "The price is fully recalculated with current rates.",
+      "aplicar": "Apply the change",
+      "aplicando": "Applying…",
+      "hecho": "Dates updated. New total: {importe}.",
+      "noDisponible": "No availability for those dates.",
+      "error": "The change couldn't be applied."
+    }
   }
 }

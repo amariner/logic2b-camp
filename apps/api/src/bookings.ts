@@ -11,7 +11,7 @@ import {
 } from '@logic-camp/core';
 import { schema } from '@logic-camp/db';
 import { eq } from 'drizzle-orm';
-import { loadEngineData, loadExtras, loadRequiredExtraIds } from './data';
+import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from './data';
 import type { BookingRequest } from './schemas';
 import type { TenantContext } from './tenant';
 
@@ -57,6 +57,28 @@ export async function createBooking(
   const unitType = data.unitTypes.find((t) => t.id === body.unitTypeId);
   if (!unitType) return { ok: false, status: 404, body: { error: 'unknown_unit_type' } };
 
+  // hold del funnel (ADR 0007): debe estar vivo y coincidir con lo que se reserva
+  const now = nowIso();
+  if (body.holdId) {
+    const holdRows = await db
+      .select()
+      .from(schema.inventoryHolds)
+      .where(eq(schema.inventoryHolds.id, body.holdId));
+    const hold = holdRows[0];
+    if (!hold || hold.expiresAt <= now) {
+      return { ok: false, status: 409, body: { error: 'hold_expired' } };
+    }
+    if (
+      hold.unitTypeId !== body.unitTypeId ||
+      hold.dateFrom !== body.dateFrom ||
+      hold.dateTo !== body.dateTo
+    ) {
+      return { ok: false, status: 409, body: { error: 'hold_mismatch' } };
+    }
+  }
+  // los demás holds vivos ocupan; el propio se excluye (si no, se bloquearía a sí mismo)
+  const holds = (await loadLiveHolds(db, now)).filter((h) => h.id !== body.holdId);
+
   const validation = validateStay({
     unitType,
     dateFrom: body.dateFrom,
@@ -78,6 +100,8 @@ export async function createBooking(
     bookings: data.bookings,
     blocks: data.blocks,
     seasons: data.seasons,
+    holds,
+    now,
   })[0]!;
   if (availability.status !== 'available') {
     return {
@@ -153,9 +177,13 @@ export async function createBooking(
     ...(opts.idemKey
       ? [db.insert(schema.meta).values({ key: `idem:${opts.idemKey}`, value: id })]
       : []),
+    // el hold se consume EN la misma transacción que crea la reserva (ADR 0007)
+    ...(body.holdId
+      ? [db.delete(schema.inventoryHolds).where(eq(schema.inventoryHolds.id, body.holdId))]
+      : []),
   ];
 
-  // batch atómico: reserva + titular (+ clave de idempotencia) juntos o nada
+  // batch atómico: reserva + titular (+ clave de idempotencia + hold consumido) juntos o nada
   await db.batch(inserts as unknown as Parameters<typeof db.batch>[0]);
 
   // Fase 7: hook onBookingCreated → email confirmación

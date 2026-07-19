@@ -120,6 +120,19 @@ html {
   text-underline-offset: 3px;
 }
 
+/* resguardo imprimible de /reserva */
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  .lc-print {
+    border: none !important;
+    padding: 0 !important;
+  }
+}
+
 /* skeleton del mostrador */
 @keyframes lc-pulse {
   50% { opacity: 0.45; }

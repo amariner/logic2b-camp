@@ -259,6 +259,82 @@ describe('searchAvailability', () => {
     expect(res[0]!.status).toBe('available');
   });
 
+  it('un hold vivo resta 1 unidad a su tipo (ADR 0007)', () => {
+    const oneUnit = mkUnits('ut_std', 1);
+    const res = searchAvailability({
+      dateFrom: '2026-07-01',
+      dateTo: '2026-07-05',
+      unitTypes: [pitchType],
+      units: oneUnit,
+      bookings: [],
+      blocks: noBlocks,
+      seasons,
+      holds: [
+        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-03', dateTo: '2026-07-06', expiresAt: '2026-06-01T10:15:00.000Z' },
+      ],
+      now: '2026-06-01T10:00:00.000Z',
+    });
+    expect(res[0]!.status).toBe('unavailable');
+    expect(res[0]!.availableUnits).toBe(0);
+  });
+
+  it('un hold caducado NO ocupa aunque el cron no haya pasado (expiración perezosa)', () => {
+    const oneUnit = mkUnits('ut_std', 1);
+    const res = searchAvailability({
+      dateFrom: '2026-07-01',
+      dateTo: '2026-07-05',
+      unitTypes: [pitchType],
+      units: oneUnit,
+      bookings: [],
+      blocks: noBlocks,
+      seasons,
+      holds: [
+        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-01', dateTo: '2026-07-05', expiresAt: '2026-06-01T09:59:59.000Z' },
+      ],
+      now: '2026-06-01T10:00:00.000Z',
+    });
+    expect(res[0]!.status).toBe('available');
+    expect(res[0]!.availableUnits).toBe(1);
+  });
+
+  it('holds sin solape de fechas no restan (to exclusive: back-to-back con hold vale)', () => {
+    const oneUnit = mkUnits('ut_std', 1);
+    const res = searchAvailability({
+      dateFrom: '2026-07-05',
+      dateTo: '2026-07-08',
+      unitTypes: [pitchType],
+      units: oneUnit,
+      bookings: [],
+      blocks: noBlocks,
+      seasons,
+      holds: [
+        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-01', dateTo: '2026-07-05', expiresAt: '2026-06-01T10:15:00.000Z' },
+        { id: 'h2', unitTypeId: 'ut_bung', dateFrom: '2026-07-05', dateTo: '2026-07-08', expiresAt: '2026-06-01T10:15:00.000Z' },
+      ],
+      now: '2026-06-01T10:00:00.000Z',
+    });
+    expect(res[0]!.status).toBe('available');
+  });
+
+  it('invariante 1 con holds: reservas + holds nunca superan las unidades', () => {
+    const twoUnits = mkUnits('ut_std', 2);
+    const res = searchAvailability({
+      dateFrom: '2026-07-01',
+      dateTo: '2026-07-04',
+      unitTypes: [pitchType],
+      units: twoUnits,
+      bookings: [mkBooking('b1', 'ut_std', 'ut_std_1', '2026-07-02', '2026-07-06')],
+      blocks: noBlocks,
+      seasons,
+      holds: [
+        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-03', dateTo: '2026-07-04', expiresAt: '2026-06-01T10:15:00.000Z' },
+      ],
+      now: '2026-06-01T10:00:00.000Z',
+    });
+    expect(res[0]!.availableUnits).toBe(0);
+    expect(res[0]!.status).toBe('unavailable');
+  });
+
   it('unidades inactivas no cuentan', () => {
     const mixed = [...mkUnits('ut_std', 2), { ...mkUnits('ut_std', 3)[2]!, status: 'inactive' as const }];
     const res = searchAvailability({

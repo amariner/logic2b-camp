@@ -8,6 +8,8 @@
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": { "TENANT_SLUG": "demo" },
+  // purga de holds caducados del funnel (ADR 0007)
+  "triggers": { "crons": ["*/15 * * * *"] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
   "assets": {
     // construir la web ANTES de desplegar: pnpm --filter @logic-camp/api deploy:demo lo hace

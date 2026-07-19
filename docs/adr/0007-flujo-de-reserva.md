@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-19
 - **Fase**: 5 · Flujo de reserva
-- **Estado**: **PROPUESTO — pendiente de validación de Andreu antes de escribir código**
+- **Estado**: aceptado (2026-07-19 — Andreu delegó la validación en sesión: "válida tú lo que necesites, avanza el máximo"). Ajuste de implementación: en salida estática la gestión vive en `/reserva?code=…&email=…` (query, no segmento de ruta) — la URL sigue siendo el estado.
 
 ## Contexto
 
