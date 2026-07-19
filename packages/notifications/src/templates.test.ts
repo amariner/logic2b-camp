@@ -69,6 +69,20 @@ describe('render de plantillas', () => {
     expect(msg.html).not.toContain(booking.manageUrl!);
   });
 
+  it('booking_pending_stuck: aviso interno con el titular, sin desglose ni botón, en los 6 idiomas', () => {
+    for (const lang of ['es', 'ca', 'en', 'fr', 'de', 'nl'] as const) {
+      const msg = render({ kind: 'booking_pending_stuck', data: booking }, lang);
+      expect(msg.subject).toContain('CS-2026-0042');
+      expect(msg.html).toContain('Marc Dubois');
+      expect(msg.text).toContain('Marc Dubois');
+      expect(msg.html).not.toContain(booking.manageUrl!);
+      expect(msg.text).not.toContain(booking.manageUrl!);
+    }
+    const es = render({ kind: 'booking_pending_stuck', data: booking }, 'es');
+    expect(es.html).not.toContain('Desglose');
+    expect(es.subject).not.toBe(render({ kind: 'booking_confirmed', data: booking }, 'es').subject);
+  });
+
   it('autoreply al cliente en su idioma; idioma raro cae a es', () => {
     const nl = render({ kind: 'enquiry_autoreply', data: enquiry }, 'nl');
     expect(nl.subject).toContain('We hebben je aanvraag ontvangen');

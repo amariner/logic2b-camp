@@ -89,14 +89,16 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
     return { subject, html: layout(d.campName, lang, tr(lang, `${pre}.title`), body), text };
   }
 
-  // booking_confirmed | booking_cancelled
+  // booking_confirmed | booking_cancelled | booking_pending_stuck
   const d = payload.data;
   const cancel = payload.kind === 'booking_cancelled';
-  const pre = cancel ? 'cnl' : 'bkg';
+  const stuck = payload.kind === 'booking_pending_stuck';
+  const pre = cancel ? 'cnl' : stuck ? 'stk' : 'bkg';
   const subject = tr(lang, `${pre}.subject`, { code: d.code, camp: d.campName });
 
   const datos = [
     row(tr(lang, 'bkg.code'), `<strong>${esc(d.code)}</strong>`),
+    stuck ? row(tr(lang, 'stk.holder'), esc(d.holderName)) : '',
     row(
       tr(lang, 'bkg.stay'),
       `${d.dateFrom} → ${d.dateTo} · ${tr(lang, 'bkg.nights', { n: d.nights })}`,
@@ -109,7 +111,7 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
   ].join('');
 
   let body = p(esc(tr(lang, `${pre}.intro`))) + table(datos);
-  if (!cancel) {
+  if (!cancel && !stuck) {
     body += `<p style="margin:0 0 4px;font-size:13px;color:#6c675c">${esc(tr(lang, 'bkg.breakdown'))}</p>`;
     body += breakdownHtml(d.lines, d.totalCents, d.currency, lang);
     if (d.touristTaxCents > 0)
@@ -124,16 +126,19 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
     tr(lang, `${pre}.title`),
     '',
     `${tr(lang, 'bkg.code')}: ${d.code}`,
+    ...(stuck ? [`${tr(lang, 'stk.holder')}: ${d.holderName}`] : []),
     `${tr(lang, 'bkg.stay')}: ${d.dateFrom} → ${d.dateTo} · ${tr(lang, 'bkg.nights', { n: d.nights })}`,
     `${tr(lang, 'bkg.type')}: ${d.unitTypeName}`,
     ...(cancel && d.refundCents !== undefined
       ? [`${tr(lang, 'cnl.refund')}: ${eur(d.refundCents, d.currency)}`]
-      : [
-          '',
-          ...d.lines.map((l) => `${l.label}: ${eur(l.amountCents, d.currency)}`),
-          `${tr(lang, 'bkg.total')}: ${eur(d.totalCents, d.currency)}`,
-          ...(d.manageUrl ? ['', `${tr(lang, 'bkg.manage')}: ${d.manageUrl}`] : []),
-        ]),
+      : stuck
+        ? []
+        : [
+            '',
+            ...d.lines.map((l) => `${l.label}: ${eur(l.amountCents, d.currency)}`),
+            `${tr(lang, 'bkg.total')}: ${eur(d.totalCents, d.currency)}`,
+            ...(d.manageUrl ? ['', `${tr(lang, 'bkg.manage')}: ${d.manageUrl}`] : []),
+          ]),
   ].join('\n');
 
   return { subject, html: layout(d.campName, lang, tr(lang, `${pre}.title`), body), text };

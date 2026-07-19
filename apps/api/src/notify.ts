@@ -4,7 +4,7 @@
  * (on/off por evento sin deploy), renderiza, envía y deja rastro SIEMPRE.
  * El envío va en waitUntil: un fallo de email jamás rompe una reserva.
  */
-import { schema } from '@logic-camp/db';
+import { schema, type Db } from '@logic-camp/db';
 import {
   conceptLabel,
   noopSender,
@@ -37,9 +37,16 @@ type DispatchInput = {
   enquiryId?: string;
 };
 
-async function dispatch(c: NotifyContext, input: DispatchInput): Promise<void> {
-  const tenant = c.get('tenant') as TenantContext;
-  const db = tenant.db;
+/**
+ * Lo mínimo que `dispatch` necesita para operar — antes era un `Context` de
+ * Hono entero, pero un cron (`scheduled()`) no tiene petición ni `Context`.
+ * `notifyAfter` (disparado desde una ruta) arma esto desde `c`; `notifyNow`
+ * (disparado desde un cron) lo arma directamente desde `env`.
+ */
+type DispatchDeps = { db: Db; tenantSlug: string; apiKey?: string };
+
+async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void> {
+  const { db, tenantSlug, apiKey } = deps;
 
   const row = (await db.select().from(schema.tenants))[0];
   const config: NotificationsConfig =
@@ -49,7 +56,6 @@ async function dispatch(c: NotifyContext, input: DispatchInput): Promise<void> {
   const kind = input.payload.kind;
   const enabled = config.enabled?.[kind] ?? true;
   const to = input.to ?? config.notifyTo ?? null;
-  const apiKey = c.env.RESEND_API_KEY;
   const sender = apiKey ? resendSender(apiKey) : noopSender;
 
   // el nombre real del camping entra aquí (la fila del tenant manda)
@@ -70,7 +76,7 @@ async function dispatch(c: NotifyContext, input: DispatchInput): Promise<void> {
 
   await db.insert(schema.notificationsLog).values({
     id: uid('ntf'),
-    tenantId: tenant.slug,
+    tenantId: tenantSlug,
     bookingId: input.bookingId ?? null,
     enquiryId: input.enquiryId ?? null,
     channel: 'email',
@@ -82,17 +88,116 @@ async function dispatch(c: NotifyContext, input: DispatchInput): Promise<void> {
   });
 }
 
+function depsFromContext(c: NotifyContext): DispatchDeps {
+  const tenant = c.get('tenant') as TenantContext;
+  return { db: tenant.db, tenantSlug: tenant.slug, apiKey: c.env.RESEND_API_KEY };
+}
+
 /**
  * Ejecuta tras responder (waitUntil). Fuera de Workers (tests) se espera
  * inline — así los tests pueden asertar el log de forma síncrona.
  */
 export function notifyAfter(c: NotifyContext, inputs: DispatchInput[]): Promise<unknown> {
-  const task = Promise.allSettled(inputs.map((i) => dispatch(c, i)));
+  const deps = depsFromContext(c);
+  const task = Promise.allSettled(inputs.map((i) => dispatch(deps, i)));
   try {
     c.executionCtx.waitUntil(task);
     return Promise.resolve();
   } catch {
     return task;
+  }
+}
+
+/**
+ * Igual que `notifyAfter` pero para un cron (`scheduled()`, sin `Context` ni
+ * `waitUntil`): el propio `scheduled()` ya controla su ciclo de vida, así
+ * que aquí simplemente se espera (ADR 0014).
+ */
+export async function notifyNow(deps: DispatchDeps, inputs: DispatchInput[]): Promise<void> {
+  await Promise.allSettled(inputs.map((i) => dispatch(deps, i)));
+}
+
+/** ADR 0014: una reserva web `pending` sin pagar ni cancelar en este tiempo, se avisa (no se cancela). */
+const STUCK_PENDING_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * Cron (ADR 0014, mismo disparo que la purga de holds de la Fase 5): avisa
+ * UNA vez por reserva colgada — comprueba en `notifications_log` antes de
+ * repetir. No toca `status` ni inventario: cancelar sigue siendo manual.
+ */
+export async function notifyStuckPendingBookings(
+  db: Db,
+  tenantSlug: string,
+  apiKey?: string,
+): Promise<void> {
+  const { and, eq, lt } = await import('drizzle-orm');
+  const threshold = new Date(Date.now() - STUCK_PENDING_MS).toISOString();
+
+  const stuck = await db
+    .select({
+      booking: schema.bookings,
+      leadName: schema.guests.name,
+      leadSurname: schema.guests.surname,
+    })
+    .from(schema.bookings)
+    .leftJoin(
+      schema.bookingGuests,
+      and(
+        eq(schema.bookingGuests.bookingId, schema.bookings.id),
+        eq(schema.bookingGuests.isLead, true),
+      ),
+    )
+    .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
+    .where(
+      and(
+        eq(schema.bookings.status, 'pending'),
+        eq(schema.bookings.channel, 'web'),
+        lt(schema.bookings.createdAt, threshold),
+      ),
+    );
+  if (!stuck.length) return;
+
+  const houseLocale = (await loadTenantConfig(db)).locales[0] ?? 'es';
+  const deps: DispatchDeps = { db, tenantSlug, apiKey };
+
+  for (const row of stuck) {
+    const already = await db
+      .select()
+      .from(schema.notificationsLog)
+      .where(
+        and(
+          eq(schema.notificationsLog.bookingId, row.booking.id),
+          eq(schema.notificationsLog.template, 'booking_pending_stuck'),
+        ),
+      );
+    if (already.length) continue;
+
+    const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
+    const breakdown = row.booking.priceBreakdown as { currency: string };
+    await notifyNow(deps, [
+      {
+        payload: {
+          kind: 'booking_pending_stuck',
+          data: {
+            campName: '',
+            code: row.booking.code,
+            holderName: row.leadName ? `${row.leadName} ${row.leadSurname ?? ''}`.trim() : '—',
+            dateFrom: row.booking.dateFrom,
+            dateTo: row.booking.dateTo,
+            nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
+            persons: occupancy.adults + occupancy.childrenAges.length,
+            unitTypeName: await unitTypeName(db, row.booking.unitTypeId, houseLocale),
+            lines: [],
+            totalCents: row.booking.totalCents,
+            touristTaxCents: row.booking.touristTaxCents,
+            currency: breakdown.currency,
+          },
+        },
+        to: null,
+        locale: houseLocale,
+        bookingId: row.booking.id,
+      },
+    ]);
   }
 }
 
@@ -108,8 +213,7 @@ const DAY_MS = 86_400_000;
 export const nightsOf = (from: string, to: string) =>
   Math.round((Date.parse(to) - Date.parse(from)) / DAY_MS);
 
-async function unitTypeName(c: NotifyContext, unitTypeId: string, locale: string): Promise<string> {
-  const db = (c.get('tenant') as TenantContext).db;
+async function unitTypeName(db: Db, unitTypeId: string, locale: string): Promise<string> {
   const { eq } = await import('drizzle-orm');
   const ut = (
     await db.select().from(schema.unitTypes).where(eq(schema.unitTypes.id, unitTypeId))
@@ -141,6 +245,7 @@ export async function notifyBookingConfirmed(
   res: ConfirmedRes,
 ): Promise<unknown> {
   const origin = new URL(c.req.url).origin;
+  const db = (c.get('tenant') as TenantContext).db;
   return notifyAfter(c, [
     {
       payload: {
@@ -153,7 +258,7 @@ export async function notifyBookingConfirmed(
           dateTo: req.dateTo,
           nights: nightsOf(req.dateFrom, req.dateTo),
           persons: req.occupancy.adults + req.occupancy.childrenAges.length,
-          unitTypeName: await unitTypeName(c, req.unitTypeId, req.locale),
+          unitTypeName: await unitTypeName(db, req.unitTypeId, req.locale),
           lines: emailLines(res.breakdown.lines, req.locale),
           totalCents: res.totalCents,
           touristTaxCents: res.touristTaxCents,
@@ -188,6 +293,7 @@ export async function notifyBookingCancelled(
   to: string,
   refundCents?: number,
 ): Promise<unknown> {
+  const db = (c.get('tenant') as TenantContext).db;
   return notifyAfter(c, [
     {
       payload: {
@@ -200,7 +306,7 @@ export async function notifyBookingCancelled(
           dateTo: booking.dateTo,
           nights: nightsOf(booking.dateFrom, booking.dateTo),
           persons: booking.occupancy.adults + booking.occupancy.childrenAges.length,
-          unitTypeName: await unitTypeName(c, booking.unitTypeId, booking.locale),
+          unitTypeName: await unitTypeName(db, booking.unitTypeId, booking.locale),
           lines: [],
           totalCents: booking.totalCents,
           touristTaxCents: booking.touristTaxCents,

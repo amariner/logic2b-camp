@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
+- **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). BACKLOG 8.x cerrado en la misma sesión cloud (ADR 0014): cron de aviso de reservas `pending` colgadas, genérico para cualquier tenant con pagos (no solo la demo). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (38/38 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,21 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 26 — 2026-07-19 · BACKLOG 8.x · ADR 0014 — aviso de reservas `pending` colgadas
+
+**Hecho** (continuación de la misma sesión cloud: "sigue perfilando... sin parar")
+- `docs/adr/0014-aviso-reservas-pending-colgadas.md`: decisión v1 = SOLO avisa (no auto-cancela ni libera inventario) — un webhook de pasarela puede llegar con minutos de retraso por causas normales; cancelar de más perdería una venta real. Cancelar sigue siendo, como hoy, una acción manual de recepción.
+- `packages/notifications`: kind nuevo `booking_pending_stuck` (reutiliza `BookingPayload`, sin campos nuevos salvo el ya existente `holderName`), plantilla propia sin desglose ni botón de gestión (es un aviso interno, nunca llega al huésped), i18n en los 6 idiomas. 1 test nuevo (7/7 en el paquete).
+- `apps/api/src/notify.ts`: `dispatch`/`unitTypeName` dejan de depender de un `Context` de Hono (hasta hoy todo disparo de notificación ocurría dentro de una petición HTTP) — se extrae a un objeto plano `{db, tenantSlug, apiKey}`; `notifyAfter` (rutas) lo arma desde `c` sin cambiar su firma pública, `notifyNow` (nuevo) lo recibe directo para usarse desde un cron. Cero cambio de comportamiento en los 4 disparos existentes — verificado con la suite completa antes/después.
+- `notifyStuckPendingBookings(db, tenantSlug, apiKey)`: reservas `channel:'web'` `status:'pending'` de más de 2h, avisa UNA vez (comprueba `notifications_log` antes de repetir), con el nombre del titular resuelto vía `booking_guests`/`guests` (mismo join que ya usaba `/admin/bookings`). Enganchado al MISMO cron `*/15 * * * *` de purga de holds de la Fase 5 en `apps/api/src/index.ts` (genérico — corre en cualquier tenant tier 3+ con pagos, no solo la demo; nada que tocar en `tenants/_template/wrangler.jsonc`).
+- **4 tests de integración nuevos** (`apps/api/test/notify-cron.test.ts`, D1 real): avisa de una `pending` vieja con el titular y sin tocar su `status`, no repite el aviso en una segunda pasada del cron, NO avisa de una reciente (<2h), NO avisa de una confirmada aunque sea vieja, NO avisa de una `pending` por teléfono (nunca nace así por pago). 55/55 en la suite privada.
+- **Verificado contra el Worker real** (wrangler dev + D1 local sembrada + `--test-scheduled`): insertada a mano una reserva `pending` de prueba (el demo usa `payments:{mode:'none'}`, así que nunca genera una `pending` real por su cuenta) — al disparar el cron aparecieron avisos para ELLA Y para 4 reservas `pending` reales que ya traía el seed (fechas del ancla de temporada, ya "viejas" respecto al reloj real), cada una `status:'disabled'` (sin `RESEND_API_KEY` local) con el código resuelto en `/admin/#/notificaciones`. Segunda pasada del cron: mismas 5, cero duplicados. Datos de prueba limpiados después.
+- `docs/FUNCIONALIDADES.md` §8, `docs/BACKLOG.md` al día
+- **`pnpm check`**: ✅ verde (38/38)
+
+**Decisiones**: purgar de verdad (auto-cancelar + liberar inventario) queda declarado para cuando el volumen real de reservas colgadas lo justifique, no antes — ver ADR 0014 §1 para el porqué.
+**`/check`**: ✅ verde (38/38) · API 55/55 · notifications 7/7
 
 ### Sesión 25 — 2026-07-19 · Fase 10 (1/varias) · ADR 0013 — reset nocturno + conmutador de nivel + banner de demo
 

@@ -40,6 +40,11 @@ const es: Dict = {
   'cnl.subject': 'Reserva {code} cancelada — {camp}',
   'cnl.title': 'Tu reserva ha sido cancelada',
   'cnl.intro': 'Confirmamos la cancelación. Si no la has pedido tú, contesta a este email.',
+  'stk.subject': 'Reserva {code} pendiente de pago sin confirmar — {camp}',
+  'stk.title': 'Reserva pendiente sin confirmar',
+  'stk.intro':
+    'Esta reserva lleva más de dos horas esperando el pago, sin cobro ni cancelación. Puede que el cliente haya abandonado el pago — revisa si hace falta contactarlo o liberar la plaza.',
+  'stk.holder': 'Titular',
   'cnl.refund': 'Reembolso previsto',
   'common.footer': 'Este email se ha enviado automáticamente desde {camp}.',
 };
@@ -81,6 +86,11 @@ const ca: Dict = {
   'cnl.subject': 'Reserva {code} cancel·lada — {camp}',
   'cnl.title': 'La teva reserva ha estat cancel·lada',
   'cnl.intro': "Confirmem la cancel·lació. Si no l'has demanat tu, respon a aquest email.",
+  'stk.subject': 'Reserva {code} pendent de pagament sense confirmar — {camp}',
+  'stk.title': 'Reserva pendent sense confirmar',
+  'stk.intro':
+    "Aquesta reserva porta més de dues hores esperant el pagament, sense cobrament ni cancel·lació. Pot ser que el client hagi abandonat el pagament — revisa si cal contactar-lo o alliberar la plaça.",
+  'stk.holder': 'Titular',
   'cnl.refund': 'Reemborsament previst',
   'common.footer': "Aquest email s'ha enviat automàticament des de {camp}.",
 };
@@ -121,6 +131,11 @@ const en: Dict = {
   'cnl.subject': 'Booking {code} cancelled — {camp}',
   'cnl.title': 'Your booking has been cancelled',
   'cnl.intro': 'We confirm the cancellation. If you did not request it, reply to this email.',
+  'stk.subject': 'Booking {code} pending payment, unconfirmed — {camp}',
+  'stk.title': 'Unconfirmed pending booking',
+  'stk.intro':
+    "This booking has been waiting for payment for over two hours, with no charge or cancellation. The guest may have abandoned checkout — check if it needs a follow-up or the spot should be released.",
+  'stk.holder': 'Holder',
   'cnl.refund': 'Expected refund',
   'common.footer': 'This email was sent automatically from {camp}.',
 };
@@ -163,6 +178,11 @@ const fr: Dict = {
   'cnl.title': 'Votre réservation a été annulée',
   'cnl.intro':
     'Nous confirmons l’annulation. Si vous n’en êtes pas à l’origine, répondez à cet email.',
+  'stk.subject': 'Réservation {code} en attente de paiement, non confirmée — {camp}',
+  'stk.title': 'Réservation en attente non confirmée',
+  'stk.intro':
+    "Cette réservation attend le paiement depuis plus de deux heures, sans encaissement ni annulation. Le client a peut-être abandonné le paiement — vérifiez s'il faut le relancer ou libérer l'emplacement.",
+  'stk.holder': 'Titulaire',
   'cnl.refund': 'Remboursement prévu',
   'common.footer': 'Cet email a été envoyé automatiquement depuis {camp}.',
 };
@@ -206,6 +226,11 @@ const de: Dict = {
   'cnl.title': 'Ihre Buchung wurde storniert',
   'cnl.intro':
     'Wir bestätigen die Stornierung. Falls Sie sie nicht veranlasst haben, antworten Sie auf diese E-Mail.',
+  'stk.subject': 'Buchung {code} wartet auf Zahlung, unbestätigt — {camp}',
+  'stk.title': 'Unbestätigte ausstehende Buchung',
+  'stk.intro':
+    "Diese Buchung wartet seit über zwei Stunden auf die Zahlung, ohne Abbuchung oder Stornierung. Der Gast hat die Zahlung möglicherweise abgebrochen — prüfen Sie, ob eine Nachfrage nötig ist oder der Platz freigegeben werden soll.",
+  'stk.holder': 'Hauptgast',
   'cnl.refund': 'Voraussichtliche Erstattung',
   'common.footer': 'Diese E-Mail wurde automatisch von {camp} gesendet.',
 };
@@ -248,6 +273,11 @@ const nl: Dict = {
   'cnl.title': 'Je boeking is geannuleerd',
   'cnl.intro':
     'We bevestigen de annulering. Heb je die niet aangevraagd, antwoord dan op deze e-mail.',
+  'stk.subject': 'Boeking {code} wacht op betaling, onbevestigd — {camp}',
+  'stk.title': 'Onbevestigde openstaande boeking',
+  'stk.intro':
+    "Deze boeking wacht al meer dan twee uur op betaling, zonder afschrijving of annulering. De gast heeft het afrekenen mogelijk afgebroken — controleer of navraag nodig is of de plek vrijgegeven moet worden.",
+  'stk.holder': 'Hoofdboeker',
   'cnl.refund': 'Verwachte terugbetaling',
   'common.footer': 'Deze e-mail is automatisch verzonden vanuit {camp}.',
 };
