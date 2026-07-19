@@ -1,0 +1,100 @@
+/* Dashboard (ADR 0008): mismos tokens que la demo — la tenant-ización llega en Fase 9. */
+@import 'tailwindcss';
+
+:root {
+  --lc-tinta: #0e1512;
+  --lc-hueso: #f4f2ec;
+  --lc-pino: #1f4d3a;
+  --lc-arena: #c9b99a;
+  --lc-mar: #2e6e73;
+  --lc-pino-oscuro: #163a2c;
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+  --lc-radius: 2px;
+  --lc-radius-lg: 4px;
+}
+
+@theme {
+  --color-tinta: var(--lc-tinta);
+  --color-hueso: var(--lc-hueso);
+  --color-pino: var(--lc-pino);
+  --color-pino-oscuro: var(--lc-pino-oscuro);
+  --color-arena: var(--lc-arena);
+  --color-arena-suave: var(--lc-arena-suave);
+  --color-mar: var(--lc-mar);
+  --color-tinta-suave: var(--lc-tinta-suave);
+}
+
+html {
+  background: var(--lc-hueso);
+  color: var(--lc-tinta);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lc-pino);
+  outline-offset: 1px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- planning (tape chart ★) ---------- */
+
+/* barra de reserva: color por estado, tokens de la paleta — nunca hex nuevos */
+.lc-bar {
+  position: absolute;
+  top: 4px;
+  height: 24px;
+  border-radius: var(--lc-radius);
+  color: var(--lc-hueso);
+  font-size: 11px;
+  line-height: 24px;
+  padding-inline: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+.lc-bar.st-confirmed {
+  background: var(--lc-pino);
+}
+.lc-bar.st-pending {
+  background: var(--lc-arena);
+  color: var(--lc-tinta);
+}
+.lc-bar.st-no_show {
+  background: var(--lc-mar);
+}
+.lc-bar.st-completed {
+  background: var(--lc-tinta-suave);
+}
+
+/* bloqueo: rayado neutro, no compite con las reservas */
+.lc-block {
+  position: absolute;
+  top: 4px;
+  height: 24px;
+  border-radius: var(--lc-radius);
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--lc-tinta) 14%, transparent),
+    color-mix(in srgb, var(--lc-tinta) 14%, transparent) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  border: 1px solid color-mix(in srgb, var(--lc-tinta) 20%, transparent);
+  color: var(--lc-tinta-suave);
+  font-size: 10px;
+  line-height: 22px;
+  padding-inline: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* fin de semana sombreado en la malla */
+.lc-weekend {
+  background: color-mix(in srgb, var(--lc-arena) 16%, transparent);
+}

@@ -19,6 +19,11 @@ jobs:
         run: pnpm --filter @logic-camp/web build
         env:
           TENANT: demo
+      - name: Build dashboard (→ /admin/)
+        if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
+        run: |
+          pnpm --filter @logic-camp/dashboard build
+          rm -rf apps/web/dist/admin && cp -r apps/dashboard/dist apps/web/dist/admin
       - name: Deploy demo worker (web + API)
         if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
         working-directory: apps/api

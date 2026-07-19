@@ -4,13 +4,25 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 5 ✅ (flujo de reserva completo con E2E) · Siguiente: **Fase 6 — Dashboard** (ADR primero: enfoque de virtualización y DnD del planning ★). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesión 1/5 (ADR 0008 + dashboard con planning v1 en lectura) · Siguiente: **Fase 6 sesión 17** — planning v2: drag&drop de reasignación (pointer events + optimista con rollback), teclado, y panel lateral de reserva con acciones tipadas. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — ahora sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 11 — 2026-07-19 · Fase 6 (1/5) · ADR 0008 + dashboard con planning v1
+
+**Hecho** (ADR 0008 aceptado por la misma delegación)
+- `docs/adr/0008-dashboard-planning.md`: SPA en `/admin/` del MISMO Worker (un deploy = web+API+dashboard, misma cookie Better Auth, cero CORS), hash history (`/admin/#/…` — sin rewrites en estático), virtualización propia de FILAS + barras absolutas, DnD con pointer events nativos (sesión 17), reparto 16–20
+- `apps/dashboard` real: React 19 + Vite + **TanStack Router** (hash) + **TanStack Query** + Tailwind v4 con los tokens de la demo. Login contra Better Auth (cookie), guardia de sesión en la raíz, i18n por diccionario `t()` desde el día 1 (es)
+- **Planning v1 (tape chart ★, lectura)**: filas virtualizadas con `@tanstack/react-virtual` (~40 renderizadas de 300 posibles), cabecera de meses+días sticky, columna de unidades sticky, findes sombreados, grupos por tipo, **colores por estado con los tokens** (confirmed=pino · pending=arena · no_show=mar · completed=tinta-suave), bloqueos rayados con motivo, **bandeja "sin asignar"**, zoom semana/mes/temporada (96/42/22px), navegación ←/hoy/→ + fecha, refresco de cortesía cada 60 s, tooltips con código·estado·fechas·pax
+- Deploy cableado: `deploy:demo` construye web + dashboard y copia `dist` a `web/dist/admin/`; CI `deploy-demo.yml` igual
+- **Verificado en navegador contra el Worker real**: login recepción → planning de agosto (83 unidades · 13 reservas a la vista · CS-2026-0006 en la bandeja sin asignar), zoom temporada, scroll a la última fila fluido, 0 errores JS
+
+**Pendiente fase**: sesiones 17–20 (DnD+ficha, solicitudes+llegadas=modo lite, reservas+inventario+tarifas, clientes+informes+ajustes)
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 10 — 2026-07-19 · Fase 5 · Flujo de reserva completo (ADR 0007)
 
