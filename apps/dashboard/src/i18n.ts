@@ -288,6 +288,8 @@ const es = {
   'notif.enquiry_autoreply': 'Acuse de recibo al solicitante',
   'notif.booking_confirmed': 'Confirmación de reserva al cliente',
   'notif.booking_cancelled': 'Cancelación de reserva al cliente',
+  'notif.booking_pending_stuck': 'Aviso interno de reserva pendiente sin pagar (2h)',
+  'notif.booking_reminder': 'Recordatorio de llegada al huésped (el día antes)',
   'ntf.todas': 'Todas',
   'ntf.sent': 'Enviada',
   'ntf.queued': 'En cola',

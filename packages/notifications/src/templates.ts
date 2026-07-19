@@ -89,11 +89,13 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
     return { subject, html: layout(d.campName, lang, tr(lang, `${pre}.title`), body), text };
   }
 
-  // booking_confirmed | booking_cancelled | booking_pending_stuck
+  // booking_confirmed | booking_cancelled | booking_pending_stuck | booking_reminder
   const d = payload.data;
   const cancel = payload.kind === 'booking_cancelled';
   const stuck = payload.kind === 'booking_pending_stuck';
-  const pre = cancel ? 'cnl' : stuck ? 'stk' : 'bkg';
+  const reminder = payload.kind === 'booking_reminder';
+  const noBreakdown = cancel || stuck || reminder;
+  const pre = cancel ? 'cnl' : stuck ? 'stk' : reminder ? 'rem' : 'bkg';
   const subject = tr(lang, `${pre}.subject`, { code: d.code, camp: d.campName });
 
   const datos = [
@@ -111,7 +113,7 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
   ].join('');
 
   let body = p(esc(tr(lang, `${pre}.intro`))) + table(datos);
-  if (!cancel && !stuck) {
+  if (!noBreakdown) {
     body += `<p style="margin:0 0 4px;font-size:13px;color:#6c675c">${esc(tr(lang, 'bkg.breakdown'))}</p>`;
     body += breakdownHtml(d.lines, d.totalCents, d.currency, lang);
     if (d.touristTaxCents > 0)
@@ -131,7 +133,7 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
     `${tr(lang, 'bkg.type')}: ${d.unitTypeName}`,
     ...(cancel && d.refundCents !== undefined
       ? [`${tr(lang, 'cnl.refund')}: ${eur(d.refundCents, d.currency)}`]
-      : stuck
+      : noBreakdown
         ? []
         : [
             '',

@@ -254,7 +254,7 @@ En el panel, la bandeja de solicitudes (§6.8) las gestiona por estados: **nueva
 El sistema avisa solo, en el idioma de cada cual:
 
 - **Al camping**: aviso de cada solicitud nueva en su buzón interno, y aviso — sin que nadie tenga que acordarse de mirar — de una reserva online que lleva más de dos horas esperando el pago sin cobrarse ni cancelarse. Ese aviso nunca cancela nada por su cuenta: solo lo hace visible; cancelarla, si hace falta, lo decide siempre una persona.
-- **Al cliente**: acuse de recibo de su solicitud, **confirmación de reserva** con el código, el desglose completo y un botón para gestionarla, y confirmación de **cancelación** con el reembolso previsto — cada uno en el idioma en que navegó (los 6 soportados).
+- **Al cliente**: acuse de recibo de su solicitud, **confirmación de reserva** con el código, el desglose completo y un botón para gestionarla, confirmación de **cancelación** con el reembolso previsto, y un **recordatorio el día antes de su llegada** — cada uno en el idioma en que navegó (los 6 soportados).
 - **Control total desde Ajustes**: cada notificación se activa o desactiva al momento, sin despliegue, con el remitente del dominio del camping y el buzón interno configurables.
 - **Todo queda registrado y es consultable en el dashboard**: cada email (enviado, fallido o desactivado), con su destino y fecha, en una pantalla propia con filtro por estado — nunca la duda de "¿le llegó?".
 - Robustez: el envío ocurre después de responder; un problema del proveedor de email jamás afecta a una reserva.

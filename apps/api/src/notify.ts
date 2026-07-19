@@ -201,6 +201,84 @@ export async function notifyStuckPendingBookings(
   }
 }
 
+const DAY_ISO_MS = 86_400_000;
+const tomorrowIso = () => new Date(Date.now() + DAY_ISO_MS).toISOString().slice(0, 10);
+
+/**
+ * Cron (ADR 0015, mismo disparo que ADR 0007/0014): recordatorio al huésped
+ * principal el día antes de su llegada. Se omite sin más si esa reserva no
+ * tiene email del titular — NUNCA cae al buzón interno como sustituto.
+ */
+export async function notifyArrivalReminders(
+  db: Db,
+  tenantSlug: string,
+  apiKey?: string,
+): Promise<void> {
+  const { and, eq } = await import('drizzle-orm');
+  const arrivalsOn = tomorrowIso();
+
+  const arriving = await db
+    .select({
+      booking: schema.bookings,
+      leadEmail: schema.guests.email,
+    })
+    .from(schema.bookings)
+    .leftJoin(
+      schema.bookingGuests,
+      and(
+        eq(schema.bookingGuests.bookingId, schema.bookings.id),
+        eq(schema.bookingGuests.isLead, true),
+      ),
+    )
+    .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
+    .where(and(eq(schema.bookings.status, 'confirmed'), eq(schema.bookings.dateFrom, arrivalsOn)));
+  if (!arriving.length) return;
+
+  const deps: DispatchDeps = { db, tenantSlug, apiKey };
+
+  for (const row of arriving) {
+    if (!row.leadEmail) continue; // sin email no hay a quién avisar — no se sustituye por notifyTo
+
+    const already = await db
+      .select()
+      .from(schema.notificationsLog)
+      .where(
+        and(
+          eq(schema.notificationsLog.bookingId, row.booking.id),
+          eq(schema.notificationsLog.template, 'booking_reminder'),
+        ),
+      );
+    if (already.length) continue;
+
+    const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
+    const breakdown = row.booking.priceBreakdown as { currency: string };
+    await notifyNow(deps, [
+      {
+        payload: {
+          kind: 'booking_reminder',
+          data: {
+            campName: '',
+            code: row.booking.code,
+            holderName: '',
+            dateFrom: row.booking.dateFrom,
+            dateTo: row.booking.dateTo,
+            nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
+            persons: occupancy.adults + occupancy.childrenAges.length,
+            unitTypeName: await unitTypeName(db, row.booking.unitTypeId, row.booking.locale),
+            lines: [],
+            totalCents: row.booking.totalCents,
+            touristTaxCents: row.booking.touristTaxCents,
+            currency: breakdown.currency,
+          },
+        },
+        to: row.leadEmail,
+        locale: row.booking.locale,
+        bookingId: row.booking.id,
+      },
+    ]);
+  }
+}
+
 /** Desglose de la reserva → líneas del email en el idioma del titular. */
 export function emailLines(
   lines: { concept: string; amountCents: number }[],

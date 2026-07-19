@@ -128,6 +128,8 @@ const EVENTOS = [
   'enquiry_autoreply',
   'booking_confirmed',
   'booking_cancelled',
+  'booking_pending_stuck',
+  'booking_reminder',
 ] as const;
 
 type NotifConfig = {

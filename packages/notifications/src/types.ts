@@ -11,7 +11,8 @@ export type NotificationKind =
   | 'enquiry_autoreply'
   | 'booking_confirmed'
   | 'booking_cancelled'
-  | 'booking_pending_stuck';
+  | 'booking_pending_stuck'
+  | 'booking_reminder';
 
 /** Línea de desglose ya formateada para el email (el dinero llega en céntimos). */
 export type EmailPriceLine = { label: string; amountCents: number };
@@ -51,7 +52,8 @@ export type NotificationPayload =
   | { kind: 'enquiry_autoreply'; data: EnquiryPayload }
   | { kind: 'booking_confirmed'; data: BookingPayload }
   | { kind: 'booking_cancelled'; data: BookingPayload }
-  | { kind: 'booking_pending_stuck'; data: BookingPayload };
+  | { kind: 'booking_pending_stuck'; data: BookingPayload }
+  | { kind: 'booking_reminder'; data: BookingPayload };
 
 export type EmailMessage = { subject: string; html: string; text: string };
 

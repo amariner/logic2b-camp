@@ -83,6 +83,19 @@ describe('render de plantillas', () => {
     expect(es.subject).not.toBe(render({ kind: 'booking_confirmed', data: booking }, 'es').subject);
   });
 
+  it('booking_reminder: recordatorio al huésped en los 6 idiomas, sin desglose ni titular repetido', () => {
+    for (const lang of ['es', 'ca', 'en', 'fr', 'de', 'nl'] as const) {
+      const msg = render({ kind: 'booking_reminder', data: booking }, lang);
+      expect(msg.subject).toContain(booking.campName);
+      expect(msg.html).toContain('CS-2026-0042');
+      expect(msg.html).not.toContain(booking.manageUrl!);
+      expect(msg.text).not.toContain(booking.manageUrl!);
+    }
+    const es = render({ kind: 'booking_reminder', data: booking }, 'es');
+    expect(es.html).not.toContain('Desglose');
+    expect(es.subject).not.toBe(render({ kind: 'booking_confirmed', data: booking }, 'es').subject);
+  });
+
   it('autoreply al cliente en su idioma; idioma raro cae a es', () => {
     const nl = render({ kind: 'enquiry_autoreply', data: enquiry }, 'nl');
     expect(nl.subject).toContain('We hebben je aanvraag ontvangen');

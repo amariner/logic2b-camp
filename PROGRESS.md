@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). BACKLOG 8.x cerrado en la misma sesión cloud (ADR 0014): cron de aviso de reservas `pending` colgadas, genérico para cualquier tenant con pagos (no solo la demo). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
+- **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). BACKLOG 7.x y 8.x cerrados en la misma sesión cloud (ADR 0014 + ADR 0015): cron de aviso de reservas `pending` colgadas y recordatorio de llegada al huésped, ambos genéricos para cualquier tenant con pagos (no solo la demo). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (38/38 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 27 — 2026-07-19 · BACKLOG 7.x · ADR 0015 — recordatorio de llegada
+
+**Hecho** (continuación de la misma sesión cloud: "continua")
+- `docs/adr/0015-recordatorio-de-llegada.md`: el motivo original del aplazamiento ("cuando haya API key de Resend") ya no aplica — ADR 0014 (esta misma sesión) demostró que se verifica igual de bien en estado `disabled`. Reutiliza el cron de 15 min de ADR 0007/0014 en vez de un cron diario nuevo por tenant: "diario" se cumple por deduplicación en `notifications_log`, y de hecho llega antes que un cron a hora fija (dentro de los primeros 15 min desde que la llegada pasa a ser "mañana", no hasta 24h después).
+- `packages/notifications`: kind `booking_reminder` (mismo `BookingPayload`, sin desglose ni botón de gestión — recuerda, no repite la confirmación), i18n en los 6 idiomas. 1 test nuevo (7/7 en el paquete).
+- `notifyArrivalReminders(db, tenantSlug, apiKey)` en `apps/api/src/notify.ts`: reservas `status:'confirmed'` con `date_from = mañana`, cualquier canal, resuelve el email del titular vía `booking_guests`/`guests` — **si no tiene email, se omite sin más**, nunca cae al buzón interno del camping como sustituto (a diferencia del aviso de `pending`, este SÍ va al huésped). Dedup igual que ADR 0014. Enganchado al mismo `scheduled()` en `apps/api/src/index.ts`.
+- Corregido de paso un descuido de la sesión anterior: `booking_pending_stuck` (ADR 0014) se quedó fuera de la lista `EVENTOS` de Ajustes y no tenía toggle visible en el dashboard pese a la promesa de ADR 0010 ("control total desde Ajustes"). Esta sesión añade AMBOS kinds nuevos a `apps/dashboard/src/pages/Ajustes.tsx` + etiquetas en `i18n.ts`.
+- **4 tests de integración nuevos** (`apps/api/test/notify-cron.test.ts`, ahora también cubre ADR 0015): recuerda a un huésped confirmado que llega mañana y no repite el recordatorio, NO recuerda sin email del titular, NO recuerda una llegada que no es mañana, NO recuerda una reserva `pending` aunque llegue mañana. 59/59 en la suite privada.
+- **Verificado contra el Worker real** (wrangler dev + D1 local sembrada + `--test-scheduled`): reserva confirmada de prueba con llegada "mañana" (fecha real, no de demo) y email del titular → el cron generó el recordatorio (`disabled`, sin `RESEND_API_KEY` local). Capturas de `/admin/#/ajustes` (los 6 toggles, incluidos los 2 nuevos) y `/admin/#/notificaciones` (las 5 notificaciones del aviso de `pending` de la sesión anterior + el recordatorio nuevo, todas resueltas correctamente). Datos de prueba limpiados después.
+- `docs/FUNCIONALIDADES.md` §8, `docs/BACKLOG.md` al día
+- **`pnpm check`**: ✅ verde (38/38)
+
+**`/check`**: ✅ verde (38/38) · API 59/59 · notifications 7/7
 
 ### Sesión 26 — 2026-07-19 · BACKLOG 8.x · ADR 0014 — aviso de reservas `pending` colgadas
 

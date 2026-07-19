@@ -45,6 +45,9 @@ const es: Dict = {
   'stk.intro':
     'Esta reserva lleva más de dos horas esperando el pago, sin cobro ni cancelación. Puede que el cliente haya abandonado el pago — revisa si hace falta contactarlo o liberar la plaza.',
   'stk.holder': 'Titular',
+  'rem.subject': 'Te esperamos mañana — {camp}',
+  'rem.title': 'Tu llegada es mañana',
+  'rem.intro': 'Estamos deseando recibirte. Aquí tienes un recordatorio de tu reserva.',
   'cnl.refund': 'Reembolso previsto',
   'common.footer': 'Este email se ha enviado automáticamente desde {camp}.',
 };
@@ -91,6 +94,9 @@ const ca: Dict = {
   'stk.intro':
     "Aquesta reserva porta més de dues hores esperant el pagament, sense cobrament ni cancel·lació. Pot ser que el client hagi abandonat el pagament — revisa si cal contactar-lo o alliberar la plaça.",
   'stk.holder': 'Titular',
+  'rem.subject': "T'esperem demà — {camp}",
+  'rem.title': 'La teva arribada és demà',
+  'rem.intro': "Tenim moltes ganes de rebre't. Aquí tens un recordatori de la teva reserva.",
   'cnl.refund': 'Reemborsament previst',
   'common.footer': "Aquest email s'ha enviat automàticament des de {camp}.",
 };
@@ -136,6 +142,9 @@ const en: Dict = {
   'stk.intro':
     "This booking has been waiting for payment for over two hours, with no charge or cancellation. The guest may have abandoned checkout — check if it needs a follow-up or the spot should be released.",
   'stk.holder': 'Holder',
+  'rem.subject': 'See you tomorrow — {camp}',
+  'rem.title': 'Your arrival is tomorrow',
+  'rem.intro': "We can't wait to welcome you. Here's a reminder of your booking.",
   'cnl.refund': 'Expected refund',
   'common.footer': 'This email was sent automatically from {camp}.',
 };
@@ -183,6 +192,9 @@ const fr: Dict = {
   'stk.intro':
     "Cette réservation attend le paiement depuis plus de deux heures, sans encaissement ni annulation. Le client a peut-être abandonné le paiement — vérifiez s'il faut le relancer ou libérer l'emplacement.",
   'stk.holder': 'Titulaire',
+  'rem.subject': 'À demain — {camp}',
+  'rem.title': 'Votre arrivée est demain',
+  'rem.intro': "Nous avons hâte de vous accueillir. Voici un rappel de votre réservation.",
   'cnl.refund': 'Remboursement prévu',
   'common.footer': 'Cet email a été envoyé automatiquement depuis {camp}.',
 };
@@ -231,6 +243,9 @@ const de: Dict = {
   'stk.intro':
     "Diese Buchung wartet seit über zwei Stunden auf die Zahlung, ohne Abbuchung oder Stornierung. Der Gast hat die Zahlung möglicherweise abgebrochen — prüfen Sie, ob eine Nachfrage nötig ist oder der Platz freigegeben werden soll.",
   'stk.holder': 'Hauptgast',
+  'rem.subject': 'Bis morgen — {camp}',
+  'rem.title': 'Ihre Anreise ist morgen',
+  'rem.intro': "Wir freuen uns auf Sie. Hier eine Erinnerung an Ihre Buchung.",
   'cnl.refund': 'Voraussichtliche Erstattung',
   'common.footer': 'Diese E-Mail wurde automatisch von {camp} gesendet.',
 };
@@ -278,6 +293,9 @@ const nl: Dict = {
   'stk.intro':
     "Deze boeking wacht al meer dan twee uur op betaling, zonder afschrijving of annulering. De gast heeft het afrekenen mogelijk afgebroken — controleer of navraag nodig is of de plek vrijgegeven moet worden.",
   'stk.holder': 'Hoofdboeker',
+  'rem.subject': 'Tot morgen — {camp}',
+  'rem.title': 'Uw aankomst is morgen',
+  'rem.intro': "We kijken ernaar uit u te verwelkomen. Hier een herinnering aan uw boeking.",
   'cnl.refund': 'Verwachte terugbetaling',
   'common.footer': 'Deze e-mail is automatisch verzonden vanuit {camp}.',
 };
