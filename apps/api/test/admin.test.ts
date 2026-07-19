@@ -370,12 +370,69 @@ describe('tarifas', () => {
 });
 
 describe('catálogo', () => {
-  it('devuelve tipos y unidades (readonly puede)', async () => {
+  it('devuelve tipos, unidades y extras (readonly puede)', async () => {
     const res = await app.request('/api/admin/catalog', { headers: { cookie: readonly } }, envA);
     expect(res.status).toBe(200);
-    const body = (await res.json()) as { unitTypes: unknown[]; units: unknown[] };
+    const body = (await res.json()) as {
+      unitTypes: unknown[];
+      units: unknown[];
+      extras: unknown[];
+    };
     expect(body.unitTypes.length).toBeGreaterThan(0);
     expect(body.units.length).toBeGreaterThan(0);
+    expect(body.extras.length).toBeGreaterThan(0);
+  });
+});
+
+describe('inventario', () => {
+  it('baja de servicio: reception 403, manager 200; reasignar hacia inactiva se rechaza', async () => {
+    const catalog = await app.request(
+      '/api/admin/catalog',
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    const { units } = (await catalog.json()) as { units: { id: string; status: string }[] };
+    const unit = units[0]!;
+
+    const forbidden = await app.request(
+      `/api/admin/units/${unit.id}`,
+      patch({ status: 'inactive' }, reception),
+      envA,
+    );
+    expect(forbidden.status).toBe(403);
+
+    const ok = await app.request(
+      `/api/admin/units/${unit.id}`,
+      patch({ status: 'inactive' }, manager),
+      envA,
+    );
+    expect(ok.status).toBe(200);
+
+    // una reserva no puede reasignarse hacia una unidad fuera de servicio
+    const created = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-09-20', '2026-09-23')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
+      envA,
+    );
+    expect(created.status).toBe(201);
+    const { id } = (await created.json()) as { id: string };
+    const reassign = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'reassign', unitId: unit.id }, reception),
+      envA,
+    );
+    expect(reassign.status).toBe(404);
+
+    // restaurar para no contaminar otros tests
+    const back = await app.request(
+      `/api/admin/units/${unit.id}`,
+      patch({ status: 'active' }, manager),
+      envA,
+    );
+    expect(back.status).toBe(200);
   });
 });
 

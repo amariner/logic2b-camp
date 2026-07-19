@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesiones 1–4/5 (planning + DnD + ficha + modo lite) · Siguiente: **Fase 6 sesión 19** — lista completa de reservas con búsqueda + alta manual desde el panel + inventario/tarifas. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard **+ temas + solicitudes + llegadas**), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesiones 1–5/5 hechas salvo remate (falta sesión 20: clientes/informes/ajustes) · Siguiente: **Fase 6 sesión 20** — ficha de clientes con historial, informes en pantalla (los datos ya los sirve `/api/admin/reports`) y ajustes del tenant. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el dashboard ya tiene 6 pantallas), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,21 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 16 — 2026-07-19 · Fase 6 (5/5 parcial) · Reservas + alta manual + inventario + tarifas
+
+**Hecho**
+- **API**: `/catalog` incluye extras; `PATCH /api/admin/units/:id {status}` (gerencia, auditado) para baja/alta de servicio — reasignar hacia una inactiva se rechaza (test). **35 tests** (+2, uno corregido: fechas de fixture fuera de temporada daban 422)
+- **Lista de reservas** (`/admin/#/reservas`): tabla con búsqueda por código (prefijo, en servidor), filtro por estado, paginación; titular/fechas/unidad/canal/estado/total/**pendiente en mar**; fila → ficha; accesible por teclado
+- **Alta manual** (`NewBookingPanel`): tipo (capacidades del catálogo), fechas, ocupación con edades de niños (input CSV validado 0-17), electricidad, extras del catálogo (obligatorios marcados y forzados), canal teléfono/mostrador, titular, notas. **Cotización EN VIVO contra `POST /api/quote`** con el desglose línea a línea y los errores del motor traducidos (`stay.min_stay` con params, etc.). Crear → `POST /api/admin/bookings` con **Idempotency-Key por apertura** (doble click = una reserva); 409 = "sin disponibilidad"; éxito → se abre la ficha de la nueva
+- **Inventario** (`/admin/#/inventario`): unidades por tipo, contador en servicio/fuera, click = baja/alta (tachada en mar cuando está fuera), nota clara de que no toca reservas existentes
+- **Tarifas** (`/admin/#/tarifas`): tabla por temporada (orden por prioridad) × tipo con edición inline **en euros** (conversión a céntimos al guardar), estancia mínima, guardado por fila vía `PUT /rates/:id` (solo campos cambiados), invariante 3 anunciada en pantalla
+- `lib/format.ts` compartido (eur/fecha/noches/conceptLabel/stayError) — BookingPanel refactorizado; fallback de extras humanizado ("Extra: limpieza", no "ext_limpieza")
+- **Verificado en navegador contra el Worker real como gerencia**: 25 listadas y búsqueda a 10; alta con cotización 99,00 € → CS-2026-808228 creada y ficha abierta; error "estancia mínima 3 noches" en vivo; A-01 fuera y de vuelta a servicio; tarifa 38→21,50 guardada y restaurada; 0 errores JS. Seed restaurado
+- `docs/FUNCIONALIDADES.md`: §6.4 reescrito (lista+alta), §6.9 inventario, §6.10 tarifas
+
+**Pendiente fase**: sesión 20 — clientes con historial, informes en pantalla, ajustes del tenant
+**`/check`**: ✅ verde (32/32) · API 35/35
 
 ### Sesión 15 — 2026-07-19 · Fase 6 (4/5) · Solicitudes + llegadas = modo lite
 

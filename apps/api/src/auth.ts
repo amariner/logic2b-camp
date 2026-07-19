@@ -52,7 +52,12 @@ export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) 
       additionalFields: {
         // input:false — un cliente no puede autoconcederse rol ni tenant
         role: { type: 'string', required: false, defaultValue: 'readonly', input: false },
-        tenantId: { type: 'string', required: false, defaultValue: env.TENANT_SLUG ?? 'unknown', input: false },
+        tenantId: {
+          type: 'string',
+          required: false,
+          defaultValue: env.TENANT_SLUG ?? 'unknown',
+          input: false,
+        },
       },
     },
     advanced: {

@@ -31,7 +31,11 @@ beforeAll(async () => {
 
 describe('GET /api/availability', () => {
   it('devuelve disponibilidad con precio calculado en servidor', async () => {
-    const res = await app.request('/api/availability?from=2026-05-01&to=2026-05-04&adults=2', {}, envA);
+    const res = await app.request(
+      '/api/availability?from=2026-05-01&to=2026-05-04&adults=2',
+      {},
+      envA,
+    );
     expect(res.status).toBe(200);
     const body = (await res.json()) as { results: { status: string; totalPriceCents: number }[] };
     expect(body.results[0]!.status).toBe('available');
@@ -73,7 +77,11 @@ describe('POST /api/quote', () => {
     );
     expect(res.status).toBe(200);
     const body = (await res.json()) as {
-      breakdown: { lines: { concept: string; amountCents: number }[]; totalCents: number; touristTaxCents: number };
+      breakdown: {
+        lines: { concept: string; amountCents: number }[];
+        totalCents: number;
+        touristTaxCents: number;
+      };
     };
     const concepts = body.breakdown.lines.map((l) => l.concept);
     expect(concepts).toContain('price.base');
@@ -108,7 +116,10 @@ describe('POST /api/enquiries', () => {
   it('guarda la solicitud SIEMPRE (nivel 1 incluido) y la persiste', async () => {
     const res = await app.request(
       '/api/enquiries',
-      json({ message: '¿Tenéis sitio en agosto?', contact: { name: 'Ana', email: 'ana@example.com' } }),
+      json({
+        message: '¿Tenéis sitio en agosto?',
+        contact: { name: 'Ana', email: 'ana@example.com' },
+      }),
       envA,
     );
     expect(res.status).toBe(201);
@@ -120,7 +131,11 @@ describe('POST /api/enquiries', () => {
 
 describe('POST /api/bookings', () => {
   it('crea la reserva con precio de servidor, unidad asignada y titular', async () => {
-    const res = await app.request('/api/bookings', json(bookingBody('2026-05-10', '2026-05-13')), envA);
+    const res = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-05-10', '2026-05-13')),
+      envA,
+    );
     expect(res.status).toBe(201);
     const body = (await res.json()) as { code: string; unitId: string; totalCents: number };
     expect(body.code).toMatch(/^CS-2026-/);
@@ -157,20 +172,36 @@ describe('POST /api/bookings', () => {
   it('rechaza cuando el tipo está agotado (409), liberando el día de salida', async () => {
     // 3 unidades → 3 reservas solapadas agotan; una 4ª no entra
     for (const i of [1, 2, 3]) {
-      const r = await app.request('/api/bookings', json(bookingBody('2026-06-01', '2026-06-05')), envA);
+      const r = await app.request(
+        '/api/bookings',
+        json(bookingBody('2026-06-01', '2026-06-05')),
+        envA,
+      );
       expect(r.status, `reserva ${i}`).toBe(201);
     }
-    const full = await app.request('/api/bookings', json(bookingBody('2026-06-03', '2026-06-06')), envA);
+    const full = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-03', '2026-06-06')),
+      envA,
+    );
     expect(full.status).toBe(409);
     // pero entrar el día que salen es válido (to exclusive)
-    const backToBack = await app.request('/api/bookings', json(bookingBody('2026-06-05', '2026-06-08')), envA);
+    const backToBack = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-05', '2026-06-08')),
+      envA,
+    );
     expect(backToBack.status).toBe(201);
   });
 });
 
 describe('GET /api/bookings/:code', () => {
   it('recupera por código + email del titular; email equivocado → 404', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-09-01', '2026-09-04')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-09-01', '2026-09-04')),
+      envA,
+    );
     const { code } = (await created.json()) as { code: string };
 
     const ok = await app.request(`/api/bookings/${code}?email=holder@example.com`, {}, envA);
@@ -193,21 +224,28 @@ describe('FUNNEL (ADR 0007): holds', () => {
 
   it('un hold resta disponibilidad y liberarlo la devuelve', async () => {
     const before = await app.request('/api/availability?from=2026-10-05&to=2026-10-08', {}, envA);
-    const nBefore = ((await before.json()) as { results: { availableUnits: number }[] }).results[0]!.availableUnits;
+    const nBefore = ((await before.json()) as { results: { availableUnits: number }[] }).results[0]!
+      .availableUnits;
 
-    const created = await app.request('/api/holds', json(holdBody('2026-10-05', '2026-10-08')), envA);
+    const created = await app.request(
+      '/api/holds',
+      json(holdBody('2026-10-05', '2026-10-08')),
+      envA,
+    );
     expect(created.status).toBe(201);
     const { holdId, expiresAt } = (await created.json()) as { holdId: string; expiresAt: string };
     expect(expiresAt > new Date().toISOString()).toBe(true);
 
     const during = await app.request('/api/availability?from=2026-10-05&to=2026-10-08', {}, envA);
-    const nDuring = ((await during.json()) as { results: { availableUnits: number }[] }).results[0]!.availableUnits;
+    const nDuring = ((await during.json()) as { results: { availableUnits: number }[] }).results[0]!
+      .availableUnits;
     expect(nDuring).toBe(nBefore - 1);
 
     const freed = await app.request(`/api/holds/${holdId}`, { method: 'DELETE' }, envA);
     expect(freed.status).toBe(204);
     const after = await app.request('/api/availability?from=2026-10-05&to=2026-10-08', {}, envA);
-    const nAfter = ((await after.json()) as { results: { availableUnits: number }[] }).results[0]!.availableUnits;
+    const nAfter = ((await after.json()) as { results: { availableUnits: number }[] }).results[0]!
+      .availableUnits;
     expect(nAfter).toBe(nBefore);
   });
 
@@ -219,11 +257,19 @@ describe('FUNNEL (ADR 0007): holds', () => {
       expect(r.status, `hold ${i}`).toBe(201);
       ids.push(((await r.json()) as { holdId: string }).holdId);
     }
-    const fourth = await app.request('/api/holds', json(holdBody('2026-10-12', '2026-10-15')), envA);
+    const fourth = await app.request(
+      '/api/holds',
+      json(holdBody('2026-10-12', '2026-10-15')),
+      envA,
+    );
     expect(fourth.status).toBe(409);
 
     // sin hold no se puede reservar (los 3 holds ocupan)
-    const noHold = await app.request('/api/bookings', json(bookingBody('2026-10-12', '2026-10-15')), envA);
+    const noHold = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-10-12', '2026-10-15')),
+      envA,
+    );
     expect(noHold.status).toBe(409);
 
     // con SU hold sí: el propio no le bloquea y se consume atómicamente
@@ -237,7 +283,8 @@ describe('FUNNEL (ADR 0007): holds', () => {
     expect(holdsLeft.find((h) => h.id === ids[0])).toBeUndefined();
 
     // limpieza: liberar los otros dos holds
-    for (const id of ids.slice(1)) await app.request(`/api/holds/${id}`, { method: 'DELETE' }, envA);
+    for (const id of ids.slice(1))
+      await app.request(`/api/holds/${id}`, { method: 'DELETE' }, envA);
   });
 
   it('un hold caducado no permite confirmar (hold_expired) y no ocupa', async () => {
@@ -263,24 +310,37 @@ describe('FUNNEL (ADR 0007): holds', () => {
 
     // y no resta disponibilidad (expiración perezosa)
     const avail = await app.request('/api/availability?from=2026-10-20&to=2026-10-22', {}, envA);
-    expect(((await avail.json()) as { results: { availableUnits: number }[] }).results[0]!.availableUnits).toBe(3);
+    expect(
+      ((await avail.json()) as { results: { availableUnits: number }[] }).results[0]!
+        .availableUnits,
+    ).toBe(3);
   });
 });
 
 describe('FUNNEL (ADR 0007): gestión por código + email', () => {
   it('el GET incluye la previsión de cancelación para reservas activas', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-10-25', '2026-10-27')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-10-25', '2026-10-27')),
+      envA,
+    );
     const { code } = (await created.json()) as { code: string };
 
     const res = await app.request(`/api/bookings/${code}?email=holder@example.com`, {}, envA);
-    const body = (await res.json()) as { cancellation: { appliedRefundPct: number; refundCents: number } };
+    const body = (await res.json()) as {
+      cancellation: { appliedRefundPct: number; refundCents: number };
+    };
     // con >30 días de antelación el tramo aplicado es el del 100%
     expect(body.cancellation.appliedRefundPct).toBe(100);
     expect(body.cancellation.refundCents).toBe(0); // sin pagos aún (Fase 8)
   });
 
   it('cancelar libera inventario y es terminal (segunda vez → 409)', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-04-06', '2026-04-09')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-04-06', '2026-04-09')),
+      envA,
+    );
     const { code } = (await created.json()) as { code: string };
 
     const cancel = await app.request(
@@ -293,7 +353,10 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
 
     // inventario liberado: vuelven a estar las 3 unidades
     const avail = await app.request('/api/availability?from=2026-04-06&to=2026-04-09', {}, envA);
-    expect(((await avail.json()) as { results: { availableUnits: number }[] }).results[0]!.availableUnits).toBe(3);
+    expect(
+      ((await avail.json()) as { results: { availableUnits: number }[] }).results[0]!
+        .availableUnits,
+    ).toBe(3);
 
     const again = await app.request(
       `/api/bookings/${code}/cancel`,
@@ -304,7 +367,11 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
   });
 
   it('modificar re-cotiza entero en servidor y mantiene el desglose auditable', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-04-13', '2026-04-16')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-04-13', '2026-04-16')),
+      envA,
+    );
     const { code, totalCents } = (await created.json()) as { code: string; totalCents: number };
     expect(totalCents).toBe(2000 * 3 + 1500);
 
@@ -314,7 +381,10 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
       envA,
     );
     expect(res.status).toBe(200);
-    const body = (await res.json()) as { totalCents: number; breakdown: { totalCents: number; lines: unknown[] } };
+    const body = (await res.json()) as {
+      totalCents: number;
+      breakdown: { totalCents: number; lines: unknown[] };
+    };
     expect(body.totalCents).toBe(2000 * 4 + 1500);
     // invariante: el desglose nuevo cuadra con el total nuevo, nunca una cifra suelta
     expect(body.breakdown.totalCents).toBe(body.totalCents);
@@ -330,7 +400,11 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
   });
 
   it('modificar hacia fechas ocupadas devuelve 409 sin tocar la reserva', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-04-20', '2026-04-22')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-04-20', '2026-04-22')),
+      envA,
+    );
     const { code } = (await created.json()) as { code: string };
 
     // agotar otras fechas con 3 holds
@@ -363,7 +437,11 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
 
 describe('AISLAMIENTO ENTRE TENANTS (invariante 5)', () => {
   it('lo escrito en el tenant A no existe en el tenant B', async () => {
-    const created = await app.request('/api/bookings', json(bookingBody('2026-10-01', '2026-10-04')), envA);
+    const created = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-10-01', '2026-10-04')),
+      envA,
+    );
     expect(created.status).toBe(201);
     const { code } = (await created.json()) as { code: string };
 

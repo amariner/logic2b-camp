@@ -20,10 +20,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const apiGet = <T>(path: string) => request<T>(path);
-export const apiPost = <T>(path: string, body: unknown) =>
-  request<T>(path, { method: 'POST', body: JSON.stringify(body) });
+export const apiPost = <T>(path: string, body: unknown, headers?: Record<string, string>) =>
+  request<T>(path, { method: 'POST', body: JSON.stringify(body), headers });
 export const apiPatch = <T>(path: string, body: unknown) =>
   request<T>(path, { method: 'PATCH', body: JSON.stringify(body) });
+export const apiPut = <T>(path: string, body: unknown) =>
+  request<T>(path, { method: 'PUT', body: JSON.stringify(body) });
 
 // ---------- tipos de /api/admin/planning (el SELECT del tape chart) ----------
 
@@ -157,4 +159,58 @@ export type EnquiryItem = {
 
 // ---------- tipos de /api/admin/catalog ----------
 
-export type Catalog = { unitTypes: PlanningUnitType[]; units: PlanningUnit[] };
+export type CatalogUnitType = PlanningUnitType & {
+  capacityMin: number;
+  capacityMax: number;
+  includedPersons: number;
+};
+
+export type ExtraItem = {
+  id: string;
+  nameI18n: Record<string, string>;
+  priceCents: number;
+  per: 'stay' | 'night' | 'person';
+  required: boolean;
+};
+
+export type Catalog = { unitTypes: CatalogUnitType[]; units: PlanningUnit[]; extras: ExtraItem[] };
+
+// ---------- tipos de /api/admin/rates ----------
+
+export type Season = {
+  id: string;
+  name: string;
+  dateFrom: string;
+  dateTo: string;
+  priority: number;
+};
+
+export type RatePlan = {
+  id: string;
+  unitTypeId: string;
+  seasonId: string;
+  baseCents: number;
+  extraPersonCents: number;
+  childCents: number;
+  petCents: number;
+  electricityCents: number;
+  vehicleCents: number;
+  minStay: number;
+  maxStay: number | null;
+  arrivalDays: number[] | null;
+  departureDays: number[] | null;
+};
+
+export type RatesData = { ratePlans: RatePlan[]; seasons: Season[] };
+
+// ---------- tipos de POST /api/quote (cotización en vivo del alta manual) ----------
+
+export type QuoteResponse = {
+  nights: number;
+  breakdown: {
+    lines: PriceLine[];
+    totalCents: number;
+    touristTaxCents: number;
+    currency: string;
+  };
+};

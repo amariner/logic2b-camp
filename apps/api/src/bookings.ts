@@ -28,7 +28,11 @@ export type CreateBookingResult =
 export async function createBooking(
   tenant: TenantContext,
   body: BookingRequest,
-  opts: { channel: 'web' | 'phone' | 'walkin'; idemKey?: string | null; taxPolicy: Parameters<typeof calculateTouristTax>[2] },
+  opts: {
+    channel: 'web' | 'phone' | 'walkin';
+    idemKey?: string | null;
+    taxPolicy: Parameters<typeof calculateTouristTax>[2];
+  },
 ): Promise<CreateBookingResult> {
   const db = tenant.db;
 
@@ -47,7 +51,12 @@ export async function createBooking(
         return {
           ok: true,
           status: 200,
-          body: { id: booking[0].id, code: booking[0].code, status: booking[0].status, idempotent: true },
+          body: {
+            id: booking[0].id,
+            code: booking[0].code,
+            status: booking[0].status,
+            idempotent: true,
+          },
         };
       }
     }

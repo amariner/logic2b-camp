@@ -6,7 +6,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail } from '../api';
-import { t, tDyn } from '../i18n';
+import { t } from '../i18n';
+import { conceptLabel, eur, fecha, noches } from '../lib/format';
 
 /** Espejo de TRANSITIONS del servidor: qué botones enseñar por estado. */
 const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
@@ -17,20 +18,6 @@ const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
   completed: [],
 };
 type BookingAction = 'confirm' | 'cancel' | 'no_show' | 'complete';
-
-const eur = (cents: number, currency = 'EUR') =>
-  new Intl.NumberFormat('es', { style: 'currency', currency }).format(cents / 100);
-const fecha = (isoDate: string) =>
-  new Intl.DateTimeFormat('es', { day: 'numeric', month: 'short', year: 'numeric' }).format(
-    new Date(`${isoDate.slice(0, 10)}T12:00:00Z`),
-  );
-const noches = (from: string, to: string) =>
-  Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
-
-const conceptLabel = (concept: string) =>
-  concept.startsWith('extra.')
-    ? `${t('concepto.extra')}: ${tDyn(`concepto.${concept}`, concept.slice('extra.'.length))}`
-    : tDyn(`concepto.${concept}`, concept);
 
 export default function BookingPanel({
   bookingId,

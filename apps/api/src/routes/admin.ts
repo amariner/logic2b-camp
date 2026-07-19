@@ -18,6 +18,7 @@ import {
   ratePatchSchema,
   reportsQuerySchema,
   settingsPatchSchema,
+  unitPatchSchema,
   userCreateSchema,
 } from '../schemas';
 
@@ -105,14 +106,38 @@ export const adminRoutes = new Hono<AuthEnv>()
     return c.json({ from, to, unitTypes: types, units, bookings, blocks });
   })
 
-  // ---------- Catálogo (tipos + unidades: estable, para selects y nombres) ----------
+  // ---------- Catálogo (tipos + unidades + extras: estable, para selects y formularios) ----------
   .get('/catalog', async (c) => {
     const db = c.get('tenant').db;
-    const [types, units] = await Promise.all([
+    const [types, units, extras] = await Promise.all([
       db.select().from(schema.unitTypes),
       db.select().from(schema.units).orderBy(schema.units.code),
+      db.select().from(schema.extras),
     ]);
-    return c.json({ unitTypes: types, units });
+    return c.json({ unitTypes: types, units, extras });
+  })
+
+  // baja/alta de servicio de una unidad (inventario). No toca reservas existentes:
+  // solo impide asignar/reasignar hacia ella y sale del cupo de disponibilidad.
+  .patch('/units/:id', requireRole('manager'), async (c) => {
+    const parsed = unitPatchSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+    const id = c.req.param('id');
+
+    const unit = (await db.select().from(schema.units).where(eq(schema.units.id, id)))[0];
+    if (!unit) return c.json({ error: 'not_found' }, 404);
+
+    await db
+      .update(schema.units)
+      .set({ status: parsed.data.status })
+      .where(eq(schema.units.id, id));
+    await audit(db, tenant.slug, c.get('user').id, 'unit', id, 'status', {
+      from: unit.status,
+      to: parsed.data.status,
+    });
+    return c.json({ id, status: parsed.data.status });
   })
 
   // ---------- Reservas ----------

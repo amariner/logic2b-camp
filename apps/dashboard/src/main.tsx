@@ -16,10 +16,13 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
 import { t } from './i18n';
+import Inventario from './pages/Inventario';
 import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
 import Planning from './pages/Planning';
+import Reservas from './pages/Reservas';
 import Solicitudes from './pages/Solicitudes';
+import Tarifas from './pages/Tarifas';
 import './styles.css';
 
 const queryClient = new QueryClient();
@@ -56,6 +59,24 @@ function Shell() {
           >
             {t('nav.solicitudes')}
           </Link>
+          <Link
+            to="/reservas"
+            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+          >
+            {t('nav.reservas')}
+          </Link>
+          <Link
+            to="/inventario"
+            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+          >
+            {t('nav.inventario')}
+          </Link>
+          <Link
+            to="/tarifas"
+            className="transition-colors hover:text-tinta [&.active]:text-tinta [&.active]:underline [&.active]:underline-offset-4"
+          >
+            {t('nav.tarifas')}
+          </Link>
         </nav>
         <div className="ml-auto flex items-center gap-3 text-[13px]">
           <span className="text-tinta-suave">{session.data.user.email}</span>
@@ -91,9 +112,31 @@ const solicitudesRoute = createRoute({
   path: '/solicitudes',
   component: Solicitudes,
 });
+const reservasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reservas',
+  component: Reservas,
+});
+const inventarioRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/inventario',
+  component: Inventario,
+});
+const tarifasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/tarifas',
+  component: Tarifas,
+});
 
 const router = createRouter({
-  routeTree: rootRoute.addChildren([planningRoute, llegadasRoute, solicitudesRoute]),
+  routeTree: rootRoute.addChildren([
+    planningRoute,
+    llegadasRoute,
+    solicitudesRoute,
+    reservasRoute,
+    inventarioRoute,
+    tarifasRoute,
+  ]),
   history: createHashHistory(),
 });
 

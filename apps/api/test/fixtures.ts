@@ -17,8 +17,24 @@ export async function seedTenant(d1: D1Database, slug: string) {
   });
 
   await db.insert(schema.seasonsCalendar).values([
-    { id: `sea_${slug}_base`, tenantId: T, name: 'Apertura', dateFrom: '2026-03-15', dateTo: '2026-11-01', priority: 0, isOpen: true },
-    { id: `sea_${slug}_alta`, tenantId: T, name: 'Alta', dateFrom: '2026-07-01', dateTo: '2026-08-31', priority: 20, isOpen: true },
+    {
+      id: `sea_${slug}_base`,
+      tenantId: T,
+      name: 'Apertura',
+      dateFrom: '2026-03-15',
+      dateTo: '2026-11-01',
+      priority: 0,
+      isOpen: true,
+    },
+    {
+      id: `sea_${slug}_alta`,
+      tenantId: T,
+      name: 'Alta',
+      dateFrom: '2026-07-01',
+      dateTo: '2026-08-31',
+      priority: 20,
+      isOpen: true,
+    },
   ]);
 
   await db.insert(schema.unitTypes).values({

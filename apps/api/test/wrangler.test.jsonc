@@ -6,6 +6,6 @@
   "vars": { "TENANT_SLUG": "alfa" },
   "d1_databases": [
     { "binding": "DB", "database_name": "test-a", "database_id": "test-a" },
-    { "binding": "DB_B", "database_name": "test-b", "database_id": "test-b" }
-  ]
+    { "binding": "DB_B", "database_name": "test-b", "database_id": "test-b" },
+  ],
 }

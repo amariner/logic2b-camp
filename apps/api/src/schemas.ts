@@ -117,6 +117,10 @@ export const enquiryPatchSchema = z.object({
   status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']),
 });
 
+export const unitPatchSchema = z.object({
+  status: z.enum(['active', 'inactive']),
+});
+
 export const ratePatchSchema = z
   .object({
     baseCents: z.number().int().min(0),

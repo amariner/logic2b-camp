@@ -153,9 +153,11 @@ Un clic en cualquier reserva abre su ficha junto al planning, sin perderlo de vi
 - **Notas internas** de recepción, editables.
 - **Acciones según el estado**: confirmar, cancelar (con doble confirmación), marcar no presentada, completar. Solo se ofrecen las que tienen sentido en cada momento, y el servidor las re-valida todas.
 
-### 6.4 Alta manual y otros canales
+### 6.4 La lista de reservas y el alta manual
 
-Recepción puede crear reservas por **teléfono o mostrador** desde el panel: mismo motor, mismas validaciones y mismo cálculo de precio que la web. El canal queda registrado (web / teléfono / mostrador / importada) para saber de dónde viene cada reserva.
+Todas las reservas en una tabla operativa: **búsqueda por código**, filtro por estado, paginación, y de un vistazo titular, fechas, unidad, canal, total y **pendiente de cobro**. Un clic abre la ficha.
+
+Recepción crea reservas por **teléfono o mostrador** desde el mismo panel: el formulario cotiza **en vivo contra el servidor** mientras se rellena (mismo motor y mismas reglas que la web — si la estancia mínima de agosto son 7 noches, lo dice ahí mismo), con extras, electricidad y edades de los niños para la tasa. Al crear, la reserva queda protegida contra dobles clics y el canal registrado (web / teléfono / mostrador) para saber de dónde viene cada una.
 
 ### 6.5 Usuarios y permisos
 
@@ -190,7 +192,15 @@ Las peticiones de la web, trabajables por estados:
 - Cada solicitud se expande para leer el **mensaje completo** y contactar con un clic (email y teléfono son enlaces directos), con su idioma y origen.
 - Los botones ofrecen solo el **siguiente paso natural** del flujo (una nueva se marca contactada o perdida; una presupuestada, convertida o perdida; una perdida puede reabrirse). Cada cambio queda auditado.
 
-### 6.9 Informes
+### 6.9 Inventario
+
+Las unidades físicas del camping, agrupadas por tipo. Gerencia puede **dar de baja de servicio** una parcela o alojamiento (avería, obra) con un clic: deja de contar para la disponibilidad y no admite asignaciones nuevas, **sin tocar las reservas que ya tiene**. Volver a ponerla en servicio es otro clic. Todo auditado.
+
+### 6.10 Tarifas
+
+Los planes de precio por temporada y tipo, editables en línea desde el panel (base por noche, persona extra, niño, mascota, electricidad, vehículo, estancia mínima) — en euros, guardado por fila, solo gerencia. Y la garantía del sistema bien visible: **cambiar una tarifa nunca modifica una reserva ya confirmada**.
+
+### 6.11 Informes
 
 Primer bloque disponible: **ocupación por tipo** (noches ocupadas sobre capacidad), **ingresos** del periodo (total y cobrado) y **llegadas/salidas**. Se amplía en las próximas fases.
 
@@ -221,7 +231,7 @@ Con fecha en el plan de trabajo, no humo:
 |---|---|
 | **Notificaciones** | Emails automáticos en los 6 idiomas (confirmación, recordatorio de llegada, aviso de solicitud…) con remitente del dominio del camping, activables una a una sin tocar código |
 | **Pagos online** | Stripe **y Redsys** (la pasarela de los bancos españoles), con modos: sin cobro / señal / total / con fianza. Reembolsos desde la ficha. Un camping puede operar sin pasarela y activarla después |
-| **Gestión ampliada** | Lista completa de reservas con búsqueda, gestión de inventario y tarifas desde el panel, conversión directa de solicitud a reserva |
+| **Gestión ampliada** | Ficha de cliente con historial, informes ampliados, ajustes del camping desde el panel, conversión directa de solicitud a reserva |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
 | **Demo autolimpiable** | La demo comercial se reinicia cada noche con fechas siempre vigentes |
 

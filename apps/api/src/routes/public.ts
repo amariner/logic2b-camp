@@ -50,7 +50,9 @@ async function findBookingByCodeEmail(db: Db, code: string, email: string) {
   const links = await db
     .select()
     .from(schema.bookingGuests)
-    .where(and(eq(schema.bookingGuests.bookingId, booking.id), eq(schema.bookingGuests.isLead, true)));
+    .where(
+      and(eq(schema.bookingGuests.bookingId, booking.id), eq(schema.bookingGuests.isLead, true)),
+    );
   const lead = links[0]
     ? (await db.select().from(schema.guests).where(eq(schema.guests.id, links[0].guestId)))[0]
     : undefined;
@@ -64,7 +66,8 @@ const childAges = (n: number) => Array.from({ length: n }, () => 8);
 export const publicRoutes = new Hono<Env>()
   .get('/availability', async (c) => {
     const parsed = availabilityQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const q = parsed.data;
     if (q.from >= q.to) return c.json({ error: 'invalid_dates' }, 400);
 
@@ -353,7 +356,11 @@ export const publicRoutes = new Hono<Env>()
         entity: 'booking',
         entityId: booking.id,
         action: 'cancel',
-        diff: { via: 'web', actor: `guest:${parsed.data.email.toLowerCase()}`, refundCents: refund.refundCents },
+        diff: {
+          via: 'web',
+          actor: `guest:${parsed.data.email.toLowerCase()}`,
+          refundCents: refund.refundCents,
+        },
         createdAt: ts,
       }),
     ]);
@@ -467,8 +474,16 @@ export const publicRoutes = new Hono<Env>()
         diff: {
           via: 'web',
           actor: `guest:${body.email.toLowerCase()}`,
-          from: { dateFrom: booking.dateFrom, dateTo: booking.dateTo, totalCents: booking.totalCents },
-          to: { dateFrom: body.dateFrom, dateTo: body.dateTo, totalCents: result.breakdown.totalCents },
+          from: {
+            dateFrom: booking.dateFrom,
+            dateTo: booking.dateTo,
+            totalCents: booking.totalCents,
+          },
+          to: {
+            dateFrom: body.dateFrom,
+            dateTo: body.dateTo,
+            totalCents: result.breakdown.totalCents,
+          },
         },
         createdAt: ts,
       }),
