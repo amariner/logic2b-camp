@@ -469,6 +469,11 @@
       "hecho": "Data bijgewerkt. Nieuw totaal: {importe}.",
       "noDisponible": "Geen beschikbaarheid voor die data.",
       "error": "De wijziging kon niet worden toegepast."
+    },
+    "pago": {
+      "esperando": "We bevestigen uw betaling bij de bank… dit duurt maar een paar seconden.",
+      "cancelado": "U hebt de betaling geannuleerd. De boeking blijft in behandeling — neem contact met ons op als u deze wilt voltooien.",
+      "pendiente": "De betaling is nog niet voltooid. Als u de betaalpagina per ongeluk hebt gesloten, neem dan contact met ons op om deze af te ronden."
     }
   },
   "temas": {

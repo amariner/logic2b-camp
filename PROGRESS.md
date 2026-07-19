@@ -4,14 +4,33 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 7 ✅ HECHA (v1 sin envío real — se activa con `RESEND_API_KEY`) · Siguiente: **Fase 8 — Pagos** (ADR primero: `PaymentProvider` stripe/redsys/none, modos, webhooks idempotentes) o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
-- **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14) — actualizar con cada funcionalidad nueva.
-- **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
+- **Fase actual**: 8 ✅ HECHA (v1 — `payments:'none'` hasta tener credenciales de Stripe/Redsys) · Siguiente: **Fase 9 — Instancias + asistente** (`TenantConfig`, resolución por host, `custom/`, `pnpm new:camping`) o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
+- **Último `/check`**: ✅ verde 2026-07-19 (34/34 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 19 — 2026-07-19 · Fase 8 · Pagos (ADR 0011)
+
+**Hecho** (ADR 0011 aceptado por delegación explícita en sesión cloud — "sigue perfilando... con tu criterio cierra temas")
+- **`packages/payments`** (puro, sin D1): interfaz `PaymentProvider` (`createIntent`/`parseWebhook`/`refund`), `computeChargeAmount` (modos `none`/`deposit`/`full` — `bond`/fianza vía pasarela queda en BACKLOG, ver §2 del ADR), adaptador `stripe` (Checkout Session por `fetch`, sin SDK, verificación de webhook HMAC-SHA256 con `crypto.subtle`) y `none`. **20 tests**
+- **Adaptador `redsys`**: firma HMAC SHA256 con derivación de clave por pedido en 3DES-CBC — **bloqueo técnico real**: Workers no soporta 3DES en `crypto.subtle`, así que se implementó DES/3DES puro en TypeScript (`des.ts`, tablas FIPS 46-3). Verificado contra `node:crypto` (`des-ede3-cbc`, IV cero) en **500 casos aleatorios** desde el propio test (Node sí lo soporta nativo, sirve de oráculo aunque producción no pueda usarlo). Algoritmo cruzado contra la guía oficial de migración a HMAC SHA256 y la implementación de referencia `santiperez/node-redsys-api` (investigación vía WebFetch/WebSearch en esta sesión). **Pendiente real declarado**: sin credenciales de comercio no se ha podido probar contra el sandbox de Redsys — BACKLOG antes del primer cobro real
+- **`apps/api/src/payments.ts`**: orquestación (mismo patrón que `notify.ts`) — `loadPaymentsConfig`/`resolveProvider` (secrets del Worker, `payment_not_configured` explícito si faltan), `recordPaymentEvent` (webhook idempotente reutilizando `meta`, **sin tabla ni migración nueva**), `executeRefund` (llama al proveedor si hay cobro de pasarela detrás, nunca dobla el cobro) y `recordManualPayment`
+- **`bookings.ts`**: solo `channel:'web'` con modo≠`none` bifurca a `status:'pending'` y crea el intent tras el batch atómico (si falla, la reserva queda `pending` sin intent — recepción la resuelve, no se auto-cancela); `phone`/`walkin` siguen confirmando al instante como siempre
+- **`public.ts`**: `booking_confirmed` ya no se dispara incondicionalmente al crear — solo cuando la reserva nace `confirmed` o al confirmarla el webhook; nuevo `POST /api/payments/webhook/:provider`; cancelación web ejecuta el reembolso real (antes solo el email con la cifra prevista)
+- **`admin.ts`**: dos acciones tipadas nuevas en `PATCH /bookings/:id` — `record_payment` (cobro en efectivo/tarjeta física) y `refund` (422 si supera lo pagado); cancelar desde el dashboard también ejecuta el reembolso real según la política
+- **8 tests de integración de pagos** (`apps/api/test/payments.test.ts`: gating por modo, misconfiguración, intent redsys real sin red, webhook idempotente de extremo a extremo, firma inválida) + **3 nuevos en `admin.test.ts`** (record_payment auditado, refund con tope, cancelación con reembolso real) — **49 tests** en la suite privada
+- **Web**: `FunnelTitular.tsx` redirige (Stripe) o auto-postea un formulario oculto (Redsys) cuando la reserva exige pago; `ReservaGestion.tsx` sondea unas pocas veces cuando vuelve con `?pago=ok` y la reserva sigue `pending` (el webhook puede tardar más que la vuelta del navegador). 6 idiomas (`reserva.pago.*`). TIER=1 re-verificado: 121 páginas, 0 islas
+- Seed demo: `modules.payments: {provider:'stripe', mode:'none'}` — mismo criterio que Resend en Fase 7: activar de verdad es solo secrets + config, sin deploy
+- `docs/FUNCIONALIDADES.md` §4.4 (cobro al reservar), §6.3 ampliada (registrar pago/reembolsar), §10 y §11 al día
+- **`pnpm check`**: ✅ verde (34/34, todo el monorepo)
+
+**Decisiones**: ver ADR 0011 — modos v1 `none`/`deposit`/`full` (fianza vía pasarela fuera de v1), solo canal web pasa por la pasarela, webhooks reutilizan `meta` en vez de una tabla nueva, DES/3DES propio como único camino técnico para Redsys en Workers
+**Pendiente de Andreu**: cuenta Stripe (modo test primero) + comercio Redsys real (clave, FUC, terminal) para activar de verdad y verificar contra su sandbox antes del primer cobro
+**`/check`**: ✅ verde (34/34) · API 49/49 · payments 20/20
 
 ### Sesión 18 — 2026-07-19 · Fase 7 · Notificaciones (ADR 0010)
 

@@ -469,6 +469,11 @@
       "hecho": "Daten aktualisiert. Neuer Gesamtbetrag: {importe}.",
       "noDisponible": "Keine Verfügbarkeit für diese Daten.",
       "error": "Die Änderung konnte nicht angewendet werden."
+    },
+    "pago": {
+      "esperando": "Wir bestätigen Ihre Zahlung bei der Bank… das dauert nur wenige Sekunden.",
+      "cancelado": "Sie haben die Zahlung abgebrochen. Die Buchung bleibt ausstehend — kontaktieren Sie uns, wenn Sie sie abschließen möchten.",
+      "pendiente": "Die Zahlung ist noch nicht abgeschlossen. Falls Sie die Zahlungsseite versehentlich geschlossen haben, kontaktieren Sie uns, um sie abzuschließen."
     }
   },
   "temas": {

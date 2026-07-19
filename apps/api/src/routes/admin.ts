@@ -3,13 +3,14 @@
  * readonly=GETs · reception=operativa · manager=tarifas/ajustes · owner=usuarios.
  * Toda mutación deja rastro en audit_log.
  */
-import { TAX_POLICIES } from '@logic-camp/core';
+import { calculateCancellationRefund, TAX_POLICIES, type CancellationPolicy } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
 import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { provisionUser, requireRole, type AuthEnv } from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
+import { executeRefund, recordManualPayment } from '../payments';
 import {
   adminBookingCreateSchema,
   bookingActionSchema,
@@ -26,6 +27,14 @@ import {
 
 /** Política de tasa del tenant — de TenantConfig en Fase 9; demo = valencia */
 const TAX_POLICY = TAX_POLICIES.valencia!;
+/** Política de cancelación del tenant — de TenantConfig en Fase 9; sobre lo PAGADO */
+const CANCEL_POLICY: CancellationPolicy = {
+  tiers: [
+    { minDaysBefore: 30, refundPct: 100 },
+    { minDaysBefore: 7, refundPct: 50 },
+    { minDaysBefore: 0, refundPct: 0 },
+  ],
+};
 
 /** Transiciones de estado permitidas. Lo que no está aquí, es 409. */
 const TRANSITIONS: Record<
@@ -284,6 +293,36 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ id, notes: action.notes });
     }
 
+    // cobro en efectivo/TPV físico ya recibido en recepción (ADR 0011 §5) — sin pasarela
+    if (action.action === 'record_payment') {
+      await recordManualPayment(db, id, action.amountCents);
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'record_payment', {
+        amountCents: action.amountCents,
+        method: action.method,
+      });
+      const updated = (
+        await db.select().from(schema.bookings).where(eq(schema.bookings.id, id))
+      )[0]!;
+      return c.json({ id, paidCents: updated.paidCents });
+    }
+
+    // reembolso (ADR 0011 §5): nunca deja paidCents negativo; si hay cobro de
+    // pasarela detrás, llama a provider.refund ANTES de escribir nada
+    if (action.action === 'refund') {
+      if (action.amountCents > booking.paidCents) {
+        return c.json({ error: 'refund_exceeds_paid', paidCents: booking.paidCents }, 422);
+      }
+      const outcome = await executeRefund(db, c.env, id, action.amountCents);
+      if (!outcome.ok) return c.json({ error: outcome.error }, 409);
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'refund', {
+        amountCents: action.amountCents,
+      });
+      const updated = (
+        await db.select().from(schema.bookings).where(eq(schema.bookings.id, id))
+      )[0]!;
+      return c.json({ id, paidCents: updated.paidCents });
+    }
+
     if (action.action === 'reassign') {
       const unit = (
         await db.select().from(schema.units).where(eq(schema.units.id, action.unitId))
@@ -345,8 +384,14 @@ export const adminRoutes = new Hono<AuthEnv>()
       from: booking.status,
       to: t.to,
     });
-    // cancelación desde el mostrador → email al titular (Fase 8: reembolso real)
+    // cancelación desde el mostrador: reembolso real según la política + email al titular
     if (t.to === 'cancelled') {
+      const refund = calculateCancellationRefund(
+        { dateFrom: booking.dateFrom, paidCents: booking.paidCents },
+        CANCEL_POLICY,
+        nowIso().slice(0, 10),
+      );
+      const refundOutcome = await executeRefund(db, c.env, id, refund.refundCents);
       const lead = (
         await db
           .select({ email: schema.guests.email })
@@ -354,7 +399,14 @@ export const adminRoutes = new Hono<AuthEnv>()
           .innerJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
           .where(and(eq(schema.bookingGuests.bookingId, id), eq(schema.bookingGuests.isLead, true)))
       )[0];
-      if (lead?.email) await notifyBookingCancelled(c, booking, lead.email);
+      if (lead?.email) {
+        await notifyBookingCancelled(
+          c,
+          booking,
+          lead.email,
+          refundOutcome.ok ? refundOutcome.refundedCents : 0,
+        );
+      }
     }
     return c.json({ id, status: t.to });
   })

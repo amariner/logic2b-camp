@@ -469,6 +469,11 @@
       "hecho": "Fechas actualizadas. Nuevo total: {importe}.",
       "noDisponible": "No hay disponibilidad para esas fechas.",
       "error": "No se ha podido aplicar el cambio."
+    },
+    "pago": {
+      "esperando": "Estamos confirmando tu pago con el banco… tardará solo unos segundos.",
+      "cancelado": "Has cancelado el pago. La reserva queda pendiente — contacta con nosotros si quieres completarla.",
+      "pendiente": "El pago todavía no se ha completado. Si has cerrado la pasarela por error, contacta con nosotros para terminarlo."
     }
   },
   "temas": {

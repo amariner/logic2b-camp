@@ -12,6 +12,11 @@ export type Bindings = {
   AUTH_SECRET?: string;
   /** wrangler secret; sin él las notificaciones quedan 'disabled' (ADR 0010) */
   RESEND_API_KEY?: string;
+  /** wrangler secrets de pago (ADR 0011). Sin ellos, un provider≠none da 500 payment_not_configured. */
+  STRIPE_SECRET_KEY?: string;
+  STRIPE_WEBHOOK_SECRET?: string;
+  /** clave de comercio Redsys en base64 — "su comercio, su clave, por camping" */
+  REDSYS_MERCHANT_KEY?: string;
 };
 
 export type TenantContext = {

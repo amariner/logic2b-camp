@@ -3,7 +3,9 @@
  * Incluye los invariantes 3 (tarifa no toca reservas) y 4 (cancelar libera
  * inventario), roles, registro cerrado y fuga cruzada de sesiones A↛B.
  */
+import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
+import { and, eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { app } from '../src/app';
 import { provisionUser } from '../src/auth';
@@ -18,9 +20,9 @@ const json = (body: unknown, headers: Record<string, string> = {}) => ({
   body: JSON.stringify(body),
 });
 
-const patch = (body: unknown, cookie: string) => ({
+const patch = (body: unknown, cookie: string, headers: Record<string, string> = {}) => ({
   method: 'PATCH',
-  headers: { 'content-type': 'application/json', cookie },
+  headers: { 'content-type': 'application/json', cookie, ...headers },
   body: JSON.stringify(body),
 });
 
@@ -288,6 +290,109 @@ describe('reservas privadas', () => {
     );
     expect(ok.status).toBe(200);
     expect(((await ok.json()) as { unitId: string }).unitId).toBe(free);
+  });
+});
+
+describe('pagos (ADR 0011)', () => {
+  // cabecera propia: el limitador de tasa cuenta por IP y este fichero ya usa
+  // muchas peticiones — un bucket aparte evita un 429 que no tiene que ver con el test
+  const PAY_IP = { 'cf-connecting-ip': 'test-pagos' };
+  const createManual = (from: string, to: string) =>
+    app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody(from, to), PAY_IP),
+        headers: { 'content-type': 'application/json', cookie: reception, ...PAY_IP },
+      },
+      envA,
+    );
+
+  it('record_payment: cobro en efectivo suma a paidCents y queda auditado', async () => {
+    const create = await createManual('2026-08-01', '2026-08-04');
+    const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
+
+    const forbidden = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'record_payment', amountCents: 1000, method: 'cash' }, readonly, PAY_IP),
+      envA,
+    );
+    expect(forbidden.status).toBe(403);
+
+    const res = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'record_payment', amountCents: totalCents, method: 'cash' }, reception, PAY_IP),
+      envA,
+    );
+    expect(res.status).toBe(200);
+    expect(((await res.json()) as { paidCents: number }).paidCents).toBe(totalCents);
+
+    const db = createDb(env.DB);
+    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, id));
+    expect(payments).toHaveLength(1);
+    expect(payments[0]).toMatchObject({ provider: 'manual', amountCents: totalCents, status: 'succeeded' });
+    const audit = await db
+      .select()
+      .from(schema.auditLog)
+      .where(and(eq(schema.auditLog.entityId, id), eq(schema.auditLog.action, 'record_payment')));
+    expect(audit).toHaveLength(1);
+  });
+
+  it('refund: nunca deja paidCents negativo; un cobro manual se reembolsa como asiento contable', async () => {
+    const create = await createManual('2026-08-05', '2026-08-08');
+    const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
+    await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'record_payment', amountCents: totalCents, method: 'card' }, reception, PAY_IP),
+      envA,
+    );
+
+    const overRefund = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'refund', amountCents: totalCents + 1 }, reception, PAY_IP),
+      envA,
+    );
+    expect(overRefund.status).toBe(422);
+
+    const refund = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'refund', amountCents: totalCents }, reception, PAY_IP),
+      envA,
+    );
+    expect(refund.status).toBe(200);
+    expect(((await refund.json()) as { paidCents: number }).paidCents).toBe(0);
+
+    const db = createDb(env.DB);
+    const payments = await db
+      .select()
+      .from(schema.payments)
+      .where(eq(schema.payments.bookingId, id))
+      .orderBy(schema.payments.createdAt);
+    expect(payments).toHaveLength(2);
+    expect(payments[1]).toMatchObject({ provider: 'manual', amountCents: -totalCents, status: 'refunded' });
+  });
+
+  it('cancelar desde el dashboard ejecuta el reembolso real según la política, no solo el email', async () => {
+    const create = await createManual('2026-10-20', '2026-10-23');
+    const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
+    await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'record_payment', amountCents: totalCents, method: 'cash' }, reception, PAY_IP),
+      envA,
+    );
+
+    const cancel = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'cancel' }, reception, PAY_IP),
+      envA,
+    );
+    expect(cancel.status).toBe(200);
+
+    // fechas en noviembre 2026, muy por delante de "hoy" (2026-07-19): reembolso 100%
+    const db = createDb(env.DB);
+    const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0]!;
+    expect(booking.paidCents).toBe(0);
+    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, id));
+    expect(payments.some((p) => p.amountCents < 0)).toBe(true);
   });
 });
 

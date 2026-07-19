@@ -103,7 +103,7 @@ export const adminBookingCreateSchema = bookingRequestSchema.extend({
   channel: z.enum(['phone', 'walkin']).default('phone'),
 });
 
-/** Acciones tipadas sobre una reserva: transición, reasignación o nota. */
+/** Acciones tipadas sobre una reserva: transición, reasignación, nota o pago (ADR 0011). */
 export const bookingActionSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('confirm') }),
   z.object({ action: z.literal('cancel') }),
@@ -111,6 +111,12 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('complete') }),
   z.object({ action: z.literal('reassign'), unitId: z.string().min(1) }),
   z.object({ action: z.literal('note'), notes: z.string().max(2000) }),
+  z.object({
+    action: z.literal('record_payment'),
+    amountCents: z.number().int().positive(),
+    method: z.enum(['cash', 'card']),
+  }),
+  z.object({ action: z.literal('refund'), amountCents: z.number().int().positive() }),
 ]);
 
 export const enquiryPatchSchema = z.object({

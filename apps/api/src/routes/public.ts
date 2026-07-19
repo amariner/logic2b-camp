@@ -16,6 +16,7 @@ import { Hono } from 'hono';
 import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed, notifyEnquiry } from '../notify';
+import { executeRefund, loadPaymentsConfig, recordPaymentEvent, resolveProvider } from '../payments';
 import {
   availabilityQuerySchema,
   bookingCancelSchema,
@@ -290,13 +291,19 @@ export const publicRoutes = new Hono<Env>()
       channel: 'web',
       idemKey: c.req.header('Idempotency-Key'),
       taxPolicy: TAX_POLICY,
+      env: c.env,
+      webOrigin: new URL(c.req.url).origin,
     });
     if (result.ok && result.status === 201) {
-      await notifyBookingConfirmed(
-        c,
-        parsed.data,
-        result.body as Parameters<typeof notifyBookingConfirmed>[2],
-      );
+      // solo se notifica la confirmación en el momento en que REALMENTE se confirma:
+      // al crear (mode none / sin pago) o más tarde, desde el webhook (ADR 0011 §4)
+      if (result.body.status === 'confirmed') {
+        await notifyBookingConfirmed(
+          c,
+          parsed.data,
+          result.body as Parameters<typeof notifyBookingConfirmed>[2],
+        );
+      }
     }
     return c.json(result.body, result.status);
   })
@@ -372,9 +379,17 @@ export const publicRoutes = new Hono<Env>()
         createdAt: ts,
       }),
     ]);
-    // Fase 8: ejecución real del reembolso
-    await notifyBookingCancelled(c, booking, parsed.data.email, refund.refundCents);
-    return c.json({ code: booking.code, status: 'cancelled', refund });
+    // Ejecución real del reembolso (ADR 0011 §5) — la cancelación YA liberó el
+    // inventario por encima; si el reembolso falla, la reserva sigue cancelada
+    // (recepción lo resuelve a mano, no se revierte la cancelación).
+    const refundOutcome = await executeRefund(db, c.env, booking.id, refund.refundCents);
+    await notifyBookingCancelled(
+      c,
+      booking,
+      parsed.data.email,
+      refundOutcome.ok ? refundOutcome.refundedCents : 0,
+    );
+    return c.json({ code: booking.code, status: 'cancelled', refund, refunded: refundOutcome.ok });
   })
 
   .post('/bookings/:code/modify', async (c) => {
@@ -509,4 +524,65 @@ export const publicRoutes = new Hono<Env>()
       touristTaxCents,
       breakdown: { ...result.breakdown, touristTaxCents },
     });
+  })
+
+  // ---------- webhooks de pago (ADR 0011 §4) ----------
+  .post('/payments/webhook/:provider', async (c) => {
+    const providerName = c.req.param('provider');
+    if (providerName !== 'stripe' && providerName !== 'redsys') {
+      return c.json({ error: 'unknown_provider' }, 404);
+    }
+    const db = c.get('tenant').db;
+    const config = await loadPaymentsConfig(db);
+    if (config.provider !== providerName) return c.json({ error: 'provider_mismatch' }, 404);
+    const provider = resolveProvider(config, c.env);
+    if (!provider) return c.json({ error: 'payment_not_configured' }, 500);
+
+    const rawBody = await c.req.text();
+    const event = await provider.parseWebhook({ headers: c.req.raw.headers, rawBody });
+    if (!event) return c.json({ error: 'invalid_signature' }, 400);
+
+    const outcome = await recordPaymentEvent(db, providerName, event);
+    if (outcome.kind === 'recorded' && outcome.justConfirmed) {
+      // booking_confirmed se dispara AHORA (Fase 8) porque es el momento real
+      // en que la reserva pasa a confirmed — no en la creación (ADR 0011 §4)
+      const booking = (
+        await db.select().from(schema.bookings).where(eq(schema.bookings.id, outcome.bookingId))
+      )[0];
+      const lead = booking
+        ? (
+            await db
+              .select({ name: schema.guests.name, email: schema.guests.email })
+              .from(schema.bookingGuests)
+              .innerJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
+              .where(
+                and(
+                  eq(schema.bookingGuests.bookingId, booking.id),
+                  eq(schema.bookingGuests.isLead, true),
+                ),
+              )
+          )[0]
+        : undefined;
+      if (booking && lead?.email) {
+        await notifyBookingConfirmed(
+          c,
+          {
+            unitTypeId: booking.unitTypeId,
+            dateFrom: booking.dateFrom,
+            dateTo: booking.dateTo,
+            occupancy: booking.occupancy,
+            holder: { name: lead.name, email: lead.email },
+            locale: booking.locale,
+          },
+          {
+            id: booking.id,
+            code: booking.code,
+            totalCents: booking.totalCents,
+            touristTaxCents: booking.touristTaxCents,
+            breakdown: booking.priceBreakdown,
+          },
+        );
+      }
+    }
+    return c.json({ ok: true, outcome: outcome.kind });
   });

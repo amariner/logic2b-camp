@@ -10,19 +10,20 @@ import {
   validateStay,
 } from '@logic-camp/core';
 import { schema } from '@logic-camp/db';
+import { computeChargeAmount, type PaymentIntentResult } from '@logic-camp/payments';
 import { eq } from 'drizzle-orm';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from './data';
+import { nowIso, uid } from './ids';
+import { loadPaymentsConfig, rememberIntent, resolveProvider, type PaymentEnv } from './payments';
 import type { BookingRequest } from './schemas';
 import type { TenantContext } from './tenant';
 
 const CURRENCY = 'EUR';
 
-export const uid = (prefix: string) =>
-  `${prefix}_${crypto.randomUUID().replace(/-/g, '').slice(0, 12)}`;
-export const nowIso = () => new Date().toISOString();
+export { nowIso, uid };
 
 export type CreateBookingResult =
-  | { ok: false; status: 404 | 409 | 422; body: Record<string, unknown> }
+  | { ok: false; status: 404 | 409 | 422 | 500; body: Record<string, unknown> }
   | { ok: true; status: 200 | 201; body: Record<string, unknown> };
 
 export async function createBooking(
@@ -32,6 +33,10 @@ export async function createBooking(
     channel: 'web' | 'phone' | 'walkin';
     idemKey?: string | null;
     taxPolicy: Parameters<typeof calculateTouristTax>[2];
+    /** secrets del Worker — solo hace falta para channel:'web' con pago activo (ADR 0011) */
+    env?: PaymentEnv;
+    /** origen público (para construir las URLs de vuelta de la pasarela) */
+    webOrigin?: string;
   },
 ): Promise<CreateBookingResult> {
   const db = tenant.db;
@@ -145,6 +150,26 @@ export async function createBooking(
     blocks: data.blocks,
   });
 
+  // Pagos (ADR 0011): solo el canal web pasa por la pasarela — una reserva de
+  // mostrador/teléfono la cobra recepción in situ y confirma al instante como
+  // siempre. Se valida ANTES de escribir nada: un provider mal configurado
+  // nunca debe dejar una reserva a medias sin explicación.
+  let chargeAmountCents = 0;
+  let provider: ReturnType<typeof resolveProvider> = null;
+  if (opts.channel === 'web') {
+    const paymentsConfig = await loadPaymentsConfig(db);
+    chargeAmountCents = computeChargeAmount(
+      paymentsConfig.mode,
+      result.breakdown.totalCents,
+      paymentsConfig.depositPercent,
+    );
+    if (chargeAmountCents > 0) {
+      provider = resolveProvider(paymentsConfig, opts.env ?? {});
+      if (!provider) return { ok: false, status: 500, body: { error: 'payment_not_configured' } };
+    }
+  }
+  const requiresPayment = chargeAmountCents > 0;
+
   const id = uid('bkg');
   const code = `CS-${body.dateFrom.slice(0, 4)}-${crypto.randomUUID().replace(/\D/g, '').slice(0, 6)}`;
   const guestId = uid('gst');
@@ -155,7 +180,7 @@ export async function createBooking(
       id,
       tenantId: tenant.slug,
       code,
-      status: 'confirmed', // pagos (Fase 8) introducirán 'pending'
+      status: requiresPayment ? 'pending' : 'confirmed',
       channel: opts.channel,
       dateFrom: body.dateFrom,
       dateTo: body.dateTo,
@@ -195,18 +220,42 @@ export async function createBooking(
   // batch atómico: reserva + titular (+ clave de idempotencia + hold consumido) juntos o nada
   await db.batch(inserts as unknown as Parameters<typeof db.batch>[0]);
 
-  // Fase 7: hook onBookingCreated → email confirmación
-  return {
-    ok: true,
-    status: 201,
-    body: {
-      id,
-      code,
-      status: 'confirmed',
-      unitId: assignment?.unitId ?? null,
-      totalCents: result.breakdown.totalCents,
-      touristTaxCents,
-      breakdown: { ...result.breakdown, touristTaxCents },
-    },
+  const baseBody = {
+    id,
+    code,
+    status: requiresPayment ? ('pending' as const) : ('confirmed' as const),
+    unitId: assignment?.unitId ?? null,
+    totalCents: result.breakdown.totalCents,
+    touristTaxCents,
+    breakdown: { ...result.breakdown, touristTaxCents },
   };
+
+  if (!requiresPayment) {
+    // Fase 7: hook onBookingCreated → email confirmación (lo dispara la ruta, aquí solo el 201)
+    return { ok: true, status: 201, body: baseBody };
+  }
+
+  // El intent se crea DESPUÉS del batch: es una llamada de red, no una escritura
+  // en D1. Si falla, la reserva ya existe como 'pending' — recepción la ve en
+  // la bandeja y puede resolverlo a mano (ADR 0011 §4, no se auto-cancela).
+  if (!provider || !opts.webOrigin) return { ok: true, status: 201, body: baseBody };
+  const email = encodeURIComponent(body.holder.email);
+  try {
+    const intent: PaymentIntentResult = await provider.createIntent({
+      bookingId: id,
+      code,
+      amountCents: chargeAmountCents,
+      currency: CURRENCY,
+      locale: body.locale,
+      description: `Reserva ${code}`,
+      successUrl: `${opts.webOrigin}/reserva?code=${code}&email=${email}&nueva=1&pago=ok`,
+      cancelUrl: `${opts.webOrigin}/reserva?code=${code}&email=${email}&nueva=1&pago=cancelado`,
+      notifyUrl: `${opts.webOrigin}/api/payments/webhook/${provider.name}`,
+    });
+    await rememberIntent(tenant.db, provider.name, intent.providerRef, id);
+    return { ok: true, status: 201, body: { ...baseBody, payment: intent } };
+  } catch (e) {
+    console.error(`createIntent failed for ${code}:`, e);
+    return { ok: true, status: 201, body: baseBody };
+  }
 }

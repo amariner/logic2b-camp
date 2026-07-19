@@ -865,7 +865,10 @@ export function generateSeed(anchorYear: number): SeedData {
           web: true,
           booking: 'instant',
           dashboard: 'full',
-          payments: 'stripe',
+          // mode:'none' hasta tener credenciales reales de Stripe (ADR 0011 §8):
+          // cambiar a 'deposit'/'full' es solo este objeto + los secrets del Worker,
+          // sin deploy de código — mismo criterio que RESEND_API_KEY en Fase 7.
+          payments: { provider: 'stripe', mode: 'none' },
           notifications: {
             notifyTo: 'recepcion@calasereno.example',
             from: 'Camping Cala Sereno <reservas@calasereno.example>',

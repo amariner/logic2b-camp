@@ -144,9 +144,37 @@ export default function FunnelTitular({
         return;
       }
       if (!res.ok) throw new Error(String(res.status));
-      const body = (await res.json()) as { code: string };
+      const body = (await res.json()) as {
+        code: string;
+        payment?:
+          | { method: 'redirect'; redirectUrl: string }
+          | { method: 'form'; action: string; fields: Record<string, string> }
+          | { method: 'immediate' };
+      };
       confirmed.current = true;
       const email = String(data.get('email'));
+
+      // pago requerido (ADR 0011): la reserva queda 'pending' hasta que la
+      // pasarela confirme por webhook — se redirige ANTES de llegar a /reserva
+      if (body.payment?.method === 'redirect') {
+        window.location.href = body.payment.redirectUrl;
+        return;
+      }
+      if (body.payment?.method === 'form') {
+        const autoForm = document.createElement('form');
+        autoForm.method = 'POST';
+        autoForm.action = body.payment.action;
+        for (const [name, value] of Object.entries(body.payment.fields)) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = name;
+          input.value = value;
+          autoForm.appendChild(input);
+        }
+        document.body.appendChild(autoForm);
+        autoForm.submit();
+        return;
+      }
       window.location.href = `${reservaPath}?code=${encodeURIComponent(body.code)}&email=${encodeURIComponent(email)}&nueva=1`;
     } catch {
       setState('error');

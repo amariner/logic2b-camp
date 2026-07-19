@@ -19,6 +19,9 @@ const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
 };
 type BookingAction = 'confirm' | 'cancel' | 'no_show' | 'complete';
 
+/** € (coma o punto) → céntimos enteros — mismo criterio que Tarifas.tsx. */
+const toCents = (euros: string) => Math.round(Number(euros.replace(',', '.')) * 100);
+
 export default function BookingPanel({
   bookingId,
   onClose,
@@ -31,6 +34,9 @@ export default function BookingPanel({
   const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
   const [confirmingCancel, setConfirmingCancel] = useState(false);
   const [notes, setNotes] = useState<string | null>(null); // null = aún sin editar
+  const [payAmount, setPayAmount] = useState('');
+  const [payMethod, setPayMethod] = useState<'cash' | 'card'>('cash');
+  const [refundAmount, setRefundAmount] = useState('');
 
   const { data, isPending, isError } = useQuery({
     queryKey: ['booking', bookingId],
@@ -47,6 +53,8 @@ export default function BookingPanel({
     setMsg(null);
     setConfirmingCancel(false);
     setNotes(null);
+    setPayAmount('');
+    setRefundAmount('');
   }, [bookingId]);
 
   // Esc cierra aunque el foco haya salido del panel (p.ej. tras deshabilitarse un botón)
@@ -84,6 +92,37 @@ export default function BookingPanel({
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
     onError: () => setMsg({ text: t('ficha.accionError'), error: true }),
+  });
+
+  // cobro en efectivo/TPV físico ya recibido en recepción (ADR 0011) — sin pasarela
+  const recordPayment = useMutation({
+    mutationFn: (input: { amountCents: number; method: 'cash' | 'card' }) =>
+      apiPatch<{ id: string; paidCents: number }>(`/api/admin/bookings/${bookingId}`, {
+        action: 'record_payment',
+        ...input,
+      }),
+    onSuccess: () => {
+      setMsg({ text: t('ficha.pagoRegistrado') });
+      setPayAmount('');
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+    },
+    onError: () => setMsg({ text: t('ficha.pagoError'), error: true }),
+  });
+
+  // reembolso (ADR 0011): si hay cobro de pasarela detrás, el servidor llama
+  // primero a provider.refund — aquí solo se ofrece la acción, SIEMPRE valida el servidor
+  const refund = useMutation({
+    mutationFn: (amountCents: number) =>
+      apiPatch<{ id: string; paidCents: number }>(`/api/admin/bookings/${bookingId}`, {
+        action: 'refund',
+        amountCents,
+      }),
+    onSuccess: () => {
+      setMsg({ text: t('ficha.reembolsoHecho') });
+      setRefundAmount('');
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+    },
+    onError: () => setMsg({ text: t('ficha.reembolsoError'), error: true }),
   });
 
   const lead = data?.guests.find((g) => g.isLead) ?? data?.guests[0];
@@ -249,6 +288,64 @@ export default function BookingPanel({
                 </li>
               ))}
             </ul>
+
+            {(data.status === 'pending' || data.status === 'confirmed') && (
+              <div className="mt-2 flex flex-col gap-2 border-t border-arena/60 pt-2">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={payAmount}
+                    onChange={(e) => setPayAmount(e.target.value)}
+                    placeholder={t('ficha.importe')}
+                    aria-label={t('ficha.registrarPago')}
+                    className="w-20 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1"
+                  />
+                  <select
+                    value={payMethod}
+                    onChange={(e) => setPayMethod(e.target.value as 'cash' | 'card')}
+                    aria-label={t('ficha.metodoPago')}
+                    className="rounded-(--lc-radius) border border-tinta/20 bg-hueso px-1.5 py-1"
+                  >
+                    <option value="cash">{t('ficha.metodoEfectivo')}</option>
+                    <option value="card">{t('ficha.metodoTarjeta')}</option>
+                  </select>
+                  <button
+                    type="button"
+                    disabled={toCents(payAmount) <= 0 || recordPayment.isPending}
+                    onClick={() => recordPayment.mutate({ amountCents: toCents(payAmount), method: payMethod })}
+                    className="rounded-(--lc-radius) border border-pino/60 px-2.5 py-1 font-medium text-pino hover:bg-arena-suave disabled:opacity-40"
+                  >
+                    {t('ficha.registrarPago')}
+                  </button>
+                </div>
+                {data.paidCents > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={refundAmount}
+                      onChange={(e) => setRefundAmount(e.target.value)}
+                      placeholder={t('ficha.importe')}
+                      aria-label={t('ficha.reembolsar')}
+                      className="w-20 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1"
+                    />
+                    <button
+                      type="button"
+                      disabled={
+                        toCents(refundAmount) <= 0 ||
+                        toCents(refundAmount) > data.paidCents ||
+                        refund.isPending
+                      }
+                      onClick={() => refund.mutate(toCents(refundAmount))}
+                      className="rounded-(--lc-radius) border border-mar/50 px-2.5 py-1 font-medium text-mar hover:bg-arena-suave disabled:opacity-40"
+                    >
+                      {t('ficha.reembolsar')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </section>
 
           {/* notas internas */}

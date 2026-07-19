@@ -469,6 +469,11 @@
       "hecho": "Dates actualitzades. Nou total: {importe}.",
       "noDisponible": "No hi ha disponibilitat per a eixes dates.",
       "error": "No s'ha pogut aplicar el canvi."
+    },
+    "pago": {
+      "esperando": "Estem confirmant el teu pagament amb el banc… trigarà només uns segons.",
+      "cancelado": "Has cancel·lat el pagament. La reserva queda pendent — contacta amb nosaltres si vols completar-la.",
+      "pendiente": "El pagament encara no s'ha completat. Si has tancat la passarel·la per error, contacta amb nosaltres per acabar-lo."
     }
   },
   "temas": {

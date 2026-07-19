@@ -469,6 +469,11 @@
       "hecho": "Dates updated. New total: {importe}.",
       "noDisponible": "No availability for those dates.",
       "error": "The change couldn't be applied."
+    },
+    "pago": {
+      "esperando": "We're confirming your payment with the bank… this only takes a few seconds.",
+      "cancelado": "You cancelled the payment. The booking stays pending — contact us if you'd like to complete it.",
+      "pendiente": "The payment hasn't gone through yet. If you closed the payment page by mistake, contact us to finish it."
     }
   },
   "temas": {

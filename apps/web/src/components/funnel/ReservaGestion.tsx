@@ -30,6 +30,7 @@ type Props = {
     imprimir: string;
     cancelar: Record<string, string>;
     modificar: Record<string, string>;
+    pago: Record<string, string>;
   };
   typeNames: Record<string, string>;
   conceptos: Record<string, string>;
@@ -54,6 +55,8 @@ export default function ReservaGestion({
   const [flash, setFlash] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [pagoParam, setPagoParam] = useState<'ok' | 'cancelado' | null>(null);
+  const [polling, setPolling] = useState(false);
 
   const load = useCallback(async (c: string, e: string) => {
     setState('loading');
@@ -79,12 +82,39 @@ export default function ReservaGestion({
     const c = p.get('code');
     const e = p.get('email');
     setIsNew(p.get('nueva') === '1');
+    const pago = p.get('pago');
+    if (pago === 'ok' || pago === 'cancelado') setPagoParam(pago);
     if (c && e) {
       setCode(c);
       setEmail(e);
       void load(c, e);
     }
   }, [load]);
+
+  // pago pendiente de confirmar por webhook (ADR 0011 §4): la vuelta de la
+  // pasarela es más rápida que el aviso server-to-server — se reconsulta unas
+  // pocas veces antes de rendirse (recepción ve igualmente la reserva 'pending')
+  useEffect(() => {
+    if (pagoParam !== 'ok' || !booking || booking.status !== 'pending') return;
+    let cancelled = false;
+    let attempts = 0;
+    setPolling(true);
+    const tick = () => {
+      window.setTimeout(async () => {
+        if (cancelled) return;
+        attempts += 1;
+        await load(booking.code, email);
+        if (!cancelled && attempts < 8) tick();
+        else if (!cancelled) setPolling(false);
+      }, 2000);
+    };
+    tick();
+    return () => {
+      cancelled = true;
+      setPolling(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagoParam, booking?.status]);
 
   const fecha = (d: string) =>
     new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(
@@ -205,6 +235,21 @@ export default function ReservaGestion({
       {isNew && (
         <p className="rounded-(--lc-radius) border border-pino/30 bg-pino/10 px-4 py-3 text-[14px] font-medium text-pino">
           {labels.nueva}
+        </p>
+      )}
+      {polling && (
+        <p role="status" className="rounded-(--lc-radius) border border-arena/60 bg-arena-suave/40 px-4 py-3 text-[14px] font-medium">
+          {labels.pago.esperando}
+        </p>
+      )}
+      {pagoParam === 'cancelado' && booking.status === 'pending' && (
+        <p className="rounded-(--lc-radius) border border-mar/40 bg-mar/5 px-4 py-3 text-[14px] font-medium text-mar">
+          {labels.pago.cancelado}
+        </p>
+      )}
+      {pagoParam === 'ok' && !polling && booking.status === 'pending' && (
+        <p className="rounded-(--lc-radius) border border-mar/40 bg-mar/5 px-4 py-3 text-[14px] font-medium text-mar">
+          {labels.pago.pendiente}
         </p>
       )}
       {flash && (

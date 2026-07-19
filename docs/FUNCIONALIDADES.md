@@ -103,6 +103,18 @@ Con su **código de reserva + email**, el cliente puede desde la web, sin regist
 - Si el cliente pulsa dos veces "Confirmar" (o la red falla a medias), la protección de idempotencia garantiza **una sola reserva**.
 - Todo el proceso está cubierto por **tests automáticos de extremo a extremo** (el camino feliz y los infelices: plaza agotada entre pasos, apartado caducado, estancia inválida) que se ejecutan contra el sistema real antes de cada entrega.
 
+### 4.4 Cobro al reservar
+
+Cada camping elige, sin tocar código, cómo quiere cobrar:
+
+- **Sin cobro online**: el producto funciona entero — la reserva confirma al instante y se cobra en recepción, como hoy. Es el punto de partida de todo camping nuevo.
+- **Señal (%) o pago completo**: el cliente paga en el momento de reservar, con **Stripe** o con **Redsys** (la pasarela de los bancos españoles, obligatoria para muchos negocios en España). La reserva queda "pendiente" solo esos segundos, hasta que el banco confirma; el cliente vuelve automáticamente a su resguardo.
+- **Nunca se cobra dos veces**: un reintento del banco (o que el cliente refresque la página) no duplica el cargo — está protegido igual que la creación de la reserva.
+- **La fianza sigue aparte**: el depósito reembolsable no se mezcla nunca con el precio de la estancia (§5) — hoy se cobra en recepción; cobrarla también online es la siguiente vuelta de tuerca, ya diseñada.
+- **Reembolsos reales**: cancelar (desde la web o desde el panel) devuelve el dinero de verdad a través de la misma pasarela con la que se cobró, no solo un email con la promesa.
+
+*Nota: activar una pasarela real es solo configuración — la cuenta de Stripe o el contrato con el banco (Redsys), sin tocar una línea de código. Hasta entonces, el camping opera con "sin cobro online" sin ningún cambio visible.*
+
 ---
 
 ## 5. Precios: siempre explicables
@@ -150,8 +162,9 @@ Un clic en cualquier reserva abre su ficha junto al planning, sin perderlo de vi
 - **Titular y acompañantes** con documento y contacto.
 - **Desglose económico completo**: cada línea del precio, tasa turística, fianza, pagado y **pendiente de cobro** destacado.
 - **Historial de pagos** con signo (los reembolsos, en negativo). La contabilidad interna cuadra por construcción: la suma de pagos ES lo pagado, con test automático que lo garantiza.
+- **Registrar un cobro** hecho en persona (efectivo o tarjeta física) y **reembolsar** sin salir de la ficha — si el cobro original fue con pasarela, el reembolso se ejecuta de verdad contra ella; nunca deja lo pagado en negativo.
 - **Notas internas** de recepción, editables.
-- **Acciones según el estado**: confirmar, cancelar (con doble confirmación), marcar no presentada, completar. Solo se ofrecen las que tienen sentido en cada momento, y el servidor las re-valida todas.
+- **Acciones según el estado**: confirmar, cancelar (con doble confirmación), marcar no presentada, completar. Solo se ofrecen las que tienen sentido en cada momento, y el servidor las re-valida todas. Cancelar ejecuta el reembolso real según la política del camping, no solo el aviso por email.
 
 ### 6.4 La lista de reservas y el alta manual
 
@@ -249,7 +262,7 @@ Con fecha en el plan de trabajo, no humo:
 
 | Módulo | Qué añade |
 |---|---|
-| **Pagos online** | Stripe **y Redsys** (la pasarela de los bancos españoles), con modos: sin cobro / señal / total / con fianza. Reembolsos desde la ficha. Un camping puede operar sin pasarela y activarla después |
+| **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso |
 | **Gestión ampliada** | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
 | **Demo autolimpiable** | La demo comercial se reinicia cada noche con fechas siempre vigentes |
@@ -264,6 +277,7 @@ Con fecha en el plan de trabajo, no humo:
 | Panel de gestión | React 19 (aplicación de página única servida junto a la web) |
 | API | Cloudflare Workers (cómputo en el borde), tipada de extremo a extremo |
 | Base de datos | Cloudflare D1 (SQLite) — **una instancia por camping** |
+| Pagos | Stripe y Redsys (firma HMAC-SHA256 propia, sin SDK), sin cobro/señal/total configurables por camping |
 | Emails | Resend, con dominio verificado del camping |
 | Dinero | Céntimos enteros; jamás decimales flotantes |
 | Fechas | ISO `YYYY-MM-DD`; el día de salida libera la plaza |

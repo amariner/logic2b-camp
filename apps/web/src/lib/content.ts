@@ -93,6 +93,7 @@ export type Content = {
     imprimir: string;
     cancelar: Record<string, string>;
     modificar: Record<string, string>;
+    pago: Record<string, string>;
   };
 };
 
