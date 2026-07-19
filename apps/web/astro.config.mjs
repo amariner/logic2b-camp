@@ -8,7 +8,10 @@ import { fileURLToPath } from 'node:url';
 const tenant = process.env.TENANT ?? 'demo';
 const tenantDir = fileURLToPath(new URL(`../../tenants/${tenant}`, import.meta.url));
 
+// La demo se sirve bajo /demo/ (la raíz la ocupa la landing de producto, ADR 0016).
+// BASE_PATH=/demo pnpm build. Por defecto raíz (un tenant real vive en su dominio, en /).
 export default defineConfig({
+  base: process.env.BASE_PATH ?? '/',
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

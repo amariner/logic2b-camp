@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Logic Camp — la web y la recepción de tu camping, resueltas",
+    "description": "Software para campings: web pública moderna, motor de reservas y gestor de recepción en un solo sistema. Alta en una tarde. De Logic2B, Castellón."
+  },
+  "nav": {
+    "producto": "Producto",
+    "niveles": "Planes",
+    "planning": "El planning",
+    "demo": "Ver demo",
+    "contacto": "Pedir demo",
+    "verDemo": "Ver la demo en vivo"
+  },
+  "hero": {
+    "kicker": "Software para campings · de Logic2B",
+    "titulo": "La web y la recepción de tu camping, en un solo sistema.",
+    "subtitulo": "Una web pública que vende sola y un gestor que tu recepción entiende desde el primer día. Sin hojas de cálculo, sin dobles reservas, sin depender de un portal que se queda tu comisión.",
+    "ctaDemo": "Pedir una demo",
+    "ctaVer": "Ver la demo en vivo",
+    "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar."
+  },
+  "problema": {
+    "titulo": "Lo que hoy te cuesta dinero cada agosto",
+    "puntos": [
+      { "titulo": "Tu web no reserva", "texto": "Un formulario que llega por email y una llamada al día siguiente. Mientras, el cliente ya reservó en otro sitio." },
+      { "titulo": "La comisión del portal", "texto": "Booking se lleva su parte de cada noche. Con reserva directa desde tu web, esa parte se queda en casa." },
+      { "titulo": "El cuaderno y el Excel", "texto": "El planning en papel se solapa, se borra, y solo lo entiende quien lo escribió. Un cambio de parcela es media hora." },
+      { "titulo": "Seis idiomas a mano", "texto": "Responder en francés, alemán y neerlandés uno a uno. La web debería hacerlo por ti." }
+    ]
+  },
+  "producto": {
+    "titulo": "Un sistema, dos caras",
+    "subtitulo": "La misma información, sin copiar nada de un sitio a otro.",
+    "bloques": [
+      {
+        "titulo": "La web pública",
+        "texto": "Rápida, en seis idiomas, con tus fotos y tu marca. El cliente busca fechas, ve disponibilidad real y reserva —o deja su solicitud— sin salir de tu dominio. Optimizada para que Google la encuentre.",
+        "puntos": ["Motor de disponibilidad de verdad, no un mockup", "Reserva directa sin comisiones de portal", "6 idiomas, responsive, accesible"]
+      },
+      {
+        "titulo": "El gestor de recepción",
+        "texto": "El planning de todas tus unidades de un vistazo, arrastrar para reasignar una parcela, cobrar, ver llegadas y salidas del día, la ficha de cada cliente con su historial. Pensado para la recepcionista, no para un informático.",
+        "puntos": ["Planning visual con arrastrar y soltar", "Llegadas, salidas y cobros del día", "Ficha e historial de cada cliente"]
+      }
+    ]
+  },
+  "planning": {
+    "kicker": "El elemento firma",
+    "titulo": "El planning que de verdad usa tu recepción",
+    "texto": "Todas tus unidades, todo el verano, en una sola pantalla. Colores por estado, bloqueos a la vista, y reasignar una unidad es arrastrar la reserva —sin cancelar ni volver a cobrar. Rápido incluso con cientos de parcelas.",
+    "cta": "Verlo funcionando en la demo"
+  },
+  "niveles": {
+    "titulo": "Empieza por donde estás",
+    "subtitulo": "Un mismo sistema, cuatro niveles. Subes de nivel cambiando un ajuste, nunca cambiando de web ni de proveedor.",
+    "items": [
+      {
+        "nombre": "Camp Web",
+        "para": "Tu primera web que trabaja",
+        "texto": "Web pública moderna en varios idiomas con formulario de solicitud. Cada solicitud queda guardada: es el histórico que hace crecer.",
+        "incluye": ["Web pública multi-idioma", "Formulario de solicitud → tu email", "Tus fotos, tu marca, tu dominio", "SEO y velocidad cuidadas"]
+      },
+      {
+        "nombre": "Camp Solicitudes",
+        "para": "Cuando quieres orden",
+        "texto": "Todo lo anterior más una bandeja de solicitudes y un panel ligero para no perder ninguna petición.",
+        "incluye": ["Bandeja de solicitudes con estados", "Panel de recepción ligero", "Llegadas y salidas del día"]
+      },
+      {
+        "nombre": "Camp Reservas",
+        "destacado": true,
+        "para": "El camping completo",
+        "texto": "Motor de reservas real, pagos online, y el gestor completo con el planning. Reserva directa de principio a fin.",
+        "incluye": ["Motor de reservas y disponibilidad", "Pagos online (señal, completo o fianza)", "Planning completo con arrastrar y soltar", "Ficha de cliente, informes y tarifas"]
+      },
+      {
+        "nombre": "Camp Motor",
+        "para": "Solo el gestor",
+        "texto": "El motor y el gestor conectados a tu web actual. A medida, cuando ya tienes web y solo te falta el cerebro.",
+        "incluye": ["Motor + gestor sobre tu web", "Integración a medida"],
+        "aMedida": true
+      }
+    ],
+    "nota": "Precios a medida según tu camping. Pídenos una propuesta."
+  },
+  "alta": {
+    "titulo": "De cero a vender, en una tarde",
+    "texto": "Nos pasas tus fotos, tus tipos de alojamiento y tus tarifas, y montamos tu instancia. Tu propia base de datos, tu dominio, tu marca —aislada de cualquier otro camping. Sin proyectos eternos."
+  },
+  "faq": {
+    "titulo": "Preguntas que nos hacen",
+    "items": [
+      { "q": "¿Tengo que cambiar mi dominio?", "a": "No. Tu web vive en tu propio dominio, con tu marca. Nosotros ponemos el motor por debajo." },
+      { "q": "¿Y si ya uso Booking?", "a": "Puedes seguir. La reserva directa desde tu web te ahorra la comisión en cada reserva que entra por tu cuenta; muchos campings usan ambos." },
+      { "q": "¿Es difícil para mi recepcionista?", "a": "Está diseñado para ella: pantallas grandes, texto claro, foco en teclado, y el planning que se entiende de un vistazo. Sin manual de 200 páginas." },
+      { "q": "¿Mis datos están seguros?", "a": "Cada camping tiene su propia base de datos aislada, alojada en la red de Cloudflare. Ningún otro cliente puede ver tus reservas." },
+      { "q": "¿En cuánto tiempo lo tengo?", "a": "Un camping nuevo se pone en marcha en una tarde a partir de tu material. Sin esperas de meses." }
+    ]
+  },
+  "contacto": {
+    "kicker": "Sin compromiso",
+    "titulo": "Pídenos una demo con los datos de tu camping",
+    "texto": "Te la enseñamos con tu inventario y tus fechas, para que veas cómo quedaría lo tuyo —no un ejemplo genérico.",
+    "campos": {
+      "nombre": "Tu nombre",
+      "camping": "Nombre del camping",
+      "email": "Email",
+      "telefono": "Teléfono (opcional)",
+      "mensaje": "Cuéntanos qué necesitas (opcional)"
+    },
+    "enviar": "Pedir demo",
+    "enviando": "Enviando…",
+    "ok": "¡Recibido! Te escribimos en menos de 24 h.",
+    "error": "No se pudo enviar. Escríbenos a hola@logic2b.com y lo resolvemos.",
+    "verDemoTexto": "¿Prefieres verla ya? Entra en la demo en vivo con datos de ejemplo."
+  },
+  "footer": {
+    "tagline": "Software para campings. Web + reservas + gestión, en un solo sistema.",
+    "powered": "Un producto de Logic2B · Castellón",
+    "demo": "Demo en vivo",
+    "producto": "Producto",
+    "planes": "Planes",
+    "contacto": "Pedir demo"
+  }
+}

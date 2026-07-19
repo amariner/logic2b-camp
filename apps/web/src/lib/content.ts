@@ -202,9 +202,18 @@ export function getPosts(locale: string): Post[] {
 
 // ---------- helpers ----------
 
-/** Ruta localizada: el idioma por defecto vive en la raíz. */
-export const localePath = (locale: string, path = '/') =>
-  locale === config.defaultLocale ? path : `/${locale}${path === '/' ? '/' : path}`;
+/** base del despliegue ('/' en un tenant real, '/demo/' en la demo — ADR 0016). */
+const BASE = import.meta.env.BASE_URL;
+
+/**
+ * Ruta localizada: el idioma por defecto vive en la raíz del sitio, prefijada por el `base`.
+ * Un solo punto: todos los enlaces internos, canonical, hreflang, sitemap y el funnel
+ * pasan por aquí, así que respetar el `base` aquí basta para servir la demo bajo /demo/.
+ */
+export const localePath = (locale: string, path = '/') => {
+  const rel = locale === config.defaultLocale ? path : `/${locale}${path === '/' ? '/' : path}`;
+  return `${BASE.replace(/\/$/, '')}${rel}`.replace(/\/{2,}/g, '/') || '/';
+};
 
 /** Idiomas no-default: rutas prefijadas /{lang}/… (getStaticPaths de [lang]). */
 export const extraLocales = config.locales.filter((l) => l !== config.defaultLocale);

@@ -1,0 +1,302 @@
+---
+import Base from '../layouts/Base.astro';
+import { getContent, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getContent(locale);
+---
+
+<Base locale={locale} content={c}>
+  {/* ---------- Héroe ---------- */}
+  <section class="relative overflow-hidden border-b border-border">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,var(--muted),transparent)]"
+    >
+    </div>
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.hero.kicker}</p>
+      <h1
+        class="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.08] tracking-tighter sm:text-5xl md:text-6xl"
+      >
+        {c.hero.titulo}
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{c.hero.subtitulo}</p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a
+          href="#contacto"
+          class="inline-flex items-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        >{c.hero.ctaDemo}</a>
+        <a
+          href="/demo/"
+          class="inline-flex items-center rounded-md border border-border bg-background px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+        >{c.hero.ctaVer} →</a>
+      </div>
+      <p class="mt-6 text-sm text-muted-foreground">{c.hero.nota}</p>
+    </div>
+  </section>
+
+  {/* ---------- Problema ---------- */}
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <h2 class="max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.problema.titulo}</h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        c.problema.puntos.map((p) => (
+          <div class="rounded-xl border border-border bg-card p-5">
+            <h3 class="font-medium">{p.titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{p.texto}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ---------- Producto: un sistema, dos caras ---------- */}
+  <section id="producto" class="border-y border-border bg-muted/30 scroll-mt-16">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <h2 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.producto.titulo}</h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">{c.producto.subtitulo}</p>
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        {
+          c.producto.bloques.map((b) => (
+            <div class="rounded-xl border border-border bg-card p-7">
+              <h3 class="font-display text-xl font-bold tracking-tight">{b.titulo}</h3>
+              <p class="mt-3 leading-relaxed text-muted-foreground">{b.texto}</p>
+              <ul class="mt-5 space-y-2 text-sm">
+                {b.puntos.map((pt) => (
+                  <li class="flex items-start gap-2">
+                    <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Planning (pieza estrella) ---------- */}
+  <section id="planning" class="mx-auto max-w-6xl px-4 py-20 sm:px-6 scroll-mt-16">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.planning.kicker}</p>
+        <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.planning.titulo}</h2>
+        <p class="mt-4 leading-relaxed text-muted-foreground">{c.planning.texto}</p>
+        <a
+          href="/demo/admin/"
+          class="mt-6 inline-flex items-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+        >{c.planning.cta} →</a>
+      </div>
+      {/* Maqueta de planning en tokens del DS — se sustituye por captura real de la demo (BACKLOG) */}
+      <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
+        <div class="mb-3 flex items-center gap-2">
+          <span class="size-2 rounded-full bg-chart-1"></span>
+          <span class="size-2 rounded-full bg-chart-4"></span>
+          <span class="size-2 rounded-full bg-chart-2"></span>
+          <span class="ml-2 text-xs text-muted-foreground tnum">Agosto · 12 unidades</span>
+        </div>
+        <div class="space-y-1.5">
+          {
+            [
+              { l: '35%', w: '30%', s: 'bg-primary' },
+              { l: '10%', w: '45%', s: 'bg-primary' },
+              { l: '55%', w: '25%', s: 'bg-chart-4 text-foreground' },
+              { l: '20%', w: '35%', s: 'bg-primary' },
+              { l: '48%', w: '40%', s: 'bg-muted-foreground/40' },
+              { l: '5%', w: '20%', s: 'bg-primary' },
+              { l: '60%', w: '30%', s: 'bg-primary' },
+              { l: '25%', w: '50%', s: 'bg-chart-4 text-foreground' },
+            ].map((r) => (
+              <div class="relative h-6 rounded bg-muted/60">
+                <div
+                  class:list={['absolute top-0 h-6 rounded', r.s]}
+                  style={`left:${r.l};width:${r.w}`}
+                />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Niveles / planes ---------- */}
+  <section id="niveles" class="border-y border-border bg-muted/30 scroll-mt-16">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <h2 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.niveles.titulo}</h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">{c.niveles.subtitulo}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {
+          c.niveles.items.map((n) => (
+            <div
+              class:list={[
+                'flex flex-col rounded-xl border bg-card p-6',
+                n.destacado ? 'border-primary ring-1 ring-primary' : 'border-border',
+              ]}
+            >
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="font-display text-lg font-bold tracking-tight">{n.nombre}</h3>
+                {n.destacado && (
+                  <span class="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-medium">
+                    ★
+                  </span>
+                )}
+              </div>
+              <p class="mt-1 text-sm font-medium text-muted-foreground">{n.para}</p>
+              <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{n.texto}</p>
+              <ul class="mt-5 space-y-2 text-sm">
+                {n.incluye.map((it) => (
+                  <li class="flex items-start gap-2">
+                    <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#contacto"
+                class:list={[
+                  'mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+                  n.destacado
+                    ? 'bg-primary text-primary-foreground hover:opacity-90'
+                    : 'border border-border hover:bg-accent',
+                ]}
+              >
+                {c.nav.contacto}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-6 text-sm text-muted-foreground">{c.niveles.nota}</p>
+    </div>
+  </section>
+
+  {/* ---------- Alta en una tarde ---------- */}
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <div class="rounded-2xl border border-border bg-card p-8 sm:p-12">
+      <h2 class="max-w-xl font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.alta.titulo}</h2>
+      <p class="mt-4 max-w-2xl leading-relaxed text-muted-foreground">{c.alta.texto}</p>
+    </div>
+  </section>
+
+  {/* ---------- FAQ ---------- */}
+  <section class="border-t border-border bg-muted/30">
+    <div class="mx-auto max-w-3xl px-4 py-20 sm:px-6">
+      <h2 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.faq.titulo}</h2>
+      <div class="mt-8 divide-y divide-border">
+        {
+          c.faq.items.map((f) => (
+            <details class="group py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium marker:content-['']">
+                {f.q}
+                <span class="text-muted-foreground transition-transform group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- Contacto / pedir demo ---------- */}
+  <section id="contacto" class="mx-auto max-w-3xl px-4 py-20 sm:px-6 scroll-mt-16">
+    <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.contacto.kicker}</p>
+    <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.contacto.titulo}</h2>
+    <p class="mt-3 text-muted-foreground">{c.contacto.texto}</p>
+
+    <form id="lead-form" class="mt-8 grid gap-4 sm:grid-cols-2" novalidate>
+      <input type="hidden" name="lang" value={locale} />
+      <label class="grid gap-1.5 text-sm">
+        <span class="font-medium">{c.contacto.campos.nombre}</span>
+        <input
+          name="name"
+          required
+          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        />
+      </label>
+      <label class="grid gap-1.5 text-sm">
+        <span class="font-medium">{c.contacto.campos.camping}</span>
+        <input
+          name="campingName"
+          required
+          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        />
+      </label>
+      <label class="grid gap-1.5 text-sm">
+        <span class="font-medium">{c.contacto.campos.email}</span>
+        <input
+          name="email"
+          type="email"
+          required
+          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        />
+      </label>
+      <label class="grid gap-1.5 text-sm">
+        <span class="font-medium">{c.contacto.campos.telefono}</span>
+        <input
+          name="phone"
+          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        />
+      </label>
+      <label class="grid gap-1.5 text-sm sm:col-span-2">
+        <span class="font-medium">{c.contacto.campos.mensaje}</span>
+        <textarea
+          name="message"
+          rows="3"
+          class="rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        ></textarea>
+      </label>
+      <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
+        <button
+          type="submit"
+          class="inline-flex items-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          data-send={c.contacto.enviar}
+          data-sending={c.contacto.enviando}
+        >{c.contacto.enviar}</button>
+        <p id="lead-msg" class="text-sm" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <p class="mt-6 text-sm text-muted-foreground">
+      {c.contacto.verDemoTexto} <a href="/demo/" class="font-medium text-foreground underline underline-offset-4">{c.nav.verDemo} →</a>
+    </p>
+  </section>
+</Base>
+
+<script
+  define:vars={{ ok: getContent(locale).contacto.ok, err: getContent(locale).contacto.error }}
+>
+  const form = document.getElementById('lead-form');
+  const msg = document.getElementById('lead-msg');
+  const btn = form?.querySelector('button[type=submit]');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = Object.fromEntries(new FormData(form).entries());
+    btn.disabled = true;
+    btn.textContent = btn.dataset.sending;
+    msg.textContent = '';
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('bad');
+      msg.textContent = ok;
+      msg.className = 'text-sm text-foreground';
+      form.reset();
+    } catch {
+      msg.textContent = err;
+      msg.className = 'text-sm text-destructive';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = btn.dataset.send;
+    }
+  });
+</script>

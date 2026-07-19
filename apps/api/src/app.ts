@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { createAuth } from './auth';
 import { adminRoutes } from './routes/admin';
+import { leadsRoutes } from './routes/leads';
 import { publicRoutes } from './routes/public';
 import { createRateLimiter, tenantMiddleware, type Env } from './tenant';
 
@@ -21,6 +22,7 @@ export function createApp() {
       // Better Auth gestiona sus propias rutas (sign-in, sign-out, session…) — ADR 0005
       .on(['GET', 'POST'], '/api/auth/*', (c) => createAuth(c.env).handler(c.req.raw))
       .route('/api/admin', adminRoutes)
+      .route('/api', leadsRoutes)
       .route('/api', publicRoutes)
   );
 }

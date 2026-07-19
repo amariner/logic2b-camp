@@ -13,8 +13,9 @@
   "triggers": { "crons": ["*/15 * * * *", "0 3 * * *"] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
   "assets": {
-    // construir la web ANTES de desplegar: pnpm --filter @logic-camp/api deploy:demo lo hace
-    "directory": "../../apps/web/dist",
+    // Bundle compuesto (ADR 0016): landing de producto en la raíz + web-demo en /demo/ +
+    // dashboard en /admin/. Lo compone `pnpm --filter @logic-camp/api deploy:demo` ANTES de desplegar.
+    "directory": "../../apps/site/dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
     // la API pasa SIEMPRE por el Worker aunque exista un fichero con esa ruta

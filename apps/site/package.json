@@ -1,0 +1,24 @@
+{
+  "name": "@logic-camp/site",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "typecheck": "astro check",
+    "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
+    "build": "astro build"
+  },
+  "dependencies": {
+    "@logic-camp/ui": "workspace:*",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^5.12.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@logic-camp/tsconfig": "workspace:*",
+    "sharp": "^0.35.3",
+    "typescript": "^5.8.0"
+  }
+}

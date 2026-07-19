@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts",
+    "./theme.css": "./src/theme.css",
+    "./logo-mark.svg": "./src/brand/logo-mark.svg"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"

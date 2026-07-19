@@ -1,0 +1,124 @@
+---
+import LogoMark from '../components/LogoMark.astro';
+import { LOCALES, localePath, type Locale } from '../lib/i18n';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  content: {
+    seo: { title: string; description: string };
+    nav: Record<string, string>;
+    footer: Record<string, string>;
+  };
+}
+const { locale, content } = Astro.props;
+const c = content;
+
+const site = 'https://camp.logic2b.com';
+const canonical = new URL(localePath(locale), site).href;
+const nav = [
+  { href: '#producto', label: c.nav.producto },
+  { href: '#niveles', label: c.nav.niveles },
+  { href: '#planning', label: c.nav.planning },
+];
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{c.seo.title}</title>
+    <meta name="description" content={c.seo.description} />
+    <link rel="canonical" href={canonical} />
+    {
+      LOCALES.map((l) => (
+        <link rel="alternate" hreflang={l} href={new URL(localePath(l), site).href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={site + '/'} />
+    <link rel="icon" href="/logo-mark.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/fonts/InterVariable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={c.seo.title} />
+    <meta property="og:description" content={c.seo.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={site + '/logo-mark.svg'} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="min-h-screen bg-background text-foreground antialiased">
+    <header
+      class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
+    >
+      <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
+        <a href={localePath(locale)} class="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
+          <LogoMark class="h-6 w-6 text-primary" />
+          <span>Logic<span class="text-muted-foreground">Camp</span></span>
+        </a>
+        <nav class="ml-4 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+          {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
+        </nav>
+        <div class="ml-auto flex items-center gap-2">
+          <a
+            href="/demo/"
+            class="hidden rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+          >{c.nav.demo}</a>
+          <a
+            href="#contacto"
+            class="inline-flex items-center rounded-md bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >{c.nav.contacto}</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-border bg-muted/40">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+          <div class="max-w-sm">
+            <div class="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
+              <LogoMark class="h-6 w-6 text-primary" />
+              <span>Logic<span class="text-muted-foreground">Camp</span></span>
+            </div>
+            <p class="mt-3 text-sm text-muted-foreground">{c.footer.tagline}</p>
+          </div>
+          <nav class="flex gap-10 text-sm">
+            <div class="flex flex-col gap-2">
+              <a href="#producto" class="text-muted-foreground hover:text-foreground">{c.footer.producto}</a>
+              <a href="#niveles" class="text-muted-foreground hover:text-foreground">{c.footer.planes}</a>
+              <a href="#contacto" class="text-muted-foreground hover:text-foreground">{c.footer.contacto}</a>
+              <a href="/demo/" class="text-muted-foreground hover:text-foreground">{c.footer.demo}</a>
+            </div>
+            <div class="flex flex-col gap-2">
+              {
+                LOCALES.map((l) => (
+                  <a
+                    href={localePath(l)}
+                    class:list={[
+                      'hover:text-foreground',
+                      l === locale ? 'font-medium text-foreground' : 'text-muted-foreground',
+                    ]}
+                  >
+                    {l.toUpperCase()}
+                  </a>
+                ))
+              }
+            </div>
+          </nav>
+        </div>
+        <p class="mt-10 border-t border-border pt-6 text-xs text-muted-foreground">
+          © 2026 · {c.footer.powered}
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

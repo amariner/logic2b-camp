@@ -15,6 +15,12 @@
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@logic-camp/web", "dev", "--", "--port", "4321"],
       "port": 4321
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@logic-camp/site", "exec", "astro", "dev", "--port", "4330"],
+      "port": 4330
     }
   ]
 }

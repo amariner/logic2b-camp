@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Logic Camp — your campsite's website and front desk, solved",
+    "description": "Software for campsites: a modern public website, a real booking engine and a front-desk manager in one system. Live in an afternoon. By Logic2B, Spain."
+  },
+  "nav": {
+    "producto": "Product",
+    "niveles": "Plans",
+    "planning": "The planner",
+    "demo": "See demo",
+    "contacto": "Request a demo",
+    "verDemo": "See the live demo"
+  },
+  "hero": {
+    "kicker": "Software for campsites · by Logic2B",
+    "titulo": "Your campsite's website and front desk, in one system.",
+    "subtitulo": "A public website that sells on its own and a manager your front desk understands from day one. No spreadsheets, no double bookings, no portal keeping its commission.",
+    "ctaDemo": "Request a demo",
+    "ctaVer": "See the live demo",
+    "nota": "A new campsite goes live in an afternoon. No lock-in to start."
+  },
+  "problema": {
+    "titulo": "What's costing you money every August",
+    "puntos": [
+      { "titulo": "Your website doesn't book", "texto": "A form that lands in your inbox and a call the next day. Meanwhile the guest already booked somewhere else." },
+      { "titulo": "The portal's commission", "texto": "Booking takes its cut of every night. With direct bookings from your own site, that cut stays home." },
+      { "titulo": "The notebook and the spreadsheet", "texto": "A paper planner overlaps, gets erased, and only its author understands it. Moving a pitch is half an hour." },
+      { "titulo": "Six languages by hand", "texto": "Answering in French, German and Dutch one by one. Your website should do that for you." }
+    ]
+  },
+  "producto": {
+    "titulo": "One system, two faces",
+    "subtitulo": "The same information, without copying anything from one place to another.",
+    "bloques": [
+      {
+        "titulo": "The public website",
+        "texto": "Fast, in six languages, with your photos and your brand. Guests search dates, see real availability and book —or leave a request— without leaving your domain. Built to be found on Google.",
+        "puntos": ["A real availability engine, not a mockup", "Direct booking with no portal commission", "6 languages, responsive, accessible"]
+      },
+      {
+        "titulo": "The front-desk manager",
+        "texto": "Every unit at a glance, drag to reassign a pitch, take payment, see today's arrivals and departures, each guest's file and history. Built for the receptionist, not for an IT expert.",
+        "puntos": ["Visual planner with drag and drop", "Today's arrivals, departures and payments", "Each guest's file and history"]
+      }
+    ]
+  },
+  "planning": {
+    "kicker": "The signature piece",
+    "titulo": "The planner your front desk actually uses",
+    "texto": "Every unit, all summer, on one screen. Colours by status, blocks in plain sight, and reassigning a unit is dragging the booking —no cancelling, no charging again. Fast even with hundreds of pitches.",
+    "cta": "See it working in the demo"
+  },
+  "niveles": {
+    "titulo": "Start where you are",
+    "subtitulo": "One system, four levels. You move up by changing a setting, never by changing website or provider.",
+    "items": [
+      {
+        "nombre": "Camp Web",
+        "para": "Your first website that works",
+        "texto": "A modern multi-language public website with a request form. Every request is stored: it's the history that makes you grow.",
+        "incluye": ["Multi-language public website", "Request form → your inbox", "Your photos, your brand, your domain", "SEO and speed taken care of"]
+      },
+      {
+        "nombre": "Camp Requests",
+        "para": "When you want order",
+        "texto": "Everything above plus a requests inbox and a light panel so you never lose an enquiry.",
+        "incluye": ["Requests inbox with statuses", "Light front-desk panel", "Today's arrivals and departures"]
+      },
+      {
+        "nombre": "Camp Bookings",
+        "destacado": true,
+        "para": "The complete campsite",
+        "texto": "A real booking engine, online payments, and the full manager with the planner. Direct booking end to end.",
+        "incluye": ["Booking and availability engine", "Online payments (deposit, full or bond)", "Full planner with drag and drop", "Guest file, reports and rates"]
+      },
+      {
+        "nombre": "Camp Engine",
+        "para": "Just the manager",
+        "texto": "The engine and manager wired into your current website. Custom, when you already have a site and only need the brain.",
+        "incluye": ["Engine + manager on your site", "Custom integration"],
+        "aMedida": true
+      }
+    ],
+    "nota": "Pricing tailored to your campsite. Ask us for a proposal."
+  },
+  "alta": {
+    "titulo": "From zero to selling, in an afternoon",
+    "texto": "Send us your photos, your accommodation types and your rates, and we set up your instance. Your own database, your domain, your brand —isolated from any other campsite. No endless projects."
+  },
+  "faq": {
+    "titulo": "Questions we get",
+    "items": [
+      { "q": "Do I have to change my domain?", "a": "No. Your site lives on your own domain, with your brand. We put the engine underneath." },
+      { "q": "What if I already use Booking?", "a": "You can keep it. Direct booking from your site saves you the commission on every reservation that comes in on your own; many campsites use both." },
+      { "q": "Is it hard for my receptionist?", "a": "It's designed for her: large screens, clear text, keyboard focus, and a planner you understand at a glance. No 200-page manual." },
+      { "q": "Is my data safe?", "a": "Each campsite has its own isolated database on Cloudflare's network. No other client can see your bookings." },
+      { "q": "How soon do I have it?", "a": "A new campsite goes live in an afternoon from your material. No months of waiting." }
+    ]
+  },
+  "contacto": {
+    "kicker": "No strings attached",
+    "titulo": "Ask for a demo with your campsite's data",
+    "texto": "We'll show it with your inventory and your dates, so you see how yours would look —not a generic example.",
+    "campos": {
+      "nombre": "Your name",
+      "camping": "Campsite name",
+      "email": "Email",
+      "telefono": "Phone (optional)",
+      "mensaje": "Tell us what you need (optional)"
+    },
+    "enviar": "Request demo",
+    "enviando": "Sending…",
+    "ok": "Got it! We'll write to you within 24 h.",
+    "error": "Couldn't send. Email us at hola@logic2b.com and we'll sort it out.",
+    "verDemoTexto": "Rather see it now? Enter the live demo with sample data."
+  },
+  "footer": {
+    "tagline": "Software for campsites. Website + bookings + management, in one system.",
+    "powered": "A Logic2B product · Spain",
+    "demo": "Live demo",
+    "producto": "Product",
+    "planes": "Plans",
+    "contacto": "Request a demo"
+  }
+}
