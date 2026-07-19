@@ -1,39 +1,38 @@
-/* Dashboard (ADR 0008): mismos tokens que la demo — la tenant-ización llega en Fase 9. */
+/* Dashboard — marca Logic2B (ADR 0017, docs/BRAND.md). Producto = DS neutro shadcn.
+ * Las fuentes (Inter Variable + Space Grotesk) se importan en main.tsx vía @fontsource. */
 @import 'tailwindcss';
+@import '@logic-camp/ui/theme.css';
 
-:root {
-  --lc-tinta: #0e1512;
-  --lc-hueso: #f4f2ec;
-  --lc-pino: #1f4d3a;
-  --lc-arena: #c9b99a;
-  --lc-mar: #2e6e73;
-  --lc-pino-oscuro: #163a2c;
-  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
-  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
-  --lc-radius: 2px;
-  --lc-radius-lg: 4px;
+/* Puente ADR 0008 → ADR 0017: los nombres de la paleta camping del dashboard apuntan
+ * ahora a los tokens del DS Logic2B. Se conservan como alias para no reescribir ~400 usos
+ * de clase a mano; el rename literal (bg-pino → bg-primary, …) queda en BACKLOG [B1].
+ * Los componentes nuevos (packages/ui) usan directamente los tokens del DS. */
+@theme {
+  --color-tinta: var(--foreground);
+  --color-tinta-suave: var(--muted-foreground);
+  --color-hueso: var(--background);
+  --color-pino: var(--primary);
+  --color-pino-oscuro: var(--primary);
+  --color-arena: var(--border);
+  --color-arena-suave: var(--accent);
+  --color-mar: var(--foreground);
 }
 
-@theme {
-  --color-tinta: var(--lc-tinta);
-  --color-hueso: var(--lc-hueso);
-  --color-pino: var(--lc-pino);
-  --color-pino-oscuro: var(--lc-pino-oscuro);
-  --color-arena: var(--lc-arena);
-  --color-arena-suave: var(--lc-arena-suave);
-  --color-mar: var(--lc-mar);
-  --color-tinta-suave: var(--lc-tinta-suave);
+:root {
+  /* radius del dashboard 2px → 10px (DS) */
+  --lc-radius: var(--radius-md);
+  --lc-radius-lg: var(--radius-lg);
 }
 
 html {
-  background: var(--lc-hueso);
-  color: var(--lc-tinta);
-  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
 :focus-visible {
-  outline: 2px solid var(--lc-pino);
+  outline: 2px solid var(--ring);
   outline-offset: 1px;
 }
 
@@ -41,15 +40,13 @@ html {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- planning (tape chart ★) ---------- */
+/* ---------- planning (tape chart ★) — colores por estado en tokens del DS (ADR 0017 §4) ---------- */
 
-/* barra de reserva: color por estado, tokens de la paleta — nunca hex nuevos */
 .lc-bar {
   position: absolute;
   top: 4px;
   height: 24px;
-  border-radius: var(--lc-radius);
-  color: var(--lc-hueso);
+  border-radius: var(--radius-sm);
   font-size: 11px;
   line-height: 24px;
   padding-inline: 6px;
@@ -59,20 +56,22 @@ html {
   cursor: default;
 }
 .lc-bar.st-confirmed {
-  background: var(--lc-pino);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .lc-bar.st-pending {
-  background: var(--lc-arena);
-  color: var(--lc-tinta);
+  background: var(--chart-4);
+  color: var(--foreground);
 }
 .lc-bar.st-no_show {
-  background: var(--lc-mar);
+  background: var(--destructive);
+  color: var(--destructive-foreground);
 }
 .lc-bar.st-completed {
-  background: var(--lc-tinta-suave);
+  background: var(--muted-foreground);
+  color: var(--background);
 }
 
-/* barra arrastrable (reasignación vertical dentro del mismo tipo) */
 .lc-grab {
   cursor: grab;
   touch-action: none;
@@ -84,16 +83,16 @@ html {
   position: absolute;
   top: 4px;
   height: 24px;
-  border-radius: var(--lc-radius);
+  border-radius: var(--radius-sm);
   background: repeating-linear-gradient(
     45deg,
-    color-mix(in srgb, var(--lc-tinta) 14%, transparent),
-    color-mix(in srgb, var(--lc-tinta) 14%, transparent) 4px,
+    color-mix(in oklab, var(--muted-foreground) 22%, transparent),
+    color-mix(in oklab, var(--muted-foreground) 22%, transparent) 4px,
     transparent 4px,
     transparent 8px
   );
-  border: 1px solid color-mix(in srgb, var(--lc-tinta) 20%, transparent);
-  color: var(--lc-tinta-suave);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
   font-size: 10px;
   line-height: 22px;
   padding-inline: 6px;
@@ -103,7 +102,7 @@ html {
 
 /* fin de semana sombreado en la malla */
 .lc-weekend {
-  background: color-mix(in srgb, var(--lc-arena) 16%, transparent);
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
 }
 
 /* ---------- ficha de reserva (panel lateral) ---------- */
@@ -111,73 +110,80 @@ html {
 .lc-panel-h {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--lc-tinta-suave);
+  color: var(--muted-foreground);
   margin-bottom: 4px;
 }
 
 /* chip de estado: mismos colores que las barras del planning */
 .lc-chip {
-  border-radius: var(--lc-radius);
-  color: var(--lc-hueso);
+  border-radius: var(--radius-sm);
   font-size: 11px;
   font-weight: 600;
   line-height: 18px;
   padding-inline: 6px;
 }
 .lc-chip.st-confirmed {
-  background: var(--lc-pino);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .lc-chip.st-pending {
-  background: var(--lc-arena);
-  color: var(--lc-tinta);
+  background: var(--chart-4);
+  color: var(--foreground);
 }
 .lc-chip.st-no_show {
-  background: var(--lc-mar);
+  background: var(--destructive);
+  color: var(--destructive-foreground);
 }
 .lc-chip.st-completed {
-  background: var(--lc-tinta-suave);
+  background: var(--muted-foreground);
+  color: var(--background);
 }
 .lc-chip.st-cancelled {
   background: transparent;
-  color: var(--lc-tinta-suave);
-  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
 }
 
-/* chips de estado de solicitud (bandeja): nueva pide atención, perdida se apaga */
+/* chips de estado de solicitud (bandeja) */
 .lc-chip.sol-new {
-  background: var(--lc-pino);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .lc-chip.sol-contacted {
-  background: var(--lc-mar);
+  background: var(--chart-3);
+  color: var(--background);
 }
 .lc-chip.sol-quoted {
-  background: var(--lc-arena);
-  color: var(--lc-tinta);
+  background: var(--chart-4);
+  color: var(--foreground);
 }
 .lc-chip.sol-converted {
-  background: var(--lc-tinta-suave);
+  background: var(--muted-foreground);
+  color: var(--background);
 }
 .lc-chip.sol-lost {
   background: transparent;
-  color: var(--lc-tinta-suave);
-  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
 }
 
-/* chips de estado del log de notificaciones: enviada bien, fallida pide atención */
+/* chips de estado del log de notificaciones */
 .lc-chip.ntf-sent {
-  background: var(--lc-pino);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .lc-chip.ntf-queued {
-  background: var(--lc-arena);
-  color: var(--lc-tinta);
+  background: var(--chart-4);
+  color: var(--foreground);
 }
 .lc-chip.ntf-failed {
-  background: var(--lc-mar);
+  background: var(--destructive);
+  color: var(--destructive-foreground);
 }
 .lc-chip.ntf-disabled {
   background: transparent;
-  color: var(--lc-tinta-suave);
-  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
 }

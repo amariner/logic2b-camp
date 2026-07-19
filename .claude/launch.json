@@ -6,9 +6,15 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-lc",
-        "mkdir -p apps/web/dist && pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787"
+        "mkdir -p apps/site/dist && pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787"
       ],
       "port": 8787
+    },
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@logic-camp/dashboard", "exec", "vite", "--port", "5173"],
+      "port": 5173
     },
     {
       "name": "web",
