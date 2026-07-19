@@ -140,6 +140,13 @@ export const notificationsListQuerySchema = z.object({
   pageSize: z.coerce.number().int().min(1).max(100).default(25),
 });
 
+export const paymentsListQuerySchema = z.object({
+  status: z.enum(['pending', 'succeeded', 'failed', 'refunded']).optional(),
+  provider: z.enum(['stripe', 'redsys', 'manual', 'none']).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+
 export const ratePatchSchema = z
   .object({
     baseCents: z.number().int().min(0),

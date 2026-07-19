@@ -23,6 +23,7 @@ import Inventario from './pages/Inventario';
 import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
 import Notificaciones from './pages/Notificaciones';
+import Pagos from './pages/Pagos';
 import Planning from './pages/Planning';
 import Reservas from './pages/Reservas';
 import Solicitudes from './pages/Solicitudes';
@@ -42,6 +43,7 @@ const NAV = [
   ['/inventario', 'nav.inventario'],
   ['/tarifas', 'nav.tarifas'],
   ['/notificaciones', 'nav.notificaciones'],
+  ['/pagos', 'nav.pagos'],
   ['/ajustes', 'nav.ajustes'],
 ] as const;
 
@@ -102,6 +104,7 @@ const routes = [
     path: '/notificaciones',
     component: Notificaciones,
   }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/pagos', component: Pagos }),
   createRoute({ getParentRoute: () => rootRoute, path: '/ajustes', component: Ajustes }),
 ] as const;
 

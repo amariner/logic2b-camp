@@ -229,6 +229,10 @@ Los datos operativos del camping editables por gerencia (nombre, zona horaria, m
 
 Cada email que el sistema ha intentado enviar (o ha decidido no enviar), en una lista filtrable por estado — enviada, en cola, fallida, desactivada —, con el evento, a quién iba dirigido (la reserva o la solicitud de origen) y cuándo. La respuesta directa a "¿le llegó el email de confirmación?" sin tener que preguntarle a nadie.
 
+### 6.15 Log de pagos
+
+Todos los cobros y reembolsos del camping en una sola lista, filtrable por proveedor (pasarela o manual) y por estado, con la reserva de origen, el importe (los reembolsos en negativo) y la fecha — sin tener que abrir ficha por ficha para saber qué ha cobrado la pasarela hoy.
+
 ---
 
 ## 7. Solicitudes: nada se pierde

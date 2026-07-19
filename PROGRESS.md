@@ -13,6 +13,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 24 — 2026-07-19 · BACKLOG 8.x · Log de pagos en el dashboard
+
+**Hecho** (continuación de la misma sesión cloud)
+- **`GET /api/admin/payments`** (`provider`/`status` opcionales, paginado): a diferencia de `/notifications`, `payments.bookingId` es `NOT NULL` — un solo `innerJoin` con `bookings` basta, sin la resolución en dos pasos que sí hace falta cuando el destino es opcional. Sin migración: `payments.createdAt` ya existía desde el modelo de datos de la Fase 1.
+- **`/admin/#/pagos`** (11ª pantalla del dashboard): dos filas de filtros (proveedor × estado), reutiliza literalmente el diccionario `pago.*` que ya existía para la ficha de reserva (Fase 8) — cero claves i18n nuevas para las etiquetas de proveedor/estado, solo las de la pantalla en sí. Importe con signo (reembolso en negativo, mismo criterio visual que la ficha).
+- **1 test de integración nuevo** (`admin.test.ts`, suite en 51/51): alta manual + `record_payment`, filtra por `provider=manual&status=succeeded` y confirma que NO aparece al filtrar por `provider=stripe`. Atrapado y corregido en el propio desarrollo: las peticiones sin `cf-connecting-ip` propio compartían el "cubo" de rate-limit (`60/min`) del fichero entero de tests y tumbaban un test posterior con 429 — se les dio su propia cabecera de IP, mismo patrón que ya usaba el bloque "pagos (ADR 0011)".
+- **Verificado en navegador contra el Worker real** (wrangler dev + D1 local sembrada): reserva por teléfono + cobro manual por curl → visible en la lista junto a los 24 pagos del seed, filtro "Manual" → 1 fila, 0 errores JS. D1 local restaurada después.
+- `docs/FUNCIONALIDADES.md` §6.15, `docs/BACKLOG.md` al día
+- **`pnpm check`**: ✅ verde (38/38)
+
+**`/check`**: ✅ verde (38/38) · API 51/51
+
 ### Sesión 23 — 2026-07-19 · Fase 10 (adelantado) · `docs/DEMO-SCRIPT.md`
 
 **Hecho** (continuación de la misma sesión cloud)

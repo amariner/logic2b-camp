@@ -652,6 +652,53 @@ describe('notificaciones (log)', () => {
   });
 });
 
+describe('pagos (log)', () => {
+  // cabecera propia: mismo motivo que en "pagos (ADR 0011)", un bucket de tasa aparte
+  const LOG_IP = { 'cf-connecting-ip': 'test-pagos-log' };
+
+  it('lista con el código de reserva resuelto y filtra por proveedor y estado', async () => {
+    const create = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-09-01', '2026-09-04'), LOG_IP),
+        headers: { 'content-type': 'application/json', cookie: reception, ...LOG_IP },
+      },
+      envA,
+    );
+    const { id, code, totalCents } = (await create.json()) as {
+      id: string;
+      code: string;
+      totalCents: number;
+    };
+    await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'record_payment', amountCents: totalCents, method: 'card' }, reception, LOG_IP),
+      envA,
+    );
+
+    const res = await app.request(
+      '/api/admin/payments?provider=manual&status=succeeded',
+      { headers: { cookie: readonly, ...LOG_IP } },
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      items: { bookingCode: string; provider: string; status: string; amountCents: number }[];
+    };
+    const row = body.items.find((r) => r.bookingCode === code);
+    expect(row).toBeDefined();
+    expect(row).toMatchObject({ provider: 'manual', status: 'succeeded', amountCents: totalCents });
+
+    const noneMatch = await app.request(
+      '/api/admin/payments?provider=stripe',
+      { headers: { cookie: readonly, ...LOG_IP } },
+      envA,
+    );
+    const noneBody = (await noneMatch.json()) as { items: { bookingCode: string }[] };
+    expect(noneBody.items.some((r) => r.bookingCode === code)).toBe(false);
+  });
+});
+
 describe('informes y ajustes', () => {
   it('reports devuelve ocupación e ingresos del rango', async () => {
     // autocontenido: el storage se aísla por test, la reserva se crea aquí

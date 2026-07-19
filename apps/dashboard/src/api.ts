@@ -284,6 +284,19 @@ export type NotificationLogItem = {
   enquiryContact: { name: string; email: string } | null;
 };
 
+// ---------- tipos de /api/admin/payments (log) ----------
+
+export type PaymentLogItem = {
+  id: string;
+  bookingId: string;
+  bookingCode: string;
+  provider: 'stripe' | 'redsys' | 'manual' | 'none';
+  providerRef: string | null;
+  amountCents: number;
+  status: 'pending' | 'succeeded' | 'failed' | 'refunded';
+  createdAt: string;
+};
+
 // ---------- tipos de POST /api/quote (cotización en vivo del alta manual) ----------
 
 export type QuoteResponse = {

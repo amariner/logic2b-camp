@@ -18,6 +18,7 @@ import {
   enquiryPatchSchema,
   guestsListQuerySchema,
   notificationsListQuerySchema,
+  paymentsListQuerySchema,
   planningQuerySchema,
   ratePatchSchema,
   reportsQuerySchema,
@@ -591,6 +592,36 @@ export const adminRoutes = new Hono<AuthEnv>()
         bookingCode: r.bookingId ? (bookingCodeById.get(r.bookingId) ?? null) : null,
         enquiryContact: r.enquiryId ? (enquiryContactById.get(r.enquiryId) ?? null) : null,
       })),
+    });
+  })
+
+  // ---------- Log de pagos (BACKLOG 8.x): payments YA es el log, esta pantalla lo hace visible ----------
+  .get('/payments', async (c) => {
+    const parsed = paymentsListQuerySchema.safeParse(c.req.query());
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    const { status, provider, page, pageSize } = parsed.data;
+    const db = c.get('tenant').db;
+
+    const filters = [
+      ...(status ? [eq(schema.payments.status, status)] : []),
+      ...(provider ? [eq(schema.payments.provider, provider)] : []),
+    ];
+    // bookingId es NOT NULL en payments — un join simple basta, sin la
+    // resolución en dos pasos que sí hace falta en /notifications (destino opcional).
+    const rows = await db
+      .select({ payment: schema.payments, bookingCode: schema.bookings.code })
+      .from(schema.payments)
+      .innerJoin(schema.bookings, eq(schema.bookings.id, schema.payments.bookingId))
+      .where(filters.length ? and(...filters) : undefined)
+      .orderBy(desc(schema.payments.createdAt))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize);
+
+    return c.json({
+      page,
+      pageSize,
+      items: rows.map((r) => ({ ...r.payment, bookingCode: r.bookingCode })),
     });
   })
 
