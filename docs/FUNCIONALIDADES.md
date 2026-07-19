@@ -225,6 +225,10 @@ Los números del periodo con un clic (este mes, el próximo, los próximos 3 mes
 
 Los datos operativos del camping editables por gerencia (nombre, zona horaria, moneda), con el nivel de producto y los idiomas contratados a la vista. Todo cambio queda auditado.
 
+### 6.14 Log de notificaciones
+
+Cada email que el sistema ha intentado enviar (o ha decidido no enviar), en una lista filtrable por estado — enviada, en cola, fallida, desactivada —, con el evento, a quién iba dirigido (la reserva o la solicitud de origen) y cuándo. La respuesta directa a "¿le llegó el email de confirmación?" sin tener que preguntarle a nadie.
+
 ---
 
 ## 7. Solicitudes: nada se pierde
@@ -242,7 +246,7 @@ El sistema avisa solo, en el idioma de cada cual:
 - **Al camping**: aviso de cada solicitud nueva en su buzón interno.
 - **Al cliente**: acuse de recibo de su solicitud, **confirmación de reserva** con el código, el desglose completo y un botón para gestionarla, y confirmación de **cancelación** con el reembolso previsto — cada uno en el idioma en que navegó (los 6 soportados).
 - **Control total desde Ajustes**: cada notificación se activa o desactiva al momento, sin despliegue, con el remitente del dominio del camping y el buzón interno configurables.
-- **Todo queda registrado**: cada email (enviado, fallido o desactivado) deja rastro consultable — nunca la duda de "¿le llegó?".
+- **Todo queda registrado y es consultable en el dashboard**: cada email (enviado, fallido o desactivado), con su destino y fecha, en una pantalla propia con filtro por estado — nunca la duda de "¿le llegó?".
 - Robustez: el envío ocurre después de responder; un problema del proveedor de email jamás afecta a una reserva.
 
 *Nota: el envío real por camping se activa al verificar su dominio de correo (proceso de alta con Logic2B).*

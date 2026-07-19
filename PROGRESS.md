@@ -13,6 +13,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 22 — 2026-07-19 · BACKLOG 7.x · Log de notificaciones en el dashboard
+
+**Hecho** (continuación de la misma sesión cloud: "sigue perfilando... sin parar")
+- **`notifications_log.created_at`**: columna nueva (nullable — como `sentAt`, las filas de antes de esta sesión no tienen fecha real que inventar), migración `0003_notifications-log-created-at.sql` generada con `drizzle-kit`. Sin ella no había forma de ordenar el log por recencia: los IDs son UUID aleatorios, no ordenables.
+- **`GET /api/admin/notifications`** (`status` opcional, paginado): mismo patrón que `/guests` — dos consultas cortas para resolver el destino de la página pedida (código de reserva o contacto de solicitud), nunca un join N×M.
+- **`/admin/#/notificaciones`**: pantalla nueva (10ª del dashboard), filtro por estado con chips (mismo lenguaje visual que Solicitudes), fecha, evento (i18n con `tDyn`, fallback al nombre técnico), destino, canal, intentos y el chip de estado con sus propios colores (`ntf-sent`/`ntf-queued`/`ntf-failed`/`ntf-disabled`). Nota visible en la propia pantalla explicando por qué todo aparece "desactivada" sin Resend configurado — no es un fallo, es el comportamiento correcto.
+- **Deliberadamente NO hecho**: reenvío manual de fallidos (backlog original lo pedía junto a la pantalla). Sin `RESEND_API_KEY` real todo el tráfico de la demo cae en "desactivada", nunca en "fallida" — no hay ningún envío real que reenviar ni manera de verificar la función en el navegador contra el Worker real, que es como se verifica todo en este proyecto. Se queda en BACKLOG hasta que haya una cuenta Resend real con tráfico que falle de verdad.
+- **1 test de integración nuevo** (`admin.test.ts`, suite en 50/50): crea una solicitud, confirma que queda en el log con el contacto resuelto y que el filtro por estado funciona.
+- **Verificado en navegador contra el Worker real** (wrangler dev + D1 local sembrada): enquiry FR por curl → 2 filas visibles con el nombre del solicitante, filtro "Desactivada" → mismas 2 filas, 0 errores JS relacionados con la pantalla. Capturas en `/tmp` (no versionadas). D1 local restaurada a la seed limpia después.
+- `docs/FUNCIONALIDADES.md` §6.14 y §8, `docs/BACKLOG.md` al día
+- **`pnpm check`**: ✅ verde (38/38)
+
+**`/check`**: ✅ verde (38/38) · API 50/50
+
 ### Sesión 21 — 2026-07-19 · Fase 9 (continuación) · `packages/cli` — `pnpm new:camping` (ADR 0012 §7)
 
 **Hecho** (petición de Andreu en sesión cloud: "sigue perfilando... sin parar... con tu criterio cierra temas")

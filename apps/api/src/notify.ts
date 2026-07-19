@@ -78,6 +78,7 @@ async function dispatch(c: NotifyContext, input: DispatchInput): Promise<void> {
     status,
     attempts,
     sentAt: status === 'sent' ? nowIso() : null,
+    createdAt: nowIso(),
   });
 }
 

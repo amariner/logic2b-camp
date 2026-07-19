@@ -17,6 +17,7 @@ import {
   bookingsListQuerySchema,
   enquiryPatchSchema,
   guestsListQuerySchema,
+  notificationsListQuerySchema,
   planningQuerySchema,
   ratePatchSchema,
   reportsQuerySchema,
@@ -543,6 +544,54 @@ export const adminRoutes = new Hono<AuthEnv>()
       to: parsed.data.status,
     });
     return c.json({ id, status: parsed.data.status });
+  })
+
+  // ---------- Log de notificaciones (ADR 0010 §BACKLOG 7.x) ----------
+  .get('/notifications', async (c) => {
+    const parsed = notificationsListQuerySchema.safeParse(c.req.query());
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    const { status, page, pageSize } = parsed.data;
+    const db = c.get('tenant').db;
+
+    const rows = await db
+      .select()
+      .from(schema.notificationsLog)
+      .where(status ? eq(schema.notificationsLog.status, status) : undefined)
+      .orderBy(desc(schema.notificationsLog.createdAt))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize);
+
+    // destino a la vista (booking/enquiry) en dos consultas cortas de la
+    // página pedida — mismo patrón que /guests, nunca un join N×M.
+    const bookingIds = [...new Set(rows.map((r) => r.bookingId).filter((v): v is string => Boolean(v)))];
+    const enquiryIds = [...new Set(rows.map((r) => r.enquiryId).filter((v): v is string => Boolean(v)))];
+    const [bookingRows, enquiryRows] = await Promise.all([
+      bookingIds.length
+        ? db
+            .select({ id: schema.bookings.id, code: schema.bookings.code })
+            .from(schema.bookings)
+            .where(inArray(schema.bookings.id, bookingIds))
+        : Promise.resolve([]),
+      enquiryIds.length
+        ? db
+            .select({ id: schema.enquiries.id, contact: schema.enquiries.contact })
+            .from(schema.enquiries)
+            .where(inArray(schema.enquiries.id, enquiryIds))
+        : Promise.resolve([]),
+    ]);
+    const bookingCodeById = new Map(bookingRows.map((b) => [b.id, b.code]));
+    const enquiryContactById = new Map(enquiryRows.map((e) => [e.id, e.contact]));
+
+    return c.json({
+      page,
+      pageSize,
+      items: rows.map((r) => ({
+        ...r,
+        bookingCode: r.bookingId ? (bookingCodeById.get(r.bookingId) ?? null) : null,
+        enquiryContact: r.enquiryId ? (enquiryContactById.get(r.enquiryId) ?? null) : null,
+      })),
+    });
   })
 
   // ---------- Tarifas (cambiarlas JAMÁS toca reservas — invariante 3) ----------

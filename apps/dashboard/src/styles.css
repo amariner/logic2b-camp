@@ -164,3 +164,20 @@ html {
   color: var(--lc-tinta-suave);
   border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
 }
+
+/* chips de estado del log de notificaciones: enviada bien, fallida pide atención */
+.lc-chip.ntf-sent {
+  background: var(--lc-pino);
+}
+.lc-chip.ntf-queued {
+  background: var(--lc-arena);
+  color: var(--lc-tinta);
+}
+.lc-chip.ntf-failed {
+  background: var(--lc-mar);
+}
+.lc-chip.ntf-disabled {
+  background: transparent;
+  color: var(--lc-tinta-suave);
+  border: 1px solid color-mix(in srgb, var(--lc-tinta) 25%, transparent);
+}

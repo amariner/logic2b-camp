@@ -1,0 +1,1 @@
+ALTER TABLE `notifications_log` ADD `created_at` text;

@@ -266,6 +266,24 @@ export type TenantSettings = {
   modules: Record<string, unknown>;
 };
 
+// ---------- tipos de /api/admin/notifications (log) ----------
+
+export type NotificationStatus = 'queued' | 'sent' | 'failed' | 'disabled';
+
+export type NotificationLogItem = {
+  id: string;
+  bookingId: string | null;
+  enquiryId: string | null;
+  channel: 'email' | 'whatsapp';
+  template: string;
+  status: NotificationStatus;
+  attempts: number;
+  sentAt: string | null;
+  createdAt: string | null;
+  bookingCode: string | null;
+  enquiryContact: { name: string; email: string } | null;
+};
+
 // ---------- tipos de POST /api/quote (cotización en vivo del alta manual) ----------
 
 export type QuoteResponse = {

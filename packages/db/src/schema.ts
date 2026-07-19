@@ -313,6 +313,9 @@ export const notificationsLog = sqliteTable('notifications_log', {
   status: text('status', { enum: ['queued', 'sent', 'failed', 'disabled'] }).notNull(),
   attempts: integer('attempts').notNull().default(0),
   sentAt: text('sent_at'),
+  // Nullable a propósito (como sentAt): las filas de antes de esta columna
+  // (sesiones 18-21, ya en la D1 remota) no tienen fecha real que inventar.
+  createdAt: text('created_at'),
 });
 
 // Tabla ÚNICA de usuario: la de dominio Y la de Better Auth (ADR 0005).

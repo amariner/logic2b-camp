@@ -134,6 +134,12 @@ export const guestsListQuerySchema = z.object({
   pageSize: z.coerce.number().int().min(1).max(100).default(25),
 });
 
+export const notificationsListQuerySchema = z.object({
+  status: z.enum(['queued', 'sent', 'failed', 'disabled']).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+
 export const ratePatchSchema = z
   .object({
     baseCents: z.number().int().min(0),

@@ -610,6 +610,48 @@ describe('solicitudes', () => {
   });
 });
 
+describe('notificaciones (log)', () => {
+  it('lista con el destino resuelto (enquiry) y filtra por estado', async () => {
+    const created = await app.request(
+      '/api/enquiries',
+      json({
+        message: '¿Aceptáis perros?',
+        contact: { name: 'Léa', email: 'lea@example.com' },
+        locale: 'fr',
+      }),
+      envA,
+    );
+    const { id: enquiryId } = (await created.json()) as { id: string };
+
+    // sin RESEND_API_KEY (envA no la define) el envío queda "disabled" — deja rastro igual
+    const res = await app.request(
+      '/api/admin/notifications?status=disabled',
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as {
+      items: {
+        enquiryId: string | null;
+        status: string;
+        enquiryContact: { name: string; email: string } | null;
+      }[];
+    };
+    const row = body.items.find((r) => r.enquiryId === enquiryId);
+    expect(row).toBeDefined();
+    expect(row?.status).toBe('disabled');
+    expect(row?.enquiryContact?.email).toBe('lea@example.com');
+
+    const filtered = await app.request(
+      '/api/admin/notifications?status=sent',
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    const filteredBody = (await filtered.json()) as { items: { id: string }[] };
+    expect(filteredBody.items.every((r) => r.id !== undefined)).toBe(true);
+  });
+});
+
 describe('informes y ajustes', () => {
   it('reports devuelve ocupación e ingresos del rango', async () => {
     // autocontenido: el storage se aísla por test, la reserva se crea aquí
