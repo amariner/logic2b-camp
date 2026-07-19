@@ -72,6 +72,13 @@ html {
   background: var(--lc-tinta-suave);
 }
 
+/* barra arrastrable (reasignación vertical dentro del mismo tipo) */
+.lc-grab {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
 /* bloqueo: rayado neutro, no compite con las reservas */
 .lc-block {
   position: absolute;

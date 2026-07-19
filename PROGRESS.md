@@ -4,13 +4,25 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 6 🟨 sesión 1/5 (ADR 0008 + dashboard con planning v1 en lectura) · Siguiente: **Fase 6 sesión 17** — planning v2: drag&drop de reasignación (pointer events + optimista con rollback), teclado, y panel lateral de reserva con acciones tipadas. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — ahora sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
+- **Fase actual**: 6 🟨 sesiones 1–2/5 (planning con DnD de reasignación) · Siguiente: **Fase 6 sesión 17 (resto)** — panel lateral de ficha de reserva con acciones tipadas (confirm/cancel/no_show/note) y después sesión 18 (solicitudes + llegadas = modo lite). Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — sirve web+API+funnel+dashboard), descargar fotos Higgsfield (IDs abajo), re-audit Lighthouse en producción.
 - **Último `/check`**: ✅ verde 2026-07-19 (32/32 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
 - **Cloudflare**: login OK (en local). D1 `logic-camp-demo` migrada (0000+0001) y sembrada en remoto. Worker desplegado con `/api/*`; **pendiente redeploy** para activar la ruta nueva `camp.logic2b.com/*` con la web (esta sesión cloud no tiene credenciales — NO simulado).
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 12 — 2026-07-19 · Fase 6 (2/5, parcial) · Drag & drop de reasignación en el planning
+
+**Hecho**
+- **DnD con Pointer Events nativos** (sin librería, según ADR 0008): arrastrar una barra verticalmente a otra unidad del MISMO tipo — umbral de 4px (un click no es un drag), transform directo al DOM (cero re-render por frame), resaltado de la fila destino válida en pino, detección de fila vía las posiciones del virtualizador
+- **Optimista con rollback**: `PATCH /api/admin/bookings/:id {action:'reassign'}` — la caché de Query se actualiza al soltar y se restaura si el servidor responde 409 (solape/estado); mensaje `role=status` con el resultado ("Reserva movida a A-05" / error). El servidor valida SIEMPRE — la UI nunca decide
+- **Teclado**: barra enfocable, ↑/↓ reasigna a la unidad adyacente del mismo tipo (misma mutación, mismos mensajes)
+- `apiPatch` en el cliente del dashboard (las acciones tipadas del admin son PATCH)
+- **Verificado en navegador contra el Worker real**: drop en fila libre → movida; drop en fila con solape → 409 + rollback visual; teclado contra fila ocupada → rechazo informado; 0 errores JS
+
+**Pendiente sesión 17**: panel lateral de ficha con acciones tipadas
+**`/check`**: ✅ verde (32/32)
 
 ### Sesión 11 — 2026-07-19 · Fase 6 (1/5) · ADR 0008 + dashboard con planning v1
 

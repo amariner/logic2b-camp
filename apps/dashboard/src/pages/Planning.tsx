@@ -4,11 +4,12 @@
  * como barras absolutas por fila (decenas de nodos por frame, no miles).
  * v1: lectura. El drag&drop de reasignación llega en la sesión 17.
  */
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useMemo, useRef, useState } from 'react';
 import {
   apiGet,
+  apiPatch,
   type PlanningBlock,
   type PlanningBooking,
   type PlanningData,
@@ -103,6 +104,128 @@ export default function Planning() {
     overscan: 8,
   });
 
+  // ---------- reasignación (ADR 0008): optimista con rollback; el servidor valida SIEMPRE ----------
+  const qc = useQueryClient();
+  const [dndMsg, setDndMsg] = useState<{ text: string; error?: boolean } | null>(null);
+  const reassign = useMutation({
+    mutationFn: (input: { id: string; unitId: string }) =>
+      apiPatch(`/api/admin/bookings/${input.id}`, { action: 'reassign', unitId: input.unitId }),
+    onMutate: async (input) => {
+      await qc.cancelQueries({ queryKey: ['planning', from, to] });
+      const prev = qc.getQueryData<PlanningData>(['planning', from, to]);
+      qc.setQueryData<PlanningData>(['planning', from, to], (d) =>
+        d
+          ? {
+              ...d,
+              bookings: d.bookings.map((b) =>
+                b.id === input.id ? { ...b, unitId: input.unitId } : b,
+              ),
+            }
+          : d,
+      );
+      return { prev };
+    },
+    onError: (_e, _i, ctx) => {
+      if (ctx?.prev) qc.setQueryData(['planning', from, to], ctx.prev);
+      setDndMsg({ text: t('planning.reasignarError'), error: true });
+    },
+    onSuccess: (_d, input) => {
+      const unit = data?.units.find((u) => u.id === input.unitId);
+      setDndMsg({ text: t('planning.reasignada', { unit: unit?.code ?? input.unitId }) });
+    },
+    onSettled: () => void qc.invalidateQueries({ queryKey: ['planning'] }),
+  });
+
+  // drag con pointer events nativos: manipulación directa del DOM (cero re-render por frame)
+  const rowsRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    bookingId: string;
+    unitTypeId: string;
+    sourceUnitId: string;
+    el: HTMLElement;
+    startY: number;
+    moved: boolean;
+    targetUnitId: string | null;
+    targetEl: HTMLElement | null;
+  } | null>(null);
+
+  const clearTargetHighlight = () => {
+    const d = dragRef.current;
+    if (d?.targetEl) d.targetEl.style.boxShadow = '';
+  };
+
+  const onBarPointerDown = (
+    e: React.PointerEvent<HTMLDivElement>,
+    b: PlanningBooking,
+    sourceUnitId: string,
+  ) => {
+    if (e.button !== 0) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragRef.current = {
+      bookingId: b.id,
+      unitTypeId: b.unitTypeId,
+      sourceUnitId,
+      el: e.currentTarget,
+      startY: e.clientY,
+      moved: false,
+      targetUnitId: null,
+      targetEl: null,
+    };
+  };
+
+  const onBarPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = dragRef.current;
+    if (!d) return;
+    const dy = e.clientY - d.startY;
+    if (!d.moved && Math.abs(dy) < 4) return; // umbral: un click no es un drag
+    d.moved = true;
+    d.el.style.transform = `translateY(${dy}px)`;
+    d.el.style.zIndex = '40';
+    d.el.style.opacity = '0.85';
+    // fila bajo el cursor (solo filas visibles: la virtualización manda)
+    const rowsTop = rowsRef.current?.getBoundingClientRect().top ?? 0;
+    const y = e.clientY - rowsTop;
+    const vi = virtualizer.getVirtualItems().find((v) => v.start <= y && y < v.end);
+    const row = vi ? rows[vi.index] : undefined;
+    clearTargetHighlight();
+    if (
+      row?.kind === 'unit' &&
+      row.unit.unitTypeId === d.unitTypeId &&
+      row.unit.id !== d.sourceUnitId
+    ) {
+      const el =
+        rowsRef.current?.querySelector<HTMLElement>(`[data-unit-row="${row.unit.id}"]`) ?? null;
+      if (el) el.style.boxShadow = 'inset 0 0 0 2px var(--lc-pino)';
+      d.targetUnitId = row.unit.id;
+      d.targetEl = el;
+    } else {
+      d.targetUnitId = null;
+      d.targetEl = null;
+    }
+  };
+
+  const onBarPointerUp = () => {
+    const d = dragRef.current;
+    if (!d) return;
+    clearTargetHighlight();
+    d.el.style.transform = '';
+    d.el.style.zIndex = '';
+    d.el.style.opacity = '';
+    if (d.moved && d.targetUnitId) reassign.mutate({ id: d.bookingId, unitId: d.targetUnitId });
+    dragRef.current = null;
+  };
+
+  // teclado: ↑/↓ mueve la reserva a la unidad adyacente del MISMO tipo
+  const onBarKeyDown = (e: React.KeyboardEvent, b: PlanningBooking, sourceUnitId: string) => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    e.preventDefault();
+    if (!data) return;
+    const sameType = data.units.filter((u) => u.unitTypeId === b.unitTypeId);
+    const idx = sameType.findIndex((u) => u.id === sourceUnitId);
+    const next = sameType[idx + (e.key === 'ArrowDown' ? 1 : -1)];
+    if (next) reassign.mutate({ id: b.id, unitId: next.id });
+  };
+
   const days = useMemo(
     () => Array.from({ length: zoom.days }, (_, i) => addDays(from, i)),
     [from, zoom.days],
@@ -172,6 +295,14 @@ export default function Planning() {
             </button>
           ))}
         </div>
+        {dndMsg && (
+          <p
+            role="status"
+            className={`text-[12px] font-medium ${dndMsg.error ? 'text-mar' : 'text-pino'}`}
+          >
+            {dndMsg.text}
+          </p>
+        )}
         {data && (
           <p className="tnum ml-auto text-[12px] text-tinta-suave">
             {t('planning.unidades', { n: data.units.length })} ·{' '}
@@ -235,7 +366,7 @@ export default function Planning() {
             </div>
 
             {/* filas virtualizadas */}
-            <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+            <div ref={rowsRef} style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
               {virtualizer.getVirtualItems().map((vi) => {
                 const row = rows[vi.index]!;
                 return (
@@ -265,7 +396,7 @@ export default function Planning() {
                         >
                           {row.unit.code}
                         </div>
-                        <div className="relative" style={{ width: gridW }}>
+                        <div className="relative" data-unit-row={row.unit.id} style={{ width: gridW }}>
                           {/* sombreado de fin de semana */}
                           {days.map((d, i) =>
                             isWeekend(d) ? (
@@ -298,9 +429,14 @@ export default function Planning() {
                               <div
                                 key={b.id}
                                 tabIndex={0}
-                                className={`lc-bar st-${b.status}`}
+                                className={`lc-bar lc-grab st-${b.status}`}
                                 style={g}
                                 title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
+                                onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
+                                onPointerMove={onBarPointerMove}
+                                onPointerUp={onBarPointerUp}
+                                onPointerCancel={onBarPointerUp}
+                                onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
                               >
                                 {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
                               </div>

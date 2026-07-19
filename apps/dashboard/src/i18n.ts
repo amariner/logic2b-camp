@@ -22,6 +22,8 @@ const es = {
   'planning.cargando': 'Cargando el planning…',
   'planning.error': 'No se ha podido cargar el planning.',
   'planning.pax': '{n} pax',
+  'planning.reasignada': 'Reserva movida a {unit}.',
+  'planning.reasignarError': 'No se ha podido reasignar (solape o estado): se ha restaurado.',
   'estado.pending': 'Pendiente',
   'estado.confirmed': 'Confirmada',
   'estado.no_show': 'No presentada',
