@@ -1,7 +1,7 @@
 ---
 import { getImage, Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { getContent, images, localePath, mode } from '../lib/content';
+import { config, getContent, images, localePath, mode } from '../lib/content';
 import EnquiryForm from './EnquiryForm.astro';
 
 interface Props {
@@ -11,17 +11,22 @@ interface Props {
 const { locale } = Astro.props;
 const c = getContent(locale);
 const instant = mode === 'instant';
+// conmutador de nivel de demo (ADR 0013): SOLO tras config.demoTierSwitch — atrezzo
+// comercial dentro de un build tier 3 real, no un segundo build. Un camping real
+// (demoTierSwitch nunca definido) sigue con el único héroe de su propio `instant`.
+const showTierSwitch = config.demoTierSwitch === true;
 // regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle no lo arrastra
-const HeroMostrador = instant ? (await import('./HeroMostrador.astro')).default : null;
+const HeroMostrador =
+  instant || showTierSwitch ? (await import('./HeroMostrador.astro')).default : null;
 
 // héroe = LCP: srcset webp + preload en <head> (Lighthouse ≥95)
-const heroSrc = instant ? images['hero-dia']! : images['hero-anochecer']!;
-const hero = await getImage({
-  src: heroSrc,
-  widths: [828, 1280, 1920, 2560],
-  format: 'webp',
-  quality: 60,
-});
+async function buildHero(src: (typeof images)[string]) {
+  return getImage({ src, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 60 });
+}
+const heroDia = instant || showTierSwitch ? await buildHero(images['hero-dia']!) : null;
+const heroAnochecer = !instant || showTierSwitch ? await buildHero(images['hero-anochecer']!) : null;
+// el que se ve por defecto (sin JS ni preferencia guardada) sigue siendo el del `instant` de build
+const heroPreload = instant ? heroDia! : heroAnochecer!;
 const lona = await getImage({
   src: images['textura-lona']!,
   width: 1200,
@@ -35,20 +40,22 @@ const lona = await getImage({
     slot="head"
     rel="preload"
     as="image"
-    imagesrcset={hero.srcSet.attribute}
+    imagesrcset={heroPreload.srcSet.attribute}
     imagesizes="100vw"
     fetchpriority="high"
   />
-  {/* héroe nivel 3: el mostrador ES el héroe · héroe nivel 1: la promesa + una acción */}
-  {instant ? (
-    <section class="relative">
+  {/* héroe nivel 3: el mostrador ES el héroe · héroe nivel 1: la promesa + una acción.
+     Con showTierSwitch (ADR 0013) se generan LOS DOS y un `data-hero-nivel` + CSS puro
+     (ver global.css) decide cuál se ve — el otro no se desmonta ni recarga por red. */}
+  {(instant || showTierSwitch) && heroDia && (
+    <section class="relative" data-hero-nivel="3">
       <div class="relative h-[82svh] min-h-130 overflow-hidden">
         <img
-          src={hero.src}
-          srcset={hero.srcSet.attribute}
+          src={heroDia.src}
+          srcset={heroDia.srcSet.attribute}
           sizes="100vw"
-          width={heroSrc.width}
-          height={heroSrc.height}
+          width={images['hero-dia']!.width}
+          height={images['hero-dia']!.height}
           alt=""
           class="lc-settle absolute inset-0 h-full w-full object-cover"
           fetchpriority="high"
@@ -62,7 +69,11 @@ const lona = await getImage({
       </div>
 
       {/* el mostrador, solapado sobre la foto y sticky después */}
-      <div id="mostrador" class="sticky top-14 z-40 mx-auto -mt-16 max-w-5xl scroll-mt-20 px-5 md:px-8">
+      <div
+        id="mostrador"
+        class="sticky z-40 mx-auto -mt-16 max-w-5xl scroll-mt-20 px-5 md:px-8"
+        style="top: var(--lc-chrome-h)"
+      >
         {HeroMostrador && (
           <HeroMostrador
             labels={c.mostrador}
@@ -74,15 +85,16 @@ const lona = await getImage({
       </div>
       <p class="mx-auto mt-5 max-w-5xl px-5 text-[13px] text-tinta-suave md:px-8">{c.hero3.prueba}</p>
     </section>
-  ) : (
-    <section class="relative">
+  )}
+  {(!instant || showTierSwitch) && heroAnochecer && (
+    <section class="relative" data-hero-nivel="1">
       <div class="relative h-[88svh] min-h-130 overflow-hidden">
         <img
-          src={hero.src}
-          srcset={hero.srcSet.attribute}
+          src={heroAnochecer.src}
+          srcset={heroAnochecer.srcSet.attribute}
           sizes="100vw"
-          width={heroSrc.width}
-          height={heroSrc.height}
+          width={images['hero-anochecer']!.width}
+          height={images['hero-anochecer']!.height}
           alt=""
           class="lc-settle absolute inset-0 h-full w-full object-cover"
           fetchpriority="high"

@@ -37,6 +37,11 @@ html {
   font-family: var(--lc-font-text);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  /* altura del "chrome" fijo (header, + banner de demo si lo hay — ADR 0013) */
+  --lc-chrome-h: 3.5rem;
+}
+[data-demo-banner] {
+  --lc-chrome-h: 5.5rem;
 }
 
 ::selection {
@@ -76,6 +81,19 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .lc-ticker, .lc-settle { animation: none; }
+}
+
+/* conmutador de nivel de demo (ADR 0013): CSS puro desde <html data-nivel>,
+   igual que el tema — sin FOUC, sin desmontar nada. Por defecto se ve el
+   héroe nivel 3 (el único caso real hoy: la demo siempre construye TIER=3). */
+[data-hero-nivel='1'] {
+  display: none;
+}
+:root[data-nivel='1'] [data-hero-nivel='3'] {
+  display: none;
+}
+:root[data-nivel='1'] [data-hero-nivel='1'] {
+  display: block;
 }
 
 /* menús nativos <details> del header (idioma + móvil) */

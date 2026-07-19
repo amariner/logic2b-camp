@@ -481,5 +481,11 @@
     "mar": "Mer",
     "garriga": "Garrigue",
     "nit": "Nuit"
+  },
+  "demo": {
+    "banner": "Vous consultez la démo commerciale de Logic Camp. Les données sont réinitialisées chaque nuit — contactez-nous pour votre camping.",
+    "nivel": "Niveau",
+    "nivel1": "Web",
+    "nivel3": "Réservations"
   }
 }

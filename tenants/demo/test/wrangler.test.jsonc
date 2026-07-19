@@ -1,0 +1,8 @@
+// Config SOLO para tests: una D1 local para probar resetDemoData() (ADR 0013).
+{
+  "name": "logic-camp-demo-test",
+  "main": "../worker.ts",
+  "compatibility_date": "2026-07-01",
+  "vars": { "TENANT_SLUG": "demo" },
+  "d1_databases": [{ "binding": "DB", "database_name": "test-demo", "database_id": "test-demo" }],
+}

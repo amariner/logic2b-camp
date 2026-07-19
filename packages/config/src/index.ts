@@ -21,6 +21,19 @@ export type TenantWebConfig = {
    * El primero es el de defecto. Sin este campo, el selector no se renderiza.
    */
   demoThemes?: string[];
+  /**
+   * SOLO demo comercial (ADR 0013): banner "entorno de demostración" en
+   * todas las páginas. Un camping real nunca define esto — ni el nodo se
+   * genera en su HTML.
+   */
+  isDemo?: boolean;
+  /**
+   * SOLO demo comercial (ADR 0013): interruptor nivel 1/3 en vivo (atrezzo,
+   * NO un segundo build — el motor sigue en el bundle debajo). Sin este
+   * campo, la home renderiza un único héroe según el `tier` de build, como
+   * siempre.
+   */
+  demoTierSwitch?: boolean;
 };
 
 /** Nivel → comportamiento del héroe y del bundle (regla dura: nivel 1 sin motor). */

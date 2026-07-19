@@ -313,13 +313,25 @@ importers:
 
   tenants/demo:
     dependencies:
+      '@logic-camp/api':
+        specifier: workspace:*
+        version: link:../../apps/api
       '@logic-camp/config':
         specifier: workspace:*
         version: link:../../packages/config
       '@logic-camp/db':
         specifier: workspace:*
         version: link:../../packages/db
+      drizzle-orm:
+        specifier: ^0.44.7
+        version: 0.44.7(@cloudflare/workers-types@4.20260702.1)(kysely@0.29.4)
     devDependencies:
+      '@cloudflare/vitest-pool-workers':
+        specifier: ^0.9.14
+        version: 0.9.14(@cloudflare/workers-types@4.20260702.1)(@vitest/runner@3.2.7)(@vitest/snapshot@3.2.7)(vitest@3.2.7(@types/debug@4.1.13)(@types/node@26.1.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0))
+      '@cloudflare/workers-types':
+        specifier: ^4.20250705.0
+        version: 4.20260702.1
       '@logic-camp/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -335,6 +347,9 @@ importers:
       vitest:
         specifier: ^3.2.0
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.1.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0)
+      wrangler:
+        specifier: ^4.24.0
+        version: 4.111.0(@cloudflare/workers-types@4.20260702.1)
 
 packages:
 

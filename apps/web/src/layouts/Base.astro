@@ -78,6 +78,40 @@ const themeMenuScript = `
   marcar(document.documentElement.dataset.theme || def);
 })();
 `;
+
+// conmutador de nivel de demo (ADR 0013): mismo patrón que el de temas —
+// anti-FOUC en <head> vía atributo en <html>, CSS puro decide qué héroe se ve
+const showTierSwitch = config.demoTierSwitch === true;
+const tierBootScript = `try{
+var n=localStorage.getItem('lc-nivel');
+if(n==='1')document.documentElement.dataset.nivel='1';
+}catch(e){}`;
+
+const tierMenuScript = `
+(function () {
+  var menu = document.getElementById('lc-nivel');
+  if (!menu) return;
+  var botones = menu.querySelectorAll('button[data-nivel]');
+  function marcar(n) {
+    botones.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.nivel === n)); });
+  }
+  botones.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = b.dataset.nivel;
+      if (n === '3') {
+        delete document.documentElement.dataset.nivel;
+        try { localStorage.removeItem('lc-nivel'); } catch (e) {}
+      } else {
+        document.documentElement.dataset.nivel = n;
+        try { localStorage.setItem('lc-nivel', n); } catch (e) {}
+      }
+      marcar(n);
+      menu.removeAttribute('open');
+    });
+  });
+  marcar(document.documentElement.dataset.nivel || '3');
+})();
+`;
 ---
 
 <html lang={locale}>
@@ -106,16 +140,25 @@ const themeMenuScript = `
     {media['og'] && <meta name="twitter:card" content="summary_large_image" />}
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {demoThemes.length > 0 && <script is:inline set:html={themeBootScript} />}
+    {showTierSwitch && <script is:inline set:html={tierBootScript} />}
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-hueso text-tinta antialiased">
+  <body class="min-h-screen bg-hueso text-tinta antialiased" data-demo-banner={config.isDemo && c.demo ? '' : undefined}>
     <a
       href="#contenido"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:rounded-(--lc-radius) focus:bg-pino focus:px-4 focus:py-2 focus:text-hueso"
     >
       {c.nav.menu} ↓
     </a>
-    <header class="fixed inset-x-0 top-0 z-50 bg-hueso/90 backdrop-blur-sm">
+    {/* header (+ banner de demo, ADR 0013): un único bloque fijo — el banner
+       empuja el nav, no lo solapa, sea cual sea su altura (i18n varía) */}
+    <div class="fixed inset-x-0 top-0 z-50">
+      {config.isDemo && c.demo && (
+        <p class="bg-pino px-4 py-1.5 text-center text-[12px] leading-snug text-hueso">
+          {c.demo.banner}
+        </p>
+      )}
+      <header class="bg-hueso/90 backdrop-blur-sm">
       <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
         <a href={localePath(locale)} class="font-display text-[15px] font-semibold tracking-[0.14em] uppercase">
           {config.name.replace('Camping ', '')}
@@ -184,6 +227,42 @@ const themeMenuScript = `
             </details>
           )}
 
+          {/* conmutador de nivel de demo (ADR 0013): solo con config.demoTierSwitch — atrezzo
+             comercial, no un segundo build (el motor sigue en el bundle debajo) */}
+          {showTierSwitch && c.demo && (
+            <details class="lc-menu relative" id="lc-nivel">
+              <summary
+                class="flex cursor-pointer items-center gap-1.5 text-[13px] font-medium text-tinta"
+                aria-label={c.demo.nivel}
+              >
+                <span class="hidden sm:inline">{c.demo.nivel}</span>
+                <span aria-hidden="true" class="text-[10px] text-tinta-suave">▾</span>
+              </summary>
+              <ul class="absolute right-0 top-full z-50 mt-2 min-w-36 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
+                <li>
+                  <button
+                    type="button"
+                    data-nivel="3"
+                    aria-pressed="true"
+                    class="block w-full px-4 py-1.5 text-left text-[13px] text-tinta-suave transition-colors aria-pressed:font-semibold aria-pressed:text-tinta hover:bg-arena-suave"
+                  >
+                    {c.demo.nivel3}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    data-nivel="1"
+                    aria-pressed="false"
+                    class="block w-full px-4 py-1.5 text-left text-[13px] text-tinta-suave transition-colors aria-pressed:font-semibold aria-pressed:text-tinta hover:bg-arena-suave"
+                  >
+                    {c.demo.nivel1}
+                  </button>
+                </li>
+              </ul>
+            </details>
+          )}
+
           {/* menú móvil */}
           <details class="lc-menu relative lg:hidden">
             <summary class="cursor-pointer text-[13px] font-medium text-tinta">{c.nav.menu}</summary>
@@ -202,7 +281,8 @@ const themeMenuScript = `
           </details>
         </div>
       </nav>
-    </header>
+      </header>
+    </div>
 
     <main id="contenido">
       <slot />
@@ -228,5 +308,6 @@ const themeMenuScript = `
     </footer>
 
     {demoThemes.length > 0 && <script is:inline set:html={themeMenuScript} />}
+    {showTierSwitch && <script is:inline set:html={tierMenuScript} />}
   </body>
 </html>

@@ -1,5 +1,8 @@
 {
   "extends": "@logic-camp/tsconfig/base.json",
-  "compilerOptions": { "lib": ["ES2023"], "types": ["node"] },
-  "include": ["*.ts"]
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node", "@cloudflare/workers-types", "@cloudflare/vitest-pool-workers"]
+  },
+  "include": ["*.ts", "test/**/*.ts"]
 }

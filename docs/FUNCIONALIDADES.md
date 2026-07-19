@@ -61,6 +61,12 @@ Cada camping tiene su paleta, su radio de esquinas y su contenido. Re-vestir el 
 
 La demo lo enseña en vivo: el menú **"Estilo"** de la cabecera cambia toda la web entre cuatro ambientes (*Pinada*, *Mar*, *Garriga* y *Noche* — este último, modo oscuro completo) delante del cliente. La elección se recuerda mientras navega. Así se ve en 10 segundos cómo quedaría la plataforma con la identidad de cada camping.
 
+Junto al de "Estilo", el menú **"Nivel"** enseña la misma web como se vería en Camp Web (sin motor de reservas) o en Camp Reservas (con él) sin salir de la página — útil para que un camping pequeño se reconozca sin imaginar nada. Como el de estilos, es atrezzo de la demo: un camping real tiene el nivel que ha contratado, no un interruptor.
+
+### 2.5 Una demo que siempre está lista
+
+La demo comercial se reinicia cada noche (datos ficticios, sin rastro de lo que un comercial o un visitante haya tocado durante el día) y siempre con el año en curso — nunca se encuentra con fechas del año pasado ni con una reserva que alguien canceló probando el sistema. Un banner discreto lo indica en todas las páginas.
+
 ---
 
 ## 3. El mostrador: disponibilidad y precio en tiempo real
@@ -273,7 +279,6 @@ Con fecha en el plan de trabajo, no humo:
 | **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso |
 | **Gestión ampliada** | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados |
 | **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
-| **Demo autolimpiable** | La demo comercial se reinicia cada noche con fechas siempre vigentes |
 
 ---
 

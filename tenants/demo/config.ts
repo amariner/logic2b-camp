@@ -15,6 +15,9 @@ export const config: TenantWebConfig = {
   },
   // atrezzo comercial (ADR 0009): la demo se re-viste en vivo delante del cliente
   demoThemes: ['pinada', 'mar', 'garriga', 'nit'],
+  // banner + conmutador de nivel 1/3 en vivo (ADR 0013) — solo esta demo
+  isDemo: true,
+  demoTierSwitch: true,
 };
 
 export default config;

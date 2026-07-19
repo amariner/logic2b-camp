@@ -4,6 +4,7 @@ import { app } from './app';
 import type { Bindings } from './tenant';
 
 export type { AppType } from './app';
+export type { Bindings } from './tenant';
 export { createApiClient, type ApiClient } from './client';
 
 export default {

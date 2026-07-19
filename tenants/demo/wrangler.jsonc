@@ -4,12 +4,13 @@
 {
   "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
   "name": "logic-camp-demo",
-  "main": "../../apps/api/src/index.ts",
+  // envuelve apps/api/src/index.ts + el reset nocturno (ADR 0013) — SOLO este tenant
+  "main": "./worker.ts",
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": { "TENANT_SLUG": "demo" },
-  // purga de holds caducados del funnel (ADR 0007)
-  "triggers": { "crons": ["*/15 * * * *"] },
+  // */15: purga de holds caducados del funnel (ADR 0007). 0 3 * * *: reset nocturno (ADR 0013)
+  "triggers": { "crons": ["*/15 * * * *", "0 3 * * *"] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
   "assets": {
     // construir la web ANTES de desplegar: pnpm --filter @logic-camp/api deploy:demo lo hace

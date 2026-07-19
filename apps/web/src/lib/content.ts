@@ -17,6 +17,8 @@ export type Content = {
   nav: Record<string, string>;
   /** nombres de los temas de demo (ADR 0009); solo la demo los define */
   temas?: Record<string, string>;
+  /** banner + conmutador de nivel de demo (ADR 0013); solo la demo lo define */
+  demo?: { banner: string; nivel: string; nivel1: string; nivel3: string };
   hero3: { titulo: string; prueba: string };
   hero1: { titulo: string; cta: string };
   ticker: string[];

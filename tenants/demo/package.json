@@ -10,14 +10,19 @@
     "seed:sql": "tsx write-seed.ts"
   },
   "dependencies": {
+    "@logic-camp/api": "workspace:*",
     "@logic-camp/config": "workspace:*",
-    "@logic-camp/db": "workspace:*"
+    "@logic-camp/db": "workspace:*",
+    "drizzle-orm": "^0.44.7"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.9.14",
+    "@cloudflare/workers-types": "^4.20250705.0",
     "@logic-camp/tsconfig": "workspace:*",
     "@types/node": "^26.1.1",
     "tsx": "^4.20.0",
     "typescript": "^5.8.0",
-    "vitest": "^3.2.0"
+    "vitest": "^3.2.0",
+    "wrangler": "^4.24.0"
   }
 }

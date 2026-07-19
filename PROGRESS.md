@@ -4,7 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Fase actual**: 9 🟨 PARCIAL (ver ADR 0012 — `TenantConfig`+`_template`+`ONBOARDING.md`+`packages/cli` hechos; solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o remates de demo de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo`), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
+- **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (UUIDs completos en BACKLOG — mismo bloqueo de red que sesión 8), re-audit Lighthouse en producción.
 - **Docs de cliente**: `docs/FUNCIONALIDADES.md` (sesión 14, al día con Fase 8 en sesión 19) — actualizar con cada funcionalidad nueva.
 - **Último `/check`**: ✅ verde 2026-07-19 (38/38 tareas)
 - **Repo**: https://github.com/amariner/logic2b-camp
@@ -12,6 +12,23 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 25 — 2026-07-19 · Fase 10 (1/varias) · ADR 0013 — reset nocturno + conmutador de nivel + banner de demo
+
+**Hecho** (petición de Andreu en sesión cloud: "sigue perfilando... sin parar... con tu criterio cierra temas y comitea, mergea y sube a la rama principal")
+- `docs/adr/0013-modo-demo.md`: de los cinco remates de Fase 10 pendientes, se cierran los tres que no dependen de ninguna cuenta real (reset nocturno, conmutador de nivel, banner); los otros dos (acceso readonly sin registro, Web Analytics) y `ui.logic2b.com`/Storybook quedan en BACKLOG con motivo explícito — ver "qué queda fuera" del ADR.
+- **Reset nocturno**: `tenants/demo/reset.ts` (`resetDemoData`: `DELETE FROM` de las 21 tablas de la app en orden hijo→padre + `INSERT` del seed regenerado con el año en curso, todo en un único `db.batch()` atómico) + `tenants/demo/worker.ts` (envuelve `@logic-camp/api` sin tocarlo — apps/api sigue siendo 100% genérico, ni una tabla de Cala Sereno entra en su bundle; solo `tenants/demo/wrangler.jsonc` apunta su `main` aquí). Segundo cron `0 3 * * *` junto al de purga de holds de la Fase 5. Doble guarda (`TENANT_SLUG==='demo'` + cron correcto) aunque el fichero nunca se referencia desde otro tenant.
+  - `apps/api` gana un `exports` en su `package.json` (no lo necesitaba: nadie lo importaba como paquete hasta hoy) y re-exporta el tipo `Bindings` desde `index.ts` — cero cambios de comportamiento.
+  - 16 tests nuevos en `tenants/demo` (`reset.test.ts`, D1 real vía `@cloudflare/vitest-pool-workers` — primera vez que este tenant tiene su propia D1 de test, mismo patrón que `apps/api`): siembra completa, wipe+reseed sin acumular basura de un "día de demo" simulado (notificación+auditoría+sesión de más, insertadas a mano y confirmadas borradas), determinismo, orden de borrado.
+  - **Verificado contra el Worker real** (`wrangler dev --test-scheduled`): login, nota de prueba en `bkg_001` vía `PATCH`, disparo de `/cdn-cgi/handler/scheduled?cron=0+3+*+*+*` → la nota vuelve a la del seed, la sesión anterior queda invalidada (sesiones también se borran), 83 unidades siguen ahí. Cron de purga de holds verificado igual, sin cambios.
+- **Conmutador de nivel 1/3**: `config.demoTierSwitch` (packages/config) + `Home.astro` genera LOS DOS héroes cuando está activo (antes solo uno, según `TIER` de build) con `data-hero-nivel`, CSS puro en `global.css` (`:root[data-nivel]`) decide cuál se ve — mismo patrón sin-FOUC que el selector de temas del ADR 0009. Verificado que la regla dura del bundle sigue intacta: un tenant real (`demoTierSwitch` nunca definido) con `TIER=1` sigue en 121 páginas, 0 islas — el flag es la única puerta.
+- **Banner de demo**: `config.isDemo` + franja fija en `Base.astro`, 6 idiomas nuevos (`demo.banner/nivel/nivel1/nivel3` en los content JSON). Envuelto en el mismo contenedor `fixed` que el header (no lo solapa, lo empuja) y variable CSS `--lc-chrome-h` (3.5rem sin banner, 5.5rem con él) que el `sticky` del mostrador de Home.astro consume — verificado con capturas que no hay solape ni en el héroe ni al hacer scroll con el mostrador pegado.
+- **Verificado visualmente con Playwright contra el Worker real** (1366px y 375px): banner + header + mostrador sin solape, toggle de nivel cambia de héroe en el sitio sin recarga, versión móvil legible. Capturas en `/tmp` (no versionadas).
+- `docs/ROADMAP.md` (Fase 10 pasa a 🟨 parcial, checklist de remates al día), `docs/BACKLOG.md` (los tres diferidos + el refinamiento de ancla "hoy" para v2)
+- **`pnpm check`**: ✅ verde (38/38, sin tareas nuevas en el pipeline — `tenants/demo` ya tenía su propio `test`)
+
+**Decisiones**: el reset vive SOLO en `tenants/demo/` (no en `apps/api`) — mismo principio que separa `apps/web` de `tenants/{slug}/content`; el conmutador de nivel es atrezzo dentro de un build tier 3 real, no un segundo build (la demo siempre construye `TIER=3`); el ancla del reset sigue siendo mitad de temporada alta del año en curso, no "hoy" exacto — ver ADR 0013 §1 para el motivo y el v2 declarado en BACKLOG.
+**`/check`**: ✅ verde (38/38) · `@tenant/demo` 16/16 nuevos (26 en total con `seed.test.ts`)
 
 ### Sesión 24 — 2026-07-19 · BACKLOG 8.x · Log de pagos en el dashboard
 
