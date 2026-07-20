@@ -566,6 +566,8 @@ export function generateSeed(anchorYear: number): SeedData {
   function addBooking(opts: {
     typeId: string;
     unitIdx?: number | null;
+    /** fuerza una unidad concreta (el relleno por curva recorre unidad a unidad) */
+    unitId?: string;
     from: string;
     to: string;
     status: BookingSeed['status'] extends string ? string : string;
@@ -585,7 +587,16 @@ export function generateSeed(anchorYear: number): SeedData {
     };
     const typeUnits = units.filter((u) => u.unit_type_id === opts.typeId);
     let unit_id: string | null = null;
-    if (opts.unitIdx !== null) {
+    const isActiveStatus =
+      opts.status === 'confirmed' || opts.status === 'pending' || opts.status === 'completed';
+    if (opts.unitId) {
+      // unidad forzada: el llamante ya garantizó que está libre en el rango
+      unit_id = opts.unitId;
+      if (isActiveStatus) {
+        const ranges = occupied.get(unit_id) ?? [];
+        occupied.set(unit_id, [...ranges, [opts.from, opts.to]]);
+      }
+    } else if (opts.unitIdx !== null) {
       // asignación: primera unidad del tipo libre en el rango (solo reservas activas ocupan)
       const range: [string, string] = [opts.from, opts.to];
       const isActive =
@@ -710,35 +721,133 @@ export function generateSeed(anchorYear: number): SeedData {
     notes: 'Sin unidad asignada — para probar asignación',
   });
 
-  // Relleno: ocupación de agosto y temporada media, canales variados
-  const fillDefs: [string, string, number, number][] = [
-    ['ut_std', `${Y}-07-15`, 7, 8],
-    ['ut_std', `${Y}-08-01`, 14, 4],
-    ['ut_conf', `${Y}-08-05`, 7, 5],
-    ['ut_prem', `${Y}-07-22`, 10, 3],
-    ['ut_moto', `${Y}-06-10`, 3, 3],
-    ['ut_bung6', `${Y}-08-09`, 7, 3],
-    ['ut_mobil', `${Y}-07-05`, 7, 2],
-    ['ut_glamp', `${Y}-06-20`, 4, 2],
-    ['ut_bung4', `${Y}-09-01`, 5, 2],
-    ['ut_std', `${Y}-09-10`, 5, 2],
-  ];
-  for (const [typeId, start, nights, count] of fillDefs) {
-    for (let i = 0; i < count; i++) {
-      const from = addDays(start, Math.floor(rand() * 4) * (i % 3));
-      const status = rand() < 0.12 ? 'pending' : 'confirmed';
-      const channel = rand() < 0.2 ? 'phone' : rand() < 0.1 ? 'walkin' : 'web';
+  // --- Relleno por CURVA DE TEMPORADA (ADR 0019 §2) ---------------------------
+  //
+  // Sustituye al relleno antiguo de 10 definiciones fijas (34 reservas sobre 83
+  // unidades), que dejaba el planning vacío de A-09 hacia abajo en pleno agosto.
+  //
+  // Se recorre UNIDAD A UNIDAD a lo largo de la temporada colocando estancias
+  // consecutivas. Recorrer por unidad tiene una propiedad que vale oro: el
+  // invariante 1 (no dos reservas activas solapadas) se cumple POR CONSTRUCCIÓN,
+  // no por comprobación — el cursor nunca retrocede. Es lo que permite subir al
+  // ~93% de agosto sin pelearse con el generador.
+
+  /** Ocupación objetivo por fecha: la FORMA de la temporada es el argumento de venta. */
+  function targetOccupancy(date: string): number {
+    const month = Number(date.slice(5, 7));
+    const base =
+      month === 8 ? 0.93 : month === 7 ? 0.75 : month === 6 || month === 9 ? 0.45 : 0.2;
+    // Sesgo de fin de semana SOLO fuera de temporada alta: en agosto está lleno
+    // igual, y en mayo/junio las llegadas se agolpan en viernes y sábado. Es lo
+    // que hace que un profesional reconozca sus propios datos.
+    if (base >= 0.75) return base;
+    const dow = new Date(`${date}T00:00:00Z`).getUTCDay();
+    return dow === 5 || dow === 6 ? Math.min(0.95, base * 1.7) : base;
+  }
+
+  /**
+   * Convierte "quiero un X% de ocupación" en "con qué probabilidad arranco una
+   * estancia HOY en esta unidad" — que es la decisión que toma el bucle.
+   *
+   * No son lo mismo, y confundirlas fue el primer resultado de esta fase: con
+   * p=0.45 en junio salía un 66% real, porque cada estancia colocada ocupa
+   * después N noches seguidas. Con ciclo = n noches ocupadas + hueco + espera:
+   *
+   *     ocupación = n / (n + hueco + espera)   y   espera = (1-p)/p
+   *
+   * despejando p. Así la constante de arriba dice lo que significa: el 45% de
+   * junio ES un 45%, no una probabilidad que casualmente produce otra cosa.
+   */
+  const AVG_GAP = 0.22 * 1 + 0.08 * 2; // ver el sorteo de hueco al final del bucle
+  function startProbability(date: string, nights: number): number {
+    const q = targetOccupancy(date);
+    const idle = nights / q - nights - AVG_GAP;
+    return idle <= 0 ? 1 : 1 / (1 + idle);
+  }
+
+  /** Duración típica según el mes de llegada. */
+  function pickNights(date: string): number {
+    const month = Number(date.slice(5, 7));
+    const r = rand();
+    if (month === 8) return r < 0.45 ? 7 : r < 0.75 ? 14 : r < 0.9 ? 10 : 4;
+    if (month === 7) return r < 0.5 ? 7 : r < 0.85 ? 5 : 10;
+    return r < 0.55 ? 2 : r < 0.85 ? 3 : 5;
+  }
+
+  const SEASON_FROM = `${Y}-04-15`;
+  const SEASON_TO = `${Y}-10-15`;
+
+  /** Rangos bloqueados por unidad — el relleno debe respetarlos (averías, larga estancia). */
+  const blockedByUnit = new Map<string, [string, string][]>();
+  for (const b of inventory_blocks) {
+    const uid = b.unit_id as string | null;
+    if (!uid) continue;
+    blockedByUnit.set(uid, [
+      ...(blockedByUnit.get(uid) ?? []),
+      [b.date_from as string, b.date_to as string],
+    ]);
+  }
+
+  for (const unit of units) {
+    const uid = unit.id as string;
+    const typeId = unit.unit_type_id as string;
+    // Ocupación previa = bloqueos + las reservas de caso límite ya colocadas
+    // arriba (que eligieron unidad ellas solas). Sin esto el recorrido las
+    // pisaría: es exactamente el solape que cazó el test del invariante 1.
+    const blocks = [...(blockedByUnit.get(uid) ?? []), ...(occupied.get(uid) ?? [])].sort((a, b) =>
+      a[0] < b[0] ? -1 : 1,
+    );
+    let cursor = SEASON_FROM;
+
+    while (cursor < SEASON_TO) {
+      // La duración se sortea ANTES de decidir: la probabilidad de arranque
+      // depende de cuántas noches va a ocupar esta estancia concreta.
+      const nights = pickNights(cursor);
+      if (rand() >= startProbability(cursor, nights)) {
+        cursor = addDays(cursor, 1);
+        continue;
+      }
+      const to = addDays(cursor, nights);
+      if (to > SEASON_TO) break;
+
+      // No pisar un bloqueo (avería o larga estancia): saltar al final del que estorbe.
+      const clash = blocks.find(([bf, bt]) => cursor < bt && bf < to);
+      if (clash) {
+        cursor = clash[1];
+        continue;
+      }
+
+      // Estado coherente con la línea temporal del ancla (Y-07-15 = "hoy" del seed):
+      // lo terminado está completado, lo que está en curso o por venir, confirmado.
+      // Un ~9% de las futuras quedan pendientes de pago, y un ~3% se cancela —
+      // la cancelada NO ocupa, así que deja un hueco real en el planning.
+      let status: string;
+      if (to <= anchor) status = 'completed';
+      else if (cursor <= anchor) status = 'confirmed';
+      else {
+        const r = rand();
+        status = r < 0.09 ? 'pending' : r < 0.12 ? 'cancelled' : 'confirmed';
+      }
+
       const adults = 2 + Math.floor(rand() * 3);
-      const nChildren = Math.floor(rand() * 3);
+      const nChildren = rand() < 0.45 ? 1 + Math.floor(rand() * 2) : 0;
       const childrenAges = Array.from({ length: nChildren }, (_, k) => 2 + ((bkgN + k * 5) % 15));
+      const chR = rand();
       addBooking({
         typeId,
-        from,
-        to: addDays(from, nights),
+        unitId: uid,
+        from: cursor,
+        to,
         status,
-        channel,
+        channel: chR < 0.14 ? 'phone' : chR < 0.19 ? 'walkin' : 'web',
         occ: { adults, childrenAges, pets: rand() < 0.25 ? 1 : 0, vehicles: 1 },
+        paidRatio: status === 'completed' ? 1 : status === 'pending' ? 0 : undefined,
       });
+
+      // Hueco tras la salida. El de 1 noche es el que todo camping odia y el que
+      // justifica el producto: aparece a propósito, no por accidente.
+      const g = rand();
+      cursor = addDays(to, g < 0.22 ? 1 : g < 0.3 ? 2 : 0);
     }
   }
 
@@ -897,6 +1006,17 @@ export function generateSeed(anchorYear: number): SeedData {
 
 // ---------- SQL ----------
 
+/**
+ * Presupuesto de bytes por sentencia INSERT.
+ *
+ * Se trocea por TAMAÑO, no por número de filas: el límite que impone D1 es la
+ * longitud de la sentencia (`SQLITE_TOOBIG`), y las filas de este seed son muy
+ * desiguales — una de `booking_guests` son 2 ids, una de `bookings` lleva el
+ * `price_breakdown` JSON entero. Un tope fijo de filas reventaba en `bookings`
+ * y desaprovechaba el resto. Así cada tabla se agrupa a su propia densidad.
+ */
+const SQL_CHUNK_BYTES = 48_000;
+
 export function seedToSql(data: SeedData): string {
   const out: string[] = ['-- Seed demo Camping Cala Sereno (generado — no editar a mano)'];
   const tables: [string, Row[]][] = [
@@ -919,11 +1039,29 @@ export function seedToSql(data: SeedData): string {
   for (const [table, rows] of tables) {
     if (!rows.length) continue;
     const cols = Object.keys(rows[0]!);
+    // INSERT multi-fila troceado (ADR 0019 §2.3). Una sentencia por fila hacía
+    // que el reset nocturno —que ejecuta wipe+reseed en un ÚNICO db.batch()
+    // para ser atómico (ADR 0013)— creciera con el nº de filas: al densificar
+    // el seed pasó de 321 a >8.000 sentencias, que no caben en un Worker.
+    // Así las FILAS crecen y las SENTENCIAS quedan acotadas, sin tocar la
+    // atomicidad. El tamaño de trozo respeta el límite de variables de SQLite.
+    const head = `INSERT INTO ${table} (${cols.join(', ')}) VALUES `;
+    let batch: string[] = [];
+    let bytes = head.length;
+    const flush = () => {
+      if (batch.length) out.push(`${head}${batch.join(', ')};`);
+      batch = [];
+      bytes = head.length;
+    };
     for (const row of rows) {
-      out.push(
-        `INSERT INTO ${table} (${cols.join(', ')}) VALUES (${cols.map((c) => q(row[c])).join(', ')});`,
-      );
+      const tuple = `(${cols.map((c) => q(row[c])).join(', ')})`;
+      // +2 por ", ". Una fila que por sí sola pase del presupuesto va igualmente
+      // en su propia sentencia: trocear más no la haría más pequeña.
+      if (batch.length && bytes + tuple.length + 2 > SQL_CHUNK_BYTES) flush();
+      batch.push(tuple);
+      bytes += tuple.length + 2;
     }
+    flush();
   }
   return out.join('\n');
 }

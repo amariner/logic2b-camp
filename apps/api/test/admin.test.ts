@@ -116,6 +116,52 @@ describe('auth', () => {
   });
 });
 
+/**
+ * ADR 0019 §1 — el agujero de orígenes se abre SOLO si se pide explícitamente.
+ * Fija las dos direcciones del contrato: sin el interruptor no hay origen
+ * cruzado autorizado (fail-closed), y con él solo entra la lista CONSTANTE
+ * de localhost. Si alguien "arregla" el 403 abriendo orígenes por defecto,
+ * el primer test cae.
+ */
+describe('trustedOrigins de desarrollo (ADR 0019)', () => {
+  // IP propia por test: el rate limit es por IP y en ventana fija (ADR 0004).
+  // Sin esto, estos logins gastarían cupo del bucket compartido y tumbarían
+  // un `signIn` posterior con un 429 — que es justo lo que pasó al añadirlos.
+  const origin = (o: string, ip: string) => ({
+    'content-type': 'application/json',
+    origin: o,
+    'cf-connecting-ip': ip,
+  });
+  const creds = { email: 'owner@alfa.test', password: 'secreto123' };
+
+  it('sin el interruptor, un Origin cruzado NO se autoriza', async () => {
+    const res = await app.request(
+      '/api/auth/sign-in/email',
+      { ...json(creds), headers: origin('http://localhost:5173', '203.0.113.71') },
+      envA, // sin LOGIC_CAMP_DEV_ORIGINS
+    );
+    expect(res.status).toBe(403);
+  });
+
+  it('con el interruptor, el origen local de Vite sí se autoriza', async () => {
+    const res = await app.request(
+      '/api/auth/sign-in/email',
+      { ...json(creds), headers: origin('http://localhost:5173', '203.0.113.72') },
+      { ...envA, LOGIC_CAMP_DEV_ORIGINS: '1' },
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it('el interruptor NO autoriza un origen arbitrario — la lista es constante', async () => {
+    const res = await app.request(
+      '/api/auth/sign-in/email',
+      { ...json(creds), headers: origin('https://atacante.example', '203.0.113.73') },
+      { ...envA, LOGIC_CAMP_DEV_ORIGINS: '1' },
+    );
+    expect(res.status).toBe(403);
+  });
+});
+
 describe('GET /api/admin/planning', () => {
   it('devuelve unidades, reservas y bloqueos del rango (readonly puede)', async () => {
     const res = await app.request(

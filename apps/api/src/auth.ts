@@ -27,11 +27,27 @@ export type AuthEnv = {
   Variables: Env['Variables'] & { user: AuthUser };
 };
 
+/**
+ * Orígenes autorizados SOLO en desarrollo local (ADR 0019 §1).
+ *
+ * La lista es una CONSTANTE del código a propósito: `LOGIC_CAMP_DEV_ORIGINS`
+ * actúa como interruptor, nunca como valor. Una variable de valor libre sería
+ * una puerta con cerradura de plástico — un despiste autorizaría un dominio
+ * arbitrario. Así, el peor caso posible es autorizar `localhost`, que un
+ * atacante remoto no controla.
+ *
+ * En producción el dashboard es MISMO ORIGEN (`/admin/` del propio Worker),
+ * así que esta lista debe quedar vacía. Fail-closed: sin el flag, `[]`.
+ */
+const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
 export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) {
   return betterAuth({
     // El secret real llega por wrangler secret; el fallback es solo dev/test local.
     secret: env.AUTH_SECRET ?? 'logic-camp-dev-secret',
     basePath: '/api/auth',
+    // Fail-closed: ausencia del interruptor ⇒ ningún origen cruzado autorizado.
+    trustedOrigins: env.LOGIC_CAMP_DEV_ORIGINS ? DEV_ORIGINS : [],
     database: drizzleAdapter(createDb(env.DB), {
       provider: 'sqlite',
       schema: {
