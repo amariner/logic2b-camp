@@ -53,10 +53,10 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
   };
 
   const celda =
-    'tnum w-20 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-1.5 py-0.5 text-right text-[13px]';
+    'tnum w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-1.5 py-0.5 text-right text-[13px]';
 
   return (
-    <tr className="border-b border-arena/40">
+    <tr className="border-b border-border/40">
       <td className="px-3 py-1.5 font-medium first:pl-4">{tipoNombre}</td>
       {CAMPOS.map(([campo, etiqueta]) => (
         <td key={campo} className="px-1.5 py-1.5">
@@ -86,14 +86,14 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
             type="button"
             disabled={!sucia || guardar.isPending}
             onClick={enviar}
-            className="rounded-(--lc-radius) border border-pino bg-pino px-2.5 py-0.5 text-[12px] font-semibold text-hueso hover:bg-pino-oscuro disabled:opacity-30"
+            className="rounded-(--lc-radius) border border-primary bg-primary px-2.5 py-0.5 text-[12px] font-semibold text-background hover:bg-primary disabled:opacity-30"
           >
             {t('tar.guardar')}
           </button>
           {msg && (
             <span
               role="status"
-              className={`text-[11px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+              className={`text-[11px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
             >
               {msg.text}
             </span>
@@ -125,12 +125,12 @@ export default function Tarifas() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-arena/60 px-4 py-2.5">
-        <p className="text-[12px] text-tinta-suave">{t('tar.nota')}</p>
+      <div className="flex items-center gap-3 border-b border-border/60 px-4 py-2.5">
+        <p className="text-[12px] text-muted-foreground">{t('tar.nota')}</p>
       </div>
 
-      {rates.isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('tar.cargando')}</p>}
-      {rates.isError && <p className="p-6 text-[14px] font-medium text-mar">{t('tar.error')}</p>}
+      {rates.isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('tar.cargando')}</p>}
+      {rates.isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('tar.error')}</p>}
 
       <div className="min-h-0 flex-1 overflow-auto p-4">
         {temporadas.map((s) => {
@@ -147,19 +147,19 @@ export default function Tarifas() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-[13px]">
                   <thead>
-                    <tr className="border-b-2 border-tinta/20 text-left">
-                      <th className="px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase first:pl-4">
+                    <tr className="border-b-2 border-foreground/20 text-left">
+                      <th className="px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4">
                         {t('tar.tipo')}
                       </th>
                       {CAMPOS.map(([campo, etiqueta]) => (
                         <th
                           key={campo}
-                          className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase"
+                          className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase"
                         >
                           {t(etiqueta)}
                         </th>
                       ))}
-                      <th className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase">
+                      <th className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
                         {t('tar.minStay')}
                       </th>
                       <th className="px-3 py-1 last:pr-4" />

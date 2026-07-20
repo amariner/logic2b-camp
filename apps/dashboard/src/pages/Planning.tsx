@@ -196,7 +196,7 @@ export default function Planning() {
     ) {
       const el =
         rowsRef.current?.querySelector<HTMLElement>(`[data-unit-row="${row.unit.id}"]`) ?? null;
-      if (el) el.style.boxShadow = 'inset 0 0 0 2px var(--lc-pino)';
+      if (el) el.style.boxShadow = 'inset 0 0 0 2px var(--primary)';
       d.targetUnitId = row.unit.id;
       d.targetEl = el;
     } else {
@@ -271,20 +271,20 @@ export default function Planning() {
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
         {/* barra de mando: fechas, zoom, datos a la vista */}
-        <div className="flex flex-wrap items-center gap-3 border-b border-arena/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => setAnchor(addDays(anchor, -zoom.days))}
               aria-label="←"
-              className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
             >
               ←
             </button>
             <button
               type="button"
               onClick={() => setAnchor(iso(new Date()))}
-              className="rounded-(--lc-radius) border border-tinta/20 px-3 py-1 text-[13px] font-semibold hover:bg-arena-suave"
+              className="rounded-(--lc-radius) border border-foreground/20 px-3 py-1 text-[13px] font-semibold hover:bg-accent"
             >
               {t('planning.hoy')}
             </button>
@@ -292,7 +292,7 @@ export default function Planning() {
               type="button"
               onClick={() => setAnchor(addDays(anchor, zoom.days))}
               aria-label="→"
-              className="rounded-(--lc-radius) border border-tinta/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-arena-suave"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
             >
               →
             </button>
@@ -301,15 +301,15 @@ export default function Planning() {
             type="date"
             value={anchor}
             onChange={(e) => e.target.value && setAnchor(e.target.value)}
-            className="tnum rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
+            className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
-          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
             {ZOOMS.map((z) => (
               <button
                 key={z.id}
                 type="button"
                 onClick={() => setZoomId(z.id)}
-                className={`px-3 py-1 ${z.id === zoomId ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+                className={`px-3 py-1 ${z.id === zoomId ? 'bg-primary text-background' : 'hover:bg-accent'}`}
                 aria-pressed={z.id === zoomId}
               >
                 {t(`planning.${z.id}`)}
@@ -319,13 +319,13 @@ export default function Planning() {
           {dndMsg && (
             <p
               role="status"
-              className={`text-[12px] font-medium ${dndMsg.error ? 'text-mar' : 'text-pino'}`}
+              className={`text-[12px] font-medium ${dndMsg.error ? 'text-destructive' : 'text-primary'}`}
             >
               {dndMsg.text}
             </p>
           )}
           {data && (
-            <p className="tnum ml-auto text-[12px] text-tinta-suave">
+            <p className="tnum ml-auto text-[12px] text-muted-foreground">
               {t('planning.unidades', { n: data.units.length })} ·{' '}
               {t('planning.reservas', { n: data.bookings.length })}
             </p>
@@ -334,8 +334,8 @@ export default function Planning() {
 
         {/* bandeja sin asignar: nada se pierde de vista */}
         {byUnit.unassigned.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 bg-arena-suave/50 px-4 py-2">
-            <span className="text-[12px] font-semibold tracking-wide text-tinta-suave uppercase">
+          <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-accent/50 px-4 py-2">
+            <span className="text-[12px] font-semibold tracking-wide text-muted-foreground uppercase">
               {t('planning.sinAsignar')}
             </span>
             {byUnit.unassigned.map((b) => (
@@ -353,21 +353,21 @@ export default function Planning() {
           </div>
         )}
 
-        {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('planning.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('planning.error')}</p>}
+        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('planning.cargando')}</p>}
+        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('planning.error')}</p>}
 
         {data && (
           <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto">
             <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
               {/* cabecera sticky: meses + días */}
-              <div className="sticky top-0 z-30 bg-hueso" style={{ width: LABEL_W + gridW }}>
-                <div className="flex border-b border-arena/60" style={{ paddingLeft: LABEL_W }}>
+              <div className="sticky top-0 z-30 bg-background" style={{ width: LABEL_W + gridW }}>
+                <div className="flex border-b border-border/60" style={{ paddingLeft: LABEL_W }}>
                   {days.map((d, i) => {
                     const first = i === 0 || d.endsWith('-01');
                     return (
                       <div
                         key={d}
-                        className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-tinta-suave uppercase"
+                        className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-muted-foreground uppercase"
                         style={{ width: zoom.cellW, height: 16 }}
                       >
                         {first ? monthLabel(d) : ''}
@@ -375,11 +375,11 @@ export default function Planning() {
                     );
                   })}
                 </div>
-                <div className="flex border-b-2 border-tinta/20" style={{ paddingLeft: LABEL_W }}>
+                <div className="flex border-b-2 border-foreground/20" style={{ paddingLeft: LABEL_W }}>
                   {days.map((d) => (
                     <div
                       key={d}
-                      className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-tinta-suave'}`}
+                      className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-muted-foreground'}`}
                       style={{ width: zoom.cellW }}
                     >
                       {dayLabel(d)}
@@ -407,17 +407,17 @@ export default function Planning() {
                     >
                       {row.kind === 'group' ? (
                         <div
-                          className="flex h-full items-end border-b border-arena/60 bg-hueso pb-0.5"
+                          className="flex h-full items-end border-b border-border/60 bg-background pb-0.5"
                           style={{ paddingLeft: 8 }}
                         >
-                          <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-tinta-suave uppercase">
+                          <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
                             {row.label}
                           </span>
                         </div>
                       ) : (
-                        <div className="flex h-full border-b border-arena/40">
+                        <div className="flex h-full border-b border-border/40">
                           <div
-                            className="tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-arena/60 bg-hueso px-2 text-[12px] font-medium"
+                            className="tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium"
                             style={{ width: LABEL_W }}
                           >
                             {row.unit.code}

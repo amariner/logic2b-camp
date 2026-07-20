@@ -31,13 +31,13 @@ export default function Pagos() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
           <button
             type="button"
             onClick={() => setProveedor('todos')}
             aria-pressed={proveedor === 'todos'}
-            className={`px-3 py-1 ${proveedor === 'todos' ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+            className={`px-3 py-1 ${proveedor === 'todos' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('pagl.todos')}
           </button>
@@ -47,18 +47,18 @@ export default function Pagos() {
               type="button"
               onClick={() => setProveedor(p)}
               aria-pressed={proveedor === p}
-              className={`px-3 py-1 ${proveedor === p ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+              className={`px-3 py-1 ${proveedor === p ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`pago.${p}`)}
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
           <button
             type="button"
             onClick={() => setEstado('todos')}
             aria-pressed={estado === 'todos'}
-            className={`px-3 py-1 ${estado === 'todos' ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+            className={`px-3 py-1 ${estado === 'todos' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('pagl.todos')}
           </button>
@@ -68,32 +68,32 @@ export default function Pagos() {
               type="button"
               onClick={() => setEstado(s)}
               aria-pressed={estado === s}
-              className={`px-3 py-1 ${estado === s ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+              className={`px-3 py-1 ${estado === s ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`pago.${s}`)}
             </button>
           ))}
         </div>
-        <p className="tnum ml-auto text-[12px] text-tinta-suave">{t('pagl.n', { n: items.length })}</p>
+        <p className="tnum ml-auto text-[12px] text-muted-foreground">{t('pagl.n', { n: items.length })}</p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('pagl.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('pagl.error')}</p>}
+      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('pagl.cargando')}</p>}
+      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('pagl.error')}</p>}
       {!isPending && !isError && items.length === 0 && (
-        <p className="p-6 text-[14px] text-tinta-suave">{t('pagl.vacio')}</p>
+        <p className="p-6 text-[14px] text-muted-foreground">{t('pagl.vacio')}</p>
       )}
 
-      <ul className="min-h-0 flex-1 divide-y divide-arena/40 overflow-y-auto">
+      <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
         {items.map((p) => (
           <li
             key={p.id}
             className="grid grid-cols-[100px_1fr_auto] items-center gap-3 px-4 py-2.5 text-[13px] sm:grid-cols-[100px_1fr_120px_120px_auto]"
           >
-            <span className="tnum text-tinta-suave">{fecha(p.createdAt)}</span>
+            <span className="tnum text-muted-foreground">{fecha(p.createdAt)}</span>
             <span className="truncate font-medium">{p.bookingCode}</span>
-            <span className="hidden text-tinta-suave sm:block">{t(`pago.${p.provider}`)}</span>
-            <span className="hidden text-tinta-suave sm:block">{t(`pago.${p.status}`)}</span>
-            <span className={`tnum justify-self-end ${p.amountCents < 0 ? 'text-mar' : ''}`}>
+            <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.provider}`)}</span>
+            <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.status}`)}</span>
+            <span className={`tnum justify-self-end ${p.amountCents < 0 ? 'text-destructive' : ''}`}>
               {eur(p.amountCents)}
             </span>
           </li>

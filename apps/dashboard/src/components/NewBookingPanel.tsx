@@ -131,23 +131,23 @@ export default function NewBookingPanel({
     Boolean(listo) && holderName.trim().length > 0 && /\S+@\S+\.\S+/.test(holderEmail);
 
   const input =
-    'w-full rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1.5 text-[13px]';
-  const label = 'text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase';
+    'w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[13px]';
+  const label = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
 
   return (
     <aside
       ref={panelRef}
       role="dialog"
       aria-label={t('alta.titulo')}
-      className="flex w-[380px] shrink-0 flex-col overflow-y-auto border-l border-arena/60 bg-hueso"
+      className="flex w-[380px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
     >
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-arena/60 bg-hueso px-4 py-2.5">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         <span className="text-[14px] font-semibold">{t('alta.titulo')}</span>
         <button
           type="button"
           onClick={onClose}
           aria-label={t('alta.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-tinta/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-arena-suave"
+          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
         >
           ✕
         </button>
@@ -163,7 +163,7 @@ export default function NewBookingPanel({
         {msg && (
           <p
             role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
           >
             {msg.text}
           </p>
@@ -295,7 +295,7 @@ export default function NewBookingPanel({
                   />
                   <span>
                     {ex.nameI18n.es ?? ex.id}
-                    <span className="tnum text-tinta-suave">
+                    <span className="tnum text-muted-foreground">
                       {' '}
                       · {eur(ex.priceCents)}
                       {ex.required && ` · ${t('alta.obligatorio')}`}
@@ -308,16 +308,16 @@ export default function NewBookingPanel({
         )}
 
         {/* cotización en vivo del servidor */}
-        <section aria-live="polite" className="rounded-(--lc-radius) bg-arena-suave/50 p-3">
+        <section aria-live="polite" className="rounded-(--lc-radius) bg-accent/50 p-3">
           <h3 className="lc-panel-h">{t('alta.desglose')}</h3>
-          {!listo && <p className="text-tinta-suave">{t('alta.rellenar')}</p>}
+          {!listo && <p className="text-muted-foreground">{t('alta.rellenar')}</p>}
           {listo && cotizacion.isPending && (
-            <p className="text-tinta-suave">{t('alta.cotizando')}</p>
+            <p className="text-muted-foreground">{t('alta.cotizando')}</p>
           )}
           {stayIssues.length > 0 && (
             <ul className="flex flex-col gap-0.5">
               {stayIssues.map((issue) => (
-                <li key={issue.code} className="font-medium text-mar">
+                <li key={issue.code} className="font-medium text-destructive">
                   {stayError(issue.code, issue.params)}
                 </li>
               ))}
@@ -327,22 +327,22 @@ export default function NewBookingPanel({
             <dl>
               {cotizacion.data.breakdown.lines.map((line, i) => (
                 <div key={i} className="flex justify-between gap-2 py-0.5">
-                  <dt className={line.amountCents < 0 ? 'text-pino' : ''}>
+                  <dt className={line.amountCents < 0 ? 'text-primary' : ''}>
                     {conceptLabel(line.concept)}
                   </dt>
-                  <dd className={`tnum ${line.amountCents < 0 ? 'text-pino' : ''}`}>
+                  <dd className={`tnum ${line.amountCents < 0 ? 'text-primary' : ''}`}>
                     {eur(line.amountCents, cotizacion.data.breakdown.currency)}
                   </dd>
                 </div>
               ))}
-              <div className="mt-1 flex justify-between gap-2 border-t border-arena/60 pt-1 font-semibold">
+              <div className="mt-1 flex justify-between gap-2 border-t border-border/60 pt-1 font-semibold">
                 <dt>{t('alta.total')}</dt>
                 <dd className="tnum">
                   {eur(cotizacion.data.breakdown.totalCents, cotizacion.data.breakdown.currency)}
                 </dd>
               </div>
               {cotizacion.data.breakdown.touristTaxCents > 0 && (
-                <div className="flex justify-between gap-2 py-0.5 text-tinta-suave">
+                <div className="flex justify-between gap-2 py-0.5 text-muted-foreground">
                   <dt>{t('alta.tasa')}</dt>
                   <dd className="tnum">
                     {eur(
@@ -358,14 +358,14 @@ export default function NewBookingPanel({
 
         <div>
           <span className={label}>{t('alta.canal')}</span>
-          <div className="flex overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+          <div className="flex overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
             {(['phone', 'walkin'] as const).map((ch) => (
               <button
                 key={ch}
                 type="button"
                 onClick={() => setChannel(ch)}
                 aria-pressed={channel === ch}
-                className={`flex-1 px-3 py-1 ${channel === ch ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+                className={`flex-1 px-3 py-1 ${channel === ch ? 'bg-primary text-background' : 'hover:bg-accent'}`}
               >
                 {t(`canal.${ch}`)}
               </button>
@@ -420,7 +420,7 @@ export default function NewBookingPanel({
         <button
           type="submit"
           disabled={!puedeCrear || crear.isPending || Boolean(cotizacion.error)}
-          className="rounded-(--lc-radius) border border-pino bg-pino px-3 py-1.5 font-semibold text-hueso hover:bg-pino-oscuro disabled:opacity-40"
+          className="rounded-(--lc-radius) border border-primary bg-primary px-3 py-1.5 font-semibold text-background hover:bg-primary disabled:opacity-40"
         >
           {crear.isPending ? t('alta.creando') : t('alta.crear')}
         </button>

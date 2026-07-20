@@ -32,25 +32,25 @@ export default function Ajustes() {
 
   const sucia = Object.keys(draft).length > 0;
   const input =
-    'w-full max-w-sm rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1.5 text-[13px]';
-  const label = 'text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase';
+    'w-full max-w-sm rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[13px]';
+  const label = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-arena/60 px-4 py-2.5">
-        <p className="text-[12px] text-tinta-suave">{t('aju.nota')}</p>
+      <div className="flex items-center gap-3 border-b border-border/60 px-4 py-2.5">
+        <p className="text-[12px] text-muted-foreground">{t('aju.nota')}</p>
         {msg && (
           <p
             role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
           >
             {msg.text}
           </p>
         )}
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('aju.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('aju.error')}</p>}
+      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('aju.cargando')}</p>}
+      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('aju.error')}</p>}
 
       {data && (
         <form
@@ -98,9 +98,9 @@ export default function Ajustes() {
             />
           </div>
 
-          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-tinta-suave">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-muted-foreground">
             <dt className={label}>{t('aju.nivel')}</dt>
-            <dd className="font-medium text-tinta">
+            <dd className="font-medium text-foreground">
               {t(`aju.nivel${data.tier as 1 | 2 | 3 | 4}`)} · {data.tier}
             </dd>
             <dt className={label}>{t('aju.idiomas')}</dt>
@@ -110,7 +110,7 @@ export default function Ajustes() {
           <button
             type="submit"
             disabled={!sucia || guardar.isPending}
-            className="w-fit rounded-(--lc-radius) border border-pino bg-pino px-3 py-1.5 font-semibold text-hueso hover:bg-pino-oscuro disabled:opacity-40"
+            className="w-fit rounded-(--lc-radius) border border-primary bg-primary px-3 py-1.5 font-semibold text-background hover:bg-primary disabled:opacity-40"
           >
             {t('aju.guardar')}
           </button>
@@ -157,14 +157,14 @@ function Notificaciones({ data, onSaved }: { data: TenantSettings; onSaved: () =
     onError: () => setError(true),
   });
 
-  const label = 'text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase';
+  const label = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
   const input =
-    'w-full max-w-sm rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1.5 text-[13px]';
+    'w-full max-w-sm rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[13px]';
 
   return (
-    <fieldset className="mt-2 flex flex-col gap-2 border-t border-arena/60 pt-4">
+    <fieldset className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-4">
       <legend className="lc-panel-h float-left w-full">{t('aju.notificaciones')}</legend>
-      <p className="text-[12px] text-tinta-suave">{t('aju.notifNota')}</p>
+      <p className="text-[12px] text-muted-foreground">{t('aju.notifNota')}</p>
       {EVENTOS.map((ev) => (
         <label key={ev} className="flex items-center gap-2">
           <input
@@ -210,12 +210,12 @@ function Notificaciones({ data, onSaved }: { data: TenantSettings; onSaved: () =
           type="button"
           disabled={draft === null || guardar.isPending}
           onClick={() => draft && guardar.mutate(draft)}
-          className="w-fit rounded-(--lc-radius) border border-pino bg-pino px-3 py-1.5 font-semibold text-hueso hover:bg-pino-oscuro disabled:opacity-40"
+          className="w-fit rounded-(--lc-radius) border border-primary bg-primary px-3 py-1.5 font-semibold text-background hover:bg-primary disabled:opacity-40"
         >
           {t('aju.guardarNotif')}
         </button>
         {error && (
-          <span role="status" className="text-[12px] font-medium text-mar">
+          <span role="status" className="text-[12px] font-medium text-destructive">
             {t('aju.errorGuardar')}
           </span>
         )}

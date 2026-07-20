@@ -3,25 +3,49 @@
 @import 'tailwindcss';
 @import '@logic-camp/ui/theme.css';
 
-/* Puente ADR 0008 → ADR 0017: los nombres de la paleta camping del dashboard apuntan
- * ahora a los tokens del DS Logic2B. Se conservan como alias para no reescribir ~400 usos
- * de clase a mano; el rename literal (bg-pino → bg-primary, …) queda en BACKLOG [B1].
- * Los componentes nuevos (packages/ui) usan directamente los tokens del DS. */
-@theme {
-  --color-tinta: var(--foreground);
-  --color-tinta-suave: var(--muted-foreground);
-  --color-hueso: var(--background);
-  --color-pino: var(--primary);
-  --color-pino-oscuro: var(--primary);
-  --color-arena: var(--border);
-  --color-arena-suave: var(--accent);
-  --color-mar: var(--foreground);
-}
+/* El puente de alias de la paleta camping (ADR 0008 → 0017) SE ELIMINÓ en ADR 0020.
+ * Motivo: mientras existía, un alias mal apuntado producía un color absurdo sin que
+ * nada fallara — que es literalmente C-BUG-2 (`--color-mar: var(--foreground)`, los
+ * errores pintados en negro). El dashboard usa ya los tokens del DS directamente. */
 
 :root {
   /* radius del dashboard 2px → 10px (DS) */
   --lc-radius: var(--radius-md);
   --lc-radius-lg: var(--radius-lg);
+}
+
+/* ---------- estado de reserva → color (ADR 0020 §2.2) ----------
+ *
+ * El planning NO lee de --chart-* directamente. Leía `--chart-4` para el estado
+ * `pending`, y así fue como un bug en la escala de gráficas (C-BUG-1) acabó
+ * pintando la pantalla firma del producto. Un tape chart no necesita "el color 4",
+ * necesita "el color de pendiente de pago".
+ *
+ * Estos valores son EXACTAMENTE los que se veían antes de corregir C-BUG-1: este
+ * ADR no cambia ni un píxel del planning. El mapa de color definitivo (incluido
+ * "en casa", que llega con el check-in de C4) lo decide **C1.5**, y cuando lo haga
+ * cambiará estos cinco valores y nada más — ni CSS de barras, ni de chips, ni el
+ * plano de C7, que leerá de aquí para que plano y planning no puedan divergir.
+ */
+:root {
+  --lc-status-confirmed: var(--primary);
+  --lc-status-confirmed-fg: var(--primary-foreground);
+
+  /* Ámbar. Valor explícito, no var(--chart-4): ver arriba. */
+  --lc-status-pending: oklch(82.8% 0.189 84.429);
+  --lc-status-pending-fg: oklch(14.5% 0 0);
+
+  --lc-status-no-show: var(--destructive);
+  --lc-status-no-show-fg: var(--destructive-foreground);
+
+  --lc-status-completed: var(--muted-foreground);
+  --lc-status-completed-fg: var(--background);
+
+  /* Azul de "en curso / informativo": solicitud contactada, aviso en cola. */
+  --lc-status-info: oklch(39.8% 0.07 227.392);
+  --lc-status-info-fg: oklch(100% 0 0);
+
+  --lc-status-blocked: var(--muted-foreground);
 }
 
 html {
@@ -40,7 +64,9 @@ html {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- planning (tape chart ★) — colores por estado en tokens del DS (ADR 0017 §4) ---------- */
+/* ---------- planning (tape chart ★) — el elemento firma (ADR 0017 §4, ADR 0020 §2.2) ----------
+ * Barra y chip comparten mapa de color a propósito: hasta ADR 0020 estaban escritos
+ * dos veces y podían divergir en silencio. */
 
 .lc-bar {
   position: absolute;
@@ -55,21 +81,39 @@ html {
   text-overflow: ellipsis;
   cursor: default;
 }
-.lc-bar.st-confirmed {
-  background: var(--primary);
-  color: var(--primary-foreground);
+
+.lc-chip {
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  padding-inline: 6px;
 }
-.lc-bar.st-pending {
-  background: var(--chart-4);
-  color: var(--foreground);
+
+.lc-bar.st-confirmed,
+.lc-chip.st-confirmed {
+  background: var(--lc-status-confirmed);
+  color: var(--lc-status-confirmed-fg);
 }
-.lc-bar.st-no_show {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
+.lc-bar.st-pending,
+.lc-chip.st-pending {
+  background: var(--lc-status-pending);
+  color: var(--lc-status-pending-fg);
 }
-.lc-bar.st-completed {
-  background: var(--muted-foreground);
-  color: var(--background);
+.lc-bar.st-no_show,
+.lc-chip.st-no_show {
+  background: var(--lc-status-no-show);
+  color: var(--lc-status-no-show-fg);
+}
+.lc-bar.st-completed,
+.lc-chip.st-completed {
+  background: var(--lc-status-completed);
+  color: var(--lc-status-completed-fg);
+}
+.lc-chip.st-cancelled {
+  background: transparent;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
 }
 
 .lc-grab {
@@ -86,8 +130,8 @@ html {
   border-radius: var(--radius-sm);
   background: repeating-linear-gradient(
     45deg,
-    color-mix(in oklab, var(--muted-foreground) 22%, transparent),
-    color-mix(in oklab, var(--muted-foreground) 22%, transparent) 4px,
+    color-mix(in oklab, var(--lc-status-blocked) 22%, transparent),
+    color-mix(in oklab, var(--lc-status-blocked) 22%, transparent) 4px,
     transparent 4px,
     transparent 8px
   );
@@ -116,52 +160,22 @@ html {
   margin-bottom: 4px;
 }
 
-/* chip de estado: mismos colores que las barras del planning */
-.lc-chip {
-  border-radius: var(--radius-sm);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 18px;
-  padding-inline: 6px;
-}
-.lc-chip.st-confirmed {
-  background: var(--primary);
-  color: var(--primary-foreground);
-}
-.lc-chip.st-pending {
-  background: var(--chart-4);
-  color: var(--foreground);
-}
-.lc-chip.st-no_show {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
-}
-.lc-chip.st-completed {
-  background: var(--muted-foreground);
-  color: var(--background);
-}
-.lc-chip.st-cancelled {
-  background: transparent;
-  color: var(--muted-foreground);
-  border: 1px solid var(--border);
-}
-
 /* chips de estado de solicitud (bandeja) */
 .lc-chip.sol-new {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--lc-status-confirmed);
+  color: var(--lc-status-confirmed-fg);
 }
 .lc-chip.sol-contacted {
-  background: var(--chart-3);
-  color: var(--background);
+  background: var(--lc-status-info);
+  color: var(--lc-status-info-fg);
 }
 .lc-chip.sol-quoted {
-  background: var(--chart-4);
-  color: var(--foreground);
+  background: var(--lc-status-pending);
+  color: var(--lc-status-pending-fg);
 }
 .lc-chip.sol-converted {
-  background: var(--muted-foreground);
-  color: var(--background);
+  background: var(--lc-status-completed);
+  color: var(--lc-status-completed-fg);
 }
 .lc-chip.sol-lost {
   background: transparent;
@@ -171,16 +185,16 @@ html {
 
 /* chips de estado del log de notificaciones */
 .lc-chip.ntf-sent {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--lc-status-confirmed);
+  color: var(--lc-status-confirmed-fg);
 }
 .lc-chip.ntf-queued {
-  background: var(--chart-4);
-  color: var(--foreground);
+  background: var(--lc-status-pending);
+  color: var(--lc-status-pending-fg);
 }
 .lc-chip.ntf-failed {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
+  background: var(--lc-status-no-show);
+  color: var(--lc-status-no-show-fg);
 }
 .lc-chip.ntf-disabled {
   background: transparent;

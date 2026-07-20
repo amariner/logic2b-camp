@@ -19,7 +19,7 @@ export default function Login() {
       >
         <h1 className="text-[22px] font-semibold tracking-tight">{t('login.titulo')}</h1>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+          <span className="text-[12px] font-medium tracking-wide text-muted-foreground uppercase">
             {t('login.email')}
           </span>
           <input
@@ -28,11 +28,11 @@ export default function Login() {
             autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-(--lc-radius) border border-tinta/20 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-3.5 py-2.5 text-[15px]"
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+          <span className="text-[12px] font-medium tracking-wide text-muted-foreground uppercase">
             {t('login.password')}
           </span>
           <input
@@ -41,17 +41,17 @@ export default function Login() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-(--lc-radius) border border-tinta/20 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-3.5 py-2.5 text-[15px]"
           />
         </label>
         <button
           type="submit"
           disabled={signIn.isPending}
-          className="rounded-(--lc-radius) bg-pino px-6 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro disabled:opacity-60"
+          className="rounded-(--lc-radius) bg-primary px-6 py-3 text-[15px] font-semibold text-background transition-colors hover:bg-primary disabled:opacity-60"
         >
           {signIn.isPending ? t('login.entrando') : t('login.entrar')}
         </button>
-        {signIn.isError && <p className="text-[14px] font-medium text-mar">{t('login.error')}</p>}
+        {signIn.isError && <p className="text-[14px] font-medium text-destructive">{t('login.error')}</p>}
       </form>
     </main>
   );

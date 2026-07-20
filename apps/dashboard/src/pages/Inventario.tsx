@@ -39,26 +39,26 @@ export default function Inventario() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center gap-3 border-b border-arena/60 px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
         <p className="tnum text-[13px] font-medium">
           {t('inv.activas', { n: activas })}
           {units.length - activas > 0 && (
-            <span className="text-mar"> · {t('inv.inactivas', { n: units.length - activas })}</span>
+            <span className="text-destructive"> · {t('inv.inactivas', { n: units.length - activas })}</span>
           )}
         </p>
         {msg && (
           <p
             role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
           >
             {msg.text}
           </p>
         )}
-        <p className="ml-auto max-w-96 text-[12px] text-tinta-suave">{t('inv.nota')}</p>
+        <p className="ml-auto max-w-96 text-[12px] text-muted-foreground">{t('inv.nota')}</p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('inv.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('inv.error')}</p>}
+      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('inv.cargando')}</p>}
+      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('inv.error')}</p>}
 
       <div className="min-h-0 flex-1 overflow-y-auto p-4">
         {data?.unitTypes.map((ut) => {
@@ -88,8 +88,8 @@ export default function Inventario() {
                         }
                         className={`tnum rounded-(--lc-radius) border px-2.5 py-1 text-[12px] font-medium disabled:opacity-40 ${
                           activa
-                            ? 'border-tinta/20 hover:bg-arena-suave'
-                            : 'border-mar/50 bg-mar/10 text-mar line-through hover:bg-arena-suave'
+                            ? 'border-foreground/20 hover:bg-accent'
+                            : 'border-destructive/50 bg-destructive/10 text-destructive line-through hover:bg-accent'
                         }`}
                       >
                         {u.code}

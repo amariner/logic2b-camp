@@ -54,7 +54,7 @@ export default function Reservas() {
   return (
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
           <input
             type="search"
             placeholder={t('res.buscar')}
@@ -64,7 +64,7 @@ export default function Reservas() {
               setQ(e.target.value);
               setPage(1);
             }}
-            className="tnum w-44 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
+            className="tnum w-44 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
           <select
             aria-label={t('res.estado')}
@@ -73,7 +73,7 @@ export default function Reservas() {
               setEstado(e.target.value as BookingDetail['status'] | '');
               setPage(1);
             }}
-            className="rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
+            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           >
             <option value="">{t('res.todas')}</option>
             {ESTADOS.map((s) => (
@@ -87,16 +87,16 @@ export default function Reservas() {
               type="button"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="rounded-(--lc-radius) border border-tinta/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-arena-suave"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-accent"
             >
               ←
             </button>
-            <span className="tnum px-1 text-tinta-suave">{t('res.pagina', { n: page })}</span>
+            <span className="tnum px-1 text-muted-foreground">{t('res.pagina', { n: page })}</span>
             <button
               type="button"
               disabled={items.length < PAGE_SIZE}
               onClick={() => setPage((p) => p + 1)}
-              className="rounded-(--lc-radius) border border-tinta/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-arena-suave"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-accent"
             >
               →
             </button>
@@ -107,23 +107,23 @@ export default function Reservas() {
               setOpenId(null);
               setAltaAbierta(true);
             }}
-            className="ml-auto rounded-(--lc-radius) border border-pino bg-pino px-3 py-1 text-[13px] font-semibold text-hueso hover:bg-pino-oscuro"
+            className="ml-auto rounded-(--lc-radius) border border-primary bg-primary px-3 py-1 text-[13px] font-semibold text-background hover:bg-primary"
           >
             {t('res.nueva')}
           </button>
         </div>
 
-        {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('res.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('res.error')}</p>}
+        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('res.cargando')}</p>}
+        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('res.error')}</p>}
         {!isPending && !isError && items.length === 0 && (
-          <p className="p-6 text-[14px] text-tinta-suave">{t('res.vacio')}</p>
+          <p className="p-6 text-[14px] text-muted-foreground">{t('res.vacio')}</p>
         )}
 
         {items.length > 0 && (
           <div className="min-h-0 flex-1 overflow-auto">
             <table className="w-full border-collapse text-[13px]">
-              <thead className="sticky top-0 z-10 bg-hueso">
-                <tr className="border-b-2 border-tinta/20 text-left">
+              <thead className="sticky top-0 z-10 bg-background">
+                <tr className="border-b-2 border-foreground/20 text-left">
                   {(
                     [
                       t('res.codigo'),
@@ -138,7 +138,7 @@ export default function Reservas() {
                   ).map((h) => (
                     <th
                       key={h}
-                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase first:pl-4 last:pr-4"
+                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4 last:pr-4"
                     >
                       {h}
                     </th>
@@ -159,17 +159,17 @@ export default function Reservas() {
                         }
                       }}
                       tabIndex={0}
-                      className="cursor-pointer border-b border-arena/40 hover:bg-arena-suave/50"
+                      className="cursor-pointer border-b border-border/40 hover:bg-accent/50"
                     >
                       <td className="tnum px-3 py-2 font-semibold first:pl-4">{b.code}</td>
                       <td className="max-w-40 truncate px-3 py-2 font-medium">
                         {b.leadName ?? '—'}
                       </td>
-                      <td className="tnum px-3 py-2 whitespace-nowrap text-tinta-suave">
+                      <td className="tnum px-3 py-2 whitespace-nowrap text-muted-foreground">
                         {fecha(b.dateFrom)} → {fecha(b.dateTo)} · {noches(b.dateFrom, b.dateTo)}n
                       </td>
                       <td className="tnum px-3 py-2">{b.unitCode ?? '—'}</td>
-                      <td className="px-3 py-2 text-tinta-suave">{t(`canal.${b.channel}`)}</td>
+                      <td className="px-3 py-2 text-muted-foreground">{t(`canal.${b.channel}`)}</td>
                       <td className="px-3 py-2">
                         <span className={`lc-chip st-${b.status}`}>{t(`estado.${b.status}`)}</span>
                       </td>
@@ -177,8 +177,8 @@ export default function Reservas() {
                       <td
                         className={`tnum px-3 py-2 last:pr-4 ${
                           pendiente > 0 && b.status !== 'cancelled'
-                            ? 'font-medium text-mar'
-                            : 'text-tinta-suave'
+                            ? 'font-medium text-destructive'
+                            : 'text-muted-foreground'
                         }`}
                       >
                         {pendiente > 0 && b.status !== 'cancelled' ? eur(pendiente) : '—'}

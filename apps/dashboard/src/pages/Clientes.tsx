@@ -41,9 +41,9 @@ function GuestPanel({
       ref={panelRef}
       role="dialog"
       aria-label={data ? `${data.name} ${data.surname}`.trim() : t('cli.ficha')}
-      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-arena/60 bg-hueso"
+      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
     >
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-arena/60 bg-hueso px-4 py-2.5">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         <span className="text-[14px] font-semibold">
           {data ? `${data.name} ${data.surname}`.trim() : t('cli.ficha')}
         </span>
@@ -51,14 +51,14 @@ function GuestPanel({
           type="button"
           onClick={onClose}
           aria-label={t('cli.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-tinta/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-arena-suave"
+          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
         >
           ✕
         </button>
       </div>
 
-      {isPending && <p className="p-4 text-[13px] text-tinta-suave">{t('cli.cargando')}</p>}
-      {isError && <p className="p-4 text-[13px] font-medium text-mar">{t('cli.error')}</p>}
+      {isPending && <p className="p-4 text-[13px] text-muted-foreground">{t('cli.cargando')}</p>}
+      {isError && <p className="p-4 text-[13px] font-medium text-destructive">{t('cli.error')}</p>}
 
       {data && (
         <div className="flex flex-col gap-4 p-4 text-[13px]">
@@ -66,26 +66,26 @@ function GuestPanel({
             <h3 className="lc-panel-h">{t('cli.contacto')}</h3>
             {data.email && (
               <p>
-                <a href={`mailto:${data.email}`} className="text-mar underline">
+                <a href={`mailto:${data.email}`} className="text-link underline">
                   {data.email}
                 </a>
               </p>
             )}
             {data.phone && (
               <p>
-                <a href={`tel:${data.phone}`} className="tnum text-mar underline">
+                <a href={`tel:${data.phone}`} className="tnum text-link underline">
                   {data.phone}
                 </a>
               </p>
             )}
             {data.docNumber && (
-              <p className="tnum text-tinta-suave">
+              <p className="tnum text-muted-foreground">
                 {data.docType?.toUpperCase()} {data.docNumber}
                 {data.nationality && ` · ${data.nationality}`}
               </p>
             )}
             {data.gdprConsentAt && (
-              <p className="tnum text-tinta-suave">
+              <p className="tnum text-muted-foreground">
                 {t('cli.rgpd')}: {fecha(data.gdprConsentAt)}
               </p>
             )}
@@ -94,7 +94,7 @@ function GuestPanel({
           <section>
             <h3 className="lc-panel-h">{t('cli.historial')}</h3>
             {data.bookings.length === 0 && (
-              <p className="text-tinta-suave">{t('cli.sinHistorial')}</p>
+              <p className="text-muted-foreground">{t('cli.sinHistorial')}</p>
             )}
             <ul className="flex flex-col">
               {data.bookings.map((b) => (
@@ -103,12 +103,12 @@ function GuestPanel({
                     type="button"
                     aria-label={t('cli.abrirReserva', { code: b.code })}
                     onClick={() => onOpenBooking(b.id)}
-                    className="grid w-full grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-arena/40 py-2 text-left hover:bg-arena-suave/50"
+                    className="grid w-full grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-border/40 py-2 text-left hover:bg-accent/50"
                   >
                     <span className="tnum font-semibold">
                       {b.code}
                       {!b.isLead && (
-                        <span className="ml-1 font-normal text-tinta-suave">
+                        <span className="ml-1 font-normal text-muted-foreground">
                           · {t('cli.acompanante')}
                         </span>
                       )}
@@ -116,10 +116,10 @@ function GuestPanel({
                     <span className={`lc-chip st-${b.status} justify-self-end`}>
                       {t(`estado.${b.status}`)}
                     </span>
-                    <span className="tnum text-tinta-suave">
+                    <span className="tnum text-muted-foreground">
                       {fecha(b.dateFrom)} → {fecha(b.dateTo)}
                     </span>
-                    <span className="tnum justify-self-end text-tinta-suave">
+                    <span className="tnum justify-self-end text-muted-foreground">
                       {eur(b.totalCents)}
                     </span>
                   </button>
@@ -151,7 +151,7 @@ export default function Clientes() {
   return (
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
           <input
             type="search"
             placeholder={t('cli.buscar')}
@@ -161,40 +161,40 @@ export default function Clientes() {
               setQ(e.target.value);
               setPage(1);
             }}
-            className="w-56 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1 text-[13px]"
+            className="w-56 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
           <div className="flex items-center gap-1 text-[13px]">
             <button
               type="button"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="rounded-(--lc-radius) border border-tinta/20 px-2 py-1 font-semibold hover:bg-arena-suave disabled:opacity-40"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold hover:bg-accent disabled:opacity-40"
             >
               ←
             </button>
-            <span className="tnum px-1 text-tinta-suave">{t('res.pagina', { n: page })}</span>
+            <span className="tnum px-1 text-muted-foreground">{t('res.pagina', { n: page })}</span>
             <button
               type="button"
               disabled={items.length < 25}
               onClick={() => setPage((p) => p + 1)}
-              className="rounded-(--lc-radius) border border-tinta/20 px-2 py-1 font-semibold hover:bg-arena-suave disabled:opacity-40"
+              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold hover:bg-accent disabled:opacity-40"
             >
               →
             </button>
           </div>
         </div>
 
-        {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('cli.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('cli.error')}</p>}
+        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('cli.cargando')}</p>}
+        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('cli.error')}</p>}
         {!isPending && !isError && items.length === 0 && (
-          <p className="p-6 text-[14px] text-tinta-suave">{t('cli.vacio')}</p>
+          <p className="p-6 text-[14px] text-muted-foreground">{t('cli.vacio')}</p>
         )}
 
         {items.length > 0 && (
           <div className="min-h-0 flex-1 overflow-auto">
             <table className="w-full border-collapse text-[13px]">
-              <thead className="sticky top-0 z-10 bg-hueso">
-                <tr className="border-b-2 border-tinta/20 text-left">
+              <thead className="sticky top-0 z-10 bg-background">
+                <tr className="border-b-2 border-foreground/20 text-left">
                   {[
                     t('cli.nombre'),
                     t('cli.contacto'),
@@ -204,7 +204,7 @@ export default function Clientes() {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-tinta-suave uppercase first:pl-4 last:pr-4"
+                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4 last:pr-4"
                     >
                       {h}
                     </th>
@@ -227,17 +227,17 @@ export default function Clientes() {
                       }
                     }}
                     tabIndex={0}
-                    className="cursor-pointer border-b border-arena/40 hover:bg-arena-suave/50"
+                    className="cursor-pointer border-b border-border/40 hover:bg-accent/50"
                   >
                     <td className="px-3 py-2 font-medium first:pl-4">
                       {`${g.name} ${g.surname}`.trim()}
                     </td>
-                    <td className="max-w-52 truncate px-3 py-2 text-tinta-suave">
+                    <td className="max-w-52 truncate px-3 py-2 text-muted-foreground">
                       {g.email ?? g.phone ?? '—'}
                     </td>
-                    <td className="tnum px-3 py-2 text-tinta-suave">{g.docNumber ?? '—'}</td>
+                    <td className="tnum px-3 py-2 text-muted-foreground">{g.docNumber ?? '—'}</td>
                     <td className="tnum px-3 py-2">{g.bookingsCount}</td>
-                    <td className="tnum px-3 py-2 text-tinta-suave last:pr-4">
+                    <td className="tnum px-3 py-2 text-muted-foreground last:pr-4">
                       {g.lastStay ? fecha(g.lastStay) : '—'}
                     </td>
                   </tr>

@@ -137,10 +137,10 @@ export default function BookingPanel({
       ref={panelRef}
       role="dialog"
       aria-label={data?.code ?? t('ficha.cargando')}
-      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-arena/60 bg-hueso"
+      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
     >
       {/* cabecera: código + estado + cerrar */}
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-arena/60 bg-hueso px-4 py-2.5">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         {data && (
           <>
             <span className="tnum text-[14px] font-semibold">{data.code}</span>
@@ -151,21 +151,21 @@ export default function BookingPanel({
           type="button"
           onClick={onClose}
           aria-label={t('ficha.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-tinta/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-arena-suave"
+          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
         >
           ✕
         </button>
       </div>
 
-      {isPending && <p className="p-4 text-[13px] text-tinta-suave">{t('ficha.cargando')}</p>}
-      {isError && <p className="p-4 text-[13px] font-medium text-mar">{t('ficha.error')}</p>}
+      {isPending && <p className="p-4 text-[13px] text-muted-foreground">{t('ficha.cargando')}</p>}
+      {isError && <p className="p-4 text-[13px] font-medium text-destructive">{t('ficha.error')}</p>}
 
       {data && (
         <div className="flex flex-col gap-4 p-4 text-[13px]">
           {msg && (
             <p
               role="status"
-              className={`text-[12px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+              className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
             >
               {msg.text}
             </p>
@@ -175,22 +175,22 @@ export default function BookingPanel({
           <section>
             <h3 className="lc-panel-h">{t('ficha.estancia')}</h3>
             <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
-              <dt className="text-tinta-suave">{t('ficha.fechas')}</dt>
+              <dt className="text-muted-foreground">{t('ficha.fechas')}</dt>
               <dd className="tnum">
                 {fecha(data.dateFrom)} → {fecha(data.dateTo)} ·{' '}
                 {n === 1 ? t('ficha.noche') : t('ficha.noches', { n })}
               </dd>
-              <dt className="text-tinta-suave">{t('ficha.ocupacion')}</dt>
+              <dt className="text-muted-foreground">{t('ficha.ocupacion')}</dt>
               <dd>
                 {t('planning.pax', { n: pax })} · {data.occupancy.adults}A
                 {data.occupancy.childrenAges.length > 0 &&
                   ` + ${data.occupancy.childrenAges.length}N (${data.occupancy.childrenAges.join(', ')})`}
               </dd>
-              <dt className="text-tinta-suave">{t('ficha.unidad')}</dt>
+              <dt className="text-muted-foreground">{t('ficha.unidad')}</dt>
               <dd>{unitCode ?? t('ficha.sinAsignar')}</dd>
-              <dt className="text-tinta-suave">{t('ficha.canal')}</dt>
+              <dt className="text-muted-foreground">{t('ficha.canal')}</dt>
               <dd>{t(`canal.${data.channel}`)}</dd>
-              <dt className="text-tinta-suave">{t('ficha.creada')}</dt>
+              <dt className="text-muted-foreground">{t('ficha.creada')}</dt>
               <dd className="tnum">{fecha(data.createdAt)}</dd>
             </dl>
           </section>
@@ -202,10 +202,10 @@ export default function BookingPanel({
               <p className="font-medium">
                 {lead.name} {lead.surname}
               </p>
-              {lead.email && <p className="text-tinta-suave">{lead.email}</p>}
-              {lead.phone && <p className="tnum text-tinta-suave">{lead.phone}</p>}
+              {lead.email && <p className="text-muted-foreground">{lead.email}</p>}
+              {lead.phone && <p className="tnum text-muted-foreground">{lead.phone}</p>}
               {lead.docNumber && (
-                <p className="tnum text-tinta-suave">
+                <p className="tnum text-muted-foreground">
                   {lead.docType?.toUpperCase()} {lead.docNumber}
                 </p>
               )}
@@ -230,20 +230,20 @@ export default function BookingPanel({
             <dl>
               {data.priceBreakdown.lines.map((line, i) => (
                 <div key={i} className="flex justify-between gap-2 py-0.5">
-                  <dt className={line.amountCents < 0 ? 'text-pino' : ''}>
+                  <dt className={line.amountCents < 0 ? 'text-primary' : ''}>
                     {conceptLabel(line.concept)}
                   </dt>
-                  <dd className={`tnum ${line.amountCents < 0 ? 'text-pino' : ''}`}>
+                  <dd className={`tnum ${line.amountCents < 0 ? 'text-primary' : ''}`}>
                     {eur(line.amountCents, data.priceBreakdown.currency)}
                   </dd>
                 </div>
               ))}
-              <div className="mt-1 flex justify-between gap-2 border-t border-arena/60 pt-1 font-semibold">
+              <div className="mt-1 flex justify-between gap-2 border-t border-border/60 pt-1 font-semibold">
                 <dt>{t('ficha.total')}</dt>
                 <dd className="tnum">{eur(data.totalCents, data.priceBreakdown.currency)}</dd>
               </div>
               {data.touristTaxCents > 0 && (
-                <div className="flex justify-between gap-2 py-0.5 text-tinta-suave">
+                <div className="flex justify-between gap-2 py-0.5 text-muted-foreground">
                   <dt>{t('ficha.tasa')}</dt>
                   <dd className="tnum">
                     {eur(data.touristTaxCents, data.priceBreakdown.currency)}
@@ -251,7 +251,7 @@ export default function BookingPanel({
                 </div>
               )}
               {data.depositCents > 0 && (
-                <div className="flex justify-between gap-2 py-0.5 text-tinta-suave">
+                <div className="flex justify-between gap-2 py-0.5 text-muted-foreground">
                   <dt>{t('ficha.fianza')}</dt>
                   <dd className="tnum">{eur(data.depositCents, data.priceBreakdown.currency)}</dd>
                 </div>
@@ -261,7 +261,7 @@ export default function BookingPanel({
                 <dd className="tnum">{eur(data.paidCents, data.priceBreakdown.currency)}</dd>
               </div>
               {pendingCents > 0 && (
-                <div className="flex justify-between gap-2 py-0.5 font-medium text-mar">
+                <div className="flex justify-between gap-2 py-0.5 font-medium text-destructive">
                   <dt>{t('ficha.pendientePago')}</dt>
                   <dd className="tnum">{eur(pendingCents, data.priceBreakdown.currency)}</dd>
                 </div>
@@ -273,16 +273,16 @@ export default function BookingPanel({
           <section>
             <h3 className="lc-panel-h">{t('ficha.pagos')}</h3>
             {data.payments.length === 0 && (
-              <p className="text-tinta-suave">{t('ficha.sinPagos')}</p>
+              <p className="text-muted-foreground">{t('ficha.sinPagos')}</p>
             )}
             <ul>
               {data.payments.map((p) => (
                 <li key={p.id} className="flex justify-between gap-2 py-0.5">
                   <span>
                     {t(`pago.${p.provider}`)} · {t(`pago.${p.status}`)}
-                    <span className="tnum text-tinta-suave"> · {fecha(p.createdAt)}</span>
+                    <span className="tnum text-muted-foreground"> · {fecha(p.createdAt)}</span>
                   </span>
-                  <span className={`tnum ${p.amountCents < 0 ? 'text-mar' : ''}`}>
+                  <span className={`tnum ${p.amountCents < 0 ? 'text-destructive' : ''}`}>
                     {eur(p.amountCents, data.priceBreakdown.currency)}
                   </span>
                 </li>
@@ -290,7 +290,7 @@ export default function BookingPanel({
             </ul>
 
             {(data.status === 'pending' || data.status === 'confirmed') && (
-              <div className="mt-2 flex flex-col gap-2 border-t border-arena/60 pt-2">
+              <div className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-2">
                 <div className="flex items-center gap-1.5">
                   <input
                     type="text"
@@ -299,13 +299,13 @@ export default function BookingPanel({
                     onChange={(e) => setPayAmount(e.target.value)}
                     placeholder={t('ficha.importe')}
                     aria-label={t('ficha.registrarPago')}
-                    className="w-20 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1"
+                    className="w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1"
                   />
                   <select
                     value={payMethod}
                     onChange={(e) => setPayMethod(e.target.value as 'cash' | 'card')}
                     aria-label={t('ficha.metodoPago')}
-                    className="rounded-(--lc-radius) border border-tinta/20 bg-hueso px-1.5 py-1"
+                    className="rounded-(--lc-radius) border border-foreground/20 bg-background px-1.5 py-1"
                   >
                     <option value="cash">{t('ficha.metodoEfectivo')}</option>
                     <option value="card">{t('ficha.metodoTarjeta')}</option>
@@ -314,7 +314,7 @@ export default function BookingPanel({
                     type="button"
                     disabled={toCents(payAmount) <= 0 || recordPayment.isPending}
                     onClick={() => recordPayment.mutate({ amountCents: toCents(payAmount), method: payMethod })}
-                    className="rounded-(--lc-radius) border border-pino/60 px-2.5 py-1 font-medium text-pino hover:bg-arena-suave disabled:opacity-40"
+                    className="rounded-(--lc-radius) border border-primary/60 px-2.5 py-1 font-medium text-primary hover:bg-accent disabled:opacity-40"
                   >
                     {t('ficha.registrarPago')}
                   </button>
@@ -328,7 +328,7 @@ export default function BookingPanel({
                       onChange={(e) => setRefundAmount(e.target.value)}
                       placeholder={t('ficha.importe')}
                       aria-label={t('ficha.reembolsar')}
-                      className="w-20 rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1"
+                      className="w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1"
                     />
                     <button
                       type="button"
@@ -338,7 +338,7 @@ export default function BookingPanel({
                         refund.isPending
                       }
                       onClick={() => refund.mutate(toCents(refundAmount))}
-                      className="rounded-(--lc-radius) border border-mar/50 px-2.5 py-1 font-medium text-mar hover:bg-arena-suave disabled:opacity-40"
+                      className="rounded-(--lc-radius) border border-destructive/50 px-2.5 py-1 font-medium text-destructive hover:bg-accent disabled:opacity-40"
                     >
                       {t('ficha.reembolsar')}
                     </button>
@@ -360,13 +360,13 @@ export default function BookingPanel({
               value={notes ?? data.notes ?? ''}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('ficha.notasPlaceholder')}
-              className="w-full rounded-(--lc-radius) border border-tinta/20 bg-hueso px-2 py-1.5"
+              className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5"
             />
             <button
               type="button"
               disabled={notes === null || notes === (data.notes ?? '') || saveNote.isPending}
               onClick={() => notes !== null && saveNote.mutate(notes)}
-              className="mt-1 rounded-(--lc-radius) border border-tinta/20 px-3 py-1 font-medium hover:bg-arena-suave disabled:opacity-40"
+              className="mt-1 rounded-(--lc-radius) border border-foreground/20 px-3 py-1 font-medium hover:bg-accent disabled:opacity-40"
             >
               {t('ficha.guardarNota')}
             </button>
@@ -389,8 +389,8 @@ export default function BookingPanel({
                       }}
                       className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
                         confirmingCancel
-                          ? 'border-mar bg-mar text-hueso'
-                          : 'border-mar/50 text-mar hover:bg-arena-suave'
+                          ? 'border-destructive bg-destructive text-background'
+                          : 'border-destructive/50 text-destructive hover:bg-accent'
                       }`}
                     >
                       {confirmingCancel ? t('accion.cancelSeguro') : t('accion.cancel')}
@@ -403,8 +403,8 @@ export default function BookingPanel({
                       onClick={() => transition.mutate(a)}
                       className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
                         a === 'confirm'
-                          ? 'border-pino bg-pino text-hueso hover:bg-pino-oscuro'
-                          : 'border-tinta/20 hover:bg-arena-suave'
+                          ? 'border-primary bg-primary text-background hover:bg-primary'
+                          : 'border-foreground/20 hover:bg-accent'
                       }`}
                     >
                       {t(`accion.${a}`)}

@@ -64,13 +64,13 @@ export default function Solicitudes() {
   return (
     <div className="flex h-full flex-col">
       {/* filtros por estado, con recuento — la bandeja se lee de un vistazo */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-arena/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
           <button
             type="button"
             onClick={() => setFiltro('todas')}
             aria-pressed={filtro === 'todas'}
-            className={`px-3 py-1 ${filtro === 'todas' ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+            className={`px-3 py-1 ${filtro === 'todas' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('sol.todas')} · {items.length}
           </button>
@@ -80,7 +80,7 @@ export default function Solicitudes() {
               type="button"
               onClick={() => setFiltro(s)}
               aria-pressed={filtro === s}
-              className={`px-3 py-1 ${filtro === s ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+              className={`px-3 py-1 ${filtro === s ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`sol.${s}`)} · {porEstado.get(s) ?? 0}
             </button>
@@ -89,23 +89,23 @@ export default function Solicitudes() {
         {msg && (
           <p
             role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-mar' : 'text-pino'}`}
+            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
           >
             {msg.text}
           </p>
         )}
-        <p className="tnum ml-auto text-[12px] text-tinta-suave">
+        <p className="tnum ml-auto text-[12px] text-muted-foreground">
           {t('sol.n', { n: visibles.length })}
         </p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('sol.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('sol.error')}</p>}
+      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('sol.cargando')}</p>}
+      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('sol.error')}</p>}
       {!isPending && !isError && visibles.length === 0 && (
-        <p className="p-6 text-[14px] text-tinta-suave">{t('sol.vacio')}</p>
+        <p className="p-6 text-[14px] text-muted-foreground">{t('sol.vacio')}</p>
       )}
 
-      <ul className="min-h-0 flex-1 divide-y divide-arena/40 overflow-y-auto">
+      <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
         {visibles.map((e) => {
           const pax = e.occupancy ? e.occupancy.adults + e.occupancy.childrenAges.length : null;
           const abiertaEsta = abierta === e.id;
@@ -116,16 +116,16 @@ export default function Solicitudes() {
                 type="button"
                 onClick={() => setAbierta(abiertaEsta ? null : e.id)}
                 aria-expanded={abiertaEsta}
-                className="grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 px-4 py-2.5 text-left text-[13px] hover:bg-arena-suave/50 sm:grid-cols-[90px_170px_1fr_130px_auto]"
+                className="grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]"
               >
-                <span className="tnum text-tinta-suave">{fecha(e.createdAt)}</span>
+                <span className="tnum text-muted-foreground">{fecha(e.createdAt)}</span>
                 <span className="truncate font-medium">{e.contact.name}</span>
-                <span className="tnum hidden truncate text-tinta-suave sm:block">
+                <span className="tnum hidden truncate text-muted-foreground sm:block">
                   {e.dateFrom && e.dateTo
                     ? `${fecha(e.dateFrom)} → ${fecha(e.dateTo)}${pax ? ` · ${t('planning.pax', { n: pax })}` : ''}`
                     : t('sol.sinFechas')}
                 </span>
-                <span className="hidden truncate text-tinta-suave sm:block">
+                <span className="hidden truncate text-muted-foreground sm:block">
                   {tipoNombre(e.unitTypeId)}
                 </span>
                 <span className={`lc-chip sol-${e.status} justify-self-end`}>
@@ -134,7 +134,7 @@ export default function Solicitudes() {
               </button>
 
               {abiertaEsta && (
-                <div className="grid gap-3 bg-arena-suave/40 px-4 py-3 text-[13px] sm:grid-cols-2">
+                <div className="grid gap-3 bg-accent/40 px-4 py-3 text-[13px] sm:grid-cols-2">
                   <div>
                     <h3 className="lc-panel-h">{t('sol.mensaje')}</h3>
                     <p className="whitespace-pre-line">{e.message}</p>
@@ -144,18 +144,18 @@ export default function Solicitudes() {
                       <h3 className="lc-panel-h">{t('sol.contacto')}</h3>
                       <p className="font-medium">{e.contact.name}</p>
                       <p>
-                        <a href={`mailto:${e.contact.email}`} className="text-mar underline">
+                        <a href={`mailto:${e.contact.email}`} className="text-link underline">
                           {e.contact.email}
                         </a>
                       </p>
                       {e.contact.phone && (
                         <p>
-                          <a href={`tel:${e.contact.phone}`} className="tnum text-mar underline">
+                          <a href={`tel:${e.contact.phone}`} className="tnum text-link underline">
                             {e.contact.phone}
                           </a>
                         </p>
                       )}
-                      <p className="mt-1 text-tinta-suave">
+                      <p className="mt-1 text-muted-foreground">
                         {t('sol.idioma')}: {e.locale.toUpperCase()} · {t('sol.origen')}: {e.source}
                       </p>
                     </div>
@@ -169,8 +169,8 @@ export default function Solicitudes() {
                             onClick={() => cambiar.mutate({ id: e.id, status: s })}
                             className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
                               s === 'lost'
-                                ? 'border-mar/50 text-mar hover:bg-arena-suave'
-                                : 'border-pino bg-pino text-hueso hover:bg-pino-oscuro'
+                                ? 'border-destructive/50 text-destructive hover:bg-accent'
+                                : 'border-primary bg-primary text-background hover:bg-primary'
                             }`}
                           >
                             {t(`accionSol.${s}`)}

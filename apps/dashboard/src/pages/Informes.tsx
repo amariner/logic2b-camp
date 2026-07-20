@@ -1,7 +1,7 @@
 /**
  * Informes (ADR 0008, sesión 20): los números que gerencia mira cada lunes.
  * Tiles de titular + ocupación por tipo como medidor de un solo tono (magnitud):
- * el color es pino, el texto SIEMPRE en tinta, la estructura recesiva.
+ * el color es primary, el texto SIEMPRE en foreground, la estructura recesiva.
  */
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -40,12 +40,12 @@ function rangos(): { id: string; label: string; from: string; to: string }[] {
 
 function Tile({ titulo, valor, detalle }: { titulo: string; valor: string; detalle?: string }) {
   return (
-    <div className="rounded-(--lc-radius-lg) border border-arena/60 px-4 py-3">
-      <p className="text-[11px] font-semibold tracking-[0.1em] text-tinta-suave uppercase">
+    <div className="rounded-(--lc-radius-lg) border border-border/60 px-4 py-3">
+      <p className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
         {titulo}
       </p>
       <p className="tnum mt-0.5 text-[22px] leading-tight font-semibold">{valor}</p>
-      {detalle && <p className="tnum text-[12px] text-tinta-suave">{detalle}</p>}
+      {detalle && <p className="tnum text-[12px] text-muted-foreground">{detalle}</p>}
     </div>
   );
 }
@@ -77,27 +77,27 @@ export default function Informes() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center gap-3 border-b border-arena/60 px-4 py-2.5">
-        <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-tinta/20 text-[13px] font-medium">
+      <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
+        <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
           {presets.map((p) => (
             <button
               key={p.id}
               type="button"
               onClick={() => setRango(p)}
               aria-pressed={p.id === rango.id}
-              className={`px-3 py-1 ${p.id === rango.id ? 'bg-pino text-hueso' : 'hover:bg-arena-suave'}`}
+              className={`px-3 py-1 ${p.id === rango.id ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {p.label}
             </button>
           ))}
         </div>
-        <p className="tnum text-[13px] text-tinta-suave">
+        <p className="tnum text-[13px] text-muted-foreground">
           {fecha(rango.from)} → {fecha(rango.to)}
         </p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-tinta-suave">{t('inf.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-mar">{t('inf.error')}</p>}
+      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('inf.cargando')}</p>}
+      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('inf.error')}</p>}
 
       {data && (
         <div className="min-h-0 flex-1 overflow-y-auto p-4">
@@ -114,7 +114,7 @@ export default function Informes() {
             <Tile titulo={t('inf.salidas')} valor={String(data.departures)} />
           </div>
 
-          {/* ocupación por tipo: medidor de un solo tono, texto en tinta */}
+          {/* ocupación por tipo: medidor de un solo tono, texto en foreground */}
           <section className="mt-6 max-w-3xl">
             <h2 className="lc-panel-h">{t('inf.ocupacionPor')}</h2>
             <ul className="flex flex-col gap-2.5">
@@ -123,14 +123,14 @@ export default function Informes() {
                   <div className="mb-0.5 flex items-baseline justify-between gap-2 text-[13px]">
                     <span className="font-medium">
                       {tipoNombre(o.unitTypeId)}{' '}
-                      <span className="tnum text-tinta-suave">
+                      <span className="tnum text-muted-foreground">
                         · {t('inf.unidades', { n: o.units })}
                       </span>
                     </span>
                     <span className="tnum font-semibold">{o.occupancyPct}%</span>
                   </div>
                   <div
-                    className="h-2 overflow-hidden rounded-(--lc-radius) bg-arena-suave"
+                    className="h-2 overflow-hidden rounded-(--lc-radius) bg-accent"
                     role="img"
                     aria-label={`${tipoNombre(o.unitTypeId)}: ${o.occupancyPct}%`}
                     title={t('inf.nochesOcupadas', {
@@ -139,7 +139,7 @@ export default function Informes() {
                     })}
                   >
                     <div
-                      className="h-full rounded-(--lc-radius) bg-pino"
+                      className="h-full rounded-(--lc-radius) bg-primary"
                       style={{ width: `${Math.min(100, o.occupancyPct)}%` }}
                     />
                   </div>
