@@ -105,7 +105,8 @@
   "footer": {
     "aviso": "__TODO__",
     "legal": "__TODO__",
-    "privacidad": "__TODO__"
+    "privacidad": "__TODO__",
+    "poweredBy": "Logiciel de gestion de camping par Logic2B"
   },
   "alojamientos": {
     "seo": {

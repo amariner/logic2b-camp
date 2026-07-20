@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-20
 - **Fase**: Frente B — B2 (web pública: estructura Logic2B + marca discreta del tenant)
-- **Estado**: propuesto — ESPERANDO validación de Andreu antes de escribir código (regla de fase)
+- **Estado**: aceptado (por criterio, 2026-07-20 — Andreu: "aplica tu criterio y continúa"). Decisiones cerradas de los 4 puntos abiertos: (1) base de radios **4px**; (2) titular **sigue con Clash Display**; (3) firma "powered by Logic2B" → raíz `camp.logic2b.com/`; (4) alcance = **alineamiento estructural sin reskin**.
 
 ## Contexto
 

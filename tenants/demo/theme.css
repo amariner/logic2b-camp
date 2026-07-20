@@ -16,9 +16,12 @@
   --lc-font-display: 'Clash Display', system-ui, sans-serif;
   --lc-font-text: 'Inter', system-ui, sans-serif;
 
-  /* forma */
-  --lc-radius: 2px;
-  --lc-radius-lg: 4px;
+  /* forma (ADR 0018): base + derivados por calc(), como la escala del DS
+     Logic2B (BRAND.md §5) con la firmeza mediterránea de ADR 0006 (base 4px). */
+  --lc-radius: 4px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 2px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 4px);
 }
 
 /* ---------- Temas de demostración (ADR 0009) ----------

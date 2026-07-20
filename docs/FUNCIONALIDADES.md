@@ -61,6 +61,8 @@ Cada camping tiene su paleta, su radio de esquinas y su contenido. Re-vestir el 
 
 La demo lo enseña en vivo: el menú **"Estilo"** de la cabecera cambia toda la web entre cuatro ambientes (*Pinada*, *Mar*, *Garriga* y *Noche* — este último, modo oscuro completo) delante del cliente. La elección se recuerda mientras navega. Así se ve en 10 segundos cómo quedaría la plataforma con la identidad de cada camping.
 
+En el pie de cada web aparece una firma discreta **"powered by Logic2B"** (en los seis idiomas) que enlaza con la información del producto. La web es del camping —su color, sus fotos, su nombre—; la firma solo deja constancia de quién la mueve, sin robar protagonismo.
+
 Junto al de "Estilo", el menú **"Nivel"** enseña la misma web como se vería en Camp Web (sin motor de reservas) o en Camp Reservas (con él) sin salir de la página — útil para que un camping pequeño se reconozca sin imaginar nada. Como el de estilos, es atrezzo de la demo: un camping real tiene el nivel que ha contratado, no un interruptor.
 
 ### 2.5 Una demo que siempre está lista

@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-18
 - **Fase**: 4 · Web pública + niveles
-- **Estado**: propuesto — ESPERANDO validación de Andreu antes de escribir código (regla de fase)
+- **Estado**: aceptado e implementado (Fase 4). **Reemplazado en parte por ADR 0018** (fase B2, 2026-07-20) en dos puntos: (1) la escala de radios pasa de `2px/4px` sueltos a **una base 4px + derivados por `calc()`**; (2) el pie gana la firma discreta **"powered by Logic2B"**. El resto de este ADR (paleta, tipografía display Clash, wireframes, elemento firma) sigue **vigente** — B2 es alineamiento estructural, no reskin de identidad.
 - **Dirección pedida**: minimalista y moderno, nivel e-commerce premiado (Awwwards), sobre el territorio del §8: camping mediterráneo REAL — materia, no vector.
 
 ## Tesis

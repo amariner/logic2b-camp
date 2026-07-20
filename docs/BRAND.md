@@ -40,7 +40,7 @@ Tagline: *"The Foundation for your Design System — for humans and coding agent
 - **Webfonts subsetadas** (self-hosted, no Google Fonts CDN): `inter-*-wght-normal.woff2` y `space-grotesk-*-wght-normal.woff2` (latin, latin-ext, y demás rangos). Servir desde el propio origen, igual que la web pública ya subsetea sus fuentes.
 - Estilo de titular observado: `font-bold tracking-tighter leading-[1.08]` (negrita, interletrado apretado, línea compacta). Números: `tabular-nums`.
 
-> Nota de convergencia: la web pública (ADR 0006) usa **Inter + Clash Display**. Inter ya es común. Al alinear, la decisión display es Clash Display (tenant, editorial) vs Space Grotesk (Logic2B). Recomendación: **producto → Space Grotesk; web de tenant → sigue con Clash Display**. Cerrar en el ADR de la fase de marca.
+> Convergencia de fuentes — **CERRADA en ADR 0018** (fase B2): **producto → Space Grotesk; web de tenant → sigue con Clash Display**. Inter es común a ambas superficies (cuerpo/UI). B2 alinea el *ritmo* tipográfico (tracking apretado, `tabular-nums`) entre web y producto, pero **no** la familia display: cambiar Clash Display por Space Grotesk neutralizaría la voz editorial del héroe mediterráneo (ADR 0006) — eso sería un reskin, no un alineamiento estructural.
 
 ## 4. Tokens de color (shadcn "neutral", oklch)
 
@@ -80,7 +80,8 @@ Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El c
 ## 5. Radios y geometría
 
 - `--radius: .625rem` (**10px**) base. Derivados: `--radius-sm = radius - 4px`, `--radius-md = radius - 2px`, `--radius-lg = radius`, `--radius-xl = radius + 4px`, `--radius-2xl = 1rem`.
-- Contraste con el dashboard actual, que usa `--lc-radius: 2px` (mucho más duro). Alinear = subir a 10px.
+- **Producto** (dashboard, landing, docs): base 10px.
+- **Web de tenant** (ADR 0018, fase B2): adopta la **forma** de la escala (una base + derivados por `calc()`) pero **no el valor** — base **4px** (`--lc-radius`, con `-sm`/`-md`/`-lg` derivados). Sube un punto respecto al 2px de ADR 0006 (más generoso, alineado con el ritmo del DS) sin ablandar la firmeza mediterránea hacia el 10px del producto. Un tenant cambia su radio tocando **un solo** número.
 
 ## 6. Componentes y layout (convenciones observadas)
 

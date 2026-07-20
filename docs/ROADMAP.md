@@ -78,11 +78,13 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 - [ ] Planning (tape chart): barras y chips con tokens del DS, no hex sueltos; verificar rendimiento (300 uds × 90 días).
 - [ ] AA: foco visible, contraste, teclado, `prefers-reduced-motion`; probar 1366px y 375px.
 
-**B2 · Web pública: estructura Logic2B + marca discreta**
-- [ ] ADR de fase: qué es "estructura Logic2B" sin pisar la identidad del tenant; convergencia de fuentes (Clash Display tenant vs Space Grotesk producto — `BRAND.md` §3 nota).
-- [ ] Header, ritmo de bloques y escala de radios alineados al DS, temáticos por tenant.
-- [ ] Isotipo "powered by Logic2B" discreto en el pie (6 idiomas), enlazando a la landing de producto (B3).
-- [ ] Re-verificar Lighthouse ≥95 y accesibilidad AA tras el cambio.
+**B2 · Web pública: estructura Logic2B + marca discreta** — ✅ HECHO (ADR 0018, 2026-07-20)
+- [x] ADR de fase (0018): "estructura sin reskin"; convergencia de fuentes cerrada (Clash Display tenant / Space Grotesk producto — `BRAND.md` §3).
+- [x] Escala de radios derivada (base **4px** + `calc()`, como el DS pero firme) en `_template`+`demo`, expuesta a Tailwind; se propaga a toda la web por el token del tenant.
+- [x] Ritmo de bloques tokenizado (`--spacing-section` / `py-section`) en el ritmo canónico (Home + secciones finales), cambio de valor cero.
+- [x] Isotipo "powered by Logic2B" discreto en el pie (6 idiomas, `aria`/title localizado), SVG compartido sin runtime, enlazando a la landing (B3).
+- [x] `pnpm check` verde; verificado visualmente contra el Worker real (home nivel 3/1, interior, pie con firma; 1366px y 375px; foco AA).
+- [ ] Remate: Lighthouse ≥95 re-medido en producción (mismo bloqueo de credenciales/red que el resto de la demo — no se añaden fuentes ni JS, así que no debería moverse).
 
 **B3 · Landing de producto (venta al CEO)**
 - [ ] ADR de fase: dónde vive (dominio — decisión pendiente B-i), arquitectura (¿app nueva en el monorepo?, ¿Astro?), narrativa de venta, idiomas.

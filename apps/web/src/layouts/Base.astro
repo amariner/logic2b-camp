@@ -1,5 +1,6 @@
 ---
 import { config, getContent, localePath, media } from '../lib/content';
+import LogoMark from '../components/LogoMark.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -301,9 +302,25 @@ const tierMenuScript = `
             ))}
           </nav>
         </div>
-        <p class="tnum text-[13px] text-tinta-suave">
-          {config.contact.address} · {config.contact.phone} · {config.contact.email}
-        </p>
+        <div class="flex flex-col gap-4 border-t border-arena/50 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p class="tnum text-[13px] text-tinta-suave">
+            {config.contact.address} · {config.contact.phone} · {config.contact.email}
+          </p>
+          {/* firma discreta "powered by Logic2B" (ADR 0018) — único punto de la
+             marca Logic2B en la web del camping (BRAND.md §0). Isotipo compartido
+             (SVG, no runtime), hereda el color apagado del tenant; enlaza a la
+             landing de producto (raíz de camp.logic2b.com). */}
+          <a
+            href="https://camp.logic2b.com/"
+            class="group inline-flex items-center gap-1.5 self-start text-[12px] text-tinta-suave transition-colors hover:text-tinta sm:self-auto"
+            aria-label={c.footer.poweredBy}
+            title={c.footer.poweredBy}
+          >
+            <span>powered by</span>
+            <LogoMark class="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100" label={c.footer.poweredBy} />
+            <span class="font-medium">Logic2B</span>
+          </a>
+        </div>
       </div>
     </footer>
 

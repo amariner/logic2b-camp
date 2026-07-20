@@ -13,8 +13,18 @@
   --color-tinta-suave: var(--lc-tinta-suave);
   --font-display: var(--lc-font-display);
   --font-text: var(--lc-font-text);
+  /* escala de radios completa (ADR 0018): rounded-lc-sm/lc/lc-md/lc-lg salen
+     de una sola base del tenant. Reemplaza los rounded-(--lc-radius) sueltos. */
+  --radius-lc-sm: var(--lc-radius-sm);
   --radius-lc: var(--lc-radius);
+  --radius-lc-md: var(--lc-radius-md);
   --radius-lc-lg: var(--lc-radius-lg);
+  /* ritmo de bloques (ADR 0018): una sola cadencia vertical de sección para
+     toda la web — antes py-24/pb-16/pb-20/pb-24 sueltos por página. Habilita
+     py-section / py-section-lg (y pt-/pb-). Mismo compás que el DS Logic2B,
+     con los valores mediterráneos ya en uso (96px móvil, 128px desktop). */
+  --spacing-section: 6rem;
+  --spacing-section-lg: 8rem;
 }
 
 @font-face {
