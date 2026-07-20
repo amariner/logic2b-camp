@@ -7,6 +7,11 @@
  * Las fuentes (@font-face) las declara el consumidor (sirve los .woff2 desde su /public).
  */
 
+/* Utilidades de animación de shadcn en Tailwind v4 (animate-in, fade-in-0…).
+ * Las usan dialog/sheet/dropdown/popover/tooltip. Todas se anulan bajo
+ * `prefers-reduced-motion` con `motion-reduce:animate-none` en cada componente. */
+@import 'tw-animate-css';
+
 :root {
   --radius: 0.625rem;
 
@@ -30,11 +35,19 @@
   --input: oklch(92.2% 0 0);
   --ring: oklch(70.8% 0 0);
 
-  --chart-1: oklch(64.6% 0.222 41.116);
+  /* Escala de gráficas — valores LIGHT de docs/BRAND.md §4.
+   * Ojo (C-BUG-1, ADR 0020): hasta 2026-07-20 esta lista contenía por error los
+   * valores DARK, los 5 desplazados. Nadie lo detectó porque `.dark` no declaraba
+   * ningún --chart-*, así que en oscuro heredaba estos y "cuadraba". */
+  --chart-1: oklch(48.8% 0.243 264.376);
   --chart-2: oklch(60% 0.118 184.704);
   --chart-3: oklch(39.8% 0.07 227.392);
-  --chart-4: oklch(82.8% 0.189 84.429);
-  --chart-5: oklch(76.9% 0.188 70.08);
+  --chart-4: oklch(62.7% 0.265 303.9);
+  --chart-5: oklch(64.5% 0.246 16.439);
+
+  /* Enlace. Token propio a propósito: hasta ADR 0020 los enlaces de contacto
+   * compartían token con los errores (C-BUG-2) y arreglar uno rompía el otro. */
+  --link: oklch(48.8% 0.243 264.376);
 
   --sidebar: oklch(98.5% 0 0);
   --sidebar-foreground: oklch(14.5% 0 0);
@@ -72,6 +85,17 @@
   --input: oklch(100% 0 0 / 0.15);
   --ring: oklch(55.6% 0 0);
 
+  /* Valores DARK de docs/BRAND.md §4. Faltaban por completo hasta ADR 0020:
+   * en oscuro los charts heredaban los de :root, que es exactamente por lo que
+   * C-BUG-1 pasó desapercibido. */
+  --chart-1: oklch(64.6% 0.222 41.116);
+  --chart-2: oklch(69.6% 0.17 162.48);
+  --chart-3: oklch(76.9% 0.188 70.08);
+  --chart-4: oklch(82.8% 0.189 84.429);
+  --chart-5: oklch(76.9% 0.188 70.08);
+
+  --link: oklch(70.7% 0.165 254.624);
+
   --sidebar: oklch(20.5% 0 0);
   --sidebar-foreground: oklch(98.5% 0 0);
   --sidebar-primary: oklch(92.2% 0 0);
@@ -108,6 +132,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-link: var(--link);
 
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
@@ -118,4 +143,5 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: 1rem;
 }
