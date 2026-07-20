@@ -17,6 +17,15 @@ export type Bindings = {
   STRIPE_WEBHOOK_SECRET?: string;
   /** clave de comercio Redsys en base64 — "su comercio, su clave, por camping" */
   REDSYS_MERCHANT_KEY?: string;
+  /**
+   * SOLO desarrollo local (ADR 0019). Interruptor, NUNCA un valor: habilita la
+   * lista CONSTANTE `DEV_ORIGINS` de `auth.ts` para que el dev server de Vite
+   * (:5173) pueda autenticar contra `wrangler dev` (:8787).
+   *
+   * Se pasa por `--var` en `.claude/launch.json`, jamás en `tenants/*\/wrangler.jsonc`:
+   * ese fichero es el MISMO que despliega a producción.
+   */
+  LOGIC_CAMP_DEV_ORIGINS?: string;
 };
 
 export type TenantContext = {
