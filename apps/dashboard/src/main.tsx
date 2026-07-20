@@ -5,7 +5,7 @@
  */
 import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
-import { cn, LogoMark } from '@logic-camp/ui';
+import { Button, cn, LogoMark, Toaster, TooltipProvider } from '@logic-camp/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createHashHistory,
@@ -33,8 +33,10 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { StrictMode, useState } from 'react';
+import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
+import { RouteError, RouteNotFound } from './components/RouteError';
 import { t } from './i18n';
 import Ajustes from './pages/Ajustes';
 import Clientes from './pages/Clientes';
@@ -50,7 +52,18 @@ import Solicitudes from './pages/Solicitudes';
 import Tarifas from './pages/Tarifas';
 import './styles.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // 401 y 403 no se arreglan reintentando: reintentarlos solo retrasa el
+      // mensaje que la recepcionista necesita leer (ADR 0020, C3).
+      retry: (intentos, error) =>
+        error instanceof ApiError && (error.status === 401 || error.status === 403)
+          ? false
+          : intentos < 2,
+    },
+  },
+});
 
 /** Navegación agrupada al estilo ui.logic2b.com (ADR 0017 §3): lo de cada día primero. */
 type TKey = Parameters<typeof t>[0];
@@ -115,7 +128,7 @@ function Shell() {
     <div className="flex h-screen">
       <aside
         className={cn(
-          'flex shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width]',
+          'flex shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] motion-reduce:transition-none',
           collapsed ? 'w-14' : 'w-56',
         )}
       >
@@ -167,28 +180,27 @@ function Shell() {
             </p>
           )}
           <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="iconSm"
               onClick={toggle}
               title={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
               aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
-              className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="size-8"
             >
-              <ChevronLeft className={cn('size-4 transition-transform', collapsed && 'rotate-180')} />
-            </button>
-            <button
-              type="button"
+              <ChevronLeft className={cn('size-4 transition-transform motion-reduce:transition-none', collapsed && 'rotate-180')} />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => signOut.mutate()}
               title={t('app.cerrarSesion')}
               aria-label={t('app.cerrarSesion')}
-              className={cn(
-                'inline-flex items-center justify-center gap-2 rounded-md border border-border text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
-                collapsed ? 'size-8' : 'ml-auto h-8 px-3',
-              )}
+              className={cn('text-muted-foreground', collapsed ? 'size-8 px-0' : 'ml-auto')}
             >
               <LogOut className="size-4" />
               {!collapsed && <span>{t('app.cerrarSesion')}</span>}
-            </button>
+            </Button>
           </div>
         </div>
       </aside>
@@ -200,7 +212,14 @@ function Shell() {
   );
 }
 
-const rootRoute = createRootRoute({ component: Shell });
+// `errorComponent` en la raíz confina cualquier throw de una pantalla al
+// <Outlet>: la sidebar sigue viva y hay salida. Antes de C3 esto era una
+// pantalla en blanco (ADR 0020).
+const rootRoute = createRootRoute({
+  component: Shell,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
+});
 const routes = [
   createRoute({ getParentRoute: () => rootRoute, path: '/', component: Planning }),
   createRoute({ getParentRoute: () => rootRoute, path: '/llegadas', component: Llegadas }),
@@ -233,7 +252,10 @@ declare module '@tanstack/react-router' {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <TooltipProvider delayDuration={300}>
+        <RouterProvider router={router} />
+        <Toaster />
+      </TooltipProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

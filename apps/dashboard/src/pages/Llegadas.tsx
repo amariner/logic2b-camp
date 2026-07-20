@@ -4,9 +4,11 @@
  * qué queda por cobrar. La ficha (BookingPanel) se abre desde cada fila.
  */
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
+import { Button, EmptyState, Skeleton, SkeletonRows, cn, focusRing } from '@logic-camp/ui';
 import { apiGet, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 
 const DAY_MS = 86_400_000;
@@ -34,7 +36,7 @@ function Lista({
 }: {
   titulo: string;
   items: BookingListItem[];
-  vacio: string;
+  vacio: ReactNode;
   onOpen: (id: string, el: HTMLElement) => void;
 }) {
   return (
@@ -42,18 +44,25 @@ function Lista({
       <h2 className="lc-panel-h px-4 pt-3">
         {titulo} · {items.length}
       </h2>
-      {items.length === 0 && <p className="px-4 py-2 text-[13px] text-muted-foreground">{vacio}</p>}
+      {items.length === 0 && vacio}
       <ul className="divide-y divide-border/40">
         {items.map((b) => {
           const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
           const pendiente = b.totalCents - b.paidCents;
           return (
             <li key={b.id}>
+              {/*
+                Fila entera clicable: se queda como <button> nativo a propósito
+                (ADR 0020, C2). <Button> del DS es `inline-flex` y aquí la fila
+                ES la rejilla de 3 columnas: convertirla rompería la maquetación.
+                Lo único que la migración debe garantizar es el foco visible, y
+                por eso lleva el mismo anillo que `buttonVariants`.
+              */}
               <button
                 type="button"
                 aria-label={t('dia.abrir', { code: b.code })}
                 onClick={(e) => onOpen(b.id, e.currentTarget)}
-                className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 px-4 py-2 text-left text-[13px] hover:bg-accent/50"
+                className={cn('grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50', focusRing)}
               >
                 <span className="tnum font-semibold">{b.code.replace(/^[A-Z]+-\d{4}-/, '')}</span>
                 <span className="truncate font-medium">{b.leadName ?? '—'}</span>
@@ -127,29 +136,25 @@ export default function Llegadas() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
           <div className="flex items-center gap-1">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
               onClick={() => setDia(addDays(dia, -1))}
-              aria-label="←"
-              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
+              aria-label={t('dia.anterior')}
             >
               ←
-            </button>
-            <button
-              type="button"
-              onClick={() => setDia(hoyIso())}
-              className="rounded-(--lc-radius) border border-foreground/20 px-3 py-1 text-[13px] font-semibold hover:bg-accent"
-            >
+            </Button>
+            <Button variant="outline" size="xs" onClick={() => setDia(hoyIso())}>
               {t('dia.hoy')}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="outline"
+              size="iconSm"
               onClick={() => setDia(addDays(dia, 1))}
-              aria-label="→"
-              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
+              aria-label={t('dia.siguiente')}
             >
               →
-            </button>
+            </Button>
           </div>
           <input
             type="date"
@@ -164,22 +169,58 @@ export default function Llegadas() {
           </p>
         </div>
 
-        {cargando && <p className="p-6 text-[14px] text-muted-foreground">{t('dia.cargando')}</p>}
-        {error && <p className="p-6 text-[14px] font-medium text-destructive">{t('dia.error')}</p>}
+        {cargando && (
+          /* Dos columnas de filas de 3 huecos: código · nombre · importe. La
+             forma de la hoja real, no un rectángulo (ADR 0020, C3). */
+          <div
+            aria-busy="true"
+            aria-label={t('dia.cargando')}
+            className="flex min-h-0 flex-1 flex-col gap-2 pb-4 lg:flex-row lg:divide-x lg:divide-border/60"
+          >
+            {[t('dia.llegadas'), t('dia.salidas')].map((titulo) => (
+              <section key={titulo} className="min-w-0 flex-1">
+                <Skeleton className="mx-4 mt-3 mb-2 h-3 w-28" />
+                <SkeletonRows rows={5} cols={['w-12', 'w-40', 'w-14', 'w-20']} />
+              </section>
+            ))}
+          </div>
+        )}
+
+        {error && (
+          <QueryError
+            error={llegadas.error ?? salidas.error}
+            onRetry={() => {
+              void llegadas.refetch();
+              void salidas.refetch();
+            }}
+          />
+        )}
 
         {!cargando && !error && (
           <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pb-4 lg:flex-row lg:divide-x lg:divide-border/60">
             <Lista
               titulo={t('dia.llegadas')}
               items={llegadasHoy}
-              vacio={t('dia.sinLlegadas')}
               onOpen={openPanel}
+              vacio={
+                <EmptyState
+                  art="calendar"
+                  title={t('vacio.llegadas.titulo')}
+                  description={t('vacio.llegadas.desc')}
+                  /* Un vacío sin salida es un callejón: se ofrece avanzar el día. */
+                  action={
+                    <Button variant="outline" size="sm" onClick={() => setDia(addDays(dia, 1))}>
+                      {t('vacio.llegadas.manana')}
+                    </Button>
+                  }
+                />
+              }
             />
             <Lista
               titulo={t('dia.salidas')}
               items={salidasHoy}
-              vacio={t('dia.sinSalidas')}
               onOpen={openPanel}
+              vacio={<EmptyState art="calendar" title={t('vacio.salidas.titulo')} />}
             />
           </div>
         )}

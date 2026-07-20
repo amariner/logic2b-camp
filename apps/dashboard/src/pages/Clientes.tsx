@@ -3,12 +3,18 @@
  * Búsqueda en servidor, historial por cliente y salto directo a la ficha
  * de cualquiera de sus reservas.
  */
+import { Button, EmptyState, Skeleton, SkeletonRows, SkeletonText } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, type GuestDetail, type GuestListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
+
+/** Foco visible en las filas clicables: son rejillas enteras, no botones. */
+const FILA_FOCO =
+  'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 motion-reduce:transition-none';
 
 function GuestPanel({
   guestId,
@@ -20,7 +26,7 @@ function GuestPanel({
   onOpenBooking: (id: string) => void;
 }) {
   const panelRef = useRef<HTMLElement>(null);
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['guest', guestId],
     queryFn: () => apiGet<GuestDetail>(`/api/admin/guests/${guestId}`),
   });
@@ -47,18 +53,31 @@ function GuestPanel({
         <span className="text-[14px] font-semibold">
           {data ? `${data.name} ${data.surname}`.trim() : t('cli.ficha')}
         </span>
-        <button
-          type="button"
+        <Button
+          variant="outline"
+          size="iconSm"
           onClick={onClose}
           aria-label={t('cli.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
+          className="ml-auto"
         >
           ✕
-        </button>
+        </Button>
       </div>
 
-      {isPending && <p className="p-4 text-[13px] text-muted-foreground">{t('cli.cargando')}</p>}
-      {isError && <p className="p-4 text-[13px] font-medium text-destructive">{t('cli.error')}</p>}
+      {/* Esqueleto con la forma de la ficha: nombre, contacto y lista de estancias. */}
+      {isPending && (
+        <div aria-busy="true" aria-label={t('cli.cargandoFicha')} className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-24" />
+            <SkeletonText lines={3} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-32" />
+            <SkeletonRows rows={3} cols={['w-16', 'w-20', 'w-14']} className="-mx-4" />
+          </div>
+        </div>
+      )}
+      {isError && <QueryError error={error} onRetry={() => refetch()} />}
 
       {data && (
         <div className="flex flex-col gap-4 p-4 text-[13px]">
@@ -99,11 +118,20 @@ function GuestPanel({
             <ul className="flex flex-col">
               {data.bookings.map((b) => (
                 <li key={b.id}>
-                  <button
-                    type="button"
+                  {/* Fila-rejilla completa: se queda como fila (no <Button>), pero
+                      con rol, teclado y foco visible. */}
+                  <div
+                    role="button"
+                    tabIndex={0}
                     aria-label={t('cli.abrirReserva', { code: b.code })}
                     onClick={() => onOpenBooking(b.id)}
-                    className="grid w-full grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-border/40 py-2 text-left hover:bg-accent/50"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onOpenBooking(b.id);
+                      }
+                    }}
+                    className={`grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-border/40 py-2 text-left hover:bg-accent/50 ${FILA_FOCO}`}
                   >
                     <span className="tnum font-semibold">
                       {b.code}
@@ -122,7 +150,7 @@ function GuestPanel({
                     <span className="tnum justify-self-end text-muted-foreground">
                       {eur(b.totalCents)}
                     </span>
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -142,7 +170,7 @@ export default function Clientes() {
   const params = new URLSearchParams({ page: String(page), pageSize: '25' });
   if (q.trim()) params.set('q', q.trim());
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['guests', params.toString()],
     queryFn: () => apiGet<{ items: GuestListItem[] }>(`/api/admin/guests?${params}`),
   });
@@ -164,30 +192,55 @@ export default function Clientes() {
             className="w-56 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
           <div className="flex items-center gap-1 text-[13px]">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
+              aria-label={t('res.anterior')}
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold hover:bg-accent disabled:opacity-40"
             >
               ←
-            </button>
+            </Button>
             <span className="tnum px-1 text-muted-foreground">{t('res.pagina', { n: page })}</span>
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
+              aria-label={t('res.siguiente')}
               disabled={items.length < 25}
               onClick={() => setPage((p) => p + 1)}
-              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold hover:bg-accent disabled:opacity-40"
             >
               →
-            </button>
+            </Button>
           </div>
         </div>
 
-        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('cli.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('cli.error')}</p>}
+        {/* Columnas del esqueleto = columnas reales: nombre · contacto · documento · nº · última estancia. */}
+        {isPending && (
+          <div aria-busy="true" aria-label={t('cli.cargando')} className="pt-2">
+            <SkeletonRows rows={8} cols={['w-36', 'w-44', 'w-24', 'w-6', 'w-20']} />
+          </div>
+        )}
+        {isError && <QueryError error={error} onRetry={() => refetch()} />}
         {!isPending && !isError && items.length === 0 && (
-          <p className="p-6 text-[14px] text-muted-foreground">{t('cli.vacio')}</p>
+          <EmptyState
+            art="search"
+            title={t('cli.vacio')}
+            description={t('cli.vacioDesc')}
+            action={
+              q.trim() ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setQ('');
+                    setPage(1);
+                  }}
+                >
+                  {t('cli.limpiarBusqueda')}
+                </Button>
+              ) : undefined
+            }
+          />
         )}
 
         {items.length > 0 && (
@@ -227,7 +280,7 @@ export default function Clientes() {
                       }
                     }}
                     tabIndex={0}
-                    className="cursor-pointer border-b border-border/40 hover:bg-accent/50"
+                    className={`cursor-pointer border-b border-border/40 hover:bg-accent/50 ${FILA_FOCO}`}
                   >
                     <td className="px-3 py-2 font-medium first:pl-4">
                       {`${g.name} ${g.surname}`.trim()}

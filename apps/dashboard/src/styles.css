@@ -3,6 +3,14 @@
 @import 'tailwindcss';
 @import '@logic-camp/ui/theme.css';
 
+/* Tailwind v4 NO escanea node_modules, y `@logic-camp/ui` entra por symlink de pnpm.
+ * Sin esta línea, las clases que viven SOLO en packages/ui (size-14, translate-x-4,
+ * rounded-[4px], min-w-[10rem]…) no generan CSS: el DS parecía funcionar solo porque
+ * sus clases más comunes coincidían con las de la app. Detectado en ADR 0020
+ * verificando en el navegador — el error boundary pintaba un icono de 384px. */
+@source '../../../packages/ui/src';
+
+
 /* El puente de alias de la paleta camping (ADR 0008 → 0017) SE ELIMINÓ en ADR 0020.
  * Motivo: mientras existía, un alias mal apuntado producía un color absurdo sin que
  * nada fallara — que es literalmente C-BUG-2 (`--color-mar: var(--foreground)`, los
@@ -14,39 +22,8 @@
   --lc-radius-lg: var(--radius-lg);
 }
 
-/* ---------- estado de reserva → color (ADR 0020 §2.2) ----------
- *
- * El planning NO lee de --chart-* directamente. Leía `--chart-4` para el estado
- * `pending`, y así fue como un bug en la escala de gráficas (C-BUG-1) acabó
- * pintando la pantalla firma del producto. Un tape chart no necesita "el color 4",
- * necesita "el color de pendiente de pago".
- *
- * Estos valores son EXACTAMENTE los que se veían antes de corregir C-BUG-1: este
- * ADR no cambia ni un píxel del planning. El mapa de color definitivo (incluido
- * "en casa", que llega con el check-in de C4) lo decide **C1.5**, y cuando lo haga
- * cambiará estos cinco valores y nada más — ni CSS de barras, ni de chips, ni el
- * plano de C7, que leerá de aquí para que plano y planning no puedan divergir.
- */
-:root {
-  --lc-status-confirmed: var(--primary);
-  --lc-status-confirmed-fg: var(--primary-foreground);
-
-  /* Ámbar. Valor explícito, no var(--chart-4): ver arriba. */
-  --lc-status-pending: oklch(82.8% 0.189 84.429);
-  --lc-status-pending-fg: oklch(14.5% 0 0);
-
-  --lc-status-no-show: var(--destructive);
-  --lc-status-no-show-fg: var(--destructive-foreground);
-
-  --lc-status-completed: var(--muted-foreground);
-  --lc-status-completed-fg: var(--background);
-
-  /* Azul de "en curso / informativo": solicitud contactada, aviso en cola. */
-  --lc-status-info: oklch(39.8% 0.07 227.392);
-  --lc-status-info-fg: oklch(100% 0 0);
-
-  --lc-status-blocked: var(--muted-foreground);
-}
+/* Los tokens --lc-status-* viven en el DS (packages/ui/theme.css): los comparten
+ * el planning, la maqueta de la landing y el futuro plano del camping (C7). */
 
 html {
   background: var(--background);

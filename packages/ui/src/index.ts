@@ -9,7 +9,7 @@ export const PACKAGE = '@logic-camp/ui';
 /** Marca a mostrar junto al isotipo. */
 export const BRAND_NAME = 'Logic2B';
 
-export { cn } from './lib/cn';
+export { cn, focusRing } from './lib/cn';
 
 export { Button, buttonVariants, type ButtonProps } from './components/button';
 export { Badge, badgeVariants, type BadgeProps } from './components/badge';

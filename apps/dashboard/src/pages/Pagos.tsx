@@ -3,9 +3,11 @@
  * invariante 2 (sum(amount_cents) == paid_cents) — esta pantalla solo lo
  * hace visible con filtros, en vez de tener que abrir ficha por ficha.
  */
+import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, type PaymentLogItem } from '../api';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
 
@@ -21,66 +23,90 @@ export default function Pagos() {
   if (estado !== 'todos') params.set('status', estado);
   const qs = params.toString();
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['payments', proveedor, estado],
     queryFn: () => apiGet<{ items: PaymentLogItem[] }>(`/api/admin/payments${qs ? `?${qs}` : ''}`),
     refetchInterval: 60_000,
   });
 
   const items = data?.items ?? [];
+  const hayFiltro = proveedor !== 'todos' || estado !== 'todos';
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
-          <button
-            type="button"
+        <div className="flex flex-wrap items-center gap-1" role="group" aria-label={t('pagl.proveedor')}>
+          <Button
+            size="xs"
+            variant={proveedor === 'todos' ? 'primary' : 'outline'}
             onClick={() => setProveedor('todos')}
             aria-pressed={proveedor === 'todos'}
-            className={`px-3 py-1 ${proveedor === 'todos' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('pagl.todos')}
-          </button>
+          </Button>
           {PROVEEDORES.map((p) => (
-            <button
+            <Button
               key={p}
-              type="button"
+              size="xs"
+              variant={proveedor === p ? 'primary' : 'outline'}
               onClick={() => setProveedor(p)}
               aria-pressed={proveedor === p}
-              className={`px-3 py-1 ${proveedor === p ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`pago.${p}`)}
-            </button>
+            </Button>
           ))}
         </div>
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
-          <button
-            type="button"
+        <div className="flex flex-wrap items-center gap-1" role="group" aria-label={t('res.estado')}>
+          <Button
+            size="xs"
+            variant={estado === 'todos' ? 'primary' : 'outline'}
             onClick={() => setEstado('todos')}
             aria-pressed={estado === 'todos'}
-            className={`px-3 py-1 ${estado === 'todos' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('pagl.todos')}
-          </button>
+          </Button>
           {ESTADOS.map((s) => (
-            <button
+            <Button
               key={s}
-              type="button"
+              size="xs"
+              variant={estado === s ? 'primary' : 'outline'}
               onClick={() => setEstado(s)}
               aria-pressed={estado === s}
-              className={`px-3 py-1 ${estado === s ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`pago.${s}`)}
-            </button>
+            </Button>
           ))}
         </div>
         <p className="tnum ml-auto text-[12px] text-muted-foreground">{t('pagl.n', { n: items.length })}</p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('pagl.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('pagl.error')}</p>}
+      {/* Columnas del esqueleto = la rejilla real: fecha · reserva · proveedor · estado · importe. */}
+      {isPending && (
+        <div aria-busy="true" aria-label={t('pagl.cargando')} className="pt-1">
+          <SkeletonRows rows={8} cols={['w-16', 'w-28', 'w-16', 'w-16', 'w-14']} />
+        </div>
+      )}
+      {isError && <QueryError error={error} onRetry={() => refetch()} />}
       {!isPending && !isError && items.length === 0 && (
-        <p className="p-6 text-[14px] text-muted-foreground">{t('pagl.vacio')}</p>
+        <EmptyState
+          art="inbox"
+          title={t('pagl.vacio')}
+          description={t('pagl.vacioDesc')}
+          action={
+            hayFiltro ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  setProveedor('todos');
+                  setEstado('todos');
+                }}
+              >
+                {t('pagl.quitarFiltros')}
+              </Button>
+            ) : undefined
+          }
+        />
       )}
 
       <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">

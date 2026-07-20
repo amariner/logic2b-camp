@@ -106,6 +106,43 @@
   --sidebar-ring: oklch(55.6% 0 0);
 }
 
+/* ---------- estado de reserva → color (ADR 0020 §2.2) ----------
+ *
+ * Vive en el DS, no en el dashboard, porque tiene MÁS DE UN CONSUMIDOR: el
+ * planning del dashboard, la maqueta de planning de la landing y, cuando llegue,
+ * el plano del camping (C7). Que los tres lean de aquí es lo que impide que el
+ * producto se contradiga a sí mismo enseñando tres colores para "pendiente".
+ *
+ * Nada aquí lee de --chart-*: el planning leía `--chart-4` para `pending`, y así
+ * fue como un bug en la escala de gráficas (C-BUG-1) acabó pintando la pantalla
+ * firma del producto. Un tape chart no necesita "el color 4", necesita "el color
+ * de pendiente de pago".
+ *
+ * Los valores son EXACTAMENTE los que se veían antes de corregir C-BUG-1, así que
+ * ADR 0020 no cambia un píxel. El mapa definitivo (incluido "en casa", que llega
+ * con el check-in de C4) lo decide **C1.5** cambiando estos valores y nada más.
+ */
+:root {
+  --lc-status-confirmed: var(--primary);
+  --lc-status-confirmed-fg: var(--primary-foreground);
+
+  /* Ámbar. Valor explícito, no var(--chart-4): ver arriba. */
+  --lc-status-pending: oklch(82.8% 0.189 84.429);
+  --lc-status-pending-fg: oklch(14.5% 0 0);
+
+  --lc-status-no-show: var(--destructive);
+  --lc-status-no-show-fg: var(--destructive-foreground);
+
+  --lc-status-completed: var(--muted-foreground);
+  --lc-status-completed-fg: var(--background);
+
+  /* Azul de "en curso / informativo": solicitud contactada, aviso en cola. */
+  --lc-status-info: oklch(39.8% 0.07 227.392);
+  --lc-status-info-fg: oklch(100% 0 0);
+
+  --lc-status-blocked: var(--muted-foreground);
+}
+
 /* Mapea los tokens a utilidades Tailwind v4 (bg-background, text-foreground, rounded-lg…). */
 @theme inline {
   --color-background: var(--background);
@@ -133,6 +170,15 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
   --color-link: var(--link);
+
+  --color-status-confirmed: var(--lc-status-confirmed);
+  --color-status-confirmed-fg: var(--lc-status-confirmed-fg);
+  --color-status-pending: var(--lc-status-pending);
+  --color-status-pending-fg: var(--lc-status-pending-fg);
+  --color-status-no-show: var(--lc-status-no-show);
+  --color-status-completed: var(--lc-status-completed);
+  --color-status-info: var(--lc-status-info);
+  --color-status-blocked: var(--lc-status-blocked);
 
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);

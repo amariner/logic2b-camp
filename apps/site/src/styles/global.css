@@ -2,6 +2,14 @@
 @import 'tailwindcss';
 @import '@logic-camp/ui/theme.css';
 
+/* Tailwind v4 NO escanea node_modules, y `@logic-camp/ui` entra por symlink de pnpm.
+ * Sin esta línea, las clases que viven SOLO en packages/ui (size-14, translate-x-4,
+ * rounded-[4px], min-w-[10rem]…) no generan CSS: el DS parecía funcionar solo porque
+ * sus clases más comunes coincidían con las de la app. Detectado en ADR 0020
+ * verificando en el navegador — el error boundary pintaba un icono de 384px. */
+@source '../../../../packages/ui/src';
+
+
 /* Las fuentes se sirven self-hosted desde /public/fonts (sin CDN). */
 @font-face {
   font-family: 'Inter Variable';

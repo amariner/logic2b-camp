@@ -2,10 +2,13 @@
  * PLANNING ★ (ADR 0008) — el tape chart que recepción mira 200 veces al día.
  * Virtualización de FILAS con @tanstack/react-virtual; las reservas se pintan
  * como barras absolutas por fila (decenas de nodos por frame, no miles).
- * v1: lectura. El drag&drop de reasignación llega en la sesión 17.
+ * Incluye reasignación por arrastre (pointer events nativos, optimista con
+ * rollback y toast con "Deshacer") y por teclado ↑/↓, más la ficha lateral de
+ * la reserva. Ver `onBarPointerDown` y siguientes.
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { Button, EmptyState, Skeleton, toast } from '@logic-camp/ui';
 import { useMemo, useRef, useState } from 'react';
 import {
   apiGet,
@@ -16,6 +19,7 @@ import {
   type PlanningUnit,
 } from '../api';
 import BookingPanel from '../components/BookingPanel';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 
 const DAY_MS = 86_400_000;
@@ -37,6 +41,58 @@ const GROUP_H = 30;
 type Row =
   { kind: 'group'; id: string; label: string } | { kind: 'unit'; id: string; unit: PlanningUnit };
 
+/** Reasignar una reserva a otra unidad. `fromUnitId` solo se usa para deshacer. */
+type ReassignInput = { id: string; unitId: string; fromUnitId: string; undo?: boolean };
+
+/**
+ * Esqueleto con la forma del tape chart (ADR 0020, C3): columna de códigos de
+ * unidad a la izquierda y barras de anchos y desplazamientos distintos a la
+ * derecha. Está fuera del componente a propósito: no entra en el camino caliente
+ * del render de barras ni de celdas de día.
+ */
+const SKELETON_BARS: ReadonlyArray<ReadonlyArray<[number, number]>> = [
+  [[2, 26], [40, 18]],
+  [[0, 34]],
+  [[12, 20], [46, 30]],
+  [[6, 48]],
+  [[28, 14], [52, 22]],
+  [[0, 18], [36, 12], [62, 26]],
+  [[18, 40]],
+  [[4, 12], [30, 34]],
+];
+
+function PlanningSkeleton() {
+  return (
+    <div aria-busy="true" aria-label={t('planning.cargando')} className="min-h-0 flex-1 overflow-hidden">
+      {/* cabecera de días */}
+      <div className="flex border-b-2 border-foreground/20" style={{ paddingLeft: LABEL_W }}>
+        {Array.from({ length: 24 }, (_, i) => (
+          <Skeleton key={i} className="mx-1 my-1.5 h-2.5 w-4 shrink-0 rounded-sm" />
+        ))}
+      </div>
+      {SKELETON_BARS.map((bars, r) => (
+        <div key={r} className="flex items-center border-b border-border/40" style={{ height: ROW_H }}>
+          <div
+            className="flex shrink-0 items-center border-r border-border/60 px-2"
+            style={{ width: LABEL_W }}
+          >
+            <Skeleton className="h-2.5 w-16" />
+          </div>
+          <div className="relative h-full flex-1">
+            {bars.map(([left, width], i) => (
+              <Skeleton
+                key={i}
+                className="absolute top-1 h-6 rounded-sm"
+                style={{ left: `${left}%`, width: `${width}%` }}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Planning() {
   const [zoomId, setZoomId] = useState<(typeof ZOOMS)[number]['id']>('mes');
   const [anchor, setAnchor] = useState(() => iso(new Date()));
@@ -44,7 +100,7 @@ export default function Planning() {
   const from = anchor;
   const to = addDays(anchor, zoom.days);
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['planning', from, to],
     queryFn: () => apiGet<PlanningData>(`/api/admin/planning?from=${from}&to=${to}`),
     staleTime: 15_000,
@@ -107,9 +163,14 @@ export default function Planning() {
 
   // ---------- reasignación (ADR 0008): optimista con rollback; el servidor valida SIEMPRE ----------
   const qc = useQueryClient();
-  const [dndMsg, setDndMsg] = useState<{ text: string; error?: boolean } | null>(null);
+  // El "Deshacer" del toast se dispara desde dentro del propio `onSuccess`, así
+  // que la mutación no puede referenciarse a sí misma: se pasa por este ref.
+  const reassignRef = useRef<(input: ReassignInput) => void>(() => {});
   const reassign = useMutation({
-    mutationFn: (input: { id: string; unitId: string }) =>
+    // `fromUnitId` no viaja al servidor: es lo que hace posible el "Deshacer"
+    // (mover la reserva de vuelta a su unidad de origen). `undo` evita que el
+    // deshacer ofrezca a su vez otro deshacer, en bucle.
+    mutationFn: (input: ReassignInput) =>
       apiPatch(`/api/admin/bookings/${input.id}`, { action: 'reassign', unitId: input.unitId }),
     onMutate: async (input) => {
       await qc.cancelQueries({ queryKey: ['planning', from, to] });
@@ -126,16 +187,32 @@ export default function Planning() {
       );
       return { prev };
     },
-    onError: (_e, _i, ctx) => {
+    onError: (_e, input, ctx) => {
       if (ctx?.prev) qc.setQueryData(['planning', from, to], ctx.prev);
-      setDndMsg({ text: t('planning.reasignarError'), error: true });
+      toast.error(input.undo ? t('accion.errorDeshacer') : t('planning.reasignarError'));
     },
     onSuccess: (_d, input) => {
+      if (input.undo) {
+        toast.success(t('accion.deshecho'));
+        return;
+      }
       const unit = data?.units.find((u) => u.id === input.unitId);
-      setDndMsg({ text: t('planning.reasignada', { unit: unit?.code ?? input.unitId }) });
+      toast.success(t('planning.reasignada', { unit: unit?.code ?? input.unitId }), {
+        action: {
+          label: t('accion.deshacer'),
+          onClick: () =>
+            reassignRef.current({
+              id: input.id,
+              unitId: input.fromUnitId,
+              fromUnitId: input.unitId,
+              undo: true,
+            }),
+        },
+      });
     },
     onSettled: () => void qc.invalidateQueries({ queryKey: ['planning'] }),
   });
+  reassignRef.current = reassign.mutate;
 
   // drag con pointer events nativos: manipulación directa del DOM (cero re-render por frame)
   const rowsRef = useRef<HTMLDivElement>(null);
@@ -212,7 +289,12 @@ export default function Planning() {
     d.el.style.transform = '';
     d.el.style.zIndex = '';
     d.el.style.opacity = '';
-    if (d.moved && d.targetUnitId) reassign.mutate({ id: d.bookingId, unitId: d.targetUnitId });
+    if (d.moved && d.targetUnitId)
+      reassign.mutate({
+        id: d.bookingId,
+        unitId: d.targetUnitId,
+        fromUnitId: d.sourceUnitId,
+      });
     else if (!d.moved) openPanel(d.bookingId, d.el); // un click (sin drag) abre la ficha
     dragRef.current = null;
   };
@@ -230,7 +312,7 @@ export default function Planning() {
     const sameType = data.units.filter((u) => u.unitTypeId === b.unitTypeId);
     const idx = sameType.findIndex((u) => u.id === sourceUnitId);
     const next = sameType[idx + (e.key === 'ArrowDown' ? 1 : -1)];
-    if (next) reassign.mutate({ id: b.id, unitId: next.id });
+    if (next) reassign.mutate({ id: b.id, unitId: next.id, fromUnitId: sourceUnitId });
   };
 
   // ---------- ficha (sesión 17): panel lateral, el foco vuelve a quien la abrió ----------
@@ -273,29 +355,25 @@ export default function Planning() {
         {/* barra de mando: fechas, zoom, datos a la vista */}
         <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
           <div className="flex items-center gap-1">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
               onClick={() => setAnchor(addDays(anchor, -zoom.days))}
-              aria-label="←"
-              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
+              aria-label={t('planning.anterior')}
             >
               ←
-            </button>
-            <button
-              type="button"
-              onClick={() => setAnchor(iso(new Date()))}
-              className="rounded-(--lc-radius) border border-foreground/20 px-3 py-1 text-[13px] font-semibold hover:bg-accent"
-            >
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setAnchor(iso(new Date()))}>
               {t('planning.hoy')}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="outline"
+              size="iconSm"
               onClick={() => setAnchor(addDays(anchor, zoom.days))}
-              aria-label="→"
-              className="rounded-(--lc-radius) border border-foreground/20 px-2.5 py-1 text-[13px] font-semibold hover:bg-accent"
+              aria-label={t('planning.siguiente')}
             >
               →
-            </button>
+            </Button>
           </div>
           <input
             type="date"
@@ -303,27 +381,21 @@ export default function Planning() {
             onChange={(e) => e.target.value && setAnchor(e.target.value)}
             className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
-          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
+          {/* grupo de selección: un solo zoom activo, aspecto segmentado */}
+          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-input">
             {ZOOMS.map((z) => (
-              <button
+              <Button
                 key={z.id}
-                type="button"
+                variant={z.id === zoomId ? 'primary' : 'outline'}
+                size="sm"
                 onClick={() => setZoomId(z.id)}
-                className={`px-3 py-1 ${z.id === zoomId ? 'bg-primary text-background' : 'hover:bg-accent'}`}
+                className="rounded-none border-0 border-l border-input first:border-l-0"
                 aria-pressed={z.id === zoomId}
               >
                 {t(`planning.${z.id}`)}
-              </button>
+              </Button>
             ))}
           </div>
-          {dndMsg && (
-            <p
-              role="status"
-              className={`text-[12px] font-medium ${dndMsg.error ? 'text-destructive' : 'text-primary'}`}
-            >
-              {dndMsg.text}
-            </p>
-          )}
           {data && (
             <p className="tnum ml-auto text-[12px] text-muted-foreground">
               {t('planning.unidades', { n: data.units.length })} ·{' '}
@@ -339,24 +411,32 @@ export default function Planning() {
               {t('planning.sinAsignar')}
             </span>
             {byUnit.unassigned.map((b) => (
-              <button
+              <Button
                 key={b.id}
-                type="button"
+                variant="ghost"
+                size="xs"
                 title={`${b.code} · ${b.dateFrom} → ${b.dateTo}`}
-                className={`lc-bar st-${b.status} cursor-pointer`}
-                style={{ position: 'static', display: 'inline-block' }}
+                className={`lc-chip st-${b.status} h-6 px-1.5`}
                 onClick={(e) => openPanel(b.id, e.currentTarget)}
               >
                 {b.code}
-              </button>
+              </Button>
             ))}
           </div>
         )}
 
-        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('planning.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('planning.error')}</p>}
+        {isPending && <PlanningSkeleton />}
+        {isError && <QueryError error={error} onRetry={() => void refetch()} />}
 
-        {data && (
+        {data && rows.length === 0 && (
+          <EmptyState
+            art="calendar"
+            title={t('planning.vacio.titulo')}
+            description={t('planning.vacio.desc')}
+          />
+        )}
+
+        {data && rows.length > 0 && (
           <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto">
             <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
               {/* cabecera sticky: meses + días */}

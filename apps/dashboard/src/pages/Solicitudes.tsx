@@ -5,7 +5,9 @@
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
 import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 
 /** Siguientes pasos naturales por estado (el servidor admite cualquiera; la UI guía). */
@@ -28,9 +30,8 @@ export default function Solicitudes() {
   const qc = useQueryClient();
   const [filtro, setFiltro] = useState<EnquiryStatus | 'todas'>('todas');
   const [abierta, setAbierta] = useState<string | null>(null);
-  const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['enquiries'],
     queryFn: () => apiGet<{ items: EnquiryItem[] }>('/api/admin/enquiries'),
     refetchInterval: 60_000,
@@ -45,10 +46,10 @@ export default function Solicitudes() {
     mutationFn: (input: { id: string; status: EnquiryStatus }) =>
       apiPatch(`/api/admin/enquiries/${input.id}`, { status: input.status }),
     onSuccess: (_d, input) => {
-      setMsg({ text: t('sol.cambiada', { estado: t(`sol.${input.status}`) }) });
+      toast.success(t('sol.cambiada', { estado: t(`sol.${input.status}`) }));
       void qc.invalidateQueries({ queryKey: ['enquiries'] });
     },
-    onError: () => setMsg({ text: t('sol.cambioError'), error: true }),
+    onError: () => toast.error(t('sol.cambioError')),
   });
 
   const items = data?.items ?? [];
@@ -65,44 +66,52 @@ export default function Solicitudes() {
     <div className="flex h-full flex-col">
       {/* filtros por estado, con recuento — la bandeja se lee de un vistazo */}
       <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
-          <button
-            type="button"
+        <div className="flex flex-wrap items-center gap-1">
+          <Button
+            variant={filtro === 'todas' ? 'primary' : 'outline'}
+            size="xs"
             onClick={() => setFiltro('todas')}
             aria-pressed={filtro === 'todas'}
-            className={`px-3 py-1 ${filtro === 'todas' ? 'bg-primary text-background' : 'hover:bg-accent'}`}
           >
             {t('sol.todas')} · {items.length}
-          </button>
+          </Button>
           {ESTADOS.map((s) => (
-            <button
+            <Button
               key={s}
-              type="button"
+              variant={filtro === s ? 'primary' : 'outline'}
+              size="xs"
               onClick={() => setFiltro(s)}
               aria-pressed={filtro === s}
-              className={`px-3 py-1 ${filtro === s ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {t(`sol.${s}`)} · {porEstado.get(s) ?? 0}
-            </button>
+            </Button>
           ))}
         </div>
-        {msg && (
-          <p
-            role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
-          >
-            {msg.text}
-          </p>
-        )}
         <p className="tnum ml-auto text-[12px] text-muted-foreground">
           {t('sol.n', { n: visibles.length })}
         </p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('sol.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('sol.error')}</p>}
+      {isPending && (
+        /* Misma rejilla que la fila real: fecha · nombre · fechas · tipo · estado. */
+        <div aria-busy="true" aria-label={t('sol.cargando')}>
+          <SkeletonRows rows={7} cols={['w-14', 'w-32', 'w-44', 'w-28', 'w-16']} />
+        </div>
+      )}
+      {isError && <QueryError error={error} onRetry={() => refetch()} />}
       {!isPending && !isError && visibles.length === 0 && (
-        <p className="p-6 text-[14px] text-muted-foreground">{t('sol.vacio')}</p>
+        <EmptyState
+          art="inbox"
+          title={t('sol.vacio')}
+          /* Salida: si el vacío lo ha causado el filtro, se puede quitar. */
+          action={
+            filtro !== 'todas' ? (
+              <Button variant="outline" size="sm" onClick={() => setFiltro('todas')}>
+                {t('sol.verTodas')}
+              </Button>
+            ) : undefined
+          }
+        />
       )}
 
       <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
@@ -111,12 +120,18 @@ export default function Solicitudes() {
           const abiertaEsta = abierta === e.id;
           return (
             <li key={e.id}>
-              {/* fila resumen: clicable para expandir el detalle */}
+              {/*
+                Fila resumen clicable para expandir el detalle. Se queda como
+                <button> nativo: la fila ES la rejilla de 5 columnas y <Button>
+                del DS es `inline-flex`, así que convertirla rompería la
+                maquetación (ADR 0020, C2 — excepción de "fila entera clicable").
+                Lleva el mismo anillo de foco que `buttonVariants`.
+              */}
               <button
                 type="button"
                 onClick={() => setAbierta(abiertaEsta ? null : e.id)}
                 aria-expanded={abiertaEsta}
-                className="grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]"
+                className={cn('grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 rounded-md px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]', focusRing)}
               >
                 <span className="tnum text-muted-foreground">{fecha(e.createdAt)}</span>
                 <span className="truncate font-medium">{e.contact.name}</span>
@@ -162,19 +177,15 @@ export default function Solicitudes() {
                     {NEXT[e.status].length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {NEXT[e.status].map((s) => (
-                          <button
+                          <Button
                             key={s}
-                            type="button"
+                            size="xs"
+                            variant={s === 'lost' ? 'destructiveOutline' : 'primary'}
                             disabled={cambiar.isPending}
                             onClick={() => cambiar.mutate({ id: e.id, status: s })}
-                            className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
-                              s === 'lost'
-                                ? 'border-destructive/50 text-destructive hover:bg-accent'
-                                : 'border-primary bg-primary text-background hover:bg-primary'
-                            }`}
                           >
                             {t(`accionSol.${s}`)}
-                          </button>
+                          </Button>
                         ))}
                       </div>
                     )}

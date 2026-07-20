@@ -3,9 +3,25 @@
  * Guardar exige gerencia (el servidor manda). Invariante 3 a la vista:
  * cambiar una tarifa JAMÁS modifica una reserva ya confirmada.
  */
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+  Skeleton,
+  SkeletonRows,
+  toast,
+} from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, apiPut, type Catalog, type RatePlan, type RatesData } from '../api';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { fecha } from '../lib/format';
 
@@ -26,16 +42,15 @@ const aCents = (euros: string) => Math.round(Number(euros.replace(',', '.')) * 1
 function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<Partial<Record<CampoCents | 'minStay', string>>>({});
-  const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
 
   const guardar = useMutation({
     mutationFn: (patch: Partial<RatePlan>) => apiPut(`/api/admin/rates/${plan.id}`, patch),
     onSuccess: () => {
-      setMsg({ text: t('tar.guardada') });
+      toast.success(t('tar.guardada'));
       setDraft({});
       void qc.invalidateQueries({ queryKey: ['rates'] });
     },
-    onError: () => setMsg({ text: t('tar.errorGuardar'), error: true }),
+    onError: () => toast.error(t('tar.errorGuardar')),
   });
 
   const sucia = Object.keys(draft).length > 0;
@@ -81,26 +96,44 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
         />
       </td>
       <td className="px-3 py-1.5 last:pr-4">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            disabled={!sucia || guardar.isPending}
-            onClick={enviar}
-            className="rounded-(--lc-radius) border border-primary bg-primary px-2.5 py-0.5 text-[12px] font-semibold text-background hover:bg-primary disabled:opacity-30"
-          >
-            {t('tar.guardar')}
-          </button>
-          {msg && (
-            <span
-              role="status"
-              className={`text-[11px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
-            >
-              {msg.text}
-            </span>
-          )}
-        </div>
+        {/* Guardar una tarifa afecta a las reservas NUEVAS: se confirma (ADR 0020). */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button type="button" size="xs" disabled={!sucia || guardar.isPending}>
+              {t('tar.guardar')}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('confirmar.tarifas.titulo')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('confirmar.tarifas.desc')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+              <AlertDialogAction onClick={enviar}>{t('confirmar.tarifas.ok')}</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </td>
     </tr>
+  );
+}
+
+/** Esqueleto con la rejilla real: tipo + 6 importes + mín. noches + acción. */
+const COLS_TARIFAS = ['w-32', 'w-20', 'w-20', 'w-20', 'w-20', 'w-20', 'w-20', 'w-14', 'w-16'];
+
+function TarifasEsqueleto() {
+  return (
+    <div aria-busy="true" className="min-h-0 flex-1 overflow-hidden p-4">
+      {[0, 1].map((s) => (
+        <section key={s} className="mb-6">
+          <Skeleton className="mb-2 h-2.5 w-56" />
+          <div className="rounded-(--lc-radius) border border-border/60">
+            <SkeletonRows rows={4} cols={COLS_TARIFAS} />
+          </div>
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -129,8 +162,8 @@ export default function Tarifas() {
         <p className="text-[12px] text-muted-foreground">{t('tar.nota')}</p>
       </div>
 
-      {rates.isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('tar.cargando')}</p>}
-      {rates.isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('tar.error')}</p>}
+      {rates.isPending && <TarifasEsqueleto />}
+      {rates.isError && <QueryError error={rates.error} onRetry={() => void rates.refetch()} />}
 
       <div className="min-h-0 flex-1 overflow-auto p-4">
         {temporadas.map((s) => {

@@ -4,6 +4,7 @@
  * en vivo sale de POST /api/quote y la creación revalida y re-cotiza en el
  * servidor (POST /api/admin/bookings, auditado). La UI nunca calcula un precio.
  */
+import { Button, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError, apiGet, apiPost, type Catalog, type QuoteResponse } from '../api';
@@ -38,7 +39,6 @@ export default function NewBookingPanel({
   const [holderEmail, setHolderEmail] = useState('');
   const [holderPhone, setHolderPhone] = useState('');
   const [notes, setNotes] = useState('');
-  const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
 
   const { data: catalog } = useQuery({
     queryKey: ['catalog'],
@@ -116,14 +116,14 @@ export default function NewBookingPanel({
         { 'Idempotency-Key': idemKey.current },
       ),
     onSuccess: (res) => {
-      setMsg({ text: t('alta.creada', { code: res.code }) });
+      toast.success(t('alta.creada', { code: res.code }));
       void qc.invalidateQueries({ queryKey: ['bookings'] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
       onCreated(res.id);
     },
     onError: (e) => {
       const agotado = e instanceof ApiError && e.status === 409;
-      setMsg({ text: agotado ? t('alta.agotado') : t('alta.errorCrear'), error: true });
+      toast.error(agotado ? t('alta.agotado') : t('alta.errorCrear'));
     },
   });
 
@@ -143,14 +143,16 @@ export default function NewBookingPanel({
     >
       <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         <span className="text-[14px] font-semibold">{t('alta.titulo')}</span>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="iconSm"
           onClick={onClose}
           aria-label={t('alta.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
+          className="ml-auto"
         >
           ✕
-        </button>
+        </Button>
       </div>
 
       <form
@@ -160,15 +162,6 @@ export default function NewBookingPanel({
           if (puedeCrear && !crear.isPending) crear.mutate();
         }}
       >
-        {msg && (
-          <p
-            role="status"
-            className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
-          >
-            {msg.text}
-          </p>
-        )}
-
         <div>
           <label htmlFor="alta-tipo" className={label}>
             {t('alta.tipo')}
@@ -315,7 +308,7 @@ export default function NewBookingPanel({
             <p className="text-muted-foreground">{t('alta.cotizando')}</p>
           )}
           {stayIssues.length > 0 && (
-            <ul className="flex flex-col gap-0.5">
+            <ul role="alert" className="flex flex-col gap-0.5">
               {stayIssues.map((issue) => (
                 <li key={issue.code} className="font-medium text-destructive">
                   {stayError(issue.code, issue.params)}
@@ -358,17 +351,19 @@ export default function NewBookingPanel({
 
         <div>
           <span className={label}>{t('alta.canal')}</span>
-          <div className="flex overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
+          <div className="mt-1 flex gap-1.5">
             {(['phone', 'walkin'] as const).map((ch) => (
-              <button
+              <Button
                 key={ch}
                 type="button"
+                size="xs"
+                variant={channel === ch ? 'primary' : 'outline'}
                 onClick={() => setChannel(ch)}
                 aria-pressed={channel === ch}
-                className={`flex-1 px-3 py-1 ${channel === ch ? 'bg-primary text-background' : 'hover:bg-accent'}`}
+                className="flex-1"
               >
                 {t(`canal.${ch}`)}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -417,13 +412,13 @@ export default function NewBookingPanel({
           />
         </div>
 
-        <button
+        <Button
           type="submit"
+          size="sm"
           disabled={!puedeCrear || crear.isPending || Boolean(cotizacion.error)}
-          className="rounded-(--lc-radius) border border-primary bg-primary px-3 py-1.5 font-semibold text-background hover:bg-primary disabled:opacity-40"
         >
           {crear.isPending ? t('alta.creando') : t('alta.crear')}
-        </button>
+        </Button>
       </form>
     </aside>
   );

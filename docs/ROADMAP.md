@@ -119,8 +119,8 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 |---|---|---|---|
 | **C0** | Desbloqueo | HMR del dashboard (hoy el login falla con 403 en `:5173`) + **seed denso**. Sin esto todo lo demás se diseña a ciegas y sobre un lienzo vacío. | `pnpm dev` permite login en `:5173`; el planning de agosto se ve lleno |
 | **C1** | Planning como pieza de exhibición | Gesto horizontal (mover/estirar fechas), crear arrastrando, línea de hoy, deshacer, color por estado desde tokens. | Un director de camping alarga una estancia arrastrando y dice "¿eso se puede?" |
-| **C2** | DS completo y conectado | Radix + primitivos que faltan; los **41 `<button>` crudos** pasan a `<Button>`. | 0 `<button>` crudos; `dialog/sheet/toast/command/skeleton/table` existen y se usan |
-| **C3** | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer, confirmación destructiva, rutas direccionables. | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
+| **C2** ✅ | DS completo y conectado | Radix + primitivos que faltan; los **43 `<button>` crudos** pasan a `<Button>`. | 0 `<button>` crudos; `dialog/sheet/toast/skeleton/table` existen y se usan |
+| **C3** ✅ | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer, confirmación destructiva. (Rutas direccionables → movidas a C4.) | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
 | **C4** | Workflow real de recepción | **Check-in** (no existe ni en cliente ni en API), huéspedes+documentos, alta desde el planning, ⌘K. | Se opera una llegada completa sin salir del planning |
 | **C5** | Materia: fotos e imagen | Cerrar el hueco de fotos con Higgsfield (4 ficheros referenciados no existen); capturas reales del planning. | 9 tipos con foto propia; ninguna galería de 1 sola imagen |
 | **C6** | Documentación (**absorbe B4**) | Guía recepcionista / guía dueño / ficha técnica, con esencia Logic2B. | Un cliente resuelve una duda de uso sin escribir a soporte |

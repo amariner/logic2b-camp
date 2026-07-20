@@ -317,11 +317,12 @@ Depende de **C0.2** (con el seed vacío, un plano en el que casi todo está libr
 
 | id | Dónde | Qué | Fase |
 |---|---|---|---|
-| **C-BUG-1** | `packages/ui/src/theme.css:33-37` | Los `--chart-*` de `:root` (light) son los valores **dark** de `BRAND.md` §4; los 5 desplazados. Afecta al estado *pending* del planning vía `--chart-4`. Falta `--radius-2xl: 1rem` | C1.5 / C2 |
-| **C-BUG-2** | `apps/dashboard/src/styles.css:18` | `--color-mar: var(--foreground)` → **los mensajes de error se pintan en negro** (`Planning.tsx:357`, `BookingPanel.tsx:161`) | C2 |
+| ~~**C-BUG-1**~~ ✅ | `packages/ui/src/theme.css` | Los `--chart-*` de `:root` (light) eran los valores **dark** de `BRAND.md` §4; los 5 desplazados. **Arreglado en ADR 0020** — y no era trivial: el valor light correcto de `--chart-4` es morado y no pasa AA con texto negro, así que arreglarlo *tal cual* rompía el planning. Se corrigieron los 5, se añadió `--radius-2xl`, se añadió el bloque `--chart-*` que **faltaba entero** en `.dark` (por eso nadie lo detectó), y el planning se desacopló a tokens semánticos `--lc-status-*` | C2 ✅ |
+| ~~**C-BUG-2**~~ ✅ | `apps/dashboard/src/styles.css` | `--color-mar: var(--foreground)` → los errores en negro. **Arreglado en ADR 0020** — tampoco era lo que parecía: `mar` tenía **dos significados** (de sus 44 usos, 4 eran enlaces `mailto:`/`tel:`), así que reapuntarlo a `--destructive` habría pintado los contactos en rojo. Se partió por significado: token `--link` propio para enlaces, `--destructive` para el resto. El puente de alias entero se eliminó | C2 ✅ |
 | **C-BUG-3** | `apps/api/src/auth.ts` | Sin `trustedOrigins` → **403 en el login del dev server** (`:5173`). Bloquea el HMR del dashboard | C0.1 |
-| **C-BUG-4** | `apps/dashboard/src/pages/Planning.tsx:5` | Comentario obsoleto: dice que el D&D "llega en la sesión 17"; está implementado abajo | C1.4 |
+| ~~**C-BUG-4**~~ ✅ | `apps/dashboard/src/pages/Planning.tsx:5` | Comentario obsoleto: decía que el D&D "llega en la sesión 17"; estaba implementado abajo. **Arreglado en ADR 0020** al pasar por el fichero | C2 ✅ |
 | **C-BUG-5** | `apps/web/src/lib/fotos.ts:12,13,21-24` | 4 ficheros de imagen inexistentes; `ut_prem`/`ut_moto` sin foto propia | C5.1 |
+| **C-BUG-6** | `apps/dashboard/src/pages/Planning.tsx:199` | **Encontrado en ADR 0020.** El resaltado de la celda destino al arrastrar se pintaba con `var(--lc-pino)`, variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web) → declaración inválida, resaltado **invisible**. Resto de ADR 0008, cuando el dashboard compartía paleta con la web. Arreglado a `var(--primary)` | C2 ✅ |
 
 ## 3. Remates menores de la web (no bloquean, pero suman)
 

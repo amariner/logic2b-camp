@@ -5,9 +5,11 @@
  */
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
+import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
 import { apiGet, type BookingDetail, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel from '../components/NewBookingPanel';
+import { QueryError } from '../components/QueryError';
 import { eur, fecha, noches } from '../lib/format';
 import { t } from '../i18n';
 
@@ -32,7 +34,7 @@ export default function Reservas() {
   if (q.trim()) params.set('q', q.trim().toUpperCase());
   if (estado) params.set('status', estado);
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['bookings', 'list', params.toString()],
     queryFn: () => apiGet<{ items: BookingListItem[] }>(`/api/admin/bookings?${params}`),
     refetchInterval: 60_000,
@@ -83,40 +85,70 @@ export default function Reservas() {
             ))}
           </select>
           <div className="flex items-center gap-1 text-[13px]">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-accent"
+              aria-label={t('res.anterior')}
             >
               ←
-            </button>
+            </Button>
             <span className="tnum px-1 text-muted-foreground">{t('res.pagina', { n: page })}</span>
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="iconSm"
               disabled={items.length < PAGE_SIZE}
               onClick={() => setPage((p) => p + 1)}
-              className="rounded-(--lc-radius) border border-foreground/20 px-2 py-1 font-semibold disabled:opacity-40 hover:bg-accent"
+              aria-label={t('res.siguiente')}
             >
               →
-            </button>
+            </Button>
           </div>
-          <button
-            type="button"
+          <Button
+            size="xs"
+            className="ml-auto"
             onClick={() => {
               setOpenId(null);
               setAltaAbierta(true);
             }}
-            className="ml-auto rounded-(--lc-radius) border border-primary bg-primary px-3 py-1 text-[13px] font-semibold text-background hover:bg-primary"
           >
             {t('res.nueva')}
-          </button>
+          </Button>
         </div>
 
-        {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('res.cargando')}</p>}
-        {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('res.error')}</p>}
+        {isPending && (
+          /* Las 8 columnas de la tabla real: código · titular · fechas · unidad ·
+             canal · estado · total · pendiente. */
+          <div aria-busy="true" aria-label={t('res.cargando')}>
+            <SkeletonRows
+              rows={10}
+              cols={['w-20', 'w-28', 'w-36', 'w-12', 'w-16', 'w-16', 'w-16', 'w-14']}
+            />
+          </div>
+        )}
+        {isError && <QueryError error={error} onRetry={() => refetch()} />}
         {!isPending && !isError && items.length === 0 && (
-          <p className="p-6 text-[14px] text-muted-foreground">{t('res.vacio')}</p>
+          <EmptyState
+            art="search"
+            title={t('res.vacio')}
+            /* Salida: si el vacío lo han causado los filtros, se pueden quitar. */
+            action={
+              q || estado ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setQ('');
+                    setEstado('');
+                    setPage(1);
+                  }}
+                >
+                  {t('res.limpiarFiltros')}
+                </Button>
+              ) : undefined
+            }
+          />
         )}
 
         {items.length > 0 && (
@@ -159,7 +191,9 @@ export default function Reservas() {
                         }
                       }}
                       tabIndex={0}
-                      className="cursor-pointer border-b border-border/40 hover:bg-accent/50"
+                      /* Fila entera clicable: no es un <button> (rompería la
+                         tabla). Solo se le asegura el foco visible del DS. */
+                      className="cursor-pointer border-b border-border/40 outline-none hover:bg-accent/50 focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-inset"
                     >
                       <td className="tnum px-3 py-2 font-semibold first:pl-4">{b.code}</td>
                       <td className="max-w-40 truncate px-3 py-2 font-medium">

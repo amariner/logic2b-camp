@@ -1,4 +1,11 @@
-/** Login del mostrador: Better Auth por cookie, sin registro público (ADR 0005). */
+/**
+ * Login del mostrador: Better Auth por cookie, sin registro público (ADR 0005).
+ *
+ * Es la PRIMERA pantalla del producto (ADR 0020, C3): lleva marca Logic2B —
+ * shadcn neutro, isotipo + wordmark como en el shell — no la paleta mediterránea
+ * de la web pública del tenant.
+ */
+import { Button, Card, CardContent, Input, Label, LogoMark, Spinner } from '@logic-camp/ui';
 import { useState } from 'react';
 import { useSignIn } from '../auth';
 import { t } from '../i18n';
@@ -9,50 +16,72 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-5">
-      <form
-        className="flex w-full max-w-sm flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          signIn.mutate({ email, password });
-        }}
-      >
-        <h1 className="text-[22px] font-semibold tracking-tight">{t('login.titulo')}</h1>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-muted-foreground uppercase">
-            {t('login.email')}
+    <main className="flex min-h-screen items-center justify-center bg-muted/30 px-5 py-10">
+      <div className="flex w-full max-w-sm flex-col gap-5">
+        <div className="flex items-center justify-center gap-2">
+          <LogoMark className="size-7 shrink-0 text-primary" />
+          <span className="font-display text-lg font-bold tracking-tight">
+            Logic<span className="text-muted-foreground">Camp</span>
           </span>
-          <input
-            type="email"
-            required
-            autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-3.5 py-2.5 text-[15px]"
-          />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-muted-foreground uppercase">
-            {t('login.password')}
-          </span>
-          <input
-            type="password"
-            required
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-3.5 py-2.5 text-[15px]"
-          />
-        </label>
-        <button
-          type="submit"
-          disabled={signIn.isPending}
-          className="rounded-(--lc-radius) bg-primary px-6 py-3 text-[15px] font-semibold text-background transition-colors hover:bg-primary disabled:opacity-60"
-        >
-          {signIn.isPending ? t('login.entrando') : t('login.entrar')}
-        </button>
-        {signIn.isError && <p className="text-[14px] font-medium text-destructive">{t('login.error')}</p>}
-      </form>
+        </div>
+
+        <Card>
+          <CardContent className="p-5">
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                signIn.mutate({ email, password });
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <h1 className="text-[17px] font-semibold tracking-tight">{t('login.titulo')}</h1>
+                <p className="text-[13px] text-muted-foreground">{t('login.subtitulo')}</p>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="login-email">{t('login.email')}</Label>
+                <Input
+                  id="login-email"
+                  type="email"
+                  required
+                  autoComplete="username"
+                  autoFocus
+                  aria-invalid={signIn.isError || undefined}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-9 text-[14px]"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="login-password">{t('login.password')}</Label>
+                <Input
+                  id="login-password"
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  aria-invalid={signIn.isError || undefined}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-9 text-[14px]"
+                />
+              </div>
+
+              {signIn.isError && (
+                <p role="alert" className="text-[13px] font-medium text-destructive">
+                  {t('login.error')}
+                </p>
+              )}
+
+              <Button type="submit" disabled={signIn.isPending} className="w-full">
+                {signIn.isPending && <Spinner />}
+                {signIn.isPending ? t('login.entrando') : t('login.entrar')}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 }

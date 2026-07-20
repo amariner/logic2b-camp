@@ -3,11 +3,27 @@
  * Acciones tipadas contra PATCH /api/admin/bookings/:id — el servidor valida SIEMPRE
  * la transición; aquí solo se ofrecen las que aplican al estado actual.
  */
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
+  Skeleton,
+  SkeletonText,
+  toast,
+} from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail } from '../api';
 import { t } from '../i18n';
 import { conceptLabel, eur, fecha, noches } from '../lib/format';
+import { QueryError } from './QueryError';
 
 /** Espejo de TRANSITIONS del servidor: qué botones enseñar por estado. */
 const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
@@ -31,14 +47,12 @@ export default function BookingPanel({
 }) {
   const qc = useQueryClient();
   const panelRef = useRef<HTMLElement>(null);
-  const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
-  const [confirmingCancel, setConfirmingCancel] = useState(false);
   const [notes, setNotes] = useState<string | null>(null); // null = aún sin editar
   const [payAmount, setPayAmount] = useState('');
   const [payMethod, setPayMethod] = useState<'cash' | 'card'>('cash');
   const [refundAmount, setRefundAmount] = useState('');
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['booking', bookingId],
     queryFn: () => apiGet<BookingDetail>(`/api/admin/bookings/${bookingId}`),
   });
@@ -50,8 +64,6 @@ export default function BookingPanel({
 
   // cambiar de reserva con el panel abierto: estado limpio
   useEffect(() => {
-    setMsg(null);
-    setConfirmingCancel(false);
     setNotes(null);
     setPayAmount('');
     setRefundAmount('');
@@ -73,12 +85,11 @@ export default function BookingPanel({
         { action },
       ),
     onSuccess: (res) => {
-      setMsg({ text: t('ficha.accionHecha', { estado: t(`estado.${res.status}`) }) });
-      setConfirmingCancel(false);
+      toast.success(t('ficha.accionHecha', { estado: t(`estado.${res.status}`) }));
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
     },
-    onError: () => setMsg({ text: t('ficha.accionError'), error: true }),
+    onError: () => toast.error(t('ficha.accionError')),
   });
 
   const saveNote = useMutation({
@@ -88,10 +99,10 @@ export default function BookingPanel({
         notes: value,
       }),
     onSuccess: () => {
-      setMsg({ text: t('ficha.notaGuardada') });
+      toast.success(t('ficha.notaGuardada'));
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => setMsg({ text: t('ficha.accionError'), error: true }),
+    onError: () => toast.error(t('ficha.accionError')),
   });
 
   // cobro en efectivo/TPV físico ya recibido en recepción (ADR 0011) — sin pasarela
@@ -102,11 +113,11 @@ export default function BookingPanel({
         ...input,
       }),
     onSuccess: () => {
-      setMsg({ text: t('ficha.pagoRegistrado') });
+      toast.success(t('ficha.pagoRegistrado'));
       setPayAmount('');
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => setMsg({ text: t('ficha.pagoError'), error: true }),
+    onError: () => toast.error(t('ficha.pagoError')),
   });
 
   // reembolso (ADR 0011): si hay cobro de pasarela detrás, el servidor llama
@@ -118,11 +129,11 @@ export default function BookingPanel({
         amountCents,
       }),
     onSuccess: () => {
-      setMsg({ text: t('ficha.reembolsoHecho') });
+      toast.success(t('ficha.reembolsoHecho'));
       setRefundAmount('');
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => setMsg({ text: t('ficha.reembolsoError'), error: true }),
+    onError: () => toast.error(t('ficha.reembolsoError')),
   });
 
   const lead = data?.guests.find((g) => g.isLead) ?? data?.guests[0];
@@ -147,30 +158,44 @@ export default function BookingPanel({
             <span className={`lc-chip st-${data.status}`}>{t(`estado.${data.status}`)}</span>
           </>
         )}
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="iconSm"
           onClick={onClose}
           aria-label={t('ficha.cerrar')}
-          className="ml-auto rounded-(--lc-radius) border border-foreground/20 px-2 py-0.5 text-[13px] font-semibold hover:bg-accent"
+          className="ml-auto"
         >
           ✕
-        </button>
+        </Button>
       </div>
 
-      {isPending && <p className="p-4 text-[13px] text-muted-foreground">{t('ficha.cargando')}</p>}
-      {isError && <p className="p-4 text-[13px] font-medium text-destructive">{t('ficha.error')}</p>}
+      {/* esqueleto con la forma real de la ficha: cabecera, secciones de dato y pagos */}
+      {isPending && (
+        <div aria-busy="true" aria-label={t('ficha.cargando')} className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-24" />
+            <SkeletonText lines={4} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-20" />
+            <SkeletonText lines={3} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-16" />
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center justify-between gap-2">
+                <Skeleton className="h-3 w-32" />
+                <Skeleton className="h-3 w-14" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {isError && <QueryError error={error} onRetry={() => void refetch()} className="p-4" />}
 
       {data && (
         <div className="flex flex-col gap-4 p-4 text-[13px]">
-          {msg && (
-            <p
-              role="status"
-              className={`text-[12px] font-medium ${msg.error ? 'text-destructive' : 'text-primary'}`}
-            >
-              {msg.text}
-            </p>
-          )}
-
           {/* estancia */}
           <section>
             <h3 className="lc-panel-h">{t('ficha.estancia')}</h3>
@@ -310,14 +335,16 @@ export default function BookingPanel({
                     <option value="cash">{t('ficha.metodoEfectivo')}</option>
                     <option value="card">{t('ficha.metodoTarjeta')}</option>
                   </select>
-                  <button
+                  <Button
                     type="button"
+                    size="sm"
                     disabled={toCents(payAmount) <= 0 || recordPayment.isPending}
-                    onClick={() => recordPayment.mutate({ amountCents: toCents(payAmount), method: payMethod })}
-                    className="rounded-(--lc-radius) border border-primary/60 px-2.5 py-1 font-medium text-primary hover:bg-accent disabled:opacity-40"
+                    onClick={() =>
+                      recordPayment.mutate({ amountCents: toCents(payAmount), method: payMethod })
+                    }
                   >
                     {t('ficha.registrarPago')}
-                  </button>
+                  </Button>
                 </div>
                 {data.paidCents > 0 && (
                   <div className="flex items-center gap-1.5">
@@ -330,18 +357,47 @@ export default function BookingPanel({
                       aria-label={t('ficha.reembolsar')}
                       className="w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1"
                     />
-                    <button
-                      type="button"
-                      disabled={
-                        toCents(refundAmount) <= 0 ||
-                        toCents(refundAmount) > data.paidCents ||
-                        refund.isPending
-                      }
-                      onClick={() => refund.mutate(toCents(refundAmount))}
-                      className="rounded-(--lc-radius) border border-destructive/50 px-2.5 py-1 font-medium text-destructive hover:bg-accent disabled:opacity-40"
-                    >
-                      {t('ficha.reembolsar')}
-                    </button>
+                    {/* dinero que sale: confirma siempre, con el importe delante */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="destructiveOutline"
+                          disabled={
+                            toCents(refundAmount) <= 0 ||
+                            toCents(refundAmount) > data.paidCents ||
+                            refund.isPending
+                          }
+                        >
+                          {t('ficha.reembolsar')}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            {t('confirmar.reembolso.titulo', {
+                              importe: eur(
+                                toCents(refundAmount),
+                                data.priceBreakdown.currency,
+                              ),
+                            })}
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t('confirmar.reembolso.desc')}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => refund.mutate(toCents(refundAmount))}
+                          >
+                            {t('confirmar.reembolso.ok')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 )}
               </div>
@@ -362,14 +418,16 @@ export default function BookingPanel({
               placeholder={t('ficha.notasPlaceholder')}
               className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5"
             />
-            <button
+            <Button
               type="button"
+              size="sm"
+              variant="outline"
+              className="mt-1"
               disabled={notes === null || notes === (data.notes ?? '') || saveNote.isPending}
               onClick={() => notes !== null && saveNote.mutate(notes)}
-              className="mt-1 rounded-(--lc-radius) border border-foreground/20 px-3 py-1 font-medium hover:bg-accent disabled:opacity-40"
             >
               {t('ficha.guardarNota')}
-            </button>
+            </Button>
           </section>
 
           {/* acciones tipadas según estado */}
@@ -379,36 +437,50 @@ export default function BookingPanel({
               <div className="flex flex-wrap gap-2">
                 {ACTIONS_BY_STATUS[data.status].map((a) =>
                   a === 'cancel' ? (
-                    <button
-                      key={a}
-                      type="button"
-                      disabled={transition.isPending}
-                      onClick={() => {
-                        if (confirmingCancel) transition.mutate('cancel');
-                        else setConfirmingCancel(true);
-                      }}
-                      className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
-                        confirmingCancel
-                          ? 'border-destructive bg-destructive text-background'
-                          : 'border-destructive/50 text-destructive hover:bg-accent'
-                      }`}
-                    >
-                      {confirmingCancel ? t('accion.cancelSeguro') : t('accion.cancel')}
-                    </button>
+                    // libera inventario y puede disparar reembolso: confirmación real,
+                    // no el doble click que había aquí antes
+                    <AlertDialog key={a}>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="destructiveOutline"
+                          disabled={transition.isPending}
+                        >
+                          {t('accion.cancel')}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            {t('confirmar.cancelarReserva.titulo', { code: data.code })}
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t('confirmar.cancelarReserva.desc')}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => transition.mutate('cancel')}
+                          >
+                            {t('confirmar.cancelarReserva.ok')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   ) : (
-                    <button
+                    <Button
                       key={a}
                       type="button"
+                      size="sm"
+                      variant={a === 'confirm' ? 'primary' : 'outline'}
                       disabled={transition.isPending}
                       onClick={() => transition.mutate(a)}
-                      className={`rounded-(--lc-radius) border px-3 py-1 font-medium disabled:opacity-40 ${
-                        a === 'confirm'
-                          ? 'border-primary bg-primary text-background hover:bg-primary'
-                          : 'border-foreground/20 hover:bg-accent'
-                      }`}
                     >
                       {t(`accion.${a}`)}
-                    </button>
+                    </Button>
                   ),
                 )}
               </div>

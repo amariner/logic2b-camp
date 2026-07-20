@@ -3,9 +3,11 @@
  * Tiles de titular + ocupación por tipo como medidor de un solo tono (magnitud):
  * el color es primary, el texto SIEMPRE en foreground, la estructura recesiva.
  */
+import { Button, Skeleton } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, type Catalog, type ReportsData } from '../api';
+import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
 
@@ -50,11 +52,45 @@ function Tile({ titulo, valor, detalle }: { titulo: string; valor: string; detal
   );
 }
 
+/**
+ * Esqueleto con la forma real del informe: las cinco tarjetas de cifra y el
+ * medidor de ocupación por tipo. Nada de un rectángulo genérico (ADR 0020).
+ */
+function InformesEsqueleto() {
+  return (
+    <div aria-busy="true" className="min-h-0 flex-1 overflow-hidden p-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+        {Array.from({ length: 5 }, (_, i) => (
+          <div key={i} className="rounded-(--lc-radius-lg) border border-border/60 px-4 py-3">
+            <Skeleton className="h-2.5 w-20" />
+            <Skeleton className="mt-2 h-5 w-24" />
+            {i === 1 && <Skeleton className="mt-1.5 h-2.5 w-16" />}
+          </div>
+        ))}
+      </div>
+      <section className="mt-6 max-w-3xl">
+        <Skeleton className="mb-2 h-2.5 w-40" />
+        <div className="flex flex-col gap-2.5">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i}>
+              <div className="mb-0.5 flex items-baseline justify-between gap-2">
+                <Skeleton className="h-3 w-44" />
+                <Skeleton className="h-3 w-10" />
+              </div>
+              <Skeleton className="h-2 w-full rounded-(--lc-radius)" />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function Informes() {
   const presets = rangos();
   const [rango, setRango] = useState(presets[0]!);
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['reports', rango.from, rango.to],
     queryFn: () => apiGet<ReportsData>(`/api/admin/reports?from=${rango.from}&to=${rango.to}`),
   });
@@ -78,17 +114,18 @@ export default function Informes() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
-        <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-foreground/20 text-[13px] font-medium">
+        <div className="flex flex-wrap items-center gap-1">
           {presets.map((p) => (
-            <button
+            <Button
               key={p.id}
               type="button"
+              size="xs"
+              variant={p.id === rango.id ? 'primary' : 'outline'}
               onClick={() => setRango(p)}
               aria-pressed={p.id === rango.id}
-              className={`px-3 py-1 ${p.id === rango.id ? 'bg-primary text-background' : 'hover:bg-accent'}`}
             >
               {p.label}
-            </button>
+            </Button>
           ))}
         </div>
         <p className="tnum text-[13px] text-muted-foreground">
@@ -96,8 +133,8 @@ export default function Informes() {
         </p>
       </div>
 
-      {isPending && <p className="p-6 text-[14px] text-muted-foreground">{t('inf.cargando')}</p>}
-      {isError && <p className="p-6 text-[14px] font-medium text-destructive">{t('inf.error')}</p>}
+      {isPending && <InformesEsqueleto />}
+      {isError && <QueryError error={error} onRetry={() => void refetch()} />}
 
       {data && (
         <div className="min-h-0 flex-1 overflow-y-auto p-4">
