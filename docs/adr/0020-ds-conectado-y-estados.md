@@ -231,3 +231,50 @@ Efecto en el pipeline: `pnpm check` pasa de **41 a 42 tareas**.
 6. `--chart-*` de `:root` coinciden con `BRAND.md` §4 light, y **el planning se ve igual que antes** de tocarlos.
 7. Los 4 enlaces `mailto:`/`tel:` **no** están en rojo, y los errores **sí** se distinguen del texto normal.
 8. `pnpm check` verde (42 tareas) y **verificación visual en el navegador a 1366px y 375px**, no solo tests.
+
+---
+
+## Resultado medido (2026-07-20/21, implementación)
+
+| | antes | después |
+|---|---|---|
+| `<button>` crudos en el dashboard | **43** | **2** (excepción documentada, ver abajo) |
+| Usos de `<Button>`/`<Card>`/`<Badge>` del DS | 0 | todas las pantallas |
+| Dependencias de Radix en `packages/ui` | 0 | **11** + `sonner` |
+| `<p>Cargando…</p>` | 12 | **0** |
+| Skeletons · error boundaries · toasts | 0 · 0 · 0 | 12 ficheros · por ruta · 7 ficheros |
+| Acciones destructivas sin confirmar | 3 (reembolso, baja de unidad, tarifas) | **0** |
+| Usos del vocabulario de tokens de ADR 0008 | 352 | **0** (alias eliminado) |
+| Tests de `packages/ui` | **no había script `test`** | **26** |
+| `pnpm check` | 41 tareas | **42 tareas, verde** |
+
+**Los 2 `<button>` que quedan** son la fila de `Llegadas` y la de `Solicitudes`: la fila **es** su rejilla CSS de 3 y 5 columnas, y `<Button>` es `inline-flex`. Convertirlas rompería la maquetación para ganar cero. Lo que las hacía "crudas" no era la etiqueta sino **copiar las clases a mano**, así que el anillo de foco se exporta desde el DS (`focusRing`) y ya no hay estilo copiado en ninguna parte.
+
+### Lo que se aprendió implementando
+
+**1. Arreglar un token puede romper la pantalla que lo usa — y eso es información, no un obstáculo.**
+El valor light correcto de `--chart-4` es morado y no pasa AA con texto negro encima. Descubrirlo *antes* de tocar nada es lo que convirtió "arreglar C-BUG-1" en "arreglar C-BUG-1 **y** desacoplar el planning". Si el planning hubiera leído un token semántico desde el principio, el bug de la escala de gráficas nunca habría llegado a la pantalla firma.
+
+**2. Un token con dos significados no se arregla reapuntándolo.**
+`--color-mar` era a la vez "error" y "enlace". Cualquier arreglo de uno estropeaba el otro. La cuenta —44 usos, de los cuales 4 eran `mailto:`/`tel:`— es lo que hizo visible que el problema era de *modelo*, no de valor. Ninguna de las dos cosas se ve leyendo solo la línea del bug.
+
+**3. ⚠️ El hallazgo más caro: Tailwind v4 no escanea `node_modules`, y el DS entra por symlink de pnpm.**
+Detectado **solo al verificar en el navegador**: el error boundary pintaba su icono a **384px** en vez de 56px. Comprobado token a token: `h-9`, `bg-primary` y `px-4` sí funcionaban —porque esas clases *también* aparecen en el código del dashboard—, pero `size-14`, `translate-x-4`, `rounded-[4px]` y `min-w-[10rem]`, que viven **solo** en `packages/ui`, **no generaban CSS**. Es decir: el DS parecía funcionar por coincidencia. Estaban afectados el pulsador del `Switch`, el radio del `Checkbox`, el ancho mínimo del `DropdownMenu` y todas las ilustraciones de estado. Se arregla con `@source '../../../packages/ui/src'` en el CSS del dashboard **y** de la landing.
+Lección para el resto del Frente C: **tests verdes y typecheck limpio no dicen nada sobre si una clase de Tailwind existe.** Esto solo se caza mirando la pantalla, que es justo lo que pide el contrato.
+
+**4. Los tokens de estado no eran del dashboard, eran del DS.**
+Se colocaron primero en `apps/dashboard/src/styles.css` y hubo que moverlos: la maqueta de planning de la **landing** usaba `bg-chart-4` para la misma idea de "pendiente". Con dos consumidores (y un tercero llegando en C7), el sitio correcto es `packages/ui`. Si la landing y el producto enseñaran colores distintos para "pendiente", la demo desmentiría a la página de venta.
+
+### Bug nuevo encontrado de paso (C-BUG-6)
+
+`Planning.tsx:199` pintaba el resaltado de la celda destino al arrastrar con `var(--lc-pino)` — variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web). Declaración inválida → **el resaltado era invisible**. Resto de ADR 0008, cuando el dashboard compartía paleta con la web. Corregido a `var(--primary)`.
+
+### Verificación
+
+`pnpm check` verde (**42/42**: API 62/62, `@tenant/demo` 16/16, `packages/ui` 26/26 nuevos).
+En el navegador contra el Worker real, a 1366px y 375px: planning **idéntico** al de antes de tocar los tokens (criterio de §2.2), "Pendiente de pago" ya en rojo y no en negro (C-BUG-2), ruta inexistente con estado y salida en vez de un "Not Found" pelado, `AlertDialog` de reembolso con el importe real interpolado, `Switch` del DS operativo, **0 errores de consola**.
+
+### Desviaciones respecto a lo aprobado
+
+- **`@radix-ui/react-select` no se instaló** (el ADR lo listaba). Para listas cortas de filtro el `<select>` nativo gana: teclado del sistema, cero JS y mismo comportamiento en móvil. Se expone como `SelectNative` con la piel del DS. Si más adelante hace falta un select con contenido rico, se añade entonces.
+- **A 375px** el sidebar sigue ocupando media pantalla. **No es regresión** — viene de B1 y ya estaba en BACKLOG. Lo que cambia es que ahora está **desbloqueado**: su pendiente era "añadir el primitivo Sheet", y `Sheet` ya existe.
