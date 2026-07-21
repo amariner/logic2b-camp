@@ -7,7 +7,9 @@
 
 ## Estado en una línea
 
-Frente C: **C0 ✅ · C2+C3 ✅ · C7 ✅ · C4 ✅ · C1 ✅**. Quedan **C5** (fotos, cuesta créditos Higgsfield — necesita confirmación de Andreu) y **C6** (documentación, absorbe B4, cero-riesgo). El planning ya es la pieza de exhibición declarada: gesto horizontal, crear arrastrando, mapa de color definitivo con test AA y modo oscuro.
+Frente C: **C0 ✅ · C2+C3 ✅ · C7 ✅ · C4 ✅ · C1 ✅**. Quedan **C5** (fotos) y **C6** (documentación, absorbe B4, cero-riesgo). El planning ya es la pieza de exhibición declarada: gesto horizontal, crear arrastrando, mapa de color definitivo con test AA y modo oscuro.
+
+> **Andreu autorizó Higgsfield el 2026-07-21** (al cierre de la sesión 34): C5 está desbloqueado. Sigue valiendo la prudencia del contrato — fijar la lista de prompts ANTES de generar y no quemar créditos a ciegas (tandas pequeñas, revisar, seguir).
 
 ## ▶ Prompt para pegar
 
