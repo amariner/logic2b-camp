@@ -7,7 +7,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "seed:sql": "tsx write-seed.ts"
+    "seed:sql": "tsx write-seed.ts",
+    "fetch:fotos": "tsx scripts/fetch-higgsfield-fotos.ts"
   },
   "dependencies": {
     "@logic-camp/api": "workspace:*",
@@ -20,6 +21,7 @@
     "@cloudflare/workers-types": "^4.20250705.0",
     "@logic-camp/tsconfig": "workspace:*",
     "@types/node": "^26.1.1",
+    "sharp": "^0.35.3",
     "tsx": "^4.20.0",
     "typescript": "^5.8.0",
     "vitest": "^3.2.0",

@@ -48,7 +48,8 @@
     "kicker": "El elemento firma",
     "titulo": "El planning que de verdad usa tu recepción",
     "texto": "Todas tus unidades, todo el verano, en una sola pantalla. Colores por estado, bloqueos a la vista, y reasignar una unidad es arrastrar la reserva —sin cancelar ni volver a cobrar. Rápido incluso con cientos de parcelas.",
-    "cta": "Verlo funcionando en la demo"
+    "cta": "Verlo funcionando en la demo",
+    "capturaAlt": "Vista del planning del gestor con reservas reales de un camping en agosto"
   },
   "niveles": {
     "titulo": "Empieza por donde estás",
