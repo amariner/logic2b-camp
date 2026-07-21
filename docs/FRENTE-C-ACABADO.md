@@ -69,7 +69,7 @@ En producción no se nota (el dashboard vive en `/admin/` del **mismo** Worker, 
 | Fase | Nombre | Objetivo | Hecho cuando |
 |---|---|---|---|
 | **C0** | Desbloqueo | HMR del dashboard + seed denso. Sin esto, todo lo demás se hace a ciegas y sobre un lienzo vacío. | `pnpm dev` permite login en `:5173`; el planning de agosto se ve lleno |
-| **C1** | El planning como pieza de exhibición | El elemento firma, a la altura de su declaración. Gesto horizontal, línea de hoy, crear arrastrando, deshacer. | Un director de camping alarga una estancia arrastrando y dice "espera, ¿eso se puede?" |
+| ~~**C1**~~ ✅ | El planning como pieza de exhibición | El elemento firma, a la altura de su declaración. Gesto horizontal, línea de hoy, crear arrastrando, deshacer. | **HECHO (ADR 0023)** — mover/estirar con re-cotización en servidor y candado de precio, crear arrastrando, bandeja arrastrable, hoy/continuación/temporada/filtros, mapa de color definitivo con test AA + modo oscuro, finde en un gradiente |
 | **C2** | DS completo y conectado | Radix + los primitivos que faltan; los 41 botones crudos pasan a `<Button>`. | 0 `<button>` crudos en el dashboard; `dialog/sheet/toast/command/skeleton/table` existen y se usan |
 | **C3** | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer. Las 11 pantallas a la vez. | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
 | ~~**C4**~~ ✅ | Workflow real de recepción | Check-in, huéspedes y documentos, alta desde el planning, ⌘K. | **HECHO (ADR 0022)** — check-in como `checked_in_at` (no estado), huéspedes editables, cobrar todo, bloqueos desde la UI, ⌘K, rutas `/reservas/$id` `/clientes/$id` |
@@ -107,9 +107,11 @@ Hoy: 40 reservas / 83 unidades. Objetivo: **una temporada que respira**, con la 
 
 ---
 
-## C1 · El planning como pieza de exhibición
+## C1 · El planning como pieza de exhibición — ✅ HECHO (ADR 0023, 2026-07-21)
 
-Está declarado como **el elemento firma**. Hoy es sólido de ingeniería (virtualización, DnD vertical, optimista con rollback, teclado) y **pobre de gesto**.
+> **Cerrado entero en ADR 0023**, incluido C1.5 (mapa de color definitivo → modo oscuro). El gesto horizontal existe: mover arrastrando (y en diagonal: fecha+unidad en una acción), estirar por los bordes, con tooltip en vivo, **re-cotización SIEMPRE en servidor** (`requote` dry-run + `move` con candado `expectedTotalCents`), desglose nuevo en diálogo antes de confirmar si el importe cambia, rechazo explicado si solapa, Deshacer en todo, y paridad de teclado (←/→, Shift+←/→). Crear arrastrando sobre celdas libres (alta precargada con `preferredUnitId`) y chips de la bandeja arrastrables. Línea de HOY, continuación en barras cortadas, franja de temporada, filtros y búsqueda dentro del planning. El mapa `--lc-status-*` es **definitivo con test de contraste** (27 aserciones light+dark en `packages/ui`; cazó que el ámbar provisional se quedaba en **1.7:1** sobre blanco) y el **modo oscuro está conectado** (toggle claro/oscuro/sistema + script anti-FOUC). El finde pasó de un `<div>` por celda×fila a **un gradiente por lienzo** — la virtualización horizontal se descarta con medida. Verificado en vivo: **22/22 gestos** con Playwright contra el bundle real. **Diferido** (BACKLOG): mover a otro tipo, crear bloqueos arrastrando, gesto táctil móvil.
+
+Estaba declarado como **el elemento firma**. Era sólido de ingeniería (virtualización, DnD vertical, optimista con rollback, teclado) y **pobre de gesto**.
 
 ### C1.1 — El gesto que falta: horizontal
 

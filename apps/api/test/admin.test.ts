@@ -1056,3 +1056,198 @@ describe('usuarios (solo owner)', () => {
     expect(dup.status).toBe(409);
   });
 });
+
+/**
+ * ADR 0023 (C1) — el gesto horizontal del tape chart: mover/estirar fechas.
+ * `requote` es el dry-run (nunca escribe); `move` re-cotiza SIEMPRE en servidor
+ * y `expectedTotalCents` es el candado entre lo que se enseñó y lo que se escribe.
+ * Precios de la fixture: base 2000/noche · alta 3800/noche · limpieza obligatoria 1500.
+ */
+describe('mover y estirar fechas — requote/move (ADR 0023)', () => {
+  const db = createDb(env.DB);
+  // bucket propio de rate-limit: el bloque hace muchas mutaciones (ver test-pagos)
+  const IP = { 'cf-connecting-ip': 'test-move' };
+
+  const crear = async (from: string, to: string, extra: Record<string, unknown> = {}) => {
+    const res = await app.request(
+      '/api/admin/bookings',
+      json({ ...bookingBody(from, to), ...extra }, { cookie: reception, ...IP }),
+      envA,
+    );
+    expect(res.status).toBe(201);
+    return (await res.json()) as { id: string; unitId: string | null; totalCents: number };
+  };
+
+  const move = (id: string, body: Record<string, unknown>, cookie = reception) =>
+    app.request(`/api/admin/bookings/${id}`, patch({ action: 'move', ...body }, cookie, IP), envA);
+
+  const row = async (id: string) =>
+    (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0]!;
+
+  it('requote: dry-run con desglose y total anterior; no escribe nada', async () => {
+    const b = await crear('2026-03-20', '2026-03-23'); // 3 noches base = 7500
+    const res = await app.request(
+      `/api/admin/bookings/${b.id}/requote`,
+      json({ dateFrom: '2026-03-24', dateTo: '2026-03-27' }, { cookie: reception, ...IP }),
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const q = (await res.json()) as {
+      nights: number;
+      totalCents: number;
+      previousTotalCents: number;
+      breakdown: { lines: unknown[]; totalCents: number };
+    };
+    expect(q.nights).toBe(3);
+    expect(q.totalCents).toBe(7500);
+    expect(q.previousTotalCents).toBe(7500);
+    expect(q.breakdown.lines.length).toBeGreaterThan(0);
+    // dry-run: la reserva sigue donde estaba
+    expect((await row(b.id)).dateFrom).toBe('2026-03-20');
+  });
+
+  it('move: cambia las fechas, re-cotiza en servidor y audita', async () => {
+    const b = await crear('2026-05-11', '2026-05-14');
+    const res = await move(b.id, { dateFrom: '2026-05-18', dateTo: '2026-05-21' });
+    expect(res.status).toBe(200);
+    const r = await row(b.id);
+    expect(r.dateFrom).toBe('2026-05-18');
+    expect(r.dateTo).toBe('2026-05-21');
+    expect(r.totalCents).toBe(7500);
+    expect((r.priceBreakdown as { totalCents: number }).totalCents).toBe(7500);
+    const audits = await db
+      .select()
+      .from(schema.auditLog)
+      .where(and(eq(schema.auditLog.entityId, b.id), eq(schema.auditLog.action, 'move')));
+    expect(audits.length).toBe(1);
+    const diff = audits[0]!.diff as { from: { dateFrom: string }; to: { dateFrom: string } };
+    expect(diff.from.dateFrom).toBe('2026-05-11');
+    expect(diff.to.dateFrom).toBe('2026-05-18');
+  });
+
+  it('candado de precio: cruzar a temporada alta con el total viejo → 409 price_changed con el desglose fresco', async () => {
+    const b = await crear('2026-05-25', '2026-05-28');
+    const res = await move(b.id, {
+      dateFrom: '2026-07-06',
+      dateTo: '2026-07-09',
+      expectedTotalCents: b.totalCents, // 7500, ya obsoleto: julio es alta
+    });
+    expect(res.status).toBe(409);
+    const body = (await res.json()) as { error: string; totalCents: number };
+    expect(body.error).toBe('price_changed');
+    expect(body.totalCents).toBe(12900); // 3×3800 + 1500
+    expect((await row(b.id)).dateFrom).toBe('2026-05-25'); // no se movió
+
+    // con el candado fresco, pasa y escribe el desglose nuevo
+    const ok = await move(b.id, {
+      dateFrom: '2026-07-06',
+      dateTo: '2026-07-09',
+      expectedTotalCents: 12900,
+    });
+    expect(ok.status).toBe(200);
+    const r = await row(b.id);
+    expect(r.totalCents).toBe(12900);
+    expect(r.paidCents).toBe(0); // move nunca toca lo pagado
+  });
+
+  it('destino que solapa otra reserva de la misma unidad → 409 unit_occupied y nada cambia', async () => {
+    const a = await crear('2026-08-10', '2026-08-13');
+    const b = await crear('2026-08-17', '2026-08-20');
+    await db.update(schema.bookings).set({ unitId: 'unt_1' }).where(eq(schema.bookings.id, a.id));
+    await db.update(schema.bookings).set({ unitId: 'unt_1' }).where(eq(schema.bookings.id, b.id));
+    const res = await move(a.id, { dateFrom: '2026-08-18', dateTo: '2026-08-21' });
+    expect(res.status).toBe(409);
+    expect(((await res.json()) as { error: string }).error).toBe('unit_occupied');
+    expect((await row(a.id)).dateFrom).toBe('2026-08-10');
+  });
+
+  it('estirar: la propia reserva no solapa consigo misma; un bloqueo sí corta → 409', async () => {
+    const b = await crear('2026-09-14', '2026-09-16');
+    await db.update(schema.bookings).set({ unitId: 'unt_2' }).where(eq(schema.bookings.id, b.id));
+    await db.insert(schema.inventoryBlocks).values({
+      id: 'blk_move_test',
+      tenantId: 'ten_alfa',
+      unitId: 'unt_2',
+      unitTypeId: null,
+      dateFrom: '2026-09-17',
+      dateTo: '2026-09-19',
+      reason: 'maintenance',
+    });
+    // +1 noche: el rango nuevo pisa el viejo (consigo misma no cuenta) y roza el
+    // bloqueo sin tocarlo (to exclusivo) → 200
+    const ok = await move(b.id, { dateFrom: '2026-09-14', dateTo: '2026-09-17' });
+    expect(ok.status).toBe(200);
+    // +1 más: entra en el bloqueo → 409
+    const clash = await move(b.id, { dateFrom: '2026-09-14', dateTo: '2026-09-18' });
+    expect(clash.status).toBe(409);
+    expect(((await clash.json()) as { error: string }).error).toBe('unit_occupied');
+    await db.delete(schema.inventoryBlocks).where(eq(schema.inventoryBlocks.id, 'blk_move_test'));
+  });
+
+  it('las reglas de estancia mandan también en el mostrador → 422 explicado', async () => {
+    const b = await crear('2026-10-12', '2026-10-15');
+    // alta exige minStay 3: dos noches en julio no valen
+    const res = await move(b.id, { dateFrom: '2026-07-27', dateTo: '2026-07-29' });
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { error: string; issues: unknown[] };
+    expect(body.error).toBe('invalid_stay');
+    expect(body.issues.length).toBeGreaterThan(0);
+  });
+
+  it('diagonal: move con unitId cambia fechas y unidad en UNA acción; unidad desconocida → 404', async () => {
+    const b = await crear('2026-04-27', '2026-04-30');
+    const res = await move(b.id, {
+      dateFrom: '2026-03-24',
+      dateTo: '2026-03-27',
+      unitId: 'unt_3',
+    });
+    expect(res.status).toBe(200);
+    const r = await row(b.id);
+    expect(r.unitId).toBe('unt_3');
+    expect(r.dateFrom).toBe('2026-03-24');
+    const bad = await move(b.id, {
+      dateFrom: '2026-03-24',
+      dateTo: '2026-03-27',
+      unitId: 'unt_nope',
+    });
+    expect(bad.status).toBe(404);
+  });
+
+  it('una completada no se mueve → 409; readonly no puede mover → 403', async () => {
+    const b = await crear('2026-03-16', '2026-03-18');
+    const forbidden = await move(b.id, { dateFrom: '2026-03-24', dateTo: '2026-03-26' }, readonly);
+    expect(forbidden.status).toBe(403);
+    await db
+      .update(schema.bookings)
+      .set({ status: 'completed' })
+      .where(eq(schema.bookings.id, b.id));
+    const res = await move(b.id, { dateFrom: '2026-03-24', dateTo: '2026-03-26' });
+    expect(res.status).toBe(409);
+    expect(((await res.json()) as { error: string }).error).toBe('invalid_state');
+  });
+
+  it('fechas invertidas → 400', async () => {
+    const b = await crear('2026-06-25', '2026-06-27');
+    const res = await move(b.id, { dateFrom: '2026-06-27', dateTo: '2026-06-25' });
+    expect(res.status).toBe(400);
+  });
+
+  it('el planning devuelve las temporadas para la franja de cabecera', async () => {
+    const res = await app.request(
+      '/api/admin/planning?from=2026-07-01&to=2026-07-08',
+      { headers: { cookie: readonly, ...IP } },
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { seasons: { name: string; priority: number }[] };
+    expect(body.seasons.map((s) => s.name).sort()).toEqual(['Alta', 'Apertura']);
+  });
+
+  it('alta con preferredUnitId: la respeta si está libre y cae al asignador si no (ADR 0023 §2)', async () => {
+    const a = await crear('2026-08-24', '2026-08-27', { preferredUnitId: 'unt_3' });
+    expect(a.unitId).toBe('unt_3');
+    const b = await crear('2026-08-24', '2026-08-27', { preferredUnitId: 'unt_3' });
+    expect(b.unitId).toBeTruthy();
+    expect(b.unitId).not.toBe('unt_3'); // ocupada por la anterior: el asignador decide
+  });
+});

@@ -3,12 +3,21 @@
  * readonly=GETs · reception=operativa · manager=tarifas/ajustes · owner=usuarios.
  * Toda mutación deja rastro en audit_log.
  */
-import { calculateCancellationRefund, TAX_POLICIES } from '@logic-camp/core';
+import {
+  calculateCancellationRefund,
+  calculateTouristTax,
+  ClosedError,
+  quote,
+  searchAvailability,
+  TAX_POLICIES,
+  validateStay,
+} from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
 import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { provisionUser, requireRole, type AuthEnv } from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
+import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import { executeRefund, recordManualPayment } from '../payments';
 import {
@@ -24,6 +33,7 @@ import {
   paymentsListQuerySchema,
   planningQuerySchema,
   ratePatchSchema,
+  requoteSchema,
   reportsQuerySchema,
   settingsPatchSchema,
   unitPatchSchema,
@@ -44,6 +54,138 @@ const TRANSITIONS: Record<
 
 const nightsBetween = (from: string, to: string) =>
   Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
+
+/**
+ * Validación + re-cotización de un cambio de fechas/unidad (ADR 0023, C1).
+ * La comparten el dry-run (`POST /bookings/:id/requote`) y la escritura
+ * (`PATCH action:'move'`): lo que se previsualiza y lo que se escribe salen del
+ * MISMO cálculo, siempre en servidor. Nunca escribe nada.
+ */
+async function quoteMove(
+  db: Db,
+  booking: typeof schema.bookings.$inferSelect,
+  target: { dateFrom: string; dateTo: string; unitId?: string },
+): Promise<
+  | { ok: false; status: 400 | 404 | 409 | 422; body: Record<string, unknown> }
+  | {
+      ok: true;
+      targetUnitId: string | null;
+      nights: number;
+      totalCents: number;
+      touristTaxCents: number;
+      breakdown: Record<string, unknown>;
+      extras: Awaited<ReturnType<typeof loadExtras>>;
+    }
+> {
+  if (target.dateFrom >= target.dateTo)
+    return { ok: false, status: 400, body: { error: 'invalid_dates' } };
+  // solo una reserva viva se mueve: completada/cancelada/no-show son historia
+  if (booking.status !== 'pending' && booking.status !== 'confirmed')
+    return { ok: false, status: 409, body: { error: 'invalid_state', status: booking.status } };
+
+  const data = await loadEngineData(db);
+  const unitType = data.unitTypes.find((t) => t.id === booking.unitTypeId);
+  if (!unitType) return { ok: false, status: 404, body: { error: 'unknown_unit_type' } };
+
+  // unidad destino: la pedida (arrastre diagonal) o la que ya tiene; puede ser ninguna
+  let targetUnitId = booking.unitId;
+  if (target.unitId) {
+    const unit = data.units.find((u) => u.id === target.unitId);
+    if (!unit || unit.status !== 'active')
+      return { ok: false, status: 404, body: { error: 'unknown_unit' } };
+    if (unit.unitTypeId !== booking.unitTypeId)
+      return { ok: false, status: 409, body: { error: 'unit_type_mismatch' } };
+    targetUnitId = unit.id;
+  }
+
+  // qué se contrató (electricidad): el desglose auditable es la fuente de verdad
+  const withElectricity = booking.priceBreakdown.lines.some(
+    (l) => l.concept === 'price.electricity',
+  );
+
+  const validation = validateStay({
+    unitType,
+    dateFrom: target.dateFrom,
+    dateTo: target.dateTo,
+    occupancy: booking.occupancy,
+    seasons: data.seasons,
+    ratePlans: data.ratePlans,
+    needsElectricity: withElectricity,
+  });
+  if (!validation.valid)
+    return { ok: false, status: 422, body: { error: 'invalid_stay', issues: validation.issues } };
+
+  // solape contra el destino (from inclusive / to exclusive), excluyéndose a sí misma
+  const others = data.bookings.filter((b) => b.id !== booking.id);
+  if (targetUnitId) {
+    const clash = others.some(
+      (b) => b.unitId === targetUnitId && b.dateFrom < target.dateTo && b.dateTo > target.dateFrom,
+    );
+    const blocked = data.blocks.some(
+      (blk) =>
+        (blk.unitId === targetUnitId || (!blk.unitId && blk.unitTypeId === booking.unitTypeId)) &&
+        blk.dateFrom < target.dateTo &&
+        blk.dateTo > target.dateFrom,
+    );
+    if (clash || blocked) return { ok: false, status: 409, body: { error: 'unit_occupied' } };
+  } else {
+    // sin unidad asignada: basta con que el TIPO tenga hueco en las fechas nuevas
+    const availability = searchAvailability({
+      dateFrom: target.dateFrom,
+      dateTo: target.dateTo,
+      unitTypes: [unitType],
+      units: data.units,
+      bookings: others,
+      blocks: data.blocks,
+      seasons: data.seasons,
+    })[0]!;
+    if (availability.status !== 'available')
+      return {
+        ok: false,
+        status: 409,
+        body: { error: availability.status === 'closed' ? 'closed' : 'no_availability' },
+      };
+  }
+
+  // re-cotización COMPLETA con los extras ya contratados (+ obligatorios)
+  const requiredIds = await loadRequiredExtraIds(db);
+  const contracted = (booking.extras ?? []).map((e) => e.extraId);
+  const extras = await loadExtras(db, [...new Set([...contracted, ...requiredIds])]);
+  let result;
+  try {
+    result = quote({
+      unitType,
+      dateFrom: target.dateFrom,
+      dateTo: target.dateTo,
+      occupancy: booking.occupancy,
+      seasons: data.seasons,
+      ratePlans: data.ratePlans,
+      extras,
+      currency: 'EUR',
+      withElectricity,
+    });
+  } catch (e) {
+    if (e instanceof ClosedError)
+      return { ok: false, status: 422, body: { error: 'closed' } };
+    throw e;
+  }
+  const tenantConfig = await loadTenantConfig(db);
+  const touristTaxCents = calculateTouristTax(
+    booking.occupancy,
+    result.nights,
+    TAX_POLICIES[tenantConfig.taxPolicy]!,
+  );
+
+  return {
+    ok: true,
+    targetUnitId,
+    nights: result.nights,
+    totalCents: result.breakdown.totalCents,
+    touristTaxCents,
+    breakdown: { ...result.breakdown, touristTaxCents },
+    extras,
+  };
+}
 
 async function audit(
   db: Db,
@@ -79,9 +221,11 @@ export const adminRoutes = new Hono<AuthEnv>()
     if (from >= to) return c.json({ error: 'invalid_dates' }, 400);
     const db = c.get('tenant').db;
 
-    const [types, units, bookings, blocks] = await Promise.all([
+    const [types, units, seasons, bookings, blocks] = await Promise.all([
       db.select().from(schema.unitTypes),
       db.select().from(schema.units).orderBy(schema.units.code),
+      // temporadas: la franja de contexto de la cabecera (ADR 0023 §3)
+      db.select().from(schema.seasonsCalendar),
       db
         .select({
           id: schema.bookings.id,
@@ -112,7 +256,7 @@ export const adminRoutes = new Hono<AuthEnv>()
         ),
     ]);
 
-    return c.json({ from, to, unitTypes: types, units, bookings, blocks });
+    return c.json({ from, to, unitTypes: types, units, seasons, bookings, blocks });
   })
 
   // ---------- Catálogo (tipos + unidades + extras: estable, para selects y formularios) ----------
@@ -253,7 +397,7 @@ export const adminRoutes = new Hono<AuthEnv>()
   .post('/bookings', requireRole('reception'), async (c) => {
     const parsed = adminBookingCreateSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
-    const { channel, ...body } = parsed.data;
+    const { channel, preferredUnitId, ...body } = parsed.data;
 
     const tenant = c.get('tenant');
     const tenantConfig = await loadTenantConfig(tenant.db);
@@ -261,6 +405,7 @@ export const adminRoutes = new Hono<AuthEnv>()
       channel,
       idemKey: c.req.header('Idempotency-Key'),
       taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
+      preferredUnitId,
     });
     if (result.ok && result.status === 201) {
       await audit(
@@ -281,6 +426,28 @@ export const adminRoutes = new Hono<AuthEnv>()
       );
     }
     return c.json(result.body, result.status);
+  })
+
+  // dry-run del gesto horizontal (ADR 0023): valida y cotiza un cambio de
+  // fechas/unidad SIN escribir. El cliente lo llama al soltar el arrastre para
+  // enseñar el desglose nuevo antes de confirmar si el importe cambia.
+  .post('/bookings/:id/requote', requireRole('reception'), async (c) => {
+    const parsed = requoteSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const db = c.get('tenant').db;
+    const id = c.req.param('id');
+    const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0];
+    if (!booking) return c.json({ error: 'not_found' }, 404);
+
+    const q = await quoteMove(db, booking, parsed.data);
+    if (!q.ok) return c.json(q.body, q.status);
+    return c.json({
+      nights: q.nights,
+      totalCents: q.totalCents,
+      previousTotalCents: booking.totalCents,
+      breakdown: q.breakdown,
+      unitId: q.targetUnitId,
+    });
   })
 
   .patch('/bookings/:id', requireRole('reception'), async (c) => {
@@ -382,6 +549,60 @@ export const adminRoutes = new Hono<AuthEnv>()
         await db.select().from(schema.bookings).where(eq(schema.bookings.id, id))
       )[0]!;
       return c.json({ id, paidCents: updated.paidCents });
+    }
+
+    // mover/estirar fechas desde el tape chart (ADR 0023): re-cotiza SIEMPRE en
+    // servidor; `expectedTotalCents` es el candado entre lo previsualizado y lo
+    // que se escribe. `unitId` opcional = arrastre diagonal (fecha+unidad, un acto).
+    if (action.action === 'move') {
+      const q = await quoteMove(db, booking, action);
+      if (!q.ok) return c.json(q.body, q.status);
+      if (action.expectedTotalCents !== undefined && action.expectedTotalCents !== q.totalCents) {
+        return c.json(
+          {
+            error: 'price_changed',
+            totalCents: q.totalCents,
+            previousTotalCents: booking.totalCents,
+            breakdown: q.breakdown,
+          },
+          409,
+        );
+      }
+      await db
+        .update(schema.bookings)
+        .set({
+          dateFrom: action.dateFrom,
+          dateTo: action.dateTo,
+          unitId: q.targetUnitId,
+          extras: q.extras.map((e) => ({ extraId: e.id, qty: e.qty, amountCents: e.priceCents })),
+          priceBreakdown: q.breakdown as typeof booking.priceBreakdown,
+          totalCents: q.totalCents,
+          touristTaxCents: q.touristTaxCents,
+          updatedAt: nowIso(),
+        })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'move', {
+        from: {
+          dateFrom: booking.dateFrom,
+          dateTo: booking.dateTo,
+          unitId: booking.unitId,
+          totalCents: booking.totalCents,
+        },
+        to: {
+          dateFrom: action.dateFrom,
+          dateTo: action.dateTo,
+          unitId: q.targetUnitId,
+          totalCents: q.totalCents,
+        },
+      });
+      return c.json({
+        id,
+        dateFrom: action.dateFrom,
+        dateTo: action.dateTo,
+        unitId: q.targetUnitId,
+        totalCents: q.totalCents,
+        breakdown: q.breakdown,
+      });
     }
 
     if (action.action === 'reassign') {

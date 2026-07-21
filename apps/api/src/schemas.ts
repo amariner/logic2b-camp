@@ -101,6 +101,11 @@ export const bookingsListQuerySchema = z.object({
 
 export const adminBookingCreateSchema = bookingRequestSchema.extend({
   channel: z.enum(['phone', 'walkin']).default('phone'),
+  /**
+   * Unidad preferida al crear desde el planning (ADR 0023 §2): si está libre se
+   * usa; si no, decide el asignador como siempre. Preferencia, nunca garantía.
+   */
+  preferredUnitId: z.string().min(1).optional(),
 });
 
 /** Acciones tipadas sobre una reserva: transición, reasignación, nota o pago (ADR 0011). */
@@ -114,6 +119,16 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('check_out') }),
   z.object({ action: z.literal('undo_checkin') }),
   z.object({ action: z.literal('reassign'), unitId: z.string().min(1) }),
+  // Mover/estirar la estancia desde el tape chart (ADR 0023): re-cotiza SIEMPRE
+  // en servidor. `unitId` opcional = arrastre diagonal (fecha+unidad, una acción).
+  // `expectedTotalCents` = candado: si el total recalculado difiere → 409 price_changed.
+  z.object({
+    action: z.literal('move'),
+    dateFrom: isoDate,
+    dateTo: isoDate,
+    unitId: z.string().min(1).optional(),
+    expectedTotalCents: z.number().int().optional(),
+  }),
   z.object({ action: z.literal('note'), notes: z.string().max(2000) }),
   z.object({
     action: z.literal('record_payment'),
@@ -168,6 +183,13 @@ export const blockCreateSchema = z
     message: 'unit_or_type_required',
   })
   .refine((b) => b.dateFrom < b.dateTo, { message: 'invalid_dates' });
+
+/** Dry-run del move (ADR 0023): misma validación y cotización, sin escribir. */
+export const requoteSchema = z.object({
+  dateFrom: isoDate,
+  dateTo: isoDate,
+  unitId: z.string().min(1).optional(),
+});
 
 export const enquiryPatchSchema = z.object({
   status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']),

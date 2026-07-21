@@ -37,6 +37,8 @@ export async function createBooking(
     env?: PaymentEnv;
     /** origen público (para construir las URLs de vuelta de la pasarela) */
     webOrigin?: string;
+    /** unidad preferida (ADR 0023 §2, crear desde el planning): si está libre se usa */
+    preferredUnitId?: string;
   },
 ): Promise<CreateBookingResult> {
   const db = tenant.db;
@@ -141,7 +143,7 @@ export async function createBooking(
   });
   const touristTaxCents = calculateTouristTax(body.occupancy, result.nights, opts.taxPolicy);
 
-  const assignment = assignUnit({
+  let assignment = assignUnit({
     unitTypeId: unitType.id,
     dateFrom: body.dateFrom,
     dateTo: body.dateTo,
@@ -149,6 +151,12 @@ export async function createBooking(
     bookings: data.bookings,
     blocks: data.blocks,
   });
+  // preferencia, nunca garantía (ADR 0023 §2): si la unidad pedida está entre las
+  // libres (titular o alternativa del asignador), se usa; si no, manda el asignador.
+  if (assignment && opts.preferredUnitId && assignment.unitId !== opts.preferredUnitId) {
+    const alt = assignment.alternatives.find((a) => a.unitId === opts.preferredUnitId);
+    if (alt) assignment = { ...assignment, unitId: alt.unitId, unitCode: alt.unitCode };
+  }
 
   // Pagos (ADR 0011): solo el canal web pasa por la pasarela — una reserva de
   // mostrador/teléfono la cobra recepción in situ y confirma al instante como

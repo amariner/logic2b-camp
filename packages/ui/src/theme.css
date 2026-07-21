@@ -118,9 +118,12 @@
  * firma del producto. Un tape chart no necesita "el color 4", necesita "el color
  * de pendiente de pago".
  *
- * Los valores son EXACTAMENTE los que se veían antes de corregir C-BUG-1, así que
- * ADR 0020 no cambia un píxel. El mapa definitivo (incluido "en casa", que llega
- * con el check-in de C4) lo decide **C1.5** cambiando estos valores y nada más.
+ * MAPA DEFINITIVO (ADR 0023, C1.5). La estructura de ADR 0020/0022 se confirma:
+ * es la lectura operativa del mostrador a las 9:00 — quién está DENTRO (verde),
+ * quién está confirmado (tinta), quién no ha pagado (ámbar), quién no vino
+ * (rojo), qué ya pasó (gris), qué está fuera de servicio (rayado). Cada pareja
+ * bg/fg tiene test de contraste en `theme-contrast.test.ts` (texto ≥ 4.5:1,
+ * barra sobre fondo ≥ 3:1, light Y dark): el mapa no puede romperse en silencio.
  */
 :root {
   --lc-status-confirmed: var(--primary);
@@ -128,26 +131,70 @@
 
   /* "En casa" (ADR 0022): huésped presente. Verde esmeralda sólido — distinto
      del negro de `confirmed` y del ámbar de `pending`, para que el mostrador
-     distinga de un vistazo "está dentro" de "solo tiene reserva". L=0.5 da 5.5:1
-     con texto blanco (AA con margen, verificado). El mapa definitivo lo fija C1.5. */
+     distinga de un vistazo "está dentro" de "solo tiene reserva". */
   --lc-status-inhouse: oklch(50% 0.14 152);
   --lc-status-inhouse-fg: oklch(100% 0 0);
 
-  /* Ámbar. Valor explícito, no var(--chart-4): ver arriba. */
-  --lc-status-pending: oklch(82.8% 0.189 84.429);
+  /* Ámbar profundo. El pálido provisional (L 82.8%) se quedaba en 1.7:1 sobre
+     blanco — invisible como bloque para baja visión; lo cazó el test AA. */
+  --lc-status-pending: oklch(63% 0.155 84.4);
   --lc-status-pending-fg: oklch(14.5% 0 0);
 
-  --lc-status-no-show: var(--destructive);
-  --lc-status-no-show-fg: var(--destructive-foreground);
+  /* Rojo propio, un punto más oscuro que --destructive: el blanco sobre el
+     destructive de shadcn se queda en ~4:1 y la barra lleva texto (AA exige 4.5). */
+  --lc-status-no-show: oklch(50.5% 0.213 27.5);
+  --lc-status-no-show-fg: oklch(100% 0 0);
 
-  --lc-status-completed: var(--muted-foreground);
-  --lc-status-completed-fg: var(--background);
+  /* Gris un punto más oscuro que --muted-foreground por la misma razón AA. */
+  --lc-status-completed: oklch(51% 0 0);
+  --lc-status-completed-fg: oklch(100% 0 0);
 
   /* Azul de "en curso / informativo": solicitud contactada, aviso en cola. */
   --lc-status-info: oklch(39.8% 0.07 227.392);
   --lc-status-info-fg: oklch(100% 0 0);
 
   --lc-status-blocked: var(--muted-foreground);
+
+  /* Línea de "hoy" del planning (ADR 0023 §3): rojo teja, no-texto (≥3:1). */
+  --lc-today: oklch(55% 0.19 35);
+
+  /* Franja de temporada de la cabecera: 4 tonos suaves cíclicos, decorativos
+     (el nombre va en tooltip). El tono N lo asigna seasonBands (packages/config). */
+  --lc-season-0: oklch(87% 0.05 230);
+  --lc-season-1: oklch(87% 0.08 85);
+  --lc-season-2: oklch(87% 0.07 150);
+  --lc-season-3: oklch(87% 0.06 320);
+
+  /* Sombreado de finde del lienzo (UNA capa por gradiente, ADR 0023 §5). */
+  --lc-weekend-fill: color-mix(in oklab, var(--muted) 60%, transparent);
+}
+
+/* Pareja dark del mapa (ADR 0023, C1.5). Hasta hoy `.dark` no declaraba ningún
+ * --lc-status-*: heredaba los light — el mismo agujero por el que C-BUG-1 pasó
+ * inadvertido con los --chart-*. Los que derivan de tokens semánticos
+ * (confirmed→primary…) se voltean solos; los fijos se declaran aquí. */
+.dark {
+  --lc-status-inhouse: oklch(76% 0.16 152);
+  --lc-status-inhouse-fg: oklch(16% 0 0);
+
+  --lc-status-pending: oklch(82.8% 0.189 84.429);
+  --lc-status-pending-fg: oklch(16% 0 0);
+
+  --lc-status-no-show: oklch(68% 0.19 25);
+  --lc-status-no-show-fg: oklch(16% 0 0);
+
+  --lc-status-completed: oklch(65% 0 0);
+  --lc-status-completed-fg: oklch(14.5% 0 0);
+
+  --lc-status-info: oklch(74% 0.1 230);
+  --lc-status-info-fg: oklch(16% 0 0);
+
+  --lc-today: oklch(70% 0.16 35);
+
+  --lc-season-0: oklch(38% 0.05 230);
+  --lc-season-1: oklch(38% 0.07 85);
+  --lc-season-2: oklch(38% 0.06 150);
+  --lc-season-3: oklch(38% 0.05 320);
 }
 
 /* Mapea los tokens a utilidades Tailwind v4 (bg-background, text-foreground, rounded-lg…). */
