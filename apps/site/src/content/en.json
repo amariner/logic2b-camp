@@ -7,6 +7,7 @@
     "producto": "Product",
     "niveles": "Plans",
     "planning": "The planner",
+    "docs": "Guides",
     "demo": "See demo",
     "contacto": "Request a demo",
     "verDemo": "See the live demo"
@@ -22,10 +23,22 @@
   "problema": {
     "titulo": "What's costing you money every August",
     "puntos": [
-      { "titulo": "Your website doesn't book", "texto": "A form that lands in your inbox and a call the next day. Meanwhile the guest already booked somewhere else." },
-      { "titulo": "The portal's commission", "texto": "Booking takes its cut of every night. With direct bookings from your own site, that cut stays home." },
-      { "titulo": "The notebook and the spreadsheet", "texto": "A paper planner overlaps, gets erased, and only its author understands it. Moving a pitch is half an hour." },
-      { "titulo": "Six languages by hand", "texto": "Answering in French, German and Dutch one by one. Your website should do that for you." }
+      {
+        "titulo": "Your website doesn't book",
+        "texto": "A form that lands in your inbox and a call the next day. Meanwhile the guest already booked somewhere else."
+      },
+      {
+        "titulo": "The portal's commission",
+        "texto": "Booking takes its cut of every night. With direct bookings from your own site, that cut stays home."
+      },
+      {
+        "titulo": "The notebook and the spreadsheet",
+        "texto": "A paper planner overlaps, gets erased, and only its author understands it. Moving a pitch is half an hour."
+      },
+      {
+        "titulo": "Six languages by hand",
+        "texto": "Answering in French, German and Dutch one by one. Your website should do that for you."
+      }
     ]
   },
   "producto": {
@@ -35,12 +48,20 @@
       {
         "titulo": "The public website",
         "texto": "Fast, in six languages, with your photos and your brand. Guests search dates, see real availability and book —or leave a request— without leaving your domain. Built to be found on Google.",
-        "puntos": ["A real availability engine, not a mockup", "Direct booking with no portal commission", "6 languages, responsive, accessible"]
+        "puntos": [
+          "A real availability engine, not a mockup",
+          "Direct booking with no portal commission",
+          "6 languages, responsive, accessible"
+        ]
       },
       {
         "titulo": "The front-desk manager",
         "texto": "Every unit at a glance, drag to reassign a pitch, take payment, see today's arrivals and departures, each guest's file and history. Built for the receptionist, not for an IT expert.",
-        "puntos": ["Visual planner with drag and drop", "Today's arrivals, departures and payments", "Each guest's file and history"]
+        "puntos": [
+          "Visual planner with drag and drop",
+          "Today's arrivals, departures and payments",
+          "Each guest's file and history"
+        ]
       }
     ]
   },
@@ -59,20 +80,34 @@
         "nombre": "Camp Web",
         "para": "Your first website that works",
         "texto": "A modern multi-language public website with a request form. Every request is stored: it's the history that makes you grow.",
-        "incluye": ["Multi-language public website", "Request form → your inbox", "Your photos, your brand, your domain", "SEO and speed taken care of"]
+        "incluye": [
+          "Multi-language public website",
+          "Request form → your inbox",
+          "Your photos, your brand, your domain",
+          "SEO and speed taken care of"
+        ]
       },
       {
         "nombre": "Camp Requests",
         "para": "When you want order",
         "texto": "Everything above plus a requests inbox and a light panel so you never lose an enquiry.",
-        "incluye": ["Requests inbox with statuses", "Light front-desk panel", "Today's arrivals and departures"]
+        "incluye": [
+          "Requests inbox with statuses",
+          "Light front-desk panel",
+          "Today's arrivals and departures"
+        ]
       },
       {
         "nombre": "Camp Bookings",
         "destacado": true,
         "para": "The complete campsite",
         "texto": "A real booking engine, online payments, and the full manager with the planner. Direct booking end to end.",
-        "incluye": ["Booking and availability engine", "Online payments (deposit, full or bond)", "Full planner with drag and drop", "Guest file, reports and rates"]
+        "incluye": [
+          "Booking and availability engine",
+          "Online payments (deposit, full or bond)",
+          "Full planner with drag and drop",
+          "Guest file, reports and rates"
+        ]
       },
       {
         "nombre": "Camp Engine",
@@ -91,11 +126,26 @@
   "faq": {
     "titulo": "Questions we get",
     "items": [
-      { "q": "Do I have to change my domain?", "a": "No. Your site lives on your own domain, with your brand. We put the engine underneath." },
-      { "q": "What if I already use Booking?", "a": "You can keep it. Direct booking from your site saves you the commission on every reservation that comes in on your own; many campsites use both." },
-      { "q": "Is it hard for my receptionist?", "a": "It's designed for her: large screens, clear text, keyboard focus, and a planner you understand at a glance. No 200-page manual." },
-      { "q": "Is my data safe?", "a": "Each campsite has its own isolated database on Cloudflare's network. No other client can see your bookings." },
-      { "q": "How soon do I have it?", "a": "A new campsite goes live in an afternoon from your material. No months of waiting." }
+      {
+        "q": "Do I have to change my domain?",
+        "a": "No. Your site lives on your own domain, with your brand. We put the engine underneath."
+      },
+      {
+        "q": "What if I already use Booking?",
+        "a": "You can keep it. Direct booking from your site saves you the commission on every reservation that comes in on your own; many campsites use both."
+      },
+      {
+        "q": "Is it hard for my receptionist?",
+        "a": "It's designed for her: large screens, clear text, keyboard focus, and a planner you understand at a glance. No 200-page manual."
+      },
+      {
+        "q": "Is my data safe?",
+        "a": "Each campsite has its own isolated database on Cloudflare's network. No other client can see your bookings."
+      },
+      {
+        "q": "How soon do I have it?",
+        "a": "A new campsite goes live in an afternoon from your material. No months of waiting."
+      }
     ]
   },
   "contacto": {
@@ -121,6 +171,41 @@
     "demo": "Live demo",
     "producto": "Product",
     "planes": "Plans",
+    "docs": "Guides",
     "contacto": "Request a demo"
+  },
+  "docs": {
+    "seo": {
+      "title": "Logic Camp guides — front desk, owner and technical sheet",
+      "description": "How Logic Camp is used: the step-by-step front desk guide, the owner's guide to the four plans, and the technical sheet for your IT person."
+    },
+    "titulo": "Logic Camp guides",
+    "subtitulo": "Three guides, three different people. Each one written for whoever will actually read it.",
+    "indice": "In this guide",
+    "empezar": "Start",
+    "anterior": "Previous",
+    "siguiente": "Next",
+    "volver": "All guides",
+    "volverGuia": "Back to the guide index",
+    "paginas": "{n} pages",
+    "fallback": "This page is still in Spanish. We are translating the guides.",
+    "ayuda": "Can't find what you need? Write to hola@logic2b.com and we'll sort it out —and improve this guide while we're at it.",
+    "guias": {
+      "recepcion": {
+        "nombre": "Front desk guide",
+        "para": "For whoever is at the desk",
+        "texto": "The day-to-day of the software, task by task: log in, see who is arriving, check them in, take payment, move a booking on the planner and close the departure. No jargon."
+      },
+      "dueno": {
+        "nombre": "Owner's guide",
+        "para": "For whoever decides",
+        "texto": "The four Logic Camp plans explained as a ladder: what each one includes, what exactly changes when you move up, and what you need to provide."
+      },
+      "tecnica": {
+        "nombre": "Technical sheet",
+        "para": "For your trusted IT person",
+        "texto": "How it is built: domains and DNS, outgoing email, per-campsite data isolation, GDPR, backups, and what happens if you ever want to leave."
+      }
+    }
   }
 }

@@ -60,6 +60,7 @@ import NewBookingPanel, { type NewBookingInitial } from '../components/NewBookin
 import { QueryError } from '../components/QueryError';
 import { t, tDyn } from '../i18n';
 import { conceptLabel, eur, stayError } from '../lib/format';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 /** "en casa" (ADR 0022): huésped presente. Se DERIVA, no es un status. */
 const barStatusClass = (b: PlanningBooking) =>
@@ -109,19 +110,39 @@ const shortDate = (d: string) =>
  * del render de barras ni de celdas de día.
  */
 const SKELETON_BARS: ReadonlyArray<ReadonlyArray<[number, number]>> = [
-  [[2, 26], [40, 18]],
+  [
+    [2, 26],
+    [40, 18],
+  ],
   [[0, 34]],
-  [[12, 20], [46, 30]],
+  [
+    [12, 20],
+    [46, 30],
+  ],
   [[6, 48]],
-  [[28, 14], [52, 22]],
-  [[0, 18], [36, 12], [62, 26]],
+  [
+    [28, 14],
+    [52, 22],
+  ],
+  [
+    [0, 18],
+    [36, 12],
+    [62, 26],
+  ],
   [[18, 40]],
-  [[4, 12], [30, 34]],
+  [
+    [4, 12],
+    [30, 34],
+  ],
 ];
 
 function PlanningSkeleton() {
   return (
-    <div aria-busy="true" aria-label={t('planning.cargando')} className="min-h-0 flex-1 overflow-hidden">
+    <div
+      aria-busy="true"
+      aria-label={t('planning.cargando')}
+      className="min-h-0 flex-1 overflow-hidden"
+    >
       {/* cabecera de días */}
       <div className="flex border-b-2 border-foreground/20" style={{ paddingLeft: LABEL_W }}>
         {Array.from({ length: 24 }, (_, i) => (
@@ -129,7 +150,11 @@ function PlanningSkeleton() {
         ))}
       </div>
       {SKELETON_BARS.map((bars, r) => (
-        <div key={r} className="flex items-center border-b border-border/40" style={{ height: ROW_H }}>
+        <div
+          key={r}
+          className="flex items-center border-b border-border/40"
+          style={{ height: ROW_H }}
+        >
           <div
             className="flex shrink-0 items-center border-r border-border/60 px-2"
             style={{ width: LABEL_W }}
@@ -180,9 +205,7 @@ export default function Planning() {
     if (!hayFiltroBarras) return false;
     if (estadoFiltro && barStatusClass(b) !== estadoFiltro) return true;
     const q = buscar.trim().toLowerCase();
-    return Boolean(
-      q && !b.code.toLowerCase().includes(q) && !unitCode.toLowerCase().includes(q),
-    );
+    return Boolean(q && !b.code.toLowerCase().includes(q) && !unitCode.toLowerCase().includes(q));
   };
 
   // filas: cabecera de grupo por tipo + sus unidades (orden estable por código)
@@ -302,7 +325,8 @@ export default function Planning() {
       };
       if (body.error === 'invalid_stay' && body.issues?.length)
         return body.issues.map((i) => stayError(i.code, i.params)).join(' ');
-      if (body.error) return tDyn(`planning.moverError.${body.error}`, t('planning.moverError.generic'));
+      if (body.error)
+        return tDyn(`planning.moverError.${body.error}`, t('planning.moverError.generic'));
     }
     return t('planning.moverError.generic');
   };
@@ -365,7 +389,11 @@ export default function Planning() {
                 dateFrom: input.prev.dateFrom,
                 dateTo: input.prev.dateTo,
                 unitId: input.prev.unitId,
-                prev: { dateFrom: input.dateFrom, dateTo: input.dateTo, unitId: input.unitId ?? input.prev.unitId },
+                prev: {
+                  dateFrom: input.dateFrom,
+                  dateTo: input.dateTo,
+                  unitId: input.unitId ?? input.prev.unitId,
+                },
                 undo: true,
               }),
           },
@@ -378,7 +406,10 @@ export default function Planning() {
 
   // el flujo del gesto: soltar → requote (dry-run) → si el total no cambia,
   // commit directo; si cambia, diálogo con el desglose nuevo antes de escribir
-  const [pendingMove, setPendingMove] = useState<{ intent: MoveIntent; quote: RequoteResponse } | null>(null);
+  const [pendingMove, setPendingMove] = useState<{
+    intent: MoveIntent;
+    quote: RequoteResponse;
+  } | null>(null);
   const requote = useMutation({
     mutationFn: (input: MoveIntent) =>
       apiPost<RequoteResponse>(`/api/admin/bookings/${input.id}/requote`, {
@@ -489,7 +520,13 @@ export default function Planning() {
     edge: 'l' | 'r',
   ) => {
     e.stopPropagation();
-    beginDrag(e, b, sourceUnitId, edge === 'l' ? 'resize-l' : 'resize-r', e.currentTarget.parentElement as HTMLElement);
+    beginDrag(
+      e,
+      b,
+      sourceUnitId,
+      edge === 'l' ? 'resize-l' : 'resize-r',
+      e.currentTarget.parentElement as HTMLElement,
+    );
   };
 
   const onBarPointerMove = (e: React.PointerEvent<HTMLElement>) => {
@@ -803,8 +840,7 @@ export default function Planning() {
     const q = buscar.trim().toLowerCase();
     if (!q || !data) return;
     const match = data.bookings.find((b) => b.unitId && b.code.toLowerCase().includes(q));
-    const unitId =
-      match?.unitId ?? data.units.find((u) => u.code.toLowerCase().includes(q))?.id;
+    const unitId = match?.unitId ?? data.units.find((u) => u.code.toLowerCase().includes(q))?.id;
     if (!unitId) return;
     const idx = rows.findIndex((r) => r.kind === 'unit' && r.unit.id === unitId);
     if (idx >= 0) virtualizer.scrollToIndex(idx, { align: 'center' });
@@ -912,6 +948,7 @@ export default function Planning() {
               {t('planning.reservas', { n: data.bookings.length })}
             </p>
           )}
+          <BotonAyuda />
         </div>
 
         {/* filtros dentro del planning (ADR 0023 §3) */}
@@ -1121,7 +1158,13 @@ export default function Planning() {
                           >
                             {/* bloqueos */}
                             {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
-                              const g = barGeometry(from, zoom.days, zoom.cellW, blk.dateFrom, blk.dateTo);
+                              const g = barGeometry(
+                                from,
+                                zoom.days,
+                                zoom.cellW,
+                                blk.dateFrom,
+                                blk.dateTo,
+                              );
                               return g ? (
                                 <div
                                   key={blk.id}
@@ -1135,7 +1178,13 @@ export default function Planning() {
                             })}
                             {/* reservas */}
                             {(byUnit.bookings.get(row.unit.id) ?? []).map((b) => {
-                              const g = barGeometry(from, zoom.days, zoom.cellW, b.dateFrom, b.dateTo);
+                              const g = barGeometry(
+                                from,
+                                zoom.days,
+                                zoom.cellW,
+                                b.dateFrom,
+                                b.dateTo,
+                              );
                               if (!g) return null;
                               const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
                               const dim = barDimmed(b, row.unit.code);
@@ -1157,7 +1206,9 @@ export default function Planning() {
                                     <div
                                       aria-hidden
                                       className="lc-handle lc-handle-l"
-                                      onPointerDown={(e) => onHandlePointerDown(e, b, row.unit.id, 'l')}
+                                      onPointerDown={(e) =>
+                                        onHandlePointerDown(e, b, row.unit.id, 'l')
+                                      }
                                     />
                                   )}
                                   {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
@@ -1165,7 +1216,9 @@ export default function Planning() {
                                     <div
                                       aria-hidden
                                       className="lc-handle lc-handle-r"
-                                      onPointerDown={(e) => onHandlePointerDown(e, b, row.unit.id, 'r')}
+                                      onPointerDown={(e) =>
+                                        onHandlePointerDown(e, b, row.unit.id, 'r')
+                                      }
                                     />
                                   )}
                                 </div>

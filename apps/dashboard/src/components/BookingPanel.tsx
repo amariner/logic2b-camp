@@ -170,7 +170,9 @@ export default function BookingPanel({
   const pax = data ? data.occupancy.adults + data.occupancy.childrenAges.length : 0;
   const pendingCents = data ? data.totalCents - data.paidCents : 0;
   // "en casa" (ADR 0022): huésped presente. NO es un status — se deriva.
-  const inHouse = Boolean(data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt);
+  const inHouse = Boolean(
+    data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt,
+  );
   const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
 
   return (
@@ -397,9 +399,13 @@ export default function BookingPanel({
                     type="button"
                     size="sm"
                     disabled={recordPayment.isPending}
-                    onClick={() => recordPayment.mutate({ amountCents: pendingCents, method: payMethod })}
+                    onClick={() =>
+                      recordPayment.mutate({ amountCents: pendingCents, method: payMethod })
+                    }
                   >
-                    {t('ficha.cobrarTodo', { importe: eur(pendingCents, data.priceBreakdown.currency) })}
+                    {t('ficha.cobrarTodo', {
+                      importe: eur(pendingCents, data.priceBreakdown.currency),
+                    })}
                   </Button>
                 )}
                 <div className="flex items-center gap-1.5">
@@ -438,7 +444,9 @@ export default function BookingPanel({
                   </Button>
                 </div>
                 {toCents(payAmount) > pendingCents && payAmount.trim() !== '' && (
-                  <p className="text-[12px] font-medium text-destructive">{t('ficha.pagoExcede')}</p>
+                  <p className="text-[12px] font-medium text-destructive">
+                    {t('ficha.pagoExcede')}
+                  </p>
                 )}
                 {data.paidCents > 0 && (
                   <div className="flex items-center gap-1.5">
@@ -471,10 +479,7 @@ export default function BookingPanel({
                         <AlertDialogHeader>
                           <AlertDialogTitle>
                             {t('confirmar.reembolso.titulo', {
-                              importe: eur(
-                                toCents(refundAmount),
-                                data.priceBreakdown.currency,
-                              ),
+                              importe: eur(toCents(refundAmount), data.priceBreakdown.currency),
                             })}
                           </AlertDialogTitle>
                           <AlertDialogDescription>

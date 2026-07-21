@@ -12,6 +12,7 @@ import BookingPanel from '../components/BookingPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 /** Foco visible en las filas clicables: son rejillas enteras, no botones. */
 const FILA_FOCO =
@@ -67,7 +68,11 @@ function GuestPanel({
 
       {/* Esqueleto con la forma de la ficha: nombre, contacto y lista de estancias. */}
       {isPending && (
-        <div aria-busy="true" aria-label={t('cli.cargandoFicha')} className="flex flex-col gap-4 p-4">
+        <div
+          aria-busy="true"
+          aria-label={t('cli.cargandoFicha')}
+          className="flex flex-col gap-4 p-4"
+        >
           <div className="flex flex-col gap-2">
             <Skeleton className="h-3 w-24" />
             <SkeletonText lines={3} />
@@ -219,6 +224,7 @@ export default function Clientes() {
               →
             </Button>
           </div>
+          <BotonAyuda className="ml-auto" />
         </div>
 
         {/* Columnas del esqueleto = columnas reales: nombre · contacto · documento · nº · última estancia. */}

@@ -7,6 +7,7 @@
     "producto": "Producto",
     "niveles": "Planes",
     "planning": "El planning",
+    "docs": "Guías",
     "demo": "Ver demo",
     "contacto": "Pedir demo",
     "verDemo": "Ver la demo en vivo"
@@ -22,10 +23,22 @@
   "problema": {
     "titulo": "Lo que hoy te cuesta dinero cada agosto",
     "puntos": [
-      { "titulo": "Tu web no reserva", "texto": "Un formulario que llega por email y una llamada al día siguiente. Mientras, el cliente ya reservó en otro sitio." },
-      { "titulo": "La comisión del portal", "texto": "Booking se lleva su parte de cada noche. Con reserva directa desde tu web, esa parte se queda en casa." },
-      { "titulo": "El cuaderno y el Excel", "texto": "El planning en papel se solapa, se borra, y solo lo entiende quien lo escribió. Un cambio de parcela es media hora." },
-      { "titulo": "Seis idiomas a mano", "texto": "Responder en francés, alemán y neerlandés uno a uno. La web debería hacerlo por ti." }
+      {
+        "titulo": "Tu web no reserva",
+        "texto": "Un formulario que llega por email y una llamada al día siguiente. Mientras, el cliente ya reservó en otro sitio."
+      },
+      {
+        "titulo": "La comisión del portal",
+        "texto": "Booking se lleva su parte de cada noche. Con reserva directa desde tu web, esa parte se queda en casa."
+      },
+      {
+        "titulo": "El cuaderno y el Excel",
+        "texto": "El planning en papel se solapa, se borra, y solo lo entiende quien lo escribió. Un cambio de parcela es media hora."
+      },
+      {
+        "titulo": "Seis idiomas a mano",
+        "texto": "Responder en francés, alemán y neerlandés uno a uno. La web debería hacerlo por ti."
+      }
     ]
   },
   "producto": {
@@ -35,12 +48,20 @@
       {
         "titulo": "La web pública",
         "texto": "Rápida, en seis idiomas, con tus fotos y tu marca. El cliente busca fechas, ve disponibilidad real y reserva —o deja su solicitud— sin salir de tu dominio. Optimizada para que Google la encuentre.",
-        "puntos": ["Motor de disponibilidad de verdad, no un mockup", "Reserva directa sin comisiones de portal", "6 idiomas, responsive, accesible"]
+        "puntos": [
+          "Motor de disponibilidad de verdad, no un mockup",
+          "Reserva directa sin comisiones de portal",
+          "6 idiomas, responsive, accesible"
+        ]
       },
       {
         "titulo": "El gestor de recepción",
         "texto": "El planning de todas tus unidades de un vistazo, arrastrar para reasignar una parcela, cobrar, ver llegadas y salidas del día, la ficha de cada cliente con su historial. Pensado para la recepcionista, no para un informático.",
-        "puntos": ["Planning visual con arrastrar y soltar", "Llegadas, salidas y cobros del día", "Ficha e historial de cada cliente"]
+        "puntos": [
+          "Planning visual con arrastrar y soltar",
+          "Llegadas, salidas y cobros del día",
+          "Ficha e historial de cada cliente"
+        ]
       }
     ]
   },
@@ -59,20 +80,34 @@
         "nombre": "Camp Web",
         "para": "Tu primera web que trabaja",
         "texto": "Web pública moderna en varios idiomas con formulario de solicitud. Cada solicitud queda guardada: es el histórico que hace crecer.",
-        "incluye": ["Web pública multi-idioma", "Formulario de solicitud → tu email", "Tus fotos, tu marca, tu dominio", "SEO y velocidad cuidadas"]
+        "incluye": [
+          "Web pública multi-idioma",
+          "Formulario de solicitud → tu email",
+          "Tus fotos, tu marca, tu dominio",
+          "SEO y velocidad cuidadas"
+        ]
       },
       {
         "nombre": "Camp Solicitudes",
         "para": "Cuando quieres orden",
         "texto": "Todo lo anterior más una bandeja de solicitudes y un panel ligero para no perder ninguna petición.",
-        "incluye": ["Bandeja de solicitudes con estados", "Panel de recepción ligero", "Llegadas y salidas del día"]
+        "incluye": [
+          "Bandeja de solicitudes con estados",
+          "Panel de recepción ligero",
+          "Llegadas y salidas del día"
+        ]
       },
       {
         "nombre": "Camp Reservas",
         "destacado": true,
         "para": "El camping completo",
         "texto": "Motor de reservas real, pagos online, y el gestor completo con el planning. Reserva directa de principio a fin.",
-        "incluye": ["Motor de reservas y disponibilidad", "Pagos online (señal, completo o fianza)", "Planning completo con arrastrar y soltar", "Ficha de cliente, informes y tarifas"]
+        "incluye": [
+          "Motor de reservas y disponibilidad",
+          "Pagos online (señal, completo o fianza)",
+          "Planning completo con arrastrar y soltar",
+          "Ficha de cliente, informes y tarifas"
+        ]
       },
       {
         "nombre": "Camp Motor",
@@ -91,11 +126,26 @@
   "faq": {
     "titulo": "Preguntas que nos hacen",
     "items": [
-      { "q": "¿Tengo que cambiar mi dominio?", "a": "No. Tu web vive en tu propio dominio, con tu marca. Nosotros ponemos el motor por debajo." },
-      { "q": "¿Y si ya uso Booking?", "a": "Puedes seguir. La reserva directa desde tu web te ahorra la comisión en cada reserva que entra por tu cuenta; muchos campings usan ambos." },
-      { "q": "¿Es difícil para mi recepcionista?", "a": "Está diseñado para ella: pantallas grandes, texto claro, foco en teclado, y el planning que se entiende de un vistazo. Sin manual de 200 páginas." },
-      { "q": "¿Mis datos están seguros?", "a": "Cada camping tiene su propia base de datos aislada, alojada en la red de Cloudflare. Ningún otro cliente puede ver tus reservas." },
-      { "q": "¿En cuánto tiempo lo tengo?", "a": "Un camping nuevo se pone en marcha en una tarde a partir de tu material. Sin esperas de meses." }
+      {
+        "q": "¿Tengo que cambiar mi dominio?",
+        "a": "No. Tu web vive en tu propio dominio, con tu marca. Nosotros ponemos el motor por debajo."
+      },
+      {
+        "q": "¿Y si ya uso Booking?",
+        "a": "Puedes seguir. La reserva directa desde tu web te ahorra la comisión en cada reserva que entra por tu cuenta; muchos campings usan ambos."
+      },
+      {
+        "q": "¿Es difícil para mi recepcionista?",
+        "a": "Está diseñado para ella: pantallas grandes, texto claro, foco en teclado, y el planning que se entiende de un vistazo. Sin manual de 200 páginas."
+      },
+      {
+        "q": "¿Mis datos están seguros?",
+        "a": "Cada camping tiene su propia base de datos aislada, alojada en la red de Cloudflare. Ningún otro cliente puede ver tus reservas."
+      },
+      {
+        "q": "¿En cuánto tiempo lo tengo?",
+        "a": "Un camping nuevo se pone en marcha en una tarde a partir de tu material. Sin esperas de meses."
+      }
     ]
   },
   "contacto": {
@@ -121,6 +171,41 @@
     "demo": "Demo en vivo",
     "producto": "Producto",
     "planes": "Planes",
+    "docs": "Guías",
     "contacto": "Pedir demo"
+  },
+  "docs": {
+    "seo": {
+      "title": "Guías de Logic Camp — recepción, dueño y ficha técnica",
+      "description": "Cómo se usa Logic Camp: la guía de recepción paso a paso, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
+    },
+    "titulo": "Guías de Logic Camp",
+    "subtitulo": "Tres guías, tres personas distintas. Cada una escrita para quien la va a leer.",
+    "indice": "En esta guía",
+    "empezar": "Empezar",
+    "anterior": "Anterior",
+    "siguiente": "Siguiente",
+    "volver": "Todas las guías",
+    "volverGuia": "Volver al índice de la guía",
+    "paginas": "{n} páginas",
+    "fallback": "Esta página todavía está en español. Estamos traduciendo las guías.",
+    "ayuda": "¿No encuentras lo que buscas? Escríbenos a hola@logic2b.com y lo resolvemos —y de paso mejoramos esta guía.",
+    "guias": {
+      "recepcion": {
+        "nombre": "Guía de recepción",
+        "para": "Para quien está en el mostrador",
+        "texto": "El día a día del programa, tarea por tarea: entrar, ver quién llega, hacer el check-in, cobrar, mover una reserva en el planning y cerrar la salida. Sin palabras raras."
+      },
+      "dueno": {
+        "nombre": "Guía del dueño",
+        "para": "Para quien decide",
+        "texto": "Los cuatro niveles de Logic Camp explicados como una escalera: qué incluye cada uno, qué cambia exactamente cuando subes, y qué tienes que aportar tú."
+      },
+      "tecnica": {
+        "nombre": "Ficha técnica",
+        "para": "Para tu informático de confianza",
+        "texto": "Cómo está montado: dominios y DNS, correo saliente, aislamiento de datos por camping, RGPD, copias de seguridad y qué pasa si un día te quieres ir."
+      }
+    }
   }
 }

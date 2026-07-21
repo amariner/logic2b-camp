@@ -11,6 +11,7 @@ import { apiGet, apiPatch, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const inHouse = (b: BookingListItem) =>
   b.status === 'confirmed' && Boolean(b.checkedInAt) && !b.checkedOutAt;
@@ -71,12 +72,17 @@ function Lista({
                 type="button"
                 aria-label={t('dia.abrir', { code: b.code })}
                 onClick={(e) => onOpen(b.id, e.currentTarget)}
-                className={cn('grid min-w-0 flex-1 grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50', focusRing)}
+                className={cn(
+                  'grid min-w-0 flex-1 grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50',
+                  focusRing,
+                )}
               >
                 <span className="tnum font-semibold">{b.code.replace(/^[A-Z]+-\d{4}-/, '')}</span>
                 <span className="truncate font-medium">{b.leadName ?? '—'}</span>
                 {here ? (
-                  <span className="lc-chip st-inhouse justify-self-end">{t('plano.estado.enCasa')}</span>
+                  <span className="lc-chip st-inhouse justify-self-end">
+                    {t('plano.estado.enCasa')}
+                  </span>
                 ) : (
                   <span className={`lc-chip st-${b.status} justify-self-end`}>
                     {t(`estado.${b.status}`)}
@@ -195,6 +201,7 @@ export default function Llegadas() {
             {t('dia.nLlegadas', { n: llegadasHoy.length })} ·{' '}
             {t('dia.nSalidas', { n: salidasHoy.length })}
           </p>
+          <BotonAyuda />
         </div>
 
         {cargando && (

@@ -10,16 +10,25 @@ interface Props {
     nav: Record<string, string>;
     footer: Record<string, string>;
   };
+  /** Ruta SIN prefijo de idioma ('/' la landing, 'docs/…' las guías). Manda en canonical y hreflang. */
+  ruta?: string;
+  /** SEO propio de la página; si no viene, el de la landing. */
+  seo?: { title: string; description: string };
 }
-const { locale, content } = Astro.props;
+const { locale, content, ruta = '/', seo } = Astro.props;
 const c = content;
 
 const site = 'https://camp.logic2b.com';
-const canonical = new URL(localePath(locale), site).href;
+const meta = seo ?? c.seo;
+const canonical = new URL(localePath(locale, ruta), site).href;
+// Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
+// desde la landing y desde cualquier página de guías (ADR 0025).
+const inicio = localePath(locale);
 const nav = [
-  { href: '#producto', label: c.nav.producto },
-  { href: '#niveles', label: c.nav.niveles },
-  { href: '#planning', label: c.nav.planning },
+  { href: `${inicio}#producto`, label: c.nav.producto },
+  { href: `${inicio}#niveles`, label: c.nav.niveles },
+  { href: `${inicio}#planning`, label: c.nav.planning },
+  { href: localePath(locale, 'docs/'), label: c.nav.docs },
 ];
 ---
 
@@ -28,15 +37,15 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{c.seo.title}</title>
-    <meta name="description" content={c.seo.description} />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
     <link rel="canonical" href={canonical} />
     {
       LOCALES.map((l) => (
-        <link rel="alternate" hreflang={l} href={new URL(localePath(l), site).href} />
+        <link rel="alternate" hreflang={l} href={new URL(localePath(l, ruta), site).href} />
       ))
     }
-    <link rel="alternate" hreflang="x-default" href={site + '/'} />
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('es', ruta), site).href} />
     <link rel="icon" href="/logo-mark.svg" type="image/svg+xml" />
     <link
       rel="preload"
@@ -46,8 +55,8 @@ const nav = [
       crossorigin
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={c.seo.title} />
-    <meta property="og:description" content={c.seo.description} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={site + '/og.png'} />
     <meta name="twitter:card" content="summary_large_image" />
@@ -70,7 +79,7 @@ const nav = [
             class="hidden rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
           >{c.nav.demo}</a>
           <a
-            href="#contacto"
+            href={`${inicio}#contacto`}
             class="inline-flex items-center rounded-md bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >{c.nav.contacto}</a>
         </div>
@@ -93,16 +102,17 @@ const nav = [
           </div>
           <nav class="flex gap-10 text-sm">
             <div class="flex flex-col gap-2">
-              <a href="#producto" class="text-muted-foreground hover:text-foreground">{c.footer.producto}</a>
-              <a href="#niveles" class="text-muted-foreground hover:text-foreground">{c.footer.planes}</a>
-              <a href="#contacto" class="text-muted-foreground hover:text-foreground">{c.footer.contacto}</a>
+              <a href={`${inicio}#producto`} class="text-muted-foreground hover:text-foreground">{c.footer.producto}</a>
+              <a href={`${inicio}#niveles`} class="text-muted-foreground hover:text-foreground">{c.footer.planes}</a>
+              <a href={localePath(locale, 'docs/')} class="text-muted-foreground hover:text-foreground">{c.footer.docs}</a>
+              <a href={`${inicio}#contacto`} class="text-muted-foreground hover:text-foreground">{c.footer.contacto}</a>
               <a href="/demo/" class="text-muted-foreground hover:text-foreground">{c.footer.demo}</a>
             </div>
             <div class="flex flex-col gap-2">
               {
                 LOCALES.map((l) => (
                   <a
-                    href={localePath(l)}
+                    href={localePath(l, ruta)}
                     class:list={[
                       'hover:text-foreground',
                       l === locale ? 'font-medium text-foreground' : 'text-muted-foreground',

@@ -1,0 +1,89 @@
+---
+/** Una página de guía. Compartido por `/docs/{guia}/{slug}/` y su variante por idioma. */
+import Docs from '../layouts/Docs.astro';
+import { esFallback, getDoc, getGuia, vecinos, type Guia } from '../lib/docs';
+import { getContent, localePath, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  guia: Guia;
+  slug: string;
+}
+const { locale, guia, slug } = Astro.props;
+const c = getContent(locale);
+const d = c.docs;
+
+const doc = getDoc(guia, slug, locale);
+if (!doc) return Astro.redirect(localePath(locale, `docs/${guia}/`));
+
+const paginas = getGuia(guia, locale);
+const { anterior, siguiente } = vecinos(guia, slug, locale);
+const { Content } = doc;
+---
+
+<Docs
+  locale={locale}
+  guia={guia}
+  paginas={paginas}
+  actual={slug}
+  seo={{
+    title: `${doc.frontmatter.title} — ${d.guias[guia].nombre} · Logic Camp`,
+    description: doc.frontmatter.description,
+  }}
+  ruta={`docs/${guia}/${slug}/`}
+>
+  {
+    esFallback(doc, locale) && (
+      <p
+        lang={doc.frontmatter.lang}
+        class="mb-8 rounded-lg border border-border bg-muted/50 px-4 py-2.5 text-sm text-muted-foreground"
+      >
+        {d.fallback}
+      </p>
+    )
+  }
+
+  <article>
+    <h1 class="font-display text-3xl font-bold tracking-tight">{doc.frontmatter.title}</h1>
+    <p class="mt-3 text-lg text-muted-foreground">{doc.frontmatter.description}</p>
+    <div class="lc-prosa mt-8">
+      <Content />
+    </div>
+  </article>
+
+  <nav
+    class="mt-14 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between"
+    aria-label={d.indice}
+  >
+    {
+      anterior ? (
+        <a
+          href={localePath(locale, `docs/${guia}/${anterior.slug}/`)}
+          rel="prev"
+          class="group min-w-0 rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary/60 hover:bg-muted/40"
+        >
+          <span class="block text-xs text-muted-foreground">{d.anterior}</span>
+          <span class="mt-0.5 block truncate text-sm font-medium">
+            {anterior.frontmatter.title}
+          </span>
+        </a>
+      ) : (
+        <span />
+      )
+    }
+    {
+      siguiente && (
+        <a
+          href={localePath(locale, `docs/${guia}/${siguiente.slug}/`)}
+          rel="next"
+          class="group min-w-0 rounded-lg border border-border px-4 py-3 text-right transition-colors hover:border-primary/60 hover:bg-muted/40 sm:ml-auto"
+        >
+          <span class="block text-xs text-muted-foreground">{d.siguiente}</span>
+          <span class="mt-0.5 block truncate text-sm font-medium">
+            {siguiente.frontmatter.title}
+          </span>
+        </a>
+      )
+    }
+  </nav>
+</Docs>

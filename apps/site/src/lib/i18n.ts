@@ -19,7 +19,9 @@ export function getContent(locale: Locale): typeof es {
 /** Ruta localizada: el idioma por defecto vive en la raíz. */
 export function localePath(locale: Locale, path = '/'): string {
   const clean = path === '/' ? '' : path;
-  return locale === DEFAULT_LOCALE ? `/${clean}`.replace('//', '/') : `/${locale}/${clean}`.replace('//', '/');
+  return locale === DEFAULT_LOCALE
+    ? `/${clean}`.replace('//', '/')
+    : `/${locale}/${clean}`.replace('//', '/');
 }
 
 /** Idiomas alternativos con su URL, para el selector y los hreflang. */

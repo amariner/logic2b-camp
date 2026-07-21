@@ -27,6 +27,7 @@ import BookingPanel from '../components/BookingPanel';
 import CampingMap from '../components/CampingMap';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 type TKey = Parameters<typeof t>[0];
 
@@ -105,7 +106,8 @@ export default function Plano() {
     if (!data) return [];
     const out: PlanoBlockRange[] = [];
     for (const b of data.blocks) {
-      if (b.unitId) out.push({ unitId: b.unitId, dateFrom: b.dateFrom, dateTo: b.dateTo, reason: b.reason });
+      if (b.unitId)
+        out.push({ unitId: b.unitId, dateFrom: b.dateFrom, dateTo: b.dateTo, reason: b.reason });
       else if (b.unitTypeId)
         for (const u of data.units.filter((x) => x.unitTypeId === b.unitTypeId))
           out.push({ unitId: u.id, dateFrom: b.dateFrom, dateTo: b.dateTo, reason: b.reason });
@@ -161,8 +163,7 @@ export default function Plano() {
     else setOpenId(null);
   };
 
-  const openInPlanning = () =>
-    navigate({ to: '/', search: { date, unit: search.unit } as never });
+  const openInPlanning = () => navigate({ to: '/', search: { date, unit: search.unit } as never });
 
   return (
     <div className="flex h-full">
@@ -170,13 +171,23 @@ export default function Plano() {
         {/* barra de mando */}
         <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
           <div className="flex items-center gap-1">
-            <Button variant="outline" size="iconSm" onClick={() => setDate(addDays(date, -1))} aria-label={t('plano.diaAnterior')}>
+            <Button
+              variant="outline"
+              size="iconSm"
+              onClick={() => setDate(addDays(date, -1))}
+              aria-label={t('plano.diaAnterior')}
+            >
               ←
             </Button>
             <Button variant="outline" size="sm" onClick={() => setDate(today)}>
               {t('planning.hoy')}
             </Button>
-            <Button variant="outline" size="iconSm" onClick={() => setDate(addDays(date, 1))} aria-label={t('plano.diaSiguiente')}>
+            <Button
+              variant="outline"
+              size="iconSm"
+              onClick={() => setDate(addDays(date, 1))}
+              aria-label={t('plano.diaSiguiente')}
+            >
               →
             </Button>
           </div>
@@ -186,11 +197,21 @@ export default function Plano() {
             onChange={(e) => e.target.value && setDate(e.target.value)}
             className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           />
-          <Button variant="outline" size="sm" onClick={openInPlanning} title={t('plano.verEnPlanning')}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={openInPlanning}
+            title={t('plano.verEnPlanning')}
+          >
             <CalendarRange className="size-4" />
             {t('plano.verEnPlanning')}
           </Button>
-          <Button variant="outline" size="sm" onClick={() => setBloqueoAbierto(true)} title={t('bloqueo.crear')}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setBloqueoAbierto(true)}
+            title={t('bloqueo.crear')}
+          >
             <Ban className="size-4" />
             {t('bloqueo.crear')}
           </Button>
@@ -199,28 +220,41 @@ export default function Plano() {
               {t('plano.ocupacion', { pct: summary.pct, occ: summary.occ, total: summary.total })}
             </p>
           )}
+          <BotonAyuda />
         </div>
 
         {/* leyenda */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-border/60 px-4 py-2">
           {LEGEND.map((l) => (
-            <span key={l.key} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span
+              key={l.key}
+              className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+            >
               <span className={`plano-lg ${l.className}`} aria-hidden="true" />
               {t(l.key)}
             </span>
           ))}
           {layout?.generated && (
-            <span className="ml-auto text-[11px] text-muted-foreground italic" title={t('plano.autoDesc')}>
+            <span
+              className="ml-auto text-[11px] text-muted-foreground italic"
+              title={t('plano.autoDesc')}
+            >
               {t('plano.auto')}
             </span>
           )}
         </div>
 
         {(planning.isPending || (map.isPending && !map.data)) && <PlanoSkeleton />}
-        {planning.isError && <QueryError error={planning.error} onRetry={() => void planning.refetch()} />}
+        {planning.isError && (
+          <QueryError error={planning.error} onRetry={() => void planning.refetch()} />
+        )}
 
         {data && data.units.length === 0 && (
-          <EmptyState art="map" title={t('plano.vacio.titulo')} description={t('plano.vacio.desc')} />
+          <EmptyState
+            art="map"
+            title={t('plano.vacio.titulo')}
+            description={t('plano.vacio.desc')}
+          />
         )}
 
         {layout && data && data.units.length > 0 && (

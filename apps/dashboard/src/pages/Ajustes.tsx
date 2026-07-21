@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { apiGet, apiPatch, type TenantSettings } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const ETIQUETA = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
 
@@ -63,6 +64,7 @@ export default function Ajustes() {
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-border/60 px-4 py-2.5">
         <p className="text-[12px] text-muted-foreground">{t('aju.nota')}</p>
+        <BotonAyuda className="ml-auto" />
       </div>
 
       {isPending && <AjustesEsqueleto />}
@@ -177,7 +179,10 @@ function Notificaciones({ data }: { data: TenantSettings }) {
               })
             }
           />
-          <Label htmlFor={`aju-notif-${ev}`} className="text-[13px] normal-case tracking-normal font-normal text-foreground">
+          <Label
+            htmlFor={`aju-notif-${ev}`}
+            className="text-[13px] normal-case tracking-normal font-normal text-foreground"
+          >
             {t(`notif.${ev}`)}
           </Label>
         </div>

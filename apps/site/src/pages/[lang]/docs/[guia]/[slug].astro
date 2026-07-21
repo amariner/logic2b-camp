@@ -1,0 +1,15 @@
+---
+import DocsPagina from '../../../../components/DocsPagina.astro';
+import { todasLasRutas, type Guia } from '../../../../lib/docs';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../../../lib/i18n';
+
+export function getStaticPaths() {
+  return LOCALES.filter((l) => l !== DEFAULT_LOCALE).flatMap((lang) =>
+    todasLasRutas().map(({ guia, slug }) => ({ params: { lang, guia, slug } })),
+  );
+}
+
+const { lang, guia, slug } = Astro.params;
+---
+
+<DocsPagina locale={lang as Locale} guia={guia as Guia} slug={slug!} />

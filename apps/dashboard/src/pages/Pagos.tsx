@@ -10,6 +10,7 @@ import { apiGet, type PaymentLogItem } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const PROVEEDORES = ['stripe', 'redsys', 'manual', 'none'] as const;
 const ESTADOS = ['pending', 'succeeded', 'failed', 'refunded'] as const;
@@ -35,7 +36,11 @@ export default function Pagos() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center gap-1" role="group" aria-label={t('pagl.proveedor')}>
+        <div
+          className="flex flex-wrap items-center gap-1"
+          role="group"
+          aria-label={t('pagl.proveedor')}
+        >
           <Button
             size="xs"
             variant={proveedor === 'todos' ? 'primary' : 'outline'}
@@ -56,7 +61,11 @@ export default function Pagos() {
             </Button>
           ))}
         </div>
-        <div className="flex flex-wrap items-center gap-1" role="group" aria-label={t('res.estado')}>
+        <div
+          className="flex flex-wrap items-center gap-1"
+          role="group"
+          aria-label={t('res.estado')}
+        >
           <Button
             size="xs"
             variant={estado === 'todos' ? 'primary' : 'outline'}
@@ -77,7 +86,10 @@ export default function Pagos() {
             </Button>
           ))}
         </div>
-        <p className="tnum ml-auto text-[12px] text-muted-foreground">{t('pagl.n', { n: items.length })}</p>
+        <p className="tnum ml-auto text-[12px] text-muted-foreground">
+          {t('pagl.n', { n: items.length })}
+        </p>
+        <BotonAyuda />
       </div>
 
       {/* Columnas del esqueleto = la rejilla real: fecha · reserva · proveedor · estado · importe. */}
@@ -119,7 +131,9 @@ export default function Pagos() {
             <span className="truncate font-medium">{p.bookingCode}</span>
             <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.provider}`)}</span>
             <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.status}`)}</span>
-            <span className={`tnum justify-self-end ${p.amountCents < 0 ? 'text-destructive' : ''}`}>
+            <span
+              className={`tnum justify-self-end ${p.amountCents < 0 ? 'text-destructive' : ''}`}
+            >
               {eur(p.amountCents)}
             </span>
           </li>

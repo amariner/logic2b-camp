@@ -32,7 +32,12 @@ function unitVisual(state: UnitDayState): {
 } {
   switch (state.kind) {
     case 'blocked':
-      return { fill: 'var(--lc-status-blocked)', fg: 'var(--background)', pattern: true, free: false };
+      return {
+        fill: 'var(--lc-status-blocked)',
+        fg: 'var(--background)',
+        pattern: true,
+        free: false,
+      };
     case 'free':
       return { fill: 'var(--muted)', fg: 'var(--muted-foreground)', pattern: false, free: true };
     case 'inhouse':
@@ -90,9 +95,7 @@ function stateLabel(state: UnitDayState): string {
     case 'departure':
       return t('plano.estado.sale');
     case 'occupied':
-      return state.status === 'pending'
-        ? t('plano.estado.ocupadaPend')
-        : t('plano.estado.ocupada');
+      return state.status === 'pending' ? t('plano.estado.ocupadaPend') : t('plano.estado.ocupada');
   }
 }
 
@@ -189,8 +192,7 @@ export default function CampingMap({
     e.preventDefault();
   };
 
-  const centerZoom = (factor: number) =>
-    zoomAt(factor, view.x + view.w / 2, view.y + view.h / 2);
+  const centerZoom = (factor: number) => zoomAt(factor, view.x + view.w / 2, view.y + view.h / 2);
 
   const smooth = !prefersReducedMotion();
 
@@ -198,13 +200,31 @@ export default function CampingMap({
     <div className="relative min-h-0 flex-1 overflow-hidden bg-muted/30">
       {/* controles */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-1">
-        <Button variant="outline" size="iconSm" onClick={() => centerZoom(1.2)} aria-label={t('plano.acercar')} title={t('plano.acercar')}>
+        <Button
+          variant="outline"
+          size="iconSm"
+          onClick={() => centerZoom(1.2)}
+          aria-label={t('plano.acercar')}
+          title={t('plano.acercar')}
+        >
           <Plus className="size-4" />
         </Button>
-        <Button variant="outline" size="iconSm" onClick={() => centerZoom(1 / 1.2)} aria-label={t('plano.alejar')} title={t('plano.alejar')}>
+        <Button
+          variant="outline"
+          size="iconSm"
+          onClick={() => centerZoom(1 / 1.2)}
+          aria-label={t('plano.alejar')}
+          title={t('plano.alejar')}
+        >
           <Minus className="size-4" />
         </Button>
-        <Button variant="outline" size="iconSm" onClick={fit} aria-label={t('plano.ajustar')} title={t('plano.ajustar')}>
+        <Button
+          variant="outline"
+          size="iconSm"
+          onClick={fit}
+          aria-label={t('plano.ajustar')}
+          title={t('plano.ajustar')}
+        >
           <Maximize className="size-4" />
         </Button>
       </div>
@@ -223,12 +243,32 @@ export default function CampingMap({
       >
         <defs>
           {/* rayado de bloqueo (mismo lenguaje que .lc-block del planning) */}
-          <pattern id="plano-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <pattern
+            id="plano-hatch"
+            width="8"
+            height="8"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
             <rect width="8" height="8" fill="var(--lc-status-blocked)" opacity="0.18" />
-            <line x1="0" y1="0" x2="0" y2="8" stroke="var(--lc-status-blocked)" strokeWidth="3" opacity="0.5" />
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="8"
+              stroke="var(--lc-status-blocked)"
+              strokeWidth="3"
+              opacity="0.5"
+            />
           </pattern>
           <filter id="plano-halo" x="-30%" y="-30%" width="160%" height="160%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="var(--ring)" floodOpacity="0.9" />
+            <feDropShadow
+              dx="0"
+              dy="0"
+              stdDeviation="3"
+              floodColor="var(--ring)"
+              floodOpacity="0.9"
+            />
           </filter>
         </defs>
 
@@ -282,15 +322,28 @@ function Decor({ d }: { d: PlanoDecor }) {
     );
   const common = { x: d.x, y: d.y, width: d.w, height: d.h };
   if (d.kind === 'enclosure')
-    return <rect {...common} rx={10} fill="none" stroke="var(--border)" strokeWidth={2} strokeDasharray="2 4" />;
-  if (d.kind === 'road')
-    return <rect {...common} rx={3} fill="var(--muted)" opacity={0.8} />;
+    return (
+      <rect
+        {...common}
+        rx={10}
+        fill="none"
+        stroke="var(--border)"
+        strokeWidth={2}
+        strokeDasharray="2 4"
+      />
+    );
+  if (d.kind === 'road') return <rect {...common} rx={3} fill="var(--muted)" opacity={0.8} />;
   if (d.kind === 'water')
     return (
       <g>
         <rect {...common} rx={4} fill="var(--lc-status-info)" opacity={0.22} />
         {d.label && (
-          <text x={d.x + 8} y={d.y + d.h / 2 + 4} className="fill-muted-foreground" style={{ fontSize: 11, fontWeight: 600 }}>
+          <text
+            x={d.x + 8}
+            y={d.y + d.h / 2 + 4}
+            className="fill-muted-foreground"
+            style={{ fontSize: 11, fontWeight: 600 }}
+          >
             {d.label}
           </text>
         )}
@@ -301,7 +354,12 @@ function Decor({ d }: { d: PlanoDecor }) {
       <g>
         <rect {...common} rx={6} fill="var(--lc-status-confirmed)" opacity={0.1} />
         {d.label && (
-          <text x={d.x + 6} y={d.y + 14} className="fill-muted-foreground" style={{ fontSize: 10, fontStyle: 'italic' }}>
+          <text
+            x={d.x + 6}
+            y={d.y + 14}
+            className="fill-muted-foreground"
+            style={{ fontSize: 10, fontStyle: 'italic' }}
+          >
             {d.label}
           </text>
         )}
@@ -368,7 +426,16 @@ function Unit({
         stroke={selected ? 'var(--ring)' : v.free ? 'var(--border)' : 'transparent'}
         strokeWidth={selected ? 2 : 1}
       />
-      {v.pattern && <rect x={rect.x} y={rect.y} width={rect.w} height={rect.h} rx={4} fill="url(#plano-hatch)" />}
+      {v.pattern && (
+        <rect
+          x={rect.x}
+          y={rect.y}
+          width={rect.w}
+          height={rect.h}
+          rx={4}
+          fill="url(#plano-hatch)"
+        />
+      )}
       {/* marca de entra/sale hoy: cuña en la esquina */}
       {marker && (
         <polygon

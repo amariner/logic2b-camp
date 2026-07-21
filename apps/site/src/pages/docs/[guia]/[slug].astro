@@ -1,0 +1,12 @@
+---
+import DocsPagina from '../../../components/DocsPagina.astro';
+import { todasLasRutas, type Guia } from '../../../lib/docs';
+
+export function getStaticPaths() {
+  return todasLasRutas().map(({ guia, slug }) => ({ params: { guia, slug } }));
+}
+
+const { guia, slug } = Astro.params;
+---
+
+<DocsPagina locale="es" guia={guia as Guia} slug={slug!} />

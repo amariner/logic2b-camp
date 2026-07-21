@@ -5,6 +5,9 @@
 const es = {
   'app.nombre': 'Logic Camp',
   'app.cerrarSesion': 'Salir',
+  // ayuda contextual: el `?` de cada pantalla (ADR 0025, C6)
+  'ayuda.aria': 'Abrir la guía de esta pantalla (se abre en otra pestaña)',
+  'ayuda.tooltip': 'Cómo se usa esta pantalla',
   'login.titulo': 'Entrar al mostrador',
   'login.email': 'Email',
   'login.password': 'Contraseña',
@@ -346,7 +349,8 @@ const es = {
   'pagl.fecha': 'Fecha',
   'pagl.n': '{n} pagos',
   // Claves de pantalla añadidas al conectar el DS y los estados (ADR 0020).
-  'login.subtitulo': 'Acceso del personal del camping. Si no tienes cuenta, te la crea la dirección.',
+  'login.subtitulo':
+    'Acceso del personal del camping. Si no tienes cuenta, te la crea la dirección.',
   'dia.anterior': 'Día anterior',
   'dia.siguiente': 'Día siguiente',
   'sol.verTodas': 'Ver todas las solicitudes',
@@ -361,20 +365,23 @@ const es = {
   'planning.anterior': 'Periodo anterior',
   'planning.siguiente': 'Periodo siguiente',
   'planning.vacio.titulo': 'No hay nada que mostrar en este periodo.',
-  'planning.vacio.desc': 'Cambia de fechas o de zoom, o comprueba que el camping tenga unidades dadas de alta.',
+  'planning.vacio.desc':
+    'Cambia de fechas o de zoom, o comprueba que el camping tenga unidades dadas de alta.',
   // ---------- estados transversales (ADR 0020, C3) ----------
   // Tono: decirle a la recepcionista QUÉ ha pasado y QUÉ hacer. Nunca un código.
   'err.reintentar': 'Reintentar',
   'err.alPlanning': 'Volver al planning',
   'err.rota.titulo': 'Esta pantalla ha fallado',
-  'err.rota.desc': 'Se ha quedado a medias por un error inesperado. Puedes reintentar; si vuelve a pasar, avisa a soporte.',
+  'err.rota.desc':
+    'Se ha quedado a medias por un error inesperado. Puedes reintentar; si vuelve a pasar, avisa a soporte.',
   'err.noExiste.titulo': 'Esta pantalla no existe',
   'err.noExiste.desc': 'Puede que el enlace esté mal o que la pantalla haya cambiado de sitio.',
   'err.sesion.titulo': 'Se ha cerrado la sesión',
   'err.sesion.desc': 'Por seguridad la sesión caduca sola. Vuelve a entrar y sigues donde estabas.',
   'err.sesion.entrar': 'Volver a entrar',
   'err.permiso.titulo': 'No tienes permiso para ver esto',
-  'err.permiso.desc': 'Esta pantalla es de gerencia. Pídeselo a quien lleve la dirección del camping.',
+  'err.permiso.desc':
+    'Esta pantalla es de gerencia. Pídeselo a quien lleve la dirección del camping.',
   'err.red.titulo': 'Sin conexión con el servidor',
   'err.red.desc': 'No se ha podido contactar. Comprueba la conexión y vuelve a intentarlo.',
   'err.servidor.titulo': 'No se ha podido cargar',
@@ -388,16 +395,20 @@ const es = {
   'accion.errorDeshacer': 'No se ha podido deshacer.',
   'confirmar.cancelar': 'Volver',
   'confirmar.reembolso.titulo': '¿Reembolsar {importe}?',
-  'confirmar.reembolso.desc': 'Se devolverá el importe por el mismo medio de cobro. Esta acción queda registrada y no se puede deshacer.',
+  'confirmar.reembolso.desc':
+    'Se devolverá el importe por el mismo medio de cobro. Esta acción queda registrada y no se puede deshacer.',
   'confirmar.reembolso.ok': 'Reembolsar',
   'confirmar.cancelarReserva.titulo': '¿Cancelar la reserva {code}?',
-  'confirmar.cancelarReserva.desc': 'Se liberará la unidad y, si hay política de cancelación, se ejecutará el reembolso que corresponda.',
+  'confirmar.cancelarReserva.desc':
+    'Se liberará la unidad y, si hay política de cancelación, se ejecutará el reembolso que corresponda.',
   'confirmar.cancelarReserva.ok': 'Cancelar la reserva',
   'confirmar.unidad.titulo': '¿Dar de baja {code}?',
-  'confirmar.unidad.desc': 'Dejará de estar disponible para nuevas reservas. Las reservas ya asignadas no se tocan.',
+  'confirmar.unidad.desc':
+    'Dejará de estar disponible para nuevas reservas. Las reservas ya asignadas no se tocan.',
   'confirmar.unidad.ok': 'Dar de baja',
   'confirmar.tarifas.titulo': '¿Guardar los cambios de tarifa?',
-  'confirmar.tarifas.desc': 'Afecta a las reservas NUEVAS. Las ya confirmadas conservan su precio, siempre.',
+  'confirmar.tarifas.desc':
+    'Afecta a las reservas NUEVAS. Las ya confirmadas conservan su precio, siempre.',
   'confirmar.tarifas.ok': 'Guardar',
   'vacio.llegadas.titulo': 'No hay llegadas hoy',
   'vacio.llegadas.desc': 'Nadie tiene entrada prevista para esta fecha.',
@@ -445,8 +456,10 @@ const es = {
   'ficha.checkinDeshecho': 'Check-in deshecho.',
   'ficha.checkinError': 'No se ha podido registrar. Recarga y reintenta.',
   'confirmar.checkout.titulo': '¿Cerrar la cuenta y hacer check-out?',
-  'confirmar.checkout.desc': 'La reserva pasará a completada. Cobra lo pendiente antes de cerrar si procede.',
-  'confirmar.checkout.descPendiente': 'Quedan {importe} pendientes de cobro. La reserva pasará a completada igualmente.',
+  'confirmar.checkout.desc':
+    'La reserva pasará a completada. Cobra lo pendiente antes de cerrar si procede.',
+  'confirmar.checkout.descPendiente':
+    'Quedan {importe} pendientes de cobro. La reserva pasará a completada igualmente.',
   'confirmar.checkout.ok': 'Check-out',
   // cobrar todo lo pendiente
   'ficha.cobrarTodo': 'Cobrar todo lo pendiente ({importe})',
@@ -475,7 +488,8 @@ const es = {
   'doc.passport': 'Pasaporte',
   'doc.other': 'Otro',
   'confirmar.quitarHuesped.titulo': '¿Quitar a {nombre} de la reserva?',
-  'confirmar.quitarHuesped.desc': 'Deja de figurar en esta reserva. Sus datos de cliente no se borran.',
+  'confirmar.quitarHuesped.desc':
+    'Deja de figurar en esta reserva. Sus datos de cliente no se borran.',
   'confirmar.quitarHuesped.ok': 'Quitar',
   // bloqueos desde la UI
   'bloqueo.crear': 'Nuevo bloqueo',
@@ -497,7 +511,8 @@ const es = {
   'bloqueo.quitado': 'Bloqueo levantado.',
   'bloqueo.quitarError': 'No se ha podido levantar el bloqueo.',
   'confirmar.quitarBloqueo.titulo': '¿Levantar este bloqueo?',
-  'confirmar.quitarBloqueo.desc': 'La unidad vuelve a estar disponible para reservas en esas fechas.',
+  'confirmar.quitarBloqueo.desc':
+    'La unidad vuelve a estar disponible para reservas en esas fechas.',
   'confirmar.quitarBloqueo.ok': 'Levantar',
   // nueva reserva desde el planning
   'planning.nuevaReserva': 'Nueva reserva',

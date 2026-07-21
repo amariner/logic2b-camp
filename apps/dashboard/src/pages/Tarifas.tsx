@@ -24,6 +24,7 @@ import { apiGet, apiPut, type Catalog, type RatePlan, type RatesData } from '../
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { fecha } from '../lib/format';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 /** Campos editables en céntimos, en orden de columna. */
 const CAMPOS = [
@@ -160,6 +161,7 @@ export default function Tarifas() {
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-border/60 px-4 py-2.5">
         <p className="text-[12px] text-muted-foreground">{t('tar.nota')}</p>
+        <BotonAyuda className="ml-auto" />
       </div>
 
       {rates.isPending && <TarifasEsqueleto />}

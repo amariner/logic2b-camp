@@ -194,7 +194,12 @@ function Shell() {
               aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
               className="size-8"
             >
-              <ChevronLeft className={cn('size-4 transition-transform motion-reduce:transition-none', collapsed && 'rotate-180')} />
+              <ChevronLeft
+                className={cn(
+                  'size-4 transition-transform motion-reduce:transition-none',
+                  collapsed && 'rotate-180',
+                )}
+              />
             </Button>
             <Button
               variant="outline"
