@@ -268,6 +268,9 @@ export type GuestBooking = {
   dateTo: string;
   totalCents: number;
   channel: BookingDetail['channel'];
+  /** "en casa" (ADR 0022) se deriva de estos dos, no del status */
+  checkedInAt: string | null;
+  checkedOutAt: string | null;
   isLead: boolean;
 };
 

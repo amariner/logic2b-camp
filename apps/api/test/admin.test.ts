@@ -883,9 +883,20 @@ describe('clientes', () => {
       envA,
     );
     expect(detail.status).toBe(200);
-    const d = (await detail.json()) as { bookings: { code: string; isLead: boolean }[] };
+    const d = (await detail.json()) as {
+      bookings: {
+        code: string;
+        isLead: boolean;
+        checkedInAt: string | null;
+        checkedOutAt: string | null;
+      }[];
+    };
     expect(d.bookings.length).toBeGreaterThan(0);
     expect(d.bookings[0]!.isLead).toBe(true);
+    // el historial entrega los timestamps de check-in para derivar "en casa"
+    // (ADR 0022): recién creada la reserva no está presente todavía.
+    expect(d.bookings[0]!.checkedInAt).toBeNull();
+    expect(d.bookings[0]!.checkedOutAt).toBeNull();
   });
 });
 

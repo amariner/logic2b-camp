@@ -5,7 +5,16 @@
  */
 import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
-import { Button, cn, LogoMark, Toaster, TooltipProvider } from '@logic-camp/ui';
+import {
+  Button,
+  cn,
+  LogoMark,
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  Toaster,
+  TooltipProvider,
+} from '@logic-camp/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   createHashHistory,
@@ -27,6 +36,7 @@ import {
   Inbox,
   LogOut,
   Map,
+  Menu,
   Settings,
   Tag,
   Tent,
@@ -103,6 +113,111 @@ const NAV_GROUPS: { label: TKey; items: [string, TKey, LucideIcon][] }[] = [
 
 const COLLAPSE_KEY = 'lc-sidebar-collapsed';
 
+/**
+ * Contenido de la sidebar: logo + navegación + pie (sesión/tema/salir).
+ * Se comparte entre la sidebar persistente de escritorio (`collapsed` real,
+ * con botón de plegar) y el off-canvas de móvil (siempre desplegado, sin
+ * plegar, y que se cierra al navegar). Un solo sitio → añadir un enlace no
+ * se olvida en la otra vista.
+ */
+function SidebarInner({
+  collapsed,
+  onToggleCollapse,
+  onNavigate,
+  email,
+  onSignOut,
+}: {
+  collapsed: boolean;
+  /** Solo en escritorio: sin él no se pinta el botón de plegar (en móvil no aplica). */
+  onToggleCollapse?: () => void;
+  /** Móvil: cerrar el off-canvas al pulsar un enlace. */
+  onNavigate?: () => void;
+  email: string;
+  onSignOut: () => void;
+}) {
+  return (
+    <>
+      <div className="flex h-14 items-center gap-2 px-3">
+        <LogoMark className="size-6 shrink-0 text-primary" />
+        {!collapsed && (
+          <span className="font-display text-base font-bold tracking-tight">
+            Logic<span className="text-muted-foreground">Camp</span>
+          </span>
+        )}
+      </div>
+
+      <nav className="flex-1 overflow-y-auto px-2 pb-2">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            {!collapsed && (
+              <p className="px-2 pt-4 pb-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
+                {t(group.label)}
+              </p>
+            )}
+            {collapsed && (
+              <div className="mt-3 border-t border-sidebar-border first:mt-0 first:border-0" />
+            )}
+            {group.items.map(([to, key, Icon]) => (
+              <Link
+                key={to}
+                to={to}
+                title={t(key)}
+                onClick={onNavigate}
+                className={cn(
+                  'mt-0.5 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
+                  collapsed && 'justify-center px-0',
+                )}
+              >
+                <Icon className="size-4 shrink-0" strokeWidth={2} />
+                {!collapsed && <span className="truncate">{t(key)}</span>}
+              </Link>
+            ))}
+          </div>
+        ))}
+      </nav>
+
+      <div className="border-t border-sidebar-border p-2">
+        {!collapsed && (
+          <p className="truncate px-2 pb-1.5 text-xs text-muted-foreground" title={email}>
+            {email}
+          </p>
+        )}
+        <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
+          <ThemeToggle />
+          {onToggleCollapse && (
+            <Button
+              variant="ghost"
+              size="iconSm"
+              onClick={onToggleCollapse}
+              title={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
+              aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
+              className="size-8"
+            >
+              <ChevronLeft
+                className={cn(
+                  'size-4 transition-transform motion-reduce:transition-none',
+                  collapsed && 'rotate-180',
+                )}
+              />
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onSignOut}
+            title={t('app.cerrarSesion')}
+            aria-label={t('app.cerrarSesion')}
+            className={cn('text-muted-foreground', collapsed ? 'size-8 px-0' : 'ml-auto')}
+          >
+            <LogOut className="size-4" />
+            {!collapsed && <span>{t('app.cerrarSesion')}</span>}
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function Shell() {
   const session = useSession();
   const signOut = useSignOut();
@@ -113,6 +228,10 @@ function Shell() {
       return false;
     }
   });
+  // Off-canvas de móvil: la sidebar persistente desaparece bajo `md` y se abre
+  // desde la hamburguesa (BACKLOG B1). El primitivo Sheet aporta trampa de foco,
+  // cierre con Escape y overlay.
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggle = () => {
     setCollapsed((v) => {
@@ -128,97 +247,65 @@ function Shell() {
 
   if (session.isPending) return null;
   if (!session.data?.user) return <Login />;
+  const email = session.data.user.email;
 
   return (
     <div className="flex h-screen">
+      {/* Escritorio: sidebar persistente y plegable (la usuaria real está a 1366px). */}
       <aside
         className={cn(
-          'flex shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] motion-reduce:transition-none',
+          'hidden shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] motion-reduce:transition-none md:flex',
           collapsed ? 'w-14' : 'w-56',
         )}
       >
-        <div className="flex h-14 items-center gap-2 px-3">
-          <LogoMark className="size-6 shrink-0 text-primary" />
-          {!collapsed && (
-            <span className="font-display text-base font-bold tracking-tight">
-              Logic<span className="text-muted-foreground">Camp</span>
-            </span>
-          )}
-        </div>
-
-        <nav className="flex-1 overflow-y-auto px-2 pb-2">
-          {NAV_GROUPS.map((group) => (
-            <div key={group.label}>
-              {!collapsed && (
-                <p className="px-2 pt-4 pb-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-                  {t(group.label)}
-                </p>
-              )}
-              {collapsed && (
-                <div className="mt-3 border-t border-sidebar-border first:mt-0 first:border-0" />
-              )}
-              {group.items.map(([to, key, Icon]) => (
-                <Link
-                  key={to}
-                  to={to}
-                  title={t(key)}
-                  className={cn(
-                    'mt-0.5 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
-                    collapsed && 'justify-center px-0',
-                  )}
-                >
-                  <Icon className="size-4 shrink-0" strokeWidth={2} />
-                  {!collapsed && <span className="truncate">{t(key)}</span>}
-                </Link>
-              ))}
-            </div>
-          ))}
-        </nav>
-
-        <div className="border-t border-sidebar-border p-2">
-          {!collapsed && (
-            <p
-              className="truncate px-2 pb-1.5 text-xs text-muted-foreground"
-              title={session.data.user.email}
-            >
-              {session.data.user.email}
-            </p>
-          )}
-          <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
-            <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="iconSm"
-              onClick={toggle}
-              title={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
-              aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
-              className="size-8"
-            >
-              <ChevronLeft
-                className={cn(
-                  'size-4 transition-transform motion-reduce:transition-none',
-                  collapsed && 'rotate-180',
-                )}
-              />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => signOut.mutate()}
-              title={t('app.cerrarSesion')}
-              aria-label={t('app.cerrarSesion')}
-              className={cn('text-muted-foreground', collapsed ? 'size-8 px-0' : 'ml-auto')}
-            >
-              <LogOut className="size-4" />
-              {!collapsed && <span>{t('app.cerrarSesion')}</span>}
-            </Button>
-          </div>
-        </div>
+        <SidebarInner
+          collapsed={collapsed}
+          onToggleCollapse={toggle}
+          email={email}
+          onSignOut={() => signOut.mutate()}
+        />
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <Outlet />
+        {/* Móvil: barra con hamburguesa; la sidebar vive en el off-canvas. */}
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-sidebar-border bg-sidebar px-2 md:hidden">
+          <Button
+            variant="ghost"
+            size="iconSm"
+            onClick={() => setMobileOpen(true)}
+            aria-label={t('nav.abrirMenu')}
+            className="size-9"
+          >
+            <Menu className="size-5" />
+          </Button>
+          <LogoMark className="size-5 shrink-0 text-primary" />
+          <span className="font-display text-sm font-bold tracking-tight">
+            Logic<span className="text-muted-foreground">Camp</span>
+          </span>
+        </header>
+
+        {/* Contenedor flex-col como el padre anterior de las páginas: sus raíces
+            usan `h-full`/`flex-1` esperando serlo. Bajo `md` descuenta la barra. */}
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <Outlet />
+        </main>
       </div>
+
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent
+          side="left"
+          className="w-64 border-sidebar-border bg-sidebar p-0 md:hidden"
+        >
+          {/* Título accesible del diálogo, oculto: el logo ya identifica visualmente. */}
+          <SheetTitle className="sr-only">{t('nav.menu')}</SheetTitle>
+          <SidebarInner
+            collapsed={false}
+            onNavigate={() => setMobileOpen(false)}
+            email={email}
+            onSignOut={() => signOut.mutate()}
+          />
+        </SheetContent>
+      </Sheet>
 
       {/* Paleta ⌘K global (ADR 0022): buscar reserva/cliente/unidad y saltar */}
       <CommandPalette />

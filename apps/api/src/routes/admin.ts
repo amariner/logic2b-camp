@@ -782,6 +782,10 @@ export const adminRoutes = new Hono<AuthEnv>()
             dateTo: schema.bookings.dateTo,
             totalCents: schema.bookings.totalCents,
             channel: schema.bookings.channel,
+            // "en casa" se DERIVA de estos dos (ADR 0022): el historial también
+            // lo pinta, para no mostrar "Confirmada" a un huésped presente.
+            checkedInAt: schema.bookings.checkedInAt,
+            checkedOutAt: schema.bookings.checkedOutAt,
           })
           .from(schema.bookings)
           .where(

@@ -31,6 +31,8 @@ const es = {
   'nav.grupo.config': 'Configuración',
   'nav.colapsar': 'Plegar el menú',
   'nav.desplegar': 'Desplegar el menú',
+  'nav.menu': 'Menú',
+  'nav.abrirMenu': 'Abrir el menú',
   'planning.hoy': 'Hoy',
   'planning.semana': 'Semana',
   'planning.mes': 'Mes',

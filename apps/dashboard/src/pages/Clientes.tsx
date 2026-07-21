@@ -125,7 +125,13 @@ function GuestPanel({
               <p className="text-muted-foreground">{t('cli.sinHistorial')}</p>
             )}
             <ul className="flex flex-col">
-              {data.bookings.map((b) => (
+              {data.bookings.map((b) => {
+                // "En casa" se deriva (ADR 0022), como en el planning y en /reservas.
+                const estadoVista =
+                  b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt
+                    ? 'inhouse'
+                    : b.status;
+                return (
                 <li key={b.id}>
                   {/* Fila-rejilla completa: se queda como fila (no <Button>), pero
                       con rol, teclado y foco visible. */}
@@ -150,8 +156,8 @@ function GuestPanel({
                         </span>
                       )}
                     </span>
-                    <span className={`lc-chip st-${b.status} justify-self-end`}>
-                      {t(`estado.${b.status}`)}
+                    <span className={`lc-chip st-${estadoVista} justify-self-end`}>
+                      {t(`estado.${estadoVista}`)}
                     </span>
                     <span className="tnum text-muted-foreground">
                       {fecha(b.dateFrom)} → {fecha(b.dateTo)}
@@ -161,7 +167,8 @@ function GuestPanel({
                     </span>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </section>
         </div>

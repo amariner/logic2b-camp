@@ -186,6 +186,11 @@ export default function Reservas() {
               <tbody>
                 {items.map((b) => {
                   const pendiente = b.totalCents - b.paidCents;
+                  // "En casa" se deriva (ADR 0022), igual que en el planning/plano.
+                  const estadoVista =
+                    b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt
+                      ? 'inhouse'
+                      : b.status;
                   return (
                     <tr
                       key={b.id}
@@ -211,7 +216,9 @@ export default function Reservas() {
                       <td className="tnum px-3 py-2">{b.unitCode ?? '—'}</td>
                       <td className="px-3 py-2 text-muted-foreground">{t(`canal.${b.channel}`)}</td>
                       <td className="px-3 py-2">
-                        <span className={`lc-chip st-${b.status}`}>{t(`estado.${b.status}`)}</span>
+                        <span className={`lc-chip st-${estadoVista}`}>
+                          {t(`estado.${estadoVista}`)}
+                        </span>
                       </td>
                       <td className="tnum px-3 py-2">{eur(b.totalCents)}</td>
                       <td
