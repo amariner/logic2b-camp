@@ -1,9 +1,9 @@
 ---
-title: "The cove in September"
-description: "The month the cove becomes ours again: 24-degree water, parking in the shade and rice with no waiting list."
-date: "2026-09-02"
-lang: "en"
-photo: "hero-dia"
+title: 'The cove in September'
+description: 'The month the cove becomes ours again: 24-degree water, parking in the shade and rice with no waiting list.'
+date: '2026-09-02'
+lang: 'en'
+photo: 'hero-dia'
 ---
 
 There are two coves with the same name: the August one and the September one. The August one is wonderful, we won't lie — but the September one is ours.

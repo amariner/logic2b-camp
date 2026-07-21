@@ -13,7 +13,10 @@ import { cn } from '../lib/cn';
 export function Table({ className, ...props }: ComponentProps<'table'>) {
   return (
     <div className="w-full overflow-x-auto">
-      <table className={cn('w-full caption-bottom border-collapse text-[13px]', className)} {...props} />
+      <table
+        className={cn('w-full caption-bottom border-collapse text-[13px]', className)}
+        {...props}
+      />
     </div>
   );
 }
@@ -29,7 +32,10 @@ export function TableBody({ className, ...props }: ComponentProps<'tbody'>) {
 export function TableRow({ className, ...props }: ComponentProps<'tr'>) {
   return (
     <tr
-      className={cn('transition-colors hover:bg-accent/60 data-[state=selected]:bg-accent', className)}
+      className={cn(
+        'transition-colors hover:bg-accent/60 data-[state=selected]:bg-accent',
+        className,
+      )}
       {...props}
     />
   );

@@ -1,9 +1,9 @@
 ---
-title: "Tres senderos que salen de recepción"
-description: "El de la cala, el del faro y el del pinar alto: distancias reales, calzado necesario y a qué hora ir."
-date: "2026-04-18"
-lang: "es"
-photo: "textura-lona"
+title: 'Tres senderos que salen de recepción'
+description: 'El de la cala, el del faro y el del pinar alto: distancias reales, calzado necesario y a qué hora ir.'
+date: '2026-04-18'
+lang: 'es'
+photo: 'textura-lona'
 ---
 
 Lo mejor de los tres senderos del camping es que empiezan donde acaba el café: en la puerta de recepción. Sin coche, sin app, sin parking de inicio de ruta.

@@ -349,7 +349,10 @@ describe('check-in / check-out (ADR 0022)', () => {
   const mkConfirmed = async (from: string, to: string) => {
     const r = await app.request(
       '/api/admin/bookings',
-      { ...json(bookingBody(from, to)), headers: { 'content-type': 'application/json', cookie: reception, ...IP } },
+      {
+        ...json(bookingBody(from, to)),
+        headers: { 'content-type': 'application/json', cookie: reception, ...IP },
+      },
       envA,
     );
     expect(r.status).toBe(201);
@@ -417,7 +420,8 @@ describe('huéspedes editables (ADR 0022)', () => {
   const get = (url: string) => app.request(url, { headers: { cookie: reception, ...IP } }, envA);
   const post = (url: string, body: unknown, cookie = reception) =>
     app.request(url, { ...json(body, { cookie, ...IP }) }, envA);
-  const del = (url: string) => app.request(url, { method: 'DELETE', headers: { cookie: reception, ...IP } }, envA);
+  const del = (url: string) =>
+    app.request(url, { method: 'DELETE', headers: { cookie: reception, ...IP } }, envA);
   const mkBooking = async () => {
     const r = await post('/api/admin/bookings', bookingBody('2026-05-01', '2026-05-04'));
     expect(r.status).toBe(201);
@@ -426,9 +430,11 @@ describe('huéspedes editables (ADR 0022)', () => {
 
   it('añadir acompañante, editar su documento y quitarlo; el titular no se puede quitar', async () => {
     const id = await mkBooking();
-    const lead = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
-      guests: { id: string; isLead: boolean }[];
-    }).guests.find((g) => g.isLead)!;
+    const lead = (
+      (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+        guests: { id: string; isLead: boolean }[];
+      }
+    ).guests.find((g) => g.isLead)!;
 
     const add = await post(`/api/admin/bookings/${id}/guests`, {
       name: 'Ana',
@@ -451,17 +457,21 @@ describe('huéspedes editables (ADR 0022)', () => {
     expect((await del(`/api/admin/bookings/${id}/guests/${lead.id}`)).status).toBe(409); // titular no
     expect((await del(`/api/admin/bookings/${id}/guests/${guestId}`)).status).toBe(200); // acompañante sí
 
-    const guests = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
-      guests: { id: string }[];
-    }).guests;
+    const guests = (
+      (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+        guests: { id: string }[];
+      }
+    ).guests;
     expect(guests.some((g) => g.id === guestId)).toBe(false);
   });
 
   it('readonly no puede editar un huésped → 403', async () => {
     const id = await mkBooking();
-    const lead = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
-      guests: { id: string }[];
-    }).guests[0]!;
+    const lead = (
+      (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+        guests: { id: string }[];
+      }
+    ).guests[0]!;
     const res = await app.request(
       `/api/admin/guests/${lead.id}`,
       patch({ name: 'X' }, readonly, IP),
@@ -474,7 +484,8 @@ describe('huéspedes editables (ADR 0022)', () => {
 describe('bloqueos desde la UI (ADR 0022)', () => {
   const IP = { 'cf-connecting-ip': 'test-blocks' };
   const get = (url: string) => app.request(url, { headers: { cookie: reception, ...IP } }, envA);
-  const post = (url: string, body: unknown) => app.request(url, { ...json(body, { cookie: reception, ...IP }) }, envA);
+  const post = (url: string, body: unknown) =>
+    app.request(url, { ...json(body, { cookie: reception, ...IP }) }, envA);
 
   it('crear un bloqueo por unidad, verlo en el planning y levantarlo', async () => {
     const create = await post('/api/admin/blocks', {
@@ -548,16 +559,27 @@ describe('pagos (ADR 0011)', () => {
 
     const res = await app.request(
       `/api/admin/bookings/${id}`,
-      patch({ action: 'record_payment', amountCents: totalCents, method: 'cash' }, reception, PAY_IP),
+      patch(
+        { action: 'record_payment', amountCents: totalCents, method: 'cash' },
+        reception,
+        PAY_IP,
+      ),
       envA,
     );
     expect(res.status).toBe(200);
     expect(((await res.json()) as { paidCents: number }).paidCents).toBe(totalCents);
 
     const db = createDb(env.DB);
-    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, id));
+    const payments = await db
+      .select()
+      .from(schema.payments)
+      .where(eq(schema.payments.bookingId, id));
     expect(payments).toHaveLength(1);
-    expect(payments[0]).toMatchObject({ provider: 'manual', amountCents: totalCents, status: 'succeeded' });
+    expect(payments[0]).toMatchObject({
+      provider: 'manual',
+      amountCents: totalCents,
+      status: 'succeeded',
+    });
     const audit = await db
       .select()
       .from(schema.auditLog)
@@ -570,7 +592,11 @@ describe('pagos (ADR 0011)', () => {
     const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
     await app.request(
       `/api/admin/bookings/${id}`,
-      patch({ action: 'record_payment', amountCents: totalCents, method: 'card' }, reception, PAY_IP),
+      patch(
+        { action: 'record_payment', amountCents: totalCents, method: 'card' },
+        reception,
+        PAY_IP,
+      ),
       envA,
     );
 
@@ -596,7 +622,11 @@ describe('pagos (ADR 0011)', () => {
       .where(eq(schema.payments.bookingId, id))
       .orderBy(schema.payments.createdAt);
     expect(payments).toHaveLength(2);
-    expect(payments[1]).toMatchObject({ provider: 'manual', amountCents: -totalCents, status: 'refunded' });
+    expect(payments[1]).toMatchObject({
+      provider: 'manual',
+      amountCents: -totalCents,
+      status: 'refunded',
+    });
   });
 
   it('cancelar desde el dashboard ejecuta el reembolso real según la política, no solo el email', async () => {
@@ -604,7 +634,11 @@ describe('pagos (ADR 0011)', () => {
     const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
     await app.request(
       `/api/admin/bookings/${id}`,
-      patch({ action: 'record_payment', amountCents: totalCents, method: 'cash' }, reception, PAY_IP),
+      patch(
+        { action: 'record_payment', amountCents: totalCents, method: 'cash' },
+        reception,
+        PAY_IP,
+      ),
       envA,
     );
 
@@ -619,7 +653,10 @@ describe('pagos (ADR 0011)', () => {
     const db = createDb(env.DB);
     const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0]!;
     expect(booking.paidCents).toBe(0);
-    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, id));
+    const payments = await db
+      .select()
+      .from(schema.payments)
+      .where(eq(schema.payments.bookingId, id));
     expect(payments.some((p) => p.amountCents < 0)).toBe(true);
   });
 });
@@ -731,7 +768,9 @@ describe('plano del camping (ADR 0021)', () => {
 
   it('con modules.plano → lo devuelve tal cual', async () => {
     const db = createDb(env.DB);
-    const row = (await db.select().from(schema.tenants).where(eq(schema.tenants.id, 'ten_alfa')))[0]!;
+    const row = (
+      await db.select().from(schema.tenants).where(eq(schema.tenants.id, 'ten_alfa'))
+    )[0]!;
     const plano = {
       version: 1,
       decor: [],
@@ -942,7 +981,11 @@ describe('pagos (log)', () => {
     };
     await app.request(
       `/api/admin/bookings/${id}`,
-      patch({ action: 'record_payment', amountCents: totalCents, method: 'card' }, reception, LOG_IP),
+      patch(
+        { action: 'record_payment', amountCents: totalCents, method: 'card' },
+        reception,
+        LOG_IP,
+      ),
       envA,
     );
 

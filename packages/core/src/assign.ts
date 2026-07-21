@@ -34,7 +34,8 @@ export function assignUnit(input: AssignUnitInput): UnitAssignment | null {
         .filter((blk) => blk.unitId === unit.id)
         .map((blk) => ({ from: blk.dateFrom, to: blk.dateTo })),
     ];
-    if (occupations.some((o) => rangesOverlap(o.from, o.to, input.dateFrom, input.dateTo))) continue;
+    if (occupations.some((o) => rangesOverlap(o.from, o.to, input.dateFrom, input.dateTo)))
+      continue;
 
     // hueco hasta la ocupación anterior y la siguiente (capado)
     const before = occupations.filter((o) => o.to <= input.dateFrom);
@@ -56,6 +57,10 @@ export function assignUnit(input: AssignUnitInput): UnitAssignment | null {
     unitId: best!.unit.id,
     unitCode: best!.unit.code,
     gapScore: best!.gapScore,
-    alternatives: rest.map((s) => ({ unitId: s.unit.id, unitCode: s.unit.code, gapScore: s.gapScore })),
+    alternatives: rest.map((s) => ({
+      unitId: s.unit.id,
+      unitCode: s.unit.code,
+      gapScore: s.gapScore,
+    })),
   };
 }

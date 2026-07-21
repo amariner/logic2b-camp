@@ -42,7 +42,9 @@ export function searchAvailability(input: AvailabilitySearchInput): Availability
 
   // expiración perezosa: un hold caducado no ocupa aunque el cron no lo haya purgado
   const liveHolds = (input.holds ?? []).filter(
-    (h) => (!input.now || h.expiresAt > input.now) && rangesOverlap(h.dateFrom, h.dateTo, dateFrom, dateTo),
+    (h) =>
+      (!input.now || h.expiresAt > input.now) &&
+      rangesOverlap(h.dateFrom, h.dateTo, dateFrom, dateTo),
   );
 
   return input.unitTypes.map((type) => {
@@ -66,7 +68,9 @@ export function searchAvailability(input: AvailabilitySearchInput): Availability
     let minFree = typeUnits.length;
     for (const night of nights) {
       const nightTo = night; // rango [night, night+1): basta comparar contra la noche
-      const occupied = typeBookings.filter((b) => b.dateFrom <= nightTo && nightTo < b.dateTo).length;
+      const occupied = typeBookings.filter(
+        (b) => b.dateFrom <= nightTo && nightTo < b.dateTo,
+      ).length;
       // bloqueos por unidad concreta cuentan 1; por tipo cuentan todas las unidades
       let blocked = 0;
       for (const blk of typeBlocks) {

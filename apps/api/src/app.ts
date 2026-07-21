@@ -1,5 +1,7 @@
 import { Hono } from 'hono';
 import { createAuth } from './auth';
+import { createOnError, normalizeThrown, notFoundHandler } from './errors';
+import { notifySystemError } from './notify';
 import { adminRoutes } from './routes/admin';
 import { leadsRoutes } from './routes/leads';
 import { publicRoutes } from './routes/public';
@@ -8,6 +10,8 @@ import { createRateLimiter, tenantMiddleware, type Env } from './tenant';
 export function createApp() {
   return (
     new Hono<Env>()
+      // el primero de todos: nada de lo que se lance puede saltarse el onError
+      .use('*', normalizeThrown)
       .use('*', tenantMiddleware)
       .use('/api/*', createRateLimiter(60, 60_000))
       // la ruta de producción solo expone /api/*; /health se mantiene para dev
@@ -24,6 +28,10 @@ export function createApp() {
       .route('/api/admin', adminRoutes)
       .route('/api', leadsRoutes)
       .route('/api', publicRoutes)
+      // Observabilidad mínima (ADR 0026 §3): sin esto, una excepción no
+      // capturada salía como 500 con el stack en el cuerpo de la respuesta.
+      .onError(createOnError(notifySystemError))
+      .notFound(notFoundHandler)
   );
 }
 

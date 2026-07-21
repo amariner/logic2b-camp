@@ -1,4 +1,5 @@
 # LOGIC CAMP — Super Prompt maestro para Claude Code
+
 ### Logic2B · v2 · Julio 2026
 
 > **Cómo usar este documento**
@@ -15,18 +16,18 @@
 
 Este bloque existe para que dentro de tres meses, a las 23:30, no te replantees algo que ya está decidido.
 
-| Decisión | Elección | Por qué |
-|---|---|---|
-| **Nicho** | Solo campings | Con recursos limitados, el nicho estrecho es la única ventaja disponible. Dos clientes campings = conocimiento de dominio real. |
-| **Repo** | **Uno solo**, modelo SaaS | El cliente nº3 debe costar una tarde, no lo mismo que el nº1. Ese delta es el negocio. |
-| **Base de datos** | **Una D1 por camping**, aislada | Código junto, datos separados. Aislamiento por diseño, no por `WHERE tenant_id`. |
-| **Personalización** | `tenants/{slug}/custom/` + puntos de extensión declarados | La personalización tiene sitio y no se infiltra en el core. |
-| **Design system** | shadcn/ui copiado en `packages/ui` | shadcn no es dependencia: te copia el código. Ya *es* tu DS, con el 90% escrito. |
-| **`ui.logic2b.com`** | Fase 10, como **escaparate** del DS | El DS nace dentro del producto y se endurece con uso real; luego se enseña. Al revés te acopla. |
-| **Niveles de producto** | 4 tiers por config (§2) | Los "casos típicos" no son complicación: son la escalera comercial. |
-| **Camp Motor (tier 4)** | **No construir hasta que alguien pague** | Widget en WordPress ajeno = el más caro de todos. Declarado, no construido. |
-| **Email** | Una cuenta Resend, N dominios verificados | Cada camping envía desde su dominio, sin gestionar N cuentas. |
-| **Salida** | Si un cliente exige repo propio, se saca *ese* | Empezar junto y separar uno es fácil. Empezar separado y consolidar cinco no se hace nunca. |
+| Decisión                | Elección                                                  | Por qué                                                                                                                         |
+| ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Nicho**               | Solo campings                                             | Con recursos limitados, el nicho estrecho es la única ventaja disponible. Dos clientes campings = conocimiento de dominio real. |
+| **Repo**                | **Uno solo**, modelo SaaS                                 | El cliente nº3 debe costar una tarde, no lo mismo que el nº1. Ese delta es el negocio.                                          |
+| **Base de datos**       | **Una D1 por camping**, aislada                           | Código junto, datos separados. Aislamiento por diseño, no por `WHERE tenant_id`.                                                |
+| **Personalización**     | `tenants/{slug}/custom/` + puntos de extensión declarados | La personalización tiene sitio y no se infiltra en el core.                                                                     |
+| **Design system**       | shadcn/ui copiado en `packages/ui`                        | shadcn no es dependencia: te copia el código. Ya _es_ tu DS, con el 90% escrito.                                                |
+| **`ui.logic2b.com`**    | Fase 10, como **escaparate** del DS                       | El DS nace dentro del producto y se endurece con uso real; luego se enseña. Al revés te acopla.                                 |
+| **Niveles de producto** | 4 tiers por config (§2)                                   | Los "casos típicos" no son complicación: son la escalera comercial.                                                             |
+| **Camp Motor (tier 4)** | **No construir hasta que alguien pague**                  | Widget en WordPress ajeno = el más caro de todos. Declarado, no construido.                                                     |
+| **Email**               | Una cuenta Resend, N dominios verificados                 | Cada camping envía desde su dominio, sin gestionar N cuentas.                                                                   |
+| **Salida**              | Si un cliente exige repo propio, se saca _ese_            | Empezar junto y separar uno es fácil. Empezar separado y consolidar cinco no se hace nunca.                                     |
 
 ---
 
@@ -124,20 +125,20 @@ PRIMERA TAREA — SOLO ESTO, NADA MÁS, NO HAGAS SCAFFOLD
 
 ## §2 Los cuatro niveles — la escalera comercial
 
-| | **1 · Camp Web** | **2 · Camp Solicitudes** | **3 · Camp Reservas** | **4 · Camp Motor** |
-|---|---|---|---|---|
-| **Web pública** | ✅ | ✅ | ✅ | ❌ (la suya) |
-| **Formulario → email** | ✅ | ✅ | ✅ | — |
-| **Solicitudes guardadas** | ✅ (silenciosas) | ✅ | ✅ | ✅ |
-| **Bandeja + calendario** | ❌ | ✅ lite | ✅ | ✅ |
-| **Motor disponibilidad** | ❌ | ❌ | ✅ | ✅ |
-| **Precio automático** | ❌ | ❌ | ✅ | ✅ |
-| **Confirmación instantánea** | ❌ | ❌ | ✅ | ✅ |
-| **Pagos** | ❌ | ❌ | opcional | opcional |
-| **Dashboard** | ❌ | lite | completo | completo |
-| **Config** | `web:true, booking:'email', dashboard:false` | `booking:'request', dashboard:'lite'` | `booking:'instant', dashboard:'full'` | `web:false, booking:'instant'` |
-| **Para quién** | El camping que solo quiere presencia digital | El que ya no da abasto con el correo | El que quiere dejar de pagar a Booking | El que ya tiene web y no la va a tocar |
-| **Estado** | Fase 4 | Fase 4+6 | Fases 2–8 | **Fase 12 — no construir hasta que se pague** |
+|                              | **1 · Camp Web**                             | **2 · Camp Solicitudes**              | **3 · Camp Reservas**                  | **4 · Camp Motor**                            |
+| ---------------------------- | -------------------------------------------- | ------------------------------------- | -------------------------------------- | --------------------------------------------- |
+| **Web pública**              | ✅                                           | ✅                                    | ✅                                     | ❌ (la suya)                                  |
+| **Formulario → email**       | ✅                                           | ✅                                    | ✅                                     | —                                             |
+| **Solicitudes guardadas**    | ✅ (silenciosas)                             | ✅                                    | ✅                                     | ✅                                            |
+| **Bandeja + calendario**     | ❌                                           | ✅ lite                               | ✅                                     | ✅                                            |
+| **Motor disponibilidad**     | ❌                                           | ❌                                    | ✅                                     | ✅                                            |
+| **Precio automático**        | ❌                                           | ❌                                    | ✅                                     | ✅                                            |
+| **Confirmación instantánea** | ❌                                           | ❌                                    | ✅                                     | ✅                                            |
+| **Pagos**                    | ❌                                           | ❌                                    | opcional                               | opcional                                      |
+| **Dashboard**                | ❌                                           | lite                                  | completo                               | completo                                      |
+| **Config**                   | `web:true, booking:'email', dashboard:false` | `booking:'request', dashboard:'lite'` | `booking:'instant', dashboard:'full'`  | `web:false, booking:'instant'`                |
+| **Para quién**               | El camping que solo quiere presencia digital | El que ya no da abasto con el correo  | El que quiere dejar de pagar a Booking | El que ya tiene web y no la va a tocar        |
+| **Estado**                   | Fase 4                                       | Fase 4+6                              | Fases 2–8                              | **Fase 12 — no construir hasta que se pague** |
 
 **La lógica del nivel 1 como caballo de Troya**: barato de vender, barato de mantener, y una vez eres su web ya estás dentro el día que les toque dar el salto. Vender el motor a puerta fría empieza la conversación en 250 €/mes y termina en nada; empezar por su web la empieza en 60 €/mes.
 
@@ -198,7 +199,7 @@ tenants/{slug}/
 └── README.md          # estado, nivel contratado, qué falta
 ```
 
-**El contrato**: `custom/` puede *engancharse* al core, nunca *modificarlo*. Si un cliente pide algo que `custom/` no alcanza, es señal de que falta un punto de extensión — lo añades al core y ganan todos.
+**El contrato**: `custom/` puede _engancharse_ al core, nunca _modificarlo_. Si un cliente pide algo que `custom/` no alcanza, es señal de que falta un punto de extensión — lo añades al core y ganan todos.
 
 ### Puntos de extensión (declarados en Fase 2, no improvisados)
 
@@ -253,6 +254,7 @@ audit_log               tenant_id, user_id, entity, entity_id, action, diff(json
 **Por qué `enquiries` es tabla propia y no un `booking` en borrador**: no bloquea inventario, no tiene precio cerrado, no tiene unidad asignada. Invariantes distintas → tabla distinta. Y es la entidad que hace que el nivel 1 acumule valor. Tiene `convertToEnquiry → Booking` como acción explícita en el dashboard.
 
 **Invariantes con test propio y obligatorio:**
+
 - Una unidad no puede tener dos reservas solapadas (`date_from` inclusive, `date_to` exclusive — el día de salida se libera).
 - `sum(payments.amount_cents) == bookings.paid_cents`, siempre.
 - Cambiar una tarifa no modifica jamás una reserva ya confirmada.
@@ -344,25 +346,25 @@ Empieza por A, ten B en el radar. La migración de A a B es transparente para el
 
 Va literal en `docs/DOMAIN.md`. Un producto genérico no modela bien nada de esto, y por eso existes.
 
-| Término | Definición para el modelo |
-|---|---|
-| **Parcela** | Terreno donde el cliente monta su equipo (tienda, caravana, autocaravana). m², suelo, sombra, electricidad (A), acceso, servicios propios sí/no. |
-| **Alojamiento** | Unidad construida: bungalow, mobil-home, glamping, safari tent. Camas, capacidad, baños, mascotas. |
-| **Tipo de unidad** | Agrupación comercial ("Bungalow 4 pax vista mar"). El cliente reserva un *tipo*; el camping asigna una *unidad*. |
-| **Asignación** | Dar unidad física a una reserva. Manual o automática. Reasignable sin cancelar. **El dashboard vive de esto.** |
-| **Temporada** | Rango con reglas propias: precio, estancia mínima, días de entrada. Se solapan por prioridad. |
-| **Plan tarifario** | Base (parcela/alojamiento) + N personas incluidas + persona extra + electricidad + mascota + vehículo extra. |
-| **Estancia mínima / máxima** | Por temporada y tipo. Julio-agosto, mínimo 7 noches en bungalow. |
-| **Día de entrada fijo** | Restricción típica de alta temporada: solo sábados. |
-| **Tasa turística** | Impuesto por persona y noche, con exenciones por edad, liquidado aparte. Varía por comunidad autónoma. |
-| **Fianza** | Depósito reembolsable. No es ingreso. |
-| **Canon / larga estancia** | Parcela alquilada por temporada o año. No pasa por el motor diario, pero bloquea inventario. |
-| **ACSI / clubs** | Descuento por carnet en temporada baja. Regla condicional. |
-| **Extras** | Ropa de cama, limpieza final, nevera, parking extra, late checkout. Por estancia o por día. |
-| **Cierre de temporada** | El camping no opera todo el año. Fuera de apertura no es "sin disponibilidad", es "cerrado". Mensaje distinto. |
-| **Overbooking controlado** | Vender por tipo por encima de unidades con margen de reasignación. Configurable, por defecto off. |
+| Término                      | Definición para el modelo                                                                                                                        |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Parcela**                  | Terreno donde el cliente monta su equipo (tienda, caravana, autocaravana). m², suelo, sombra, electricidad (A), acceso, servicios propios sí/no. |
+| **Alojamiento**              | Unidad construida: bungalow, mobil-home, glamping, safari tent. Camas, capacidad, baños, mascotas.                                               |
+| **Tipo de unidad**           | Agrupación comercial ("Bungalow 4 pax vista mar"). El cliente reserva un _tipo_; el camping asigna una _unidad_.                                 |
+| **Asignación**               | Dar unidad física a una reserva. Manual o automática. Reasignable sin cancelar. **El dashboard vive de esto.**                                   |
+| **Temporada**                | Rango con reglas propias: precio, estancia mínima, días de entrada. Se solapan por prioridad.                                                    |
+| **Plan tarifario**           | Base (parcela/alojamiento) + N personas incluidas + persona extra + electricidad + mascota + vehículo extra.                                     |
+| **Estancia mínima / máxima** | Por temporada y tipo. Julio-agosto, mínimo 7 noches en bungalow.                                                                                 |
+| **Día de entrada fijo**      | Restricción típica de alta temporada: solo sábados.                                                                                              |
+| **Tasa turística**           | Impuesto por persona y noche, con exenciones por edad, liquidado aparte. Varía por comunidad autónoma.                                           |
+| **Fianza**                   | Depósito reembolsable. No es ingreso.                                                                                                            |
+| **Canon / larga estancia**   | Parcela alquilada por temporada o año. No pasa por el motor diario, pero bloquea inventario.                                                     |
+| **ACSI / clubs**             | Descuento por carnet en temporada baja. Regla condicional.                                                                                       |
+| **Extras**                   | Ropa de cama, limpieza final, nevera, parking extra, late checkout. Por estancia o por día.                                                      |
+| **Cierre de temporada**      | El camping no opera todo el año. Fuera de apertura no es "sin disponibilidad", es "cerrado". Mensaje distinto.                                   |
+| **Overbooking controlado**   | Vender por tipo por encima de unidades con margen de reasignación. Configurable, por defecto off.                                                |
 
-**Regla del motor**: el precio nunca se guarda como número suelto. Se guarda el desglose (`price_breakdown` JSON) para poder explicárselo al cliente y auditarlo. *Un camping que no puede explicar una factura no te renueva.*
+**Regla del motor**: el precio nunca se guarda como número suelto. Se guarda el desglose (`price_breakdown` JSON) para poder explicárselo al cliente y auditarlo. _Un camping que no puede explicar una factura no te renueva._
 
 ---
 
@@ -371,6 +373,7 @@ Va literal en `docs/DOMAIN.md`. Un producto genérico no modela bien nada de est
 Objetivo: **`pnpm new:camping`** y en una tarde hay un camping en producción. Tres capas.
 
 **Capa 1 — CLI (`packages/cli`)**
+
 ```
 pnpm new:camping
 ? Nombre ..................... Camping Pinar de la Vall
@@ -382,10 +385,12 @@ pnpm new:camping
 ? Tasa turística ............. Comunitat Valenciana
 ? Inventario ................. csv / manual / omitir
 ```
+
 Sin intervención: crea la D1, genera `config.ts` + `theme.css` + `content/` + `wrangler.toml`, migra, siembra, crea el Worker y las rutas DNS, crea el usuario owner, escribe su `README.md` con estado y pendientes.
 
 **Capa 2 — `/new-camping` en Claude Code** (esto es lo que no automatiza una CLI)
 Le pasas el material real del cliente y él lo interpreta:
+
 - PDF de tarifas → propone `seasons` + `rate_plans` → tú validas
 - Excel de parcelas → normaliza inventario → genera el seed
 - Su web actual → redacta los textos de la landing en sus idiomas
@@ -404,7 +409,7 @@ Va en `CLAUDE.md` como brief de diseño, porque `camp.logic2b.com` **es** tu com
 
 - **Antimodelo**: ni SaaS azul con ilustraciones isométricas, ni el look "startup": fondo crema + serif de contraste + acento terracota. Eso lo tiene todo el mundo y se nota.
 - **Territorio**: camping mediterráneo real. Pino carrasco, sombra, lona, arena compactada, mañana de agosto. Materia, no vector.
-- **Landing**: la unidad narrativa es la **parcela**, no el "feature". El héroe es el widget de disponibilidad **funcionando de verdad**, no un mockup: que en la reunión el dueño busque fechas y vea su propio inventario. Ese es el momento en que se vende. *(En nivel 1 el héroe es otro: sin motor, el widget no existe.)*
+- **Landing**: la unidad narrativa es la **parcela**, no el "feature". El héroe es el widget de disponibilidad **funcionando de verdad**, no un mockup: que en la reunión el dueño busque fechas y vea su propio inventario. Ese es el momento en que se vende. _(En nivel 1 el héroe es otro: sin motor, el widget no existe.)_
 - **Dashboard**: densidad sin ruido. La pantalla que se mira 200 veces al día es el **planning**: unidades en filas, días en columnas, drag & drop. Si esa pantalla es buena, el producto es bueno. **Rápida antes que bonita.**
 - **Elemento firma**: el planning. Ahí gastas la ambición. Todo lo demás, callado y disciplinado.
 - **Suelo no negociable**: responsive, foco de teclado visible, `prefers-reduced-motion`, contraste AA. La recepcionista de 55 años de un camping de costa es tu usuario real, y trabaja a 1366px.
@@ -468,6 +473,7 @@ applyRules(quote, rules): Quote              // early booking, ACSI, promo
 calculateTouristTax(occupancy, nights, region)
 calculateCancellationRefund(booking, policy, now)
 ```
+
 Más el **registro de puntos de extensión** de §3.
 
 **Hecho cuando**: ≥40 tests verdes, incluyendo los 7 casos que rompen a todos los productos genéricos:
@@ -529,7 +535,7 @@ tipografías con rol, wireframe ASCII de los dos héroes, elemento firma) y PARA
 
 1. **Planning (tape chart)** ★ — unidades × días, drag & drop de reasignación, colores por estado, bloqueos, zoom semana/mes/temporada, virtualizado
 2. **Reservas** — lista filtrable, ficha, alta manual (teléfono/mostrador), modificar, cancelar, cobrar
-3. **Solicitudes** — bandeja, estados, responder, **convertir en reserva**. *Es todo el dashboard del nivel 2*
+3. **Solicitudes** — bandeja, estados, responder, **convertir en reserva**. _Es todo el dashboard del nivel 2_
 4. **Llegadas y salidas del día** — pantalla de recepción, check-in, registro de viajeros
 5. **Inventario** — tipos, unidades, fotos, bloqueos de mantenimiento
 6. **Tarifas** — temporadas, planes, reglas, extras, con **previsualización**: "familia de 4 con perro, 7 noches en agosto, paga X". Sin eso no lo entienden.
@@ -615,7 +621,7 @@ Vas a trabajar esto en ratos sueltos. La estructura importa más que la velocida
 3. **`/session-close` al terminar.** `PROGRESS.md` con qué se hizo, qué falta, qué quedó abierto. La siguiente sesión empieza leyéndolo.
 4. **`/check` verde antes de cerrar.** Nunca dejes el repo roto: el tú de dentro de dos semanas no recuerda por qué.
 5. **Commits pequeños con contexto.** El histórico es documentación.
-6. **La regla que decide los empates**: *¿qué necesita un camping real para operar en agosto?* Eso gana. Lo demás espera. Si la respuesta es "nada", no es prioridad.
+6. **La regla que decide los empates**: _¿qué necesita un camping real para operar en agosto?_ Eso gana. Lo demás espera. Si la respuesta es "nada", no es prioridad.
 
 ---
 
@@ -633,4 +639,4 @@ El nivel 1 es lo primero que se puede vender: barato de colocar, barato de mante
 
 ---
 
-*Logic Camp — Logic2B · Andreu · 2026*
+_Logic Camp — Logic2B · Andreu · 2026_

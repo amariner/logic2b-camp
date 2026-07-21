@@ -25,9 +25,12 @@ describe('stripeProvider.createIntent', () => {
       expect(init.method).toBe('POST');
       expect(String(init.body)).toContain('client_reference_id=bkg_abc123');
       expect(String(init.body)).toContain('unit_amount%5D=12345');
-      return new Response(JSON.stringify({ id: 'cs_test_1', url: 'https://checkout.stripe.com/cs_test_1' }), {
-        status: 200,
-      });
+      return new Response(
+        JSON.stringify({ id: 'cs_test_1', url: 'https://checkout.stripe.com/cs_test_1' }),
+        {
+          status: 200,
+        },
+      );
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -43,7 +46,10 @@ describe('stripeProvider.createIntent', () => {
   it('lanza con el mensaje de Stripe si la sesión falla', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(async () => new Response(JSON.stringify({ error: { message: 'clave inválida' } }), { status: 401 })),
+      vi.fn(
+        async () =>
+          new Response(JSON.stringify({ error: { message: 'clave inválida' } }), { status: 401 }),
+      ),
     );
     const provider = stripeProvider(CONFIG);
     await expect(provider.createIntent(PARAMS)).rejects.toThrow(/clave inválida/);
@@ -51,9 +57,17 @@ describe('stripeProvider.createIntent', () => {
 });
 
 async function sign(secret: string, payload: string): Promise<string> {
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
   const digest = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
-  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 describe('stripeProvider.parseWebhook', () => {
@@ -62,7 +76,9 @@ describe('stripeProvider.parseWebhook', () => {
     const body = JSON.stringify({
       id: 'evt_1',
       type: 'checkout.session.completed',
-      data: { object: { id: 'cs_test_1', client_reference_id: 'bkg_abc123', amount_total: 12_345 } },
+      data: {
+        object: { id: 'cs_test_1', client_reference_id: 'bkg_abc123', amount_total: 12_345 },
+      },
     });
     const timestamp = '1700000000';
     const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
@@ -81,7 +97,11 @@ describe('stripeProvider.parseWebhook', () => {
 
   it('rechaza una firma inválida', async () => {
     const provider = stripeProvider(CONFIG);
-    const body = JSON.stringify({ id: 'evt_2', type: 'checkout.session.completed', data: { object: {} } });
+    const body = JSON.stringify({
+      id: 'evt_2',
+      type: 'checkout.session.completed',
+      data: { object: {} },
+    });
     const event = await provider.parseWebhook({
       headers: new Headers({ 'stripe-signature': 't=123,v1=deadbeef' }),
       rawBody: body,
@@ -91,7 +111,11 @@ describe('stripeProvider.parseWebhook', () => {
 
   it('ignora eventos que no nos interesan', async () => {
     const provider = stripeProvider(CONFIG);
-    const body = JSON.stringify({ id: 'evt_3', type: 'payment_intent.created', data: { object: {} } });
+    const body = JSON.stringify({
+      id: 'evt_3',
+      type: 'payment_intent.created',
+      data: { object: {} },
+    });
     const timestamp = '1700000000';
     const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
     const event = await provider.parseWebhook({

@@ -2,11 +2,11 @@
 
 - **Fecha**: 2026-07-21
 - **Fase**: Frente C — C1 (planning ★)
-- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu: *"aplica tu criterio y no pares hasta cerrarlo"*, como en C7/ADR 0021 y C4/ADR 0022). Todo lo que se decide aquí es reversible: no hay migración de D1, ni cambio de semántica en datos existentes — solo una acción nueva de API (aditiva), tokens CSS y cliente.
+- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu: _"aplica tu criterio y no pares hasta cerrarlo"_, como en C7/ADR 0021 y C4/ADR 0022). Todo lo que se decide aquí es reversible: no hay migración de D1, ni cambio de semántica en datos existentes — solo una acción nueva de API (aditiva), tokens CSS y cliente.
 
 ## Contexto
 
-El planning está declarado **elemento firma** desde ADR 0008, y hoy es sólido de ingeniería (virtualización de filas, DnD vertical optimista con rollback, teclado) pero **pobre de gesto**: no se pueden mover ni estirar fechas arrastrando — *el* gesto que cualquiera que haya usado un tape chart busca en los primeros 10 segundos (`FRENTE-C-ACABADO.md` §C1). Tampoco se crea reserva arrastrando, no hay línea de "hoy", las barras se cortan en el borde sin avisar, no hay filtros dentro del planning, y el mapa de color es provisional desde ADR 0020 — lo que a su vez bloquea el modo oscuro.
+El planning está declarado **elemento firma** desde ADR 0008, y hoy es sólido de ingeniería (virtualización de filas, DnD vertical optimista con rollback, teclado) pero **pobre de gesto**: no se pueden mover ni estirar fechas arrastrando — _el_ gesto que cualquiera que haya usado un tape chart busca en los primeros 10 segundos (`FRENTE-C-ACABADO.md` §C1). Tampoco se crea reserva arrastrando, no hay línea de "hoy", las barras se cortan en el borde sin avisar, no hay filtros dentro del planning, y el mapa de color es provisional desde ADR 0020 — lo que a su vez bloquea el modo oscuro.
 
 Herencias ya cobradas: toast con **Deshacer** (C3), mapa de color con "en casa" (C4), seed denso (C0.2), `AlertDialog`/primitivos del DS (C2).
 
@@ -14,7 +14,7 @@ Reglas duras que gobiernan este ADR:
 
 - **El precio lo calcula SIEMPRE el servidor** (contrato del proyecto, y así lo hacen ya el alta manual y el `modify` público).
 - **Invariante 1** (sin solapes) y **auditoría** de toda mutación.
-- Invariante 3 se lee bien: *cambiar una tarifa* no toca reservas. **Cambiar las fechas de una reserva SÍ re-cotiza** — es un cambio de la estancia, no de la tarifa; exactamente lo que ya hace `POST /bookings/:code/modify` de la web pública.
+- Invariante 3 se lee bien: _cambiar una tarifa_ no toca reservas. **Cambiar las fechas de una reserva SÍ re-cotiza** — es un cambio de la estancia, no de la tarifa; exactamente lo que ya hace `POST /bookings/:code/modify` de la web pública.
 - Suelo de calidad: teclado, `prefers-reduced-motion`, AA, 1366px.
 
 ## Decisión
@@ -32,9 +32,9 @@ Semántica de `move` (espejo del `modify` público, que es el precedente en el c
 - **Re-cotiza en servidor** con los extras ya contratados de la reserva (+ los obligatorios) y `withElectricity` inferido del desglose vigente (la línea `price.electricity` del `price_breakdown` — el desglose auditable es la fuente de verdad de qué se contrató).
 - Escribe fechas + unidad + desglose + total en un batch atómico con su asiento de `audit_log` (`from`/`to` con fechas y total). `paidCents` **no se toca**: si el nuevo total queda por debajo de lo pagado, la ficha ya enseña el pendiente negativo y el reembolso es la acción explícita de siempre (mismo criterio que el `modify` público).
 
-**`expectedTotalCents` — el candado del "confirmar antes de cobrar".** El contrato pide *"enseñar el desglose nuevo antes de confirmar si el importe cambia"*. Eso obliga a un paso de previsualización, y toda previsualización puede quedarse obsoleta. El cliente manda el total que le enseñó al usuario; si el que recalcula el servidor difiere, la acción devuelve **409 `price_changed`** con el desglose fresco y la UI vuelve a preguntar. Sin este campo habría una ventana en la que se confirma un precio y se escribe otro.
+**`expectedTotalCents` — el candado del "confirmar antes de cobrar".** El contrato pide _"enseñar el desglose nuevo antes de confirmar si el importe cambia"_. Eso obliga a un paso de previsualización, y toda previsualización puede quedarse obsoleta. El cliente manda el total que le enseñó al usuario; si el que recalcula el servidor difiere, la acción devuelve **409 `price_changed`** con el desglose fresco y la UI vuelve a preguntar. Sin este campo habría una ventana en la que se confirma un precio y se escribe otro.
 
-**La previsualización es `POST /api/admin/bookings/:id/requote`** (dry-run): mismas validaciones y misma cotización que `move`, **sin escribir nada**. Devuelve `{ nights, breakdown, totalCents, previousTotalCents }` o el mismo catálogo de errores (`unit_occupied`, `invalid_stay`, `closed`). Existe porque el flujo del gesto es: soltar → requote → *si el total no cambia*, commit directo (optimista, toast con Deshacer); *si cambia*, `AlertDialog` con desglose viejo→nuevo → confirmar → `move` con el candado. Reutilizar `POST /api/quote` (público) no vale: cotiza por **tipo**, no valida la **unidad** destino ni excluye la propia reserva del solape.
+**La previsualización es `POST /api/admin/bookings/:id/requote`** (dry-run): mismas validaciones y misma cotización que `move`, **sin escribir nada**. Devuelve `{ nights, breakdown, totalCents, previousTotalCents }` o el mismo catálogo de errores (`unit_occupied`, `invalid_stay`, `closed`). Existe porque el flujo del gesto es: soltar → requote → _si el total no cambia_, commit directo (optimista, toast con Deshacer); _si cambia_, `AlertDialog` con desglose viejo→nuevo → confirmar → `move` con el candado. Reutilizar `POST /api/quote` (público) no vale: cotiza por **tipo**, no valida la **unidad** destino ni excluye la propia reserva del solape.
 
 **El deshacer de un `move`** es otro `move` a las fechas/unidad de origen con `expectedTotalCents` = total de origen: como las tarifas no han cambiado en los segundos intermedios, el servidor recalcula el mismo desglose y el candado pasa. Si justo entonces alguien ocupó el hueco de origen, el deshacer falla **explicado** — que es más honesto que fingir que siempre se puede.
 
@@ -61,7 +61,7 @@ Semántica de `move` (espejo del `modify` público, que es el precedente en el c
 
 ### 4. C1.5 — el mapa de color DEFINITIVO, y con él el modo oscuro
 
-El mapa provisional de ADR 0020/0022 **se confirma como definitivo en estructura** — está bien elegido operativamente: lo que la recepcionista mira a las 9:00 es *quién está dentro* (verde), *quién llega/está confirmado* (tinta), *quién no ha pagado* (ámbar), *quién no vino* (rojo), *qué ya pasó* (gris), *qué está fuera de servicio* (rayado). Lo que faltaba no era otro mapa, era **cerrarlo**: valores finales, pareja `.dark`, AA **verificado por test** y no por ojo, y declarar `--lc-today` y la escala de temporada como tokens del DS (los consumirá también el plano).
+El mapa provisional de ADR 0020/0022 **se confirma como definitivo en estructura** — está bien elegido operativamente: lo que la recepcionista mira a las 9:00 es _quién está dentro_ (verde), _quién llega/está confirmado_ (tinta), _quién no ha pagado_ (ámbar), _quién no vino_ (rojo), _qué ya pasó_ (gris), _qué está fuera de servicio_ (rayado). Lo que faltaba no era otro mapa, era **cerrarlo**: valores finales, pareja `.dark`, AA **verificado por test** y no por ojo, y declarar `--lc-today` y la escala de temporada como tokens del DS (los consumirá también el plano).
 
 - Los 7 pares `--lc-status-*`/`-fg` quedan con **valor final en `:root` y en `.dark`** (hasta hoy `.dark` no declaraba ninguno: heredaba los light — el mismo agujero que C-BUG-1). Los que derivan de tokens semánticos (`confirmed`→`primary`, `completed`→`muted-foreground`…) ya se adaptan solos; los fijos (`inhouse`, `pending`, `info`) reciben pareja dark explícita.
 - **Test de contraste en `packages/ui`**: conversión oklch→sRGB en el propio test y aserción WCAG — texto sobre barra ≥ 4.5:1 (AA texto normal) y barra sobre fondo ≥ 3:1 (AA no-texto), en light **y** dark. El mapa deja de poder romperse en silencio: cambiar un token a un valor sin contraste hace fallar la suite.

@@ -274,8 +274,47 @@ export type GuestBooking = {
 export type GuestDetail = Omit<GuestListItem, 'bookingsCount' | 'lastStay'> & {
   address: string | null;
   gdprConsentAt: string | null;
+  /** Versión del texto de privacidad que se aceptó (ADR 0026 §2.3). */
+  gdprConsentVersion: string | null;
+  /** Sellado = derecho de supresión ya ejercido: la ficha no se edita más. */
+  anonymizedAt: string | null;
   bookings: GuestBooking[];
 };
+
+// ---------- RGPD: derechos del interesado (ADR 0026 §2) ----------
+
+/**
+ * `GET /api/admin/guests/:id/export` — art. 15 y 20.
+ * El dashboard no interpreta el contenido: lo entrega tal cual como fichero.
+ */
+export type GuestExport = {
+  generatedAt: string;
+  tenant: string;
+  guest: Record<string, unknown>;
+  bookings: Record<string, unknown>[];
+  payments: Record<string, unknown>[];
+  auditTrail: Record<string, unknown>[];
+};
+
+/** `DELETE /api/admin/guests/:id` — supresión por anonimización (ADR 0026 §2.2). */
+export type GuestDeleteResult = { ok: true; alreadyDone: boolean };
+
+/**
+ * Cuerpo del 409 cuando un plazo legal impide suprimir: `until` es la fecha ISO
+ * desde la que SÍ se podrá. Un "no" sin fecha no es una respuesta que el camping
+ * pueda reenviarle al interesado.
+ */
+export type RetentionHold = { error: 'retention_hold'; until: string; basis: string };
+
+/** Reconoce el 409 de retención dentro de un error cualquiera de `fetch`. */
+export function retentionHold(error: unknown): RetentionHold | null {
+  if (!(error instanceof ApiError) || error.status !== 409) return null;
+  const body: unknown = error.body;
+  if (typeof body !== 'object' || body === null) return null;
+  const { error: code, until, basis } = body as Record<string, unknown>;
+  if (code !== 'retention_hold' || typeof until !== 'string') return null;
+  return { error: 'retention_hold', until, basis: typeof basis === 'string' ? basis : '' };
+}
 
 // ---------- tipos de /api/admin/reports ----------
 

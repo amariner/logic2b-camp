@@ -44,7 +44,13 @@ export const enquiryRequestSchema = z.object({
   source: z.string().max(40).default('web'),
 });
 
-export const bookingRequestSchema = z.object({
+/**
+ * Todo lo que define una reserva MENOS el consentimiento, que se exige distinto
+ * según quién la cree (ADR 0026 §2.3): la web pública no puede reservar sin él;
+ * el mostrador lo recoge aparte y no puede quedarse bloqueado por una casilla que
+ * el huésped está firmando en papel delante de la recepcionista.
+ */
+const bookingBaseSchema = z.object({
   unitTypeId: z.string().min(1),
   dateFrom: isoDate,
   dateTo: isoDate,
@@ -57,6 +63,15 @@ export const bookingRequestSchema = z.object({
   notes: z.string().max(2000).optional(),
   /** hold del funnel a consumir en la misma transacción (ADR 0007) */
   holdId: z.string().max(40).optional(),
+});
+
+/**
+ * Reserva desde la web pública. `literal(true)` y no `boolean`: una reserva web sin
+ * consentimiento no debe poder crearse, y el esquema es el sitio donde eso se hace
+ * imposible en vez de recordable. La VERSIÓN del texto la sella el servidor.
+ */
+export const bookingRequestSchema = bookingBaseSchema.extend({
+  gdprConsent: z.literal(true),
 });
 
 // ---------- Funnel (ADR 0007) ----------
@@ -99,8 +114,14 @@ export const bookingsListQuerySchema = z.object({
   pageSize: z.coerce.number().int().min(1).max(100).default(25),
 });
 
-export const adminBookingCreateSchema = bookingRequestSchema.extend({
+export const adminBookingCreateSchema = bookingBaseSchema.extend({
   channel: z.enum(['phone', 'walkin']).default('phone'),
+  /**
+   * En mostrador el consentimiento se recoge en el momento y se registra en la
+   * ficha del huésped; no bloquea el alta. Por defecto `false` — sin marcar NO se
+   * inventa una fecha de consentimiento, que es justo el bug que arregla el ADR 0026.
+   */
+  gdprConsent: z.boolean().default(false),
   /**
    * Unidad preferida al crear desde el planning (ADR 0023 §2): si está libre se
    * usa; si no, decide el asignador como siempre. Preferencia, nunca garantía.
@@ -152,6 +173,12 @@ export const guestCreateSchema = z.object({
   nationality: z.string().max(2).optional(),
   email: z.string().email().max(200).optional().or(z.literal('')),
   phone: z.string().max(40).optional(),
+  /**
+   * Recepción registra que el huésped aceptó la política (ADR 0026 §2.3). Antes
+   * este campo no existía y el alta de mostrador clavaba `null` sin alternativa:
+   * la doc publicada prometía un consentimiento que nunca se guardaba.
+   */
+  gdprConsent: z.boolean().optional(),
 });
 
 /** Edición de los datos de un huésped ya existente (los que la ficha pintaba). */
@@ -165,6 +192,8 @@ export const guestPatchSchema = z
     nationality: z.string().max(2).nullable(),
     email: z.string().email().max(200).nullable().or(z.literal('')),
     phone: z.string().max(40).nullable(),
+    /** Registrar o retirar el consentimiento (ADR 0026 §2.3). Es revocable. */
+    gdprConsent: z.boolean(),
   })
   .partial();
 
@@ -256,6 +285,11 @@ export const userCreateSchema = z.object({
 export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>;
 export type QuoteRequest = z.infer<typeof quoteRequestSchema>;
 export type EnquiryRequest = z.infer<typeof enquiryRequestSchema>;
-export type BookingRequest = z.infer<typeof bookingRequestSchema>;
+/**
+ * Lo que `createBooking` acepta, venga de la web o del mostrador. El consentimiento
+ * llega como `boolean` porque cada puerta lo exige distinto — la web ya no puede
+ * mandar `false` (su esquema es `literal(true)`).
+ */
+export type BookingRequest = z.infer<typeof bookingBaseSchema> & { gdprConsent: boolean };
 export type HoldRequest = z.infer<typeof holdRequestSchema>;
 export type BookingModify = z.infer<typeof bookingModifySchema>;

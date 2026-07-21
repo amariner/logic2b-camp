@@ -16,8 +16,9 @@ import {
 } from '@logic-camp/notifications';
 import type { Context } from 'hono';
 import { nowIso, uid } from './bookings';
+import { logEvent, type SystemAlert } from './errors';
 import { loadTenantConfig } from './tenant-config';
-import type { TenantContext } from './tenant';
+import type { Env, TenantContext } from './tenant';
 
 /** Remitente de plataforma hasta que el tenant verifique su dominio en Resend. */
 const PLATFORM_FROM = 'Logic Camp <noreply@logic2b.com>';
@@ -43,7 +44,7 @@ type DispatchInput = {
  * `notifyAfter` (disparado desde una ruta) arma esto desde `c`; `notifyNow`
  * (disparado desde un cron) lo arma directamente desde `env`.
  */
-type DispatchDeps = { db: Db; tenantSlug: string; apiKey?: string };
+export type DispatchDeps = { db: Db; tenantSlug: string; apiKey?: string };
 
 async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void> {
   const { db, tenantSlug, apiKey } = deps;
@@ -71,7 +72,16 @@ async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void>
     const message = render(payload, input.locale);
     const result = await sender({ from: config.from ?? PLATFORM_FROM, to, message });
     status = result.ok ? 'sent' : 'failed';
-    if (!result.ok) console.error(`notify ${kind} → ${status}:`, result.error);
+    // ADR 0026 §3: si el correo falla, esta línea es lo ÚNICO que queda. El
+    // aviso al buzón no sirve aquí — es el propio canal el que está roto.
+    if (!result.ok)
+      logEvent({
+        level: 'error',
+        event: 'notification_send_failed',
+        tenant: tenantSlug,
+        kind,
+        detail: result.error,
+      });
   }
 
   await db.insert(schema.notificationsLog).values({
@@ -115,6 +125,75 @@ export function notifyAfter(c: NotifyContext, inputs: DispatchInput[]): Promise<
  */
 export async function notifyNow(deps: DispatchDeps, inputs: DispatchInput[]): Promise<void> {
   await Promise.allSettled(inputs.map((i) => dispatch(deps, i)));
+}
+
+/**
+ * Aviso al buzón de la casa de que algo ha reventado (ADR 0026 §3). Reutiliza
+ * el mismo canal que `booking_pending_stuck`: `to: null` → `config.notifyTo`.
+ *
+ * NUNCA lanza y NUNCA se espera desde `onError`: un fallo al avisar no puede
+ * tumbar la petición que ya está fallando. Todo lo que pueda ir mal aquí
+ * (tenant sin montar, D1 caída, Resend caído) se traga y, como mucho, deja una
+ * línea de log.
+ */
+export function notifySystemError(c: Context<Env>, alert: SystemAlert): void {
+  try {
+    const tenant = c.get('tenant') as TenantContext | undefined;
+    if (!tenant?.db) return; // ha fallado antes del middleware de tenant: solo queda el log
+    const deps: DispatchDeps = {
+      db: tenant.db,
+      tenantSlug: tenant.slug,
+      apiKey: c.env.RESEND_API_KEY,
+    };
+    const task = sendSystemErrorAlert(deps, alert);
+    try {
+      c.executionCtx.waitUntil(task);
+    } catch {
+      // fuera de Workers (tests) no hay waitUntil: se deja correr sin esperar
+      void task;
+    }
+  } catch {
+    // deliberadamente mudo: avisar es lo último, jamás la causa de un fallo nuevo
+  }
+}
+
+/**
+ * El envío en sí, separado para poder esperarlo en los tests. Siempre resuelve.
+ */
+export async function sendSystemErrorAlert(deps: DispatchDeps, alert: SystemAlert): Promise<void> {
+  try {
+    let houseLocale = 'es';
+    try {
+      houseLocale = (await loadTenantConfig(deps.db)).locales[0] ?? 'es';
+    } catch {
+      // si ni la config se puede leer, se avisa igual en el idioma por defecto
+    }
+    await notifyNow(deps, [
+      {
+        payload: {
+          kind: 'system_error',
+          data: {
+            campName: '',
+            ref: alert.ref,
+            event: alert.event,
+            route: alert.route,
+            occurredAt: alert.occurredAt,
+            suppressed: alert.suppressed,
+          },
+        },
+        to: null, // buzón de la casa (config.notifyTo)
+        locale: houseLocale,
+      },
+    ]);
+  } catch (e) {
+    logEvent({
+      level: 'warn',
+      event: 'system_alert_failed',
+      tenant: deps.tenantSlug,
+      requestId: alert.ref,
+      detail: e instanceof Error ? e.message : String(e),
+    });
+  }
 }
 
 /** ADR 0014: una reserva web `pending` sin pagar ni cancelar en este tiempo, se avisa (no se cancela). */

@@ -2,9 +2,30 @@
 import type { Block, BookingSpan, RatePlan, Season, Unit, UnitType } from './types';
 
 export const seasons: Season[] = [
-  { id: 'apertura', name: 'Apertura', dateFrom: '2026-03-15', dateTo: '2026-11-01', priority: 0, isOpen: true },
-  { id: 'media', name: 'Media', dateFrom: '2026-06-01', dateTo: '2026-09-15', priority: 10, isOpen: true },
-  { id: 'alta', name: 'Alta', dateFrom: '2026-07-01', dateTo: '2026-08-31', priority: 20, isOpen: true },
+  {
+    id: 'apertura',
+    name: 'Apertura',
+    dateFrom: '2026-03-15',
+    dateTo: '2026-11-01',
+    priority: 0,
+    isOpen: true,
+  },
+  {
+    id: 'media',
+    name: 'Media',
+    dateFrom: '2026-06-01',
+    dateTo: '2026-09-15',
+    priority: 10,
+    isOpen: true,
+  },
+  {
+    id: 'alta',
+    name: 'Alta',
+    dateFrom: '2026-07-01',
+    dateTo: '2026-08-31',
+    priority: 20,
+    isOpen: true,
+  },
 ];
 
 export const pitchType: UnitType = {
@@ -58,10 +79,31 @@ export const plans: RatePlan[] = [
   mkPlan('ut_eco', 'apertura', { baseCents: 1400, electricityCents: 0 }),
   mkPlan('ut_eco', 'media', { baseCents: 2000, electricityCents: 0 }),
   mkPlan('ut_eco', 'alta', { baseCents: 2900, electricityCents: 0, minStay: 3 }),
-  mkPlan('ut_bung', 'apertura', { baseCents: 7500, extraPersonCents: 0, childCents: 0, electricityCents: 0, vehicleCents: 0 }),
-  mkPlan('ut_bung', 'media', { baseCents: 10500, extraPersonCents: 0, childCents: 0, electricityCents: 0, vehicleCents: 0, minStay: 2 }),
+  mkPlan('ut_bung', 'apertura', {
+    baseCents: 7500,
+    extraPersonCents: 0,
+    childCents: 0,
+    electricityCents: 0,
+    vehicleCents: 0,
+  }),
+  mkPlan('ut_bung', 'media', {
+    baseCents: 10500,
+    extraPersonCents: 0,
+    childCents: 0,
+    electricityCents: 0,
+    vehicleCents: 0,
+    minStay: 2,
+  }),
   // alta: mínimo 7 noches, entrada solo sábados (casos 1 y 2)
-  mkPlan('ut_bung', 'alta', { baseCents: 15500, extraPersonCents: 0, childCents: 0, electricityCents: 0, vehicleCents: 0, minStay: 7, arrivalDays: [6] }),
+  mkPlan('ut_bung', 'alta', {
+    baseCents: 15500,
+    extraPersonCents: 0,
+    childCents: 0,
+    electricityCents: 0,
+    vehicleCents: 0,
+    minStay: 7,
+    arrivalDays: [6],
+  }),
 ];
 
 export const mkUnits = (typeId: string, count: number, prefix = 'U'): Unit[] =>

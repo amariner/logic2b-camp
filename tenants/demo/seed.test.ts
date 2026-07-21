@@ -108,7 +108,9 @@ describe('seed demo Cala Sereno', () => {
   });
 
   it('reserva que cruza temporadas tiene el precio por tramos', () => {
-    const cross = data.bookings.find((b) => b.date_from < '2026-07-01' && b.date_to > '2026-07-01')!;
+    const cross = data.bookings.find(
+      (b) => b.date_from < '2026-07-01' && b.date_to > '2026-07-01',
+    )!;
     const baseSeasons = cross.price_breakdown.lines
       .filter((l) => l.concept === 'price.base')
       .map((l) => l.detail.season);

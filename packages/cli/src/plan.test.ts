@@ -1,14 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { formatPlan, infraPlan } from './plan';
 
-const identity = { slug: 'la-pineda', name: 'Camping La Pineda', domain: 'lapineda.com', zone: 'lapineda.com' };
+const identity = {
+  slug: 'la-pineda',
+  name: 'Camping La Pineda',
+  domain: 'lapineda.com',
+  zone: 'lapineda.com',
+};
 
 describe('infraPlan', () => {
   it('referencia el slug en cada comando de infra', () => {
     const steps = infraPlan(identity);
     const commands = steps.filter((s) => s.command).map((s) => s.command as string);
     expect(commands.some((c) => c.includes('wrangler d1 create logic-camp-la-pineda'))).toBe(true);
-    expect(commands.some((c) => c.includes('--config tenants/la-pineda/wrangler.jsonc'))).toBe(true);
+    expect(commands.some((c) => c.includes('--config tenants/la-pineda/wrangler.jsonc'))).toBe(
+      true,
+    );
     expect(commands.some((c) => c.includes('wrangler deploy'))).toBe(true);
   });
 

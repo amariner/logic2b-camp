@@ -16,15 +16,19 @@ Crea un ADR para: $ARGUMENTS
 - **Estado**: propuesto | aceptado | reemplazado por NNNN
 
 ## Contexto
+
 <Qué problema o decisión hay que tomar. Restricciones aplicables (recordar: ~6h/semana, nada que escale trabajo por cliente).>
 
 ## Decisión
+
 <Qué se decide y su diseño concreto: tipos, contratos, estructura de ficheros si aplica.>
 
 ## Alternativas descartadas
+
 <Cada una con el motivo en una línea.>
 
 ## Consecuencias
+
 <Qué se gana, qué se compromete, qué habrá que vigilar.>
 ```
 

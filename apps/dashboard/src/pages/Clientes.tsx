@@ -3,12 +3,13 @@
  * Búsqueda en servidor, historial por cliente y salto directo a la ficha
  * de cualquiera de sus reservas.
  */
-import { Button, EmptyState, Skeleton, SkeletonRows, SkeletonText } from '@logic-camp/ui';
+import { Badge, Button, EmptyState, Skeleton, SkeletonRows, SkeletonText } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, type GuestDetail, type GuestListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
+import GuestRgpdSection from '../components/GuestRgpdSection';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
@@ -55,6 +56,9 @@ function GuestPanel({
         <span className="text-[14px] font-semibold">
           {data ? `${data.name} ${data.surname}`.trim() : t('cli.ficha')}
         </span>
+        {/* Una ficha suprimida se anuncia en la cabecera: lo que se ve debajo ya
+            no son los datos de nadie (ADR 0026 §2.2). */}
+        {data?.anonymizedAt && <Badge variant="muted">{t('rgpd.anonimizada.badge')}</Badge>}
         <Button
           variant="outline"
           size="iconSm"
@@ -109,12 +113,11 @@ function GuestPanel({
                 {data.nationality && ` · ${data.nationality}`}
               </p>
             )}
-            {data.gdprConsentAt && (
-              <p className="tnum text-muted-foreground">
-                {t('cli.rgpd')}: {fecha(data.gdprConsentAt)}
-              </p>
-            )}
           </section>
+
+          {/* El consentimiento ya no es una línea de solo lectura: se registra,
+              se retira, y desde aquí se ejercen acceso y supresión. */}
+          <GuestRgpdSection guest={data} />
 
           <section>
             <h3 className="lc-panel-h">{t('cli.historial')}</h3>

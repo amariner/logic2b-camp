@@ -1,0 +1,91 @@
+---
+/**
+ * Una página legal (ADR 0026 §2.5). Compartida por `/aviso-legal/` y su
+ * variante por idioma, igual que el resto de páginas de la web de tenant.
+ *
+ * La prosa llega ya compilada desde Markdown y se interpolan los datos del
+ * tenant DESPUÉS de compilar (`fill`), así que los placeholders solo pueden
+ * sustituir texto en línea, nunca crear estructura.
+ */
+import Base from '../../layouts/Base.astro';
+import { config, fecha, fill, getContent, localePath } from '../../lib/content';
+import {
+  esFallback,
+  getLegal,
+  getLegalUi,
+  LEGAL_SLUGS,
+  legalVars,
+  type LegalSlug,
+} from '../../lib/legal';
+
+interface Props {
+  locale: string;
+  slug: LegalSlug;
+}
+const { locale, slug } = Astro.props;
+const c = getContent(locale);
+const t = getLegalUi(locale);
+const doc = getLegal(slug, locale);
+const { title, description, actualizado, lang } = doc.frontmatter;
+const prosa = fill(await doc.compiledContent(), legalVars(doc));
+const desdeFallback = esFallback(doc, locale);
+
+// las otras dos páginas legales, con la etiqueta traducida del pie del tenant
+const etiquetas: Record<LegalSlug, string> = {
+  'aviso-legal': c.footer.legal!,
+  privacidad: c.footer.privacidad!,
+  cookies: c.footer.cookies!,
+};
+const otras = LEGAL_SLUGS.filter((s) => s !== slug);
+---
+
+<Base
+  locale={locale}
+  path={`/${slug}`}
+  title={`${title} | ${config.name}`}
+  description={description}
+>
+  {/* `lang` va en la prosa, no en el <article>: el cromo (fecha, aviso de
+     idioma, enlaces) sí está traducido y marcarlo como castellano engañaría
+     al lector de pantalla. */}
+  <article class="mx-auto max-w-3xl px-5 pt-28 pb-section md:pt-36">
+    <h1
+      lang={lang}
+      class="font-display text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] font-semibold tracking-tight text-balance"
+    >
+      {title}
+    </h1>
+    <p lang={lang} class="mt-4 text-[16px] leading-relaxed text-tinta-suave">{description}</p>
+    <p class="tnum mt-4 text-[13px] text-tinta-suave">
+      {t.actualizado}: <time datetime={actualizado}>
+        {fecha(actualizado, locale, { day: 'numeric', month: 'long', year: 'numeric' })}
+      </time>
+    </p>
+
+    {
+      desdeFallback && (
+        <p class="mt-8 rounded-(--lc-radius) border border-arena bg-arena-suave/60 px-4 py-3 text-[14px] leading-relaxed text-tinta">
+          {t.fallback}
+        </p>
+      )
+    }
+
+    <div lang={lang} class="lc-prose mt-8" set:html={prosa} />
+
+    <nav
+      class="mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t border-arena/60 pt-6 text-[13px]"
+      aria-label={t.nav}
+    >
+      {
+        otras.map((s) => (
+          <a
+            href={localePath(locale, `/${s}`)}
+            class="text-tinta-suave transition-colors hover:text-tinta"
+          >
+            {etiquetas[s]}
+          </a>
+        ))
+      }
+    </nav>
+  </article>
+</Base>

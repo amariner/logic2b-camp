@@ -40,6 +40,33 @@ export const DEFAULT_CANCELLATION_POLICY: CancellationPolicyConfig = {
   ],
 };
 
+/**
+ * Identidad legal del titular del sitio (ADR 0026 §2.5).
+ *
+ * El TEXTO legal es de producto —se escribe una vez y sirve a todos los campings—;
+ * lo único que varía por instancia son estos cinco campos, que las páginas de aviso
+ * legal, privacidad y cookies interpolan. Escribir la prosa legal a mano por camping
+ * sería justo lo que prohíbe CLAUDE.md.
+ */
+export const tenantLegalSchema = z.object({
+  /** Razón social, o nombre y apellidos si el titular es empresario individual. */
+  razonSocial: z.string().min(1),
+  /** NIF/CIF del titular. */
+  nif: z.string().min(1),
+  /** Domicilio social o fiscal completo, con código postal y población. */
+  domicilio: z.string().min(1),
+  /**
+   * Datos registrales, si los hay: **frase completa** lista para insertar en la prosa
+   * ("Inscrita en el Registro Mercantil de Castellón, tomo…"). Se interpola en línea,
+   * así que un titular sin registro (empresario individual) lo deja fuera y la frase
+   * simplemente no aparece.
+   */
+  registro: z.string().optional(),
+  /** Buzón donde el interesado ejerce sus derechos RGPD (arts. 15-22). */
+  emailDerechos: z.string().email(),
+});
+export type TenantLegal = z.infer<typeof tenantLegalSchema>;
+
 export type TenantConfig = {
   slug: string;
   name: string;
@@ -77,7 +104,9 @@ export function loadTenantConfig(row: TenantRow): TenantConfig {
     currency: row.currency,
     locales: Array.isArray(row.locales) ? (row.locales as string[]) : ['es'],
     taxPolicy: taxPolicy.success ? taxPolicy.data : 'none',
-    cancellationPolicy: cancellationPolicy.success ? cancellationPolicy.data : DEFAULT_CANCELLATION_POLICY,
+    cancellationPolicy: cancellationPolicy.success
+      ? cancellationPolicy.data
+      : DEFAULT_CANCELLATION_POLICY,
     demoThemes: Array.isArray(modules.demoThemes) ? (modules.demoThemes as string[]) : undefined,
   };
 }

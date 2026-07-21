@@ -1,6 +1,6 @@
 ---
-title: "Cambiar una reserva de sitio o de fechas"
-description: "Arrastrar para cambiar de parcela, mover las fechas, alargar la estancia — y deshacer si te equivocas."
+title: 'Cambiar una reserva de sitio o de fechas'
+description: 'Arrastrar para cambiar de parcela, mover las fechas, alargar la estancia — y deshacer si te equivocas.'
 lang: es
 orden: 6
 ---

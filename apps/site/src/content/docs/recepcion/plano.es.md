@@ -1,6 +1,6 @@
 ---
-title: "Encontrar una parcela en el plano"
-description: "La vista de pájaro del camping: quién está en cada sitio, un día concreto."
+title: 'Encontrar una parcela en el plano'
+description: 'La vista de pájaro del camping: quién está en cada sitio, un día concreto.'
 lang: es
 orden: 7
 ---
@@ -15,9 +15,9 @@ Es el camping visto desde arriba, con sus parcelas, sus alojamientos, la piscina
 
 Para lo que el planning no resuelve bien:
 
-- *"¿Qué hay libre cerca de la piscina para el jueves?"*
-- *"La señora de la B-12 dice que tiene ruido, ¿qué hay al otro lado?"*
-- *"¿Dónde está exactamente la A-27?"* — la pregunta de cada recepcionista nueva.
+- _"¿Qué hay libre cerca de la piscina para el jueves?"_
+- _"La señora de la B-12 dice que tiene ruido, ¿qué hay al otro lado?"_
+- _"¿Dónde está exactamente la A-27?"_ — la pregunta de cada recepcionista nueva.
 
 ## Elegir el día
 
@@ -39,7 +39,7 @@ Con la rueda del ratón haces **zoom**, y arrastrando el fondo **desplazas** el 
 
 **Pulsa una unidad ocupada** y se abre la **ficha de la reserva** —la misma de siempre, no una versión distinta.
 
-Y hay un salto que vale la pena conocer: desde el plano puedes **ir al planning con esa unidad y esa fecha ya puestas**, y volver. Es la forma rápida de pasar de *"¿dónde está la B-12?"* a *"¿qué días tiene libres?"* sin perder el hilo.
+Y hay un salto que vale la pena conocer: desde el plano puedes **ir al planning con esa unidad y esa fecha ya puestas**, y volver. Es la forma rápida de pasar de _"¿dónde está la B-12?"_ a _"¿qué días tiene libres?"_ sin perder el hilo.
 
 ## Si tu camping no tiene plano dibujado
 

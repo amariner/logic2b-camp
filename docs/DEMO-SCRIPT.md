@@ -22,12 +22,14 @@ Abrir `camp.logic2b.com`. Dejar que la portada respire un segundo (foto real, no
 > "Esto no es una web con un formulario de contacto disfrazado de motor de reservas. El buscador de aquí arriba consulta la disponibilidad real, ahora mismo."
 
 Rellenar el mostrador con un rango de agosto y 2 adultos, buscar. Señalar:
+
 - Los precios que aparecen son del **mismo motor** que cobra — nunca hay un precio de la web y otro de la reserva.
 - Si el rango cae en unidades sin hueco, el sistema lo dice claro (no "error", sino "agotado" o "cerrado" según el caso — un camping real distingue las dos cosas).
 
 ## Minuto 1–3 · Una reserva de principio a fin
 
 Clicar "Reservar" en un resultado. Recorrer rápido, narrando en vez de leyendo:
+
 - **Extras** (ropa de cama, mascota, electricidad…) con el desglose recalculándose en vivo — cada línea del precio a la vista, nunca un total opaco.
 - Al llegar a los datos del titular, señalar el **contador de 15 minutos**: "la unidad queda apartada mientras rellena sus datos, como en cualquier venta online seria — sin bloquear inventario para siempre si alguien lo abandona a medias".
 - Confirmar. Mostrar la página de confirmación: código de reserva, desglose imprimible, y el enlace de autogestión.
@@ -65,6 +67,7 @@ Bandeja de solicitudes: filtros por estado con recuento, mensaje completo al exp
 ## Minuto 9–10 · Lo que no se ve pero vende
 
 Tres pantallas rápidas, sin detenerse mucho en ninguna:
+
 - **Informes**: ocupación y ingresos del mes con un clic.
 - **Clientes**: buscar un huésped, ver su historial completo.
 - **Log de notificaciones**: "cada email que ha salido — o que no ha salido y por qué — queda aquí. Nunca la duda de si le llegó la confirmación al cliente."

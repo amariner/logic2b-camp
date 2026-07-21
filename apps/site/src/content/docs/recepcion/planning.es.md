@@ -1,6 +1,6 @@
 ---
-title: "Leer el planning"
-description: "La pantalla grande: qué significa cada color, cómo moverte por las fechas y cómo encontrar lo que buscas."
+title: 'Leer el planning'
+description: 'La pantalla grande: qué significa cada color, cómo moverte por las fechas y cómo encontrar lo que buscas.'
 lang: es
 orden: 5
 ---
@@ -13,14 +13,14 @@ El planning es la pantalla principal, y es el cuaderno de recepción de toda la 
 
 Cada color dice una cosa distinta. Merece la pena aprendérselos, porque es toda la información del día en un vistazo:
 
-| Color | Qué significa |
-|---|---|
-| **Confirmada** | Reserva en firme. Vendrán. |
-| **En casa** (verde) | Ya han llegado y están dentro |
-| **Pendiente** | Falta cobrar, o falta que confirmen |
-| **No presentada** | Tenían que venir y no vinieron |
-| **Completada** | Ya se han ido, cuenta cerrada |
-| **Bloqueo** | La unidad no se puede usar (avería, obra, propietario) |
+| Color               | Qué significa                                          |
+| ------------------- | ------------------------------------------------------ |
+| **Confirmada**      | Reserva en firme. Vendrán.                             |
+| **En casa** (verde) | Ya han llegado y están dentro                          |
+| **Pendiente**       | Falta cobrar, o falta que confirmen                    |
+| **No presentada**   | Tenían que venir y no vinieron                         |
+| **Completada**      | Ya se han ido, cuenta cerrada                          |
+| **Bloqueo**         | La unidad no se puede usar (avería, obra, propietario) |
 
 Los **fines de semana** salen sombreados, para orientarte sin contar días.
 
@@ -39,7 +39,7 @@ Fíjate en un detalle importante: lo que no coincide **se atenúa, no desaparece
 
 ## La bandeja "sin asignar"
 
-A un lado aparecen las reservas que **todavía no tienen parcela concreta**. Es normal: el cliente reserva un *tipo* (una parcela con electricidad, un bungalow de 4), y sois vosotros quienes decidís cuál.
+A un lado aparecen las reservas que **todavía no tienen parcela concreta**. Es normal: el cliente reserva un _tipo_ (una parcela con electricidad, un bungalow de 4), y sois vosotros quienes decidís cuál.
 
 No se pierden de vista nunca, y se resuelven arrastrándolas a una fila. Ver [Cambiar una reserva de sitio o de fechas](/docs/recepcion/mover/).
 

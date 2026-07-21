@@ -276,7 +276,8 @@ const es = {
   'cli.historial': 'Historial de reservas',
   'cli.sinHistorial': 'Sin reservas registradas.',
   'cli.acompanante': 'acompañante',
-  'cli.rgpd': 'Consentimiento RGPD',
+  // 'cli.rgpd' se retira: el consentimiento dejó de ser una línea de solo lectura
+  // y vive en la sección de protección de datos (rgpd.*, ADR 0026 §2.3).
   'cli.abrirReserva': 'Abrir la reserva {code}',
   'inf.titulo': 'Informes',
   'inf.cargando': 'Calculando el informe…',
@@ -525,6 +526,46 @@ const es = {
   'cmdk.reservas': 'Reservas',
   'cmdk.clientes': 'Clientes',
   'cmdk.unidades': 'Unidades',
+  // ---------- derechos del interesado (ADR 0026 §2) ----------
+  // Tono: la recepcionista no sabe qué es el RD 933/2021 y no tiene por qué.
+  // Cada texto dice qué pasa, qué se pierde y qué puede contestarle al cliente.
+  'rgpd.titulo': 'Protección de datos',
+  'rgpd.consent.label': 'Consentimiento de tratamiento de datos',
+  'rgpd.consent.registrado': 'Registrado el {fecha}',
+  'rgpd.consent.version': 'Texto aceptado: versión {version}',
+  'rgpd.consent.sinVersion': 'Registrado antes de que se guardara la versión del texto',
+  'rgpd.consent.noRegistrado': 'Sin consentimiento registrado',
+  'rgpd.consent.guardado': 'Consentimiento registrado.',
+  'rgpd.consent.retirado': 'Consentimiento retirado.',
+  'rgpd.consent.error': 'No se ha podido cambiar el consentimiento.',
+  'rgpd.exportar': 'Descargar sus datos',
+  'rgpd.exportando': 'Preparando el fichero…',
+  'rgpd.exportAyuda':
+    'Fichero con su ficha, sus reservas, sus cobros y el registro de cambios. Es lo que hay que entregarle si pide una copia de sus datos.',
+  'rgpd.exportado': 'Fichero descargado. Entrégalo solo a la persona interesada.',
+  'rgpd.exportError': 'No se han podido descargar los datos.',
+  'rgpd.suprimir': 'Suprimir sus datos',
+  'rgpd.suprimiendo': 'Suprimiendo…',
+  'rgpd.suprimirAyuda':
+    'Borra sus datos personales para siempre. Las reservas y los cobros se quedan, sin nombre.',
+  'rgpd.suprimido': 'Datos personales suprimidos.',
+  'rgpd.yaSuprimido': 'Esta ficha ya estaba suprimida.',
+  'rgpd.suprimirError': 'No se han podido suprimir los datos.',
+  'confirmar.suprimir.titulo': '¿Suprimir los datos personales de {nombre}?',
+  'confirmar.suprimir.desc':
+    'Se borran nombre, documento, fecha de nacimiento, nacionalidad, contacto y dirección. No hay forma de recuperarlos. Sus reservas y sus cobros se conservan sin nombre, porque la ley obliga a guardarlos.',
+  'confirmar.suprimir.ok': 'Suprimir para siempre',
+  'rgpd.plazo.titulo': 'Todavía no se pueden suprimir',
+  'rgpd.plazo.desc':
+    'Una estancia de esta persona sigue dentro de un plazo de conservación que impone la ley: {base}. Sus datos se podrán suprimir a partir del {fecha}.',
+  'rgpd.plazo.copia':
+    'Puedes copiar este aviso y enviárselo tal cual a quien haya pedido el borrado.',
+  'rgpd.base.traveller_registry':
+    'el registro de viajeros que todo alojamiento tiene que conservar a disposición de las autoridades',
+  'rgpd.base.generico': 'una obligación legal de conservación',
+  'rgpd.anonimizada.badge': 'Ficha suprimida',
+  'rgpd.anonimizada.desc':
+    'Se atendió una petición de supresión el {fecha}. Sus datos personales ya no están y la ficha no se puede editar. Las reservas y los cobros siguen en el histórico, sin nombre.',
 } as const;
 
 type Key = keyof typeof es;

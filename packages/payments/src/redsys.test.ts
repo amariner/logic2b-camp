@@ -78,7 +78,9 @@ describe('redsysProvider.parseWebhook', () => {
   it('rechaza una firma inválida', async () => {
     const provider = redsysProvider(TEST_CONFIG);
     const paramsBase64 = base64Encode(
-      utf8Encode(JSON.stringify({ Ds_Order: '1234xxxx0002', Ds_Response: '0000', Ds_Amount: '100' })),
+      utf8Encode(
+        JSON.stringify({ Ds_Order: '1234xxxx0002', Ds_Response: '0000', Ds_Amount: '100' }),
+      ),
     );
     const event = await provider.parseWebhook({
       headers: new Headers(),

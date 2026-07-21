@@ -15,6 +15,7 @@ El mostrador ya busca disponibilidad real y muestra precios de servidor, pero el
 Páginas Astro bajo `/reservar` con **una isla React por paso** (mismo patrón que el mostrador: import dinámico, el nivel 1/2 no lo arrastra en el bundle — verificable en build). Mismo dominio, misma sesión de caché, cero framework nuevo. El dashboard (Fase 6) seguirá siendo la SPA React; el funnel es parte de la web pública.
 
 **Pasos** (cada uno una URL):
+
 1. `/reservar?from&to&adults&children[&pets]` — resultados (reusa `GET /availability`)
 2. `/reservar/{tipo}?from&to&…` — detalle del tipo + desglose en vivo (`POST /quote`)
 3. `+ &extras=ext_a,ext_b&elec=1` — extras y opciones (mismo paso 2, el desglose se recalcula en servidor a cada cambio)

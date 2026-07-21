@@ -5,6 +5,8 @@
  * `./tenant-config` y lo consume `apps/api`.
  */
 
+import type { TenantLegal } from './tenant-config';
+
 export type BookingMode = 'none' | 'enquiry' | 'instant';
 
 export type TenantWebConfig = {
@@ -16,6 +18,12 @@ export type TenantWebConfig = {
   defaultLocale: string;
   domain: string;
   contact: { email: string; phone: string; address: string };
+  /**
+   * Identidad legal del titular (ADR 0026 §2.5). Obligatorio: un camping español
+   * no puede publicar sin aviso legal, y sin estos datos las páginas legales no
+   * se pueden generar. El texto es de producto; esto es lo único que varía.
+   */
+  legal: TenantLegal;
   /**
    * SOLO demo comercial (ADR 0009): temas alternativos seleccionables en vivo.
    * El primero es el de defecto. Sin este campo, el selector no se renderiza.
@@ -48,9 +56,11 @@ export {
   DEFAULT_CANCELLATION_POLICY,
   loadTenantConfig,
   taxPolicySchema,
+  tenantLegalSchema,
   type CancellationPolicyConfig,
   type TaxPolicyName,
   type TenantConfig,
+  type TenantLegal,
 } from './tenant-config';
 
 export {

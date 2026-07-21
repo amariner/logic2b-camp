@@ -17,12 +17,14 @@ Cierra la Fase 3: Better Auth con roles y los endpoints privados del dashboard (
 **Registro público desactivado.** `disableSignUp: true` en las rutas montadas. Los usuarios se provisionan: `POST /api/admin/users` (solo `owner`) usa una instancia interna con signup permitido (`createAuth(env, { allowSignUp: true })`) y fija el rol después, en servidor. El seed de la demo hace lo mismo.
 
 **Roles jerárquicos**: `readonly(0) < reception(1) < manager(2) < owner(3)`. Middleware `requireRole(min)` sobre `/api/admin/*`:
+
 - `readonly` → todos los GET.
 - `reception` → mutaciones operativas (reservas, solicitudes, reasignación).
 - `manager` → tarifas y ajustes.
 - `owner` → gestión de usuarios.
 
 **Rutas privadas** (`routes/admin.ts`, montadas en `/api/admin`):
+
 - `GET /planning?from&to` — unidades + reservas + bloqueos que solapan el rango. El SELECT del tape chart (Fase 6 solo pinta).
 - `GET /bookings` (filtros estado/rango/código, paginado) · `GET /bookings/:id` (con huéspedes y pagos) · `POST /bookings` (alta manual `phone|walkin`; mismo motor y mismo precio-en-servidor que la pública, extraído a `createBooking()` compartido) · `PATCH /bookings/:id` con **acciones tipadas** (union discriminada Zod): `confirm | cancel | no_show | complete | reassign | note`. Transiciones validadas; `reassign` comprueba tipo y solape. Cancelar libera inventario en el mismo acto (invariante 4, con test).
 - `GET /enquiries?status` · `PATCH /enquiries/:id` (transición de estado del embudo).

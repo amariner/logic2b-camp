@@ -42,16 +42,16 @@ Hoy hay una barra superior con 11 enlaces planos. Se sustituye por una **sidebar
 
 ### 4. Colores por estado del planning → tokens del DS (sin hex sueltos)
 
-El tape chart mantiene su semántica de color, derivada de tokens (`BRAND.md`): 
+El tape chart mantiene su semántica de color, derivada de tokens (`BRAND.md`):
 
-| Estado | Token |
-|---|---|
+| Estado      | Token                                                        |
+| ----------- | ------------------------------------------------------------ |
 | `confirmed` | `--primary` (tinta casi negra), texto `--primary-foreground` |
-| `pending` | `--chart-4` (ámbar), texto `--foreground` |
-| `no_show` | `--destructive` |
-| `completed` | `--muted-foreground` |
-| `cancelled` | contorno (`border`, texto `--muted-foreground`) |
-| bloqueo | rayado con `--muted-foreground` a baja opacidad |
+| `pending`   | `--chart-4` (ámbar), texto `--foreground`                    |
+| `no_show`   | `--destructive`                                              |
+| `completed` | `--muted-foreground`                                         |
+| `cancelled` | contorno (`border`, texto `--muted-foreground`)              |
+| bloqueo     | rayado con `--muted-foreground` a baja opacidad              |
 
 Los mismos tokens para los `chip` de reserva/solicitud/notificación. Fin de semana: `--muted`.
 

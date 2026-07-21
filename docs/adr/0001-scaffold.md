@@ -27,6 +27,7 @@ tenants/demo      wrangler.jsonc del Worker demo (binding DB "logic-camp-demo"),
 ```
 
 **Tooling**:
+
 - pnpm workspaces (`apps/*`, `packages/*`) + Turborepo. Script raíz `pnpm check` = `turbo run typecheck lint test build`.
 - TypeScript 5 estricto en todos los paquetes; tipos compartidos desde `packages/tsconfig`.
 - ESLint 9 flat config + Prettier, config única en la raíz.
@@ -34,6 +35,7 @@ tenants/demo      wrangler.jsonc del Worker demo (binding DB "logic-camp-demo"),
 - Wrangler como devDependency (no global). Config en **`wrangler.jsonc`** (formato actual recomendado por Cloudflare; el super prompt dice `.toml`, funcionalmente equivalente — si molesta, se cambia, es un rename).
 
 **CI (GitHub Actions)**:
+
 - `check.yml`: en PR y push → pnpm install + `pnpm check`.
 - `deploy-demo.yml`: en push a `main` → deploy del Worker demo con `CLOUDFLARE_API_TOKEN`/`ACCOUNT_ID` de secrets. Hasta que existan los secrets, el job hace skip explícito (no falla).
 - No hay workflow de deploy por tenant aún (Fase 9).

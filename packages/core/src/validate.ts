@@ -49,7 +49,10 @@ export function validateStay(input: ValidateStayInput): ValidationResult {
   });
   const missing = plansTouched.find((p) => !p.plan);
   if (missing) {
-    return { valid: false, issues: [{ code: 'stay.no_rate', params: { season: missing.seg.season.name } }] };
+    return {
+      valid: false,
+      issues: [{ code: 'stay.no_rate', params: { season: missing.seg.season.name } }],
+    };
   }
 
   // estancia mínima/máxima: la MÁS restrictiva de las temporadas tocadas
@@ -90,7 +93,10 @@ export function validateStay(input: ValidateStayInput): ValidationResult {
     issues.push({ code: 'stay.capacity', params: { persons, capacityMax: unitType.capacityMax } });
   }
   if (persons < unitType.capacityMin) {
-    issues.push({ code: 'stay.capacity_min', params: { persons, capacityMin: unitType.capacityMin } });
+    issues.push({
+      code: 'stay.capacity_min',
+      params: { persons, capacityMin: unitType.capacityMin },
+    });
   }
   if (occupancy.adults < 1) issues.push({ code: 'stay.no_adults' });
 

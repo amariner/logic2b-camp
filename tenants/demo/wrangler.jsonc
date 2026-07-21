@@ -19,14 +19,14 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
     // la API pasa SIEMPRE por el Worker aunque exista un fichero con esa ruta
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*"],
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "logic-camp-demo",
       "database_id": "41a7fe70-6385-445b-b7ae-6133442cf91f",
-      "migrations_dir": "../../packages/db/migrations"
-    }
-  ]
+      "migrations_dir": "../../packages/db/migrations",
+    },
+  ],
 }

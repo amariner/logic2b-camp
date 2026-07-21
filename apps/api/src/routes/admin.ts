@@ -19,7 +19,9 @@ import { provisionUser, requireRole, type AuthEnv } from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
+import { CONSENT_VERSION } from '../consent';
 import { executeRefund, recordManualPayment } from '../payments';
+import { anonymizeGuest, exportGuest, sweepRetention } from '../rgpd';
 import {
   adminBookingCreateSchema,
   blockCreateSchema,
@@ -165,8 +167,7 @@ async function quoteMove(
       withElectricity,
     });
   } catch (e) {
-    if (e instanceof ClosedError)
-      return { ok: false, status: 422, body: { error: 'closed' } };
+    if (e instanceof ClosedError) return { ok: false, status: 422, body: { error: 'closed' } };
     throw e;
   }
   const tenantConfig = await loadTenantConfig(db);
@@ -801,6 +802,45 @@ export const adminRoutes = new Hono<AuthEnv>()
     });
   })
 
+  // ---------- RGPD (ADR 0026 §2): derechos del interesado ----------
+  // Art. 15 y 20: todo lo que el sistema sabe de esta persona, en un formato
+  // estructurado. Rol gerencia: es un volcado de datos personales, no una consulta
+  // de mostrador.
+  .get('/guests/:id/export', requireRole('manager'), async (c) => {
+    const tenant = c.get('tenant');
+    const id = c.req.param('id');
+    const data = await exportGuest(tenant.db, tenant.slug, id);
+    if (!data) return c.json({ error: 'not_found' }, 404);
+    // Entregar un export TAMBIÉN es un tratamiento: queda registrado quién lo pidió.
+    await audit(tenant.db, tenant.slug, c.get('user').id, 'guest', id, 'export');
+    return c.json(data);
+  })
+
+  // Art. 17: supresión. Nunca borra en duro — anonimiza, y si un plazo legal lo
+  // impide responde 409 con la fecha exacta desde la que se podrá (ADR 0026 §2.2).
+  .delete('/guests/:id', requireRole('manager'), async (c) => {
+    const tenant = c.get('tenant');
+    const id = c.req.param('id');
+    const result = await anonymizeGuest(tenant.db, tenant.slug, id, {
+      userId: c.get('user').id,
+    });
+    if (!result.ok && result.reason === 'not_found') return c.json({ error: 'not_found' }, 404);
+    if (!result.ok) {
+      return c.json(
+        { error: 'retention_hold', until: result.until, basis: 'traveller_registry' },
+        409,
+      );
+    }
+    return c.json({ ok: true, alreadyDone: result.alreadyDone });
+  })
+
+  // Qué anonimizaría la purga automática si corriera ahora. Solo lectura: existe
+  // para poder mirar ANTES, porque una anonimización no tiene vuelta atrás.
+  .get('/rgpd/retention', requireRole('owner'), async (c) => {
+    const tenant = c.get('tenant');
+    return c.json(await sweepRetention(tenant.db, tenant.slug, { dryRun: true }));
+  })
+
   // ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------
   // añadir un huésped a una reserva (crea guest + enlace). Si la reserva no tiene
   // titular, el primero pasa a serlo.
@@ -836,11 +876,12 @@ export const adminRoutes = new Hono<AuthEnv>()
       email: d.email || null,
       phone: d.phone ?? null,
       address: null,
-      gdprConsentAt: null,
+      // ADR 0026 §2.3: antes esto era `null` fijo — recepción no tenía forma de
+      // registrar un consentimiento que la doc publicada daba por guardado.
+      gdprConsentAt: d.gdprConsent ? nowIso() : null,
+      gdprConsentVersion: d.gdprConsent ? CONSENT_VERSION : null,
     });
-    await db
-      .insert(schema.bookingGuests)
-      .values({ bookingId, guestId, isLead });
+    await db.insert(schema.bookingGuests).values({ bookingId, guestId, isLead });
     await audit(db, tenant.slug, c.get('user').id, 'booking', bookingId, 'guest_add', { guestId });
     return c.json({ id: guestId, isLead }, 201);
   })
@@ -893,9 +934,20 @@ export const adminRoutes = new Hono<AuthEnv>()
     const guest = (await db.select().from(schema.guests).where(eq(schema.guests.id, id)))[0];
     if (!guest) return c.json({ error: 'not_found' }, 404);
 
+    // una ficha ya anonimizada no se vuelve a rellenar: sería deshacer un derecho
+    // de supresión ya ejercido (ADR 0026 §2.2)
+    if (guest.anonymizedAt) return c.json({ error: 'anonymized' }, 409);
+
     // '' en email → null (el campo es opcional en la BD, no una cadena vacía)
-    const patch = { ...parsed.data };
+    const { gdprConsent, ...rest } = parsed.data;
+    const patch: Partial<typeof schema.guests.$inferInsert> = { ...rest };
     if (patch.email === '') patch.email = null;
+    // el consentimiento es revocable: retirarlo borra fecha Y versión juntas, para
+    // que no quede una versión huérfana que parezca un consentimiento vivo
+    if (gdprConsent !== undefined) {
+      patch.gdprConsentAt = gdprConsent ? nowIso() : null;
+      patch.gdprConsentVersion = gdprConsent ? CONSENT_VERSION : null;
+    }
     await db.update(schema.guests).set(patch).where(eq(schema.guests.id, id));
     await audit(db, tenant.slug, c.get('user').id, 'guest', id, 'update', parsed.data);
     const updated = (await db.select().from(schema.guests).where(eq(schema.guests.id, id)))[0];
@@ -1029,8 +1081,12 @@ export const adminRoutes = new Hono<AuthEnv>()
 
     // destino a la vista (booking/enquiry) en dos consultas cortas de la
     // página pedida — mismo patrón que /guests, nunca un join N×M.
-    const bookingIds = [...new Set(rows.map((r) => r.bookingId).filter((v): v is string => Boolean(v)))];
-    const enquiryIds = [...new Set(rows.map((r) => r.enquiryId).filter((v): v is string => Boolean(v)))];
+    const bookingIds = [
+      ...new Set(rows.map((r) => r.bookingId).filter((v): v is string => Boolean(v))),
+    ];
+    const enquiryIds = [
+      ...new Set(rows.map((r) => r.enquiryId).filter((v): v is string => Boolean(v))),
+    ];
     const [bookingRows, enquiryRows] = await Promise.all([
       bookingIds.length
         ? db

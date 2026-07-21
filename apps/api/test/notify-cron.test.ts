@@ -103,19 +103,34 @@ describe('notifyStuckPendingBookings (ADR 0014)', () => {
   });
 
   it('NO avisa de una reserva reciente (menos de 2h)', async () => {
-    await insertBooking({ id: 'bkg_recent', status: 'pending', channel: 'web', createdAt: isoHoursAgo(1) });
+    await insertBooking({
+      id: 'bkg_recent',
+      status: 'pending',
+      channel: 'web',
+      createdAt: isoHoursAgo(1),
+    });
     await notifyStuckPendingBookings(db, 'cron', undefined);
     expect(await logsFor('bkg_recent', 'booking_pending_stuck')).toHaveLength(0);
   });
 
   it('NO avisa de una reserva confirmada aunque sea vieja', async () => {
-    await insertBooking({ id: 'bkg_confirmed', status: 'confirmed', channel: 'web', createdAt: isoHoursAgo(5) });
+    await insertBooking({
+      id: 'bkg_confirmed',
+      status: 'confirmed',
+      channel: 'web',
+      createdAt: isoHoursAgo(5),
+    });
     await notifyStuckPendingBookings(db, 'cron', undefined);
     expect(await logsFor('bkg_confirmed', 'booking_pending_stuck')).toHaveLength(0);
   });
 
   it('NO avisa de una reserva pending por teléfono (nunca nace pending por pago)', async () => {
-    await insertBooking({ id: 'bkg_phone', status: 'pending', channel: 'phone', createdAt: isoHoursAgo(5) });
+    await insertBooking({
+      id: 'bkg_phone',
+      status: 'pending',
+      channel: 'phone',
+      createdAt: isoHoursAgo(5),
+    });
     await notifyStuckPendingBookings(db, 'cron', undefined);
     expect(await logsFor('bkg_phone', 'booking_pending_stuck')).toHaveLength(0);
   });

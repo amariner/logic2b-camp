@@ -17,6 +17,16 @@ export const config: TenantWebConfig = {
     phone: '+34 000 000 000', // TODO
     address: '__DIRECCION__', // TODO
   },
+  // Identidad legal (ADR 0026 §2.5). El texto de las páginas legales (aviso legal,
+  // privacidad, cookies) es de PRODUCTO y no se toca: solo se rellenan estos campos.
+  legal: {
+    razonSocial: '__RAZON_SOCIAL__', // TODO: razón social, o nombre y apellidos si es empresario individual
+    nif: '__NIF__', // TODO
+    domicilio: '__DOMICILIO_FISCAL__', // TODO: calle, CP, población y país
+    // TODO: frase completa de datos registrales, o borra la línea si no los hay.
+    registro: '__DATOS_REGISTRALES__',
+    emailDerechos: 'privacidad@__DOMINIO__', // TODO: buzón donde se ejercen los derechos RGPD
+  },
   // demoThemes: NO se rellena — es exclusivo de la demo comercial (ADR 0009).
   // Un cliente real tiene UN tema: el suyo, en theme.css.
 };

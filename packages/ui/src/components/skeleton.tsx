@@ -13,23 +13,14 @@ export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>
     <div
       data-slot="skeleton"
       aria-hidden="true"
-      className={cn(
-        'animate-pulse rounded-md bg-muted motion-reduce:animate-none',
-        className,
-      )}
+      className={cn('animate-pulse rounded-md bg-muted motion-reduce:animate-none', className)}
       {...props}
     />
   );
 }
 
 /** Renglones de texto de ancho decreciente — la forma de un párrafo. */
-export function SkeletonText({
-  lines = 3,
-  className,
-}: {
-  lines?: number;
-  className?: string;
-}) {
+export function SkeletonText({ lines = 3, className }: { lines?: number; className?: string }) {
   const widths = ['w-full', 'w-11/12', 'w-4/5', 'w-3/5', 'w-2/3'];
   return (
     <div className={cn('flex flex-col gap-2', className)}>

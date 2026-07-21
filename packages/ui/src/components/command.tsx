@@ -9,7 +9,10 @@ import { Dialog, DialogContent } from './dialog';
 
 export const Command = ({ className, ...props }: ComponentProps<typeof CommandPrimitive>) => (
   <CommandPrimitive
-    className={cn('flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground', className)}
+    className={cn(
+      'flex h-full w-full flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground',
+      className,
+    )}
     {...props}
   />
 );
@@ -40,7 +43,10 @@ export function CommandDialog({
   );
 }
 
-export function CommandInput({ className, ...props }: ComponentProps<typeof CommandPrimitive.Input>) {
+export function CommandInput({
+  className,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.Input>) {
   return (
     <div className="flex items-center gap-2 border-b border-border px-3">
       <Search className="size-4 shrink-0 text-muted-foreground" />
@@ -55,7 +61,10 @@ export function CommandInput({ className, ...props }: ComponentProps<typeof Comm
   );
 }
 
-export const CommandList = ({ className, ...props }: ComponentProps<typeof CommandPrimitive.List>) => (
+export const CommandList = ({
+  className,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.List>) => (
   <CommandPrimitive.List
     className={cn('max-h-80 overflow-y-auto overflow-x-hidden p-1', className)}
     {...props}
@@ -66,7 +75,10 @@ export const CommandEmpty = (props: ComponentProps<typeof CommandPrimitive.Empty
   <CommandPrimitive.Empty className="py-6 text-center text-sm text-muted-foreground" {...props} />
 );
 
-export const CommandGroup = ({ className, ...props }: ComponentProps<typeof CommandPrimitive.Group>) => (
+export const CommandGroup = ({
+  className,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.Group>) => (
   <CommandPrimitive.Group
     className={cn(
       'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase',
@@ -76,7 +88,10 @@ export const CommandGroup = ({ className, ...props }: ComponentProps<typeof Comm
   />
 );
 
-export const CommandItem = ({ className, ...props }: ComponentProps<typeof CommandPrimitive.Item>) => (
+export const CommandItem = ({
+  className,
+  ...props
+}: ComponentProps<typeof CommandPrimitive.Item>) => (
   <CommandPrimitive.Item
     className={cn(
       'relative flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-sm outline-none select-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',

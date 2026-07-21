@@ -10,7 +10,7 @@ El Frente C se abre con prioridad declarada en **la parte visual, en modo fake**
 
 **1. El dashboard no tiene HMR.** `POST /api/auth/sign-in/email` devuelve **403** desde el dev server de Vite (`:5173`); la misma petición contra el Worker (`:8787`) devuelve 200 + cookie. No son las credenciales: es Better Auth rechazando el origen cruzado, porque `apps/api/src/auth.ts` no declara `trustedOrigins` y el proxy de Vite manda `Origin: http://localhost:5173`. En producción el dashboard vive en `/admin/` del **mismo** Worker, así que nunca se detectó — y **no está documentado en ninguna parte**, que es justo por lo que nadie se topó con ello antes. Hoy la única vía es compilar y servir desde el Worker: iterar en ~40s en vez de en ~1s. Para un frente cuyo objetivo es afinar interfaz, eso es el cuello de botella dominante.
 
-**2. El planning está vacío, y es el elemento firma.** Verificado en vivo contra el Worker: *83 unidades · 29 reservas a la vista*; de `A-09` hacia abajo, nada, en pleno agosto. El ROADMAP lo pedía desde la Fase 6 (*"debe verse ESPECTACULAR: 83 unidades × agosto lleno"*) y nunca se hizo. Un director de camping mira eso y ve un negocio sin clientes: **la pantalla más importante del producto está enseñando el peor dato posible.** Además bloquea trabajo aguas abajo — C1 (gestos del planning) se diseñaría sobre una rejilla en blanco, C5 capturaría un planning vacío para la landing, y C7 (plano) enseñaría un camping desierto.
+**2. El planning está vacío, y es el elemento firma.** Verificado en vivo contra el Worker: _83 unidades · 29 reservas a la vista_; de `A-09` hacia abajo, nada, en pleno agosto. El ROADMAP lo pedía desde la Fase 6 (_"debe verse ESPECTACULAR: 83 unidades × agosto lleno"_) y nunca se hizo. Un director de camping mira eso y ve un negocio sin clientes: **la pantalla más importante del producto está enseñando el peor dato posible.** Además bloquea trabajo aguas abajo — C1 (gestos del planning) se diseñaría sobre una rejilla en blanco, C5 capturaría un planning vacío para la landing, y C7 (plano) enseñaría un camping desierto.
 
 Restricciones que gobiernan (§0 del super prompt): ~6h/semana y **nada que multiplique trabajo por cliente**. Y la regla dura que este ADR no puede relajar: **"modo fake" se resuelve en el seed, nunca con mocks en el cliente**. Hoy el dashboard tiene **0 mocks** (0 `faker`, 0 fixtures, 0 `msw`) y todas las pantallas hablan con la API real — eso es un activo y no se toca.
 
@@ -51,6 +51,7 @@ Motivo: `tenants/demo/wrangler.jsonc` es **el mismo fichero** que despliega a pr
 **1.3 — Fail-closed.** Ausencia del flag → `trustedOrigins: []`. Nunca hay un default permisivo.
 
 **Verificación exigida para dar C0.1 por hecho:**
+
 - Login OK en `:5173` con HMR vivo.
 - Login sigue OK en `:8787`.
 - `wrangler deploy --dry-run` del tenant demo **no contiene** `LOGIC_CAMP_DEV_ORIGINS`.
@@ -66,16 +67,17 @@ Objetivo: que el planning en zoom "Temporada" muestre **la forma de una temporad
 
 **2.1 — Ocupación por curva, no plana.** La forma es el argumento de venta:
 
-| Periodo | Ocupación objetivo |
-|---|---|
-| Agosto | ~90–95 % |
-| Julio | ~75 % |
-| Junio · Septiembre | ~45 % |
-| Mayo · Octubre | ~20 % |
+| Periodo            | Ocupación objetivo |
+| ------------------ | ------------------ |
+| Agosto             | ~90–95 %           |
+| Julio              | ~75 %              |
+| Junio · Septiembre | ~45 %              |
+| Mayo · Octubre     | ~20 %              |
 
 Más **sesgo de fin de semana** en temporada media (viernes/sábado notablemente por encima). Es lo que hace que un profesional reconozca sus propios datos.
 
 **2.2 — Textura, no relleno uniforme.** Lo que distingue un seed creíble de uno generado:
+
 - **Huecos de 1 noche** entre reservas — el hueco que todo camping odia y que justifica el producto.
 - **2–3 unidades fuera de servicio** por avería (`inventory_blocks`): el planning ya sabe pintarlas y hoy casi no se ven.
 - **Mezcla de estados**: mayoría confirmadas, un puñado pendientes de pago, 1–2 no-shows, alguna cancelada reciente. Que el color del planning **tenga algo que diferenciar** (y que C1.5 tenga material sobre el que decidir el mapa de color).
@@ -91,6 +93,7 @@ Decisión: **`seedToSql` emite `INSERT` multi-fila** (una sentencia con N tuplas
 Verificación exigida: medir el tiempo real del reset contra el Worker **después** de densificar, no asumirlo. Si no cabe, la alternativa es reducir el horizonte sembrado (una ventana alrededor de hoy en vez de la temporada entera), no romper la atomicidad.
 
 **2.4 — Lo que no se toca.**
+
 - **Determinismo**: el reset nocturno depende de él. Nada de `Math.random()` sin semilla.
 - **Tests de invariantes del seed**: verdes antes y después. En particular el nº 1 (no dos reservas solapadas en una unidad), que es exactamente lo que más se tensa al subir la ocupación al 95 %.
 - **`_template`**: la densidad es de la **demo**, no del template. Un camping nuevo no arranca con 800 reservas inventadas.
@@ -101,12 +104,14 @@ Verificación exigida: medir el tiempo real del reset contra el Worker **despué
 ## Consecuencias
 
 **Positivas**
+
 - El resto del Frente C se diseña con HMR y sobre un lienzo que se parece a un camping en agosto.
 - C1 (gestos), C5 (capturas para la landing) y C7 (plano) dejan de estar bloqueados por falta de datos.
 - El planning pasa de ser el peor argumento visual a ser el mejor, sin escribir una línea de UI.
 - Se documenta un flujo de dev que no estaba escrito en ninguna parte.
 
 **Negativas / riesgos aceptados**
+
 - Se toca `auth.ts`, que es código sensible. Mitigado con lista constante, flag no desplegable, fail-closed y un test que fija el contrato.
 - El reset nocturno se vuelve más pesado. Mitigado con INSERT multi-fila y **medición obligatoria**; si no cabe, se recorta horizonte, no atomicidad.
 - Un seed más grande hace `db:reset && db:seed` más lento en local. Aceptable.
@@ -137,8 +142,8 @@ Tampoco entra aquí el arreglo de **C-BUG-1** (`--chart-*` light desplazados) ni
 
 Curva de ocupación real medida (noches-unidad / capacidad):
 
-| abr | may | jun | jul | **ago** | sep | oct |
-|---|---|---|---|---|---|---|
+| abr  | may  | jun  | jul  | **ago**  | sep  | oct  |
+| ---- | ---- | ---- | ---- | -------- | ---- | ---- |
 | 12 % | 26 % | 51 % | 73 % | **86 %** | 55 % | 11 % |
 
 Agosto queda en 86 % y no en el 93 % nominal porque los 4 bloqueos —dos de ellos de temporada completa— retiran capacidad real. Es honesto: el planning refleja el inventario que de verdad se puede vender.
@@ -147,7 +152,7 @@ Agosto queda en 86 % y no en el 93 % nominal porque los 4 bloqueos —dos de ell
 
 1. **Ocupación ≠ probabilidad de arranque.** El primer intento puso `p = 0.45` para junio y salió **66 %** real: cada estancia colocada ocupa después N noches. Se corrigió invirtiendo la fórmula (`startProbability`), de modo que la constante del código dice lo que significa. Sin esto los hombros de la curva quedaban inflados ~20 puntos.
 2. **El límite de D1 es de bytes, no de filas.** El troceado inicial por nº de filas (200) reventó con `SQLITE_TOOBIG`: las filas de `bookings` llevan el `price_breakdown` JSON entero y son órdenes de magnitud más grandes que las de `booking_guests`. Se trocea por **presupuesto de bytes** (48 KB), que además se autoajusta por tabla. Resultado: **8.155 → 54 sentencias**, reset nocturno verde contra D1 real.
-3. **El invariante 1 cazó un solape real.** Las reservas de caso límite se colocan *antes* del recorrido y eligen unidad ellas solas; el bucle no las conocía y las pisaba. El test lo detectó en el primer intento — exactamente para lo que está.
+3. **El invariante 1 cazó un solape real.** Las reservas de caso límite se colocan _antes_ del recorrido y eligen unidad ellas solas; el bucle no las conocía y las pisaba. El test lo detectó en el primer intento — exactamente para lo que está.
 
 Colateral: los 3 tests nuevos gastaban cupo del rate limiter por IP y tumbaban un `signIn` posterior con 429. Se les dio IP propia para no perturbar el presupuesto compartido.
 

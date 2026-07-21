@@ -1,6 +1,6 @@
 ---
-title: "Crear una reserva por teléfono o en el mostrador"
-description: "Dar de alta una reserva que no ha entrado por la web, con el precio calculado solo."
+title: 'Crear una reserva por teléfono o en el mostrador'
+description: 'Dar de alta una reserva que no ha entrado por la web, con el precio calculado solo.'
 lang: es
 orden: 8
 ---

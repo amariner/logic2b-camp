@@ -27,8 +27,15 @@ export type PaymentsConfig = {
 };
 
 export type PaymentIntentParams = {
-  bookingId: string; code: string; amountCents: number; currency: string;
-  locale: string; description: string; successUrl: string; cancelUrl: string; notifyUrl: string;
+  bookingId: string;
+  code: string;
+  amountCents: number;
+  currency: string;
+  locale: string;
+  description: string;
+  successUrl: string;
+  cancelUrl: string;
+  notifyUrl: string;
 };
 
 export type PaymentIntentResult =
@@ -37,8 +44,11 @@ export type PaymentIntentResult =
   | { method: 'immediate'; providerRef: string }; // none: cobrado (no hay nada que cobrar)
 
 export type PaymentWebhookEvent = {
-  eventId: string; providerRef: string; orderRef?: string;
-  status: 'succeeded' | 'failed'; amountCents: number;
+  eventId: string;
+  providerRef: string;
+  orderRef?: string;
+  status: 'succeeded' | 'failed';
+  amountCents: number;
 };
 
 export interface PaymentProvider {
@@ -53,9 +63,10 @@ export interface PaymentProvider {
 
 ### 2. Modos v1: `none` / `deposit` / `full` — **`bond` (fianza vía pasarela) queda en BACKLOG**
 
-El ROADMAP menciona un cuarto modo, "fianza". `depositCents` (fianza, `DOMAIN.md`: *"depósito reembolsable, no es ingreso, no se mezcla con el total"*) es dinero que **no puede** pasar por la tabla `payments` sin romper la invariante 2 (`sum(payments)==paidCents`), y cobrarla de verdad vía pasarela exige una pre-autorización con captura diferida (Stripe `capture_method:manual`, o en Redsys una operación de autorización tipo `1` con confirmación posterior tipo `2`) que además necesita una vía para *capturar solo una parte* si hay que retener por daños — un flujo completo con su propia máquina de estados que no es necesario para que el producto funcione. Se declara conscientemente fuera de v1 (igual que React Email/Queues en la Fase 7): la fianza se sigue cobrando in situ (efectivo/TPV físico) y se registra ya en el campo `depositCents` que existe desde la Fase 1; el dashboard ya lo muestra. Anotado en BACKLOG para cuando un camping real lo pida.
+El ROADMAP menciona un cuarto modo, "fianza". `depositCents` (fianza, `DOMAIN.md`: _"depósito reembolsable, no es ingreso, no se mezcla con el total"_) es dinero que **no puede** pasar por la tabla `payments` sin romper la invariante 2 (`sum(payments)==paidCents`), y cobrarla de verdad vía pasarela exige una pre-autorización con captura diferida (Stripe `capture_method:manual`, o en Redsys una operación de autorización tipo `1` con confirmación posterior tipo `2`) que además necesita una vía para _capturar solo una parte_ si hay que retener por daños — un flujo completo con su propia máquina de estados que no es necesario para que el producto funcione. Se declara conscientemente fuera de v1 (igual que React Email/Queues en la Fase 7): la fianza se sigue cobrando in situ (efectivo/TPV físico) y se registra ya en el campo `depositCents` que existe desde la Fase 1; el dashboard ya lo muestra. Anotado en BACKLOG para cuando un camping real lo pida.
 
 `computeChargeAmount(mode, totalCents, depositPercent)`:
+
 - `none` → 0 (no se crea intent; la reserva nace `confirmed` como hoy).
 - `deposit` → `round(totalCents * depositPercent / 100)`.
 - `full` → `totalCents`.

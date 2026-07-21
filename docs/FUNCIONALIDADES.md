@@ -16,16 +16,16 @@ No es una plantilla ni un producto de hoteles adaptado. El vocabulario del siste
 
 Cada camping contrata el nivel que necesita. Subir de nivel no es un proyecto nuevo: es activar módulos sobre lo que ya tiene, sin migraciones ni cambios de web.
 
-| | **Camp Web** | **Camp Solicitudes** | **Camp Reservas** | **Camp Motor** |
-|---|---|---|---|---|
-| Web propia completa | ✅ | ✅ | ✅ | — (usa la suya) |
-| Formulario de solicitud → email | ✅ | ✅ | ✅ | — |
-| Historial de solicitudes guardado | ✅ | ✅ | ✅ | ✅ |
-| Bandeja de solicitudes + panel básico | — | ✅ | ✅ | ✅ |
-| Disponibilidad y precios en tiempo real | — | — | ✅ | ✅ |
-| Reserva online con confirmación instantánea | — | — | ✅ | ✅ |
-| Programa de gestión completo (planning) | — | — | ✅ | ✅ |
-| Cobro online (opcional) | — | — | ✅ | ✅ |
+|                                             | **Camp Web** | **Camp Solicitudes** | **Camp Reservas** | **Camp Motor**  |
+| ------------------------------------------- | ------------ | -------------------- | ----------------- | --------------- |
+| Web propia completa                         | ✅           | ✅                   | ✅                | — (usa la suya) |
+| Formulario de solicitud → email             | ✅           | ✅                   | ✅                | —               |
+| Historial de solicitudes guardado           | ✅           | ✅                   | ✅                | ✅              |
+| Bandeja de solicitudes + panel básico       | —            | ✅                   | ✅                | ✅              |
+| Disponibilidad y precios en tiempo real     | —            | —                    | ✅                | ✅              |
+| Reserva online con confirmación instantánea | —            | —                    | ✅                | ✅              |
+| Programa de gestión completo (planning)     | —            | —                    | ✅                | ✅              |
+| Cobro online (opcional)                     | —            | —                    | ✅                | ✅              |
 
 Detalle importante del nivel Camp Web: aunque no hay panel, **cada solicitud que entra por la web queda guardada** desde el primer día. Cuando el camping sube de nivel, su historial de peticiones ya está ahí.
 
@@ -59,7 +59,7 @@ Todo el sitio existe en **español, catalán, inglés, francés, alemán y neerl
 
 Cada camping tiene su paleta, su radio de esquinas y su contenido. Re-vestir el sitio entero es cambiar **un solo fichero de diseño** — sin tocar ninguna página.
 
-La demo lo enseña en vivo: el menú **"Estilo"** de la cabecera cambia toda la web entre cuatro ambientes (*Pinada*, *Mar*, *Garriga* y *Noche* — este último, modo oscuro completo) delante del cliente. La elección se recuerda mientras navega. Así se ve en 10 segundos cómo quedaría la plataforma con la identidad de cada camping.
+La demo lo enseña en vivo: el menú **"Estilo"** de la cabecera cambia toda la web entre cuatro ambientes (_Pinada_, _Mar_, _Garriga_ y _Noche_ — este último, modo oscuro completo) delante del cliente. La elección se recuerda mientras navega. Así se ve en 10 segundos cómo quedaría la plataforma con la identidad de cada camping.
 
 En el pie de cada web aparece una firma discreta **"powered by Logic2B"** (en los seis idiomas) que enlaza con la información del producto. La web es del camping —su color, sus fotos, su nombre—; la firma solo deja constancia de quién la mueve, sin robar protagonismo.
 
@@ -73,7 +73,7 @@ La demo comercial se reinicia cada noche (datos ficticios, sin rastro de lo que 
 
 ## 3. El mostrador: disponibilidad y precio en tiempo real
 
-*(Nivel Camp Reservas)*
+_(Nivel Camp Reservas)_
 
 El buscador de la portada es el elemento central de la web:
 
@@ -86,7 +86,7 @@ El buscador de la portada es el elemento central de la web:
 
 ## 4. La reserva online, de principio a fin
 
-*(Nivel Camp Reservas)*
+_(Nivel Camp Reservas)_
 
 ### 4.1 El proceso de compra
 
@@ -121,7 +121,7 @@ Cada camping elige, sin tocar código, cómo quiere cobrar:
 - **La fianza sigue aparte**: el depósito reembolsable no se mezcla nunca con el precio de la estancia (§5) — hoy se cobra en recepción; cobrarla también online es la siguiente vuelta de tuerca, ya diseñada.
 - **Reembolsos reales**: cancelar (desde la web o desde el panel) devuelve el dinero de verdad a través de la misma pasarela con la que se cobró, no solo un email con la promesa.
 
-*Nota: activar una pasarela real es solo configuración — la cuenta de Stripe o el contrato con el banco (Redsys), sin tocar una línea de código. Hasta entonces, el camping opera con "sin cobro online" sin ningún cambio visible.*
+_Nota: activar una pasarela real es solo configuración — la cuenta de Stripe o el contrato con el banco (Redsys), sin tocar una línea de código. Hasta entonces, el camping opera con "sin cobro online" sin ningún cambio visible._
 
 ---
 
@@ -142,7 +142,7 @@ Y la regla de oro: **ningún precio se guarda como un número suelto**. Toda res
 
 ## 6. El programa de gestión (dashboard)
 
-*(Nivel Camp Reservas completo; versión básica en Camp Solicitudes)*
+_(Nivel Camp Reservas completo; versión básica en Camp Solicitudes)_
 
 En `su-dominio.com/admin`, con usuario y contraseña. Diseñado con una premisa: **densidad sin ruido, rápido antes que bonito** — es la herramienta que recepción tiene abierta todo el día.
 
@@ -163,7 +163,7 @@ La pantalla firma del producto. La rejilla unidades × días que en muchos campi
 
 El corcho de recepción, pero vivo. Sobre la barra de una reserva:
 
-- **Arrastrar en vertical** la cambia de parcela (mismo tipo). Su reserva y su precio no se tocan: el cliente reservó un *tipo*, no una parcela concreta.
+- **Arrastrar en vertical** la cambia de parcela (mismo tipo). Su reserva y su precio no se tocan: el cliente reservó un _tipo_, no una parcela concreta.
 - **Arrastrar en horizontal** mueve la estancia de fechas (mismas noches); **estirar por los bordes** la alarga o acorta. Mientras se arrastra, las fechas y el número de noches acompañan al cursor.
 - **El precio lo recalcula siempre el servidor.** Si el cambio de fechas cambia el importe, aparece el **desglose nuevo antes de confirmar** — nada se escribe hasta que recepción dice que sí. Si el hueco de destino está ocupado o bloqueado, el movimiento "rebota" con su explicación.
 - **Deshacer** en un clic desde el aviso, en cualquier movimiento.
@@ -172,7 +172,7 @@ El corcho de recepción, pero vivo. Sobre la barra de una reserva:
 
 ### 6.2b El plano del camping ★
 
-Si el planning responde *"¿cuándo?"*, el plano responde *"¿dónde?"*. Una **vista cenital del camping de verdad** — el director **reconoce su propio recinto** en la pantalla: el mar al norte, las parcelas premium pegadas a la playa, la piscina y la recepción donde están, la pinada al fondo.
+Si el planning responde _"¿cuándo?"_, el plano responde _"¿dónde?"_. Una **vista cenital del camping de verdad** — el director **reconoce su propio recinto** en la pantalla: el mar al norte, las parcelas premium pegadas a la playa, la piscina y la recepción donde están, la pinada al fondo.
 
 - **Estado en vivo por fecha**: se elige un día y cada parcela/alojamiento se pinta con **los mismos colores que el planning** — libre, ocupada, falta cobrar, **entra hoy**, **sale hoy** (con una marca en la esquina), bloqueada. De un vistazo se ve cómo está el camping esa noche.
 - **Un clic en una unidad ocupada abre su ficha** — la misma que en el planning, sin duplicar nada.
@@ -202,12 +202,12 @@ Recepción crea reservas por **teléfono o mostrador** desde el mismo panel: el 
 
 Cuatro perfiles jerárquicos:
 
-| Perfil | Puede |
-|---|---|
-| **Consulta** | Ver todo, tocar nada |
+| Perfil        | Puede                                              |
+| ------------- | -------------------------------------------------- |
+| **Consulta**  | Ver todo, tocar nada                               |
 | **Recepción** | Operar: reservas, asignaciones, solicitudes, notas |
-| **Gerencia** | Además: tarifas, temporadas y ajustes del camping |
-| **Dirección** | Además: gestionar usuarios |
+| **Gerencia**  | Además: tarifas, temporadas y ajustes del camping  |
+| **Dirección** | Además: gestionar usuarios                         |
 
 Las sesiones son revocables al instante (un empleado que se va deja de entrar HOY). No hay registro público: los usuarios los da de alta la dirección.
 
@@ -287,7 +287,7 @@ El sistema avisa solo, en el idioma de cada cual:
 - **Todo queda registrado y es consultable en el dashboard**: cada email (enviado, fallido o desactivado), con su destino y fecha, en una pantalla propia con filtro por estado — nunca la duda de "¿le llegó?".
 - Robustez: el envío ocurre después de responder; un problema del proveedor de email jamás afecta a una reserva.
 
-*Nota: el envío real por camping se activa al verificar su dominio de correo (proceso de alta con Logic2B).*
+_Nota: el envío real por camping se activa al verificar su dominio de correo (proceso de alta con Logic2B)._
 
 ## 9. Seguridad y datos
 
@@ -302,25 +302,25 @@ El sistema avisa solo, en el idioma de cada cual:
 
 Con fecha en el plan de trabajo, no humo:
 
-| Módulo | Qué añade |
-|---|---|
+| Módulo                    | Qué añade                                                                                                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso |
-| **Gestión ampliada** | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados |
-| **Alta exprés** | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real |
+| **Gestión ampliada**      | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados                                                                       |
+| **Alta exprés**           | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real                                                                              |
 
 ---
 
 ## 11. Ficha técnica (para el informático de confianza)
 
-| | |
-|---|---|
-| Web pública | Astro 5 — HTML estático + islas de interactividad; por eso vuela |
-| Panel de gestión | React 19 (aplicación de página única servida junto a la web) |
-| API | Cloudflare Workers (cómputo en el borde), tipada de extremo a extremo |
-| Base de datos | Cloudflare D1 (SQLite) — **una instancia por camping** |
-| Pagos | Stripe y Redsys (firma HMAC-SHA256 propia, sin SDK), sin cobro/señal/total configurables por camping |
-| Emails | Resend, con dominio verificado del camping |
-| Dinero | Céntimos enteros; jamás decimales flotantes |
-| Fechas | ISO `YYYY-MM-DD`; el día de salida libera la plaza |
-| Calidad | Tests unitarios + integración sobre base de datos real + extremo a extremo en navegador, en cada entrega |
-| Despliegue | Automatizado a la demo; a producción de cada camping, siempre con aprobación manual |
+|                  |                                                                                                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| Web pública      | Astro 5 — HTML estático + islas de interactividad; por eso vuela                                         |
+| Panel de gestión | React 19 (aplicación de página única servida junto a la web)                                             |
+| API              | Cloudflare Workers (cómputo en el borde), tipada de extremo a extremo                                    |
+| Base de datos    | Cloudflare D1 (SQLite) — **una instancia por camping**                                                   |
+| Pagos            | Stripe y Redsys (firma HMAC-SHA256 propia, sin SDK), sin cobro/señal/total configurables por camping     |
+| Emails           | Resend, con dominio verificado del camping                                                               |
+| Dinero           | Céntimos enteros; jamás decimales flotantes                                                              |
+| Fechas           | ISO `YYYY-MM-DD`; el día de salida libera la plaza                                                       |
+| Calidad          | Tests unitarios + integración sobre base de datos real + extremo a extremo en navegador, en cada entrega |
+| Despliegue       | Automatizado a la demo; a producción de cada camping, siempre con aprobación manual                      |

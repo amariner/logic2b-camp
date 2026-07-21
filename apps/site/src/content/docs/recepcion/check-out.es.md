@@ -1,6 +1,6 @@
 ---
-title: "La salida: el check-out"
-description: "Cerrar la cuenta y liberar la parcela cuando el huésped se va."
+title: 'La salida: el check-out'
+description: 'Cerrar la cuenta y liberar la parcela cuando el huésped se va.'
 lang: es
 orden: 10
 ---

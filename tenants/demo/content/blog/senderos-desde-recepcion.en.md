@@ -1,9 +1,9 @@
 ---
-title: "Three trails that start at reception"
-description: "The cove trail, the lighthouse trail and the high pine wood: real distances, footwear needed and when to go."
-date: "2026-04-18"
-lang: "en"
-photo: "textura-lona"
+title: 'Three trails that start at reception'
+description: 'The cove trail, the lighthouse trail and the high pine wood: real distances, footwear needed and when to go.'
+date: '2026-04-18'
+lang: 'en'
+photo: 'textura-lona'
 ---
 
 The best thing about the campsite's three trails is that they start where your coffee ends: at the reception door. No car, no app, no trailhead car park.

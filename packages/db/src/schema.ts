@@ -126,8 +126,7 @@ export const ratePlans = sqliteTable(
 
 export type RateRuleConditions = Record<string, unknown>;
 export type RateRuleDiscount =
-  | { type: 'percent'; value: number }
-  | { type: 'fixed_cents'; value: number };
+  { type: 'percent'; value: number } | { type: 'fixed_cents'; value: number };
 
 export const rateRules = sqliteTable('rate_rules', {
   id: text('id').primaryKey(),
@@ -274,6 +273,10 @@ export const guests = sqliteTable('guests', {
   phone: text('phone'),
   address: text('address'),
   gdprConsentAt: text('gdpr_consent_at'),
+  /** A qué texto se consintió — una fecha sin versión no prueba nada (ADR 0026 §2.3). */
+  gdprConsentVersion: text('gdpr_consent_version'),
+  /** Sello de supresión (art. 17). La fila sobrevive vaciada, nunca se borra (ADR 0026 §2.2). */
+  anonymizedAt: text('anonymized_at'),
 });
 
 export const bookingGuests = sqliteTable(
@@ -337,8 +340,12 @@ export const users = sqliteTable(
     name: text('name').notNull().default(''),
     emailVerified: integer('email_verified', { mode: 'boolean' }).notNull().default(false),
     image: text('image'),
-    createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull().default(sql`0`),
-    updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull().default(sql`0`),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .notNull()
+      .default(sql`0`),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .notNull()
+      .default(sql`0`),
   },
   (t) => [uniqueIndex('users_email_uq').on(t.email)],
 );

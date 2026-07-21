@@ -142,7 +142,10 @@ describe('LogoMark', () => {
 describe('Skeleton', () => {
   it('queda oculto a los lectores de pantalla', () => {
     const { container } = render(<Skeleton className="h-4 w-20" />);
-    expect(container.querySelector('[data-slot="skeleton"]')).toHaveAttribute('aria-hidden', 'true');
+    expect(container.querySelector('[data-slot="skeleton"]')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
   });
 
   it('SkeletonText pinta tantas líneas como se le piden', () => {

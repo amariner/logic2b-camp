@@ -67,10 +67,7 @@
       "indexes": {
         "audit_entity_idx": {
           "name": "audit_entity_idx",
-          "columns": [
-            "entity",
-            "entity_id"
-          ],
+          "columns": ["entity", "entity_id"],
           "isUnique": false
         }
       },
@@ -79,12 +76,8 @@
           "name": "audit_log_user_id_users_id_fk",
           "tableFrom": "audit_log",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -122,10 +115,7 @@
       "indexes": {
         "booking_guests_uq": {
           "name": "booking_guests_uq",
-          "columns": [
-            "booking_id",
-            "guest_id"
-          ],
+          "columns": ["booking_id", "guest_id"],
           "isUnique": true
         }
       },
@@ -134,12 +124,8 @@
           "name": "booking_guests_booking_id_bookings_id_fk",
           "tableFrom": "booking_guests",
           "tableTo": "bookings",
-          "columnsFrom": [
-            "booking_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["booking_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -147,12 +133,8 @@
           "name": "booking_guests_guest_id_guests_id_fk",
           "tableFrom": "booking_guests",
           "tableTo": "guests",
-          "columnsFrom": [
-            "guest_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["guest_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -311,34 +293,22 @@
       "indexes": {
         "bookings_code_uq": {
           "name": "bookings_code_uq",
-          "columns": [
-            "code"
-          ],
+          "columns": ["code"],
           "isUnique": true
         },
         "bookings_type_dates_idx": {
           "name": "bookings_type_dates_idx",
-          "columns": [
-            "unit_type_id",
-            "date_from",
-            "date_to"
-          ],
+          "columns": ["unit_type_id", "date_from", "date_to"],
           "isUnique": false
         },
         "bookings_unit_dates_idx": {
           "name": "bookings_unit_dates_idx",
-          "columns": [
-            "unit_id",
-            "date_from",
-            "date_to"
-          ],
+          "columns": ["unit_id", "date_from", "date_to"],
           "isUnique": false
         },
         "bookings_status_idx": {
           "name": "bookings_status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -347,12 +317,8 @@
           "name": "bookings_unit_type_id_unit_types_id_fk",
           "tableFrom": "bookings",
           "tableTo": "unit_types",
-          "columnsFrom": [
-            "unit_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -360,12 +326,8 @@
           "name": "bookings_unit_id_units_id_fk",
           "tableFrom": "bookings",
           "tableTo": "units",
-          "columnsFrom": [
-            "unit_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -473,9 +435,7 @@
       "indexes": {
         "enquiries_status_idx": {
           "name": "enquiries_status_idx",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -484,12 +444,8 @@
           "name": "enquiries_unit_type_id_unit_types_id_fk",
           "tableFrom": "enquiries",
           "tableTo": "unit_types",
-          "columnsFrom": [
-            "unit_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -701,20 +657,12 @@
       "indexes": {
         "blocks_unit_dates_idx": {
           "name": "blocks_unit_dates_idx",
-          "columns": [
-            "unit_id",
-            "date_from",
-            "date_to"
-          ],
+          "columns": ["unit_id", "date_from", "date_to"],
           "isUnique": false
         },
         "blocks_type_dates_idx": {
           "name": "blocks_type_dates_idx",
-          "columns": [
-            "unit_type_id",
-            "date_from",
-            "date_to"
-          ],
+          "columns": ["unit_type_id", "date_from", "date_to"],
           "isUnique": false
         }
       },
@@ -723,12 +671,8 @@
           "name": "inventory_blocks_unit_id_units_id_fk",
           "tableFrom": "inventory_blocks",
           "tableTo": "units",
-          "columnsFrom": [
-            "unit_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -736,12 +680,8 @@
           "name": "inventory_blocks_unit_type_id_unit_types_id_fk",
           "tableFrom": "inventory_blocks",
           "tableTo": "unit_types",
-          "columnsFrom": [
-            "unit_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -848,12 +788,8 @@
           "name": "notifications_log_booking_id_bookings_id_fk",
           "tableFrom": "notifications_log",
           "tableTo": "bookings",
-          "columnsFrom": [
-            "booking_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["booking_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -861,12 +797,8 @@
           "name": "notifications_log_enquiry_id_enquiries_id_fk",
           "tableFrom": "notifications_log",
           "tableTo": "enquiries",
-          "columnsFrom": [
-            "enquiry_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["enquiry_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -938,9 +870,7 @@
       "indexes": {
         "payments_booking_idx": {
           "name": "payments_booking_idx",
-          "columns": [
-            "booking_id"
-          ],
+          "columns": ["booking_id"],
           "isUnique": false
         }
       },
@@ -949,12 +879,8 @@
           "name": "payments_booking_id_bookings_id_fk",
           "tableFrom": "payments",
           "tableTo": "bookings",
-          "columnsFrom": [
-            "booking_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["booking_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1074,10 +1000,7 @@
       "indexes": {
         "rate_plans_type_season_idx": {
           "name": "rate_plans_type_season_idx",
-          "columns": [
-            "unit_type_id",
-            "season_id"
-          ],
+          "columns": ["unit_type_id", "season_id"],
           "isUnique": false
         }
       },
@@ -1086,12 +1009,8 @@
           "name": "rate_plans_unit_type_id_unit_types_id_fk",
           "tableFrom": "rate_plans",
           "tableTo": "unit_types",
-          "columnsFrom": [
-            "unit_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1099,12 +1018,8 @@
           "name": "rate_plans_season_id_seasons_calendar_id_fk",
           "tableFrom": "rate_plans",
           "tableTo": "seasons_calendar",
-          "columnsFrom": [
-            "season_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["season_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1232,10 +1147,7 @@
       "indexes": {
         "seasons_dates_idx": {
           "name": "seasons_dates_idx",
-          "columns": [
-            "date_from",
-            "date_to"
-          ],
+          "columns": ["date_from", "date_to"],
           "isUnique": false
         }
       },
@@ -1307,9 +1219,7 @@
       "indexes": {
         "tenants_slug_unique": {
           "name": "tenants_slug_unique",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -1442,16 +1352,12 @@
       "indexes": {
         "units_code_uq": {
           "name": "units_code_uq",
-          "columns": [
-            "code"
-          ],
+          "columns": ["code"],
           "isUnique": true
         },
         "units_type_idx": {
           "name": "units_type_idx",
-          "columns": [
-            "unit_type_id"
-          ],
+          "columns": ["unit_type_id"],
           "isUnique": false
         }
       },
@@ -1460,12 +1366,8 @@
           "name": "units_unit_type_id_unit_types_id_fk",
           "tableFrom": "units",
           "tableTo": "unit_types",
-          "columnsFrom": [
-            "unit_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unit_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1509,9 +1411,7 @@
       "indexes": {
         "users_email_uq": {
           "name": "users_email_uq",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },

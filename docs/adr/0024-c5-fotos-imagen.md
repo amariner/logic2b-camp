@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-21
 - **Fase**: Frente C — C5 (fotos e imagen)
-- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, al cerrar C7/C4/C1: *"aplica tu criterio y no pares hasta cerrarlo"*). Higgsfield autorizado por Andreu el 2026-07-21 (registrado en `docs/SIGUIENTE-SESION.md`).
+- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, al cerrar C7/C4/C1: _"aplica tu criterio y no pares hasta cerrarlo"_). Higgsfield autorizado por Andreu el 2026-07-21 (registrado en `docs/SIGUIENTE-SESION.md`).
 
 ## Contexto
 
@@ -12,7 +12,7 @@ Antes de tocar nada se audita el estado real de la 1ª tanda:
 
 - **Los 6 ficheros que hacen falta para C-BUG-5 YA ESTÁN GENERADOS.** Sesión 8 generó 6 fotos con Higgsfield (Soul 2.0) y quedaron sin descargar por bloqueo de red del contenedor; sus UUIDs completos están en `docs/BACKLOG.md`. De esos 6, **4 son exactamente los 4 que pide C-BUG-5** (`tipo-premium`, `tipo-autocaravana`, `detalle-bungalow-interior`, `detalle-glamping-interior`) y los otros 2 (`instalacion-piscina`, `instalacion-restaurante`) alimentan `Instalaciones.astro` (que ya degrada solo — `images['instalacion-${id}']` filtra lo que falta). Además, por cómo está escrito `fotos.ts` (§`detalle` mapea `ut_bung4/ut_bung6/ut_mobil → detalle-bungalow-interior` y `ut_glamp → detalle-glamping-interior`), **descargar esos 2 ficheros cierra también "2ª foto por tipo" en bungalow/mobil/glamping sin tocar código**: el `galeriaTipo()` ya compone `[principal, detalle]` y deduplica.
 - Los 6 prompts (recuperados vía `job_display`) ya cumplen la dirección de arte del contrato: pino de Alepo (Aleppo pine = pino carrasco), luz de mañana/última hora tardía, sin gente, sin texto, "editorial documentary photography", grano de película — nada de HDR ni de saturación publicitaria. **No hace falta fijar una lista nueva de prompts: la de sesión 8 ya es la definitiva** (ver tabla en §1).
-- **La descarga sigue bloqueada por política de red del contenedor** (`d8j0ntlcm91z4.cloudfront.net`, 403 en el `CONNECT`), verificado de nuevo hoy con `curl` + `$HTTPS_PROXY/__agentproxy/status`: `recentRelayFailures` muestra el mismo host, mismo motivo (`policy denial`), a las 12:21 de hoy. Es la **3ª sesión consecutiva** con el idéntico bloqueo (sesión 8, sesión "24" de descarga fallida registrada en PROGRESS línea 289, y esta). El README del proxy es explícito: *"403/407 … Do not retry or route around it — report the blocked host."*
+- **La descarga sigue bloqueada por política de red del contenedor** (`d8j0ntlcm91z4.cloudfront.net`, 403 en el `CONNECT`), verificado de nuevo hoy con `curl` + `$HTTPS_PROXY/__agentproxy/status`: `recentRelayFailures` muestra el mismo host, mismo motivo (`policy denial`), a las 12:21 de hoy. Es la **3ª sesión consecutiva** con el idéntico bloqueo (sesión 8, sesión "24" de descarga fallida registrada en PROGRESS línea 289, y esta). El README del proxy es explícito: _"403/407 … Do not retry or route around it — report the blocked host."_
 
 Esto cambia la pregunta del ADR: no es "qué generar" sino **"qué hacer cuando lo que falta no es prompt ni crédito, sino una puerta de red que este contenedor no tiene"**.
 
@@ -28,14 +28,14 @@ Lo que sí se entrega esta sesión:
 - **`tenants/demo/scripts/fetch-higgsfield-fotos.mjs`**: script Node autocontenido (usa `sharp`, ya dependencia de `apps/web`) con las 6 `rawUrl` + nombre de fichero destino ya resueltos — descarga y optimiza a WebP (incremento de tamaño ~2000px de lado mayor, `q:78`, igual que el resto de `tenants/demo/content/media/`) en una sola orden. No se ejecuta en este contenedor (mismo bloqueo); queda listo para correrlo desde cualquier máquina con salida a `cloudfront.net` — la de Andreu, o una sesión futura con otra política de red.
 - **C-BUG-5 se registra como 🟨 parcial, no como cerrado**: el código no tiene ningún bug de degradación (los `undefined` ya caen al fallback de `tipo-parcela` y `Instalaciones.astro` ya filtra lo que falta) — lo único que falta son los bytes. Misma categoría que el bloqueo de credenciales de Cloudflare en Fase 9: no es una tarea de código pendiente, es un recurso externo pendiente.
 
-| Fichero destino | Job UUID | Prompt (resumen) |
-|---|---|---|
-| `tipo-premium.webp` | `32b5b013-44b5-4bf4-9ec4-18009cbf00ef` | Parcela premium en terraza baja, sombra de pino de Alepo, mar entre troncos, luz de mediodía con sombras marcadas |
-| `tipo-autocaravana.webp` | `2ba71b99-2b56-47a6-bcf1-af26efba53b3` | Plaza de autocaravana, toldo a medio desplegar, sombra moteada de mañana, agujas de pino en el suelo |
+| Fichero destino                  | Job UUID                               | Prompt (resumen)                                                                                                          |
+| -------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `tipo-premium.webp`              | `32b5b013-44b5-4bf4-9ec4-18009cbf00ef` | Parcela premium en terraza baja, sombra de pino de Alepo, mar entre troncos, luz de mediodía con sombras marcadas         |
+| `tipo-autocaravana.webp`         | `2ba71b99-2b56-47a6-bcf1-af26efba53b3` | Plaza de autocaravana, toldo a medio desplegar, sombra moteada de mañana, agujas de pino en el suelo                      |
 | `detalle-bungalow-interior.webp` | `f5ac46f2-f0eb-4a47-ab17-ef8ea694f924` | Interior de bungalow, madera de pino clara, cama hecha lino blanco/salvia, luz de mañana con sombra de pino en la ventana |
-| `detalle-glamping-interior.webp` | `9bfdfd4b-5563-4f98-8d5b-874f76efb44b` | Interior de tienda safari, lona cruda, cama con lino natural, luz cálida moteada a través de la lona |
-| `instalacion-piscina.webp` | `9a9eeb15-b009-47e3-9de8-95d0d6fb0b44` | Piscina bajo pinos de Alepo, sombras largas sobre piedra, tumbonas vacías, luz de última mañana |
-| `instalacion-restaurante.webp` | `1cbee642-34bd-4d6a-b992-49d4e38d88b2` | Terraza-restaurante bajo lona crema entre troncos de pino, mesas sencillas, mar al fondo, luz dorada de última hora |
+| `detalle-glamping-interior.webp` | `9bfdfd4b-5563-4f98-8d5b-874f76efb44b` | Interior de tienda safari, lona cruda, cama con lino natural, luz cálida moteada a través de la lona                      |
+| `instalacion-piscina.webp`       | `9a9eeb15-b009-47e3-9de8-95d0d6fb0b44` | Piscina bajo pinos de Alepo, sombras largas sobre piedra, tumbonas vacías, luz de última mañana                           |
+| `instalacion-restaurante.webp`   | `1cbee642-34bd-4d6a-b992-49d4e38d88b2` | Terraza-restaurante bajo lona crema entre troncos de pino, mesas sencillas, mar al fondo, luz dorada de última hora       |
 
 Todos: `text2image_soul_v2`, sin personas, sin texto, grano de película — mismo estilo que las 6 fotos ya en `tenants/demo/content/media/`.
 

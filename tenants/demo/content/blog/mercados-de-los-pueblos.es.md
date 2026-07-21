@@ -1,9 +1,9 @@
 ---
-title: "Los mercados de los pueblos, en serio"
-description: "Cuál ir según el día de la semana, dónde aparcar y qué comprar antes de las diez."
-date: "2026-06-10"
-lang: "es"
-photo: "tipo-parcela"
+title: 'Los mercados de los pueblos, en serio'
+description: 'Cuál ir según el día de la semana, dónde aparcar y qué comprar antes de las diez.'
+date: '2026-06-10'
+lang: 'es'
+photo: 'tipo-parcela'
 ---
 
 La pregunta más repetida del mostrador después de "¿a qué hora abre la piscina?" es "¿qué mercado nos recomiendas?". Va la respuesta larga, con días y horas.

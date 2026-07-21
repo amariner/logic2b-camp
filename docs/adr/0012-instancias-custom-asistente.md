@@ -17,15 +17,26 @@ Además, `packages/core/src/extensions.ts` tiene desde la Fase 2 un `createExten
 ```ts
 export const taxPolicySchema = z.enum(['valencia', 'catalunya', 'none']);
 export const cancellationPolicySchema = z.object({
-  tiers: z.array(z.object({ minDaysBefore: z.number().int().min(0), refundPct: z.number().min(0).max(100) })).min(1),
+  tiers: z
+    .array(
+      z.object({ minDaysBefore: z.number().int().min(0), refundPct: z.number().min(0).max(100) }),
+    )
+    .min(1),
 });
 export type TenantConfig = {
-  slug: string; name: string; tier: 1 | 2 | 3 | 4; timezone: string; currency: string; locales: string[];
+  slug: string;
+  name: string;
+  tier: 1 | 2 | 3 | 4;
+  timezone: string;
+  currency: string;
+  locales: string[];
   taxPolicy: TaxPolicyName;
   cancellationPolicy: CancellationPolicyConfig;
   demoThemes?: string[]; // ADR 0009, demo-only
 };
-export function loadTenantConfig(row: TenantRow): TenantConfig { /* valida y aplica defaults, nunca lanza */ }
+export function loadTenantConfig(row: TenantRow): TenantConfig {
+  /* valida y aplica defaults, nunca lanza */
+}
 ```
 
 `TenantWebConfig` (el de la web pública, Fase 4) no desaparece: es el subconjunto que necesita `apps/web` en **build time** (nunca lee D1). `TenantConfig` es el que lee `apps/api` en **request time** desde `tenants.modules`, con un envoltorio `apps/api/src/tenant-config.ts` que añade la lectura de D1.
@@ -34,11 +45,12 @@ export function loadTenantConfig(row: TenantRow): TenantConfig { /* valida y apl
 
 ### 2. Resolución por host: ya está resuelta desde la Fase 0 — lo que falta es caché, no enrutado
 
-**No se reabre ADR 0002/0004**: aislamiento por *binding* D1, un Worker por tenant, `TENANT_SLUG` como variable de ese Worker. El "host → binding correcto" de §5 del super prompt lo hace **Cloudflare** (Custom Domain / DNS apuntando al Worker de ese tenant), no código nuestro — por eso no hay nada que enrutar dentro de un único Worker multi-tenant (eso rompería el aislamiento físico, que es la decisión de fondo de todo el producto). Lo que sí toca código: hoy cada request hace un `SELECT * FROM tenants` para leer `modules` (en `notify.ts`, `payments.ts`, y ahora en `loadTenantConfig`). Con un camping real (no un seed de test) esto es barato pero repetido — cachear en KV (`CONFIG` binding, ya previsto en §5) con invalidación explícita en `PATCH /api/admin/settings` es la optimización natural. **Se declara para cuando haya un camping real generando tráfico** (BACKLOG) — antes es optimizar sin medir.
+**No se reabre ADR 0002/0004**: aislamiento por _binding_ D1, un Worker por tenant, `TENANT_SLUG` como variable de ese Worker. El "host → binding correcto" de §5 del super prompt lo hace **Cloudflare** (Custom Domain / DNS apuntando al Worker de ese tenant), no código nuestro — por eso no hay nada que enrutar dentro de un único Worker multi-tenant (eso rompería el aislamiento físico, que es la decisión de fondo de todo el producto). Lo que sí toca código: hoy cada request hace un `SELECT * FROM tenants` para leer `modules` (en `notify.ts`, `payments.ts`, y ahora en `loadTenantConfig`). Con un camping real (no un seed de test) esto es barato pero repetido — cachear en KV (`CONFIG` binding, ya previsto en §5) con invalidación explícita en `PATCH /api/admin/settings` es la optimización natural. **Se declara para cuando haya un camping real generando tráfico** (BACKLOG) — antes es optimizar sin medir.
 
 ### 3. `custom/` operativo: conectar el registro que ya existe, no inventar uno nuevo (diseñado, sin conectar aún)
 
 `createExtensionRegistry()` (Fase 2) ya tiene los 9 hooks tipados, pero **nadie lo instancia** — es una pieza probada y sin usar. Lo que hace falta:
+
 - Instanciarlo **una vez por tenant** (no por request — los `custom/hooks.ts` de un tenant no cambian entre peticiones) y exponerlo en el contexto de Hono (`c.get('extensions')`).
 - Cargar `tenants/{slug}/custom/hooks.ts` en **build time** vía alias, exactamente igual que `@tenant` ya resuelve `tenants/{slug}/content` hoy en `apps/web` (Fase 4, sesión 7) — Workers no permite `import()` dinámico de una ruta arbitraria en runtime, así que la resolución tiene que ser estática. `tenants/_template/custom/hooks.ts` exporta una función `register(ext: ExtensionRegistry)` vacía por defecto; un tenant real la sobrescribe.
 - Enganchar `transform('beforeAvailabilitySearch', …)`/`transform('afterAvailabilitySearch', …)`/`transform('onQuoteCalculated', …)` en `data.ts`/`routes/public.ts`, y `emit('onBookingCreated'|'onBookingModified'|'onBookingCancelled', …)` en `bookings.ts`/`public.ts`/`admin.ts` — en los puntos donde esas operaciones YA ocurren, sin cambiar su comportamiento cuando `custom/` no registra nada (el contrato: motor y API funcionan idénticos sin `custom/`).

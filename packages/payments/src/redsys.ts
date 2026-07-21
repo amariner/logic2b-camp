@@ -16,7 +16,12 @@
  */
 import { base64Decode, base64Encode, utf8Decode, utf8Encode } from './base64';
 import { tripleDesCbcEncrypt } from './des';
-import type { PaymentIntentParams, PaymentIntentResult, PaymentProvider, PaymentWebhookEvent } from './types';
+import type {
+  PaymentIntentParams,
+  PaymentIntentResult,
+  PaymentProvider,
+  PaymentWebhookEvent,
+} from './types';
 
 export type RedsysConfig = {
   /** FUC, 9 dígitos */
@@ -93,7 +98,10 @@ export async function signRedsysParameters(
 /** 4 dígitos numéricos + hasta 8 alfanuméricos (norma Ds_Merchant_Order). */
 function generateOrder(bookingId: string): string {
   const numericPrefix = String(Math.floor(Math.random() * 10_000)).padStart(4, '0');
-  const suffix = bookingId.replace(/[^a-zA-Z0-9]/g, '').slice(-8).padEnd(4, '0');
+  const suffix = bookingId
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .slice(-8)
+    .padEnd(4, '0');
   return `${numericPrefix}${suffix}`;
 }
 
@@ -137,7 +145,10 @@ export function redsysProvider(config: RedsysConfig): PaymentProvider {
       };
     },
 
-    async parseWebhook(req: { headers: Headers; rawBody: string }): Promise<PaymentWebhookEvent | null> {
+    async parseWebhook(req: {
+      headers: Headers;
+      rawBody: string;
+    }): Promise<PaymentWebhookEvent | null> {
       const form = new URLSearchParams(req.rawBody);
       const paramsBase64 = form.get('Ds_MerchantParameters');
       const receivedSignature = form.get('Ds_Signature');
@@ -179,7 +190,11 @@ export function redsysProvider(config: RedsysConfig): PaymentProvider {
         Ds_Merchant_Terminal: config.terminal,
       };
       const paramsBase64 = base64Encode(utf8Encode(JSON.stringify(merchantParams)));
-      const signature = await signRedsysParameters(paramsBase64, providerRef, config.secretKeyBase64);
+      const signature = await signRedsysParameters(
+        paramsBase64,
+        providerRef,
+        config.secretKeyBase64,
+      );
       try {
         const res = await fetch(REST_URL[config.environment], {
           method: 'POST',

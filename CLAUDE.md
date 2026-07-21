@@ -4,7 +4,7 @@ Producto SaaS de Logic2B (Castellón): web + reservas + gestión para **campings
 
 ## Restricción que lo gobierna todo
 
-El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el trabajo por número de clientes está prohibida.** Dar de alta un camping nuevo debe costar una tarde. Regla de desempate: *¿qué necesita un camping real para operar en agosto?* Eso gana.
+El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el trabajo por número de clientes está prohibida.** Dar de alta un camping nuevo debe costar una tarde. Regla de desempate: _¿qué necesita un camping real para operar en agosto?_ Eso gana.
 
 ## Arquitectura
 
@@ -35,21 +35,21 @@ Un código, cuatro flags. Subir de nivel = cambiar config, nunca un proyecto nue
 
 ## Stack cerrado (no proponer alternativas salvo bloqueo técnico real)
 
-| | |
-|---|---|
-| Monorepo | pnpm workspaces + Turborepo |
-| Web pública | Astro 5 + islas React (SEO crítico) |
-| Dashboard | React 19 + Vite + TanStack Router + TanStack Query |
-| API | Hono en Cloudflare Workers, RPC tipado (hono/client) |
-| DB | Cloudflare D1 + Drizzle ORM + drizzle-kit |
-| Auth | Better Auth (adaptador D1) |
-| Validación | Zod, esquemas compartidos API↔clientes |
-| UI | Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS) |
-| Email | Resend + React Email — una cuenta, N dominios verificados, `from` por tenant |
-| Colas / Cron / Ficheros / Cache | Cloudflare Queues · Cron Triggers · R2 (prefijo por tenant) · KV |
-| Pagos | capa propia `PaymentProvider`: stripe \| redsys \| none |
-| Deploy | Wrangler + GitHub Actions (main→demo automático; producción por tenant, manual) |
-| Tests | Vitest (unit + integración D1 local) + Playwright (E2E) |
+|                                 |                                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------- |
+| Monorepo                        | pnpm workspaces + Turborepo                                                     |
+| Web pública                     | Astro 5 + islas React (SEO crítico)                                             |
+| Dashboard                       | React 19 + Vite + TanStack Router + TanStack Query                              |
+| API                             | Hono en Cloudflare Workers, RPC tipado (hono/client)                            |
+| DB                              | Cloudflare D1 + Drizzle ORM + drizzle-kit                                       |
+| Auth                            | Better Auth (adaptador D1)                                                      |
+| Validación                      | Zod, esquemas compartidos API↔clientes                                          |
+| UI                              | Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)                |
+| Email                           | Resend + React Email — una cuenta, N dominios verificados, `from` por tenant    |
+| Colas / Cron / Ficheros / Cache | Cloudflare Queues · Cron Triggers · R2 (prefijo por tenant) · KV                |
+| Pagos                           | capa propia `PaymentProvider`: stripe \| redsys \| none                         |
+| Deploy                          | Wrangler + GitHub Actions (main→demo automático; producción por tenant, manual) |
+| Tests                           | Vitest (unit + integración D1 local) + Playwright (E2E)                         |
 
 ## Convenciones no negociables
 

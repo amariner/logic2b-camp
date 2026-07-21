@@ -23,6 +23,8 @@ const bookingBody = (from: string, to: string) => ({
   extraIds: [],
   holder: { name: 'Test Holder', email: 'holder@example.com' },
   locale: 'es',
+  // ADR 0026 §2.3: la web pública no puede reservar sin consentimiento
+  gdprConsent: true as const,
 });
 
 beforeAll(async () => {
@@ -164,6 +166,7 @@ describe('notificaciones de reserva (ADR 0010)', () => {
         extraIds: [],
         holder: { name: 'Eva Serra', email: 'eva@example.com' },
         locale: 'ca',
+        gdprConsent: true,
       }),
       envA,
     );

@@ -1,7 +1,23 @@
 /** Sesión Better Auth por cookie (misma-origen). El servidor manda; la UI solo pregunta. */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-type Session = { user: { id: string; email: string; name: string } } | null;
+/**
+ * Los mismos cuatro roles de `apps/api/src/auth.ts`, con su misma jerarquía.
+ *
+ * La UI los usa SOLO para no ofrecer un botón que va a devolver 403 — quien
+ * decide sigue siendo el servidor (`requireRole`). Ocultar aquí es cortesía con
+ * la recepcionista, nunca la barrera de seguridad.
+ */
+const ROLES = ['readonly', 'reception', 'manager', 'owner'] as const;
+export type Role = (typeof ROLES)[number];
+
+const NIVEL: Record<Role, number> = { readonly: 0, reception: 1, manager: 2, owner: 3 };
+
+const esRole = (v: unknown): v is Role =>
+  typeof v === 'string' && (ROLES as readonly string[]).includes(v);
+
+/** `role` llega como campo adicional del usuario de Better Auth (auth.ts:70). */
+type Session = { user: { id: string; email: string; name: string; role?: string } } | null;
 
 export function useSession() {
   return useQuery({
@@ -14,6 +30,22 @@ export function useSession() {
     staleTime: 60_000,
     retry: false,
   });
+}
+
+/** Rol de quien está dentro, o `null` si no se sabe (sin sesión o valor desconocido). */
+export function useRol(): Role | null {
+  const { data } = useSession();
+  const rol = data?.user.role;
+  return esRole(rol) ? rol : null;
+}
+
+/**
+ * ¿Llega el rol de la sesión a `min`? Falla cerrado: un rol desconocido no ve
+ * nada, igual que en el servidor.
+ */
+export function useTieneRol(min: Role): boolean {
+  const rol = useRol();
+  return rol !== null && NIVEL[rol] >= NIVEL[min];
 }
 
 export function useSignIn() {

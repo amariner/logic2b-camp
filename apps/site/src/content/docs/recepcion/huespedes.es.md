@@ -1,6 +1,6 @@
 ---
-title: "Huéspedes y documentos"
-description: "Apuntar quién viene de verdad y sus documentos. Es obligatorio, y se tarda dos minutos."
+title: 'Huéspedes y documentos'
+description: 'Apuntar quién viene de verdad y sus documentos. Es obligatorio, y se tarda dos minutos.'
 lang: es
 orden: 9
 ---

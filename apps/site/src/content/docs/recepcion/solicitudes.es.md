@@ -1,6 +1,6 @@
 ---
-title: "Las solicitudes de la web"
-description: "Las peticiones que llegan por el formulario, y cómo no perder ninguna."
+title: 'Las solicitudes de la web'
+description: 'Las peticiones que llegan por el formulario, y cómo no perder ninguna.'
 lang: es
 orden: 12
 ---

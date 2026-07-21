@@ -1,6 +1,6 @@
 ---
-title: "Buscar cualquier cosa en un segundo"
-description: "El buscador rápido: reservas por código, clientes por nombre, unidades por su número."
+title: 'Buscar cualquier cosa en un segundo'
+description: 'El buscador rápido: reservas por código, clientes por nombre, unidades por su número.'
 lang: es
 orden: 13
 ---

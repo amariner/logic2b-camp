@@ -73,16 +73,16 @@ docs/SIGUIENTE-SESION.md apuntando a lo que siga.
 
 ## El mapa completo de lo que queda
 
-| Candidato | Estado | Bloqueo |
-|---|---|---|
-| **Fase 11 · Endurecimiento** | ⬜ Sin empezar | **Ninguno** ← por eso es la recomendación |
-| Fase 9 · Alta real de un tenant | 🟨 Solo falta `--apply` contra Cloudflare | Credenciales + decisión de Andreu |
-| Fase 10 · Dashboard demo readonly | 🟨 | Alcance sin decidir (ADR 0013) |
-| Fase 10 · Web Analytics | 🟨 | Credenciales |
-| Fase 10 · `ui.logic2b.com` / Storybook | ⬜ | Es su propio objetivo de fase + decisión **B-iii** |
-| C5 · Descargar 6 fotos | 🟨 | **Red**, no código. `pnpm --filter @tenant/demo fetch:fotos` |
-| Remates de BACKLOG | — | Ninguno, pero es limpieza, no avance |
-| Fase 12 · Camp Motor | 🚫 | **No construir hasta que alguien pague** |
+| Candidato                              | Estado                                    | Bloqueo                                                      |
+| -------------------------------------- | ----------------------------------------- | ------------------------------------------------------------ |
+| **Fase 11 · Endurecimiento**           | ⬜ Sin empezar                            | **Ninguno** ← por eso es la recomendación                    |
+| Fase 9 · Alta real de un tenant        | 🟨 Solo falta `--apply` contra Cloudflare | Credenciales + decisión de Andreu                            |
+| Fase 10 · Dashboard demo readonly      | 🟨                                        | Alcance sin decidir (ADR 0013)                               |
+| Fase 10 · Web Analytics                | 🟨                                        | Credenciales                                                 |
+| Fase 10 · `ui.logic2b.com` / Storybook | ⬜                                        | Es su propio objetivo de fase + decisión **B-iii**           |
+| C5 · Descargar 6 fotos                 | 🟨                                        | **Red**, no código. `pnpm --filter @tenant/demo fetch:fotos` |
+| Remates de BACKLOG                     | —                                         | Ninguno, pero es limpieza, no avance                         |
+| Fase 12 · Camp Motor                   | 🚫                                        | **No construir hasta que alguien pague**                     |
 
 **Si prefieres una sesión corta y visible** en vez de la Fase 11, los remates de BACKLOG mejor amortizados son: sidebar móvil off-canvas (el primitivo `Sheet` ya existe), "en casa" en `/reservas`, idiomas fr/de/nl de la landing, y las guías de `/informes`, `/tarifas` y `/ajustes` que C6 dejó sin escribir a propósito.
 

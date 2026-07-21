@@ -6,7 +6,7 @@
 
 ## Contexto
 
-La demo `camp.logic2b.com` es LA herramienta de ventas (§0). En una llamada comercial, el director de un camping pregunta siempre lo mismo: *"¿y esto puede ir con mis colores?"*. Hoy la respuesta es teórica ("cambiamos un fichero de tokens"). Un selector de temas en vivo convierte la respuesta en un click delante del cliente — y de paso **demuestra la arquitectura**: un tenant se re-viste cambiando `theme.css`, sin tocar un componente.
+La demo `camp.logic2b.com` es LA herramienta de ventas (§0). En una llamada comercial, el director de un camping pregunta siempre lo mismo: _"¿y esto puede ir con mis colores?"_. Hoy la respuesta es teórica ("cambiamos un fichero de tokens"). Un selector de temas en vivo convierte la respuesta en un click delante del cliente — y de paso **demuestra la arquitectura**: un tenant se re-viste cambiando `theme.css`, sin tocar un componente.
 
 ## Decisión
 
@@ -16,12 +16,12 @@ La cascada ya está preparada: los componentes solo consumen tokens `--lc-*`, y 
 
 Cuatro temas, todos dentro del territorio (mediterráneo real, materia) y fuera del antimodelo (ni SaaS azul isométrico ni crema+serif+terracota). Mismas fuentes en todos (Clash Display + Inter): cambiar tipografía = cargar webfonts extra = pagar Lighthouse; la identidad tipográfica es del producto, la paleta es del tenant.
 
-| Tema | Idea | Acción |
-|---|---|---|
-| `pinada` (defecto) | pino carrasco, el actual | verde pino `#1f4d3a` |
-| `mar` | posidonia, roca húmeda | verde-azul profundo `#14555e` |
-| `garriga` | oliva, romero, tierra seca | oliva oscura `#55531d` |
-| `nit` | acampada de noche | verde luminoso sobre fondo oscuro (`color-scheme: dark`) |
+| Tema               | Idea                       | Acción                                                   |
+| ------------------ | -------------------------- | -------------------------------------------------------- |
+| `pinada` (defecto) | pino carrasco, el actual   | verde pino `#1f4d3a`                                     |
+| `mar`              | posidonia, roca húmeda     | verde-azul profundo `#14555e`                            |
+| `garriga`          | oliva, romero, tierra seca | oliva oscura `#55531d`                                   |
+| `nit`              | acampada de noche          | verde luminoso sobre fondo oscuro (`color-scheme: dark`) |
 
 `nit` es además la prueba de fuego del sistema: si el modo oscuro sale gratis con los mismos tokens, cualquier identidad de cliente sale gratis.
 

@@ -1,6 +1,6 @@
 ---
-title: "Dar la bienvenida: el check-in"
-description: "Marcar que un huésped ha llegado, en un clic, desde donde te pille más a mano."
+title: 'Dar la bienvenida: el check-in'
+description: 'Marcar que un huésped ha llegado, en un clic, desde donde te pille más a mano.'
 lang: es
 orden: 3
 ---

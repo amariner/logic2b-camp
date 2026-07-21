@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-21
 - **Fase**: Frente C — C6 (documentación). Absorbe **B4** del Frente B.
-- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, al cerrar C7/C4/C1/C5: *"aplica tu criterio y no pares hasta cerrarlo"*).
+- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, al cerrar C7/C4/C1/C5: _"aplica tu criterio y no pares hasta cerrarlo"_).
 - **Resuelve la decisión pendiente B-ii** del ROADMAP (audiencia, herramienta e idiomas de la documentación).
 
 ## Contexto
@@ -11,14 +11,14 @@ C6 es la **última fase del Frente C**. Con C0–C5 y C7 cerrados, el producto t
 
 Lo que hay hoy y lo que falta:
 
-- **`docs/FUNCIONALIDADES.md`** (326 líneas) ya describe cada funcionalidad del producto y está al día. Pero es un documento **comercial**, escrito para que un director de camping entienda *qué hace* el producto — no para que una recepcionista *lo use un martes por la mañana*. Y vive en el repo, no en la web: un cliente no lo ve nunca.
+- **`docs/FUNCIONALIDADES.md`** (326 líneas) ya describe cada funcionalidad del producto y está al día. Pero es un documento **comercial**, escrito para que un director de camping entienda _qué hace_ el producto — no para que una recepcionista _lo use un martes por la mañana_. Y vive en el repo, no en la web: un cliente no lo ve nunca.
 - **`docs/TIERS.md`** tiene la matriz de los 4 niveles, pero en formato de contrato interno (config `ts` incluida), no de escalera comercial explicada.
 - **No hay ficha técnica** dirigida al "informático de confianza" del camping: hoy esa información está repartida entre `FUNCIONALIDADES.md` §11, `CLAUDE.md` y los ADR.
 - El dashboard **no tiene ninguna ayuda contextual**: una recepcionista atascada no tiene a dónde ir salvo llamar por teléfono.
 
 `FRENTE-C-ACABADO.md` §C6 pide tres piezas (guía de recepcionista, guía de dueño, ficha técnica), con **marca Logic2B** (no la mediterránea del tenant — `BRAND.md` §0), enlazadas desde la landing y desde el dashboard.
 
-**La decisión de fondo es B-ii**, que lleva abierta desde el 2026-07-19: *¿páginas Astro propias, Starlight, o reutilizar el layout de `ui.logic2b.com`?*
+**La decisión de fondo es B-ii**, que lleva abierta desde el 2026-07-19: _¿páginas Astro propias, Starlight, o reutilizar el layout de `ui.logic2b.com`?_
 
 ## La pregunta que decide, y la observación que la resuelve
 
@@ -41,20 +41,20 @@ Las docs son **rutas `/docs/…` de la app que ya existe** (`apps/site`, la land
 
 Lo que esto aprovecha sin escribir una línea:
 
-| Ya resuelto en `apps/site` | Qué habría que rehacer en Starlight |
-|---|---|
-| Tokens oklch de `BRAND.md` §4 vía `@logic-camp/ui/theme.css` | Re-tematizar el DS de Starlight a los tokens Logic2B |
-| Inter Variable + Space Grotesk self-hosted, subsetadas, sin CDN | Volver a cablear las fuentes contra el tema de Starlight |
-| Isotipo, header, footer, selector de idioma | Reimplementar o sobrescribir los componentes del tema |
-| i18n es/en/ca (`lib/i18n.ts`, `content/{lang}.json`) | El i18n propio de Starlight, en paralelo al que ya hay |
-| SEO: canonical, hreflang, OG, sitemap | El de Starlight, con su propia configuración |
-| **Despliegue: `apps/site/dist` ES el bundle compuesto del Worker** (`tenants/demo/wrangler.jsonc:18`) | Un segundo build que habría que componer en el bundle |
+| Ya resuelto en `apps/site`                                                                            | Qué habría que rehacer en Starlight                      |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Tokens oklch de `BRAND.md` §4 vía `@logic-camp/ui/theme.css`                                          | Re-tematizar el DS de Starlight a los tokens Logic2B     |
+| Inter Variable + Space Grotesk self-hosted, subsetadas, sin CDN                                       | Volver a cablear las fuentes contra el tema de Starlight |
+| Isotipo, header, footer, selector de idioma                                                           | Reimplementar o sobrescribir los componentes del tema    |
+| i18n es/en/ca (`lib/i18n.ts`, `content/{lang}.json`)                                                  | El i18n propio de Starlight, en paralelo al que ya hay   |
+| SEO: canonical, hreflang, OG, sitemap                                                                 | El de Starlight, con su propia configuración             |
+| **Despliegue: `apps/site/dist` ES el bundle compuesto del Worker** (`tenants/demo/wrangler.jsonc:18`) | Un segundo build que habría que componer en el bundle    |
 
 Ese último punto es el decisivo y es puramente mecánico: el Worker del tenant sirve **un solo directorio de assets**, `apps/site/dist`, en el que `deploy:demo` compone la landing en la raíz, la web-demo en `/demo/` y el dashboard en `/admin/`. Una página Astro nueva en `apps/site/src/pages/docs/` **aparece desplegada sin tocar el pipeline**. Starlight obligaría a un tercer build y a un paso de composición nuevo — coste fijo permanente a cambio de features (buscador, versionado, sidebar autogenerada) que un producto con **tres guías** no necesita.
 
 `ui.logic2b.com` queda descartado por un motivo distinto y más simple: es **externo a este repo** y su relación con `packages/ui` es la **decisión B-iii, todavía abierta**. Acoplar C6 a una decisión sin tomar sería bloquear la última fase del frente por algo que no tiene nada que ver con documentar.
 
-> Nota: el propio `apps/site/astro.config.mjs` ya lo anticipaba en un comentario — *"Sitio de PRODUCTO Logic2B (landing ahora, docs en B4)"*. Esta decisión confirma esa intención, no la improvisa.
+> Nota: el propio `apps/site/astro.config.mjs` ya lo anticipaba en un comentario — _"Sitio de PRODUCTO Logic2B (landing ahora, docs en B4)"_. Esta decisión confirma esa intención, no la improvisa.
 
 ### 2. La prosa va en Markdown, no en los JSON de i18n
 
@@ -77,11 +77,11 @@ Lo que **no** se hace es fingir que están traducidas. El aviso de idioma es una
 
 `/docs/` es un índice que reparte a tres sitios, porque las tres audiencias no se solapan:
 
-| Guía | URL | Para quién | Tono |
-|---|---|---|---|
-| **Recepción** | `/docs/recepcion/` | La recepcionista de 55 años | Llano, imperativo, **una tarea por página**, captura grande |
-| **Dueño** | `/docs/dueno/` | Quien paga | Los 4 niveles como escalera: qué incluye, qué cambia al subir |
-| **Técnica** | `/docs/tecnica/` | "El informático de confianza" | Dominios, DNS, correo, aislamiento por D1, RGPD, backups |
+| Guía          | URL                | Para quién                    | Tono                                                          |
+| ------------- | ------------------ | ----------------------------- | ------------------------------------------------------------- |
+| **Recepción** | `/docs/recepcion/` | La recepcionista de 55 años   | Llano, imperativo, **una tarea por página**, captura grande   |
+| **Dueño**     | `/docs/dueno/`     | Quien paga                    | Los 4 niveles como escalera: qué incluye, qué cambia al subir |
+| **Técnica**   | `/docs/tecnica/`   | "El informático de confianza" | Dominios, DNS, correo, aislamiento por D1, RGPD, backups      |
 
 La guía de recepción se parte en **una página por tarea** (contrato explícito de `FRENTE-C-ACABADO.md` §C6), siguiendo el orden real de un día de mostrador, no el orden del menú del dashboard.
 

@@ -79,7 +79,11 @@ export type ScaffoldResult = {
   pendingDatabaseId: boolean;
 };
 
-export function scaffoldTenant(templateDir: string, tenantsDir: string, identity: TenantIdentity): ScaffoldResult {
+export function scaffoldTenant(
+  templateDir: string,
+  tenantsDir: string,
+  identity: TenantIdentity,
+): ScaffoldResult {
   const slugError = validateSlug(identity.slug);
   if (slugError) throw new Error(slugError);
 

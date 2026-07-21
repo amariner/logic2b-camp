@@ -13,6 +13,7 @@ La Fase 3 abarca dos sesiones. Esta primera cubre la **API pública** end-to-end
 **Aislamiento por binding, no por host-routing interno.** Cada tenant ES su propio Worker con su binding `DB` (Fase 0). El "middleware que resuelve tenant por host y selecciona binding" se materializa así: el host enruta al Worker del tenant (rutas de Cloudflare), y dentro del Worker el middleware `tenant` construye el contexto `{ slug, db }` desde `env`. No existe código capaz de abrir la D1 de otro tenant: la fuga cruzada es imposible por diseño y el test lo demuestra instanciando la app con dos entornos (DB y DB_B) y verificando que lo escrito en A no es visible desde B.
 
 **Estructura** (`apps/api/src`):
+
 - `schemas.ts` — Zod de entrada/salida compartidos (fuente de tipos del cliente RPC).
 - `tenant.ts` — middleware de contexto (slug, db drizzle) + tipos de entorno.
 - `data.ts` — loaders: filas Drizzle → tipos de dominio del core (el adaptador fino del ADR 0003).
@@ -20,6 +21,7 @@ La Fase 3 abarca dos sesiones. Esta primera cubre la **API pública** end-to-end
 - `app.ts` — composición Hono; `index.ts` exporta el Worker y el tipo `AppType` para `hono/client`.
 
 **Contratos clave**
+
 - `GET /availability?from&to&adults&children&pets` → por tipo: estado (`available|unavailable|closed`), unidades libres y precio "desde" (quote de la ocupación pedida). `closed` distingue cierre de agotado.
 - `POST /quote` → valida con `validateStay` (todos los errores, códigos i18n) y devuelve desglose completo + tasa turística según política del tenant.
 - `POST /bookings` → revalida y **recalcula el precio en servidor** (el cliente jamás envía precios), comprueba disponibilidad, asigna unidad con `assignUnit` y escribe en un `batch` atómico (booking + pago inicial si procede). **Idempotencia**: header `Idempotency-Key`; la clave se guarda como fila `meta` (`idem:<key>` → booking id) en el mismo batch — la PK de `meta` convierte la repetición en conflicto y la respuesta repetida devuelve la reserva original.

@@ -1,6 +1,6 @@
 ---
-title: "Qué necesitas para empezar"
-description: "Lo que tienes que aportar tú, lo que ponemos nosotros, y qué pasa con tus datos."
+title: 'Qué necesitas para empezar'
+description: 'Lo que tienes que aportar tú, lo que ponemos nosotros, y qué pasa con tus datos.'
 lang: es
 orden: 3
 ---

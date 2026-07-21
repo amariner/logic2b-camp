@@ -6,7 +6,7 @@
 
 ## Contexto
 
-BACKLOG lo señalaba desde el cierre de la Fase 7: *"Recordatorio de llegada (cron diario sobre `arrivalsOn`) cuando haya API key de Resend"* — aplazado en su momento porque parecía necesitar un envío real para verificarse. ADR 0014 (esta misma sesión cloud) ya demostró que no hace falta: cualquier notificación se verifica igual de bien en estado `disabled` (sin `RESEND_API_KEY`) que enviada de verdad — el motor, el `notifications_log` y los tests no dependen de la credencial, solo el envío efectivo. Con la infraestructura de cron+`notify` que ADR 0014 acaba de dejar lista (`notifyNow`, deps planas sin `Context` de Hono), este recordatorio deja de estar bloqueado.
+BACKLOG lo señalaba desde el cierre de la Fase 7: _"Recordatorio de llegada (cron diario sobre `arrivalsOn`) cuando haya API key de Resend"_ — aplazado en su momento porque parecía necesitar un envío real para verificarse. ADR 0014 (esta misma sesión cloud) ya demostró que no hace falta: cualquier notificación se verifica igual de bien en estado `disabled` (sin `RESEND_API_KEY`) que enviada de verdad — el motor, el `notifications_log` y los tests no dependen de la credencial, solo el envío efectivo. Con la infraestructura de cron+`notify` que ADR 0014 acaba de dejar lista (`notifyNow`, deps planas sin `Context` de Hono), este recordatorio deja de estar bloqueado.
 
 ## Decisión
 

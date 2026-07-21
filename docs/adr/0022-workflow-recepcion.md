@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-21
 - **Fase**: Frente C — C4 (workflow de recepción)
-- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, sesión 31: *"aplica tu criterio y no pares hasta cerrarlo"*, como en C7/ADR 0021). La decisión de fondo (§1, el modelo de check-in) se toma aquí y se implementa en la misma sesión; es reversible sin migración destructiva (columnas aditivas nulables).
+- **Estado**: **aceptado e implementado**. Mandato autónomo permanente del Frente C (Andreu, sesión 31: _"aplica tu criterio y no pares hasta cerrarlo"_, como en C7/ADR 0021). La decisión de fondo (§1, el modelo de check-in) se toma aquí y se implementa en la misma sesión; es reversible sin migración destructiva (columnas aditivas nulables).
 
 ## Contexto
 
@@ -10,10 +10,10 @@ C4 es **el único hueco de DOMINIO que le quedaba al Frente C** (todo lo demás 
 
 1. **Check-in / check-out** no existen (dominio).
 2. **Huéspedes y documentos**: la ficha los **muestra** pero no se editan → sin esto no hay parte de viajeros, requisito legal en un camping español.
-3. **Cobro**: "cobrar todo lo pendiente" se teclea a mano; **crear bloqueos** desde la UI no se puede (el planning y el plano los *pintan* pero no hay forma de crear uno).
+3. **Cobro**: "cobrar todo lo pendiente" se teclea a mano; **crear bloqueos** desde la UI no se puede (el planning y el plano los _pintan_ pero no hay forma de crear uno).
 4. **⌘K** (buscar y saltar) y las **rutas direccionables** `/reservas/$id` `/clientes/$id` que C3 dejó explícitamente para aquí.
 
-Restricción que gobierna (§0 super prompt): ~6h/semana, **nada que multiplique el trabajo por número de clientes**, y *¿qué necesita un camping real para operar en agosto?*
+Restricción que gobierna (§0 super prompt): ~6h/semana, **nada que multiplique el trabajo por número de clientes**, y _¿qué necesita un camping real para operar en agosto?_
 
 ## Decisión
 
@@ -42,7 +42,7 @@ Si `in_house` fuera un `status`, una reserva con el huésped dentro **saldría d
 
 **El color "en casa" en el planning y el plano.** `unitStateOn` (`packages/config`) gana un `kind: 'inhouse'` que se deriva cuando el ocupante está `checkedIn && !checkedOut` — exactamente la "línea de más" que C7 dejó preparada. Un token nuevo `--lc-status-inhouse` en el DS (verde más vivo que `confirmed`) lo pinta en la barra, en el `<svg>` del plano y en la leyenda. Es la información que un mostrador **más mira a las 9:00**: quién está dentro y quién solo tiene reserva.
 
-**En el seed (modo fake).** Las reservas confirmadas que están en casa **en el ancla del seed** (`Y-07-15`, el "hoy" del seed — misma convención que ya usa el estado `completed/confirmed`, ADR 0019 §2) se estampan `checked_in_at` (la mayoría; ~1 de cada 5 aún "solo tiene reserva, no ha llegado"). Así el planning y el plano enseñan la mezcla "en casa / confirmada / entra hoy" **sin un solo mock en el cliente** — el "fake" se resuelve en el seed, como manda el frente. El seed sigue siendo función pura de `anchorYear` (determinismo intacto: el reset nocturno depende de ello). *Limitación conocida y consistente con ADR 0013*: el ancla es `Y-07-15`, no el "hoy" real, así que la mezcla "en casa" se aprecia navegando el planning a mediados de julio; ya declarado en el BACKLOG de ADR 0013 (ancla ≠ hoy exacto).
+**En el seed (modo fake).** Las reservas confirmadas que están en casa **en el ancla del seed** (`Y-07-15`, el "hoy" del seed — misma convención que ya usa el estado `completed/confirmed`, ADR 0019 §2) se estampan `checked_in_at` (la mayoría; ~1 de cada 5 aún "solo tiene reserva, no ha llegado"). Así el planning y el plano enseñan la mezcla "en casa / confirmada / entra hoy" **sin un solo mock en el cliente** — el "fake" se resuelve en el seed, como manda el frente. El seed sigue siendo función pura de `anchorYear` (determinismo intacto: el reset nocturno depende de ello). _Limitación conocida y consistente con ADR 0013_: el ancla es `Y-07-15`, no el "hoy" real, así que la mezcla "en casa" se aprecia navegando el planning a mediados de julio; ya declarado en el BACKLOG de ADR 0013 (ancla ≠ hoy exacto).
 
 ### 2. Huéspedes y documentos editables (parte de viajeros)
 
@@ -52,7 +52,7 @@ La ficha ya **muestra** `guests[]`. Ahora se **editan** contra dos rutas nuevas,
 - `PATCH /admin/guests/:id` — edita los datos y el documento de un huésped existente (los que la ficha ya pintaba pero no dejaba tocar).
 - `DELETE /admin/bookings/:id/guests/:guestId` — quita a un acompañante de la reserva (nunca al titular; el `guest` en sí no se borra — es memoria comercial).
 
-El **parte de viajeros** en sí (export a la Guardia Civil / Mossos) **no se construye** este sesión: se deja el **modelo preparado** (todos los campos de documento por huésped ya existen en `guests` desde la Fase 1) y declarado en el BACKLOG. El requisito de C4 era que *el hueco esté previsto*, y ahora los datos se pueden capturar y editar; el fichero de export es una pieza aparte con su formato legal.
+El **parte de viajeros** en sí (export a la Guardia Civil / Mossos) **no se construye** este sesión: se deja el **modelo preparado** (todos los campos de documento por huésped ya existen en `guests` desde la Fase 1) y declarado en el BACKLOG. El requisito de C4 era que _el hueco esté previsto_, y ahora los datos se pueden capturar y editar; el fichero de export es una pieza aparte con su formato legal.
 
 ### 3. Cobro sin fricción y bloqueos desde la UI
 

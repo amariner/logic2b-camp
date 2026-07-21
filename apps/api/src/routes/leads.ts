@@ -6,6 +6,7 @@
 import { noopSender, resendSender } from '@logic-camp/notifications';
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { logEvent } from '../errors';
 import type { Env } from '../tenant';
 
 const leadSchema = z.object({
@@ -49,14 +50,19 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     message: { subject: `Demo: ${d.campingName}`, html, text },
   });
   // El visitante siempre recibe ok si el input es válido; el fallo de envío se registra en servidor.
-  if (!result.ok) console.error('lead_send_failed', result.error);
+  if (!result.ok)
+    logEvent({
+      level: 'error',
+      event: 'lead_send_failed',
+      tenant: c.get('tenant').slug,
+      detail: result.error,
+    });
   return c.json({ ok: true });
 });
 
 function escapeHtml(s: string): string {
   return s.replace(
     /[&<>"']/g,
-    (ch) =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch] ?? ch,
+    (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch] ?? ch,
   );
 }

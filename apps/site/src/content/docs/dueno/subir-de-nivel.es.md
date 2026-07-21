@@ -1,6 +1,6 @@
 ---
-title: "Qué pasa cuando subes de nivel"
-description: "Qué cambia exactamente, qué NO cambia, y cuánto tarda."
+title: 'Qué pasa cuando subes de nivel'
+description: 'Qué cambia exactamente, qué NO cambia, y cuánto tarda.'
 lang: es
 orden: 2
 ---
@@ -23,10 +23,10 @@ Al subir de nivel se queda **todo** tal cual:
 
 Aparece lo que estaba apagado:
 
-| Al pasar a | Aparece |
-|---|---|
-| **Camp Solicitudes** | La bandeja de solicitudes y el panel de llegadas/salidas |
-| **Camp Reservas** | El buscador de disponibilidad en la portada, la reserva online completa, y el gestor entero: planning, plano, fichas, tarifas, informes |
+| Al pasar a           | Aparece                                                                                                                                 |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Camp Solicitudes** | La bandeja de solicitudes y el panel de llegadas/salidas                                                                                |
+| **Camp Reservas**    | El buscador de disponibilidad en la portada, la reserva online completa, y el gestor entero: planning, plano, fichas, tarifas, informes |
 
 En Camp Reservas, la portada gana el **buscador de fechas** como protagonista. Es el cambio más visible para tu cliente.
 
