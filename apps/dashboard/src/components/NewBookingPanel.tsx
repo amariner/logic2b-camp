@@ -13,10 +13,24 @@ import { conceptLabel, eur, stayError } from '../lib/format';
 
 type StayIssue = { code: string; params?: Record<string, string | number> };
 
+/**
+ * Precarga del alta al crear ARRASTRANDO en el planning (ADR 0023 §2): tipo,
+ * fechas y unidad preferida ya elegidos con el gesto. `{}` = alta en blanco.
+ */
+export type NewBookingInitial = {
+  unitTypeId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  unitId?: string;
+  unitCode?: string;
+};
+
 export default function NewBookingPanel({
+  initial,
   onClose,
   onCreated,
 }: {
+  initial?: NewBookingInitial;
   onClose: () => void;
   onCreated: (id: string) => void;
 }) {
@@ -25,9 +39,9 @@ export default function NewBookingPanel({
   // una clave de idempotencia por apertura del formulario: doble click = una reserva
   const idemKey = useRef(crypto.randomUUID());
 
-  const [unitTypeId, setUnitTypeId] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [unitTypeId, setUnitTypeId] = useState(initial?.unitTypeId ?? '');
+  const [dateFrom, setDateFrom] = useState(initial?.dateFrom ?? '');
+  const [dateTo, setDateTo] = useState(initial?.dateTo ?? '');
   const [adults, setAdults] = useState(2);
   const [childrenRaw, setChildrenRaw] = useState('');
   const [pets, setPets] = useState(0);
@@ -112,6 +126,8 @@ export default function NewBookingPanel({
           locale: 'es',
           notes: notes || undefined,
           channel,
+          // preferencia, no garantía: si al crear ya está ocupada, asigna el motor
+          preferredUnitId: initial?.unitId,
         },
         { 'Idempotency-Key': idemKey.current },
       ),
@@ -180,6 +196,12 @@ export default function NewBookingPanel({
             ))}
           </select>
         </div>
+
+        {initial?.unitCode && (
+          <p className="rounded-(--lc-radius) bg-accent/50 px-2 py-1.5 text-[12px] text-muted-foreground">
+            {t('alta.unidadPreferida', { code: initial.unitCode })}
+          </p>
+        )}
 
         <div>
           <span className={label}>{t('alta.fechas')}</span>

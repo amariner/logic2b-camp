@@ -39,6 +39,7 @@ import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
 import CommandPalette from './components/CommandPalette';
 import { RouteError, RouteNotFound } from './components/RouteError';
+import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
 import Ajustes from './pages/Ajustes';
 import Clientes from './pages/Clientes';
@@ -184,6 +185,7 @@ function Shell() {
             </p>
           )}
           <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="iconSm"

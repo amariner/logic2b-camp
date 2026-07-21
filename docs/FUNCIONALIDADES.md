@@ -151,16 +151,24 @@ En `su-dominio.com/admin`, con usuario y contraseña. Diseñado con una premisa:
 La pantalla firma del producto. La rejilla unidades × días que en muchos campings sigue siendo un corcho o un Excel:
 
 - **Todas las unidades a la vista** (la demo mueve 83; el sistema está dimensionado para 300) con scroll fluido, agrupadas por tipo, con la columna de códigos y la fila de fechas siempre visibles.
-- **Colores por estado**: confirmada, pendiente, no presentada, completada. **Bloqueos** visibles con su motivo (mantenimiento, larga estancia…). Fines de semana sombreados.
+- **Colores por estado**: confirmada, **en casa** (huésped dentro), pendiente, no presentada, completada. **Bloqueos** visibles con su motivo (mantenimiento, larga estancia…). Fines de semana sombreados.
+- **Orientación de un vistazo**: línea vertical de **HOY**, franja de **temporada** en la cabecera (alta/media/baja con su nombre), y una marca cuando una estancia **continúa** más allá del borde visible.
+- **Filtros y búsqueda sin salir del planning**: por tipo de alojamiento, por estado, o tecleando un código de reserva o de unidad — lo que no casa se atenúa, no desaparece (la ocupación real nunca se esconde).
 - **Zoom** semana / mes / temporada, navegación por fechas y salto a hoy.
-- **Bandeja "sin asignar"**: las reservas sin unidad física asignada nunca se pierden de vista.
+- **Bandeja "sin asignar"**: las reservas sin unidad física asignada nunca se pierden de vista — y se **arrastran directamente a una fila** para asignarlas.
+- **Modo oscuro** (claro / oscuro / según el sistema): un mostrador a las 23:00 lo agradece. Los colores de estado están verificados de contraste en ambos temas.
 - Se actualiza sola cada minuto.
 
-### 6.2 Reasignar arrastrando
+### 6.2 Mover, estirar y crear arrastrando
 
-Cambiar una reserva de parcela es **arrastrar su barra** a otra fila del mismo tipo. La interfaz responde al instante y el servidor valida siempre: si hay solape o bloqueo, el movimiento "rebota" con su explicación. También funciona **por teclado** (flechas ↑/↓), porque no todo el mundo maneja bien el ratón.
+El corcho de recepción, pero vivo. Sobre la barra de una reserva:
 
-Detalle de dominio importante: el cliente reservó un **tipo**, no una parcela concreta. Reasignar no toca su reserva, ni su precio, ni requiere avisarle.
+- **Arrastrar en vertical** la cambia de parcela (mismo tipo). Su reserva y su precio no se tocan: el cliente reservó un *tipo*, no una parcela concreta.
+- **Arrastrar en horizontal** mueve la estancia de fechas (mismas noches); **estirar por los bordes** la alarga o acorta. Mientras se arrastra, las fechas y el número de noches acompañan al cursor.
+- **El precio lo recalcula siempre el servidor.** Si el cambio de fechas cambia el importe, aparece el **desglose nuevo antes de confirmar** — nada se escribe hasta que recepción dice que sí. Si el hueco de destino está ocupado o bloqueado, el movimiento "rebota" con su explicación.
+- **Deshacer** en un clic desde el aviso, en cualquier movimiento.
+- **Arrastrar sobre celdas libres crea una reserva** con esa unidad y esas fechas ya rellenas — el alta donde ocurre la venta, no en otra pantalla.
+- Todo funciona también **por teclado** (flechas para mover y reasignar, Mayús+flechas para estirar), porque no todo el mundo maneja bien el ratón.
 
 ### 6.2b El plano del camping ★
 

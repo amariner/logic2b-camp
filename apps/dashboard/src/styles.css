@@ -105,6 +105,107 @@ html {
   user-select: none;
 }
 
+/* ---------- gestos del tape chart (ADR 0023) ---------- */
+
+/* asas de estirar: aparecen al pasar/enfocar la barra */
+.lc-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lc-handle {
+    transition: none;
+  }
+}
+.lc-handle-l {
+  left: 0;
+}
+.lc-handle-r {
+  right: 0;
+}
+.lc-bar:hover .lc-handle,
+.lc-bar:focus-visible .lc-handle {
+  opacity: 1;
+}
+.lc-handle::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 3px;
+  width: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+/* continuación: la estancia sigue más allá del borde visible (ADR 0023 §3) */
+.lc-bar.lc-clip-l {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 2px dotted currentColor;
+}
+.lc-bar.lc-clip-r {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 2px dotted currentColor;
+}
+
+/* filtros: lo que no casa se atenúa — ocultarlo mentiría sobre la ocupación */
+.lc-bar.lc-dim {
+  opacity: 0.22;
+}
+
+/* línea vertical de HOY sobre toda la malla */
+.lc-today-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--lc-today);
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* tooltip flotante del arrastre: fechas + noches junto al cursor */
+.lc-drag-tip {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.14);
+}
+
+/* selección de "crear arrastrando" sobre celdas libres */
+.lc-create-sel {
+  position: absolute;
+  border: 1.5px dashed var(--primary);
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* franja de temporada de la cabecera */
+.lc-season-band {
+  position: absolute;
+  top: 1px;
+  height: 5px;
+  border-radius: 2px;
+}
+
 /* bloqueo: rayado neutro, no compite con las reservas */
 .lc-block {
   position: absolute;
@@ -127,9 +228,10 @@ html {
   white-space: nowrap;
 }
 
-/* fin de semana sombreado en la malla */
+/* fin de semana: cabecera por celda; en la malla es UNA capa con gradiente
+ * (weekendBackground, packages/config) — mismo token, cero nodos por celda. */
 .lc-weekend {
-  background: color-mix(in oklab, var(--muted) 60%, transparent);
+  background: var(--lc-weekend-fill);
 }
 
 /* ---------- ficha de reserva (panel lateral) ---------- */

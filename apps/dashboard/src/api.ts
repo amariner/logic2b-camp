@@ -57,13 +57,38 @@ export type PlanningBlock = {
   dateTo: string;
   reason: 'maintenance' | 'owner' | 'longstay' | 'manual';
 };
+export type PlanningSeason = {
+  id: string;
+  name: string;
+  dateFrom: string;
+  dateTo: string;
+  priority: number;
+};
 export type PlanningData = {
   from: string;
   to: string;
   unitTypes: PlanningUnitType[];
   units: PlanningUnit[];
+  /** temporadas del calendario: la franja de contexto de la cabecera (ADR 0023 §3) */
+  seasons: PlanningSeason[];
   bookings: PlanningBooking[];
   blocks: PlanningBlock[];
+};
+
+// ---------- tipos de POST /api/admin/bookings/:id/requote (ADR 0023) ----------
+
+/** Dry-run de mover/estirar: el desglose que enseñará el diálogo si el precio cambia. */
+export type RequoteResponse = {
+  nights: number;
+  totalCents: number;
+  previousTotalCents: number;
+  breakdown: {
+    lines: PriceLine[];
+    totalCents: number;
+    touristTaxCents: number;
+    currency: string;
+  };
+  unitId: string | null;
 };
 
 // ---------- tipos de /api/admin/map (el plano — ADR 0021, C7) ----------

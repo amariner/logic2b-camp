@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Logic Camp — Dashboard</title>
+    <!-- tema antes del primer pintado (sin FOUC, ADR 0023 C1.5): la clase .dark
+         se decide aquí; ThemeToggle la mantiene después. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('lc-theme');
+          var dark =
+            t === 'dark' ||
+            ((!t || t === 'system') && matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
