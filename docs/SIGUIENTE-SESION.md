@@ -1,13 +1,30 @@
-# Prompt para la siguiente sesión — el Frente C está cerrado
+# Prompt para la siguiente sesión — la Fase 11 cerró sus cuatro bloques
 
-> Reescrito al cerrar la sesión 36 (2026-07-21, C6 · documentación, ADR 0025).
+> Reescrito al cerrar la sesión 37 (2026-07-21, Fase 11 · endurecimiento, ADR 0026).
 > Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de la siguiente.
 
 ---
 
 ## Estado en una línea
 
-**Frente C CERRADO** (C0 ✅ · C1 ✅ · C2+C3 ✅ · C4 ✅ · C5 🟨 · C6 ✅ · C7 ✅) y **Frente B CERRADO** (B4 se cerró dentro de C6). Lo único abierto del acabado es C5, y **no es código**: 6 fotos ya generadas que este contenedor no puede descargar. Queda decidir hacia dónde va el proyecto: la recomendación es **Fase 11 — endurecimiento**.
+Frentes B y C **cerrados**, y la **Fase 11 con sus cuatro bloques hechos** (aislamiento, RGPD, observabilidad, copias). Lo que queda del producto ya no es construir: es **desplegar lo de esta sesión** y **conseguir el primer camping real**. Casi todo lo demás está bloqueado por credenciales o por no tener cliente.
+
+## ⚠️ Lo primero de la próxima sesión, antes que nada
+
+**La Fase 11 NO está desplegada.** El commit está en `main` pero la demo sigue sirviendo la versión anterior, y hay una **migración de D1 nueva** (`0005_rgpd.sql`, aditiva: tres columnas nulables, sin backfill).
+
+```bash
+cd apps/api && pnpm run deploy:demo   # compone site+web+dashboard, migra la D1 remota y despliega
+```
+
+Después, comprobar en vivo:
+
+- `camp.logic2b.com/docs/tecnica/datos-rgpd/` → la ficha corregida
+- `camp.logic2b.com/demo/privacidad`, `/aviso-legal`, `/cookies` → las páginas legales nuevas
+- Ficha de cliente en el dashboard → "Protección de datos" con export, supresión y consentimiento
+- Y el caso bonito: **suprimir un cliente con estancia reciente** debe responder con la fecha exacta desde la que se podrá
+
+Los assets tardan ~30 s en propagar: 404 mezclados con 200 justo después **no** es un fallo.
 
 ## ▶ Prompt para pegar
 
@@ -15,55 +32,43 @@
 Logic Camp (SaaS de campings, monorepo pnpm/Turborepo, repo amariner/logic2b-camp).
 Lee primero PROGRESS.md, CLAUDE.md y docs/ROADMAP.md antes de tocar nada.
 
-Estado: main al día en GitHub (commit 3c2595d) y la demo DESPLEGADA y verificada
-en camp.logic2b.com. El Frente C (acabado profesional) está CERRADO y el Frente B
-también. Lo construido hasta hoy: producto completo (fases 0-8), marca Logic2B
-aplicada a dashboard/web/landing, planning con gestos, plano del camping, workflow
-de recepción con check-in, y 21 páginas de documentación en camp.logic2b.com/docs/.
+Estado: main al día en GitHub (commit 586cbef). Frentes B y C cerrados y la Fase 11
+(endurecimiento, ADR 0026) con sus cuatro bloques hechos: aislamiento verificable
+por barrido de las 42 rutas, RGPD operativo (export, supresión que anonimiza y
+niega con fecha, consentimiento con versión, retención en cron, páginas legales),
+observabilidad mínima y copias con runbook. pnpm check verde 42/42.
 
-El objetivo de ESTA sesión es la FASE 11 — endurecimiento (docs/ROADMAP.md):
-auditoría de aislamiento, RGPD, backups, observabilidad, carga y legales. Es la
-puerta antes del primer camping real en producción.
+PRIMERO, ANTES DE NADA: la Fase 11 no está desplegada y trae migración de D1 nueva
+(0005_rgpd.sql, aditiva). Ejecuta `cd apps/api && pnpm run deploy:demo` y verifica
+en vivo las páginas legales, la ficha técnica corregida y el bloque de protección
+de datos en la ficha de cliente. Los assets tardan ~30 s en propagar.
 
-Por qué esta y no otra: en C6 acabamos de PUBLICAR una ficha técnica
-(camp.logic2b.com/docs/tecnica/datos-rgpd/) que hace afirmaciones concretas ante
-el informático de un cliente — una base D1 por camping con test de fuga cruzada,
-consentimiento con fecha, restauración a un punto en el tiempo, exportación y
-portabilidad bajo demanda. Esa página incluso admite por escrito que "el
-endurecimiento completo es una fase propia del plan". Esta sesión es la que
-convierte esa promesa en algo verificable, y además es la única fase relevante
-que NO está bloqueada por credenciales ni por tener un cliente.
+Después, elige objetivo. Mi recomendación en orden:
 
-Alcance sugerido (afínalo tú en el ADR 0026, y recorta si es demasiado para una
-sesión — mejor cerrar dos bloques de verdad que dejar cinco a medias):
+1. FASE 9 — primer alta real de un tenant. Es lo único que queda para cerrar una
+   fase entera y lo que de verdad desbloquea el negocio. `pnpm new:camping` está
+   escrito y testeado (17 tests) pero `--apply` NUNCA se ha ejecutado contra la
+   cuenta de Cloudflare. Necesita credenciales y que Andreu esté presente.
 
-1. Auditoría de aislamiento: el test A↛B ya existe (fuga de datos Y de sesión).
-   Revisar que cubre TODA la superficie de hoy, que creció mucho desde que se
-   escribió — /api/admin/map (C7), check-in/check-out y huéspedes (C4),
-   requote/move (C1), ⌘K, rutas /reservas/$id y /clientes/$id.
-2. RGPD operativo: retención y borrado, export de datos de un interesado,
-   registro de actividades de tratamiento, y el texto legal de la web.
-   OJO: el parte de viajeros tiene plazo legal propio y NO se borra con el resto.
-3. Backups: hoy dependemos del point-in-time recovery de Cloudflare y de un
-   export manual. Decidir si hace falta export programado a almacenamiento
-   propio (la ficha técnica ya dice que no viene por defecto — que siga siendo
-   verdad o cámbialo, pero que la doc y el código no se contradigan).
-4. Observabilidad: hoy no hay forma de saber que algo va mal en producción sin
-   que lo cuente un cliente.
+2. PARTE DE VIAJEROS (SES.Hospedajes). El hueco funcional más grande que queda
+   para un camping español real: el modelo ya captura documento, nacimiento y
+   nacionalidad, y la retención ya respeta su plazo de 3 años, pero no existe ni
+   el fichero con el formato oficial ni su envío. Es integración con la
+   Administración: fase propia con su ADR.
+
+3. Remates de BACKLOG si prefieres sesión corta: sidebar móvil off-canvas (el
+   primitivo Sheet ya existe), "en casa" en /reservas, idiomas fr/de/nl de la
+   landing, guías de /informes /tarifas /ajustes.
 
 Contrato del proyecto (CLAUDE.md, no negociable):
-- La restricción que lo gobierna todo: ~6h/semana de desarrollo; cualquier
-  decisión que multiplique el trabajo por camping está prohibida — dar de alta
-  un camping nuevo debe costar una tarde.
+- ~6h/semana; nada que multiplique el trabajo por camping. Dar de alta un camping
+  debe costar una tarde.
 - TypeScript estricto, nada de `any`. Dinero en céntimos enteros con desglose
-  auditable. Fechas ISO sin zona horaria, date_from inclusive / date_to exclusive.
-- Textos de UI siempre vía i18n, nunca hardcodeados.
-- ADR en docs/adr/NNNN-titulo.md ANTES de escribir código. Una sesión = una fase.
+  auditable. Fechas ISO sin zona, date_from inclusive / date_to exclusive.
+- Textos de UI siempre vía i18n. Cero mocks en el cliente: el "modo fake" se
+  resuelve en el seed.
+- ADR en docs/adr/NNNN-titulo.md ANTES de escribir código, y PARAR a validar.
 - `pnpm check` verde antes de cerrar.
-
-Si la Fase 11 te parece mal encaminada con lo que veas al leer el repo, dilo y
-propón alternativa antes de abrir el ADR — las opciones están más abajo en este
-fichero.
 
 Cierra con /session-close, mergea a main, súbelo a GitHub y reescribe
 docs/SIGUIENTE-SESION.md apuntando a lo que siga.
@@ -73,40 +78,44 @@ docs/SIGUIENTE-SESION.md apuntando a lo que siga.
 
 ## El mapa completo de lo que queda
 
-| Candidato                              | Estado                                    | Bloqueo                                                      |
-| -------------------------------------- | ----------------------------------------- | ------------------------------------------------------------ |
-| **Fase 11 · Endurecimiento**           | ⬜ Sin empezar                            | **Ninguno** ← por eso es la recomendación                    |
-| Fase 9 · Alta real de un tenant        | 🟨 Solo falta `--apply` contra Cloudflare | Credenciales + decisión de Andreu                            |
-| Fase 10 · Dashboard demo readonly      | 🟨                                        | Alcance sin decidir (ADR 0013)                               |
-| Fase 10 · Web Analytics                | 🟨                                        | Credenciales                                                 |
-| Fase 10 · `ui.logic2b.com` / Storybook | ⬜                                        | Es su propio objetivo de fase + decisión **B-iii**           |
-| C5 · Descargar 6 fotos                 | 🟨                                        | **Red**, no código. `pnpm --filter @tenant/demo fetch:fotos` |
-| Remates de BACKLOG                     | —                                         | Ninguno, pero es limpieza, no avance                         |
-| Fase 12 · Camp Motor                   | 🚫                                        | **No construir hasta que alguien pague**                     |
-
-**Si prefieres una sesión corta y visible** en vez de la Fase 11, los remates de BACKLOG mejor amortizados son: sidebar móvil off-canvas (el primitivo `Sheet` ya existe), "en casa" en `/reservas`, idiomas fr/de/nl de la landing, y las guías de `/informes`, `/tarifas` y `/ajustes` que C6 dejó sin escribir a propósito.
+| Candidato                              | Estado                                    | Bloqueo                                                                       |
+| -------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------- |
+| **Desplegar la Fase 11**               | ⬜ Pendiente                              | **Ninguno** ← hazlo primero                                                   |
+| **Fase 9 · Alta real de un tenant**    | 🟨 Solo falta `--apply`                   | Credenciales + Andreu presente                                                |
+| **Parte de viajeros (SES.Hospedajes)** | ⬜ Sin empezar                            | Ninguno técnico — es fase propia con su ADR                                   |
+| Fase 11 · Sentry/Logpush               | ⬜ Enganche listo en un solo punto        | Credenciales                                                                  |
+| Fase 11 · Ensayo real de restauración  | ⬜ Runbook escrito, tabla de ensayo vacía | Credenciales de Cloudflare                                                    |
+| Fase 11 · Pruebas de carga             | ⬜                                        | **Falta el objetivo declarado**, no el tiempo                                 |
+| Fase 10 · Dashboard demo readonly      | 🟨                                        | Alcance sin decidir (ADR 0013)                                                |
+| Fase 10 · Web Analytics                | 🟨                                        | Credenciales. **Ojo: si no es cookieless, rompe la posición de "sin banner"** |
+| Fase 10 · `ui.logic2b.com` / Storybook | ⬜                                        | Su propio objetivo de fase + decisión B-iii                                   |
+| C5 · Descargar 6 fotos                 | 🟨                                        | **Red**, no código. `pnpm --filter @tenant/demo fetch:fotos`                  |
+| Fase 12 · Camp Motor                   | 🚫                                        | **No construir hasta que alguien pague**                                      |
 
 ## Decisiones abiertas
 
-- **B-iii** — relación entre `packages/ui` y `ui.logic2b.com` (¿consume, replica, o se fusiona el Storybook?). Bloquea la Fase 10 de Storybook. **No** bloquea la Fase 11.
-- **B-iv** — logotipo completo de Logic2B (hoy solo tenemos el isotipo monocromo).
-- **B-v** — ¿puede el dashboard de un camping teñir `--primary` con su color, o se mantiene 100 % neutro Logic2B?
-- **Indexación de la demo** — ¿`camp.logic2b.com` se indexa ya en Google? La landing y las guías **sí** se indexan (`robots.txt`), la demo bajo `/demo/` va `noindex`. Confirmar que es lo que se quiere ahora que hay 21 páginas de contenido real que posicionar.
+- **B-iii** — relación entre `packages/ui` y `ui.logic2b.com`. Bloquea el Storybook de la Fase 10.
+- **B-iv** — logotipo completo de Logic2B (hoy solo el isotipo monocromo).
+- **B-v** — ¿puede el dashboard de un camping teñir `--primary` con su color, o se mantiene neutro Logic2B?
+- **Indexación de la demo** — la landing y las guías se indexan; la demo bajo `/demo/` va `noindex`. Confirmar que sigue siendo lo que se quiere.
+- **NUEVA — ¿auditoría con encadenado criptográfico?** La ficha técnica ya dice con precisión lo que el `audit_log` es y lo que no. Construir el append-only con hash solo si un cliente lo exige: su valor frente a un D1 gestionado con PITR es discutible.
 
 ## Cosas que hay que saber antes de tocar nada
 
-- **El `main` local puede quedarse atrás.** Al empezar la sesión 36 estaba **5 commits por detrás** del remoto con el árbol limpio y nada lo delataba. **Haz `git fetch` y compara antes de trabajar.**
-- **`pnpm db:reset` hace `rm -rf .wrangler-demo`** → reinicia el Worker después.
-- **El dashboard necesita el flag de dev**: `wrangler dev … --var LOGIC_CAMP_DEV_ORIGINS:1` (ya en `.claude/launch.json`). Sin él, login 403 en `:5173`.
+- **El `main` local puede quedarse atrás.** Pasó en la sesión 36 (5 commits, árbol limpio, nada lo delataba). **`git fetch` y compara antes de trabajar.**
+- **`pnpm db:reset` hace `rm -rf .wrangler-demo`** → reinicia el Worker después. La base local está **una migración por detrás** si no la reseteas (le faltan las columnas de `0005_rgpd.sql`).
+- **El dashboard necesita el flag de dev**: `--var LOGIC_CAMP_DEV_ORIGINS:1` (ya en `.claude/launch.json`). Sin él, login 403 en `:5173`.
 - **Credenciales del seed** (contraseña `calasereno`): `direccion@` / `gerencia@` / `recepcion@` / `consulta@calasereno.example`.
 - **Cero mocks en el cliente** — propiedad del proyecto. "Modo fake" se resuelve en el seed.
-- **El segfault de workerd sobre `reset.test.ts` es del contenedor cloud, no del código**: en la máquina de Andreu `pnpm check` da **42/42 verde** (confirmado en la sesión 36). Si trabajas en cloud y ves 40/42, es eso; verifica las suites en aislamiento y sigue.
-- **El mapa de color tiene contrato de test** (`packages/ui/test/theme-contrast.test.ts`): cambiar un `--lc-status-*` sin AA rompe la suite.
+- **El segfault de workerd sobre `reset.test.ts` es del contenedor cloud.** En la máquina de Andreu da 42/42 (confirmado de nuevo en la sesión 37). Si ves 40/42 en cloud, es eso.
+- **`vitest-pool-workers` aísla el almacenamiento POR TEST**: lo que crea un `it` no lo ve el siguiente. Solo lo escrito en `beforeAll` persiste. Costó dos vueltas descubrirlo en la sesión 37 — **cada test debe crear sus propios datos**.
+- **Una ruta nueva de API nace con test de fuga cruzada**, sin que nadie haga nada. Si añades una que el barrido no sepa recorrer, `isolation.test.ts` **falla** y te dice qué declarar. No lo silencies metiéndola en excepciones sin motivo real.
+- **`exports/` está en `.gitignore` y debe seguir estando**: contiene documentos de identidad de huéspedes reales.
+- **Si algún día se añade analítica que NO sea cookieless**, hay que revisar la política de cookies y probablemente poner banner. El aviso está escrito en `apps/web/src/lib/legal.ts` y junto a los scripts de `Base.astro`.
+- **El mapa de color tiene contrato de test** (`packages/ui/test/theme-contrast.test.ts`).
 - **El precio lo calcula SIEMPRE el servidor** (`requote`/`move`, ADR 0023).
-- **Deploy de la demo**: `cd apps/api && pnpm run deploy:demo` (compone site+web+dashboard, migra la D1 remota y despliega). **Los assets tardan ~30 s en propagar**: si justo después ves 404 mezclados con 200, no es un fallo — reintenta.
-- **Las docs se despliegan solas**: viven en `apps/site`, cuyo `dist` ES el directorio de assets del Worker. Una página nueva en `src/pages/docs/` no toca el pipeline.
-- **Red bloqueada a `cloudfront.net`**: confirmado en **4 sesiones** distintas. No reintentar en cloud; es tarea de Andreu desde su máquina.
+- **Red bloqueada a `cloudfront.net`**: confirmado en 4 sesiones. Es tarea de Andreu desde su máquina.
 
 ## Verificación sin poder levantar wrangler
 
-Patrón ya usado en C1, C5 y C6: `vite build` real del dashboard + un servidor Node stub que sirve ese bundle y responde `/api/admin/*` con datos calculados del MISMO `generateSeed(2026)` + Playwright/chromium. El stub es un script de sesión y **nunca se commitea**. Para `apps/site` (estático) basta `preview_start` con la config `site` de `.claude/launch.json` (puerto 4330).
+Patrón ya usado en C1, C5 y C6: `vite build` real del dashboard + servidor Node stub que sirve ese bundle y responde `/api/admin/*` con datos del MISMO `generateSeed(2026)` + Playwright. El stub es un script de sesión y **nunca se commitea**. Para `apps/web` y `apps/site` basta `preview_start` con las configs de `.claude/launch.json` (puertos 4321 y 4330) — así se verificaron las páginas legales en la sesión 37.
