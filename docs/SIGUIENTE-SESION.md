@@ -7,7 +7,7 @@
 
 ## Estado en una línea
 
-Frentes B y C **cerrados**, y la **Fase 11 con sus cuatro bloques hechos** (aislamiento, RGPD, observabilidad, copias). Lo que queda del producto ya no es construir: es **desplegar lo de esta sesión** y **conseguir el primer camping real**. Casi todo lo demás está bloqueado por credenciales o por no tener cliente.
+Frentes B y C **cerrados**, y la **Fase 11 con sus cuatro bloques hechos y desplegados** (aislamiento, RGPD, observabilidad, copias). Lo que queda del producto ya no es construir: es **conseguir el primer camping real**. Casi todo lo demás está bloqueado por credenciales o por no tener cliente.
 
 ## ✅ Desplegado y verificado en producción (2026-07-21, versión `f4288603`)
 
@@ -27,7 +27,7 @@ La Fase 11 **está en vivo** en `camp.logic2b.com`. Verificado tras el despliegu
 Logic Camp (SaaS de campings, monorepo pnpm/Turborepo, repo amariner/logic2b-camp).
 Lee primero PROGRESS.md, CLAUDE.md y docs/ROADMAP.md antes de tocar nada.
 
-Estado: main al día en GitHub (commit 586cbef). Frentes B y C cerrados y la Fase 11
+Estado: main al día en GitHub (commit fbf89f7). Frentes B y C cerrados y la Fase 11
 (endurecimiento, ADR 0026) con sus cuatro bloques hechos: aislamiento verificable
 por barrido de las 42 rutas, RGPD operativo (export, supresión que anonimiza y
 niega con fecha, consentimiento con versión, retención en cron, páginas legales),
