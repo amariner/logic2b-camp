@@ -88,11 +88,21 @@ function GuestFields({
       <div className="grid grid-cols-2 gap-2">
         <div>
           <Label htmlFor={`${idPrefix}-name`}>{t('huesped.nombre')}</Label>
-          <Input id={`${idPrefix}-name`} value={form.name} onChange={(e) => set({ name: e.target.value })} className={input} />
+          <Input
+            id={`${idPrefix}-name`}
+            value={form.name}
+            onChange={(e) => set({ name: e.target.value })}
+            className={input}
+          />
         </div>
         <div>
           <Label htmlFor={`${idPrefix}-surname`}>{t('huesped.apellidos')}</Label>
-          <Input id={`${idPrefix}-surname`} value={form.surname} onChange={(e) => set({ surname: e.target.value })} className={input} />
+          <Input
+            id={`${idPrefix}-surname`}
+            value={form.surname}
+            onChange={(e) => set({ surname: e.target.value })}
+            className={input}
+          />
         </div>
       </div>
       <div className="grid grid-cols-[1fr_1.2fr] gap-2">
@@ -114,34 +124,71 @@ function GuestFields({
         </div>
         <div>
           <Label htmlFor={`${idPrefix}-docnum`}>{t('huesped.docNumero')}</Label>
-          <Input id={`${idPrefix}-docnum`} value={form.docNumber} onChange={(e) => set({ docNumber: e.target.value })} className={`${input} tnum`} />
+          <Input
+            id={`${idPrefix}-docnum`}
+            value={form.docNumber}
+            onChange={(e) => set({ docNumber: e.target.value })}
+            className={`${input} tnum`}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <Label htmlFor={`${idPrefix}-birth`}>{t('huesped.nacimiento')}</Label>
-          <Input id={`${idPrefix}-birth`} type="date" value={form.birthdate} onChange={(e) => set({ birthdate: e.target.value })} className={`${input} tnum`} />
+          <Input
+            id={`${idPrefix}-birth`}
+            type="date"
+            value={form.birthdate}
+            onChange={(e) => set({ birthdate: e.target.value })}
+            className={`${input} tnum`}
+          />
         </div>
         <div>
           <Label htmlFor={`${idPrefix}-nat`}>{t('huesped.nacionalidad')}</Label>
-          <Input id={`${idPrefix}-nat`} maxLength={2} value={form.nationality} onChange={(e) => set({ nationality: e.target.value.toUpperCase() })} className={`${input} tnum`} />
+          <Input
+            id={`${idPrefix}-nat`}
+            maxLength={2}
+            value={form.nationality}
+            onChange={(e) => set({ nationality: e.target.value.toUpperCase() })}
+            className={`${input} tnum`}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <Label htmlFor={`${idPrefix}-email`}>{t('huesped.email')}</Label>
-          <Input id={`${idPrefix}-email`} type="email" value={form.email} onChange={(e) => set({ email: e.target.value })} className={input} />
+          <Input
+            id={`${idPrefix}-email`}
+            type="email"
+            value={form.email}
+            onChange={(e) => set({ email: e.target.value })}
+            className={input}
+          />
         </div>
         <div>
           <Label htmlFor={`${idPrefix}-phone`}>{t('huesped.telefono')}</Label>
-          <Input id={`${idPrefix}-phone`} type="tel" value={form.phone} onChange={(e) => set({ phone: e.target.value })} className={`${input} tnum`} />
+          <Input
+            id={`${idPrefix}-phone`}
+            type="tel"
+            value={form.phone}
+            onChange={(e) => set({ phone: e.target.value })}
+            className={`${input} tnum`}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function GuestRow({ bookingId, guest, invalidate }: { bookingId: string; guest: BookingGuest; invalidate: () => void }) {
+function GuestRow({
+  bookingId,
+  guest,
+  invalidate,
+}: {
+  bookingId: string;
+  guest: BookingGuest;
+  invalidate: () => void;
+}) {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<GuestForm>(() => fromGuest(guest));
 
@@ -166,12 +213,29 @@ function GuestRow({ bookingId, guest, invalidate }: { bookingId: string; guest: 
   if (editing)
     return (
       <li className="rounded-(--lc-radius) border border-border/60 p-2">
-        <GuestFields form={form} set={(p) => setForm((f) => ({ ...f, ...p }))} idPrefix={`edit-${guest.id}`} />
+        <GuestFields
+          form={form}
+          set={(p) => setForm((f) => ({ ...f, ...p }))}
+          idPrefix={`edit-${guest.id}`}
+        />
         <div className="mt-2 flex gap-2">
-          <Button type="button" size="xs" disabled={!form.name || !form.surname || save.isPending} onClick={() => save.mutate()}>
+          <Button
+            type="button"
+            size="xs"
+            disabled={!form.name || !form.surname || save.isPending}
+            onClick={() => save.mutate()}
+          >
             {t('ficha.guardarHuesped')}
           </Button>
-          <Button type="button" size="xs" variant="outline" onClick={() => { setForm(fromGuest(guest)); setEditing(false); }}>
+          <Button
+            type="button"
+            size="xs"
+            variant="outline"
+            onClick={() => {
+              setForm(fromGuest(guest));
+              setEditing(false);
+            }}
+          >
             {t('ficha.cancelarEdicion')}
           </Button>
         </div>
@@ -183,7 +247,9 @@ function GuestRow({ bookingId, guest, invalidate }: { bookingId: string; guest: 
       <div className="min-w-0">
         <p className="truncate font-medium">
           {guest.name} {guest.surname}
-          {guest.isLead && <span className="ml-1 text-[11px] text-muted-foreground">· {t('ficha.titular')}</span>}
+          {guest.isLead && (
+            <span className="ml-1 text-[11px] text-muted-foreground">· {t('ficha.titular')}</span>
+          )}
         </p>
         {guest.docNumber && (
           <p className="tnum text-muted-foreground">
@@ -193,19 +259,37 @@ function GuestRow({ bookingId, guest, invalidate }: { bookingId: string; guest: 
         )}
       </div>
       <div className="flex shrink-0 gap-0.5">
-        <Button type="button" size="iconSm" variant="ghost" aria-label={t('ficha.editarHuesped')} title={t('ficha.editarHuesped')} onClick={() => setEditing(true)}>
+        <Button
+          type="button"
+          size="iconSm"
+          variant="ghost"
+          aria-label={t('ficha.editarHuesped')}
+          title={t('ficha.editarHuesped')}
+          onClick={() => setEditing(true)}
+        >
           <Pencil className="size-3.5" />
         </Button>
         {!guest.isLead && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button type="button" size="iconSm" variant="ghost" aria-label={t('ficha.quitarHuesped')} title={t('ficha.quitarHuesped')} disabled={remove.isPending}>
+              <Button
+                type="button"
+                size="iconSm"
+                variant="ghost"
+                aria-label={t('ficha.quitarHuesped')}
+                title={t('ficha.quitarHuesped')}
+                disabled={remove.isPending}
+              >
                 <Trash2 className="size-3.5" />
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('confirmar.quitarHuesped.titulo', { nombre: `${guest.name} ${guest.surname}`.trim() })}</AlertDialogTitle>
+                <AlertDialogTitle>
+                  {t('confirmar.quitarHuesped.titulo', {
+                    nombre: `${guest.name} ${guest.surname}`.trim(),
+                  })}
+                </AlertDialogTitle>
                 <AlertDialogDescription>{t('confirmar.quitarHuesped.desc')}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -222,7 +306,13 @@ function GuestRow({ bookingId, guest, invalidate }: { bookingId: string; guest: 
   );
 }
 
-export default function GuestsSection({ bookingId, guests }: { bookingId: string; guests: BookingGuest[] }) {
+export default function GuestsSection({
+  bookingId,
+  guests,
+}: {
+  bookingId: string;
+  guests: BookingGuest[];
+}) {
   const qc = useQueryClient();
   const invalidate = () => void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
   const [adding, setAdding] = useState(false);
@@ -252,16 +342,35 @@ export default function GuestsSection({ bookingId, guests }: { bookingId: string
         <div className="mt-2 rounded-(--lc-radius) border border-border/60 p-2">
           <GuestFields form={form} set={(p) => setForm((f) => ({ ...f, ...p }))} idPrefix="add" />
           <div className="mt-2 flex gap-2">
-            <Button type="button" size="xs" disabled={!form.name || !form.surname || add.isPending} onClick={() => add.mutate()}>
+            <Button
+              type="button"
+              size="xs"
+              disabled={!form.name || !form.surname || add.isPending}
+              onClick={() => add.mutate()}
+            >
               {t('ficha.guardarHuesped')}
             </Button>
-            <Button type="button" size="xs" variant="outline" onClick={() => { setForm(emptyForm); setAdding(false); }}>
+            <Button
+              type="button"
+              size="xs"
+              variant="outline"
+              onClick={() => {
+                setForm(emptyForm);
+                setAdding(false);
+              }}
+            >
               {t('ficha.cancelarEdicion')}
             </Button>
           </div>
         </div>
       ) : (
-        <Button type="button" size="xs" variant="outline" className="mt-2" onClick={() => setAdding(true)}>
+        <Button
+          type="button"
+          size="xs"
+          variant="outline"
+          className="mt-2"
+          onClick={() => setAdding(true)}
+        >
           <Plus className="size-3.5" />
           {t('ficha.anadirHuesped')}
         </Button>

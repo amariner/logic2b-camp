@@ -64,11 +64,12 @@ export default function BlockDialog({
       onOpenChange(false);
     },
     onError: (e) =>
-      toast.error(e instanceof ApiError && e.status === 409 ? t('bloqueo.ocupado') : t('bloqueo.error')),
+      toast.error(
+        e instanceof ApiError && e.status === 409 ? t('bloqueo.ocupado') : t('bloqueo.error'),
+      ),
   });
 
-  const listo =
-    from < to && (scope === 'unit' ? Boolean(unitId) : Boolean(unitTypeId));
+  const listo = from < to && (scope === 'unit' ? Boolean(unitId) : Boolean(unitTypeId));
 
   const field = 'w-full text-[13px]';
 
