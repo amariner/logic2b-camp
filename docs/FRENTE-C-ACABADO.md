@@ -73,7 +73,7 @@ En producción no se nota (el dashboard vive en `/admin/` del **mismo** Worker, 
 | **C2** | DS completo y conectado | Radix + los primitivos que faltan; los 41 botones crudos pasan a `<Button>`. | 0 `<button>` crudos en el dashboard; `dialog/sheet/toast/command/skeleton/table` existen y se usan |
 | **C3** | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer. Las 11 pantallas a la vez. | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
 | ~~**C4**~~ ✅ | Workflow real de recepción | Check-in, huéspedes y documentos, alta desde el planning, ⌘K. | **HECHO (ADR 0022)** — check-in como `checked_in_at` (no estado), huéspedes editables, cobrar todo, bloqueos desde la UI, ⌘K, rutas `/reservas/$id` `/clientes/$id` |
-| **C5** | Materia: fotos e imagen | Cerrar el hueco de fotos con Higgsfield; densidad real por tipo. | 9 tipos con foto propia; ninguna galería de 1 sola imagen |
+| **C5** 🟨 | Materia: fotos e imagen | Cerrar el hueco de fotos con Higgsfield; densidad real por tipo. | 9 tipos con foto propia; ninguna galería de 1 sola imagen — **PARCIAL (ADR 0024)**: lista de prompts cerrada y código listo, descarga bloqueada por red del contenedor (script listo); capturas reales del producto + OG image, hechas |
 | **C6** | Documentación (absorbe B4) | Guía de recepcionista, guía de dueño, ficha técnica. Con esencia Logic2B. | Un cliente resuelve una duda de uso sin escribir a soporte |
 | **C7** | **Plano del camping** | Vista cenital de parcelas y alojamientos con estado en vivo. Base ya resuelta en `gestor-reservas`. | Se ve el camping de verdad y se salta plano ↔ planning ↔ ficha |
 
@@ -215,30 +215,25 @@ Aquí "todo previsto y pensado" es literal: el flujo tiene que existir aunque pa
 
 ---
 
-## C5 · Materia: fotos e imagen
+## C5 · Materia: fotos e imagen — 🟨 PARCIAL (ADR 0024, 2026-07-21)
 
 `CLAUDE.md` dice **"materia, no vector"**, y el antimodelo está explícito: ni SaaS azul isométrico ni crema+serif+terracota.
 
-### C5.1 — Cerrar el hueco de fotos (Higgsfield)
+> **Resuelto en ADR 0024**, con un matiz importante descubierto al auditar: **las 6 fotos que hacían falta ya estaban generadas** desde la sesión 8 (prompts fijados, cumplen la dirección de arte del contrato) — el hueco nunca fue de prompt ni de crédito, es de **descarga**, bloqueada por la política de red del contenedor (`cloudfront.net`, 403, verificado de nuevo esta sesión — 3ª vez consecutiva, mismo motivo que Fase 9 con las credenciales de Cloudflare: bloqueo de entorno, no de código). Por eso C5.1 queda 🟨 en vez de ✅. C5.2 (imagen del propio producto) **no depende de red externa** y se completó entera.
 
-Faltan **4 ficheros ya referenciados en código** (`src/lib/fotos.ts:12,13,21-24`), más densidad de galería:
+### C5.1 — Cerrar el hueco de fotos (Higgsfield) — 🟨 código listo, activos pendientes de red
 
-- [ ] `tipo-premium` — parcela grande con sombra de pino, suelo de arena compactada, toma de servicios visible
-- [ ] `tipo-autocaravana` — plaza de autocaravana, hormigón + gravilla, luz de media tarde
-- [ ] `detalle-bungalow-interior` — interior sencillo y limpio, luz natural, sin estilismo de catálogo
-- [ ] `detalle-glamping-interior` — interior de tienda safari, lona, textil natural
-- [ ] **2ª foto por tipo** donde la galería es de una sola imagen (bungalow, mobil, glamping): hoy la "galería" del detalle es de un elemento.
-- [ ] Descargar las **6 ya generadas** que siguen pendientes de bajar (IDs en `PROGRESS.md`): interiores, piscina, restaurante, premium, autocaravana.
+- [x] **Lista definitiva de prompts — cerrada** (tabla completa en ADR 0024 §1): `tipo-premium`, `tipo-autocaravana`, `detalle-bungalow-interior`, `detalle-glamping-interior`, `instalacion-piscina`, `instalacion-restaurante`. Los 6 ya generados (Soul 2.0, sesión 8), UUIDs en `docs/BACKLOG.md`. **No se generó nada nuevo esta sesión** — no hacía falta, y regenerar no habría resuelto el bloqueo de descarga (misma CDN).
+- [x] **2ª foto por tipo** (bungalow, mobil, glamping): se resuelve SOLA al descargar `detalle-bungalow-interior`/`detalle-glamping-interior` — `fotos.ts` ya compone `[principal, detalle]` sin duplicados; no hacía falta ni una foto más ni un cambio de código.
+- [ ] **Descarga real**: bloqueada en este contenedor. Script listo para ejecutar desde cualquier máquina con salida a `cloudfront.net` (la de Andreu, o una sesión con otra política de red): `pnpm --filter @tenant/demo fetch:fotos` (`tenants/demo/scripts/fetch-higgsfield-fotos.mjs`) — descarga las 6, optimiza a WebP ~2000px `q78` y las deja con el nombre correcto en `tenants/demo/content/media/`. Es una tarea de minutos, no de código.
 
-**Dirección de arte, común a todas** — pino carrasco, sombra real, lona, arena compactada, luz mediterránea de mañana o de última hora (nunca mediodía plano), sin personas reconocibles, sin saturación de folleto, sin HDR. Coherencia de hora y estación entre todas.
+**Dirección de arte, común a todas** — pino carrasco (Aleppo), sombra real, lona, arena compactada, luz mediterránea de mañana o de última hora (nunca mediodía plano), sin personas reconocibles, sin saturación de folleto, sin HDR. Coherencia de hora y estación entre todas — verificado en los 6 prompts (ADR 0024 §1).
 
-**Antes de generar en Higgsfield**: fijar la lista definitiva y los prompts, y confirmar la tanda. Cada generación cuesta créditos y no quiero quemarlos a ciegas.
+### C5.2 — Imagen del producto (no del camping) — ✅ hecho
 
-### C5.2 — Imagen del producto (no del camping)
-
-- [ ] **Capturas reales del planning** para la landing y las docs — y esto **depende de C0.2**: capturar el planning vacío de hoy sería contraproducente. Es la razón de ordenar el seed primero.
-- [ ] OG image de la landing de producto (pendiente en BACKLOG).
-- [ ] Ilustraciones discretas de estado vacío (C3), en la línea Logic2B: monocromo, trazo, nada de mascotas ni isometrías.
+- [x] **Capturas reales del planning y del plano** — bundle real del dashboard (`vite build`) + stub Node servido con datos del MISMO generador de seed puro (`generateSeed(2026)`) + Playwright/chromium, sin workerd (mismo patrón que C1/ADR 0023). La del planning sustituye la maqueta CSS de `apps/site/src/components/Landing.astro` → cierra `docs/BACKLOG.md` **[B3]**. La del plano queda en `docs/img/` como activo para **C6** (no hay sección de plano en la landing hoy).
+- [x] **OG image de la landing** — tarjeta de marca Logic2B (tokens oklch de `packages/ui/src/theme.css`, isotipo, Space Grotesk), 1200×630, renderizada con Playwright — **no** es una foto del camping (la landing es superficie Logic2B, `BRAND.md` §0, no la marca mediterránea del tenant).
+- [ ] Ilustraciones discretas de estado vacío (C3) — ya hechas en C3, sin pendiente nuevo aquí.
 
 ---
 
@@ -327,7 +322,7 @@ Depende de **C0.2** (con el seed vacío, un plano en el que casi todo está libr
 | ~~**C-BUG-2**~~ ✅ | `apps/dashboard/src/styles.css` | `--color-mar: var(--foreground)` → los errores en negro. **Arreglado en ADR 0020** — tampoco era lo que parecía: `mar` tenía **dos significados** (de sus 44 usos, 4 eran enlaces `mailto:`/`tel:`), así que reapuntarlo a `--destructive` habría pintado los contactos en rojo. Se partió por significado: token `--link` propio para enlaces, `--destructive` para el resto. El puente de alias entero se eliminó | C2 ✅ |
 | **C-BUG-3** | `apps/api/src/auth.ts` | Sin `trustedOrigins` → **403 en el login del dev server** (`:5173`). Bloquea el HMR del dashboard | C0.1 |
 | ~~**C-BUG-4**~~ ✅ | `apps/dashboard/src/pages/Planning.tsx:5` | Comentario obsoleto: decía que el D&D "llega en la sesión 17"; estaba implementado abajo. **Arreglado en ADR 0020** al pasar por el fichero | C2 ✅ |
-| **C-BUG-5** | `apps/web/src/lib/fotos.ts:12,13,21-24` | 4 ficheros de imagen inexistentes; `ut_prem`/`ut_moto` sin foto propia | C5.1 |
+| **C-BUG-5** 🟨 | `apps/web/src/lib/fotos.ts:12,13,21-24` | 4 ficheros de imagen inexistentes; `ut_prem`/`ut_moto` sin foto propia. **Código sin bug de degradación** (cae a `tipo-parcela` con honestidad) — los 4 ficheros ya están generados (ADR 0024), solo falta descargarlos (bloqueo de red del contenedor, script en `tenants/demo/scripts/fetch-higgsfield-fotos.mjs`) | C5.1 |
 | **C-BUG-6** | `apps/dashboard/src/pages/Planning.tsx:199` | **Encontrado en ADR 0020.** El resaltado de la celda destino al arrastrar se pintaba con `var(--lc-pino)`, variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web) → declaración inválida, resaltado **invisible**. Resto de ADR 0008, cuando el dashboard compartía paleta con la web. Arreglado a `var(--primary)` | C2 ✅ |
 
 ## 3. Remates menores de la web (no bloquean, pero suman)
