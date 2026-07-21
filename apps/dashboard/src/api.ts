@@ -26,6 +26,7 @@ export const apiPatch = <T>(path: string, body: unknown) =>
   request<T>(path, { method: 'PATCH', body: JSON.stringify(body) });
 export const apiPut = <T>(path: string, body: unknown) =>
   request<T>(path, { method: 'PUT', body: JSON.stringify(body) });
+export const apiDelete = <T>(path: string) => request<T>(path, { method: 'DELETE' });
 
 // ---------- tipos de /api/admin/planning (el SELECT del tape chart) ----------
 
@@ -44,6 +45,9 @@ export type PlanningBooking = {
   dateFrom: string;
   dateTo: string;
   occupancy: { adults: number; childrenAges: number[] };
+  /** "en casa" (ADR 0022) se deriva de estos dos, no del status */
+  checkedInAt: string | null;
+  checkedOutAt: string | null;
 };
 export type PlanningBlock = {
   id: string;
@@ -85,6 +89,8 @@ export type BookingGuest = {
   phone: string | null;
   docType: string | null;
   docNumber: string | null;
+  birthdate: string | null;
+  nationality: string | null;
   isLead: boolean;
 };
 
@@ -119,6 +125,8 @@ export type BookingDetail = {
   touristTaxCents: number;
   depositCents: number;
   notes: string | null;
+  checkedInAt: string | null;
+  checkedOutAt: string | null;
   locale: string;
   createdAt: string;
   guests: BookingGuest[];
@@ -142,6 +150,8 @@ export type BookingListItem = {
   totalCents: number;
   paidCents: number;
   notes: string | null;
+  checkedInAt: string | null;
+  checkedOutAt: string | null;
   createdAt: string;
 };
 

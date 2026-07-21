@@ -57,6 +57,16 @@ export {
 
 export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/table';
 
+export {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from './components/command';
+
 export { Input, Label, SelectNative, Textarea } from './components/input';
 export { Checkbox, Switch } from './components/controls';
 

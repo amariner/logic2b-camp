@@ -37,6 +37,7 @@ import { StrictMode, useState } from 'react';
 import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
+import CommandPalette from './components/CommandPalette';
 import { RouteError, RouteNotFound } from './components/RouteError';
 import { t } from './i18n';
 import Ajustes from './pages/Ajustes';
@@ -211,6 +212,9 @@ function Shell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Outlet />
       </div>
+
+      {/* Paleta ⌘K global (ADR 0022): buscar reserva/cliente/unidad y saltar */}
+      <CommandPalette />
     </div>
   );
 }
@@ -246,7 +250,10 @@ const routes = [
   createRoute({ getParentRoute: () => rootRoute, path: '/llegadas', component: Llegadas }),
   createRoute({ getParentRoute: () => rootRoute, path: '/solicitudes', component: Solicitudes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/reservas', component: Reservas }),
+  // rutas direccionables (ADR 0022 §4): una reserva/cliente se puede enviar por URL
+  createRoute({ getParentRoute: () => rootRoute, path: '/reservas/$id', component: Reservas }),
   createRoute({ getParentRoute: () => rootRoute, path: '/clientes', component: Clientes }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/clientes/$id', component: Clientes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/informes', component: Informes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/inventario', component: Inventario }),
   createRoute({ getParentRoute: () => rootRoute, path: '/tarifas', component: Tarifas }),

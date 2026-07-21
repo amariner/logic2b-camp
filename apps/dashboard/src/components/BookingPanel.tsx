@@ -19,11 +19,15 @@ import {
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { DoorOpen, LogOut, Undo2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail } from '../api';
 import { t } from '../i18n';
 import { conceptLabel, eur, fecha, noches } from '../lib/format';
+import GuestsSection from './GuestsSection';
 import { QueryError } from './QueryError';
+
+type RecepcionAction = 'check_in' | 'check_out' | 'undo_checkin';
 
 /** Espejo de TRANSITIONS del servidor: qué botones enseñar por estado. */
 const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
@@ -120,6 +124,31 @@ export default function BookingPanel({
     onError: () => toast.error(t('ficha.pagoError')),
   });
 
+  // check-in / check-out (ADR 0022): hechos de recepción, no transiciones. "En
+  // casa" se deriva; el servidor valida la precondición SIEMPRE.
+  const recepcion = useMutation({
+    mutationFn: (action: RecepcionAction) =>
+      apiPatch<{ id: string; status?: BookingDetail['status'] }>(
+        `/api/admin/bookings/${bookingId}`,
+        { action },
+      ),
+    onSuccess: (_res, action) => {
+      toast.success(
+        t(
+          action === 'check_in'
+            ? 'ficha.checkinHecho'
+            : action === 'check_out'
+              ? 'ficha.checkoutHecho'
+              : 'ficha.checkinDeshecho',
+        ),
+      );
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+      void qc.invalidateQueries({ queryKey: ['planning'] });
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: () => toast.error(t('ficha.checkinError')),
+  });
+
   // reembolso (ADR 0011): si hay cobro de pasarela detrás, el servidor llama
   // primero a provider.refund — aquí solo se ofrece la acción, SIEMPRE valida el servidor
   const refund = useMutation({
@@ -136,12 +165,13 @@ export default function BookingPanel({
     onError: () => toast.error(t('ficha.reembolsoError')),
   });
 
-  const lead = data?.guests.find((g) => g.isLead) ?? data?.guests[0];
-  const companions = data?.guests.filter((g) => g !== lead) ?? [];
   const unitCode = data?.unitCode ?? null;
   const n = data ? noches(data.dateFrom, data.dateTo) : 0;
   const pax = data ? data.occupancy.adults + data.occupancy.childrenAges.length : 0;
   const pendingCents = data ? data.totalCents - data.paidCents : 0;
+  // "en casa" (ADR 0022): huésped presente. NO es un status — se deriva.
+  const inHouse = Boolean(data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt);
+  const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
 
   return (
     <aside
@@ -155,7 +185,11 @@ export default function BookingPanel({
         {data && (
           <>
             <span className="tnum text-[14px] font-semibold">{data.code}</span>
-            <span className={`lc-chip st-${data.status}`}>{t(`estado.${data.status}`)}</span>
+            {inHouse ? (
+              <span className="lc-chip st-inhouse">{t('ficha.enCasa')}</span>
+            ) : (
+              <span className={`lc-chip st-${data.status}`}>{t(`estado.${data.status}`)}</span>
+            )}
           </>
         )}
         <Button
@@ -220,34 +254,74 @@ export default function BookingPanel({
             </dl>
           </section>
 
-          {/* titular y acompañantes */}
-          {lead && (
+          {/* recepción: check-in / check-out (ADR 0022). "En casa" se deriva. */}
+          {(canCheckIn || inHouse) && (
             <section>
-              <h3 className="lc-panel-h">{t('ficha.titular')}</h3>
-              <p className="font-medium">
-                {lead.name} {lead.surname}
-              </p>
-              {lead.email && <p className="text-muted-foreground">{lead.email}</p>}
-              {lead.phone && <p className="tnum text-muted-foreground">{lead.phone}</p>}
-              {lead.docNumber && (
-                <p className="tnum text-muted-foreground">
-                  {lead.docType?.toUpperCase()} {lead.docNumber}
-                </p>
+              <h3 className="lc-panel-h">{t('ficha.recepcion')}</h3>
+              {canCheckIn && (
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={recepcion.isPending}
+                  onClick={() => recepcion.mutate('check_in')}
+                >
+                  <DoorOpen className="size-4" />
+                  {t('ficha.hacerCheckin')}
+                </Button>
               )}
-              {companions.length > 0 && (
-                <>
-                  <h3 className="lc-panel-h mt-2">{t('ficha.acompanantes')}</h3>
-                  <ul>
-                    {companions.map((g) => (
-                      <li key={g.id}>
-                        {g.name} {g.surname}
-                      </li>
-                    ))}
-                  </ul>
-                </>
+              {inHouse && data.checkedInAt && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-muted-foreground">
+                    <span className="lc-chip st-inhouse mr-1.5">{t('ficha.enCasa')}</span>
+                    {t('ficha.entradaEl', { fecha: fecha(data.checkedInAt) })}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {/* check-out cierra la cuenta (completa). Confirma, y avisa si
+                        queda pendiente por cobrar. */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button type="button" size="sm" disabled={recepcion.isPending}>
+                          <LogOut className="size-4" />
+                          {t('accion.check_out')}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t('confirmar.checkout.titulo')}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {pendingCents > 0
+                              ? t('confirmar.checkout.descPendiente', {
+                                  importe: eur(pendingCents, data.priceBreakdown.currency),
+                                })
+                              : t('confirmar.checkout.desc')}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => recepcion.mutate('check_out')}>
+                            {t('confirmar.checkout.ok')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={recepcion.isPending}
+                      onClick={() => recepcion.mutate('undo_checkin')}
+                    >
+                      <Undo2 className="size-4" />
+                      {t('accion.undo_checkin')}
+                    </Button>
+                  </div>
+                </div>
               )}
             </section>
           )}
+
+          {/* huéspedes editables (ADR 0022): parte de viajeros */}
+          {data.guests.length >= 0 && <GuestsSection bookingId={data.id} guests={data.guests} />}
 
           {/* desglose auditable: las líneas mandan, el total es su suma */}
           <section>
@@ -316,6 +390,18 @@ export default function BookingPanel({
 
             {(data.status === 'pending' || data.status === 'confirmed') && (
               <div className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-2">
+                {/* cobrar todo lo pendiente en un gesto (ADR 0022): hasta ahora
+                    había que leer la cifra arriba y teclearla a mano. */}
+                {pendingCents > 0 && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={recordPayment.isPending}
+                    onClick={() => recordPayment.mutate({ amountCents: pendingCents, method: payMethod })}
+                  >
+                    {t('ficha.cobrarTodo', { importe: eur(pendingCents, data.priceBreakdown.currency) })}
+                  </Button>
+                )}
                 <div className="flex items-center gap-1.5">
                   <input
                     type="text"
@@ -338,7 +424,12 @@ export default function BookingPanel({
                   <Button
                     type="button"
                     size="sm"
-                    disabled={toCents(payAmount) <= 0 || recordPayment.isPending}
+                    // no se puede cobrar más de lo pendiente (validado también en servidor)
+                    disabled={
+                      toCents(payAmount) <= 0 ||
+                      toCents(payAmount) > pendingCents ||
+                      recordPayment.isPending
+                    }
                     onClick={() =>
                       recordPayment.mutate({ amountCents: toCents(payAmount), method: payMethod })
                     }
@@ -346,6 +437,9 @@ export default function BookingPanel({
                     {t('ficha.registrarPago')}
                   </Button>
                 </div>
+                {toCents(payAmount) > pendingCents && payAmount.trim() !== '' && (
+                  <p className="text-[12px] font-medium text-destructive">{t('ficha.pagoExcede')}</p>
+                )}
                 {data.paidCents > 0 && (
                   <div className="flex items-center gap-1.5">
                     <input

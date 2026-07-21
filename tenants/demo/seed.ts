@@ -635,6 +635,14 @@ export function generateSeed(anchorYear: number): SeedData {
       gdpr_consent_at: now,
     });
     booking_guests.push({ booking_id: id, guest_id: gid, is_lead: true });
+    // Check-in de demostración (ADR 0022): las confirmadas que están EN CASA en el
+    // ancla del seed (Y-07-15, el "hoy" del seed) ya hicieron check-in — salvo ~1
+    // de cada 5, que "solo tiene reserva, no ha llegado". Así el planning y el plano
+    // enseñan la mezcla "en casa / confirmada / entra hoy" sin un mock en el cliente.
+    // Puro: solo depende de anchorYear (el reset nocturno depende del determinismo).
+    const inHouseAtAnchor =
+      opts.status === 'confirmed' && opts.from <= anchor && anchor < opts.to;
+    const checkedIn = inHouseAtAnchor && bkgN % 5 !== 0;
     bookings.push({
       id,
       tenant_id: T,
@@ -653,6 +661,8 @@ export function generateSeed(anchorYear: number): SeedData {
       tourist_tax_cents: breakdown.touristTaxCents,
       deposit_cents: opts.typeId.startsWith('ut_bung') || opts.typeId === 'ut_mobil' ? 10000 : 0,
       notes: opts.notes ?? null,
+      checked_in_at: checkedIn ? `${anchor}T09:30:00.000Z` : null,
+      checked_out_at: null,
       locale,
       created_at: now,
       updated_at: now,

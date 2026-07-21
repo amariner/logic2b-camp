@@ -40,6 +40,20 @@ describe('seed demo Cala Sereno', () => {
     expect(new Set(placed).size).toBe(placed.length);
   });
 
+  it('CHECK-IN (ADR 0022): hay huéspedes "en casa" en el ancla, y solo confirmadas', () => {
+    const anchor = data.anchor;
+    const checkedIn = data.bookings.filter((b) => b.checked_in_at !== null);
+    // el planning/plano de la demo tienen que enseñar la mezcla "en casa"
+    expect(checkedIn.length).toBeGreaterThan(0);
+    // "en casa" solo se estampa sobre confirmadas presentes en el ancla; nadie
+    // con check-in ha hecho check-out todavía (seguiría 'confirmed', no completada)
+    for (const b of checkedIn) {
+      expect(b.status).toBe('confirmed');
+      expect(b.checked_out_at).toBeNull();
+      expect(b.date_from <= anchor && anchor < b.date_to).toBe(true);
+    }
+  });
+
   it('incluye los casos límite: cancelada, no-show, sin asignar, larga estancia, grupo', () => {
     const statuses = data.bookings.map((b) => b.status);
     expect(statuses).toContain('cancelled');

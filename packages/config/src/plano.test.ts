@@ -146,6 +146,26 @@ describe('unitStateOn', () => {
     expect(s).toEqual({ kind: 'free' });
   });
 
+  it('en casa (ADR 0022): check-in hecho, check-out no → inhouse en noche intermedia', () => {
+    const s = unitStateOn('2026-08-12', 'u1', [b({ checkedInAt: '2026-08-10T10:00:00Z' })], []);
+    expect(s).toMatchObject({ kind: 'inhouse', bookingId: 'bkg', status: 'confirmed' });
+  });
+
+  it('en casa manda sobre "entra hoy": si ya hizo check-in el día de llegada, está dentro', () => {
+    const s = unitStateOn('2026-08-10', 'u1', [b({ checkedInAt: '2026-08-10T10:00:00Z' })], []);
+    expect(s.kind).toBe('inhouse');
+  });
+
+  it('tras check-out ya no está en casa (checkedOutAt !=null) → ocupada normal', () => {
+    const s = unitStateOn(
+      '2026-08-12',
+      'u1',
+      [b({ checkedInAt: '2026-08-10T10:00:00Z', checkedOutAt: '2026-08-12T09:00:00Z' })],
+      [],
+    );
+    expect(s.kind).toBe('occupied');
+  });
+
   it('bloqueada por avería', () => {
     const blk: PlanoBlockRange = {
       unitId: 'u1',

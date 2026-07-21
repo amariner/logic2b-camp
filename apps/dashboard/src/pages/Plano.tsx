@@ -19,9 +19,10 @@ import {
 import { Button, EmptyState, Skeleton } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { CalendarRange } from 'lucide-react';
+import { Ban, CalendarRange } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import { apiGet, type MapData, type PlanningData, type PlanningUnit } from '../api';
+import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
 import CampingMap from '../components/CampingMap';
 import { QueryError } from '../components/QueryError';
@@ -37,6 +38,7 @@ const addDays = (isoDate: string, n: number) =>
 /** Leyenda: los mismos colores que el planning, explicados. */
 const LEGEND: { key: TKey; className: string }[] = [
   { key: 'plano.estado.libre', className: 'lg-free' },
+  { key: 'plano.estado.enCasa', className: 'lg-inhouse' },
   { key: 'plano.estado.ocupada', className: 'lg-confirmed' },
   { key: 'plano.estado.ocupadaPend', className: 'lg-pending' },
   { key: 'plano.estado.entra', className: 'lg-arrival' },
@@ -119,6 +121,9 @@ export default function Plano() {
         unitId: b.unitId,
         dateFrom: b.dateFrom,
         dateTo: b.dateTo,
+        // "en casa" (ADR 0022): unitStateOn lo deriva de estos dos
+        checkedInAt: b.checkedInAt,
+        checkedOutAt: b.checkedOutAt,
       })),
     [data],
   );
@@ -144,6 +149,7 @@ export default function Plano() {
 
   const selectedCode = search.unit ? (codeById.get(search.unit) ?? null) : null;
   const [openId, setOpenId] = useState<string | null>(null);
+  const [bloqueoAbierto, setBloqueoAbierto] = useState(false);
   const openerRef = useRef<HTMLElement | null>(null);
 
   const onSelectUnit = (code: string) => {
@@ -183,6 +189,10 @@ export default function Plano() {
           <Button variant="outline" size="sm" onClick={openInPlanning} title={t('plano.verEnPlanning')}>
             <CalendarRange className="size-4" />
             {t('plano.verEnPlanning')}
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setBloqueoAbierto(true)} title={t('bloqueo.crear')}>
+            <Ban className="size-4" />
+            {t('bloqueo.crear')}
           </Button>
           {data && (
             <p className="tnum ml-auto text-[12px] text-muted-foreground">
@@ -232,6 +242,12 @@ export default function Plano() {
           }}
         />
       )}
+      <BlockDialog
+        open={bloqueoAbierto}
+        onOpenChange={setBloqueoAbierto}
+        defaultUnitId={search.unit}
+        defaultDate={date}
+      />
     </div>
   );
 }

@@ -126,6 +126,13 @@
   --lc-status-confirmed: var(--primary);
   --lc-status-confirmed-fg: var(--primary-foreground);
 
+  /* "En casa" (ADR 0022): huésped presente. Verde esmeralda sólido — distinto
+     del negro de `confirmed` y del ámbar de `pending`, para que el mostrador
+     distinga de un vistazo "está dentro" de "solo tiene reserva". L=0.5 da 5.5:1
+     con texto blanco (AA con margen, verificado). El mapa definitivo lo fija C1.5. */
+  --lc-status-inhouse: oklch(50% 0.14 152);
+  --lc-status-inhouse-fg: oklch(100% 0 0);
+
   /* Ámbar. Valor explícito, no var(--chart-4): ver arriba. */
   --lc-status-pending: oklch(82.8% 0.189 84.429);
   --lc-status-pending-fg: oklch(14.5% 0 0);
@@ -173,6 +180,8 @@
 
   --color-status-confirmed: var(--lc-status-confirmed);
   --color-status-confirmed-fg: var(--lc-status-confirmed-fg);
+  --color-status-inhouse: var(--lc-status-inhouse);
+  --color-status-inhouse-fg: var(--lc-status-inhouse-fg);
   --color-status-pending: var(--lc-status-pending);
   --color-status-pending-fg: var(--lc-status-pending-fg);
   --color-status-no-show: var(--lc-status-no-show);

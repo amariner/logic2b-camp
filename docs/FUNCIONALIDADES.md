@@ -251,6 +251,14 @@ Cada email que el sistema ha intentado enviar (o ha decidido no enviar), en una 
 
 Todos los cobros y reembolsos del camping en una sola lista, filtrable por proveedor (pasarela o manual) y por estado, con la reserva de origen, el importe (los reembolsos en negativo) y la fecha — sin tener que abrir ficha por ficha para saber qué ha cobrado la pasarela hoy.
 
+### 6.16 Recepción: check-in, check-out y huéspedes
+
+El acto central del mostrador. Cuando un huésped llega, recepción hace **check-in** desde la lista de llegadas del día, desde el plano o desde la ficha, y esa unidad pasa a pintarse **"en casa"** (verde) en el planning y en el plano — de un vistazo se distingue quién está dentro de quién solo tiene reserva. El **check-out** cierra la cuenta: avisa de lo que quede pendiente, deja cobrar en el mismo gesto y completa la reserva. Un clic erróneo se deshace.
+
+En la ficha, los **huéspedes** de la reserva se editan (no solo se ven): añadir un acompañante, corregir su documento, nacimiento y nacionalidad, o quitarlo. Es la base del **parte de viajeros**, obligatorio en un camping español.
+
+Además: **"cobrar todo lo pendiente"** en un botón (sin teclear la cifra), **crear un bloqueo** de una unidad o de un tipo (avería, propietario) desde el planning o el plano, y **⌘K** para buscar una reserva por código, un cliente por nombre o una unidad y saltar. Una reserva o un cliente tienen su propia dirección (`/reservas/…`, `/clientes/…`): se pueden enviar por enlace a un compañero.
+
 ---
 
 ## 7. Solicitudes: nada se pierde

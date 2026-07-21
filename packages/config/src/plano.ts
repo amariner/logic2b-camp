@@ -240,6 +240,9 @@ export type PlanoBooking = {
   unitId: string | null;
   dateFrom: string;
   dateTo: string;
+  /** Check-in / check-out (ADR 0022): "en casa" se DERIVA, no es un status. */
+  checkedInAt?: string | null;
+  checkedOutAt?: string | null;
 };
 
 export type PlanoBlockRange = {
@@ -254,11 +257,19 @@ export type UnitDayState =
   | { kind: 'blocked'; reason: string }
   | { kind: 'occupied'; bookingId: string; status: string; turnover: boolean }
   | { kind: 'arrival'; bookingId: string; status: string; turnover: boolean }
+  | { kind: 'inhouse'; bookingId: string; status: string; turnover: boolean }
   | { kind: 'departure'; bookingId: string; status: string };
 
 /** Solo las reservas activas ocupan inventario (las canceladas dejan hueco real). */
 const OCCUPIES = (status: string) =>
   status === 'confirmed' || status === 'pending' || status === 'completed';
+
+/**
+ * "En casa" (ADR 0022) se DERIVA: huésped presente = check-in hecho y check-out
+ * no. Es ortogonal al status (la reserva sigue 'confirmed'), por eso no toca
+ * `OCCUPIES` ni ningún filtro de ocupación.
+ */
+const IN_HOUSE = (b: PlanoBooking) => Boolean(b.checkedInAt) && !b.checkedOutAt;
 
 /**
  * Qué le pasa a una unidad la noche del `date` (ISO `YYYY-MM-DD`, from inclusive,
@@ -280,9 +291,12 @@ export function unitStateOn(
 
   if (occupant) {
     const turnover = !!departing;
+    const base = { bookingId: occupant.id, status: occupant.status, turnover };
+    // "en casa" manda sobre "entra hoy"/"ocupada": el huésped ya está dentro.
+    if (IN_HOUSE(occupant)) return { kind: 'inhouse', ...base };
     return occupant.dateFrom === date
-      ? { kind: 'arrival', bookingId: occupant.id, status: occupant.status, turnover }
-      : { kind: 'occupied', bookingId: occupant.id, status: occupant.status, turnover };
+      ? { kind: 'arrival', ...base }
+      : { kind: 'occupied', ...base };
   }
   if (departing) return { kind: 'departure', bookingId: departing.id, status: departing.status };
 

@@ -72,6 +72,12 @@ html {
   background: var(--lc-status-confirmed);
   color: var(--lc-status-confirmed-fg);
 }
+/* "en casa" (ADR 0022): huésped presente. Se DERIVA (checkedInAt), no es un status. */
+.lc-bar.st-inhouse,
+.lc-chip.st-inhouse {
+  background: var(--lc-status-inhouse);
+  color: var(--lc-status-inhouse-fg);
+}
 .lc-bar.st-pending,
 .lc-chip.st-pending {
   background: var(--lc-status-pending);
@@ -174,6 +180,9 @@ html {
 }
 .plano-lg.lg-confirmed {
   background: var(--lc-status-confirmed);
+}
+.plano-lg.lg-inhouse {
+  background: var(--lc-status-inhouse);
 }
 .plano-lg.lg-pending {
   background: var(--lc-status-pending);

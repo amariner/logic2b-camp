@@ -72,7 +72,7 @@ En producción no se nota (el dashboard vive en `/admin/` del **mismo** Worker, 
 | **C1** | El planning como pieza de exhibición | El elemento firma, a la altura de su declaración. Gesto horizontal, línea de hoy, crear arrastrando, deshacer. | Un director de camping alarga una estancia arrastrando y dice "espera, ¿eso se puede?" |
 | **C2** | DS completo y conectado | Radix + los primitivos que faltan; los 41 botones crudos pasan a `<Button>`. | 0 `<button>` crudos en el dashboard; `dialog/sheet/toast/command/skeleton/table` existen y se usan |
 | **C3** | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer. Las 11 pantallas a la vez. | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
-| **C4** | Workflow real de recepción | Check-in, huéspedes y documentos, alta desde el planning, ⌘K. | Se opera una llegada completa de principio a fin sin salir del planning |
+| ~~**C4**~~ ✅ | Workflow real de recepción | Check-in, huéspedes y documentos, alta desde el planning, ⌘K. | **HECHO (ADR 0022)** — check-in como `checked_in_at` (no estado), huéspedes editables, cobrar todo, bloqueos desde la UI, ⌘K, rutas `/reservas/$id` `/clientes/$id` |
 | **C5** | Materia: fotos e imagen | Cerrar el hueco de fotos con Higgsfield; densidad real por tipo. | 9 tipos con foto propia; ninguna galería de 1 sola imagen |
 | **C6** | Documentación (absorbe B4) | Guía de recepcionista, guía de dueño, ficha técnica. Con esencia Logic2B. | Un cliente resuelve una duda de uso sin escribir a soporte |
 | **C7** | **Plano del camping** | Vista cenital de parcelas y alojamientos con estado en vivo. Base ya resuelta en `gestor-reservas`. | Se ve el camping de verdad y se salta plano ↔ planning ↔ ficha |
@@ -179,7 +179,9 @@ Once pantallas, un puñado de piezas transversales. Probablemente la mejor relac
 
 ---
 
-## C4 · Workflow real de recepción
+## C4 · Workflow real de recepción — ✅ HECHO (ADR 0022, 2026-07-21)
+
+> **La decisión de fondo (§C4.1) se cerró: `checked_in_at`, no un estado `in_house`.** Un estado nuevo caería fuera de ~8 filtros por `status` (ocupación, informes, solape) y olvidar uno es un doble-booking; el campo no toca ninguno y "en casa" se deriva. Migración aditiva `0004` (dos columnas nulables). Hecho: check-in/check-out/deshacer (TRANSITIONS intacto), huéspedes y documentos editables (añadir/editar/quitar acompañante), "cobrar todo lo pendiente" con guarda ≤pendiente (cliente y servidor), crear/levantar bloqueos desde el planning **y** el plano, ⌘K (`cmdk`) buscando reserva/cliente/unidad, rutas direccionables `/reservas/$id` y `/clientes/$id`. Token `--lc-status-inhouse` (verde esmeralda, AA 5.5:1) en barra, plano y leyenda; `unitStateOn` gana `inhouse`. Seed: check-in de demostración sobre las confirmadas presentes en el ancla (puro, determinista). **Diferido** (BACKLOG): export del parte de viajeros (formato legal), recibo imprimible del check-out, crear reserva arrastrando (es C1.2).
 
 Aquí "todo previsto y pensado" es literal: el flujo tiene que existir aunque parte se resuelva en modo fake.
 

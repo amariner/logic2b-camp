@@ -339,6 +339,188 @@ describe('reservas privadas', () => {
   });
 });
 
+describe('check-in / check-out (ADR 0022)', () => {
+  const IP = { 'cf-connecting-ip': 'test-checkin' };
+  // todas las peticiones de este bloque van por la MISMA IP (bucket de rate-limit
+  // propio): un GET sin cabecera cae al bucket 'local' compartido de todo el fichero.
+  const get = (url: string) => app.request(url, { headers: { cookie: reception, ...IP } }, envA);
+  const act = (id: string, body: unknown) =>
+    app.request(`/api/admin/bookings/${id}`, patch(body, reception, IP), envA);
+  const mkConfirmed = async (from: string, to: string) => {
+    const r = await app.request(
+      '/api/admin/bookings',
+      { ...json(bookingBody(from, to)), headers: { 'content-type': 'application/json', cookie: reception, ...IP } },
+      envA,
+    );
+    expect(r.status).toBe(201);
+    // el alta manual nace 'confirmed' (canal phone, ver createBooking)
+    return ((await r.json()) as { id: string }).id;
+  };
+
+  it('check-in estampa checkedInAt sin tocar el status; no toca la ocupación', async () => {
+    const id = await mkConfirmed('2026-04-01', '2026-04-05');
+    const res = await act(id, { action: 'check_in' });
+    expect(res.status).toBe(200);
+    expect(((await res.json()) as { checkedInAt: string }).checkedInAt).toBeTruthy();
+
+    const body = (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      status: string;
+      checkedInAt: string | null;
+    };
+    expect(body.status).toBe('confirmed'); // "en casa" NO es un status
+    expect(body.checkedInAt).toBeTruthy();
+  });
+
+  it('doble check-in → 409', async () => {
+    const id = await mkConfirmed('2026-04-06', '2026-04-09');
+    await act(id, { action: 'check_in' });
+    expect((await act(id, { action: 'check_in' })).status).toBe(409);
+  });
+
+  it('deshacer check-in vuelve a dejar checkedInAt null', async () => {
+    const id = await mkConfirmed('2026-04-10', '2026-04-13');
+    await act(id, { action: 'check_in' });
+    expect((await act(id, { action: 'undo_checkin' })).status).toBe(200);
+    const body = (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      checkedInAt: string | null;
+    };
+    expect(body.checkedInAt).toBeNull();
+  });
+
+  it('check-out sella checkedOutAt y completa; requiere check-in previo', async () => {
+    const id = await mkConfirmed('2026-04-14', '2026-04-17');
+    expect((await act(id, { action: 'check_out' })).status).toBe(409); // sin check-in previo
+    await act(id, { action: 'check_in' });
+    const out = await act(id, { action: 'check_out' });
+    expect(out.status).toBe(200);
+    expect(((await out.json()) as { status: string }).status).toBe('completed');
+    const body = (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      status: string;
+      checkedOutAt: string | null;
+    };
+    expect(body.status).toBe('completed');
+    expect(body.checkedOutAt).toBeTruthy();
+  });
+
+  it('el planning trae checkedInAt/checkedOutAt para derivar "en casa"', async () => {
+    const id = await mkConfirmed('2026-04-20', '2026-04-25');
+    await act(id, { action: 'check_in' });
+    const data = (await (
+      await get('/api/admin/planning?from=2026-04-21&to=2026-04-22')
+    ).json()) as { bookings: { id: string; checkedInAt: string | null }[] };
+    expect(data.bookings.find((b) => b.id === id)?.checkedInAt).toBeTruthy();
+  });
+});
+
+describe('huéspedes editables (ADR 0022)', () => {
+  const IP = { 'cf-connecting-ip': 'test-guests' };
+  const get = (url: string) => app.request(url, { headers: { cookie: reception, ...IP } }, envA);
+  const post = (url: string, body: unknown, cookie = reception) =>
+    app.request(url, { ...json(body, { cookie, ...IP }) }, envA);
+  const del = (url: string) => app.request(url, { method: 'DELETE', headers: { cookie: reception, ...IP } }, envA);
+  const mkBooking = async () => {
+    const r = await post('/api/admin/bookings', bookingBody('2026-05-01', '2026-05-04'));
+    expect(r.status).toBe(201);
+    return ((await r.json()) as { id: string }).id;
+  };
+
+  it('añadir acompañante, editar su documento y quitarlo; el titular no se puede quitar', async () => {
+    const id = await mkBooking();
+    const lead = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      guests: { id: string; isLead: boolean }[];
+    }).guests.find((g) => g.isLead)!;
+
+    const add = await post(`/api/admin/bookings/${id}/guests`, {
+      name: 'Ana',
+      surname: 'Ruiz',
+      docType: 'dni',
+      docNumber: '12345678Z',
+    });
+    expect(add.status).toBe(201);
+    const { id: guestId, isLead } = (await add.json()) as { id: string; isLead: boolean };
+    expect(isLead).toBe(false); // ya había titular
+
+    const edit = await app.request(
+      `/api/admin/guests/${guestId}`,
+      patch({ docNumber: '99999999R', nationality: 'FR' }, reception, IP),
+      envA,
+    );
+    expect(edit.status).toBe(200);
+    expect(((await edit.json()) as { docNumber: string }).docNumber).toBe('99999999R');
+
+    expect((await del(`/api/admin/bookings/${id}/guests/${lead.id}`)).status).toBe(409); // titular no
+    expect((await del(`/api/admin/bookings/${id}/guests/${guestId}`)).status).toBe(200); // acompañante sí
+
+    const guests = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      guests: { id: string }[];
+    }).guests;
+    expect(guests.some((g) => g.id === guestId)).toBe(false);
+  });
+
+  it('readonly no puede editar un huésped → 403', async () => {
+    const id = await mkBooking();
+    const lead = ((await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      guests: { id: string }[];
+    }).guests[0]!;
+    const res = await app.request(
+      `/api/admin/guests/${lead.id}`,
+      patch({ name: 'X' }, readonly, IP),
+      envA,
+    );
+    expect(res.status).toBe(403);
+  });
+});
+
+describe('bloqueos desde la UI (ADR 0022)', () => {
+  const IP = { 'cf-connecting-ip': 'test-blocks' };
+  const get = (url: string) => app.request(url, { headers: { cookie: reception, ...IP } }, envA);
+  const post = (url: string, body: unknown) => app.request(url, { ...json(body, { cookie: reception, ...IP }) }, envA);
+
+  it('crear un bloqueo por unidad, verlo en el planning y levantarlo', async () => {
+    const create = await post('/api/admin/blocks', {
+      unitId: 'unt_1',
+      dateFrom: '2026-06-01',
+      dateTo: '2026-06-05',
+      reason: 'maintenance',
+    });
+    expect(create.status).toBe(201);
+    const { id: blockId } = (await create.json()) as { id: string };
+
+    const data = (await (
+      await get('/api/admin/planning?from=2026-06-01&to=2026-06-05')
+    ).json()) as { blocks: { id: string; unitId: string }[] };
+    expect(data.blocks.some((b) => b.id === blockId && b.unitId === 'unt_1')).toBe(true);
+
+    const del = await app.request(
+      `/api/admin/blocks/${blockId}`,
+      { method: 'DELETE', headers: { cookie: reception, ...IP } },
+      envA,
+    );
+    expect(del.status).toBe(200);
+  });
+
+  it('no se puede bloquear una unidad sobre una reserva viva → 409', async () => {
+    const r = await post('/api/admin/bookings', bookingBody('2026-06-10', '2026-06-14'));
+    const booking = (await r.json()) as { unitId: string };
+    const clash = await post('/api/admin/blocks', {
+      unitId: booking.unitId,
+      dateFrom: '2026-06-11',
+      dateTo: '2026-06-12',
+      reason: 'owner',
+    });
+    expect(clash.status).toBe(409);
+  });
+
+  it('un bloqueo necesita unidad o tipo → 400', async () => {
+    const res = await post('/api/admin/blocks', {
+      dateFrom: '2026-06-20',
+      dateTo: '2026-06-24',
+      reason: 'manual',
+    });
+    expect(res.status).toBe(400);
+  });
+});
+
 describe('pagos (ADR 0011)', () => {
   // cabecera propia: el limitador de tasa cuenta por IP y este fichero ya usa
   // muchas peticiones — un bucket aparte evita un 429 que no tiene que ver con el test

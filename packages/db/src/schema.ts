@@ -242,6 +242,13 @@ export const bookings = sqliteTable(
     touristTaxCents: integer('tourist_tax_cents').notNull().default(0),
     depositCents: integer('deposit_cents').notNull().default(0),
     notes: text('notes'),
+    // Check-in / check-out (ADR 0022): hechos ORTOGONALES al ciclo de vida, no
+    // un estado. Una reserva confirmada con el huésped dentro sigue siendo
+    // 'confirmed' — "en casa" se deriva (checkedInAt != null && checkedOutAt == null).
+    // Nulables y aditivas a propósito: no cambian la semántica de ningún filtro
+    // por status (ocupación, informes, solape). ISO datetime, como sentAt.
+    checkedInAt: text('checked_in_at'),
+    checkedOutAt: text('checked_out_at'),
     locale: text('locale').notNull(),
     createdAt: text('created_at').notNull(),
     updatedAt: text('updated_at').notNull(),

@@ -4,6 +4,7 @@
  * motor y precio-en-servidor con la web pública.
  */
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
 import { apiGet, type BookingDetail, type BookingListItem } from '../api';
@@ -26,7 +27,10 @@ export default function Reservas() {
   const [q, setQ] = useState('');
   const [estado, setEstado] = useState<BookingDetail['status'] | ''>('');
   const [page, setPage] = useState(1);
-  const [openId, setOpenId] = useState<string | null>(null);
+  // el panel es direccionable por la URL (/reservas/$id, ADR 0022 §4): se puede
+  // enviar por email a un compañero. La lista sigue en /reservas.
+  const navigate = useNavigate();
+  const { id: openId } = useParams({ strict: false }) as { id?: string };
   const [altaAbierta, setAltaAbierta] = useState(false);
   const openerRef = useRef<HTMLElement | null>(null);
 
@@ -45,10 +49,10 @@ export default function Reservas() {
   const openPanel = (id: string, el: HTMLElement) => {
     openerRef.current = el;
     setAltaAbierta(false);
-    setOpenId(id);
+    void navigate({ to: '/reservas/$id', params: { id } });
   };
   const closePanel = () => {
-    setOpenId(null);
+    void navigate({ to: '/reservas' });
     openerRef.current?.focus();
     openerRef.current = null;
   };
@@ -109,7 +113,7 @@ export default function Reservas() {
             size="xs"
             className="ml-auto"
             onClick={() => {
-              setOpenId(null);
+              void navigate({ to: '/reservas' });
               setAltaAbierta(true);
             }}
           >
@@ -232,7 +236,7 @@ export default function Reservas() {
           onClose={() => setAltaAbierta(false)}
           onCreated={(id) => {
             setAltaAbierta(false);
-            setOpenId(id);
+            void navigate({ to: '/reservas/$id', params: { id } });
           }}
         />
       )}

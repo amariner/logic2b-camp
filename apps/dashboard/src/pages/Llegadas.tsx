@@ -3,13 +3,17 @@
  * La hoja que recepción imprime mentalmente cada mañana: quién entra, quién sale,
  * qué queda por cobrar. La ficha (BookingPanel) se abre desde cada fila.
  */
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, type ReactNode } from 'react';
-import { Button, EmptyState, Skeleton, SkeletonRows, cn, focusRing } from '@logic-camp/ui';
-import { apiGet, type BookingListItem } from '../api';
+import { Button, EmptyState, Skeleton, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
+import { DoorOpen, LogOut } from 'lucide-react';
+import { apiGet, apiPatch, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+
+const inHouse = (b: BookingListItem) =>
+  b.status === 'confirmed' && Boolean(b.checkedInAt) && !b.checkedOutAt;
 
 const DAY_MS = 86_400_000;
 const hoyIso = () => new Date().toISOString().slice(0, 10);
@@ -33,11 +37,14 @@ function Lista({
   items,
   vacio,
   onOpen,
+  action,
 }: {
   titulo: string;
   items: BookingListItem[];
   vacio: ReactNode;
   onOpen: (id: string, el: HTMLElement) => void;
+  /** botón de recepción (check-in/check-out) por fila, FUERA del <button> de la fila */
+  action?: (b: BookingListItem) => ReactNode;
 }) {
   return (
     <section className="min-w-0 flex-1">
@@ -49,26 +56,32 @@ function Lista({
         {items.map((b) => {
           const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
           const pendiente = b.totalCents - b.paidCents;
+          const here = inHouse(b);
           return (
-            <li key={b.id}>
+            <li key={b.id} className="flex items-center gap-1 pr-2">
               {/*
                 Fila entera clicable: se queda como <button> nativo a propósito
                 (ADR 0020, C2). <Button> del DS es `inline-flex` y aquí la fila
                 ES la rejilla de 3 columnas: convertirla rompería la maquetación.
                 Lo único que la migración debe garantizar es el foco visible, y
-                por eso lleva el mismo anillo que `buttonVariants`.
+                por eso lleva el mismo anillo que `buttonVariants`. El botón de
+                recepción vive FUERA (no se puede anidar <button> en <button>).
               */}
               <button
                 type="button"
                 aria-label={t('dia.abrir', { code: b.code })}
                 onClick={(e) => onOpen(b.id, e.currentTarget)}
-                className={cn('grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50', focusRing)}
+                className={cn('grid min-w-0 flex-1 grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50', focusRing)}
               >
                 <span className="tnum font-semibold">{b.code.replace(/^[A-Z]+-\d{4}-/, '')}</span>
                 <span className="truncate font-medium">{b.leadName ?? '—'}</span>
-                <span className={`lc-chip st-${b.status} justify-self-end`}>
-                  {t(`estado.${b.status}`)}
-                </span>
+                {here ? (
+                  <span className="lc-chip st-inhouse justify-self-end">{t('plano.estado.enCasa')}</span>
+                ) : (
+                  <span className={`lc-chip st-${b.status} justify-self-end`}>
+                    {t(`estado.${b.status}`)}
+                  </span>
+                )}
                 <span className="tnum col-start-1 text-muted-foreground">
                   {b.unitCode ?? t('dia.sinUnidad')}
                 </span>
@@ -86,6 +99,7 @@ function Lista({
                     : t('dia.alCorriente')}
                 </span>
               </button>
+              {action?.(b)}
             </li>
           );
         })}
@@ -98,6 +112,20 @@ export default function Llegadas() {
   const [dia, setDia] = useState(hoyIso);
   const [openId, setOpenId] = useState<string | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const qc = useQueryClient();
+
+  // check-in desde la llegada / check-out desde la salida (ADR 0022): el gesto
+  // más frecuente del mostrador, sin abrir la ficha. El servidor valida SIEMPRE.
+  const recepcion = useMutation({
+    mutationFn: (v: { id: string; action: 'check_in' | 'check_out' }) =>
+      apiPatch(`/api/admin/bookings/${v.id}`, { action: v.action }),
+    onSuccess: (_r, v) => {
+      toast.success(t(v.action === 'check_in' ? 'ficha.checkinHecho' : 'ficha.checkoutHecho'));
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+      void qc.invalidateQueries({ queryKey: ['planning'] });
+    },
+    onError: () => toast.error(t('ficha.checkinError')),
+  });
 
   const llegadas = useQuery({
     queryKey: ['bookings', 'arrivals', dia],
@@ -202,6 +230,21 @@ export default function Llegadas() {
               titulo={t('dia.llegadas')}
               items={llegadasHoy}
               onOpen={openPanel}
+              action={(b) =>
+                b.status === 'confirmed' && !b.checkedInAt ? (
+                  <Button
+                    type="button"
+                    size="xs"
+                    variant="outline"
+                    disabled={recepcion.isPending}
+                    onClick={() => recepcion.mutate({ id: b.id, action: 'check_in' })}
+                    title={t('accion.check_in')}
+                  >
+                    <DoorOpen className="size-3.5" />
+                    {t('accion.check_in')}
+                  </Button>
+                ) : null
+              }
               vacio={
                 <EmptyState
                   art="calendar"
@@ -220,6 +263,21 @@ export default function Llegadas() {
               titulo={t('dia.salidas')}
               items={salidasHoy}
               onOpen={openPanel}
+              action={(b) =>
+                inHouse(b) ? (
+                  <Button
+                    type="button"
+                    size="xs"
+                    variant="outline"
+                    disabled={recepcion.isPending}
+                    onClick={() => recepcion.mutate({ id: b.id, action: 'check_out' })}
+                    title={t('accion.check_out')}
+                  >
+                    <LogOut className="size-3.5" />
+                    {t('accion.check_out')}
+                  </Button>
+                ) : null
+              }
               vacio={<EmptyState art="calendar" title={t('vacio.salidas.titulo')} />}
             />
           </div>

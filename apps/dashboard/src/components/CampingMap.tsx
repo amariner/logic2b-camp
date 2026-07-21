@@ -35,6 +35,14 @@ function unitVisual(state: UnitDayState): {
       return { fill: 'var(--lc-status-blocked)', fg: 'var(--background)', pattern: true, free: false };
     case 'free':
       return { fill: 'var(--muted)', fg: 'var(--muted-foreground)', pattern: false, free: true };
+    case 'inhouse':
+      // "en casa" (ADR 0022): huésped presente. Token propio, más vivo que confirmed.
+      return {
+        fill: 'var(--lc-status-inhouse)',
+        fg: 'var(--lc-status-inhouse-fg)',
+        pattern: false,
+        free: false,
+      };
     case 'departure':
       return {
         fill: 'var(--lc-status-completed)',
@@ -77,6 +85,8 @@ function stateLabel(state: UnitDayState): string {
       return `${t('plano.estado.bloqueada')} · ${tDyn(`bloqueo.${state.reason}`, state.reason)}`;
     case 'arrival':
       return state.turnover ? t('plano.estado.turnover') : t('plano.estado.entra');
+    case 'inhouse':
+      return t('plano.estado.enCasa');
     case 'departure':
       return t('plano.estado.sale');
     case 'occupied':

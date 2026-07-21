@@ -18,6 +18,11 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -360,5 +365,26 @@ describe('Separator', () => {
   it('es decorativo por defecto', () => {
     const { container } = render(<Separator />);
     expect(container.querySelector('[data-orientation="horizontal"]')).toBeTruthy();
+  });
+});
+
+describe('Command (⌘K, ADR 0022)', () => {
+  it('filtra en cliente (shouldFilter=false) y dispara onSelect al elegir', async () => {
+    const onSelect = vi.fn();
+    render(
+      <Command shouldFilter={false}>
+        <CommandInput placeholder="Buscar…" />
+        <CommandList>
+          <CommandGroup heading="Reservas">
+            <CommandItem value="cs-1" onSelect={onSelect}>
+              CS-2026-0001
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>,
+    );
+    expect(screen.getByPlaceholderText('Buscar…')).toBeInTheDocument();
+    await userEvent.click(screen.getByText('CS-2026-0001'));
+    expect(onSelect).toHaveBeenCalledOnce();
   });
 });

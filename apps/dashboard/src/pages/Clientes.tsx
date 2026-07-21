@@ -5,6 +5,7 @@
  */
 import { Button, EmptyState, Skeleton, SkeletonRows, SkeletonText } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { apiGet, type GuestDetail, type GuestListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
@@ -164,8 +165,14 @@ function GuestPanel({
 export default function Clientes() {
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
-  const [guestId, setGuestId] = useState<string | null>(null);
+  // ficha de cliente direccionable por la URL (/clientes/$id, ADR 0022 §4)
+  const navigate = useNavigate();
+  const { id: guestId } = useParams({ strict: false }) as { id?: string };
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const openGuest = (id: string) => {
+    setBookingId(null);
+    void navigate({ to: '/clientes/$id', params: { id } });
+  };
 
   const params = new URLSearchParams({ page: String(page), pageSize: '25' });
   if (q.trim()) params.set('q', q.trim());
@@ -268,15 +275,11 @@ export default function Clientes() {
                 {items.map((g) => (
                   <tr
                     key={g.id}
-                    onClick={() => {
-                      setBookingId(null);
-                      setGuestId(g.id);
-                    }}
+                    onClick={() => openGuest(g.id)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setBookingId(null);
-                        setGuestId(g.id);
+                        openGuest(g.id);
                       }
                     }}
                     tabIndex={0}
@@ -307,7 +310,7 @@ export default function Clientes() {
         guestId && (
           <GuestPanel
             guestId={guestId}
-            onClose={() => setGuestId(null)}
+            onClose={() => void navigate({ to: '/clientes' })}
             onOpenBooking={(id) => setBookingId(id)}
           />
         )

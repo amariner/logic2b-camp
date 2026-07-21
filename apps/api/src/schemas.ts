@@ -109,6 +109,10 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('cancel') }),
   z.object({ action: z.literal('no_show') }),
   z.object({ action: z.literal('complete') }),
+  // Check-in / check-out (ADR 0022): hechos ortogonales, no transiciones de estado.
+  z.object({ action: z.literal('check_in') }),
+  z.object({ action: z.literal('check_out') }),
+  z.object({ action: z.literal('undo_checkin') }),
   z.object({ action: z.literal('reassign'), unitId: z.string().min(1) }),
   z.object({ action: z.literal('note'), notes: z.string().max(2000) }),
   z.object({
@@ -118,6 +122,52 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
   }),
   z.object({ action: z.literal('refund'), amountCents: z.number().int().positive() }),
 ]);
+
+// ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------
+
+const docTypeSchema = z.enum(['dni', 'nie', 'passport', 'other']);
+
+/** Alta de un huésped en una reserva. Nombre y apellidos mínimos; documento opcional. */
+export const guestCreateSchema = z.object({
+  name: z.string().min(1).max(120),
+  surname: z.string().min(1).max(120),
+  docType: docTypeSchema.optional(),
+  docNumber: z.string().max(40).optional(),
+  birthdate: isoDate.optional(),
+  nationality: z.string().max(2).optional(),
+  email: z.string().email().max(200).optional().or(z.literal('')),
+  phone: z.string().max(40).optional(),
+});
+
+/** Edición de los datos de un huésped ya existente (los que la ficha pintaba). */
+export const guestPatchSchema = z
+  .object({
+    name: z.string().min(1).max(120),
+    surname: z.string().min(1).max(120),
+    docType: docTypeSchema.nullable(),
+    docNumber: z.string().max(40).nullable(),
+    birthdate: isoDate.nullable(),
+    nationality: z.string().max(2).nullable(),
+    email: z.string().email().max(200).nullable().or(z.literal('')),
+    phone: z.string().max(40).nullable(),
+  })
+  .partial();
+
+// ---------- Bloqueos de inventario desde la UI (ADR 0022 §3) ----------
+
+/** Crear un bloqueo (avería, propietario…): por unidad O por tipo, nunca ninguno. */
+export const blockCreateSchema = z
+  .object({
+    unitId: z.string().min(1).optional(),
+    unitTypeId: z.string().min(1).optional(),
+    dateFrom: isoDate,
+    dateTo: isoDate,
+    reason: z.enum(['maintenance', 'owner', 'longstay', 'manual']),
+  })
+  .refine((b) => Boolean(b.unitId) || Boolean(b.unitTypeId), {
+    message: 'unit_or_type_required',
+  })
+  .refine((b) => b.dateFrom < b.dateTo, { message: 'invalid_dates' });
 
 export const enquiryPatchSchema = z.object({
   status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']),

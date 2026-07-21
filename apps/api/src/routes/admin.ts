@@ -13,9 +13,12 @@ import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import { executeRefund, recordManualPayment } from '../payments';
 import {
   adminBookingCreateSchema,
+  blockCreateSchema,
   bookingActionSchema,
   bookingsListQuerySchema,
   enquiryPatchSchema,
+  guestCreateSchema,
+  guestPatchSchema,
   guestsListQuerySchema,
   notificationsListQuerySchema,
   paymentsListQuerySchema,
@@ -89,6 +92,9 @@ export const adminRoutes = new Hono<AuthEnv>()
           dateFrom: schema.bookings.dateFrom,
           dateTo: schema.bookings.dateTo,
           occupancy: schema.bookings.occupancy,
+          // "en casa" (ADR 0022): el planning y el plano lo derivan de estos dos
+          checkedInAt: schema.bookings.checkedInAt,
+          checkedOutAt: schema.bookings.checkedOutAt,
         })
         .from(schema.bookings)
         .where(
@@ -297,8 +303,59 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ id, notes: action.notes });
     }
 
+    // Check-in / check-out (ADR 0022): hechos ortogonales al status, no
+    // transiciones. "En casa" = checkedInAt != null && checkedOutAt == null; el
+    // status sigue 'confirmed', así que ocupación e informes no se enteran.
+    if (
+      action.action === 'check_in' ||
+      action.action === 'check_out' ||
+      action.action === 'undo_checkin'
+    ) {
+      const inHouse = Boolean(booking.checkedInAt) && !booking.checkedOutAt;
+      if (action.action === 'check_in') {
+        if (booking.status !== 'confirmed' || booking.checkedInAt)
+          return c.json({ error: 'invalid_checkin', status: booking.status }, 409);
+        const at = nowIso();
+        await db
+          .update(schema.bookings)
+          .set({ checkedInAt: at, updatedAt: at })
+          .where(eq(schema.bookings.id, id));
+        await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'check_in');
+        return c.json({ id, checkedInAt: at });
+      }
+      if (action.action === 'undo_checkin') {
+        if (booking.status !== 'confirmed' || !inHouse)
+          return c.json({ error: 'invalid_checkin', status: booking.status }, 409);
+        await db
+          .update(schema.bookings)
+          .set({ checkedInAt: null, updatedAt: nowIso() })
+          .where(eq(schema.bookings.id, id));
+        await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'undo_checkin');
+        return c.json({ id, checkedInAt: null });
+      }
+      // check_out: cierra la estancia — sella checkedOutAt y completa (invariante
+      // 3 intacto: no toca precio). Es el `complete` con recibo del mostrador.
+      if (booking.status !== 'confirmed' || !inHouse)
+        return c.json({ error: 'invalid_checkout', status: booking.status }, 409);
+      const at = nowIso();
+      await db
+        .update(schema.bookings)
+        .set({ checkedOutAt: at, status: 'completed', updatedAt: at })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'check_out', {
+        from: booking.status,
+        to: 'completed',
+      });
+      return c.json({ id, status: 'completed', checkedOutAt: at });
+    }
+
     // cobro en efectivo/TPV físico ya recibido en recepción (ADR 0011 §5) — sin pasarela
     if (action.action === 'record_payment') {
+      // el cobro no puede pasar del pendiente (ADR 0022 §3): la guarda que el
+      // reembolso ya tenía, ahora también aquí (simetría cliente↔servidor).
+      const pending = booking.totalCents - booking.paidCents;
+      if (action.amountCents > pending)
+        return c.json({ error: 'payment_exceeds_pending', pendingCents: pending }, 422);
       await recordManualPayment(db, id, action.amountCents);
       await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'record_payment', {
         amountCents: action.amountCents,
@@ -521,6 +578,181 @@ export const adminRoutes = new Hono<AuthEnv>()
         isLead: links.find((l) => l.bookingId === b.id)?.isLead ?? false,
       })),
     });
+  })
+
+  // ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------
+  // añadir un huésped a una reserva (crea guest + enlace). Si la reserva no tiene
+  // titular, el primero pasa a serlo.
+  .post('/bookings/:id/guests', requireRole('reception'), async (c) => {
+    const parsed = guestCreateSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+    const bookingId = c.req.param('id');
+
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId))
+    )[0];
+    if (!booking) return c.json({ error: 'not_found' }, 404);
+
+    const existing = await db
+      .select()
+      .from(schema.bookingGuests)
+      .where(eq(schema.bookingGuests.bookingId, bookingId));
+    const isLead = existing.every((l) => !l.isLead);
+
+    const guestId = uid('gst');
+    const d = parsed.data;
+    await db.insert(schema.guests).values({
+      id: guestId,
+      tenantId: tenant.slug,
+      name: d.name,
+      surname: d.surname,
+      docType: d.docType ?? null,
+      docNumber: d.docNumber ?? null,
+      birthdate: d.birthdate ?? null,
+      nationality: d.nationality ?? null,
+      email: d.email || null,
+      phone: d.phone ?? null,
+      address: null,
+      gdprConsentAt: null,
+    });
+    await db
+      .insert(schema.bookingGuests)
+      .values({ bookingId, guestId, isLead });
+    await audit(db, tenant.slug, c.get('user').id, 'booking', bookingId, 'guest_add', { guestId });
+    return c.json({ id: guestId, isLead }, 201);
+  })
+
+  // quitar un ACOMPAÑANTE de una reserva (nunca al titular; el guest en sí no se
+  // borra — es memoria comercial).
+  .delete('/bookings/:id/guests/:guestId', requireRole('reception'), async (c) => {
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+    const bookingId = c.req.param('id');
+    const guestId = c.req.param('guestId');
+
+    const link = (
+      await db
+        .select()
+        .from(schema.bookingGuests)
+        .where(
+          and(
+            eq(schema.bookingGuests.bookingId, bookingId),
+            eq(schema.bookingGuests.guestId, guestId),
+          ),
+        )
+    )[0];
+    if (!link) return c.json({ error: 'not_found' }, 404);
+    if (link.isLead) return c.json({ error: 'cannot_remove_lead' }, 409);
+
+    await db
+      .delete(schema.bookingGuests)
+      .where(
+        and(
+          eq(schema.bookingGuests.bookingId, bookingId),
+          eq(schema.bookingGuests.guestId, guestId),
+        ),
+      );
+    await audit(db, tenant.slug, c.get('user').id, 'booking', bookingId, 'guest_remove', {
+      guestId,
+    });
+    return c.json({ ok: true });
+  })
+
+  // editar los datos y el documento de un huésped existente
+  .patch('/guests/:id', requireRole('reception'), async (c) => {
+    const parsed = guestPatchSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    if (!Object.keys(parsed.data).length) return c.json({ error: 'empty_patch' }, 400);
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+    const id = c.req.param('id');
+
+    const guest = (await db.select().from(schema.guests).where(eq(schema.guests.id, id)))[0];
+    if (!guest) return c.json({ error: 'not_found' }, 404);
+
+    // '' en email → null (el campo es opcional en la BD, no una cadena vacía)
+    const patch = { ...parsed.data };
+    if (patch.email === '') patch.email = null;
+    await db.update(schema.guests).set(patch).where(eq(schema.guests.id, id));
+    await audit(db, tenant.slug, c.get('user').id, 'guest', id, 'update', parsed.data);
+    const updated = (await db.select().from(schema.guests).where(eq(schema.guests.id, id)))[0];
+    return c.json(updated);
+  })
+
+  // ---------- Bloqueos de inventario desde la UI (ADR 0022 §3) ----------
+  // crear un bloqueo (avería, propietario…): por unidad O por tipo. No se puede
+  // tapar sobre una reserva viva de esa unidad sin avisar (mismo criterio de
+  // solape que reassign, from inclusive / to exclusive).
+  .post('/blocks', requireRole('reception'), async (c) => {
+    const parsed = blockCreateSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const { unitId, unitTypeId, dateFrom, dateTo, reason } = parsed.data;
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+
+    // unidades afectadas: la unidad concreta, o todas las del tipo
+    const targetUnitIds = unitId
+      ? [unitId]
+      : (
+          await db
+            .select({ id: schema.units.id })
+            .from(schema.units)
+            .where(eq(schema.units.unitTypeId, unitTypeId!))
+        ).map((u) => u.id);
+    if (unitId) {
+      const unit = (await db.select().from(schema.units).where(eq(schema.units.id, unitId)))[0];
+      if (!unit) return c.json({ error: 'unknown_unit' }, 404);
+    }
+
+    if (targetUnitIds.length) {
+      const clash = await db
+        .select({ id: schema.bookings.id })
+        .from(schema.bookings)
+        .where(
+          and(
+            inArray(schema.bookings.unitId, targetUnitIds),
+            inArray(schema.bookings.status, ['pending', 'confirmed']),
+            lt(schema.bookings.dateFrom, dateTo),
+            gt(schema.bookings.dateTo, dateFrom),
+          ),
+        );
+      if (clash.length) return c.json({ error: 'unit_occupied' }, 409);
+    }
+
+    const blockId = uid('blk');
+    await db.insert(schema.inventoryBlocks).values({
+      id: blockId,
+      tenantId: tenant.slug,
+      unitId: unitId ?? null,
+      unitTypeId: unitTypeId ?? null,
+      dateFrom,
+      dateTo,
+      reason,
+    });
+    await audit(db, tenant.slug, c.get('user').id, 'block', blockId, 'create', {
+      unitId: unitId ?? null,
+      unitTypeId: unitTypeId ?? null,
+      dateFrom,
+      dateTo,
+      reason,
+    });
+    return c.json({ id: blockId }, 201);
+  })
+
+  // levantar un bloqueo
+  .delete('/blocks/:id', requireRole('reception'), async (c) => {
+    const tenant = c.get('tenant');
+    const db = tenant.db;
+    const id = c.req.param('id');
+    const row = (
+      await db.select().from(schema.inventoryBlocks).where(eq(schema.inventoryBlocks.id, id))
+    )[0];
+    if (!row) return c.json({ error: 'not_found' }, 404);
+    await db.delete(schema.inventoryBlocks).where(eq(schema.inventoryBlocks.id, id));
+    await audit(db, tenant.slug, c.get('user').id, 'block', id, 'delete');
+    return c.json({ ok: true });
   })
 
   // ---------- Solicitudes ----------

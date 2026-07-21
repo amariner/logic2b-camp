@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { Button, EmptyState, Skeleton, toast } from '@logic-camp/ui';
-import { Map as MapIcon } from 'lucide-react';
+import { Ban, Map as MapIcon, Plus } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   apiGet,
@@ -20,9 +20,15 @@ import {
   type PlanningData,
   type PlanningUnit,
 } from '../api';
+import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
+import NewBookingPanel from '../components/NewBookingPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+
+/** "en casa" (ADR 0022): huésped presente. Se DERIVA, no es un status. */
+const barStatusClass = (b: PlanningBooking) =>
+  b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt ? 'inhouse' : b.status;
 
 const DAY_MS = 86_400_000;
 const iso = (d: Date) => d.toISOString().slice(0, 10);
@@ -320,6 +326,10 @@ export default function Planning() {
     if (next) reassign.mutate({ id: b.id, unitId: next.id, fromUnitId: sourceUnitId });
   };
 
+  // ---------- alta manual y bloqueos desde el planning (ADR 0022 §3/§4) ----------
+  const [altaAbierta, setAltaAbierta] = useState(false);
+  const [bloqueoAbierto, setBloqueoAbierto] = useState(false);
+
   // ---------- ficha (sesión 17): panel lateral, el foco vuelve a quien la abrió ----------
   const [openId, setOpenId] = useState<string | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -424,6 +434,25 @@ export default function Planning() {
           >
             <MapIcon className="size-4" />
             {t('planning.verEnPlano')}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setBloqueoAbierto(true)}
+            title={t('bloqueo.crear')}
+          >
+            <Ban className="size-4" />
+            {t('bloqueo.crear')}
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => {
+              setOpenId(null);
+              setAltaAbierta(true);
+            }}
+          >
+            <Plus className="size-4" />
+            {t('planning.nuevaReserva')}
           </Button>
           {data && (
             <p className="tnum ml-auto text-[12px] text-muted-foreground">
@@ -568,7 +597,7 @@ export default function Planning() {
                                 <div
                                   key={b.id}
                                   tabIndex={0}
-                                  className={`lc-bar lc-grab st-${b.status}`}
+                                  className={`lc-bar lc-grab st-${barStatusClass(b)}`}
                                   style={g}
                                   title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
                                   onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
@@ -594,6 +623,16 @@ export default function Planning() {
       </div>
 
       {openId && data && <BookingPanel bookingId={openId} onClose={closePanel} />}
+      {altaAbierta && (
+        <NewBookingPanel
+          onClose={() => setAltaAbierta(false)}
+          onCreated={(id) => {
+            setAltaAbierta(false);
+            setOpenId(id);
+          }}
+        />
+      )}
+      <BlockDialog open={bloqueoAbierto} onOpenChange={setBloqueoAbierto} defaultDate={from} />
     </div>
   );
 }
