@@ -9,6 +9,7 @@ import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-c
 import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 /** Siguientes pasos naturales por estado (el servidor admite cualquiera; la UI guía). */
 const NEXT: Record<EnquiryStatus, EnquiryStatus[]> = {
@@ -90,6 +91,7 @@ export default function Solicitudes() {
         <p className="tnum ml-auto text-[12px] text-muted-foreground">
           {t('sol.n', { n: visibles.length })}
         </p>
+        <BotonAyuda />
       </div>
 
       {isPending && (
@@ -131,7 +133,10 @@ export default function Solicitudes() {
                 type="button"
                 onClick={() => setAbierta(abiertaEsta ? null : e.id)}
                 aria-expanded={abiertaEsta}
-                className={cn('grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 rounded-md px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]', focusRing)}
+                className={cn(
+                  'grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 rounded-md px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]',
+                  focusRing,
+                )}
               >
                 <span className="tnum text-muted-foreground">{fecha(e.createdAt)}</span>
                 <span className="truncate font-medium">{e.contact.name}</span>

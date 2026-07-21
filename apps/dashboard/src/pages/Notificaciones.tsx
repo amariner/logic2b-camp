@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { apiGet, type NotificationLogItem, type NotificationStatus } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t, tDyn } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const ESTADOS: NotificationStatus[] = ['sent', 'queued', 'failed', 'disabled'];
 
@@ -47,7 +48,11 @@ export default function Notificaciones() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center gap-1" role="group" aria-label={t('res.estado')}>
+        <div
+          className="flex flex-wrap items-center gap-1"
+          role="group"
+          aria-label={t('res.estado')}
+        >
           <Button
             size="xs"
             variant={filtro === 'todas' ? 'primary' : 'outline'}
@@ -68,7 +73,10 @@ export default function Notificaciones() {
             </Button>
           ))}
         </div>
-        <p className="tnum ml-auto text-[12px] text-muted-foreground">{t('ntf.n', { n: items.length })}</p>
+        <p className="tnum ml-auto text-[12px] text-muted-foreground">
+          {t('ntf.n', { n: items.length })}
+        </p>
+        <BotonAyuda />
       </div>
 
       <p className="border-b border-border/60 bg-accent/40 px-4 py-2 text-[12px] text-muted-foreground">
@@ -110,7 +118,9 @@ export default function Notificaciones() {
             <span className="tnum hidden text-muted-foreground sm:block">
               {t('ntf.intentos')}: {n.attempts}
             </span>
-            <span className={`lc-chip ntf-${n.status} justify-self-end`}>{t(`ntf.${n.status}`)}</span>
+            <span className={`lc-chip ntf-${n.status} justify-self-end`}>
+              {t(`ntf.${n.status}`)}
+            </span>
           </li>
         ))}
       </ul>

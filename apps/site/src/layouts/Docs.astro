@@ -1,0 +1,77 @@
+---
+/**
+ * Chasis de las guías (ADR 0025). Reutiliza `Base` — header, footer, marca Logic2B,
+ * fuentes y SEO ya resueltos ahí — y solo añade lo propio de documentación:
+ * índice lateral de la guía y ancho de lectura.
+ *
+ * En móvil el índice va DESPUÉS del texto (`order-last`), no plegado antes de él:
+ * con 13 tareas, un acordeón arriba empuja el contenido fuera de pantalla, y el
+ * salto entre páginas ya lo resuelve el anterior/siguiente del pie. Cero JS.
+ */
+import { getContent, localePath, type Locale } from '../lib/i18n';
+import type { Doc, Guia } from '../lib/docs';
+import Base from './Base.astro';
+
+interface Props {
+  locale: Locale;
+  guia: Guia;
+  /** Páginas de la guía, ya ordenadas y con el fallback aplicado. */
+  paginas: Doc[];
+  /** Slug de la página abierta; sin él, es el índice de la guía. */
+  actual?: string;
+  seo: { title: string; description: string };
+  ruta: string;
+}
+const { locale, guia, paginas, actual, seo, ruta } = Astro.props;
+const c = getContent(locale);
+const d = c.docs;
+const meta = d.guias[guia];
+---
+
+<Base locale={locale} content={c} ruta={ruta} seo={seo}>
+  <div
+    class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:py-14"
+  >
+    <aside class="order-last lg:order-first lg:sticky lg:top-20 lg:self-start">
+      <a
+        href={localePath(locale, 'docs/')}
+        class="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <span aria-hidden="true">&larr;</span>{d.volver}
+      </a>
+      <p class="mt-4 font-display text-sm font-semibold tracking-tight">{d.indice}</p>
+      <nav aria-label={meta.nombre}>
+        <ol class="mt-3 space-y-0.5 border-l border-border">
+          {
+            paginas.map((p, i) => (
+              <li>
+                <a
+                  href={localePath(locale, `docs/${guia}/${p.slug}/`)}
+                  aria-current={p.slug === actual ? 'page' : undefined}
+                  class:list={[
+                    '-ml-px flex gap-2.5 border-l py-1.5 pl-3 text-sm transition-colors',
+                    p.slug === actual
+                      ? 'border-primary font-medium text-foreground'
+                      : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground',
+                  ]}
+                >
+                  <span class="tnum pt-0.5 text-xs text-muted-foreground/70">{i + 1}</span>
+                  <span>{p.frontmatter.title}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </aside>
+
+    <div class="min-w-0">
+      <slot />
+      <p
+        class="mt-14 rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground"
+      >
+        {d.ayuda}
+      </p>
+    </div>
+  </div>
+</Base>

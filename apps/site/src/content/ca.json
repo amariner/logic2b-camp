@@ -7,6 +7,7 @@
     "producto": "Producte",
     "niveles": "Plans",
     "planning": "El planning",
+    "docs": "Guies",
     "demo": "Veure demo",
     "contacto": "Demanar demo",
     "verDemo": "Veure la demo en viu"
@@ -22,10 +23,22 @@
   "problema": {
     "titulo": "El que avui et costa diners cada agost",
     "puntos": [
-      { "titulo": "El teu web no reserva", "texto": "Un formulari que arriba per correu i una trucada l'endemà. Mentrestant, el client ja ha reservat en un altre lloc." },
-      { "titulo": "La comissió del portal", "texto": "Booking s'endú la seva part de cada nit. Amb reserva directa des del teu web, aquesta part es queda a casa." },
-      { "titulo": "La llibreta i l'Excel", "texto": "El planning en paper se solapa, s'esborra i només l'entén qui el va escriure. Un canvi de parcel·la és mitja hora." },
-      { "titulo": "Sis idiomes a mà", "texto": "Respondre en francès, alemany i neerlandès un per un. El web hauria de fer-ho per tu." }
+      {
+        "titulo": "El teu web no reserva",
+        "texto": "Un formulari que arriba per correu i una trucada l'endemà. Mentrestant, el client ja ha reservat en un altre lloc."
+      },
+      {
+        "titulo": "La comissió del portal",
+        "texto": "Booking s'endú la seva part de cada nit. Amb reserva directa des del teu web, aquesta part es queda a casa."
+      },
+      {
+        "titulo": "La llibreta i l'Excel",
+        "texto": "El planning en paper se solapa, s'esborra i només l'entén qui el va escriure. Un canvi de parcel·la és mitja hora."
+      },
+      {
+        "titulo": "Sis idiomes a mà",
+        "texto": "Respondre en francès, alemany i neerlandès un per un. El web hauria de fer-ho per tu."
+      }
     ]
   },
   "producto": {
@@ -35,12 +48,20 @@
       {
         "titulo": "El web públic",
         "texto": "Ràpid, en sis idiomes, amb les teves fotos i la teva marca. El client cerca dates, veu disponibilitat real i reserva —o deixa la seva sol·licitud— sense sortir del teu domini. Optimitzat perquè Google el trobi.",
-        "puntos": ["Motor de disponibilitat de veritat, no una maqueta", "Reserva directa sense comissions de portal", "6 idiomes, responsive, accessible"]
+        "puntos": [
+          "Motor de disponibilitat de veritat, no una maqueta",
+          "Reserva directa sense comissions de portal",
+          "6 idiomes, responsive, accessible"
+        ]
       },
       {
         "titulo": "El gestor de recepció",
         "texto": "El planning de totes les teves unitats d'un cop d'ull, arrossegar per reassignar una parcel·la, cobrar, veure arribades i sortides del dia, la fitxa de cada client amb el seu historial. Pensat per a la recepcionista, no per a un informàtic.",
-        "puntos": ["Planning visual amb arrossegar i deixar anar", "Arribades, sortides i cobraments del dia", "Fitxa i historial de cada client"]
+        "puntos": [
+          "Planning visual amb arrossegar i deixar anar",
+          "Arribades, sortides i cobraments del dia",
+          "Fitxa i historial de cada client"
+        ]
       }
     ]
   },
@@ -59,20 +80,34 @@
         "nombre": "Camp Web",
         "para": "El teu primer web que treballa",
         "texto": "Web pública moderna en diversos idiomes amb formulari de sol·licitud. Cada sol·licitud queda desada: és l'historial que fa créixer.",
-        "incluye": ["Web pública multi-idioma", "Formulari de sol·licitud → el teu correu", "Les teves fotos, la teva marca, el teu domini", "SEO i velocitat cuidades"]
+        "incluye": [
+          "Web pública multi-idioma",
+          "Formulari de sol·licitud → el teu correu",
+          "Les teves fotos, la teva marca, el teu domini",
+          "SEO i velocitat cuidades"
+        ]
       },
       {
         "nombre": "Camp Sol·licituds",
         "para": "Quan vols ordre",
         "texto": "Tot l'anterior més una safata de sol·licituds i un panell lleuger per no perdre cap petició.",
-        "incluye": ["Safata de sol·licituds amb estats", "Panell de recepció lleuger", "Arribades i sortides del dia"]
+        "incluye": [
+          "Safata de sol·licituds amb estats",
+          "Panell de recepció lleuger",
+          "Arribades i sortides del dia"
+        ]
       },
       {
         "nombre": "Camp Reserves",
         "destacado": true,
         "para": "El càmping complet",
         "texto": "Motor de reserves real, pagaments en línia i el gestor complet amb el planning. Reserva directa de principi a fi.",
-        "incluye": ["Motor de reserves i disponibilitat", "Pagaments en línia (paga i senyal, complet o fiança)", "Planning complet amb arrossegar i deixar anar", "Fitxa de client, informes i tarifes"]
+        "incluye": [
+          "Motor de reserves i disponibilitat",
+          "Pagaments en línia (paga i senyal, complet o fiança)",
+          "Planning complet amb arrossegar i deixar anar",
+          "Fitxa de client, informes i tarifes"
+        ]
       },
       {
         "nombre": "Camp Motor",
@@ -91,11 +126,26 @@
   "faq": {
     "titulo": "Preguntes que ens fan",
     "items": [
-      { "q": "He de canviar el meu domini?", "a": "No. El teu web viu al teu propi domini, amb la teva marca. Nosaltres posem el motor per sota." },
-      { "q": "I si ja faig servir Booking?", "a": "Pots continuar. La reserva directa des del teu web t'estalvia la comissió de cada reserva que entra pel teu compte; molts càmpings fan servir tots dos." },
-      { "q": "És difícil per a la meva recepcionista?", "a": "Està dissenyat per a ella: pantalles grans, text clar, focus amb teclat, i el planning que s'entén d'un cop d'ull. Sense manual de 200 pàgines." },
-      { "q": "Les meves dades estan segures?", "a": "Cada càmping té la seva pròpia base de dades aïllada a la xarxa de Cloudflare. Cap altre client pot veure les teves reserves." },
-      { "q": "En quant de temps el tinc?", "a": "Un càmping nou es posa en marxa en una tarda a partir del teu material. Sense esperes de mesos." }
+      {
+        "q": "He de canviar el meu domini?",
+        "a": "No. El teu web viu al teu propi domini, amb la teva marca. Nosaltres posem el motor per sota."
+      },
+      {
+        "q": "I si ja faig servir Booking?",
+        "a": "Pots continuar. La reserva directa des del teu web t'estalvia la comissió de cada reserva que entra pel teu compte; molts càmpings fan servir tots dos."
+      },
+      {
+        "q": "És difícil per a la meva recepcionista?",
+        "a": "Està dissenyat per a ella: pantalles grans, text clar, focus amb teclat, i el planning que s'entén d'un cop d'ull. Sense manual de 200 pàgines."
+      },
+      {
+        "q": "Les meves dades estan segures?",
+        "a": "Cada càmping té la seva pròpia base de dades aïllada a la xarxa de Cloudflare. Cap altre client pot veure les teves reserves."
+      },
+      {
+        "q": "En quant de temps el tinc?",
+        "a": "Un càmping nou es posa en marxa en una tarda a partir del teu material. Sense esperes de mesos."
+      }
     ]
   },
   "contacto": {
@@ -121,6 +171,41 @@
     "demo": "Demo en viu",
     "producto": "Producte",
     "planes": "Plans",
+    "docs": "Guies",
     "contacto": "Demanar demo"
+  },
+  "docs": {
+    "seo": {
+      "title": "Guies de Logic Camp — recepció, propietari i fitxa tècnica",
+      "description": "Com s'utilitza Logic Camp: la guia de recepció pas a pas, la guia del propietari amb els quatre nivells, i la fitxa tècnica per al teu informàtic."
+    },
+    "titulo": "Guies de Logic Camp",
+    "subtitulo": "Tres guies, tres persones diferents. Cadascuna escrita per a qui la llegirà.",
+    "indice": "En aquesta guia",
+    "empezar": "Començar",
+    "anterior": "Anterior",
+    "siguiente": "Següent",
+    "volver": "Totes les guies",
+    "volverGuia": "Tornar a l'índex de la guia",
+    "paginas": "{n} pàgines",
+    "fallback": "Aquesta pàgina encara és en castellà. Estem traduint les guies.",
+    "ayuda": "No trobes el que busques? Escriu-nos a hola@logic2b.com i ho resolem —i de pas millorem aquesta guia.",
+    "guias": {
+      "recepcion": {
+        "nombre": "Guia de recepció",
+        "para": "Per a qui és al taulell",
+        "texto": "El dia a dia del programa, tasca per tasca: entrar, veure qui arriba, fer el check-in, cobrar, moure una reserva al planning i tancar la sortida. Sense paraules estranyes."
+      },
+      "dueno": {
+        "nombre": "Guia del propietari",
+        "para": "Per a qui decideix",
+        "texto": "Els quatre nivells de Logic Camp explicats com una escala: què inclou cadascun, què canvia exactament quan puges, i què has d'aportar tu."
+      },
+      "tecnica": {
+        "nombre": "Fitxa tècnica",
+        "para": "Per al teu informàtic de confiança",
+        "texto": "Com està muntat: dominis i DNS, correu sortint, aïllament de dades per càmping, RGPD, còpies de seguretat i què passa si un dia te'n vols anar."
+      }
+    }
   }
 }

@@ -237,16 +237,24 @@ Aquí "todo previsto y pensado" es literal: el flujo tiene que existir aunque pa
 
 ---
 
-## C6 · Documentación (absorbe B4)
+## C6 · Documentación (absorbe B4) — ✅ HECHO (ADR 0025, 2026-07-21)
 
 Petición explícita: *"que todo tenga una esencia Logic2B"* y *"una documentación súper detallada"*.
 
-- [ ] **Guía de la recepcionista** — operar el gestor de principio a fin. **La usuaria real es la recepcionista de 55 años**: lenguaje llano, capturas grandes, una tarea por página. Apoyada en `FUNCIONALIDADES.md`.
-- [ ] **Guía del dueño** — los 4 niveles (`TIERS.md`) como escalera, qué incluye cada uno, qué cambia al subir.
-- [ ] **Ficha técnica** — para "el informático de confianza": dominios, DNS, correo, datos, aislamiento por D1, RGPD, backups.
-- [ ] **Layout con marca Logic2B**, alineado con el DS. Decidir herramienta (decisión pendiente **B-ii** del ROADMAP: páginas Astro propias vs. Starlight vs. reutilizar el layout de `ui.logic2b.com`).
-- [ ] Enlazada desde la landing (B3, hecha) y desde el dashboard (ayuda contextual — que el `?` de una pantalla lleve a *su* sección).
-- [ ] **Mantener vivo este documento**: cada fase C que se cierre actualiza su bloque aquí y la tabla del ROADMAP.
+- [x] **Guía de la recepcionista** — **14 páginas, una tarea por página**, en el orden de un día real de mostrador (entrar → llegadas → check-in → cobrar → planning → mover → plano → alta manual → huéspedes → check-out → bloqueos → solicitudes → ⌘K → qué hacer cuando algo falla). Lenguaje llano, capturas reales, sin jerga.
+- [x] **Guía del dueño** — 3 páginas: los 4 niveles como escalera, qué cambia exactamente al subir (y qué **no** cambia: dominio, web, SEO, histórico), y qué tiene que aportar el camping para el alta.
+- [x] **Ficha técnica** — 4 páginas: arquitectura, dominios/DNS, correo saliente (SPF/DKIM/DMARC, con el aviso del SPF duplicado), y datos/aislamiento/RGPD/backups/portabilidad.
+- [x] **Layout con marca Logic2B** — **B-ii resuelta**: páginas Astro dentro de `apps/site` (ver ADR 0025 §1). Ni Starlight ni `ui.logic2b.com`.
+- [x] Enlazada desde la landing (nav, pie, bloque propio tras "niveles") y desde el dashboard: **`BotonAyuda`** en las 12 barras de pantalla, con el mapa pantalla→página en un único módulo (`apps/dashboard/src/lib/ayuda.ts`).
+- [x] **Mantener vivo este documento**: hecho aquí y en la tabla del ROADMAP.
+
+**Lo que decidió la fase**: la documentación es del **producto**, no del tenant — se escribe una vez y sirve a todos los campings, así que el coste por camping ya era cero en las tres opciones de B-ii. Eso movió el criterio del eje habitual ("¿multiplica por cliente?") al **coste fijo de construcción con 6h/semana**, donde `apps/site` gana solo: hereda tokens, fuentes, isotipo, i18n, SEO y —lo decisivo— **el pipeline de despliegue**, porque `apps/site/dist` **ya es** el directorio de assets que compone el Worker del tenant. Una página nueva se despliega sin tocar nada. Corolario que sí habría multiplicado y queda descartado explícitamente: docs servidas por cada tenant. El dashboard enlaza con **URL absoluta** a `camp.logic2b.com/docs/…`.
+
+**Prosa en Markdown, cromo en i18n** — se respeta "textos de UI siempre vía i18n" distinguiendo cromo (nav, índice, avisos → `content/{lang}.json`) de contenido (las guías → `.md`, misma categoría que el blog del tenant), con el idiom que el repo ya tenía (`import.meta.glob` + `{slug}.{lang}.md` + fallback por página).
+
+**Idiomas, dicho en voz alta**: cromo en es/en/ca; **prosa en es**, con aviso visible de fallback. Traducir 21 páginas a 3 idiomas triplica la prosa y su mantenimiento de por vida con cero clientes en producción. La estructura por idioma está montada: añadir en/ca es soltar ficheros.
+
+**Pendiente registrado** (BACKLOG, no bloquea): `/informes`, `/tarifas` y `/ajustes` son pantallas de gestión y **no tienen página de guía** — su `?` no se pinta, a propósito (un `?` que lleva a un sitio que no responde la pregunta es peor que no tener `?`). Y el GIF/vídeo de los gestos del planning, que se explica mucho mejor en movimiento que en foto.
 
 ---
 

@@ -24,6 +24,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiGet, apiPatch, type Catalog } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 /** Esqueleto con la forma real: dos bloques de tipo con su hilera de códigos. */
 function InventarioEsqueleto() {
@@ -77,10 +78,14 @@ export default function Inventario() {
         <p className="tnum text-[13px] font-medium">
           {t('inv.activas', { n: activas })}
           {units.length - activas > 0 && (
-            <span className="text-destructive"> · {t('inv.inactivas', { n: units.length - activas })}</span>
+            <span className="text-destructive">
+              {' '}
+              · {t('inv.inactivas', { n: units.length - activas })}
+            </span>
           )}
         </p>
         <p className="ml-auto max-w-96 text-[12px] text-muted-foreground">{t('inv.nota')}</p>
+        <BotonAyuda />
       </div>
 
       {isPending && <InventarioEsqueleto />}

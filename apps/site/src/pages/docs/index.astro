@@ -1,0 +1,11 @@
+---
+import DocsIndice from '../../components/DocsIndice.astro';
+import Base from '../../layouts/Base.astro';
+import { getContent } from '../../lib/i18n';
+
+const c = getContent('es');
+---
+
+<Base locale="es" content={c} ruta="docs/" seo={c.docs.seo}>
+  <DocsIndice locale="es" />
+</Base>

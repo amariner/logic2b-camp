@@ -10,6 +10,7 @@ import { apiGet, type Catalog, type ReportsData } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 
@@ -131,6 +132,7 @@ export default function Informes() {
         <p className="tnum text-[13px] text-muted-foreground">
           {fecha(rango.from)} → {fecha(rango.to)}
         </p>
+        <BotonAyuda className="ml-auto" />
       </div>
 
       {isPending && <InformesEsqueleto />}

@@ -1,0 +1,16 @@
+---
+import DocsIndice from '../../../components/DocsIndice.astro';
+import Base from '../../../layouts/Base.astro';
+import { DEFAULT_LOCALE, LOCALES, getContent, type Locale } from '../../../lib/i18n';
+
+export function getStaticPaths() {
+  return LOCALES.filter((l) => l !== DEFAULT_LOCALE).map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+const c = getContent(locale);
+---
+
+<Base locale={locale} content={c} ruta="docs/" seo={c.docs.seo}>
+  <DocsIndice locale={locale} />
+</Base>

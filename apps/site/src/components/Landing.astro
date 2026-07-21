@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getContent, type Locale } from '../lib/i18n';
+import { getContent, localePath, type Locale } from '../lib/i18n';
 
 interface Props {
   locale: Locale;
@@ -152,7 +152,38 @@ const c = getContent(locale);
           ))
         }
       </div>
-      <p class="mt-6 text-sm text-muted-foreground">{c.niveles.nota}</p>
+      <p class="mt-6 text-sm text-muted-foreground">
+        {c.niveles.nota}
+        <a
+          href={localePath(locale, 'docs/dueno/')}
+          class="ml-1.5 font-medium text-primary underline underline-offset-4 hover:opacity-80"
+          >{c.docs.guias.dueno.nombre} &rarr;</a
+        >
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- Guías (C6, ADR 0025) ---------- */}
+  <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
+    <h2 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.docs.titulo}</h2>
+    <p class="mt-3 max-w-2xl text-muted-foreground">{c.docs.subtitulo}</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      {
+        (['recepcion', 'dueno', 'tecnica'] as const).map((g) => (
+          <a
+            href={localePath(locale, `docs/${g}/`)}
+            class="rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/60 hover:bg-muted/40"
+          >
+            <p class="text-xs font-medium tracking-wide text-primary uppercase">
+              {c.docs.guias[g].para}
+            </p>
+            <h3 class="mt-1.5 font-display text-base font-semibold tracking-tight">
+              {c.docs.guias[g].nombre}
+            </h3>
+            <p class="mt-2 text-sm text-muted-foreground">{c.docs.guias[g].texto}</p>
+          </a>
+        ))
+      }
     </div>
   </section>
 

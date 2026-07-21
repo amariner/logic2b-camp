@@ -13,6 +13,7 @@ import NewBookingPanel from '../components/NewBookingPanel';
 import { QueryError } from '../components/QueryError';
 import { eur, fecha, noches } from '../lib/format';
 import { t } from '../i18n';
+import { BotonAyuda } from '../components/BotonAyuda';
 
 const ESTADOS: BookingDetail['status'][] = [
   'pending',
@@ -119,6 +120,7 @@ export default function Reservas() {
           >
             {t('res.nueva')}
           </Button>
+          <BotonAyuda />
         </div>
 
         {isPending && (
