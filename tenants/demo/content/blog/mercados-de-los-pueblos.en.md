@@ -1,9 +1,9 @@
 ---
-title: "The town markets, properly explained"
-description: "Which one to visit depending on the day, where to park and what to buy before ten."
-date: "2026-06-10"
-lang: "en"
-photo: "tipo-parcela"
+title: 'The town markets, properly explained'
+description: 'Which one to visit depending on the day, where to park and what to buy before ten.'
+date: '2026-06-10'
+lang: 'en'
+photo: 'tipo-parcela'
 ---
 
 The most repeated question at the front desk, after "what time does the pool open?", is "which market do you recommend?". Here's the long answer, with days and times.

@@ -12,7 +12,8 @@ export type NotificationKind =
   | 'booking_confirmed'
   | 'booking_cancelled'
   | 'booking_pending_stuck'
-  | 'booking_reminder';
+  | 'booking_reminder'
+  | 'system_error';
 
 /** Línea de desglose ya formateada para el email (el dinero llega en céntimos). */
 export type EmailPriceLine = { label: string; amountCents: number };
@@ -47,13 +48,36 @@ export type BookingPayload = {
   refundCents?: number;
 };
 
+/**
+ * Aviso técnico al buzón de la casa (ADR 0026 §3): "algo ha reventado".
+ *
+ * Deliberadamente NO lleva ni el mensaje del error ni el stack. El correo sale
+ * del sistema y puede acabar en cualquier bandeja: lo que viaja es la
+ * REFERENCIA, y el detalle se queda en el log del servidor bajo esa misma
+ * referencia. Quien mantiene el sistema cruza una con otro.
+ */
+export type SystemErrorPayload = {
+  campName: string;
+  /** identificador de correlación — el mismo que ha visto el cliente y el del log */
+  ref: string;
+  /** identificador del suceso en snake_case (p. ej. `unhandled_error`) */
+  event: string;
+  /** método y patrón de ruta donde ha fallado, sin querystring ni identificadores */
+  route: string;
+  /** ISO del momento del fallo */
+  occurredAt: string;
+  /** cuántos avisos iguales se callaron en la ventana anterior (cortafuegos del buzón) */
+  suppressed: number;
+};
+
 export type NotificationPayload =
   | { kind: 'enquiry_received'; data: EnquiryPayload }
   | { kind: 'enquiry_autoreply'; data: EnquiryPayload }
   | { kind: 'booking_confirmed'; data: BookingPayload }
   | { kind: 'booking_cancelled'; data: BookingPayload }
   | { kind: 'booking_pending_stuck'; data: BookingPayload }
-  | { kind: 'booking_reminder'; data: BookingPayload };
+  | { kind: 'booking_reminder'; data: BookingPayload }
+  | { kind: 'system_error'; data: SystemErrorPayload };
 
 export type EmailMessage = { subject: string; html: string; text: string };
 

@@ -8,22 +8,26 @@
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": { "TENANT_SLUG": "__SLUG__" },
-  // solo hace falta si el nivel es 3+ (funnel con holds — purga cada 15 min, ADR 0007).
-  // "triggers": { "crons": ["*/15 * * * *"] },
+  // ACTIVO EN TODOS LOS NIVELES (ADR 0026 §2.4). Antes venía comentado "solo si el
+  // nivel es 3+" porque solo purgaba holds (ADR 0007) — pero el cron ejecuta también
+  // la retención de datos personales, y un camping de nivel 1 SÍ acumula solicitudes
+  // con nombre, correo y teléfono. Dejarlo comentado convertía el alta en un paso
+  // silencioso y olvidable, que es justo lo que no puede costar dar de alta un camping.
+  "triggers": { "crons": ["*/15 * * * *"] },
   "routes": [{ "pattern": "__DOMINIO__/*", "zone_name": "__ZONA__" }],
   "assets": {
     // construir la web ANTES de desplegar (un deploy = web + API, igual que la demo)
     "directory": "../../apps/web/dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*"],
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "logic-camp-__SLUG__",
       "database_id": "__TODO_DATABASE_ID__",
-      "migrations_dir": "../../packages/db/migrations"
-    }
-  ]
+      "migrations_dir": "../../packages/db/migrations",
+    },
+  ],
 }

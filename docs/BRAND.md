@@ -6,19 +6,19 @@
 
 Logic Camp tiene **dos superficies visuales distintas**, cada una con su dueño de marca:
 
-| Superficie | Marca | Dónde |
-|---|---|---|
-| **Producto Logic2B** — dashboard/gestor, landing de venta, documentación | **Logic2B** (esta guía): neutra, Inter, isotipo, shadcn | `/admin`, landing de producto, docs |
-| **Web pública de cada camping** (tenant) | **Del camping** — su color, sus fotos, su identidad mediterránea (ADR 0006) | `camp.logic2b.com` y cada dominio de cliente |
+| Superficie                                                               | Marca                                                                       | Dónde                                        |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------- |
+| **Producto Logic2B** — dashboard/gestor, landing de venta, documentación | **Logic2B** (esta guía): neutra, Inter, isotipo, shadcn                     | `/admin`, landing de producto, docs          |
+| **Web pública de cada camping** (tenant)                                 | **Del camping** — su color, sus fotos, su identidad mediterránea (ADR 0006) | `camp.logic2b.com` y cada dominio de cliente |
 
 Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara al huésped lleva la marca del camping.** El isotipo Logic2B aparece en el producto y, de forma discreta ("powered by Logic2B"), en el pie de las webs de tenant. Esto respeta el principio de §0 (cada cliente es su marca) sin perder que el producto es reconociblemente Logic2B.
 
 ## 1. Origen técnico
 
-`ui.logic2b.com` es la instancia Logic2B de **shadcn/ui** (base de color **"neutral"**, estilo New York), construida con Astro + Tailwind v4 (tokens como CSS vars en oklch). Coincide con lo que CLAUDE.md ya declara: *"Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)"*. Alinear la marca = **poblar `packages/ui` con estos tokens y componentes**, hoy vacío.
+`ui.logic2b.com` es la instancia Logic2B de **shadcn/ui** (base de color **"neutral"**, estilo New York), construida con Astro + Tailwind v4 (tokens como CSS vars en oklch). Coincide con lo que CLAUDE.md ya declara: _"Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)"_. Alinear la marca = **poblar `packages/ui` con estos tokens y componentes**, hoy vacío.
 
 Navegación del DS de referencia: `Home · Docs · Components · Blocks · Charts · Create · Typeset`.
-Tagline: *"The Foundation for your Design System — for humans and coding agents alike. Open Source. Open Code."*
+Tagline: _"The Foundation for your Design System — for humans and coding agents alike. Open Source. Open Code."_
 
 ## 2. Isotipo
 
@@ -30,41 +30,41 @@ Tagline: *"The Foundation for your Design System — for humans and coding agent
 
 ## 3. Tipografía
 
-| Rol | Familia | Notas |
-|---|---|---|
-| Sans / cuerpo | **Inter Variable** | `--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif` |
-| Titulares (h1–h4) | **Inter Variable** | `--font-heading` = misma que sans; los `h1..h4` la aplican por CSS |
-| Display / alt | **Space Grotesk Variable** | cargada como webfont; disponible para acentos de titular / marca |
-| Mono | ui-monospace | `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace` |
+| Rol               | Familia                    | Notas                                                                 |
+| ----------------- | -------------------------- | --------------------------------------------------------------------- |
+| Sans / cuerpo     | **Inter Variable**         | `--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif` |
+| Titulares (h1–h4) | **Inter Variable**         | `--font-heading` = misma que sans; los `h1..h4` la aplican por CSS    |
+| Display / alt     | **Space Grotesk Variable** | cargada como webfont; disponible para acentos de titular / marca      |
+| Mono              | ui-monospace               | `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`    |
 
 - **Webfonts subsetadas** (self-hosted, no Google Fonts CDN): `inter-*-wght-normal.woff2` y `space-grotesk-*-wght-normal.woff2` (latin, latin-ext, y demás rangos). Servir desde el propio origen, igual que la web pública ya subsetea sus fuentes.
 - Estilo de titular observado: `font-bold tracking-tighter leading-[1.08]` (negrita, interletrado apretado, línea compacta). Números: `tabular-nums`.
 
-> Convergencia de fuentes — **CERRADA en ADR 0018** (fase B2): **producto → Space Grotesk; web de tenant → sigue con Clash Display**. Inter es común a ambas superficies (cuerpo/UI). B2 alinea el *ritmo* tipográfico (tracking apretado, `tabular-nums`) entre web y producto, pero **no** la familia display: cambiar Clash Display por Space Grotesk neutralizaría la voz editorial del héroe mediterráneo (ADR 0006) — eso sería un reskin, no un alineamiento estructural.
+> Convergencia de fuentes — **CERRADA en ADR 0018** (fase B2): **producto → Space Grotesk; web de tenant → sigue con Clash Display**. Inter es común a ambas superficies (cuerpo/UI). B2 alinea el _ritmo_ tipográfico (tracking apretado, `tabular-nums`) entre web y producto, pero **no** la familia display: cambiar Clash Display por Space Grotesk neutralizaría la voz editorial del héroe mediterráneo (ADR 0006) — eso sería un reskin, no un alineamiento estructural.
 
 ## 4. Tokens de color (shadcn "neutral", oklch)
 
 Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El color solo entra en los **charts**. Valores exactos capturados (light / dark):
 
-| Token | Light | Dark |
-|---|---|---|
-| `--background` | `oklch(100% 0 0)` | `oklch(14.5% 0 0)` |
-| `--foreground` | `oklch(14.5% 0 0)` | `oklch(98.5% 0 0)` |
-| `--card` | `oklch(100% 0 0)` | `oklch(20.5% 0 0)` |
-| `--card-foreground` | `oklch(14.5% 0 0)` | `oklch(98.5% 0 0)` |
-| `--popover` | `oklch(100% 0 0)` | `oklch(20.5% 0 0)` |
-| `--primary` | `oklch(20.5% 0 0)` | `oklch(92.2% 0 0)` |
-| `--primary-foreground` | `oklch(98.5% 0 0)` | `oklch(20.5% 0 0)` |
-| `--secondary` | `oklch(97% 0 0)` | `oklch(26.9% 0 0)` |
-| `--secondary-foreground` | `oklch(20.5% 0 0)` | `oklch(98.5% 0 0)` |
-| `--muted` | `oklch(97% 0 0)` | `oklch(26.9% 0 0)` |
-| `--muted-foreground` | `oklch(55.6% 0 0)` | `oklch(70.8% 0 0)` |
-| `--accent` | `oklch(97% 0 0)` | `oklch(26.9% 0 0)` |
-| `--accent-foreground` | `oklch(20.5% 0 0)` | `oklch(98.5% 0 0)` |
-| `--destructive` | `oklch(57.7% .245 27.325)` | `oklch(70.4% .191 22.216)` |
-| `--border` | `oklch(92.2% 0 0)` | `oklch(100% 0 0 / .1)` |
-| `--input` | `oklch(92.2% 0 0)` | `oklch(100% 0 0 / .15)` |
-| `--ring` | `oklch(70.8% 0 0)` | `oklch(55.6% 0 0)` |
+| Token                    | Light                      | Dark                       |
+| ------------------------ | -------------------------- | -------------------------- |
+| `--background`           | `oklch(100% 0 0)`          | `oklch(14.5% 0 0)`         |
+| `--foreground`           | `oklch(14.5% 0 0)`         | `oklch(98.5% 0 0)`         |
+| `--card`                 | `oklch(100% 0 0)`          | `oklch(20.5% 0 0)`         |
+| `--card-foreground`      | `oklch(14.5% 0 0)`         | `oklch(98.5% 0 0)`         |
+| `--popover`              | `oklch(100% 0 0)`          | `oklch(20.5% 0 0)`         |
+| `--primary`              | `oklch(20.5% 0 0)`         | `oklch(92.2% 0 0)`         |
+| `--primary-foreground`   | `oklch(98.5% 0 0)`         | `oklch(20.5% 0 0)`         |
+| `--secondary`            | `oklch(97% 0 0)`           | `oklch(26.9% 0 0)`         |
+| `--secondary-foreground` | `oklch(20.5% 0 0)`         | `oklch(98.5% 0 0)`         |
+| `--muted`                | `oklch(97% 0 0)`           | `oklch(26.9% 0 0)`         |
+| `--muted-foreground`     | `oklch(55.6% 0 0)`         | `oklch(70.8% 0 0)`         |
+| `--accent`               | `oklch(97% 0 0)`           | `oklch(26.9% 0 0)`         |
+| `--accent-foreground`    | `oklch(20.5% 0 0)`         | `oklch(98.5% 0 0)`         |
+| `--destructive`          | `oklch(57.7% .245 27.325)` | `oklch(70.4% .191 22.216)` |
+| `--border`               | `oklch(92.2% 0 0)`         | `oklch(100% 0 0 / .1)`     |
+| `--input`                | `oklch(92.2% 0 0)`         | `oklch(100% 0 0 / .15)`    |
+| `--ring`                 | `oklch(70.8% 0 0)`         | `oklch(55.6% 0 0)`         |
 
 **Sidebar** (mismos grises, superficie propia): `--sidebar`, `--sidebar-foreground`, `--sidebar-primary(-foreground)`, `--sidebar-accent(-foreground)`, `--sidebar-border`, `--sidebar-ring` — light basa en blanco/tinta, dark en `oklch(20.5%)`.
 

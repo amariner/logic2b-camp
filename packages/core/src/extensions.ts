@@ -24,7 +24,9 @@ export type ExtensionHooks = {
   onBookingModified: (booking: unknown) => MaybePromise<void>;
   onBookingCancelled: (booking: unknown) => MaybePromise<void>;
   // transformadores
-  beforeAvailabilitySearch: (query: AvailabilitySearchInput) => MaybePromise<AvailabilitySearchInput>;
+  beforeAvailabilitySearch: (
+    query: AvailabilitySearchInput,
+  ) => MaybePromise<AvailabilitySearchInput>;
   afterAvailabilitySearch: (results: AvailabilityResult[]) => MaybePromise<AvailabilityResult[]>;
   onQuoteCalculated: (quote: Quote) => MaybePromise<Quote>;
 };
@@ -32,12 +34,16 @@ export type ExtensionHooks = {
 export type ExtensionRegistry = {
   on: <K extends keyof ExtensionHooks>(hook: K, fn: ExtensionHooks[K]) => void;
   /** ejecuta observadores en orden de registro */
-  emit: <K extends 'onEnquiryReceived' | 'onBookingCreated' | 'onBookingModified' | 'onBookingCancelled'>(
+  emit: <
+    K extends 'onEnquiryReceived' | 'onBookingCreated' | 'onBookingModified' | 'onBookingCancelled',
+  >(
     hook: K,
     payload: Parameters<ExtensionHooks[K]>[0],
   ) => Promise<void>;
   /** encadena transformadores en orden de registro */
-  transform: <K extends 'beforeAvailabilitySearch' | 'afterAvailabilitySearch' | 'onQuoteCalculated'>(
+  transform: <
+    K extends 'beforeAvailabilitySearch' | 'afterAvailabilitySearch' | 'onQuoteCalculated',
+  >(
     hook: K,
     value: Parameters<ExtensionHooks[K]>[0],
   ) => Promise<Awaited<ReturnType<ExtensionHooks[K]>>>;

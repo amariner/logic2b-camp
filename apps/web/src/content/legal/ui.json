@@ -1,0 +1,32 @@
+{
+  "es": {
+    "nav": "Información legal",
+    "fallback": "Esta página está redactada en español, que es la versión válida a efectos legales.",
+    "actualizado": "Última actualización"
+  },
+  "ca": {
+    "nav": "Informació legal",
+    "fallback": "Aquesta pàgina està redactada en castellà, que és la versió vàlida a efectes legals.",
+    "actualizado": "Darrera actualització"
+  },
+  "en": {
+    "nav": "Legal information",
+    "fallback": "This page is written in Spanish, which is the legally binding version.",
+    "actualizado": "Last updated"
+  },
+  "fr": {
+    "nav": "Informations légales",
+    "fallback": "Cette page est rédigée en espagnol, seule version faisant foi sur le plan juridique.",
+    "actualizado": "Dernière mise à jour"
+  },
+  "de": {
+    "nav": "Rechtliche Hinweise",
+    "fallback": "Diese Seite ist auf Spanisch verfasst; diese Fassung ist rechtlich maßgeblich.",
+    "actualizado": "Zuletzt aktualisiert"
+  },
+  "nl": {
+    "nav": "Juridische informatie",
+    "fallback": "Deze pagina is in het Spaans opgesteld; die versie is juridisch bindend.",
+    "actualizado": "Laatst bijgewerkt"
+  }
+}

@@ -44,13 +44,7 @@ export type PlanoBlock = {
 };
 
 export type PlanoServiceIcon =
-  | 'reception'
-  | 'pool'
-  | 'restaurant'
-  | 'wc'
-  | 'playground'
-  | 'market'
-  | 'shop';
+  'reception' | 'pool' | 'restaurant' | 'wc' | 'playground' | 'market' | 'shop';
 
 /** Decorado del recinto — DATO, no cableado (defecto 2 del original corregido). */
 export type PlanoDecor =
@@ -166,7 +160,8 @@ function typeLabel(type: PlanoUnitType, locale: string): string {
 /** Forma de celda por tipo, con heurística por id (moto/glamping) para el auto-layout. */
 function cellFor(type: PlanoUnitType): PlanoCellKind {
   const id = type.id.toLowerCase();
-  if (type.kind === 'pitch') return id.includes('moto') || id.includes('auto') ? 'motorhome' : 'pitch';
+  if (type.kind === 'pitch')
+    return id.includes('moto') || id.includes('auto') ? 'motorhome' : 'pitch';
   return id.includes('glamp') || id.includes('tent') ? 'glamping' : 'lodging';
 }
 

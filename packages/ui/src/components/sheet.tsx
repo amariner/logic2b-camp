@@ -16,7 +16,8 @@ export const SheetTrigger = DialogPrimitive.Trigger;
 export const SheetClose = DialogPrimitive.Close;
 
 const sides = {
-  right: 'inset-y-0 right-0 h-full border-l data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right',
+  right:
+    'inset-y-0 right-0 h-full border-l data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right',
   left: 'inset-y-0 left-0 h-full border-r data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left',
   bottom:
     'inset-x-0 bottom-0 border-t data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom',
@@ -52,7 +53,10 @@ export function SheetContent({
 
 export function SheetHeader({ className, ...props }: ComponentProps<'div'>) {
   return (
-    <div className={cn('flex flex-col gap-1 border-b border-border p-4 pr-10', className)} {...props} />
+    <div
+      className={cn('flex flex-col gap-1 border-b border-border p-4 pr-10', className)}
+      {...props}
+    />
   );
 }
 

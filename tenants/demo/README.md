@@ -8,11 +8,11 @@
 
 Contraseña de todos: `calasereno` (solo demo — el hash scrypt vive en `accounts`; seed determinista, ADR 0005).
 
-| Email | Rol |
-|---|---|
-| direccion@calasereno.example | owner |
-| gerencia@calasereno.example | manager |
+| Email                        | Rol       |
+| ---------------------------- | --------- |
+| direccion@calasereno.example | owner     |
+| gerencia@calasereno.example  | manager   |
 | recepcion@calasereno.example | reception |
-| consulta@calasereno.example | readonly |
+| consulta@calasereno.example  | readonly  |
 
 Login: `POST /api/auth/sign-in/email` con `{ email, password }` (cookie de sesión Better Auth). Rutas privadas bajo `/api/admin/*`.

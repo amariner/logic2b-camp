@@ -49,6 +49,16 @@ const es: Dict = {
   'rem.title': 'Tu llegada es mañana',
   'rem.intro': 'Estamos deseando recibirte. Aquí tienes un recordatorio de tu reserva.',
   'cnl.refund': 'Reembolso previsto',
+  'sys.subject': 'Aviso técnico — {camp}',
+  'sys.title': 'Algo ha fallado en el sistema',
+  'sys.intro':
+    'Una petición ha terminado en error. Puede que un cliente no haya podido completar lo que estaba haciendo. Pasa esta referencia a quien lleve el mantenimiento: con ella se localiza el detalle exacto.',
+  'sys.ref': 'Referencia',
+  'sys.route': 'Dónde',
+  'sys.when': 'Cuándo',
+  'sys.more': 'Fallos iguales silenciados',
+  'sys.hint':
+    'Este aviso no incluye el detalle técnico a propósito: viaja por email y podría contener datos internos. El detalle queda en el registro del servidor, con esta misma referencia.',
   'common.footer': 'Este email se ha enviado automáticamente desde {camp}.',
 };
 
@@ -92,12 +102,22 @@ const ca: Dict = {
   'stk.subject': 'Reserva {code} pendent de pagament sense confirmar — {camp}',
   'stk.title': 'Reserva pendent sense confirmar',
   'stk.intro':
-    "Aquesta reserva porta més de dues hores esperant el pagament, sense cobrament ni cancel·lació. Pot ser que el client hagi abandonat el pagament — revisa si cal contactar-lo o alliberar la plaça.",
+    'Aquesta reserva porta més de dues hores esperant el pagament, sense cobrament ni cancel·lació. Pot ser que el client hagi abandonat el pagament — revisa si cal contactar-lo o alliberar la plaça.',
   'stk.holder': 'Titular',
   'rem.subject': "T'esperem demà — {camp}",
   'rem.title': 'La teva arribada és demà',
   'rem.intro': "Tenim moltes ganes de rebre't. Aquí tens un recordatori de la teva reserva.",
   'cnl.refund': 'Reemborsament previst',
+  'sys.subject': 'Avís tècnic — {camp}',
+  'sys.title': 'Alguna cosa ha fallat al sistema',
+  'sys.intro':
+    'Una petició ha acabat en error. Pot ser que un client no hagi pogut completar el que estava fent. Passa aquesta referència a qui porti el manteniment: amb ella es localitza el detall exacte.',
+  'sys.ref': 'Referència',
+  'sys.route': 'On',
+  'sys.when': 'Quan',
+  'sys.more': 'Errors iguals silenciats',
+  'sys.hint':
+    'Aquest avís no inclou el detall tècnic a propòsit: viatja per email i podria contenir dades internes. El detall queda al registre del servidor, amb aquesta mateixa referència.',
   'common.footer': "Aquest email s'ha enviat automàticament des de {camp}.",
 };
 
@@ -140,12 +160,22 @@ const en: Dict = {
   'stk.subject': 'Booking {code} pending payment, unconfirmed — {camp}',
   'stk.title': 'Unconfirmed pending booking',
   'stk.intro':
-    "This booking has been waiting for payment for over two hours, with no charge or cancellation. The guest may have abandoned checkout — check if it needs a follow-up or the spot should be released.",
+    'This booking has been waiting for payment for over two hours, with no charge or cancellation. The guest may have abandoned checkout — check if it needs a follow-up or the spot should be released.',
   'stk.holder': 'Holder',
   'rem.subject': 'See you tomorrow — {camp}',
   'rem.title': 'Your arrival is tomorrow',
   'rem.intro': "We can't wait to welcome you. Here's a reminder of your booking.",
   'cnl.refund': 'Expected refund',
+  'sys.subject': 'Technical alert — {camp}',
+  'sys.title': 'Something failed in the system',
+  'sys.intro':
+    'A request ended in an error. A guest may not have been able to finish what they were doing. Pass this reference to whoever handles maintenance: it pinpoints the exact detail.',
+  'sys.ref': 'Reference',
+  'sys.route': 'Where',
+  'sys.when': 'When',
+  'sys.more': 'Identical failures silenced',
+  'sys.hint':
+    'This alert deliberately omits the technical detail: it travels by email and could carry internal data. The detail stays in the server log, under this same reference.',
   'common.footer': 'This email was sent automatically from {camp}.',
 };
 
@@ -194,8 +224,18 @@ const fr: Dict = {
   'stk.holder': 'Titulaire',
   'rem.subject': 'À demain — {camp}',
   'rem.title': 'Votre arrivée est demain',
-  'rem.intro': "Nous avons hâte de vous accueillir. Voici un rappel de votre réservation.",
+  'rem.intro': 'Nous avons hâte de vous accueillir. Voici un rappel de votre réservation.',
   'cnl.refund': 'Remboursement prévu',
+  'sys.subject': 'Alerte technique — {camp}',
+  'sys.title': 'Une erreur est survenue dans le système',
+  'sys.intro':
+    "Une requête s'est terminée en erreur. Un client n'a peut-être pas pu finir ce qu'il faisait. Transmettez cette référence à la personne chargée de la maintenance : elle permet de retrouver le détail exact.",
+  'sys.ref': 'Référence',
+  'sys.route': 'Où',
+  'sys.when': 'Quand',
+  'sys.more': 'Erreurs identiques masquées',
+  'sys.hint':
+    'Cette alerte omet volontairement le détail technique : elle circule par email et pourrait contenir des données internes. Le détail reste dans le journal du serveur, sous cette même référence.',
   'common.footer': 'Cet email a été envoyé automatiquement depuis {camp}.',
 };
 
@@ -241,12 +281,22 @@ const de: Dict = {
   'stk.subject': 'Buchung {code} wartet auf Zahlung, unbestätigt — {camp}',
   'stk.title': 'Unbestätigte ausstehende Buchung',
   'stk.intro':
-    "Diese Buchung wartet seit über zwei Stunden auf die Zahlung, ohne Abbuchung oder Stornierung. Der Gast hat die Zahlung möglicherweise abgebrochen — prüfen Sie, ob eine Nachfrage nötig ist oder der Platz freigegeben werden soll.",
+    'Diese Buchung wartet seit über zwei Stunden auf die Zahlung, ohne Abbuchung oder Stornierung. Der Gast hat die Zahlung möglicherweise abgebrochen — prüfen Sie, ob eine Nachfrage nötig ist oder der Platz freigegeben werden soll.',
   'stk.holder': 'Hauptgast',
   'rem.subject': 'Bis morgen — {camp}',
   'rem.title': 'Ihre Anreise ist morgen',
-  'rem.intro': "Wir freuen uns auf Sie. Hier eine Erinnerung an Ihre Buchung.",
+  'rem.intro': 'Wir freuen uns auf Sie. Hier eine Erinnerung an Ihre Buchung.',
   'cnl.refund': 'Voraussichtliche Erstattung',
+  'sys.subject': 'Technische Meldung — {camp}',
+  'sys.title': 'Im System ist ein Fehler aufgetreten',
+  'sys.intro':
+    'Eine Anfrage endete mit einem Fehler. Möglicherweise konnte ein Gast seinen Vorgang nicht abschließen. Geben Sie diese Referenz an die Wartung weiter: damit lässt sich das genaue Detail finden.',
+  'sys.ref': 'Referenz',
+  'sys.route': 'Wo',
+  'sys.when': 'Wann',
+  'sys.more': 'Gleiche Fehler unterdrückt',
+  'sys.hint':
+    'Diese Meldung enthält bewusst keine technischen Details: Sie wird per E-Mail versendet und könnte interne Daten enthalten. Das Detail bleibt im Serverprotokoll, unter derselben Referenz.',
   'common.footer': 'Diese E-Mail wurde automatisch von {camp} gesendet.',
 };
 
@@ -291,12 +341,22 @@ const nl: Dict = {
   'stk.subject': 'Boeking {code} wacht op betaling, onbevestigd — {camp}',
   'stk.title': 'Onbevestigde openstaande boeking',
   'stk.intro':
-    "Deze boeking wacht al meer dan twee uur op betaling, zonder afschrijving of annulering. De gast heeft het afrekenen mogelijk afgebroken — controleer of navraag nodig is of de plek vrijgegeven moet worden.",
+    'Deze boeking wacht al meer dan twee uur op betaling, zonder afschrijving of annulering. De gast heeft het afrekenen mogelijk afgebroken — controleer of navraag nodig is of de plek vrijgegeven moet worden.',
   'stk.holder': 'Hoofdboeker',
   'rem.subject': 'Tot morgen — {camp}',
   'rem.title': 'Uw aankomst is morgen',
-  'rem.intro': "We kijken ernaar uit u te verwelkomen. Hier een herinnering aan uw boeking.",
+  'rem.intro': 'We kijken ernaar uit u te verwelkomen. Hier een herinnering aan uw boeking.',
   'cnl.refund': 'Verwachte terugbetaling',
+  'sys.subject': 'Technische melding — {camp}',
+  'sys.title': 'Er is iets misgegaan in het systeem',
+  'sys.intro':
+    'Een verzoek is op een fout uitgelopen. Mogelijk kon een gast niet afmaken waar hij mee bezig was. Geef deze referentie door aan wie het onderhoud doet: daarmee is het exacte detail terug te vinden.',
+  'sys.ref': 'Referentie',
+  'sys.route': 'Waar',
+  'sys.when': 'Wanneer',
+  'sys.more': 'Identieke fouten onderdrukt',
+  'sys.hint':
+    'Deze melding bevat bewust geen technisch detail: ze reist per e-mail en zou interne gegevens kunnen bevatten. Het detail blijft in het serverlogboek, onder dezelfde referentie.',
   'common.footer': 'Deze e-mail is automatisch verzonden vanuit {camp}.',
 };
 

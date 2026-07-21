@@ -4,7 +4,13 @@
  * fichas técnicas no pueden divergir de lo que responde la API.
  * (En Fase 9 el asistente de alta generará este fichero para cada camping.)
  */
-import { generateSeed, type SeedExtra, type SeedRatePlan, type SeedSeason, type SeedUnitType } from './seed';
+import {
+  generateSeed,
+  type SeedExtra,
+  type SeedRatePlan,
+  type SeedSeason,
+  type SeedUnitType,
+} from './seed';
 
 // Mismo ancla por defecto que `pnpm db:seed` (write-seed.ts): el año en curso.
 const year = new Date().getUTCFullYear();

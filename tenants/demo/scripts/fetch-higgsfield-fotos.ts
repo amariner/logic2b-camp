@@ -22,12 +22,18 @@ const outDir = join(__dirname, '..', 'content', 'media');
 
 // nombre destino -> URL cruda de Higgsfield (job_display, sesión 8; UUIDs también en docs/BACKLOG.md)
 const FOTOS = {
-  'tipo-premium': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230032_32b5b013-44b5-4bf4-9ec4-18009cbf00ef.png',
-  'tipo-autocaravana': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230034_2ba71b99-2b56-47a6-bcf1-af26efba53b3.png',
-  'detalle-bungalow-interior': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230018_f5ac46f2-f0eb-4a47-ab17-ef8ea694f924.png',
-  'detalle-glamping-interior': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230020_9bfdfd4b-5563-4f98-8d5b-874f76efb44b.png',
-  'instalacion-piscina': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230025_9a9eeb15-b009-47e3-9de8-95d0d6fb0b44.png',
-  'instalacion-restaurante': 'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230027_1cbee642-34bd-4d6a-b992-49d4e38d88b2.png',
+  'tipo-premium':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230032_32b5b013-44b5-4bf4-9ec4-18009cbf00ef.png',
+  'tipo-autocaravana':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230034_2ba71b99-2b56-47a6-bcf1-af26efba53b3.png',
+  'detalle-bungalow-interior':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230018_f5ac46f2-f0eb-4a47-ab17-ef8ea694f924.png',
+  'detalle-glamping-interior':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230020_9bfdfd4b-5563-4f98-8d5b-874f76efb44b.png',
+  'instalacion-piscina':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230025_9a9eeb15-b009-47e3-9de8-95d0d6fb0b44.png',
+  'instalacion-restaurante':
+    'https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260718_230027_1cbee642-34bd-4d6a-b992-49d4e38d88b2.png',
 };
 
 // mismo perfil que el resto de tenants/demo/content/media/: WebP, lado mayor

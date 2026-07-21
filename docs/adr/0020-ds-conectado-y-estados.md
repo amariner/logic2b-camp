@@ -19,16 +19,16 @@ Hacerlos por separado significa tocar los mismos 16 ficheros dos veces. Se hacen
 
 Verificado en el repo al abrir la sesión:
 
-| Hecho | Medida |
-|---|---|
-| `<button>` crudos en `apps/dashboard` | **43** en 16 ficheros |
-| Usos de `<Button>`/`<Card>`/`<Badge>` del DS | **0** |
-| Dependencias de Radix en `packages/ui` | **0** — el bloqueo de fondo |
-| Claves `*.cargando` renderizadas como `<p>` | **12** |
-| Skeletons · spinners · error boundaries · toasts | **0 · 0 · 0 · 0** |
-| `useState<{text, error}>` duplicado a mano | **6 ficheros** |
-| Usos del vocabulario viejo (`pino`/`arena`/`tinta`/`hueso`/`mar`) | **352** |
-| Script `test` en `packages/ui` | **no existe** |
+| Hecho                                                             | Medida                      |
+| ----------------------------------------------------------------- | --------------------------- |
+| `<button>` crudos en `apps/dashboard`                             | **43** en 16 ficheros       |
+| Usos de `<Button>`/`<Card>`/`<Badge>` del DS                      | **0**                       |
+| Dependencias de Radix en `packages/ui`                            | **0** — el bloqueo de fondo |
+| Claves `*.cargando` renderizadas como `<p>`                       | **12**                      |
+| Skeletons · spinners · error boundaries · toasts                  | **0 · 0 · 0 · 0**           |
+| `useState<{text, error}>` duplicado a mano                        | **6 ficheros**              |
+| Usos del vocabulario viejo (`pino`/`arena`/`tinta`/`hueso`/`mar`) | **352**                     |
+| Script `test` en `packages/ui`                                    | **no existe**               |
 
 ### Los dos bugs, verificados — y ninguno es lo que parecía
 
@@ -36,14 +36,14 @@ Verificado en el repo al abrir la sesión:
 
 `packages/ui/src/theme.css:33-37` (`:root`, light) contiene exactamente la **columna dark** de `BRAND.md` §4. Comprobado valor a valor:
 
-| token | `:root` hoy | BRAND light (correcto) | BRAND dark |
-|---|---|---|---|
-| `--chart-1` | `64.6% .222 41.116` | `48.8% .243 264.376` | ← lo de hoy |
-| `--chart-4` | `82.8% .189 84.429` | `62.7% .265 303.9` | ← lo de hoy |
+| token       | `:root` hoy         | BRAND light (correcto) | BRAND dark  |
+| ----------- | ------------------- | ---------------------- | ----------- |
+| `--chart-1` | `64.6% .222 41.116` | `48.8% .243 264.376`   | ← lo de hoy |
+| `--chart-4` | `82.8% .189 84.429` | `62.7% .265 303.9`     | ← lo de hoy |
 
 Y aquí está lo que no era obvio: **`--chart-4` pinta las barras `pending` del planning** (`styles.css`, `.lc-bar.st-pending`). Hoy es ámbar y funciona. El valor correcto de BRAND es **morado** (`62.7% .265 303.9`) — y además con `color: var(--foreground)` (texto negro encima) a esa luminosidad **no pasa AA**.
 
-O sea: *arreglar el bug tal cual rompe el planning*. Ese es el hallazgo. Ver decisión 2.
+O sea: _arreglar el bug tal cual rompe el planning_. Ese es el hallazgo. Ver decisión 2.
 
 Complementos del mismo bug: falta `--radius-2xl: 1rem` (BRAND §5 lo pide), y el bloque `.dark` **no declara ningún `--chart-*`** — en oscuro los charts heredarían los de `:root`, que es precisamente por lo que nadie notó que estaban cambiados.
 
@@ -64,38 +64,38 @@ Seis decisiones. La 4 es la única que pido decidir a Andreu antes de tocar cód
 
 ### 1. Radix: alcance acotado, no los 21 primitivos de la lista
 
-El contrato (`FRENTE-C-ACABADO.md` C2) lista 21 primitivos. **No se instalan los 21.** Se instala lo que C2+C3 usan *en esta sesión*, y el resto se declara con su fase.
+El contrato (`FRENTE-C-ACABADO.md` C2) lista 21 primitivos. **No se instalan los 21.** Se instala lo que C2+C3 usan _en esta sesión_, y el resto se declara con su fase.
 
 **Se instala ahora** (12 paquetes Radix + 1 de toast, versiones verificadas hoy contra el registro):
 
-| paquete | versión | lo usa |
-|---|---|---|
-| `@radix-ui/react-slot` | `1.3.0` | `asChild` en `Button` — base de todo lo demás |
-| `@radix-ui/react-dialog` | `1.1.20` | `dialog` + `sheet` (el panel lateral de la ficha) |
-| `@radix-ui/react-alert-dialog` | `1.1.20` | **C3** — confirmación de acciones destructivas |
-| `@radix-ui/react-dropdown-menu` | `2.1.21` | menús de fila (reservas, pagos, solicitudes) |
-| `@radix-ui/react-popover` | `1.1.20` | filtros del planning |
-| `@radix-ui/react-tooltip` | `1.2.13` | densidad: iconos sin etiqueta |
-| `@radix-ui/react-select` | `2.3.4` | los `<select>` crudos de filtros |
-| `@radix-ui/react-label` | `2.1.12` | accesibilidad de formularios |
-| `@radix-ui/react-separator` | `1.1.12` | estructura de paneles |
-| `@radix-ui/react-tabs` | `1.1.18` | ficha de reserva e informes |
-| `@radix-ui/react-switch` | `1.3.4` | los toggles de Ajustes |
-| `@radix-ui/react-checkbox` | `1.3.8` | selección en tablas |
-| `sonner` | `2.0.7` | **C3** — toasts con "Deshacer" |
+| paquete                         | versión  | lo usa                                            |
+| ------------------------------- | -------- | ------------------------------------------------- |
+| `@radix-ui/react-slot`          | `1.3.0`  | `asChild` en `Button` — base de todo lo demás     |
+| `@radix-ui/react-dialog`        | `1.1.20` | `dialog` + `sheet` (el panel lateral de la ficha) |
+| `@radix-ui/react-alert-dialog`  | `1.1.20` | **C3** — confirmación de acciones destructivas    |
+| `@radix-ui/react-dropdown-menu` | `2.1.21` | menús de fila (reservas, pagos, solicitudes)      |
+| `@radix-ui/react-popover`       | `1.1.20` | filtros del planning                              |
+| `@radix-ui/react-tooltip`       | `1.2.13` | densidad: iconos sin etiqueta                     |
+| `@radix-ui/react-select`        | `2.3.4`  | los `<select>` crudos de filtros                  |
+| `@radix-ui/react-label`         | `2.1.12` | accesibilidad de formularios                      |
+| `@radix-ui/react-separator`     | `1.1.12` | estructura de paneles                             |
+| `@radix-ui/react-tabs`          | `1.1.18` | ficha de reserva e informes                       |
+| `@radix-ui/react-switch`        | `1.3.4`  | los toggles de Ajustes                            |
+| `@radix-ui/react-checkbox`      | `1.3.8`  | selección en tablas                               |
+| `sonner`                        | `2.0.7`  | **C3** — toasts con "Deshacer"                    |
 
 Sin Radix (son CSS + markup nuestro): `skeleton`, `table`, `input`, `card`, `badge`, `button`, `empty-state`, `spinner`.
 
 **Se declara y NO se instala**, con motivo:
 
-| primitivo | por qué no ahora |
-|---|---|
-| `cmdk` (⌘K) | El contrato lo sitúa en **C4**, no en C2. Instalarlo sin la búsqueda detrás es peso muerto. |
-| `calendar` / `date-picker` | Arrastra una librería de fechas y **una decisión de dominio** (`date_to` exclusive, UTC, sin zona). Merece su propio ADR, no un renglón de este. |
-| `form` (react-hook-form) | Dependencia grande y los formularios de hoy son cortos y funcionan. Sin justificación medida. |
-| `scroll-area` | El planning está **virtualizado**; interponer un scroll custom entre el virtualizador y el scroll nativo es pedir un bug de rendimiento a cambio de una barra más bonita. |
-| `avatar` | Cero usos reales. No hay fotos de usuario en el producto. |
-| `vaul` (drawer móvil) | El `sheet` de `react-dialog` cubre el caso; revisar en el remate móvil (BACKLOG B1). |
+| primitivo                  | por qué no ahora                                                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cmdk` (⌘K)                | El contrato lo sitúa en **C4**, no en C2. Instalarlo sin la búsqueda detrás es peso muerto.                                                                               |
+| `calendar` / `date-picker` | Arrastra una librería de fechas y **una decisión de dominio** (`date_to` exclusive, UTC, sin zona). Merece su propio ADR, no un renglón de este.                          |
+| `form` (react-hook-form)   | Dependencia grande y los formularios de hoy son cortos y funcionan. Sin justificación medida.                                                                             |
+| `scroll-area`              | El planning está **virtualizado**; interponer un scroll custom entre el virtualizador y el scroll nativo es pedir un bug de rendimiento a cambio de una barra más bonita. |
+| `avatar`                   | Cero usos reales. No hay fotos de usuario en el producto.                                                                                                                 |
+| `vaul` (drawer móvil)      | El `sheet` de `react-dialog` cubre el caso; revisar en el remate móvil (BACKLOG B1).                                                                                      |
 
 **Por qué paquetes sueltos y no `radix-ui` (el meta-paquete).** Los sueltos dejan el árbol de dependencias legible y permiten que el bundle del dashboard crezca solo por lo que se usa. El dashboard es una SPA privada tras login (el presupuesto de bytes duro es el **nivel 1**, que no incluye dashboard ni React), pero eso no es excusa para arrastrar 21 paquetes sin usar.
 
@@ -112,15 +112,15 @@ Los dos hechos a la vez: los tokens de BRAND están mal, y el planning no puede 
 ```css
 /* estado de reserva → color. El planning y (futuro) el plano leen SOLO de aquí. */
 --lc-status-confirmed: …;
---lc-status-pending:   …;
---lc-status-no-show:   …;
+--lc-status-pending: …;
+--lc-status-no-show: …;
 --lc-status-completed: …;
---lc-status-blocked:   …;
+--lc-status-blocked: …;
 ```
 
 **Con los valores de hoy**, para que este ADR no cambie ni un píxel del planning: `--lc-status-pending` conserva el ámbar actual (`oklch(82.8% .189 84.429)`) escrito como valor propio, no como `var(--chart-4)`.
 
-**Por qué es lo correcto y no un parche.** `BRAND.md` §4 dice que el color solo entra por los `--chart-*` — y eso sigue valiéndose: los `--lc-status-*` **salen** de esa familia, pero el planning no se ata al *índice* de una escala de gráficas. Un tape chart no necesita "el color 4", necesita "el color de pendiente de pago". Hoy están acoplados por accidente, y ese accidente es exactamente el mecanismo por el que un bug de tokens llegó a la pantalla firma del producto.
+**Por qué es lo correcto y no un parche.** `BRAND.md` §4 dice que el color solo entra por los `--chart-*` — y eso sigue valiéndose: los `--lc-status-*` **salen** de esa familia, pero el planning no se ata al _índice_ de una escala de gráficas. Un tape chart no necesita "el color 4", necesita "el color de pendiente de pago". Hoy están acoplados por accidente, y ese accidente es exactamente el mecanismo por el que un bug de tokens llegó a la pantalla firma del producto.
 
 Y deja **C1.5 limpio**: cuando toque decidir el mapa de color definitivo (incluido "en casa" tras C4), se cambian 5 valores en un sitio, sin tocar CSS de barras ni de chips ni el futuro plano de C7. Ahora mismo esos colores están escritos **dos veces** (`.lc-bar.st-*` y `.lc-chip.st-*`); esta capa los unifica de paso.
 
@@ -212,14 +212,14 @@ Efecto en el pipeline: `pnpm check` pasa de **41 a 42 tareas**.
 
 ## Qué queda fuera (y en qué fase se cobra)
 
-| Diferido | Fase |
-|---|---|
-| Toggle de modo oscuro + `prefers-color-scheme` | tras **C1.5** (ver decisión 4) |
-| Mapa de color definitivo de estado (incluido "en casa") | **C1.5** |
-| ⌘K / `cmdk` y búsqueda global | **C4** |
-| Rutas direccionables `/reservas/$id`, `/clientes/$id` | **C4** |
-| `calendar` / `date-picker` | ADR propio |
-| `form` / react-hook-form | sin justificación medida |
+| Diferido                                                | Fase                           |
+| ------------------------------------------------------- | ------------------------------ |
+| Toggle de modo oscuro + `prefers-color-scheme`          | tras **C1.5** (ver decisión 4) |
+| Mapa de color definitivo de estado (incluido "en casa") | **C1.5**                       |
+| ⌘K / `cmdk` y búsqueda global                           | **C4**                         |
+| Rutas direccionables `/reservas/$id`, `/clientes/$id`   | **C4**                         |
+| `calendar` / `date-picker`                              | ADR propio                     |
+| `form` / react-hook-form                                | sin justificación medida       |
 
 ## Criterio de "hecho" de esta sesión
 
@@ -236,30 +236,30 @@ Efecto en el pipeline: `pnpm check` pasa de **41 a 42 tareas**.
 
 ## Resultado medido (2026-07-20/21, implementación)
 
-| | antes | después |
-|---|---|---|
-| `<button>` crudos en el dashboard | **43** | **2** (excepción documentada, ver abajo) |
-| Usos de `<Button>`/`<Card>`/`<Badge>` del DS | 0 | todas las pantallas |
-| Dependencias de Radix en `packages/ui` | 0 | **11** + `sonner` |
-| `<p>Cargando…</p>` | 12 | **0** |
-| Skeletons · error boundaries · toasts | 0 · 0 · 0 | 12 ficheros · por ruta · 7 ficheros |
-| Acciones destructivas sin confirmar | 3 (reembolso, baja de unidad, tarifas) | **0** |
-| Usos del vocabulario de tokens de ADR 0008 | 352 | **0** (alias eliminado) |
-| Tests de `packages/ui` | **no había script `test`** | **26** |
-| `pnpm check` | 41 tareas | **42 tareas, verde** |
+|                                              | antes                                  | después                                  |
+| -------------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| `<button>` crudos en el dashboard            | **43**                                 | **2** (excepción documentada, ver abajo) |
+| Usos de `<Button>`/`<Card>`/`<Badge>` del DS | 0                                      | todas las pantallas                      |
+| Dependencias de Radix en `packages/ui`       | 0                                      | **11** + `sonner`                        |
+| `<p>Cargando…</p>`                           | 12                                     | **0**                                    |
+| Skeletons · error boundaries · toasts        | 0 · 0 · 0                              | 12 ficheros · por ruta · 7 ficheros      |
+| Acciones destructivas sin confirmar          | 3 (reembolso, baja de unidad, tarifas) | **0**                                    |
+| Usos del vocabulario de tokens de ADR 0008   | 352                                    | **0** (alias eliminado)                  |
+| Tests de `packages/ui`                       | **no había script `test`**             | **26**                                   |
+| `pnpm check`                                 | 41 tareas                              | **42 tareas, verde**                     |
 
 **Los 2 `<button>` que quedan** son la fila de `Llegadas` y la de `Solicitudes`: la fila **es** su rejilla CSS de 3 y 5 columnas, y `<Button>` es `inline-flex`. Convertirlas rompería la maquetación para ganar cero. Lo que las hacía "crudas" no era la etiqueta sino **copiar las clases a mano**, así que el anillo de foco se exporta desde el DS (`focusRing`) y ya no hay estilo copiado en ninguna parte.
 
 ### Lo que se aprendió implementando
 
 **1. Arreglar un token puede romper la pantalla que lo usa — y eso es información, no un obstáculo.**
-El valor light correcto de `--chart-4` es morado y no pasa AA con texto negro encima. Descubrirlo *antes* de tocar nada es lo que convirtió "arreglar C-BUG-1" en "arreglar C-BUG-1 **y** desacoplar el planning". Si el planning hubiera leído un token semántico desde el principio, el bug de la escala de gráficas nunca habría llegado a la pantalla firma.
+El valor light correcto de `--chart-4` es morado y no pasa AA con texto negro encima. Descubrirlo _antes_ de tocar nada es lo que convirtió "arreglar C-BUG-1" en "arreglar C-BUG-1 **y** desacoplar el planning". Si el planning hubiera leído un token semántico desde el principio, el bug de la escala de gráficas nunca habría llegado a la pantalla firma.
 
 **2. Un token con dos significados no se arregla reapuntándolo.**
-`--color-mar` era a la vez "error" y "enlace". Cualquier arreglo de uno estropeaba el otro. La cuenta —44 usos, de los cuales 4 eran `mailto:`/`tel:`— es lo que hizo visible que el problema era de *modelo*, no de valor. Ninguna de las dos cosas se ve leyendo solo la línea del bug.
+`--color-mar` era a la vez "error" y "enlace". Cualquier arreglo de uno estropeaba el otro. La cuenta —44 usos, de los cuales 4 eran `mailto:`/`tel:`— es lo que hizo visible que el problema era de _modelo_, no de valor. Ninguna de las dos cosas se ve leyendo solo la línea del bug.
 
 **3. ⚠️ El hallazgo más caro: Tailwind v4 no escanea `node_modules`, y el DS entra por symlink de pnpm.**
-Detectado **solo al verificar en el navegador**: el error boundary pintaba su icono a **384px** en vez de 56px. Comprobado token a token: `h-9`, `bg-primary` y `px-4` sí funcionaban —porque esas clases *también* aparecen en el código del dashboard—, pero `size-14`, `translate-x-4`, `rounded-[4px]` y `min-w-[10rem]`, que viven **solo** en `packages/ui`, **no generaban CSS**. Es decir: el DS parecía funcionar por coincidencia. Estaban afectados el pulsador del `Switch`, el radio del `Checkbox`, el ancho mínimo del `DropdownMenu` y todas las ilustraciones de estado. Se arregla con `@source '../../../packages/ui/src'` en el CSS del dashboard **y** de la landing.
+Detectado **solo al verificar en el navegador**: el error boundary pintaba su icono a **384px** en vez de 56px. Comprobado token a token: `h-9`, `bg-primary` y `px-4` sí funcionaban —porque esas clases _también_ aparecen en el código del dashboard—, pero `size-14`, `translate-x-4`, `rounded-[4px]` y `min-w-[10rem]`, que viven **solo** en `packages/ui`, **no generaban CSS**. Es decir: el DS parecía funcionar por coincidencia. Estaban afectados el pulsador del `Switch`, el radio del `Checkbox`, el ancho mínimo del `DropdownMenu` y todas las ilustraciones de estado. Se arregla con `@source '../../../packages/ui/src'` en el CSS del dashboard **y** de la landing.
 Lección para el resto del Frente C: **tests verdes y typecheck limpio no dicen nada sobre si una clase de Tailwind existe.** Esto solo se caza mirando la pantalla, que es justo lo que pide el contrato.
 
 **4. Los tokens de estado no eran del dashboard, eran del DS.**

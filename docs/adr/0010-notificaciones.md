@@ -6,7 +6,7 @@
 
 ## Contexto
 
-El producto ya crea reservas y guarda solicitudes pero no avisa a nadie: el cliente no recibe su confirmación y recepción no se entera de una solicitud si no mira la bandeja. Restricciones reales de esta sesión: **no hay API key de Resend todavía** (dominio sin verificar) y no hay Queues configuradas. El criterio de fase manda: *on/off por notificación sin deploy; el nivel 1 solo usa las de solicitud*.
+El producto ya crea reservas y guarda solicitudes pero no avisa a nadie: el cliente no recibe su confirmación y recepción no se entera de una solicitud si no mira la bandeja. Restricciones reales de esta sesión: **no hay API key de Resend todavía** (dominio sin verificar) y no hay Queues configuradas. El criterio de fase manda: _on/off por notificación sin deploy; el nivel 1 solo usa las de solicitud_.
 
 ## Decisión
 
@@ -27,12 +27,12 @@ Desviación consciente del stack y por qué: React Email arrastra react-dom/serv
 
 ### 4. Eventos v1 y a quién van
 
-| Evento | A quién | Niveles |
-|---|---|---|
-| `enquiry_received` | al camping (`notifyTo`) | 1-4 (la del caballo de Troya) |
-| `enquiry_autoreply` | al solicitante, en SU idioma | 1-4 |
-| `booking_confirmed` | al titular, en su idioma, con desglose | 3-4 |
-| `booking_cancelled` | al titular, con el reembolso previsto | 3-4 |
+| Evento              | A quién                                | Niveles                       |
+| ------------------- | -------------------------------------- | ----------------------------- |
+| `enquiry_received`  | al camping (`notifyTo`)                | 1-4 (la del caballo de Troya) |
+| `enquiry_autoreply` | al solicitante, en SU idioma           | 1-4                           |
+| `booking_confirmed` | al titular, en su idioma, con desglose | 3-4                           |
+| `booking_cancelled` | al titular, con el reembolso previsto  | 3-4                           |
 
 Los 6 idiomas salen de diccionarios por plantilla; el idioma es el `locale` guardado con la solicitud/reserva.
 

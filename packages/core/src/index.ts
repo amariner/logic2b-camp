@@ -3,13 +3,34 @@
  * PURO: recibe datos, devuelve resultados. Sin I/O, sin Drizzle, sin framework.
  */
 export * from './types';
-export { addDays, daysUntil, eachNight, isValidIso, nightsBetween, rangesOverlap, weekday } from './dates';
+export {
+  addDays,
+  daysUntil,
+  eachNight,
+  isValidIso,
+  nightsBetween,
+  rangesOverlap,
+  weekday,
+} from './dates';
 export { seasonForNight, segmentStay, type SeasonSegment } from './seasons';
 export { searchAvailability, type AvailabilitySearchInput } from './availability';
-export { applyRules, ClosedError, MissingRatePlanError, quote, type ApplyRulesContext, type QuoteInput } from './pricing';
+export {
+  applyRules,
+  ClosedError,
+  MissingRatePlanError,
+  quote,
+  type ApplyRulesContext,
+  type QuoteInput,
+} from './pricing';
 export { validateStay, type ValidateStayInput } from './validate';
 export { assignUnit, type AssignUnitInput } from './assign';
-export { calculateTouristTax, CATALUNYA_TAX, NO_TAX, TAX_POLICIES, VALENCIA_TAX } from './touristTax';
+export {
+  calculateTouristTax,
+  CATALUNYA_TAX,
+  NO_TAX,
+  TAX_POLICIES,
+  VALENCIA_TAX,
+} from './touristTax';
 export { calculateCancellationRefund } from './cancellation';
 export {
   createExtensionRegistry,
@@ -19,3 +40,11 @@ export {
   type ExtensionRegistry,
   type WebRoute,
 } from './extensions';
+export {
+  addYears,
+  anonymizableFrom,
+  isDueForAnonymization,
+  lastStayEnd,
+  RETENTION,
+  type RetentionStay,
+} from './retention';

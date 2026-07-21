@@ -40,6 +40,8 @@ const bookingBody = (from: string, to: string, email = 'holder@example.com') => 
   extraIds: [],
   holder: { name: 'Test Holder', email },
   locale: 'es',
+  // ADR 0026 §2.3: la web pública no puede reservar sin consentimiento
+  gdprConsent: true as const,
 });
 
 async function setPaymentsConfig(config: Record<string, unknown> | null) {
@@ -63,7 +65,9 @@ async function buildNotification(order: string, responseCode: string, amountCent
     Ds_Amount: String(amountCents),
     Ds_AuthorisationCode: '123456',
   };
-  const encoded = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, encodeURIComponent(v)]));
+  const encoded = Object.fromEntries(
+    Object.entries(raw).map(([k, v]) => [k, encodeURIComponent(v)]),
+  );
   const paramsBase64 = Buffer.from(JSON.stringify(encoded)).toString('base64');
   const signature = await signRedsysParameters(paramsBase64, order, REDSYS_ENV.REDSYS_MERCHANT_KEY);
   return new URLSearchParams({
@@ -147,7 +151,12 @@ describe('reserva web con pago (redsys deposit)', () => {
     const body = (await res.json()) as {
       status: string;
       totalCents: number;
-      payment: { method: string; action: string; fields: Record<string, string>; providerRef: string };
+      payment: {
+        method: string;
+        action: string;
+        fields: Record<string, string>;
+        providerRef: string;
+      };
     };
     expect(body.status).toBe('pending');
     expect(body.payment.method).toBe('form');
@@ -183,7 +192,11 @@ describe('reserva web con pago (redsys deposit)', () => {
     const notification = await buildNotification(order, '0000', depositCents);
     const hook = await app.request(
       '/api/payments/webhook/redsys',
-      { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: notification },
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
       REDSYS_ENV,
     );
     expect(hook.status).toBe(200);
@@ -196,7 +209,10 @@ describe('reserva web con pago (redsys deposit)', () => {
     expect(booking.status).toBe('confirmed');
     expect(booking.paidCents).toBe(depositCents);
 
-    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id));
+    const payments = await db
+      .select()
+      .from(schema.payments)
+      .where(eq(schema.payments.bookingId, created.id));
     expect(payments).toHaveLength(1);
     expect(payments[0]!.provider).toBe('redsys');
     expect(payments[0]!.amountCents).toBe(depositCents);
@@ -228,7 +244,11 @@ describe('reserva web con pago (redsys deposit)', () => {
     for (let i = 0; i < 2; i++) {
       await app.request(
         '/api/payments/webhook/redsys',
-        { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: notification },
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body: notification,
+        },
         REDSYS_ENV,
       );
     }
@@ -238,7 +258,10 @@ describe('reserva web con pago (redsys deposit)', () => {
       await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
     )[0]!;
     expect(booking.paidCents).toBe(depositCents); // no se dobló
-    const payments = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id));
+    const payments = await db
+      .select()
+      .from(schema.payments)
+      .where(eq(schema.payments.bookingId, created.id));
     expect(payments).toHaveLength(1);
   });
 
@@ -260,13 +283,20 @@ describe('reserva web con pago (redsys deposit)', () => {
 
     const hook = await app.request(
       '/api/payments/webhook/redsys',
-      { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: tampered },
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: tampered,
+      },
       REDSYS_ENV,
     );
     expect(hook.status).toBe(400);
 
     const booking = (
-      await createDb(env.DB).select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+      await createDb(env.DB)
+        .select()
+        .from(schema.bookings)
+        .where(eq(schema.bookings.id, created.id))
     )[0]!;
     expect(booking.status).toBe('pending');
     expect(booking.paidCents).toBe(0);

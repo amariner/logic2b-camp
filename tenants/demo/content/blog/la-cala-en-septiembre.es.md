@@ -1,9 +1,9 @@
 ---
-title: "La cala en septiembre"
-description: "El mes en que la cala vuelve a ser nuestra: agua a 24 grados, aparcamiento en la sombra y arroz sin espera."
-date: "2026-09-02"
-lang: "es"
-photo: "hero-dia"
+title: 'La cala en septiembre'
+description: 'El mes en que la cala vuelve a ser nuestra: agua a 24 grados, aparcamiento en la sombra y arroz sin espera.'
+date: '2026-09-02'
+lang: 'es'
+photo: 'hero-dia'
 ---
 
 Hay dos calas con el mismo nombre: la de agosto y la de septiembre. La de agosto es estupenda, no vamos a mentir — pero la de septiembre es la nuestra.

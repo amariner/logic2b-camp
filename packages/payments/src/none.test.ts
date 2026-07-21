@@ -20,7 +20,9 @@ describe('noneProvider', () => {
 
   it('no reconoce ningún webhook ni permite reembolso por pasarela', async () => {
     const provider = noneProvider();
-    await expect(provider.parseWebhook({ headers: new Headers(), rawBody: '' })).resolves.toBeNull();
+    await expect(
+      provider.parseWebhook({ headers: new Headers(), rawBody: '' }),
+    ).resolves.toBeNull();
     await expect(provider.refund('x', 100)).resolves.toEqual({
       ok: false,
       error: 'none_provider_no_refund',

@@ -139,9 +139,7 @@ export function stripeProvider(config: StripeConfig): PaymentProvider {
       const session = event.data?.object ?? {};
       const bookingId =
         (session.client_reference_id as string | undefined) ??
-        ((session.metadata as Record<string, string> | undefined)?.bookingId as
-          | string
-          | undefined);
+        ((session.metadata as Record<string, string> | undefined)?.bookingId as string | undefined);
       const sessionId = session.id as string | undefined;
       if (!event.id || !sessionId) return null;
 
@@ -154,7 +152,10 @@ export function stripeProvider(config: StripeConfig): PaymentProvider {
           amountCents: Number(session.amount_total ?? 0),
         };
       }
-      if (event.type === 'checkout.session.async_payment_failed' || event.type === 'checkout.session.expired') {
+      if (
+        event.type === 'checkout.session.async_payment_failed' ||
+        event.type === 'checkout.session.expired'
+      ) {
         return {
           eventId: event.id,
           providerRef: sessionId,
@@ -174,7 +175,9 @@ export function stripeProvider(config: StripeConfig): PaymentProvider {
         {},
         'GET',
       );
-      const paymentIntent = session.ok ? (session.data.payment_intent as string | undefined) : undefined;
+      const paymentIntent = session.ok
+        ? (session.data.payment_intent as string | undefined)
+        : undefined;
       if (!paymentIntent) return { ok: false, error: 'stripe_refund_no_payment_intent' };
       const result = await stripeRequest(config.secretKey, '/refunds', {
         payment_intent: paymentIntent,

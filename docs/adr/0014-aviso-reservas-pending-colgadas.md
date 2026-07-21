@@ -6,7 +6,7 @@
 
 ## Contexto
 
-Desde ADR 0011 (Fase 8), una reserva `channel:'web'` con un modo de pago que exige cobro nace `status:'pending'` y solo pasa a `confirmed` cuando llega el webhook de la pasarela (Stripe/Redsys). Si el cliente abandona el pago a mitad — cierra la pestaña, la tarjeta falla, el banco la retiene — esa reserva se queda `pending` **para siempre**: nadie la cancela, nadie la cobra, y sigue contando como ocupación activa (`data.ts`/`admin.ts` la incluyen en `['pending', 'confirmed']`) hasta que alguien de recepción la note a simple vista en la lista de reservas. BACKLOG lo señala desde la Fase 8: *"Cron de purga/aviso de reservas `pending` colgadas... simétrico al cron de holds de la Fase 5"*.
+Desde ADR 0011 (Fase 8), una reserva `channel:'web'` con un modo de pago que exige cobro nace `status:'pending'` y solo pasa a `confirmed` cuando llega el webhook de la pasarela (Stripe/Redsys). Si el cliente abandona el pago a mitad — cierra la pestaña, la tarjeta falla, el banco la retiene — esa reserva se queda `pending` **para siempre**: nadie la cancela, nadie la cobra, y sigue contando como ocupación activa (`data.ts`/`admin.ts` la incluyen en `['pending', 'confirmed']`) hasta que alguien de recepción la note a simple vista en la lista de reservas. BACKLOG lo señala desde la Fase 8: _"Cron de purga/aviso de reservas `pending` colgadas... simétrico al cron de holds de la Fase 5"_.
 
 Solo aplica a `channel:'web'`: una reserva `phone`/`walkin` nunca nace `pending` por pago (ADR 0011 §1 — recepción ya sabe cómo se ha cobrado).
 

@@ -1,6 +1,6 @@
 ---
-title: "Cómo está montado"
-description: "La arquitectura en una página: dónde corre, con qué está hecho y por qué."
+title: 'Cómo está montado'
+description: 'La arquitectura en una página: dónde corre, con qué está hecho y por qué.'
 lang: es
 orden: 1
 ---
@@ -13,16 +13,16 @@ Logic Camp es una aplicación **serverless en el borde de Cloudflare**: web est�
 
 ## Las piezas
 
-| Pieza | Tecnología | Por qué |
-|---|---|---|
-| Web pública | **Astro 5** | HTML estático con islas de interactividad. Se sirve desde CDN: no hay render por petición |
-| Gestor | **React 19** (SPA) | Aplicación de una sola página, servida bajo `/admin` del mismo dominio |
-| API | **Hono sobre Cloudflare Workers** | Cómputo en el borde, arranque en frío inapreciable. Tipada de extremo a extremo |
-| Base de datos | **Cloudflare D1** (SQLite) | **Una instancia por camping.** Ver [Datos y aislamiento](/docs/tecnica/datos-rgpd/) |
-| Autenticación | **Better Auth** | Sesión por cookie `HttpOnly` + `Secure`, roles jerárquicos, revocables al instante |
-| Correo | **Resend** | Un dominio verificado por camping. Ver [Correo](/docs/tecnica/correo/) |
-| Pagos | **Stripe** o **Redsys** | Webhooks idempotentes. Configurable por camping, o ninguno |
-| Ficheros | **Cloudflare R2** | Imágenes y adjuntos, con prefijo por camping |
+| Pieza         | Tecnología                        | Por qué                                                                                   |
+| ------------- | --------------------------------- | ----------------------------------------------------------------------------------------- |
+| Web pública   | **Astro 5**                       | HTML estático con islas de interactividad. Se sirve desde CDN: no hay render por petición |
+| Gestor        | **React 19** (SPA)                | Aplicación de una sola página, servida bajo `/admin` del mismo dominio                    |
+| API           | **Hono sobre Cloudflare Workers** | Cómputo en el borde, arranque en frío inapreciable. Tipada de extremo a extremo           |
+| Base de datos | **Cloudflare D1** (SQLite)        | **Una instancia por camping.** Ver [Datos y aislamiento](/docs/tecnica/datos-rgpd/)       |
+| Autenticación | **Better Auth**                   | Sesión por cookie `HttpOnly` + `Secure`, roles jerárquicos, revocables al instante        |
+| Correo        | **Resend**                        | Un dominio verificado por camping. Ver [Correo](/docs/tecnica/correo/)                    |
+| Pagos         | **Stripe** o **Redsys**           | Webhooks idempotentes. Configurable por camping, o ninguno                                |
+| Ficheros      | **Cloudflare R2**                 | Imágenes y adjuntos, con prefijo por camping                                              |
 
 ## Un dominio, un Worker
 

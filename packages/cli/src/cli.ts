@@ -73,7 +73,9 @@ function main(): void {
 
   if (!args.planOnly) {
     if (!args.name || !args.domain) {
-      console.error(`✗ faltan --name y/o --domain (obligatorios salvo con --plan-only)\n\n${USAGE}`);
+      console.error(
+        `✗ faltan --name y/o --domain (obligatorios salvo con --plan-only)\n\n${USAGE}`,
+      );
       process.exitCode = 1;
       return;
     }
@@ -82,12 +84,16 @@ function main(): void {
     console.log('\nCapa 2 pendiente (contenido real, no automatizable):');
     for (const t of result.contentTodos) console.log(`  · ${t.file}: ${t.todoCount} __TODO__`);
     if (result.pendingDatabaseId) {
-      console.log('  · wrangler.jsonc: database_id pendiente (se rellena tras crear la D1 real, paso 1 del plan)');
+      console.log(
+        '  · wrangler.jsonc: database_id pendiente (se rellena tras crear la D1 real, paso 1 del plan)',
+      );
     }
   }
 
   const steps = infraPlan(identity);
-  console.log('\nCapa 3 — plan de infraestructura (requiere credenciales de Cloudflare, §5 del super prompt):');
+  console.log(
+    '\nCapa 3 — plan de infraestructura (requiere credenciales de Cloudflare, §5 del super prompt):',
+  );
   console.log(formatPlan(steps));
 
   if (args.apply) {
@@ -110,7 +116,9 @@ function main(): void {
       }
     }
   } else {
-    console.log('\n(no ejecutado — pasa --apply, con LOGIC_CAMP_ALLOW_INFRA=1, cuando tengas las credenciales)');
+    console.log(
+      '\n(no ejecutado — pasa --apply, con LOGIC_CAMP_ALLOW_INFRA=1, cuando tengas las credenciales)',
+    );
   }
 }
 

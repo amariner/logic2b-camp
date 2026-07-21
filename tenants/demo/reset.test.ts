@@ -39,8 +39,12 @@ describe('buildResetStatements (puro)', () => {
     expect(deletes[0]).toBe('DELETE FROM notifications_log;');
     expect(deletes.at(-1)).toBe('DELETE FROM tenants;');
     // orden hijo→padre: bookings se borra antes que units, y units antes que unit_types
-    expect(deletes.indexOf('DELETE FROM bookings;')).toBeLessThan(deletes.indexOf('DELETE FROM units;'));
-    expect(deletes.indexOf('DELETE FROM units;')).toBeLessThan(deletes.indexOf('DELETE FROM unit_types;'));
+    expect(deletes.indexOf('DELETE FROM bookings;')).toBeLessThan(
+      deletes.indexOf('DELETE FROM units;'),
+    );
+    expect(deletes.indexOf('DELETE FROM units;')).toBeLessThan(
+      deletes.indexOf('DELETE FROM unit_types;'),
+    );
   });
 
   it('es determinista para el mismo año', () => {

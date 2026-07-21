@@ -20,7 +20,10 @@ const css = readFileSync(
 /** Extrae las declaraciones `--x: valor;` de un bloque `selector { … }`. */
 function tokensOf(selector: string): Map<string, string> {
   const map = new Map<string, string>();
-  const re = new RegExp(`(?:^|\\n)\\s*${selector.replace('.', '\\.')}\\s*\\{([\\s\\S]*?)\\n\\}`, 'g');
+  const re = new RegExp(
+    `(?:^|\\n)\\s*${selector.replace('.', '\\.')}\\s*\\{([\\s\\S]*?)\\n\\}`,
+    'g',
+  );
   for (const block of css.matchAll(re)) {
     for (const m of block[1]!.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) {
       map.set(m[1]!, m[2]!.trim());
@@ -103,7 +106,14 @@ describe.each([
 });
 
 it('el bloque .dark declara los tokens fijos del mapa (no hereda los light)', () => {
-  for (const t of ['--lc-status-inhouse', '--lc-status-pending', '--lc-status-no-show', '--lc-status-completed', '--lc-status-info', '--lc-today']) {
+  for (const t of [
+    '--lc-status-inhouse',
+    '--lc-status-pending',
+    '--lc-status-no-show',
+    '--lc-status-completed',
+    '--lc-status-info',
+    '--lc-today',
+  ]) {
     expect(darkOnly.has(t), `${t} falta en .dark`).toBe(true);
   }
 });

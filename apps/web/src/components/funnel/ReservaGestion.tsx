@@ -65,7 +65,9 @@ export default function ReservaGestion({
     p.set('email', e);
     window.history.replaceState(null, '', `${window.location.pathname}?${p}`);
     try {
-      const res = await fetch(`/api/bookings/${encodeURIComponent(c)}?email=${encodeURIComponent(e)}`);
+      const res = await fetch(
+        `/api/bookings/${encodeURIComponent(c)}?email=${encodeURIComponent(e)}`,
+      );
       if (!res.ok) {
         setState('notfound');
         return;
@@ -188,7 +190,9 @@ export default function ReservaGestion({
       >
         <p className="text-[15px] text-tinta-suave">{labels.buscar.intro}</p>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.buscar.codigo}</span>
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.buscar.codigo}
+          </span>
           <input
             value={code}
             onChange={(e) => setCode(e.target.value)}
@@ -198,7 +202,9 @@ export default function ReservaGestion({
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.buscar.email}</span>
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.buscar.email}
+          </span>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -238,7 +244,10 @@ export default function ReservaGestion({
         </p>
       )}
       {polling && (
-        <p role="status" className="rounded-(--lc-radius) border border-arena/60 bg-arena-suave/40 px-4 py-3 text-[14px] font-medium">
+        <p
+          role="status"
+          className="rounded-(--lc-radius) border border-arena/60 bg-arena-suave/40 px-4 py-3 text-[14px] font-medium"
+        >
           {labels.pago.esperando}
         </p>
       )}
@@ -268,7 +277,9 @@ export default function ReservaGestion({
 
         <dl className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-2 text-[14px]">
           <dt className="font-medium text-tinta-suave">{labels.campos.alojamiento}</dt>
-          <dd className="text-right font-medium">{typeNames[booking.unitTypeId] ?? booking.unitTypeId}</dd>
+          <dd className="text-right font-medium">
+            {typeNames[booking.unitTypeId] ?? booking.unitTypeId}
+          </dd>
           <dt className="font-medium text-tinta-suave">{labels.campos.llegada}</dt>
           <dd className="tnum text-right">{fecha(booking.dateFrom)}</dd>
           <dt className="font-medium text-tinta-suave">{labels.campos.salida}</dt>
@@ -367,16 +378,35 @@ export default function ReservaGestion({
       )}
 
       {panel === 'modify' && (
-        <form onSubmit={doModify} className="no-print flex flex-col gap-4 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-5">
+        <form
+          onSubmit={doModify}
+          className="no-print flex flex-col gap-4 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-5"
+        >
           <p className="font-display text-[15px] font-semibold">{labels.modificar.titulo}</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5">
-              <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.campos.llegada}</span>
-              <input name="from" type="date" required defaultValue={booking.dateFrom} className="tnum rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+              <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+                {labels.campos.llegada}
+              </span>
+              <input
+                name="from"
+                type="date"
+                required
+                defaultValue={booking.dateFrom}
+                className="tnum rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+              />
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.campos.salida}</span>
-              <input name="to" type="date" required defaultValue={booking.dateTo} className="tnum rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+              <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+                {labels.campos.salida}
+              </span>
+              <input
+                name="to"
+                type="date"
+                required
+                defaultValue={booking.dateTo}
+                className="tnum rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+              />
             </label>
           </div>
           <p className="text-[12px] text-tinta-suave">{labels.modificar.nota}</p>

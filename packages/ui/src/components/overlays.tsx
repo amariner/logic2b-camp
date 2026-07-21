@@ -48,7 +48,8 @@ export function DropdownMenuItem({
       className={cn(
         'flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-[13px] outline-none',
         'focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-        variant === 'destructive' && 'text-destructive focus:bg-destructive/10 focus:text-destructive',
+        variant === 'destructive' &&
+          'text-destructive focus:bg-destructive/10 focus:text-destructive',
         className,
       )}
       {...props}
@@ -76,7 +77,10 @@ export function DropdownMenuSeparator({
   ...props
 }: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
-    <DropdownMenuPrimitive.Separator className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />
+    <DropdownMenuPrimitive.Separator
+      className={cn('-mx-1 my-1 h-px bg-border', className)}
+      {...props}
+    />
   );
 }
 

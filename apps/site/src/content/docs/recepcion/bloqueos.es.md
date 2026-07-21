@@ -1,6 +1,6 @@
 ---
-title: "Cerrar una parcela por avería"
-description: "Impedir que se venda una unidad que no se puede usar, sin tocar las reservas que ya tiene."
+title: 'Cerrar una parcela por avería'
+description: 'Impedir que se venda una unidad que no se puede usar, sin tocar las reservas que ya tiene.'
 lang: es
 orden: 11
 ---

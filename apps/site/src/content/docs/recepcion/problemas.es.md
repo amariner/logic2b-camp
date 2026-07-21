@@ -1,6 +1,6 @@
 ---
-title: "Cuando algo no sale como esperabas"
-description: "Los apuros más habituales del mostrador y qué hacer en cada uno."
+title: 'Cuando algo no sale como esperabas'
+description: 'Los apuros más habituales del mostrador y qué hacer en cada uno.'
 lang: es
 orden: 14
 ---

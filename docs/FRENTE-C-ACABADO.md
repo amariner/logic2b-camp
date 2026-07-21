@@ -2,9 +2,9 @@
 
 > **Abierto 2026-07-20.** Contrato de trabajo del acabado visual y de flujo. El Frente A construyó **el producto**; el Frente B le puso **la marca**. El Frente C es lo que separa "funciona y está bien construido" de **"esto lo compro"**.
 >
-> **Premisa de este frente** (dicha por Andreu, 2026-07-20): *ahora mismo tiene prioridad la parte visual en modo fake. Tiene que estar todo previsto y pensado, pero lo importante es que el cliente vea la interfaz bien pensada y que sea profesional.*
+> **Premisa de este frente** (dicha por Andreu, 2026-07-20): _ahora mismo tiene prioridad la parte visual en modo fake. Tiene que estar todo previsto y pensado, pero lo importante es que el cliente vea la interfaz bien pensada y que sea profesional._
 >
-> **Qué significa "modo fake" aquí — y qué NO significa.** Significa que un flujo puede estar *representado* antes de estar *conectado*: una pantalla de check-in puede existir y ser navegable aunque el estado no persista todavía. **No** significa maquetas muertas ni datos inventados en el cliente. La regla dura del proyecto sigue en pie: **cero mocks en el cliente**. Hoy el dashboard tiene 0 mocks y toda pantalla habla con la API real (verificado en auditoría) — eso es un activo y no se tira. Lo "fake" se resuelve **en el seed y en la capa de estado**, nunca en el componente.
+> **Qué significa "modo fake" aquí — y qué NO significa.** Significa que un flujo puede estar _representado_ antes de estar _conectado_: una pantalla de check-in puede existir y ser navegable aunque el estado no persista todavía. **No** significa maquetas muertas ni datos inventados en el cliente. La regla dura del proyecto sigue en pie: **cero mocks en el cliente**. Hoy el dashboard tiene 0 mocks y toda pantalla habla con la API real (verificado en auditoría) — eso es un activo y no se tira. Lo "fake" se resuelve **en el seed y en la capa de estado**, nunca en el componente.
 >
 > **ADR antes de código.** Cada fase C abre con su ADR y PARA a esperar validación, como el resto del proyecto.
 
@@ -16,12 +16,12 @@ No opiniones: auditoría de los dos frentes visuales + verificación en vivo con
 
 ### Lo que está mejor de lo que parecía
 
-| | |
-|---|---|
+|                 |                                                                                                                                                                                                                                                                                                                       |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Web pública** | 216 páginas generadas, 6 idiomas con **267 claves y 0 faltantes**, funnel completo y cerrado (mostrador → detalle → titular con hold de 15 min → confirmación → gestión por código+email), estados de UI reales (loading/error/agotado/**cerrado con la fecha real de apertura**), Lighthouse ≥95 verificado en local |
-| **Dashboard** | **11 pantallas, ninguna vacía ni esqueleto.** Planning virtualizado con drag&drop de reasignación, mutación optimista con rollback, navegación por teclado ↑/↓ real |
-| **Datos** | **Cero mocks.** 0 `faker`, 0 fixtures, 0 `msw`. Todo contra `/api/admin/*` real |
-| **Marca** | B1 hecho: sidebar agrupada, isotipo, Inter+Space Grotesk, radius 10px, ~17 tokens oklch que **coinciden exactamente** con `BRAND.md` §4 |
+| **Dashboard**   | **11 pantallas, ninguna vacía ni esqueleto.** Planning virtualizado con drag&drop de reasignación, mutación optimista con rollback, navegación por teclado ↑/↓ real                                                                                                                                                   |
+| **Datos**       | **Cero mocks.** 0 `faker`, 0 fixtures, 0 `msw`. Todo contra `/api/admin/*` real                                                                                                                                                                                                                                       |
+| **Marca**       | B1 hecho: sidebar agrupada, isotipo, Inter+Space Grotesk, radius 10px, ~17 tokens oklch que **coinciden exactamente** con `BRAND.md` §4                                                                                                                                                                               |
 
 Lo construido es honesto. El problema no es que falte producto: es que **el producto no se está luciendo**.
 
@@ -30,7 +30,7 @@ Lo construido es honesto. El problema no es que falte producto: es que **el prod
 Ordenados por daño visual en una demo, no por dificultad.
 
 **1. El planning está vacío. Es el problema número uno.**
-Verificado en vivo: *83 unidades · 29 reservas a la vista*. De `A-09` hacia abajo, **nada** — 92 días de rejilla en blanco, en pleno agosto. El ROADMAP ya lo pedía ("debe verse ESPECTACULAR: 83 unidades × agosto lleno") y nunca se hizo. Un director de camping mira eso y ve un negocio sin clientes. **El elemento firma del producto está enseñando el peor dato posible.**
+Verificado en vivo: _83 unidades · 29 reservas a la vista_. De `A-09` hacia abajo, **nada** — 92 días de rejilla en blanco, en pleno agosto. El ROADMAP ya lo pedía ("debe verse ESPECTACULAR: 83 unidades × agosto lleno") y nunca se hizo. Un director de camping mira eso y ve un negocio sin clientes. **El elemento firma del producto está enseñando el peor dato posible.**
 
 **2. El design system existe y no se usa.**
 `packages/ui` = 101 líneas, 4 componentes (`Button`, `Badge`, `Card`, `LogoMark`). En todo `apps/dashboard`: **0 usos de `<Button>`, `<Card>` o `<Badge>`**, y **41 `<button>` crudos** con las mismas clases Tailwind copiadas a mano. El único import del DS es `cn` y `LogoMark` en `main.tsx:8`.
@@ -43,7 +43,7 @@ Bloqueo de fondo: `packages/ui/package.json` **no tiene ninguna dependencia de R
 Se reasigna de unidad, sí. Pero **no se pueden mover ni estirar fechas arrastrando** — el gesto que cualquiera que haya usado un tape chart busca en los primeros 10 segundos. Tampoco se crea reserva arrastrando sobre una celda vacía, ni se arrastra desde la bandeja "sin asignar". Sin línea de "hoy". El feedback de reasignación es un `<p>`, y no hay deshacer.
 
 **5. No existe el check-in.**
-Ni en cliente ni en servidor: `TRANSITIONS` (`apps/api/src/routes/admin.ts:36-40`) solo tiene `confirm`, `cancel`, `no_show`, `complete`. **No hay concepto de "huésped presente".** Una recepcionista no puede marcar que alguien ha llegado. Es un hueco de *dominio*, no de UI, y es el acto central de una recepción.
+Ni en cliente ni en servidor: `TRANSITIONS` (`apps/api/src/routes/admin.ts:36-40`) solo tiene `confirm`, `cancel`, `no_show`, `complete`. **No hay concepto de "huésped presente".** Una recepcionista no puede marcar que alguien ha llegado. Es un hueco de _dominio_, no de UI, y es el acto central de una recepción.
 Hermano del mismo agujero: la ficha **muestra** `guests[]` pero **no se pueden añadir ni editar huéspedes ni sus documentos**. Sin eso no hay parte de viajeros — requisito legal en un camping español.
 
 **6. La primera pantalla del producto es un formulario flotando en blanco.**
@@ -54,7 +54,7 @@ Verificado: el login es un `<h1>` + 2 inputs + botón, centrados sobre blanco pu
 
 ### Dos bugs concretos, baratos, con efecto visible
 
-- **`packages/ui/src/theme.css:33-37`** — los `--chart-*` de `:root` (light) contienen los **valores dark** de `BRAND.md` §4. Los 5 están desplazados. `--chart-4` pinta el estado *pending* de las barras del planning: **las reservas pendientes se están pintando con un token equivocado.** Además falta `--radius-2xl` (BRAND §5 lo pide).
+- **`packages/ui/src/theme.css:33-37`** — los `--chart-*` de `:root` (light) contienen los **valores dark** de `BRAND.md` §4. Los 5 están desplazados. `--chart-4` pinta el estado _pending_ de las barras del planning: **las reservas pendientes se están pintando con un token equivocado.** Además falta `--radius-2xl` (BRAND §5 lo pide).
 - **`apps/dashboard/src/styles.css:18`** — `--color-mar: var(--foreground)`. El color de error/aviso es literalmente el color de texto normal, así que **`text-mar` en los mensajes de error se pinta en negro** y no se distingue (ver `Planning.tsx:357`, `BookingPanel.tsx:161`).
 
 ### Un bloqueo de entorno que hay que resolver antes de trabajar
@@ -66,20 +66,20 @@ En producción no se nota (el dashboard vive en `/admin/` del **mismo** Worker, 
 
 ## 1. Las fases del Frente C
 
-| Fase | Nombre | Objetivo | Hecho cuando |
-|---|---|---|---|
-| **C0** | Desbloqueo | HMR del dashboard + seed denso. Sin esto, todo lo demás se hace a ciegas y sobre un lienzo vacío. | `pnpm dev` permite login en `:5173`; el planning de agosto se ve lleno |
+| Fase          | Nombre                               | Objetivo                                                                                                       | Hecho cuando                                                                                                                                                                                                                                  |
+| ------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **C0**        | Desbloqueo                           | HMR del dashboard + seed denso. Sin esto, todo lo demás se hace a ciegas y sobre un lienzo vacío.              | `pnpm dev` permite login en `:5173`; el planning de agosto se ve lleno                                                                                                                                                                        |
 | ~~**C1**~~ ✅ | El planning como pieza de exhibición | El elemento firma, a la altura de su declaración. Gesto horizontal, línea de hoy, crear arrastrando, deshacer. | **HECHO (ADR 0023)** — mover/estirar con re-cotización en servidor y candado de precio, crear arrastrando, bandeja arrastrable, hoy/continuación/temporada/filtros, mapa de color definitivo con test AA + modo oscuro, finde en un gradiente |
-| **C2** | DS completo y conectado | Radix + los primitivos que faltan; los 41 botones crudos pasan a `<Button>`. | 0 `<button>` crudos en el dashboard; `dialog/sheet/toast/command/skeleton/table` existen y se usan |
-| **C3** | Estados y microinteracción | Skeletons, error boundaries, toasts con deshacer. Las 11 pantallas a la vez. | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca |
-| ~~**C4**~~ ✅ | Workflow real de recepción | Check-in, huéspedes y documentos, alta desde el planning, ⌘K. | **HECHO (ADR 0022)** — check-in como `checked_in_at` (no estado), huéspedes editables, cobrar todo, bloqueos desde la UI, ⌘K, rutas `/reservas/$id` `/clientes/$id` |
-| **C5** 🟨 | Materia: fotos e imagen | Cerrar el hueco de fotos con Higgsfield; densidad real por tipo. | 9 tipos con foto propia; ninguna galería de 1 sola imagen — **PARCIAL (ADR 0024)**: lista de prompts cerrada y código listo, descarga bloqueada por red del contenedor (script listo); capturas reales del producto + OG image, hechas |
-| **C6** | Documentación (absorbe B4) | Guía de recepcionista, guía de dueño, ficha técnica. Con esencia Logic2B. | Un cliente resuelve una duda de uso sin escribir a soporte |
-| **C7** | **Plano del camping** | Vista cenital de parcelas y alojamientos con estado en vivo. Base ya resuelta en `gestor-reservas`. | Se ve el camping de verdad y se salta plano ↔ planning ↔ ficha |
+| **C2**        | DS completo y conectado              | Radix + los primitivos que faltan; los 41 botones crudos pasan a `<Button>`.                                   | 0 `<button>` crudos en el dashboard; `dialog/sheet/toast/command/skeleton/table` existen y se usan                                                                                                                                            |
+| **C3**        | Estados y microinteracción           | Skeletons, error boundaries, toasts con deshacer. Las 11 pantallas a la vez.                                   | Ninguna pantalla enseña `<p>Cargando…</p>`; ningún error deja pantalla blanca                                                                                                                                                                 |
+| ~~**C4**~~ ✅ | Workflow real de recepción           | Check-in, huéspedes y documentos, alta desde el planning, ⌘K.                                                  | **HECHO (ADR 0022)** — check-in como `checked_in_at` (no estado), huéspedes editables, cobrar todo, bloqueos desde la UI, ⌘K, rutas `/reservas/$id` `/clientes/$id`                                                                           |
+| **C5** 🟨     | Materia: fotos e imagen              | Cerrar el hueco de fotos con Higgsfield; densidad real por tipo.                                               | 9 tipos con foto propia; ninguna galería de 1 sola imagen — **PARCIAL (ADR 0024)**: lista de prompts cerrada y código listo, descarga bloqueada por red del contenedor (script listo); capturas reales del producto + OG image, hechas        |
+| **C6**        | Documentación (absorbe B4)           | Guía de recepcionista, guía de dueño, ficha técnica. Con esencia Logic2B.                                      | Un cliente resuelve una duda de uso sin escribir a soporte                                                                                                                                                                                    |
+| **C7**        | **Plano del camping**                | Vista cenital de parcelas y alojamientos con estado en vivo. Base ya resuelta en `gestor-reservas`.            | Se ve el camping de verdad y se salta plano ↔ planning ↔ ficha                                                                                                                                                                                |
 
 ---
 
-## C0 · Desbloqueo — *primero, y es rápido*
+## C0 · Desbloqueo — _primero, y es rápido_
 
 Sin esto se trabaja a ciegas. Son las dos cosas que multiplican la velocidad del resto de la noche.
 
@@ -116,7 +116,7 @@ Estaba declarado como **el elemento firma**. Era sólido de ingeniería (virtual
 ### C1.1 — El gesto que falta: horizontal
 
 - [ ] **Mover la estancia arrastrando en horizontal** (cambia `dateFrom`/`dateTo` manteniendo noches).
-- [ ] **Estirar por los bordes** para alargar/acortar (resize handles). Es *el* gesto de un tape chart.
+- [ ] **Estirar por los bordes** para alargar/acortar (resize handles). Es _el_ gesto de un tape chart.
 - [ ] **Re-cotización al soltar**: el precio lo calcula **siempre el servidor** (regla dura del proyecto). Enseñar el nuevo desglose antes de confirmar si el importe cambia.
 - [ ] Feedback en vivo durante el arrastre: fechas y nº de noches flotando junto al cursor.
 - [ ] Rechazo visible y explicado si el destino solapa — no un silencio.
@@ -156,7 +156,7 @@ El DS está bien hecho y **desconectado**. Conectarlo es lo que hace que las 11 
 
 - [ ] **Meter Radix en `packages/ui`.** Es el bloqueo de fondo: sin las primitivas no hay dialog/sheet/popover/dropdown. Decidir en el ADR el alcance exacto (qué paquetes de Radix, versiones).
 - [ ] **Primitivos que faltan**, por orden de uso real en este producto:
-  `skeleton` · `toast`(sonner) · `dialog` · `alert-dialog` · `sheet` · `table` · `input` · `label` · `select` · `dropdown-menu` · `popover` · `tooltip` · `tabs` · `command`(⌘K) · `separator` · `scroll-area` · `switch` · `checkbox` · `calendar`/`date-picker` · `avatar` · `form`.
+      `skeleton` · `toast`(sonner) · `dialog` · `alert-dialog` · `sheet` · `table` · `input` · `label` · `select` · `dropdown-menu` · `popover` · `tooltip` · `tabs` · `command`(⌘K) · `separator` · `scroll-area` · `switch` · `checkbox` · `calendar`/`date-picker` · `avatar` · `form`.
 - [ ] **Migrar los 41 `<button>` crudos** a `<Button>`. Criterio de hecho: **0 `<button>` crudos** en `apps/dashboard`.
 - [ ] Migrar tablas, inputs y tarjetas a los primitivos del DS sin perder densidad ni velocidad (la densidad es requisito, no adorno).
 - [ ] **Cerrar el rename de la paleta camping.** `styles.css:9-19` mapea `--color-pino → var(--primary)` etc. Es un puente consciente, pero deja **~400 usos escritos en el vocabulario viejo** y produce el bug C-BUG-2. Terminarlo aquí.
@@ -165,7 +165,7 @@ El DS está bien hecho y **desconectado**. Conectarlo es lo que hace que las 11 
 
 ---
 
-## C3 · Estados y microinteracción — *el multiplicador barato*
+## C3 · Estados y microinteracción — _el multiplicador barato_
 
 Once pantallas, un puñado de piezas transversales. Probablemente la mejor relación esfuerzo/percepción de todo el documento.
 
@@ -239,7 +239,7 @@ Aquí "todo previsto y pensado" es literal: el flujo tiene que existir aunque pa
 
 ## C6 · Documentación (absorbe B4) — ✅ HECHO (ADR 0025, 2026-07-21)
 
-Petición explícita: *"que todo tenga una esencia Logic2B"* y *"una documentación súper detallada"*.
+Petición explícita: _"que todo tenga una esencia Logic2B"_ y _"una documentación súper detallada"_.
 
 - [x] **Guía de la recepcionista** — **14 páginas, una tarea por página**, en el orden de un día real de mostrador (entrar → llegadas → check-in → cobrar → planning → mover → plano → alta manual → huéspedes → check-out → bloqueos → solicitudes → ⌘K → qué hacer cuando algo falla). Lenguaje llano, capturas reales, sin jerga.
 - [x] **Guía del dueño** — 3 páginas: los 4 niveles como escalera, qué cambia exactamente al subir (y qué **no** cambia: dominio, web, SEO, histórico), y qué tiene que aportar el camping para el alta.
@@ -262,7 +262,7 @@ Petición explícita: *"que todo tenga una esencia Logic2B"* y *"una documentaci
 
 ## C7 · Plano del camping — ✅ HECHO (ADR 0021, 2026-07-21)
 
-> **Pedido por Andreu (2026-07-20)** revisando el dashboard. Es una pieza de exhibición de primer orden: un director de camping **reconoce su propio camping** en la pantalla, y eso es un tipo de conexión que un tape chart no da. Complementa al planning, no lo sustituye — el planning responde *"¿cuándo?"*, el plano responde *"¿dónde?"*.
+> **Pedido por Andreu (2026-07-20)** revisando el dashboard. Es una pieza de exhibición de primer orden: un director de camping **reconoce su propio camping** en la pantalla, y eso es un tipo de conexión que un tape chart no da. Complementa al planning, no lo sustituye — el planning responde _"¿cuándo?"_, el plano responde _"¿dónde?"_.
 >
 > **Resuelto en ADR 0021.** La decisión de fondo (§C7.1, dónde vive la geometría) se cerró por una **tercera vía**: descriptor declarativo en `tenants/{slug}/plano.ts` → `modules.plano` (columna JSON existente, **cero migración**) → `GET /api/admin/map` genérico → el dashboard lo expande con `expandPlano` (`packages/config`, puro y testeado). Los dos defectos del original cerrados (constantes únicas en `PLANO_GRID`, decorado como dato). `autoPlano` da degradación honesta. `CampingMap` (SVG, **pan/zoom** nuevo, teclado/foco/tooltip, colores `--lc-status-*` del planning) + página `Plano` (selector de fecha, estado en vivo, click→ficha, salto plano↔planning conservando unidad+fecha). Verificado visualmente con Playwright. **Diferido**: crear reserva/bloqueo desde el plano (C1.2/C4.4).
 
@@ -324,14 +324,14 @@ Depende de **C0.2** (con el seed vacío, un plano en el que casi todo está libr
 
 ## 2. Bugs registrados (arreglar dentro de su fase)
 
-| id | Dónde | Qué | Fase |
-|---|---|---|---|
-| ~~**C-BUG-1**~~ ✅ | `packages/ui/src/theme.css` | Los `--chart-*` de `:root` (light) eran los valores **dark** de `BRAND.md` §4; los 5 desplazados. **Arreglado en ADR 0020** — y no era trivial: el valor light correcto de `--chart-4` es morado y no pasa AA con texto negro, así que arreglarlo *tal cual* rompía el planning. Se corrigieron los 5, se añadió `--radius-2xl`, se añadió el bloque `--chart-*` que **faltaba entero** en `.dark` (por eso nadie lo detectó), y el planning se desacopló a tokens semánticos `--lc-status-*` | C2 ✅ |
-| ~~**C-BUG-2**~~ ✅ | `apps/dashboard/src/styles.css` | `--color-mar: var(--foreground)` → los errores en negro. **Arreglado en ADR 0020** — tampoco era lo que parecía: `mar` tenía **dos significados** (de sus 44 usos, 4 eran enlaces `mailto:`/`tel:`), así que reapuntarlo a `--destructive` habría pintado los contactos en rojo. Se partió por significado: token `--link` propio para enlaces, `--destructive` para el resto. El puente de alias entero se eliminó | C2 ✅ |
-| **C-BUG-3** | `apps/api/src/auth.ts` | Sin `trustedOrigins` → **403 en el login del dev server** (`:5173`). Bloquea el HMR del dashboard | C0.1 |
-| ~~**C-BUG-4**~~ ✅ | `apps/dashboard/src/pages/Planning.tsx:5` | Comentario obsoleto: decía que el D&D "llega en la sesión 17"; estaba implementado abajo. **Arreglado en ADR 0020** al pasar por el fichero | C2 ✅ |
-| **C-BUG-5** 🟨 | `apps/web/src/lib/fotos.ts:12,13,21-24` | 4 ficheros de imagen inexistentes; `ut_prem`/`ut_moto` sin foto propia. **Código sin bug de degradación** (cae a `tipo-parcela` con honestidad) — los 4 ficheros ya están generados (ADR 0024), solo falta descargarlos (bloqueo de red del contenedor, script en `tenants/demo/scripts/fetch-higgsfield-fotos.mjs`) | C5.1 |
-| **C-BUG-6** | `apps/dashboard/src/pages/Planning.tsx:199` | **Encontrado en ADR 0020.** El resaltado de la celda destino al arrastrar se pintaba con `var(--lc-pino)`, variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web) → declaración inválida, resaltado **invisible**. Resto de ADR 0008, cuando el dashboard compartía paleta con la web. Arreglado a `var(--primary)` | C2 ✅ |
+| id                 | Dónde                                       | Qué                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Fase  |
+| ------------------ | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| ~~**C-BUG-1**~~ ✅ | `packages/ui/src/theme.css`                 | Los `--chart-*` de `:root` (light) eran los valores **dark** de `BRAND.md` §4; los 5 desplazados. **Arreglado en ADR 0020** — y no era trivial: el valor light correcto de `--chart-4` es morado y no pasa AA con texto negro, así que arreglarlo _tal cual_ rompía el planning. Se corrigieron los 5, se añadió `--radius-2xl`, se añadió el bloque `--chart-*` que **faltaba entero** en `.dark` (por eso nadie lo detectó), y el planning se desacopló a tokens semánticos `--lc-status-*` | C2 ✅ |
+| ~~**C-BUG-2**~~ ✅ | `apps/dashboard/src/styles.css`             | `--color-mar: var(--foreground)` → los errores en negro. **Arreglado en ADR 0020** — tampoco era lo que parecía: `mar` tenía **dos significados** (de sus 44 usos, 4 eran enlaces `mailto:`/`tel:`), así que reapuntarlo a `--destructive` habría pintado los contactos en rojo. Se partió por significado: token `--link` propio para enlaces, `--destructive` para el resto. El puente de alias entero se eliminó                                                                           | C2 ✅ |
+| **C-BUG-3**        | `apps/api/src/auth.ts`                      | Sin `trustedOrigins` → **403 en el login del dev server** (`:5173`). Bloquea el HMR del dashboard                                                                                                                                                                                                                                                                                                                                                                                             | C0.1  |
+| ~~**C-BUG-4**~~ ✅ | `apps/dashboard/src/pages/Planning.tsx:5`   | Comentario obsoleto: decía que el D&D "llega en la sesión 17"; estaba implementado abajo. **Arreglado en ADR 0020** al pasar por el fichero                                                                                                                                                                                                                                                                                                                                                   | C2 ✅ |
+| **C-BUG-5** 🟨     | `apps/web/src/lib/fotos.ts:12,13,21-24`     | 4 ficheros de imagen inexistentes; `ut_prem`/`ut_moto` sin foto propia. **Código sin bug de degradación** (cae a `tipo-parcela` con honestidad) — los 4 ficheros ya están generados (ADR 0024), solo falta descargarlos (bloqueo de red del contenedor, script en `tenants/demo/scripts/fetch-higgsfield-fotos.mjs`)                                                                                                                                                                          | C5.1  |
+| **C-BUG-6**        | `apps/dashboard/src/pages/Planning.tsx:199` | **Encontrado en ADR 0020.** El resaltado de la celda destino al arrastrar se pintaba con `var(--lc-pino)`, variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web) → declaración inválida, resaltado **invisible**. Resto de ADR 0008, cuando el dashboard compartía paleta con la web. Arreglado a `var(--primary)`                                                                                                                                        | C2 ✅ |
 
 ## 3. Remates menores de la web (no bloquean, pero suman)
 
@@ -339,11 +339,11 @@ Depende de **C0.2** (con el seed vacío, un plano en el que casi todo está libr
 - [ ] **Blog solo en `es`/`en`**: 4 idiomas caen a fallback y ven español.
 - [ ] Sin `aria-live`/`role="alert"` en resultados y errores dinámicos del mostrador y del funnel: **un lector de pantalla no anuncia que aparecieron resultados**.
 - [ ] `ca.json`: revisar `nav.idioma`, `nav.menu`, `mostrador.reservar`, `ticker.1` (idénticos a `es`).
-- [ ] Errores de la web pintados con `--lc-mar` (token de *info*), sin token semántico de error. Mismo vicio que C-BUG-2.
+- [ ] Errores de la web pintados con `--lc-mar` (token de _info_), sin token semántico de error. Mismo vicio que C-BUG-2.
 
 ## 4. Orden propuesto y por qué
 
-**C0 primero, y no es negociable.** El seed denso (C0.2) cambia cómo se ve *todo* lo demás, y el HMR (C0.1) cambia la velocidad de *todo* lo demás. Hacer C1 sobre un planning vacío es diseñar a ciegas.
+**C0 primero, y no es negociable.** El seed denso (C0.2) cambia cómo se ve _todo_ lo demás, y el HMR (C0.1) cambia la velocidad de _todo_ lo demás. Hacer C1 sobre un planning vacío es diseñar a ciegas.
 
 Después, **C3 antes que C4**: los estados son transversales y suben las 11 pantallas de golpe; el workflow es profundo pero afecta a pocas. Con prioridad visual declarada, lo ancho va primero.
 

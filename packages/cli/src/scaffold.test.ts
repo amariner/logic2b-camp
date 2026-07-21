@@ -95,12 +95,17 @@ describe('scaffoldTenant', () => {
 
   it('rechaza un slug inválido antes de tocar el disco', () => {
     tenantsDir = mkdtempSync(join(tmpdir(), 'logic-camp-cli-'));
-    expect(() => scaffoldTenant(templateDir, tenantsDir, { ...identity, slug: 'Mal Slug' })).toThrow();
+    expect(() =>
+      scaffoldTenant(templateDir, tenantsDir, { ...identity, slug: 'Mal Slug' }),
+    ).toThrow();
   });
 
   it('rellena __DIRECCION__ solo si se aporta', () => {
     tenantsDir = mkdtempSync(join(tmpdir(), 'logic-camp-cli-'));
-    const result = scaffoldTenant(templateDir, tenantsDir, { ...identity, address: 'Camí de la Platja, 3' });
+    const result = scaffoldTenant(templateDir, tenantsDir, {
+      ...identity,
+      address: 'Camí de la Platja, 3',
+    });
     const config = readFileSync(join(result.targetDir, 'config.ts'), 'utf8');
     expect(config).toContain('Camí de la Platja, 3');
     expect(config).not.toContain('__DIRECCION__');

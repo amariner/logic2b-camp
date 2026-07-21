@@ -26,8 +26,12 @@ export function eachNight(from: IsoDate, to: IsoDate): IsoDate[] {
 }
 
 /** solape de rangos semiabiertos [aFrom,aTo) ∩ [bFrom,bTo) */
-export const rangesOverlap = (aFrom: IsoDate, aTo: IsoDate, bFrom: IsoDate, bTo: IsoDate): boolean =>
-  aFrom < bTo && bFrom < aTo;
+export const rangesOverlap = (
+  aFrom: IsoDate,
+  aTo: IsoDate,
+  bFrom: IsoDate,
+  bTo: IsoDate,
+): boolean => aFrom < bTo && bFrom < aTo;
 
 /** días entre hoy (ISO) y una fecha, redondeando hacia abajo */
 export const daysUntil = (from: IsoDate, to: IsoDate): number =>

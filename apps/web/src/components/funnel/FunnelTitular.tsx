@@ -127,6 +127,7 @@ export default function FunnelTitular({
             phone: data.get('phone') || undefined,
           },
           notes: data.get('notes') || undefined,
+          gdprConsent: data.get('gdprConsent') === 'on',
           locale,
           ...(typeof hold === 'object' ? { holdId: hold.holdId } : {}),
         }),
@@ -204,23 +205,59 @@ export default function FunnelTitular({
     <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
       <form onSubmit={submit} noValidate className="flex max-w-xl flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.titular.nombre}</span>
-          <input name="name" required autoComplete="name" className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.titular.nombre}
+          </span>
+          <input
+            name="name"
+            required
+            autoComplete="name"
+            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+          />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.titular.email}</span>
-          <input name="email" type="email" required autoComplete="email" className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.titular.email}
+          </span>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+          />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.titular.telefono}</span>
-          <input name="phone" type="tel" autoComplete="tel" className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.titular.telefono}
+          </span>
+          <input
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+          />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{labels.titular.notas}</span>
-          <textarea name="notes" rows={3} className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+          <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
+            {labels.titular.notas}
+          </span>
+          <textarea
+            name="notes"
+            rows={3}
+            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+          />
         </label>
+        {/* ADR 0026 §2.3: el `name` NO es cosmético — sin él la casilla no se
+            serializaba y el consentimiento no llegaba nunca al servidor, pese a
+            que la ficha técnica publicada prometía guardarlo con su fecha. */}
         <label className="flex cursor-pointer items-start gap-3 text-[14px]">
-          <input type="checkbox" required className="mt-1 size-4 accent-(--lc-pino)" />
+          <input
+            name="gdprConsent"
+            type="checkbox"
+            required
+            className="mt-1 size-4 accent-(--lc-pino)"
+          />
           {labels.titular.condiciones}
         </label>
         <button
@@ -230,7 +267,9 @@ export default function FunnelTitular({
         >
           {state === 'sending' ? labels.titular.confirmando : labels.titular.confirmar}
         </button>
-        {state === 'error' && <p className="text-[14px] font-medium text-mar">{labels.titular.error}</p>}
+        {state === 'error' && (
+          <p className="text-[14px] font-medium text-mar">{labels.titular.error}</p>
+        )}
       </form>
 
       <aside className="flex flex-col gap-3 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 lg:sticky lg:top-24 lg:self-start">

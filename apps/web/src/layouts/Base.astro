@@ -1,5 +1,6 @@
 ---
 import { config, getContent, localePath, media } from '../lib/content';
+import { getLegalUi } from '../lib/legal';
 import LogoMark from '../components/LogoMark.astro';
 import '../styles/global.css';
 
@@ -37,6 +38,21 @@ const navLinks = [
   ['/blog', c.nav.blog],
   ['/contacto', c.nav.contacto],
 ] as const;
+
+// páginas legales (ADR 0026 §2.5): solo en el pie, nunca en la nav principal.
+// Las claves `footer.legal` y `footer.privacidad` llevaban seis idiomas escritas
+// y huérfanas desde la Fase 4; a partir de aquí apuntan a algún sitio.
+const legalLinks = [
+  ['/aviso-legal', c.footer.legal],
+  ['/privacidad', c.footer.privacidad],
+  ['/cookies', c.footer.cookies],
+] as const;
+
+// OJO (ADR 0026 §2.5): `lc-theme` y `lc-nivel` son el ÚNICO almacenamiento de
+// cliente de esta web, ambos funcionales, y por eso `/cookies` puede afirmar que
+// no hay nada que consentir y no se muestra banner. Añadir aquí analítica que no
+// sea *cookieless* rompe esa afirmación: obligaría a consentimiento previo y a
+// reescribir la página. Ver `src/lib/legal.ts`.
 
 // temas de demo (ADR 0009): sin flag en config, nada de esto llega al HTML
 const demoThemes = config.demoThemes ?? [];
@@ -302,10 +318,19 @@ const tierMenuScript = `
             ))}
           </nav>
         </div>
-        <div class="flex flex-col gap-4 border-t border-arena/50 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p class="tnum text-[13px] text-tinta-suave">
-            {config.contact.address} · {config.contact.phone} · {config.contact.email}
-          </p>
+        <div class="flex flex-col gap-4 border-t border-arena/50 pt-6 sm:flex-row sm:items-start sm:justify-between">
+          <div class="flex flex-col gap-2">
+            <p class="tnum text-[13px] text-tinta-suave">
+              {config.contact.address} · {config.contact.phone} · {config.contact.email}
+            </p>
+            <nav class="flex flex-wrap gap-x-5 gap-y-1.5 text-[13px]" aria-label={getLegalUi(locale).nav}>
+              {legalLinks.map(([href, label]) => (
+                <a href={localePath(locale, href)} class="text-tinta-suave transition-colors hover:text-tinta">
+                  {label}
+                </a>
+              ))}
+            </nav>
+          </div>
           {/* firma discreta "powered by Logic2B" (ADR 0018) — único punto de la
              marca Logic2B en la web del camping (BRAND.md §0). Isotipo compartido
              (SVG, no runtime), hereda el color apagado del tenant; enlaza a la

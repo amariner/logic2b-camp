@@ -131,14 +131,16 @@ export default function FunnelDetalle({
         <div>
           <h2 className="font-display mb-3 text-[15px] font-semibold">{labels.detalle.estancia}</h2>
           <p className="tnum text-[15px]">
-            {fecha(query.from)} → {fecha(query.to)} ·{' '}
-            {fill(labels.noches, { n: nights || '…' })} ·{' '}
+            {fecha(query.from)} → {fecha(query.to)} · {fill(labels.noches, { n: nights || '…' })} ·{' '}
             {query.adults} {query.adults === 1 ? mostrador.adulto : mostrador.adultos}
             {query.children > 0 &&
               `, ${query.children} ${query.children === 1 ? mostrador.nino : mostrador.ninos}`}
           </p>
           <p className="mt-2">
-            <a href={`${reservarPath}?${funnelQs(query)}`} className="text-[13px] font-medium text-tinta-suave underline underline-offset-4 transition-colors hover:text-tinta">
+            <a
+              href={`${reservarPath}?${funnelQs(query)}`}
+              className="text-[13px] font-medium text-tinta-suave underline underline-offset-4 transition-colors hover:text-tinta"
+            >
               ← {labels.detalle.volver}
             </a>
           </p>
@@ -150,7 +152,12 @@ export default function FunnelDetalle({
             {hasElectricity && (
               <li className="flex items-center justify-between gap-3 py-2.5 text-[14px]">
                 <label className="flex flex-1 cursor-pointer items-center gap-3">
-                  <input type="checkbox" checked={query.elec} onChange={toggleElec} className="size-4 accent-(--lc-pino)" />
+                  <input
+                    type="checkbox"
+                    checked={query.elec}
+                    onChange={toggleElec}
+                    className="size-4 accent-(--lc-pino)"
+                  />
                   {labels.detalle.electricidad}
                 </label>
               </li>
@@ -172,7 +179,10 @@ export default function FunnelDetalle({
               </li>
             ))}
             {requiredExtras.map((e) => (
-              <li key={e.id} className="flex items-center justify-between gap-3 py-2.5 text-[14px] text-tinta-suave">
+              <li
+                key={e.id}
+                className="flex items-center justify-between gap-3 py-2.5 text-[14px] text-tinta-suave"
+              >
                 <span>{extrasNombres[e.id] ?? e.id}</span>
                 <span className="tnum whitespace-nowrap">
                   {eur(e.priceCents, locale)} · {labels.detalle.incluido}
@@ -194,7 +204,9 @@ export default function FunnelDetalle({
             ))}
           </ul>
         )}
-        {state === 'error' && <p className="text-[14px] font-medium text-mar">{labels.detalle.error}</p>}
+        {state === 'error' && (
+          <p className="text-[14px] font-medium text-mar">{labels.detalle.error}</p>
+        )}
         {state === 'loading' && (
           <div aria-busy="true" className="flex flex-col gap-2">
             {[0, 1, 2].map((i) => (
@@ -211,7 +223,9 @@ export default function FunnelDetalle({
                   <span className={l.amountCents < 0 ? 'text-pino' : ''}>
                     {conceptLabel(l.concept, labels.conceptos, extrasNombres)}
                   </span>
-                  <span className={`tnum whitespace-nowrap ${l.amountCents < 0 ? 'text-pino' : ''}`}>
+                  <span
+                    className={`tnum whitespace-nowrap ${l.amountCents < 0 ? 'text-pino' : ''}`}
+                  >
                     {eur(l.amountCents, locale)}
                   </span>
                 </li>
@@ -222,7 +236,9 @@ export default function FunnelDetalle({
               <span className="tnum">{eur(breakdown.totalCents, locale)}</span>
             </p>
             <p className="text-[12px] text-tinta-suave">
-              {fill(labels.detalle.tasaNota ?? '', { importe: eur(breakdown.touristTaxCents, locale) })}
+              {fill(labels.detalle.tasaNota ?? '', {
+                importe: eur(breakdown.touristTaxCents, locale),
+              })}
             </p>
             <a
               href={`${titularPath}?${funnelQs(query)}`}

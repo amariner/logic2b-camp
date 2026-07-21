@@ -6,7 +6,7 @@
 
 ## Contexto
 
-Hasta hoy "la herramienta de ventas" era `camp.logic2b.com`, que en realidad es la **demo de un camping ficticio** (Cala Sereno): enseña *cómo queda la web de un cliente*, no *qué es Logic Camp ni por qué comprarlo*. Falta el equivalente a la landing de `ecom.logic2b.com`: un **sitio de producto** dirigido al **comprador** (director/dueño/CEO de camping) que explique web + gestor, muestre la escalera de niveles (`docs/TIERS.md`), use el planning como pieza estrella, enlace la demo viva y capte contacto.
+Hasta hoy "la herramienta de ventas" era `camp.logic2b.com`, que en realidad es la **demo de un camping ficticio** (Cala Sereno): enseña _cómo queda la web de un cliente_, no _qué es Logic Camp ni por qué comprarlo_. Falta el equivalente a la landing de `ecom.logic2b.com`: un **sitio de producto** dirigido al **comprador** (director/dueño/CEO de camping) que explique web + gestor, muestre la escalera de niveles (`docs/TIERS.md`), use el planning como pieza estrella, enlace la demo viva y capte contacto.
 
 Decisiones ya tomadas (ROADMAP, 2026-07-19): la landing vive en la **raíz `camp.logic2b.com/`**; la demo baja a **`camp.logic2b.com/demo/`**. La marca del producto es **Logic2B** (`docs/BRAND.md`): shadcn/ui neutro, Inter Variable + Space Grotesk, isotipo, radius 10px, tokens oklch.
 
@@ -63,7 +63,7 @@ site build → web build (BASE=/demo/) → dashboard build
 
 ### 4. Narrativa de venta (secciones de la landing)
 
-Dirigida al **director de camping**, no al huésped. La unidad narrativa es *"tu web y tu recepción, resueltas"*, no el feature suelto.
+Dirigida al **director de camping**, no al huésped. La unidad narrativa es _"tu web y tu recepción, resueltas"_, no el feature suelto.
 
 1. **Héroe**: propuesta de valor + isotipo Logic2B + doble CTA — **"Pedir demo"** (formulario) y **"Ver la demo en vivo"** (→ `/demo/`).
 2. **El problema**: la web actual del camping + la gestión en papel/Excel.

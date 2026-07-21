@@ -13,3 +13,8 @@ coverage/
 # Playwright (E2E)
 test-results/
 playwright-report/
+
+# Volcados de bases de tenant (ADR 0026 §4). CONTIENEN DATOS PERSONALES:
+# nombres, documentos de identidad y contacto de huéspedes reales. No se
+# commitean jamás — se entregan al camping y se borran.
+exports/

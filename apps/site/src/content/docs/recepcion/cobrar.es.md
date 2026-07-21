@@ -1,6 +1,6 @@
 ---
-title: "Cobrar lo que falta"
-description: "Registrar un pago en efectivo o con tarjeta, cobrar todo lo pendiente de una vez y devolver dinero."
+title: 'Cobrar lo que falta'
+description: 'Registrar un pago en efectivo o con tarjeta, cobrar todo lo pendiente de una vez y devolver dinero.'
 lang: es
 orden: 4
 ---

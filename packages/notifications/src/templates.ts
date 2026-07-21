@@ -89,6 +89,39 @@ export function render(payload: NotificationPayload, locale: string): EmailMessa
     return { subject, html: layout(d.campName, lang, tr(lang, `${pre}.title`), body), text };
   }
 
+  if (payload.kind === 'system_error') {
+    // ADR 0026 §3: aquí NO entra ni el mensaje del error ni el stack. Solo la
+    // referencia, que es lo que permite cruzar este correo con el log del
+    // servidor. Si algún día se añade "un poquito de detalle para ayudar", se
+    // está sacando por email lo que se decidió no sacar por la respuesta HTTP.
+    const d = payload.data;
+    const datos = [
+      row(tr(lang, 'sys.ref'), `<strong>${esc(d.ref)}</strong>`),
+      row(tr(lang, 'sys.route'), esc(d.route)),
+      row(tr(lang, 'sys.when'), esc(d.occurredAt)),
+      d.suppressed > 0 ? row(tr(lang, 'sys.more'), String(d.suppressed)) : '',
+    ].join('');
+    const body =
+      p(esc(tr(lang, 'sys.intro'))) +
+      table(datos) +
+      `<p style="margin:0;font-size:12px;color:#6c675c;line-height:1.5">${esc(tr(lang, 'sys.hint'))}</p>`;
+    const text = [
+      tr(lang, 'sys.title'),
+      '',
+      `${tr(lang, 'sys.ref')}: ${d.ref}`,
+      `${tr(lang, 'sys.route')}: ${d.route}`,
+      `${tr(lang, 'sys.when')}: ${d.occurredAt}`,
+      ...(d.suppressed > 0 ? [`${tr(lang, 'sys.more')}: ${d.suppressed}`] : []),
+      '',
+      tr(lang, 'sys.hint'),
+    ].join('\n');
+    return {
+      subject: tr(lang, 'sys.subject', { camp: d.campName }),
+      html: layout(d.campName, lang, tr(lang, 'sys.title'), body),
+      text,
+    };
+  }
+
   // booking_confirmed | booking_cancelled | booking_pending_stuck | booking_reminder
   const d = payload.data;
   const cancel = payload.kind === 'booking_cancelled';

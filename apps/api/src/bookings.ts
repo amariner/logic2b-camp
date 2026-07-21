@@ -12,7 +12,9 @@ import {
 import { schema } from '@logic-camp/db';
 import { computeChargeAmount, type PaymentIntentResult } from '@logic-camp/payments';
 import { eq } from 'drizzle-orm';
+import { CONSENT_VERSION } from './consent';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from './data';
+import { errorDetail, logEvent } from './errors';
 import { nowIso, uid } from './ids';
 import { loadPaymentsConfig, rememberIntent, resolveProvider, type PaymentEnv } from './payments';
 import type { BookingRequest } from './schemas';
@@ -213,7 +215,11 @@ export async function createBooking(
       surname: '',
       email: body.holder.email,
       phone: body.holder.phone ?? null,
-      gdprConsentAt: ts,
+      // ADR 0026 §2.3: sin consentimiento NO se inventa una fecha. La web pública
+      // no puede llegar aquí sin él (su esquema es `literal(true)`); el mostrador sí,
+      // y entonces se registra después desde la ficha. La versión la sella el servidor.
+      gdprConsentAt: body.gdprConsent ? ts : null,
+      gdprConsentVersion: body.gdprConsent ? CONSENT_VERSION : null,
     }),
     db.insert(schema.bookingGuests).values({ bookingId: id, guestId, isLead: true }),
     ...(opts.idemKey
@@ -263,7 +269,15 @@ export async function createBooking(
     await rememberIntent(tenant.db, provider.name, intent.providerRef, id);
     return { ok: true, status: 201, body: { ...baseBody, payment: intent } };
   } catch (e) {
-    console.error(`createIntent failed for ${code}:`, e);
+    logEvent({
+      level: 'error',
+      event: 'payment_intent_failed',
+      tenant: tenant.slug,
+      code,
+      provider: provider.name,
+      detail: errorDetail(e).message,
+      stack: errorDetail(e).stack,
+    });
     return { ok: true, status: 201, body: baseBody };
   }
 }

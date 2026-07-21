@@ -7,8 +7,9 @@ Ver `docs/adr/0012-instancias-custom-asistente.md` (§1-6 diseño y estado, §7 
 ## Antes de empezar
 
 Necesitas (§5 del super prompt):
+
 - `wrangler login` hecho, o un `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` con los scopes: `Workers Scripts:Edit` · `D1:Edit` · `Pages:Edit` · `Workers KV Storage:Edit` · `R2:Edit` · `Queues:Edit` · `Zone:DNS:Edit` (sobre `logic2b.com` y la zona del cliente si mueve sus nameservers) · `Account Settings:Read`.
-- Del cliente: nombre del camping, dominio deseado, idiomas a ofrecer, nivel contratado (`docs/TIERS.md`), comunidad autónoma (tasa turística), y **material real**: PDF de tarifas, Excel/CSV de parcelas, URL de su web actual si tiene.
+- Del cliente: nombre del camping, dominio deseado, idiomas a ofrecer, nivel contratado (`docs/TIERS.md`), comunidad autónoma (tasa turística), **identidad legal** (razón social, NIF, domicilio fiscal, datos registrales si los hay y el buzón donde atenderá los derechos RGPD — bloque `legal` de `config.ts`, ADR 0026 §2.5), y **material real**: PDF de tarifas, Excel/CSV de parcelas, URL de su web actual si tiene.
 - Una decisión tomada: ¿mueve sus nameservers a Cloudflare (camino A, por defecto) o usa Cloudflare for SaaS / Custom Hostnames (camino B, a partir de 10-15 clientes)? Ver §5 del super prompt.
 
 ## Los tres capas del alta
@@ -26,6 +27,7 @@ El checklist completo, fichero a fichero, sigue en `tenants/_template/README.md`
 ### Capa 2 — interpretativa (el margen de Logic2B — slash command `/new-camping`)
 
 Con el material real del cliente:
+
 - **PDF de tarifas** → propuesta de `seasons_calendar` + `rate_plans` (+ `rate_rules` si hay descuentos) → **Andreu valida los números antes de sembrar nada** — nunca se inventan precios.
 - **Excel/CSV de parcelas** → inventario normalizado (`unit_types` + `units`) → sustituye a los de ejemplo del seed.
 - **Su web actual** → borrador de los textos de la landing en sus idiomas, a `content/{lang}.json`.
@@ -44,7 +46,7 @@ Checklist dentro del propio dashboard para que el camping se sienta dueño del a
 
 ## Verificación de que el alta está completa
 
-- `grep -rn __TODO__ tenants/{slug}/` no debe devolver nada.
+- `grep -rn '__[A-Z_]*__' tenants/{slug}/` no debe devolver nada — ni los `__TODO__` de `content/{lang}.json` ni los marcadores de `config.ts`, **incluido el bloque `legal`**: sin él las páginas de aviso legal, privacidad y cookies salen publicadas con huecos.
 - `pnpm check` en verde.
 - El camping responde en su dominio real, con sus datos reales, en los idiomas contratados.
 - Login del owner funciona con una contraseña que el camping ya ha cambiado (no la sembrada).

@@ -39,13 +39,13 @@ const DEFAULT_CONFIG: TenantPaymentsConfig = { provider: 'none', mode: 'none' };
 export async function loadPaymentsConfig(db: Db): Promise<TenantPaymentsConfig> {
   const row = (await db.select().from(schema.tenants))[0];
   const raw = (row?.modules as Record<string, unknown> | undefined)?.payments as
-    | Partial<TenantPaymentsConfig>
-    | undefined;
+    Partial<TenantPaymentsConfig> | undefined;
   if (!raw) return DEFAULT_CONFIG;
 
   // deposit sin % configurado no es un modo válido: se trata como 'none' para
   // no crear NUNCA una reserva 'pending' a la espera de un cobro de 0€.
-  const mode: PaymentMode = raw.mode === 'deposit' && !raw.depositPercent ? 'none' : (raw.mode ?? 'none');
+  const mode: PaymentMode =
+    raw.mode === 'deposit' && !raw.depositPercent ? 'none' : (raw.mode ?? 'none');
 
   return {
     provider: raw.provider ?? 'none',
@@ -91,19 +91,26 @@ export async function rememberIntent(
   providerRef: string,
   bookingId: string,
 ): Promise<void> {
-  await db.insert(schema.meta).values({ key: `payment_order:${provider}:${providerRef}`, value: bookingId });
+  await db
+    .insert(schema.meta)
+    .values({ key: `payment_order:${provider}:${providerRef}`, value: bookingId });
 }
 
-async function lookupBookingId(db: Db, provider: string, providerRef: string): Promise<string | null> {
+async function lookupBookingId(
+  db: Db,
+  provider: string,
+  providerRef: string,
+): Promise<string | null> {
   const row = (
-    await db.select().from(schema.meta).where(eq(schema.meta.key, `payment_order:${provider}:${providerRef}`))
+    await db
+      .select()
+      .from(schema.meta)
+      .where(eq(schema.meta.key, `payment_order:${provider}:${providerRef}`))
   )[0];
   return row?.value ?? null;
 }
 
-export type RefundOutcome =
-  | { ok: true; refundedCents: number }
-  | { ok: false; error: string };
+export type RefundOutcome = { ok: true; refundedCents: number } | { ok: false; error: string };
 
 /**
  * Ejecuta un reembolso real (ADR 0011 §5): si hay un cobro de pasarela con
@@ -120,10 +127,15 @@ export async function executeRefund(
 ): Promise<RefundOutcome> {
   if (amountCents <= 0) return { ok: true, refundedCents: 0 };
 
-  const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId)))[0];
+  const booking = (
+    await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId))
+  )[0];
   if (!booking) return { ok: false, error: 'booking_not_found' };
 
-  const paymentRows = await db.select().from(schema.payments).where(eq(schema.payments.bookingId, bookingId));
+  const paymentRows = await db
+    .select()
+    .from(schema.payments)
+    .where(eq(schema.payments.bookingId, bookingId));
   const gatewayPayment = paymentRows
     .filter((p) => p.amountCents > 0 && (p.provider === 'stripe' || p.provider === 'redsys'))
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -168,7 +180,9 @@ export async function recordManualPayment(
   bookingId: string,
   amountCents: number,
 ): Promise<void> {
-  const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId)))[0];
+  const booking = (
+    await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId))
+  )[0];
   if (!booking) throw new Error('booking_not_found');
   const ts = nowIso();
   await db.batch([
@@ -218,7 +232,9 @@ export async function recordPaymentEvent(
     return { kind: 'failed', bookingId };
   }
 
-  const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId)))[0];
+  const booking = (
+    await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId))
+  )[0];
   if (!booking) return { kind: 'unknown_booking' };
 
   const ts = nowIso();

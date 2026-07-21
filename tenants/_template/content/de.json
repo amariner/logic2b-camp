@@ -22,13 +22,7 @@
     "titulo": "__TODO__",
     "cta": "__TODO__"
   },
-  "ticker": [
-    "__TODO__",
-    "__TODO__",
-    "__TODO__",
-    "__TODO__",
-    "__TODO__"
-  ],
+  "ticker": ["__TODO__", "__TODO__", "__TODO__", "__TODO__", "__TODO__"],
   "mostrador": {
     "llegada": "__TODO__",
     "salida": "__TODO__",
@@ -104,8 +98,9 @@
   },
   "footer": {
     "aviso": "__TODO__",
-    "legal": "__TODO__",
-    "privacidad": "__TODO__",
+    "legal": "Impressum",
+    "privacidad": "Datenschutz",
+    "cookies": "Cookies",
     "poweredBy": "Camping-Verwaltungssoftware von Logic2B"
   },
   "alojamientos": {
@@ -312,13 +307,7 @@
     },
     "condiciones": {
       "titulo": "__TODO__",
-      "items": [
-        "__TODO__",
-        "__TODO__",
-        "__TODO__",
-        "__TODO__",
-        "__TODO__"
-      ]
+      "items": ["__TODO__", "__TODO__", "__TODO__", "__TODO__", "__TODO__"]
     }
   },
   "contacto": {

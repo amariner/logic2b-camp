@@ -12,4 +12,5 @@ export type {
   NotificationPayload,
   NotificationsConfig,
   SendResult,
+  SystemErrorPayload,
 } from './types';

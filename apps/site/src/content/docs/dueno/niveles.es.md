@@ -1,6 +1,6 @@
 ---
-title: "Los cuatro niveles"
-description: "Qué incluye cada nivel de Logic Camp y para qué camping está pensado cada uno."
+title: 'Los cuatro niveles'
+description: 'Qué incluye cada nivel de Logic Camp y para qué camping está pensado cada uno.'
 lang: es
 orden: 1
 ---
@@ -11,16 +11,16 @@ Eso tiene una consecuencia práctica que conviene entender antes de elegir: **su
 
 ## La tabla
 
-| | **Camp Web** | **Camp Solicitudes** | **Camp Reservas** | **Camp Motor** |
-|---|---|---|---|---|
-| Web pública completa | ✅ | ✅ | ✅ | — (usas la tuya) |
-| Formulario de solicitud → tu email | ✅ | ✅ | ✅ | — |
-| Historial de solicitudes guardado | ✅ | ✅ | ✅ | ✅ |
-| Bandeja de solicitudes + panel básico | — | ✅ | ✅ | ✅ |
-| Disponibilidad y precio en tiempo real | — | — | ✅ | ✅ |
-| Reserva online con confirmación al momento | — | — | ✅ | ✅ |
-| Gestor completo (planning, plano, fichas) | — | — | ✅ | ✅ |
-| Cobro online (opcional) | — | — | ✅ | ✅ |
+|                                            | **Camp Web** | **Camp Solicitudes** | **Camp Reservas** | **Camp Motor**   |
+| ------------------------------------------ | ------------ | -------------------- | ----------------- | ---------------- |
+| Web pública completa                       | ✅           | ✅                   | ✅                | — (usas la tuya) |
+| Formulario de solicitud → tu email         | ✅           | ✅                   | ✅                | —                |
+| Historial de solicitudes guardado          | ✅           | ✅                   | ✅                | ✅               |
+| Bandeja de solicitudes + panel básico      | —            | ✅                   | ✅                | ✅               |
+| Disponibilidad y precio en tiempo real     | —            | —                    | ✅                | ✅               |
+| Reserva online con confirmación al momento | —            | —                    | ✅                | ✅               |
+| Gestor completo (planning, plano, fichas)  | —            | —                    | ✅                | ✅               |
+| Cobro online (opcional)                    | —            | —                    | ✅                | ✅               |
 
 ## Camp Web — tu primera web que trabaja
 

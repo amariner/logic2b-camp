@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-21
 - **Fase**: Frente C — C7 (plano del camping)
-- **Estado**: **aceptado e implementado**. Andreu, al cerrar la sesión anterior: *"continua como creas conveniente pero no pares hasta conseguirlo todo"* — mandato autónomo permanente para el Frente C. La decisión de fondo (§1) se toma aquí y se implementa en la misma sesión; si Andreu quiere revertir el sitio de la geometría, es un cambio de una capa (el descriptor), no del componente.
+- **Estado**: **aceptado e implementado**. Andreu, al cerrar la sesión anterior: _"continua como creas conveniente pero no pares hasta conseguirlo todo"_ — mandato autónomo permanente para el Frente C. La decisión de fondo (§1) se toma aquí y se implementa en la misma sesión; si Andreu quiere revertir el sitio de la geometría, es un cambio de una capa (el descriptor), no del componente.
 
 ## Contexto
 
@@ -24,7 +24,7 @@ Restricciones que gobiernan (§0 del super prompt): ~6h/semana y **nada que mult
 
 ### 1. Dónde vive la geometría — la decisión de fondo
 
-Las dos opciones que el contrato dejaba abiertas eran: **columna en `units` (D1)** o **fichero de tenant**. Se elige una **tercera vía que es la síntesis honesta de ambas**, y que resulta ser exactamente cómo funciona ya *todo lo demás* en este proyecto:
+Las dos opciones que el contrato dejaba abiertas eran: **columna en `units` (D1)** o **fichero de tenant**. Se elige una **tercera vía que es la síntesis honesta de ambas**, y que resulta ser exactamente cómo funciona ya _todo lo demás_ en este proyecto:
 
 > **La fuente de verdad de la geometría es un descriptor declarativo en `tenants/{slug}/` (`tenants/demo/plano.ts`). El seed lo materializa en la columna JSON `tenants.modules` (bajo `modules.plano`), igual que ya materializa `unit_types`, `rate_plans` o el resto de la config del tenant. El dashboard genérico lo recibe por un endpoint genérico (`GET /api/admin/map`).**
 
@@ -55,14 +55,14 @@ Igual que el original: recibe `layout` + `stateByUnit` + `selectedCode` + callba
 
 **Color de estado desde los mismos `--lc-status-*` que el planning** (§C1.5), no una segunda paleta:
 
-| Estado del día | Token | Lectura de recepción a las 9:00 |
-|---|---|---|
-| Ocupada (confirmada) | `--lc-status-confirmed` | ahí hay gente y está pagado |
-| Ocupada (pendiente de pago) | `--lc-status-pending` | ahí hay gente pero falta cobrar |
-| Entra hoy | confirmed/pending + marca de esquina | llega alguien: preparar |
-| Sale hoy | `--lc-status-completed` (neutro) + marca | se libera: limpiar |
-| Bloqueada (avería/larga estancia) | `--lc-status-blocked` (rayado) | no tocar |
-| Libre | `--muted` + borde | disponible |
+| Estado del día                    | Token                                    | Lectura de recepción a las 9:00 |
+| --------------------------------- | ---------------------------------------- | ------------------------------- |
+| Ocupada (confirmada)              | `--lc-status-confirmed`                  | ahí hay gente y está pagado     |
+| Ocupada (pendiente de pago)       | `--lc-status-pending`                    | ahí hay gente pero falta cobrar |
+| Entra hoy                         | confirmed/pending + marca de esquina     | llega alguien: preparar         |
+| Sale hoy                          | `--lc-status-completed` (neutro) + marca | se libera: limpiar              |
+| Bloqueada (avería/larga estancia) | `--lc-status-blocked` (rayado)           | no tocar                        |
+| Libre                             | `--muted` + borde                        | disponible                      |
 
 ### 4. Integración: el ida y vuelta es la demo
 

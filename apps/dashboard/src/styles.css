@@ -10,7 +10,6 @@
  * verificando en el navegador — el error boundary pintaba un icono de 384px. */
 @source '../../../packages/ui/src';
 
-
 /* El puente de alias de la paleta camping (ADR 0008 → 0017) SE ELIMINÓ en ADR 0020.
  * Motivo: mientras existía, un alias mal apuntado producía un color absurdo sin que
  * nada fallara — que es literalmente C-BUG-2 (`--color-mar: var(--foreground)`, los

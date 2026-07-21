@@ -72,8 +72,12 @@ html {
 
 /* ticker del héroe nivel 1 */
 @keyframes lc-ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 .lc-ticker {
   animation: lc-ticker 36s linear infinite;
@@ -81,16 +85,25 @@ html {
 
 /* las fotos respiran una vez al entrar */
 @keyframes lc-settle {
-  from { transform: scale(1.04); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 .lc-settle {
   animation: lc-settle 1.8s cubic-bezier(0.2, 0.6, 0.2, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .lc-ticker, .lc-settle { animation: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .lc-ticker,
+  .lc-settle {
+    animation: none;
+  }
 }
 
 /* conmutador de nivel de demo (ADR 0013): CSS puro desde <html data-nivel>,
@@ -174,12 +187,16 @@ html {
 
 /* skeleton del mostrador */
 @keyframes lc-pulse {
-  50% { opacity: 0.45; }
+  50% {
+    opacity: 0.45;
+  }
 }
 .lc-skeleton {
   animation: lc-pulse 1.6s ease-in-out infinite;
   background: var(--lc-arena-suave);
 }
 @media (prefers-reduced-motion: reduce) {
-  .lc-skeleton { animation: none; }
+  .lc-skeleton {
+    animation: none;
+  }
 }

@@ -27,7 +27,11 @@ describe('dates', () => {
     expect(nightsBetween('2026-07-01', '2026-07-02')).toBe(1);
   });
   it('eachNight devuelve las noches [from,to)', () => {
-    expect(eachNight('2026-07-30', '2026-08-02')).toEqual(['2026-07-30', '2026-07-31', '2026-08-01']);
+    expect(eachNight('2026-07-30', '2026-08-02')).toEqual([
+      '2026-07-30',
+      '2026-07-31',
+      '2026-08-01',
+    ]);
   });
   it('rangesOverlap: el día de salida se libera (semiabierto)', () => {
     expect(rangesOverlap('2026-07-01', '2026-07-05', '2026-07-05', '2026-07-10')).toBe(false);
@@ -161,9 +165,30 @@ describe('applyRules', () => {
       currency: 'EUR',
     });
   const rules: RateRule[] = [
-    { id: 'early', type: 'early_booking', conditions: { minDaysAhead: 60 }, discount: { type: 'percent', value: 10 }, stackable: false, priority: 10 },
-    { id: 'acsi', type: 'acsi', conditions: { card: 'acsi', seasonIds: ['apertura'] }, discount: { type: 'percent', value: 20 }, stackable: false, priority: 5 },
-    { id: 'long', type: 'long_stay', conditions: { minNights: 14 }, discount: { type: 'percent', value: 8 }, stackable: true, priority: 20 },
+    {
+      id: 'early',
+      type: 'early_booking',
+      conditions: { minDaysAhead: 60 },
+      discount: { type: 'percent', value: 10 },
+      stackable: false,
+      priority: 10,
+    },
+    {
+      id: 'acsi',
+      type: 'acsi',
+      conditions: { card: 'acsi', seasonIds: ['apertura'] },
+      discount: { type: 'percent', value: 20 },
+      stackable: false,
+      priority: 5,
+    },
+    {
+      id: 'long',
+      type: 'long_stay',
+      conditions: { minNights: 14 },
+      discount: { type: 'percent', value: 8 },
+      stackable: true,
+      priority: 20,
+    },
   ];
   const ctx = { today: '2026-01-15', seasonIds: ['apertura'], cards: ['acsi'] };
 
@@ -239,7 +264,9 @@ describe('searchAvailability', () => {
       unitTypes: [pitchType],
       units,
       bookings: [],
-      blocks: [{ unitTypeId: 'ut_std', dateFrom: '2026-07-02', dateTo: '2026-07-03', reason: 'manual' }],
+      blocks: [
+        { unitTypeId: 'ut_std', dateFrom: '2026-07-02', dateTo: '2026-07-03', reason: 'manual' },
+      ],
       seasons,
     });
     expect(res[0]!.status).toBe('unavailable');
@@ -270,7 +297,13 @@ describe('searchAvailability', () => {
       blocks: noBlocks,
       seasons,
       holds: [
-        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-03', dateTo: '2026-07-06', expiresAt: '2026-06-01T10:15:00.000Z' },
+        {
+          id: 'h1',
+          unitTypeId: 'ut_std',
+          dateFrom: '2026-07-03',
+          dateTo: '2026-07-06',
+          expiresAt: '2026-06-01T10:15:00.000Z',
+        },
       ],
       now: '2026-06-01T10:00:00.000Z',
     });
@@ -289,7 +322,13 @@ describe('searchAvailability', () => {
       blocks: noBlocks,
       seasons,
       holds: [
-        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-01', dateTo: '2026-07-05', expiresAt: '2026-06-01T09:59:59.000Z' },
+        {
+          id: 'h1',
+          unitTypeId: 'ut_std',
+          dateFrom: '2026-07-01',
+          dateTo: '2026-07-05',
+          expiresAt: '2026-06-01T09:59:59.000Z',
+        },
       ],
       now: '2026-06-01T10:00:00.000Z',
     });
@@ -308,8 +347,20 @@ describe('searchAvailability', () => {
       blocks: noBlocks,
       seasons,
       holds: [
-        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-01', dateTo: '2026-07-05', expiresAt: '2026-06-01T10:15:00.000Z' },
-        { id: 'h2', unitTypeId: 'ut_bung', dateFrom: '2026-07-05', dateTo: '2026-07-08', expiresAt: '2026-06-01T10:15:00.000Z' },
+        {
+          id: 'h1',
+          unitTypeId: 'ut_std',
+          dateFrom: '2026-07-01',
+          dateTo: '2026-07-05',
+          expiresAt: '2026-06-01T10:15:00.000Z',
+        },
+        {
+          id: 'h2',
+          unitTypeId: 'ut_bung',
+          dateFrom: '2026-07-05',
+          dateTo: '2026-07-08',
+          expiresAt: '2026-06-01T10:15:00.000Z',
+        },
       ],
       now: '2026-06-01T10:00:00.000Z',
     });
@@ -327,7 +378,13 @@ describe('searchAvailability', () => {
       blocks: noBlocks,
       seasons,
       holds: [
-        { id: 'h1', unitTypeId: 'ut_std', dateFrom: '2026-07-03', dateTo: '2026-07-04', expiresAt: '2026-06-01T10:15:00.000Z' },
+        {
+          id: 'h1',
+          unitTypeId: 'ut_std',
+          dateFrom: '2026-07-03',
+          dateTo: '2026-07-04',
+          expiresAt: '2026-06-01T10:15:00.000Z',
+        },
       ],
       now: '2026-06-01T10:00:00.000Z',
     });
@@ -336,7 +393,10 @@ describe('searchAvailability', () => {
   });
 
   it('unidades inactivas no cuentan', () => {
-    const mixed = [...mkUnits('ut_std', 2), { ...mkUnits('ut_std', 3)[2]!, status: 'inactive' as const }];
+    const mixed = [
+      ...mkUnits('ut_std', 2),
+      { ...mkUnits('ut_std', 3)[2]!, status: 'inactive' as const },
+    ];
     const res = searchAvailability({
       dateFrom: '2026-07-01',
       dateTo: '2026-07-03',
@@ -376,7 +436,9 @@ describe('assignUnit', () => {
       dateTo: '2026-07-10',
       units,
       bookings: [mkBooking('b1', 'ut_std', 'ut_std_1', '2026-07-07', '2026-07-09')],
-      blocks: [{ unitId: 'ut_std_2', dateFrom: '2026-07-01', dateTo: '2026-08-01', reason: 'longstay' }],
+      blocks: [
+        { unitId: 'ut_std_2', dateFrom: '2026-07-01', dateTo: '2026-08-01', reason: 'longstay' },
+      ],
     })!;
     expect(a.unitId).toBe('ut_std_3');
     expect(a.alternatives).toHaveLength(0);
@@ -409,11 +471,17 @@ describe('assignUnit', () => {
 
 describe('touristTax', () => {
   it('respeta maxNights de la política', () => {
-    const tax = calculateTouristTax({ adults: 2, childrenAges: [], pets: 0, vehicles: 1 }, 10, VALENCIA_TAX);
+    const tax = calculateTouristTax(
+      { adults: 2, childrenAges: [], pets: 0, vehicles: 1 },
+      10,
+      VALENCIA_TAX,
+    );
     expect(tax).toBe(2 * 100 * 7); // capado a 7 noches
   });
   it('política none devuelve 0', () => {
-    expect(calculateTouristTax({ adults: 4, childrenAges: [], pets: 0, vehicles: 1 }, 7, NO_TAX)).toBe(0);
+    expect(
+      calculateTouristTax({ adults: 4, childrenAges: [], pets: 0, vehicles: 1 }, 7, NO_TAX),
+    ).toBe(0);
   });
 });
 
@@ -454,9 +522,7 @@ describe('validateStay — acumulación de errores', () => {
 describe('extensiones', () => {
   it('los transformadores se encadenan en orden de registro', async () => {
     const reg = createExtensionRegistry();
-    reg.on('afterAvailabilitySearch', (results) =>
-      results.filter((r) => r.status === 'available'),
-    );
+    reg.on('afterAvailabilitySearch', (results) => results.filter((r) => r.status === 'available'));
     reg.on('afterAvailabilitySearch', (results) =>
       results.map((r) => ({ ...r, availableUnits: r.availableUnits - 1 })),
     );
@@ -480,7 +546,14 @@ describe('extensiones', () => {
     const reg = createExtensionRegistry();
     reg.registerDashboardPanel({ id: 'p2', titleKey: 'x', order: 2 });
     reg.registerDashboardPanel({ id: 'p1', titleKey: 'y', order: 1 });
-    reg.registerRateRule({ id: 'r1', type: 'promo', conditions: {}, discount: { type: 'percent', value: 5 }, stackable: true, priority: 0 });
+    reg.registerRateRule({
+      id: 'r1',
+      type: 'promo',
+      conditions: {},
+      discount: { type: 'percent', value: 5 },
+      stackable: true,
+      priority: 0,
+    });
     expect(reg.getDashboardPanels().map((p) => p.id)).toEqual(['p1', 'p2']);
     expect(reg.getRateRules()).toHaveLength(1);
   });

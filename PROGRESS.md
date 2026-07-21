@@ -4,6 +4,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Fase 11 (endurecimiento)**: 🟨 **PARCIAL** (ADR 0026, 2026-07-21, sesión 37). Cuatro bloques cerrados de verdad: **aislamiento verificable por barrido** (42 rutas, dirigido por `app.routes` — una ruta nueva queda cubierta el día que se escribe, y la entrega falla si alguien añade una sin declarar), **RGPD operativo** (export del interesado, supresión que anonimiza y **niega con fecha** cuando corre el plazo del RD 933/2021, limpieza del PII copiado en `audit_log`, consentimiento con fecha y versión, retención en cron incluida la del nivel 1, y aviso legal + privacidad + cookies sin banner porque no hay seguimiento), **observabilidad mínima** (`onError` — antes se devolvía 500 con el stack trace en el cuerpo—, log estructurado, aviso con cortafuegos, cron que falla por tarea) y **copias** (sin pipeline propio, por decisión: comando `pnpm export:tenant` probado + runbook de restauración con verificación de invariantes). El criterio que ordenó la fase: **la página publicada es la especificación** — la ficha técnica de C6 hacía cuatro afirmaciones falsas y ninguna sobrevive. **Queda**: parte de viajeros (fase propia), Sentry/Logpush y ensayo real de restauración (credenciales), pruebas de carga (falta objetivo declarado), y el primer cliente.
 - **Frente C (acabado profesional: visual + workflow + docs)**: abierto 2026-07-20. Prioridad declarada por Andreu: **la interfaz, en modo fake** — todo previsto y pensado, pero lo que manda es que el cliente vea algo bien pensado y profesional. Regla dura: "fake" se resuelve en el **seed**, nunca con mocks en el cliente. Contrato completo en **[`docs/FRENTE-C-ACABADO.md`](docs/FRENTE-C-ACABADO.md)** (8 fases C0–C7 + bugs registrados). **C0 ✅** (ADR 0019), **C2+C3 ✅** (ADR 0020) y **C7 ✅** (ADR 0021). C0: HMR desbloqueado y seed denso (planning 25 → **346 reservas a la vista**, agosto al 86%). C2+C3: el DS conectado (Radix + 16 primitivos, 43 → 2 `<button>` crudos, rename de tokens cerrado) y los estados (0 `<p>Cargando…</p>`, error boundary por ruta, toasts con deshacer, confirmación en las 3 acciones destructivas). **C7: el plano del camping** — geometría pura y testeada en `packages/config` (`expandPlano`/`autoPlano`/`unitStateOn`, 18 tests), descriptor declarativo en `tenants/demo/plano.ts` → `modules.plano` (columna JSON existente, **cero migración D1**) → `GET /api/admin/map` genérico → `CampingMap` (SVG, pan/zoom, colores `--lc-status-*` del planning) + página `Plano` con estado en vivo por fecha, click→ficha y salto plano↔planning. **C4 ✅** (ADR 0022): **el workflow de recepción** — check-in como campo `checked_in_at` (**no** un estado `in_house`: un estado nuevo caería fuera de ~8 filtros por `status` y olvidar uno es un doble-booking; el campo no toca ninguno y "en casa" se deriva), migración aditiva `0004`; huéspedes y documentos editables (base del parte de viajeros), "cobrar todo lo pendiente" con guarda ≤pendiente, crear/levantar bloqueos desde planning y plano, ⌘K (`cmdk`) y rutas `/reservas/$id` `/clientes/$id`; token nuevo `--lc-status-inhouse` (verde AA 5.5:1) en barra/plano/leyenda + `inhouse` en `unitStateOn`. **C1 ✅** (ADR 0023): **el planning como pieza de exhibición** — gesto horizontal (mover arrastrando manteniendo noches, diagonal fecha+unidad en una acción, estirar por los bordes), re-cotización SIEMPRE en servidor (`requote` dry-run + `move` con candado `expectedTotalCents`; desglose nuevo en diálogo antes de confirmar; rechazo explicado; Deshacer; teclado ←/→ y Shift+←/→), crear arrastrando sobre celdas libres (alta precargada, `preferredUnitId`), bandeja "sin asignar" arrastrable, línea de HOY + continuación + franja de temporada + filtros/búsqueda dentro del planning, **C1.5 cerrado** (mapa `--lc-status-*` definitivo con test AA de 27 aserciones y pareja `.dark` → **modo oscuro conectado**, toggle claro/oscuro/sistema sin FOUC), y finde en UN gradiente por lienzo (geometría pura en `packages/config`). Verificado en vivo: 22/22 gestos con Playwright contra el bundle real. **C5 🟨 PARCIAL** (ADR 0024, 2026-07-21): auditoría reveló que las 6 fotos que hacían falta para **C-BUG-5** ya estaban generadas desde sesión 8 (prompts ya cumplen el contrato de arte — lista definitiva cerrada, no hacía falta generar nada nuevo); el hueco es solo de **descarga**, bloqueada por la política de red del contenedor (`cloudfront.net`, 403, 3ª sesión consecutiva con el mismo bloqueo) — script listo (`pnpm --filter @tenant/demo fetch:fotos`) para ejecutar desde un entorno con esa salida. **C5.2 ✅**: capturas reales del planning y del plano (bundle `vite build` + stub Node con datos del generador de seed puro `generateSeed(2026)`, sin workerd, mismo patrón que C1) reemplazan la maqueta CSS de la landing (cierra BACKLOG [B3]) y OG image de marca Logic2B (1200×630, tokens oklch + isotipo, sin fotografía del tenant). **C6 ✅** (ADR 0025, 2026-07-21) — **la documentación, ÚLTIMA fase del frente: el Frente C queda CERRADO.** Resuelve además la decisión pendiente **B-ii** y cierra **B4** del Frente B. **21 páginas** en `camp.logic2b.com/docs/`: **guía de recepción (14 páginas, una tarea por página)** en el orden de un día real de mostrador (entrar · llegadas/salidas · check-in · cobrar · leer el planning · mover/estirar · plano · alta manual · huéspedes y documentos · check-out · bloqueos · solicitudes · ⌘K · qué hacer cuando algo falla), **guía del dueño (3)** — los niveles como escalera, qué cambia y qué **no** al subir (dominio, web, SEO e histórico se mantienen), qué aportar en el alta — y **ficha técnica (4)** — arquitectura, DNS, correo (SPF/DKIM/DMARC con el aviso del SPF duplicado), datos/aislamiento/RGPD/backups/portabilidad. **B-ii se resolvió por una observación que reordena el criterio**: la documentación es del **producto**, no del tenant — se escribe una vez y sirve a todos los campings, así que el coste por camping ya era cero en las tres opciones y la decisión se juega en **coste fijo de construcción con 6h/semana**, donde `apps/site` gana solo: hereda tokens, fuentes, isotipo, i18n y SEO, y sobre todo **el pipeline de despliegue** (`apps/site/dist` **ya es** el directorio de assets del Worker del tenant → una página nueva se despliega sin tocar nada). Starlight exigía un tercer build y re-tematizar su DS entero; `ui.logic2b.com` está detrás de **B-iii**, sin decidir. Corolario descartado explícitamente: **docs servidas por cada tenant**, que sí habrían multiplicado el alta — el dashboard enlaza con **URL absoluta**. Prosa en Markdown / cromo en i18n, con el idiom que el repo ya usaba para el blog (`import.meta.glob` + `{slug}.{lang}.md` + fallback **por página**, avisado en pantalla, nunca en silencio). Idiomas: cromo es/en/ca, **prosa es**. Enlazada desde la landing (nav, pie y bloque propio tras "niveles") y desde el dashboard con **`BotonAyuda`** en las **12 barras de pantalla**, con el mapa pantalla→página en un módulo único (`apps/dashboard/src/lib/ayuda.ts`). **`pnpm check` verde 42/42** (esta sesión corrió en la máquina de Andreu, sin el segfault de workerd del contenedor cloud). **B4 absorbida en C6 y cerrada.**
 - **Frente B (marca Logic2B + landing de producto + docs)**: abierto 2026-07-19. **B0-lite + B3 + B1 + B2 HECHOS** (ADR 0016, 0017, 0018). **B2 (ADR 0018, 2026-07-20)**: web de tenant alineada al esqueleto del DS Logic2B **sin reskin** — la identidad mediterránea (ADR 0006) intacta. (1) Escala de radios derivada, base **4px** + `calc()` (`--lc-radius-sm/md/lg`) en `_template`+`demo`, expuesta a Tailwind; se propaga a toda la web por el token del tenant (antes 2px sueltos). (2) Ritmo de bloques tokenizado (`--spacing-section`/`py-section`) en el ritmo canónico (Home + secciones finales), cambio de valor cero. (3) Firma discreta **"powered by Logic2B"** en el pie: isotipo compartido vía `LogoMark.astro` (SVG, sin runtime React), `currentColor`, enlaza a la landing; `footer.poweredBy` (aria/title) en los 6 idiomas ×`_template`+`demo`. Convergencia de fuentes CERRADA en BRAND.md §3: web=Clash Display, producto=Space Grotesk. Verificado con Playwright contra el dev real (home nivel 3, pie con firma, 1366px y 375px). `pnpm check` verde (41/41). Pendiente **B4** (docs) + remate: re-medir Lighthouse ≥95 en producción (no se añaden fuentes ni JS). B1 (ADR 0017): dashboard reskinneado a Logic2B UI — `packages/ui` es ya librería React (cn + Button/Card/Badge/LogoMark shadcn); shell = sidebar agrupada plegable con isotipo; tokens/fuentes del DS; planning con el mapa de colores aprobado. Verificado en vivo. Remates en BACKLOG (rename literal de tokens, off-canvas móvil). **B0-lite + B3 HECHOS y en vivo** (ADR 0016): `packages/ui` con tema/tokens/isotipo Logic2B; `apps/site` = landing de producto (es/en/ca) sirviéndose en `camp.logic2b.com/`; demo movida a `camp.logic2b.com/demo/` (routing por prefijo en el mismo Worker, `localePath` consciente del `base`); `POST /api/leads`. Deploy manual con `pnpm --filter @logic-camp/api deploy:demo` (ahora compone site+web+dashboard, migra y despliega). Pendientes B1 (dashboard→Logic2B UI), B2 (web de tenant), B4 (docs) + remates en BACKLOG. Contrato de marca en `docs/BRAND.md`.
 - **Fase actual**: 10 🟨 PARCIAL (ADR 0013 — reset nocturno + conmutador de nivel 1/3 + banner de demo hechos y verificados contra el Worker real; queda acceso readonly al dashboard sin registro —alcance sin decidir—, Cloudflare Web Analytics —credenciales— y `ui.logic2b.com`/Storybook —su propio objetivo de fase—). BACKLOG 7.x y 8.x cerrados en la misma sesión cloud (ADR 0014 + ADR 0015): cron de aviso de reservas `pending` colgadas y recordatorio de llegada al huésped, ambos genéricos para cualquier tenant con pagos (no solo la demo). Fase 9 sigue 🟨 PARCIAL detrás (ver ADR 0012 — solo queda el tenant de prueba real, bloqueado por credenciales de Cloudflare, no por código) · Siguiente: sesión con Andreu presente para el primer alta real con `--apply`, o seguir cerrando remates de Fase 10. Antes, en local: redeploy demo (`pnpm --filter @logic-camp/api deploy:demo` — el `main` de `tenants/demo/wrangler.jsonc` ahora es `./worker.ts`, el script de deploy no cambia), descargar fotos Higgsfield (`pnpm --filter @tenant/demo fetch:fotos`, script listo desde ADR 0024 — mismo bloqueo de red que sesiones 8 y C5), re-audit Lighthouse en producción.
@@ -14,6 +15,50 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Pendiente de Andreu (cierra Fase 0)**: registro DNS en zona logic2b.com: `AAAA camp → 100::` proxied. También: secrets `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ACCOUNT_ID` + var `DEPLOY_DEMO_ENABLED=true` en GitHub para el deploy automático de la demo.
 
 ## Sesiones
+
+### Sesión 37 — 2026-07-21 · **Fase 11 — endurecimiento** (ADR 0026)
+
+**Contexto**: primera fase tras cerrar los Frentes B y C. Es la puerta declarada antes del primer camping real en producción. Rama `claude/endurecimiento-fase11`. (El `main` local **sí** estaba al día esta vez — se comprobó con `git fetch` antes de tocar nada, como quedó escrito tras el susto de la sesión 36.)
+
+**El hallazgo que reordenó la fase.** La Fase 11 estaba en el plan como una lista de buenas intenciones ("aislamiento, RGPD, backups, observabilidad, carga, legales") sin criterio para ordenarla. La auditoría previa al ADR le encontró uno, y no era el esperado: en C6 (sesión 36) publicamos `camp.logic2b.com/docs/tecnica/datos-rgpd/`, la página que lee **el informático del cliente antes de que su jefe firme** — y **cuatro de sus afirmaciones no eran verdad**:
+
+| Afirmación publicada                                            | Realidad medida                                                                                                      |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| "test automático explícito que en cada entrega intenta la fuga" | Existía, cubría **3 de 40 rutas** (7,5 %)                                                                            |
+| "el sistema guarda el consentimiento con su fecha"              | `admin.ts:839` lo escribía siempre `null`, y el _checkbox_ del funnel **no tenía `name`**: nunca llegaba al servidor |
+| "Registro de auditoría **inalterable**"                         | Tabla D1 normal. La demo la borra entera cada noche                                                                  |
+| "volcado en SQL **y en CSV**… pedid una exportación de prueba"  | **No existía exportador de ninguna clase** en el repo                                                                |
+
+La última es la peor: no es una exageración, es **una invitación explícita a pedir una prueba** que habría terminado en silencio. De ahí el criterio del ADR 0026, que Andreu validó: **la página publicada es la especificación**. Cada bloque se juzga por si hace verdad una frase ya publicada, o corrige una que no lo es. Ninguna afirmación falsa sobre datos personales sobrevive a la sesión.
+
+**Las dos decisiones de diseño que mandan**
+
+- **El aislamiento se prueba por BARRIDO, no ruta por ruta.** El hueco era de 37 rutas; escribir 37 tests es la decisión prohibida por el contrato: no multiplica por camping, pero **multiplica por funcionalidad** y depende de que nadie se olvide — que es exactamente cómo se llegó al 7,5 %. Verificado que `app.routes` de Hono expone el inventario completo **incluidos los routers montados**, el test se genera de ahí: **42 rutas barridas** + 3 excepciones declaradas con motivo, y **falla si aparece una ruta que no esté ni barrida ni declarada**. Mismo movimiento que el test de cobertura del plano en C7: en vez de comprobar los casos que se nos ocurren, se comprueba que no falte ninguno. Demostración involuntaria de que funciona: mientras el agente lo escribía, otro frente añadió `/guests/:id/export` y `/rgpd/retention` — **el barrido las recogió solas**.
+- **La supresión anonimiza, y cuando no puede NIEGA CON FECHA.** Borrar en duro es ilegal (reservas y pagos por obligación fiscal, identidad por RD 933/2021); ignorar la petición también. Así que `DELETE /guests/:id` nunca borra: vacía los datos personales y conserva el histórico sin dueño identificable; y si hay una estancia en plazo responde **409 con la fecha exacta** desde la que sí se podrá. Un "no" sin fecha es indistinguible de un producto que no sabe hacerlo; un "no hasta el 14/03/2029 porque la estancia del 14/03/2026 está sujeta al plazo del registro de viajeros" es una respuesta que el camping reenvía al interesado tal cual.
+
+**Hecho** (4 bloques + 3 hallazgos propios)
+
+- **ADR 0026**, validado antes de escribir código. Andreu aprobó el encuadre, la decisión de dominio 2.2, el bloque 4 sin pipeline propio (a recomendación explícita) y el alcance de los cuatro bloques.
+- **Bloque 1 — aislamiento** (`apps/api/test/isolation.test.ts`, **46 tests**): 42 rutas barridas contra el tenant B con identificadores y sesión de A. **Cero fugas reales.** Verificado además que el cierre del bucle **falla de verdad** al romperlo a propósito — una comprobación que no puede fallar no vale nada.
+- **Bloque 2 — RGPD operativo** (`packages/core/src/retention.ts` **17 tests puros** · `apps/api/src/rgpd.ts` · **24 tests** de integración): export del interesado (art. 15/20, auditado — entregar un export también es un tratamiento), anonimización con el freno legal, **limpieza del PII que `audit_log` había copiado** (sin eso la anonimización sería de mentira: `PATCH /guests/:id` volcaba el patch entero, documento incluido), consentimiento con fecha **y versión** sellada por el servidor, y retención automática en cron. El esquema separa el consentimiento por puerta: `literal(true)` en la web —una reserva web sin consentimiento **no se puede crear**— y `boolean` en mostrador, que lo recoge en papel y no puede quedarse bloqueado.
+- **Bloque 2.5 — páginas legales**: aviso legal, privacidad y cookies como **texto de PRODUCTO** con datos de tenant interpolados desde un bloque `legal` nuevo en `TenantWebConfig` (18 páginas, 6 locales). **Sin banner de cookies**, y comprobado en vez de supuesto: no hay analítica, ni píxeles, ni `document.cookie`. Las claves `footer.legal`/`footer.privacidad`, huérfanas desde hacía seis idiomas, por fin apuntan a algo.
+- **Bloque 3 — observabilidad**: `onError`/`notFound` (antes **cualquier excepción salía como 500 con el stack trace en el cuerpo**), log estructurado JSON de una línea con enganche único para Logpush/Sentry, aviso al buzón con cortafuegos de 15 min agrupado por ruta, y cada tarea del cron **falla sola** (antes, si la purga de holds reventaba, los recordatorios de llegada de ese tick no se ejecutaban).
+- **Bloque 4 — copias**: decidido **no** montar pipeline propio (con 6h/semana se pudre en silencio, y una copia que descubres rota el día que la necesitas es peor que no tenerla). Sí: `pnpm export:tenant` (SQL + CSV, **10 tests** en la parte pura) **probado contra la base local** — 2032 reservas, 2032 huéspedes, 1898 pagos, CSV verificado con anchos constantes — y `docs/RUNBOOK-COPIAS.md` con restauración, comandos verificados contra el `wrangler` real, y **cinco comprobaciones que incluyen los invariantes 1 y 2** antes de dar una copia por buena.
+- **`docs/RAT-PLANTILLA.md`**: registro de actividades del art. 30, plantilla de producto — se escribe una vez y el alta rellena cinco campos.
+
+**Tres hallazgos propios, fuera del encargo**
+
+1. **El cron de `tenants/_template/wrangler.jsonc` estaba COMENTADO.** Un camping nuevo nacía sin purga de holds ni recordatorios — y ahora tampoco tendría retención de datos. Era un paso silencioso y olvidable en un alta que debe costar una tarde: la línea roja del proyecto. Activado, con el motivo escrito.
+2. **El nivel 1 acumulaba datos personales para siempre.** No tiene motor ni reservas, pero sus `enquiries` guardan nombre, correo y teléfono. Se añadió purga propia que **anonimiza el contacto y conserva la solicitud** — porque el histórico de peticiones es lo que hace renovar al nivel 1 (CLAUDE.md) y las fechas no son dato personal.
+3. **Hono solo entrega a `onError` lo que es `instanceof Error`**: un `throw 'texto'` se escapaba a workerd, que respondía con su propio 500 — la misma fuga por otra puerta. Tapado con un middleware que normaliza lo lanzado.
+
+**La doc publicada, corregida**: `datos-rgpd.es.md` reescrita entera en sus afirmaciones. Las cuatro falsas o se implementaron o se corrigieron; "inalterable" pasa a decir **exactamente lo que el registro es y lo que no es**, con la invitación a hablarlo si la política del cliente exige más. Se añaden dos pruebas nuevas que un cliente puede pedir: el procedimiento de restauración y una demostración del ejercicio de derechos, **incluida la respuesta de un plazo legal que lo impide**.
+
+**Verificado en el navegador** (web de tenant real): privacidad con los datos del tenant interpolados, cookies con la variante correcta de la demo, los tres enlaces del pie, el aviso de fallback en francés con `lang="es"` solo en la prosa, y **0 errores de consola**.
+
+**`pnpm check`**: ✅ **verde 42/42** — API **172/172**, `@tenant/demo` 18/18, sin el segfault de workerd (sesión en la máquina de Andreu).
+
+**Siguiente paso**: ver `docs/SIGUIENTE-SESION.md`.
 
 ### Sesión 36 — 2026-07-21 · **Frente C — C6: documentación** (ADR 0025) · **cierra el Frente C**
 
@@ -63,13 +108,15 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 **Contexto**: mandato autónomo permanente del Frente C. C1 era el elemento firma declarado y el único que no estaba a la altura: sólido de ingeniería (virtualización, DnD vertical, optimista, teclado) y **pobre de gesto**. ADR primero (0023), criterio propio, no parar hasta cerrarlo — como C7/C4. Rama `claude/planning-c1-gestures-c1ni7l`.
 
 **Las decisiones de fondo**
-- **El gesto escribe por la MISMA puerta que todo lo demás**: `move` es una acción más de `bookingActionSchema` (no una ruta aparte) — hereda rol, auditoría y patrón de errores. Espejo del `modify` público, que era el precedente: cambiar fechas re-cotiza SIEMPRE en servidor (el invariante 3 habla de *tarifas*, no de esto).
+
+- **El gesto escribe por la MISMA puerta que todo lo demás**: `move` es una acción más de `bookingActionSchema` (no una ruta aparte) — hereda rol, auditoría y patrón de errores. Espejo del `modify` público, que era el precedente: cambiar fechas re-cotiza SIEMPRE en servidor (el invariante 3 habla de _tarifas_, no de esto).
 - **El candado `expectedTotalCents`**: "enseñar el desglose antes de confirmar" obliga a un paso de previsualización (`POST /bookings/:id/requote`, dry-run con las MISMAS validaciones), y toda previsualización caduca. El cliente manda el total que enseñó; si el servidor recalcula otro → 409 `price_changed` con el desglose fresco. Sin ese campo habría una ventana confirmas-X-se-escribe-Y.
 - **`preferredUnitId` es preferencia, nunca garantía**: crear arrastrando en la fila A-08 pide A-08; si justo se ocupó, asigna el motor — el alta no falla por la preferencia.
 - **NO virtualizar el eje horizontal**: medido, el coste no eran las barras sino el sombreado de finde (`<div>` por celda×fila ≈ miles de nodos). Ahora es UN `repeating-linear-gradient` por lienzo con la fase calculada del día de semana (`weekendBackground`). Descartado con medida, no por intuición — reabrir solo si existe un zoom "Año".
 - **C1.5**: el mapa provisional se confirma en estructura y se cierra con **contrato de test** — 27 aserciones oklch→sRGB→WCAG en `packages/ui` (texto ≥4.5:1, barra/fondo ≥3:1, light Y dark). El test cazó de inmediato que el **ámbar provisional de `pending` se quedaba en 1.7:1** sobre blanco (ahora ámbar profundo, 5.6/3.5) y que el `.dark` no declaraba ningún token de estado. Con el mapa cerrado, **modo oscuro conectado** (dependencia declarada en ADR 0020): toggle claro/oscuro/sistema en la sidebar + script pre-React en `index.html` (sin FOUC).
 
 **Hecho**
+
 - **API** (+11 tests → **86/86**): `requote` (dry-run) y `move` (con `unitId` opcional para el diagonal: fecha+unidad en UNA acción y UN deshacer) sobre `quoteMove()` compartido — validateStay con claves `stay.*` explicadas, solape unidad-concreta (o disponibilidad de tipo si va sin asignar), re-cotización con los extras contratados (la electricidad se infiere del `price_breakdown`, que es la fuente de verdad auditable), batch + audit con from/to. `/planning` devuelve `seasons`. `adminBookingCreateSchema` gana `preferredUnitId` (el asignador lo respeta si está libre).
 - **`packages/config`** (+14 tests → **39/39**): `planning.ts` puro — `barGeometry` (con `clipStart/clipEnd`), `todayOffset`, `weekendBackground` (incluye el caso domingo, banda partida), `seasonBands` (prioridad por día como el motor, bandas fundidas, tono estable), `snapDays`.
 - **Dashboard**: `Planning.tsx` reescrito — arrastre horizontal con snap a celda y tooltip en vivo (fechas+noches junto al cursor, manipulación directa del DOM, cero re-render por frame), asas de resize en los bordes (ocultas en un borde recortado), flujo soltar→requote→commit directo si el total no cambia / `AlertDialog` con desglose viejo→nuevo si cambia, deshacer que es otro `move` al origen, rechazo explicado por clave (`unit_occupied`, `invalid_stay` con sus issues…), teclado ←/→ y Shift+←/→ (con guard anti-repeat), crear arrastrando (overlay de selección + `NewBookingPanel` con prop `initial`), chips de la bandeja arrastrables (con guard de click), filtros tipo/estado/búsqueda (atenúan con `.lc-dim`, Enter centra la coincidencia), línea de HOY, franja de temporada, chevrons de continuación, y la capa única de finde. `ThemeToggle` + script anti-FOUC.
@@ -93,6 +140,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 Las dos opciones del contrato: estado `in_house` en la máquina de estados, o campo `checked_in_at` sobre la reserva. Se eligió el **campo**, y no por estética: es la única que **no mete un bug de corrección latente**. El `status` es el ciclo de vida (`pending→confirmed→completed/…`); que un huésped esté presente es un hecho **ortogonal** (una confirmada con el titular dentro sigue confirmada). El sistema filtra por `status` donde ocupación e ingresos dependen de ello: `OCCUPIES` (plano), el filtro de `/reports`, el solape de `reassign`, el motor y el seed. Un estado `in_house` **saldría de todos** salvo que se parchee cada uno, y **olvidar uno es un doble-booking**. El campo no toca ninguno: "en casa" = `status==='confirmed' && checked_in_at && !checked_out_at`, derivado. Migración **aditiva** `0004` (dos columnas nulables, sin backfill). Detalle en ADR 0022 §1.
 
 **Hecho**
+
 - **Migración `0004` + `schema`**: `checked_in_at`/`checked_out_at` en `bookings` (nulables). `unitStateOn` (`packages/config`) gana `kind: 'inhouse'` (la "línea de más" que C7 dejó preparada) — **3 tests nuevos** (25/25).
 - **API** (`admin.ts`, **13 tests nuevos** → 75/75): acciones `check_in` / `check_out` (completa + sella salida) / `undo_checkin`, con `TRANSITIONS` intacto; guarda `record_payment ≤ pendiente` (simetría con el reembolso); **huéspedes editables** (`POST /bookings/:id/guests`, `PATCH /guests/:id`, `DELETE /bookings/:id/guests/:guestId` — nunca al titular); **bloqueos** (`POST /blocks` con solape validado, `DELETE /blocks/:id`). `/planning` devuelve los dos timestamps.
 - **Dashboard**: `--lc-status-inhouse` (verde esmeralda **oklch(0.5 0.14 152)**, AA **5.5:1** con blanco — verificado con los tokens compilados y Playwright, el primer valor L=0.648 daba 2.99:1 y se corrigió) en barra del planning, `<svg>` del plano, chips y leyenda. Ficha: sección Recepción (check-in/out/deshacer + chip "En casa"), **huéspedes editables** (`GuestsSection`), **"cobrar todo lo pendiente"** con validación en cliente. Llegadas: botón de check-in por llegada / check-out por salida. **⌘K** (`cmdk`, instalado aquí a propósito, no en C2) buscando reserva/cliente/unidad → `CommandPalette` + primitivo `Command` en el DS (**+1 test**, ui 27/27). **Rutas direccionables** `/reservas/$id` `/clientes/$id` (patrón search-param de C7). `BlockDialog` reutilizado por planning y plano.
@@ -110,12 +158,13 @@ Las dos opciones del contrato: estado `in_house` en la máquina de estados, o ca
 
 ### Sesión 32 — 2026-07-21 · sesión autónoma · **Frente C — C7: plano del camping** (ADR 0021)
 
-**Contexto**: Andreu al cerrar la sesión 31: *"continua como creas conveniente pero no pares hasta conseguirlo todo cuando lo termines replantea lo siguiente en el roadmap"* — mandato autónomo. Siguiente pieza desbloqueada: **C7**, porque C1.5/C2 ya fijaron el mapa de color (`--lc-status-*`) y C0.2 el seed denso (un plano de un camping vacío no enseña nada).
+**Contexto**: Andreu al cerrar la sesión 31: _"continua como creas conveniente pero no pares hasta conseguirlo todo cuando lo termines replantea lo siguiente en el roadmap"_ — mandato autónomo. Siguiente pieza desbloqueada: **C7**, porque C1.5/C2 ya fijaron el mapa de color (`--lc-status-*`) y C0.2 el seed denso (un plano de un camping vacío no enseña nada).
 
 **La decisión de fondo (dónde vive la geometría) — tercera vía**
 Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se eligió la síntesis: **fuente de verdad en `tenants/{slug}/plano.ts`** (descriptor declarativo), **materializado en `modules.plano`** (columna JSON que YA existe → **cero migración de D1**), **servido por `GET /api/admin/map` genérico** (`apps/api` intacto, ni un dato de Cala Sereno en su bundle). Es el mismo camino que ya recorren las unidades: fichero de tenant → seed → D1 → API genérico → dashboard. No es un compromiso, es coherencia (ADR 0021 §1).
 
 **Hecho**
+
 - **`packages/config/src/plano.ts`** (puro, **18 tests**): `PLANO_GRID` (constantes de rejilla en **un solo sitio** → defecto 1 del original cerrado), `expandPlano` (descriptor → rectángulos + viewBox), `autoPlano` (**degradación honesta**: un camping sin plano ve un layout por zonas, no una pantalla rota), `unitStateOn` (estado por fecha: libre/ocupada/entra/sale/turnover/bloqueada, from inclusive / to exclusive, la cancelada no ocupa).
 - **`tenants/demo/plano.ts`**: descriptor declarativo de Cala Sereno (mar al norte, premium/vista-mar en la playa, parcelas A/B, autocaravanas D, piscina/restaurante/recepción/súper/aseos/juegos como servicios, pinada al este). Decorado del recinto **como dato** → defecto 2 del original cerrado. Enganchado a `modules.plano` en `seed.ts`.
 - **Seed test de cobertura**: `expandPlano(modules.plano)` coloca EXACTAMENTE las 83 unidades del seed (sin huérfanas ni duplicadas) — si se añade un tipo y se olvida el plano, salta.
@@ -137,13 +186,15 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 
 ### Sesión 31 — 2026-07-21 · Andreu presente · **Frente C — C2 + C3** (ADR 0020)
 
-**Contexto**: continuación de la sesión 30. Objetivo declarado por Andreu: C2 y C3 **como un solo objetivo** ("el DS conectado y los estados"), porque están acoplados — sin `skeleton`/`toast`/`alert-dialog` en el DS, C3 no se puede hacer; y C2 sin C3 no se nota en pantalla. ADR primero y parada a validar; Andreu: *"me parece bien tu propuesta continua con el proyecto"*.
+**Contexto**: continuación de la sesión 30. Objetivo declarado por Andreu: C2 y C3 **como un solo objetivo** ("el DS conectado y los estados"), porque están acoplados — sin `skeleton`/`toast`/`alert-dialog` en el DS, C3 no se puede hacer; y C2 sin C3 no se nota en pantalla. ADR primero y parada a validar; Andreu: _"me parece bien tu propuesta continua con el proyecto"_.
 
 **Los dos bugs no eran lo que parecían — y eso cambió el ADR**
-- **C-BUG-1**: los 5 `--chart-*` de `:root` eran la columna **dark** de BRAND §4. Pero el valor light correcto de `--chart-4` es **morado**, y `--chart-4` pinta las barras `pending` del planning: *arreglar el bug tal cual rompía la pantalla firma* (y no pasaba AA con texto negro). Solución: corregir los 5 **y** desacoplar el planning a tokens semánticos `--lc-status-*`, con los valores de hoy → **el planning no cambió ni un píxel** (verificado en el navegador). C1.5 decidirá el mapa definitivo tocando 5 valores en un sitio. Además faltaba `--radius-2xl` y el bloque `.dark` **no declaraba ningún `--chart-*`**, que es justo por lo que el bug pasó desapercibido.
+
+- **C-BUG-1**: los 5 `--chart-*` de `:root` eran la columna **dark** de BRAND §4. Pero el valor light correcto de `--chart-4` es **morado**, y `--chart-4` pinta las barras `pending` del planning: _arreglar el bug tal cual rompía la pantalla firma_ (y no pasaba AA con texto negro). Solución: corregir los 5 **y** desacoplar el planning a tokens semánticos `--lc-status-*`, con los valores de hoy → **el planning no cambió ni un píxel** (verificado en el navegador). C1.5 decidirá el mapa definitivo tocando 5 valores en un sitio. Además faltaba `--radius-2xl` y el bloque `.dark` **no declaraba ningún `--chart-*`**, que es justo por lo que el bug pasó desapercibido.
 - **C-BUG-2**: `--color-mar` tenía **dos significados**. De sus 44 usos, **4 eran enlaces** `mailto:`/`tel:`, así que reapuntarlo a `--destructive` habría pintado los contactos en rojo. Se partió por significado: token `--link` propio para enlaces, `--destructive` para el resto.
 
 **Hecho**
+
 - **C2**: 11 paquetes Radix + `sonner` (**alcance acotado a propósito**: `cmdk` es C4; `calendar`/`form` merecen ADR propio; `scroll-area` descartado por el virtualizador del planning). 16 primitivos nuevos. **43 → 2 `<button>` crudos** (los 2 restantes son filas que **son** su rejilla CSS; su anillo de foco es ya `focusRing`, export del DS, así que no queda estilo copiado a mano). **Rename cerrado**: 352 usos del vocabulario de ADR 0008 → **0**, alias eliminado. `packages/ui` **estrena runner de tests: 26**, incluidos los 4 componentes de B1 que nunca tuvieron ninguno.
 - **C3**: 12 `<p>Cargando…</p>` → **0** (esqueletos con la **forma** del contenido, no rectángulos). Error boundary por ruta + `notFound` con salida. Errores de query diferenciados **401/403/red/500** (antes los cuatro eran el mismo `<p>`); el QueryClient deja de reintentar 401/403. Los 6 `useState<{text,error}>` → toasts, con **Deshacer real** en la reasignación del planning. Confirmación en las **3 acciones destructivas que no la tenían** (reembolso, baja de unidad, tarifas) y el "doble click" de cancelar sustituido por `alert-dialog`. Estados vacíos con ilustración de trazo y salida. **Login** con marca (isotipo, Card, Spinner). 16 claves i18n nuevas, cero cadenas hardcodeadas.
 - Migración de las 15 pantallas repartida en **5 agentes en paralelo** con ficheros disjuntos y una spec común; `i18n.ts` quedó fuera de su alcance (zona compartida) y se mezcló al final para evitar que se pisaran.
@@ -151,12 +202,14 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 **Lo que solo apareció mirando la pantalla** (y es la lección de la sesión): **Tailwind v4 no escanea `node_modules`**, y `@logic-camp/ui` entra por symlink de pnpm. Las clases que viven **solo** en el DS (`size-14`, `translate-x-4`, `rounded-[4px]`, `min-w-[10rem]`) **no generaban CSS** — el DS funcionaba por coincidencia, porque sus clases más comunes (`h-9`, `bg-primary`, `px-4`) también estaban en el código de la app. Se detectó porque el error boundary pintaba su icono a **384px** en vez de 56. Afectaba al pulsador del `Switch`, al radio del `Checkbox`, al ancho del `DropdownMenu` y a todas las ilustraciones. Arreglado con `@source` en dashboard **y** landing. **Tests verdes y typecheck limpio no dicen nada sobre si una clase de Tailwind existe.**
 
 **Otras dos correcciones de criterio propio durante la implementación**
+
 - Los `--lc-status-*` se colocaron primero en el dashboard y hubo que **moverlos a `packages/ui`**: la maqueta de planning de la **landing** usaba `bg-chart-4` para la misma idea de "pendiente". Con dos consumidores (y C7 llegando), el sitio es el DS — si landing y producto enseñaran colores distintos para "pendiente", la demo desmentiría a la página de venta.
 - **`@radix-ui/react-select` no se instaló** pese a estar en el ADR: para listas cortas de filtro el `<select>` nativo gana (teclado del sistema, cero JS, igual en móvil). Se expone como `SelectNative` con la piel del DS.
 
 **Bug nuevo (C-BUG-6)**: `Planning.tsx:199` pintaba el resaltado del destino al arrastrar con `var(--lc-pino)` — variable que el dashboard **nunca define** (solo existe en los temas de tenant de la web) → declaración inválida, **resaltado invisible**. Resto de ADR 0008. Corregido a `var(--primary)`.
 
 **Sin terminar / diferido con motivo**
+
 - **Rutas direccionables** (`/reservas/$id`, `/clientes/$id`) → **C4**: es lo único de la lista de C3 que no es un estado, y su valor se cobra junto a la navegación de ⌘K.
 - **Modo oscuro** → detrás de **C1.5** (la tercera vía del ADR §4, aprobada): su superficie más difícil son las barras del planning, y decidirlo antes de fijar ese mapa de color sería decidirlo dos veces. Mientras, el bloque `.dark` deja de estar roto.
 - **375px**: el sidebar sigue ocupando media pantalla. **No es regresión** (viene de B1) y ya estaba en BACKLOG; ahora está **desbloqueado**, porque su pendiente era "añadir el primitivo Sheet" y `Sheet` ya existe.
@@ -174,11 +227,12 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 **Auditoría (medida, no opinada)**. Lo construido es honesto: 11 pantallas sin esqueletos, **0 mocks** (todo contra API real), 267 claves i18n sin huecos en 6 idiomas, funnel cerrado. El problema es que **el producto no se está luciendo**. Tres hallazgos que mandan: (1) **el planning estaba vacío** — 83 unidades, 29 reservas, nada de A-09 abajo en pleno agosto, siendo el elemento firma declarado; (2) **el DS existe y no se usa** — `packages/ui` son 101 líneas con **0 usos** de `<Button>`/`<Card>`/`<Badge>` y **41 `<button>` crudos**, sin Radix; (3) **estados en texto plano** — 0 skeletons, 0 error boundaries, 0 toasts en 11 pantallas. Más: no existe el **check-in** (ni en cliente ni en API), no se editan huéspedes/documentos (requisito legal), login sin marca, y 4 ficheros de foto referenciados que no existen.
 
 **Hecho**
+
 - `docs/FRENTE-C-ACABADO.md` (nuevo): contrato del frente — auditoría, **7 fases C0–C7**, checklists, 5 bugs registrados (C-BUG-1..5), dirección de arte para Higgsfield, grafo de dependencias. `ROADMAP.md` registra el Frente C; **B4 (docs) queda absorbida en C6**.
 - **C7 · Plano del camping** (pedido por Andreu): registrado, no construido. Ojo — Andreu lo situó en `logic2b-norte`; **ahí no está** (verificado árbol, package.json e historial git de 3 ramas). Está en **`gestor-reservas/src/lib/components/camping-map.svelte`** (518 L, Svelte 5 + SVG puro, `mapPosition` por unidad, layout por factories). Al portar hay que corregir dos defectos del original: constantes de rejilla duplicadas y decorado del recinto cableado a ese camping. No trae pan/zoom. Decisión de fondo abierta: **dónde vive la geometría** (inclinación: `tenants/{slug}/`, no columna en D1).
 - **ADR 0019 + C0 implementado** (ver commit `f0806cb`):
   - **C0.1 HMR**: el login fallaba con **403** desde `:5173` (Better Auth rechazaba el origen cruzado; `auth.ts` no declaraba `trustedOrigins`). Fail-closed en 3 capas: lista de orígenes **constante** en código, la var es solo interruptor, y se pasa por `--var` en `launch.json` para no existir en ningún `wrangler.jsonc` (que es el fichero que despliega a producción). 3 tests fijan el contrato en ambas direcciones. `apps/dashboard/README.md` nuevo documenta el flujo, que no estaba escrito en ninguna parte.
-  - **C0.2 seed denso**: relleno de 10 definiciones fijas → **recorrido unidad a unidad por curva de temporada** (el invariante 1 se cumple *por construcción*: el cursor nunca retrocede). **40 → 2.032 reservas**; planning **25 → 346 a la vista**, todas las filas pobladas. Curva real: abr 12% · may 26% · jun 51% · jul 73% · **ago 86%** · sep 55% · oct 11%.
+  - **C0.2 seed denso**: relleno de 10 definiciones fijas → **recorrido unidad a unidad por curva de temporada** (el invariante 1 se cumple _por construcción_: el cursor nunca retrocede). **40 → 2.032 reservas**; planning **25 → 346 a la vista**, todas las filas pobladas. Curva real: abr 12% · may 26% · jun 51% · jul 73% · **ago 86%** · sep 55% · oct 11%.
 
 **Tres cosas aprendidas implementando** (detalle en el ADR): (1) **ocupación ≠ probabilidad de arranque** — `p=0.45` en junio daba 66% real porque cada estancia ocupa luego N noches; se invierte la fórmula para que la constante diga lo que significa. (2) **El límite de D1 es de BYTES, no de filas** — trocear a 200 filas reventó con `SQLITE_TOOBIG` (las filas de `bookings` llevan el `price_breakdown` entero); troceado por presupuesto de bytes: **8.155 → 54 sentencias**, reset nocturno atómico intacto. (3) El **invariante 1 cazó un solape real**: las reservas de caso límite se colocan antes del recorrido y el bucle las pisaba.
 
@@ -195,7 +249,8 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 **Decisiones (por criterio)**: (1) base de radios **4px** (un punto sobre el 2px de ADR 0006, firme, lejos del 10px del producto); (2) titular **sigue con Clash Display** (cambiar a Space Grotesk sería reskin); (3) firma "powered by Logic2B" → raíz `camp.logic2b.com/`; (4) alcance = **alineamiento estructural sin reskin** (la identidad mediterránea no se toca).
 
 **Hecho**
-- `docs/adr/0018-web-tenant-estructura-logic2b.md`: aceptado por criterio. Principio: converge el *esqueleto* (ritmo, radios, anatomía de header), no la *piel*. Los dos sistemas de tokens (`--lc-*` tenant / oklch DS) NO se mezclan — la web no importa el tema del DS.
+
+- `docs/adr/0018-web-tenant-estructura-logic2b.md`: aceptado por criterio. Principio: converge el _esqueleto_ (ritmo, radios, anatomía de header), no la _piel_. Los dos sistemas de tokens (`--lc-*` tenant / oklch DS) NO se mezclan — la web no importa el tema del DS.
 - **Radios**: `tenants/_template/theme.css` y `tenants/demo/theme.css` pasan de `2px/4px` sueltos a **una base `--lc-radius: 4px` + `--lc-radius-sm/md/lg` por `calc()`** (misma forma que la escala del DS, BRAND.md §5). `apps/web/src/styles/global.css` expone la escala completa a Tailwind. Los componentes ya usaban `rounded-(--lc-radius)`/`-lg` → el cambio se propaga solo, sin renombrar nada ni valores sueltos.
 - **Ritmo de bloques**: `--spacing-section`/`--spacing-section-lg` en `@theme` → `py-section`/`md:py-section-lg`. Aplicado al ritmo canónico (Home 3 secciones + secciones finales `pb-24` de las interiores) con cambio de valor CERO (24 = 6rem) — pura tokenización, dejando intactas las intermedias `pb-16`/bandeadas `py-16` (roles deliberados).
 - **Firma "powered by Logic2B"**: `apps/web/src/components/LogoMark.astro` nuevo — inyecta el mismo `<path>` del isotipo que `packages/ui` pero en Astro puro (comparte el SVG, NO el runtime React: el header/pie de la web es 100% estático, regla dura del nivel 1). Pie de `Base.astro` gana una línea discreta (isotipo `currentColor` + "powered by Logic2B") alineada con el contacto, enlazando a la landing. `footer.poweredBy` (aria/title localizado) añadido a `content/*.json` en los **6 idiomas** × `_template` **y** `demo` (12 ficheros). El texto visible "powered by Logic2B" es marca fija; se localiza solo la etiqueta accesible.
@@ -211,6 +266,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 **Contexto**: sesión de revisión con Andreu. (1) Se detectó que `main` local estaba en Fase 4 (21 commits atrás) → sincronizado. (2) La demo `camp.logic2b.com` estaba CAÍDA (web+dashboard 404, D1 sin migrar) → arreglada en vivo (deploy manual + 2 migraciones remotas). (3) Se decidió **deploy manual** (CI descartado: la sesión OAuth no puede crear API token, 403/9109) y `deploy:demo` ahora migra. (4) Andreu pidió alinear la marca con Logic2B y, sobre todo, **crear la landing de producto que faltaba** (vender Logic Camp al director de camping, distinta de la demo del camping ficticio) + documentación.
 
 **Hecho**
+
 - `docs/BRAND.md` + `docs/brand/logo-mark.svg`: contrato de marca Logic2B extraído del CSS real de `ui.logic2b.com` (shadcn "neutral": Inter Variable + Space Grotesk, tokens oklch light/dark, radius 10px, isotipo).
 - `docs/ROADMAP.md`: **Frente B** (B0–B4) en paralelo a las 12 fases, con checklist y decisiones (landing en `/`, demo a `/demo/`, deploy manual).
 - ADR 0016 (aceptado por Andreu): landing de producto + fundación DS B0-lite + routing por prefijo.
@@ -225,6 +281,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 27 — 2026-07-19 · BACKLOG 7.x · ADR 0015 — recordatorio de llegada
 
 **Hecho** (continuación de la misma sesión cloud: "continua")
+
 - `docs/adr/0015-recordatorio-de-llegada.md`: el motivo original del aplazamiento ("cuando haya API key de Resend") ya no aplica — ADR 0014 (esta misma sesión) demostró que se verifica igual de bien en estado `disabled`. Reutiliza el cron de 15 min de ADR 0007/0014 en vez de un cron diario nuevo por tenant: "diario" se cumple por deduplicación en `notifications_log`, y de hecho llega antes que un cron a hora fija (dentro de los primeros 15 min desde que la llegada pasa a ser "mañana", no hasta 24h después).
 - `packages/notifications`: kind `booking_reminder` (mismo `BookingPayload`, sin desglose ni botón de gestión — recuerda, no repite la confirmación), i18n en los 6 idiomas. 1 test nuevo (7/7 en el paquete).
 - `notifyArrivalReminders(db, tenantSlug, apiKey)` en `apps/api/src/notify.ts`: reservas `status:'confirmed'` con `date_from = mañana`, cualquier canal, resuelve el email del titular vía `booking_guests`/`guests` — **si no tiene email, se omite sin más**, nunca cae al buzón interno del camping como sustituto (a diferencia del aviso de `pending`, este SÍ va al huésped). Dedup igual que ADR 0014. Enganchado al mismo `scheduled()` en `apps/api/src/index.ts`.
@@ -239,6 +296,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 26 — 2026-07-19 · BACKLOG 8.x · ADR 0014 — aviso de reservas `pending` colgadas
 
 **Hecho** (continuación de la misma sesión cloud: "sigue perfilando... sin parar")
+
 - `docs/adr/0014-aviso-reservas-pending-colgadas.md`: decisión v1 = SOLO avisa (no auto-cancela ni libera inventario) — un webhook de pasarela puede llegar con minutos de retraso por causas normales; cancelar de más perdería una venta real. Cancelar sigue siendo, como hoy, una acción manual de recepción.
 - `packages/notifications`: kind nuevo `booking_pending_stuck` (reutiliza `BookingPayload`, sin campos nuevos salvo el ya existente `holderName`), plantilla propia sin desglose ni botón de gestión (es un aviso interno, nunca llega al huésped), i18n en los 6 idiomas. 1 test nuevo (7/7 en el paquete).
 - `apps/api/src/notify.ts`: `dispatch`/`unitTypeName` dejan de depender de un `Context` de Hono (hasta hoy todo disparo de notificación ocurría dentro de una petición HTTP) — se extrae a un objeto plano `{db, tenantSlug, apiKey}`; `notifyAfter` (rutas) lo arma desde `c` sin cambiar su firma pública, `notifyNow` (nuevo) lo recibe directo para usarse desde un cron. Cero cambio de comportamiento en los 4 disparos existentes — verificado con la suite completa antes/después.
@@ -254,6 +312,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 25 — 2026-07-19 · Fase 10 (1/varias) · ADR 0013 — reset nocturno + conmutador de nivel + banner de demo
 
 **Hecho** (petición de Andreu en sesión cloud: "sigue perfilando... sin parar... con tu criterio cierra temas y comitea, mergea y sube a la rama principal")
+
 - `docs/adr/0013-modo-demo.md`: de los cinco remates de Fase 10 pendientes, se cierran los tres que no dependen de ninguna cuenta real (reset nocturno, conmutador de nivel, banner); los otros dos (acceso readonly sin registro, Web Analytics) y `ui.logic2b.com`/Storybook quedan en BACKLOG con motivo explícito — ver "qué queda fuera" del ADR.
 - **Reset nocturno**: `tenants/demo/reset.ts` (`resetDemoData`: `DELETE FROM` de las 21 tablas de la app en orden hijo→padre + `INSERT` del seed regenerado con el año en curso, todo en un único `db.batch()` atómico) + `tenants/demo/worker.ts` (envuelve `@logic-camp/api` sin tocarlo — apps/api sigue siendo 100% genérico, ni una tabla de Cala Sereno entra en su bundle; solo `tenants/demo/wrangler.jsonc` apunta su `main` aquí). Segundo cron `0 3 * * *` junto al de purga de holds de la Fase 5. Doble guarda (`TENANT_SLUG==='demo'` + cron correcto) aunque el fichero nunca se referencia desde otro tenant.
   - `apps/api` gana un `exports` en su `package.json` (no lo necesitaba: nadie lo importaba como paquete hasta hoy) y re-exporta el tipo `Bindings` desde `index.ts` — cero cambios de comportamiento.
@@ -271,6 +330,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 24 — 2026-07-19 · BACKLOG 8.x · Log de pagos en el dashboard
 
 **Hecho** (continuación de la misma sesión cloud)
+
 - **`GET /api/admin/payments`** (`provider`/`status` opcionales, paginado): a diferencia de `/notifications`, `payments.bookingId` es `NOT NULL` — un solo `innerJoin` con `bookings` basta, sin la resolución en dos pasos que sí hace falta cuando el destino es opcional. Sin migración: `payments.createdAt` ya existía desde el modelo de datos de la Fase 1.
 - **`/admin/#/pagos`** (11ª pantalla del dashboard): dos filas de filtros (proveedor × estado), reutiliza literalmente el diccionario `pago.*` que ya existía para la ficha de reserva (Fase 8) — cero claves i18n nuevas para las etiquetas de proveedor/estado, solo las de la pantalla en sí. Importe con signo (reembolso en negativo, mismo criterio visual que la ficha).
 - **1 test de integración nuevo** (`admin.test.ts`, suite en 51/51): alta manual + `record_payment`, filtra por `provider=manual&status=succeeded` y confirma que NO aparece al filtrar por `provider=stripe`. Atrapado y corregido en el propio desarrollo: las peticiones sin `cf-connecting-ip` propio compartían el "cubo" de rate-limit (`60/min`) del fichero entero de tests y tumbaban un test posterior con 429 — se les dio su propia cabecera de IP, mismo patrón que ya usaba el bloque "pagos (ADR 0011)".
@@ -283,6 +343,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 23 — 2026-07-19 · Fase 10 (adelantado) · `docs/DEMO-SCRIPT.md`
 
 **Hecho** (continuación de la misma sesión cloud)
+
 - `docs/DEMO-SCRIPT.md`: guion de venta de 12 minutos, minuto a minuto (mostrador → reserva completa con hold y reembolso previsto → multi-idioma+móvil → selector de temas explicado como atrezzo comercial, no feature del cliente → planning con DnD y ficha → modo lite → informes/clientes/log de notificaciones → el argumento de seguridad de D1 por camping → niveles y cierre), más variantes según interlocutor (camping pequeño escéptico / camping grande con Excel / interlocutor técnico) y qué NO enseñar todavía (cobro real, reenvío de notificaciones, reset nocturno) para no prometer de más.
 - Grounded en datos reales del seed y sesiones anteriores (credenciales de demo verificadas por curl en la sesión 22, temas de ADR 0009, ancla de temporada de `tenants/demo/seed.ts`) — nada inventado.
 - Adelantado de Fase 10 a propósito: es puro documento, no depende de ningún código pendiente de esa fase (reset nocturno, dashboard readonly, conmutador de nivel, Storybook) — mismo criterio que el selector de temas en la sesión 14.
@@ -293,6 +354,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 22 — 2026-07-19 · BACKLOG 7.x · Log de notificaciones en el dashboard
 
 **Hecho** (continuación de la misma sesión cloud: "sigue perfilando... sin parar")
+
 - **`notifications_log.created_at`**: columna nueva (nullable — como `sentAt`, las filas de antes de esta sesión no tienen fecha real que inventar), migración `0003_notifications-log-created-at.sql` generada con `drizzle-kit`. Sin ella no había forma de ordenar el log por recencia: los IDs son UUID aleatorios, no ordenables.
 - **`GET /api/admin/notifications`** (`status` opcional, paginado): mismo patrón que `/guests` — dos consultas cortas para resolver el destino de la página pedida (código de reserva o contacto de solicitud), nunca un join N×M.
 - **`/admin/#/notificaciones`**: pantalla nueva (10ª del dashboard), filtro por estado con chips (mismo lenguaje visual que Solicitudes), fecha, evento (i18n con `tDyn`, fallback al nombre técnico), destino, canal, intentos y el chip de estado con sus propios colores (`ntf-sent`/`ntf-queued`/`ntf-failed`/`ntf-disabled`). Nota visible en la propia pantalla explicando por qué todo aparece "desactivada" sin Resend configurado — no es un fallo, es el comportamiento correcto.
@@ -307,6 +369,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 21 — 2026-07-19 · Fase 9 (continuación) · `packages/cli` — `pnpm new:camping` (ADR 0012 §7)
 
 **Hecho** (petición de Andreu en sesión cloud: "sigue perfilando... sin parar... con tu criterio cierra temas")
+
 - **`packages/cli`**: implementada la parte pura de la Capa 1 del alta que ADR 0012 §5 dejó explícitamente declarada como segura de construir sin credenciales ("se puede escribir y testear su lógica de plantillas sin ejecutar un solo comando contra Cloudflare"):
   - `scaffold.ts` — `scaffoldTenant()` copia `tenants/_template` → `tenants/{slug}` sustituyendo los tokens de identidad (`__SLUG__`/`__NOMBRE_DEL_CAMPING__`/`__DOMINIO__`/`__ZONA__`/`__DIRECCION__` opcional) SOLO en `config.ts`/`seed.ts`/`wrangler.jsonc`/`package.json` — el resto (`content/*.json`, `custom/hooks.ts`, `data.ts`) se copia intacto porque su contenido es Capa 2 (interpretación del material real del cliente, no mecánica). Valida el slug (formato + reservados) y no sobrescribe un tenant existente. Genera un `README.md` de estado propio (no el instruccional de `_template`) y reporta qué `__TODO__` de contenido quedan y si falta el `database_id` real.
   - `plan.ts` — `infraPlan()` pura: los 8 pasos de infraestructura real (crear D1, migrar, sembrar, construir, desplegar, DNS) como datos, en el orden correcto que exigen sus dependencias.
@@ -324,6 +387,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 20 — 2026-07-19 · Fase 9 (parcial) · Instancias, TenantConfig, `_template` (ADR 0012)
 
 **Hecho** (ADR 0012 aceptado por delegación explícita en sesión cloud, continuación de la sesión 19)
+
 - **`packages/config`**: `TenantConfig` (tasa turística + política de cancelación, con `loadTenantConfig` que valida y cae a defaults seguros sin lanzar nunca) + 4 tests. Deliberadamente NO incluye `payments`/`notifications` — esos ya tienen dueño propio con más matices (ADR 0010/0011) y forzarlos aquí habría sido una abstracción de más.
 - **`apps/api/src/tenant-config.ts`**: envoltorio que añade la lectura de D1. Sustituye `TAX_POLICY`/`CANCEL_POLICY`, dos constantes **idénticas y duplicadas a mano** en `public.ts` Y `admin.ts` con el comentario "de TenantConfig en Fase 9" desde la Fase 3 — ahora se leen del tenant en las 7 llamadas donde se usaban. `notify.ts`: el idioma del aviso interno de solicitudes deja de ser `'es'` fijo (usa `TenantConfig.locales[0]`). Seed demo y fixtures de test declaran `taxPolicy:'valencia'` explícitamente (antes invisible). **49/49 tests siguen en verde** tras el cambio — verificado, no asumido.
 - **`tenants/_template/`**: `config.ts`, `theme.css`, `content/{6 idiomas}.json` (todas las claves de la web como `__TODO__` — un `grep` te dice qué falta), `custom/hooks.ts` (no-op documentado, sin conectar aún), `seed.ts`+`write-seed.ts`+`data.ts` (mínimo: 1 temporada, 1 tipo, 3 unidades, 1 owner con contraseña `cambia-esta-clave` — **hash scrypt real**, calculado con `better-auth/crypto` y verificado con `verifyPassword` antes de fijarlo, no inventado), `wrangler.jsonc` parametrizado, `README.md` con checklist de alta. `pnpm --filter @tenant/_template typecheck/lint` limpios; `write-seed.ts` genera un `seed.sql` válido de verdad (verificado a mano).
@@ -338,6 +402,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 19 — 2026-07-19 · Fase 8 · Pagos (ADR 0011)
 
 **Hecho** (ADR 0011 aceptado por delegación explícita en sesión cloud — "sigue perfilando... con tu criterio cierra temas")
+
 - **`packages/payments`** (puro, sin D1): interfaz `PaymentProvider` (`createIntent`/`parseWebhook`/`refund`), `computeChargeAmount` (modos `none`/`deposit`/`full` — `bond`/fianza vía pasarela queda en BACKLOG, ver §2 del ADR), adaptador `stripe` (Checkout Session por `fetch`, sin SDK, verificación de webhook HMAC-SHA256 con `crypto.subtle`) y `none`. **20 tests**
 - **Adaptador `redsys`**: firma HMAC SHA256 con derivación de clave por pedido en 3DES-CBC — **bloqueo técnico real**: Workers no soporta 3DES en `crypto.subtle`, así que se implementó DES/3DES puro en TypeScript (`des.ts`, tablas FIPS 46-3). Verificado contra `node:crypto` (`des-ede3-cbc`, IV cero) en **500 casos aleatorios** desde el propio test (Node sí lo soporta nativo, sirve de oráculo aunque producción no pueda usarlo). Algoritmo cruzado contra la guía oficial de migración a HMAC SHA256 y la implementación de referencia `santiperez/node-redsys-api` (investigación vía WebFetch/WebSearch en esta sesión). **Pendiente real declarado**: sin credenciales de comercio no se ha podido probar contra el sandbox de Redsys — BACKLOG antes del primer cobro real
 - **`apps/api/src/payments.ts`**: orquestación (mismo patrón que `notify.ts`) — `loadPaymentsConfig`/`resolveProvider` (secrets del Worker, `payment_not_configured` explícito si faltan), `recordPaymentEvent` (webhook idempotente reutilizando `meta`, **sin tabla ni migración nueva**), `executeRefund` (llama al proveedor si hay cobro de pasarela detrás, nunca dobla el cobro) y `recordManualPayment`
@@ -357,6 +422,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 18 — 2026-07-19 · Fase 7 · Notificaciones (ADR 0010)
 
 **Hecho** (ADR 0010 aceptado por delegación explícita en sesión cloud)
+
 - **`packages/notifications`** (puro, sin DB): tipos de evento, diccionarios de email en 6 idiomas (+ etiquetas de conceptos del desglose), plantillas como funciones `(payload, lang) → {subject, html, text}` con layout de marca sin webfonts, `resendSender` (POST HTTP, sin SDK) y `noopSender`. **6 tests** (idiomas, céntimos formateados, escape XSS, fallback de idioma)
 - **`apps/api/notify.ts`**: único punto que toca `notifications_log` — lee `modules.notifications` del tenant, decide (on/off por evento SIN deploy), renderiza, envía y registra sent/failed/**disabled** (sin `RESEND_API_KEY` no sale nada y queda constancia). `waitUntil` tras responder; en tests se espera inline
 - **4 eventos** enganchados: `enquiry_received` (al buzón del camping) + `enquiry_autoreply` (al solicitante en SU idioma) en el POST público; `booking_confirmed` (web Y alta manual, con desglose traducido y botón de gestión) ; `booking_cancelled` (gestión web con reembolso previsto Y acción del dashboard, buscando el email del titular)
@@ -371,6 +437,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 17 — 2026-07-19 · Fase 6 (cierre) · Clientes + informes + ajustes
 
 **Hecho**
+
 - **API**: `GET /api/admin/guests` (búsqueda contiene en nombre/apellidos/email, paginada, con `bookingsCount` y `lastStay` agregados solo para la página — dos consultas cortas, no un join N×M) y `GET /guests/:id` (ficha + historial con `isLead`). **36 tests** (+1; ojo: `isolatedStorage` de vitest-pool-workers aísla el storage POR TEST — lo que un test crea no existe en el siguiente; el test crea su propia reserva)
 - **Clientes** (`/admin/#/clientes`): buscador en servidor, tabla (nombre/contacto/documento/nº reservas/última estancia), panel de ficha con contacto clicable, RGPD con fecha e **historial de reservas → click abre la ficha operativa** (BookingPanel reemplaza el panel; cerrar vuelve al cliente)
 - **Informes** (`/admin/#/informes`): presets este mes / próximo / 3 meses; tiles de titular (ocupación global calculada de la capacidad real, ingresos por llegada, cobrado, llegadas, salidas) y **ocupación por tipo como medidor de un solo tono** (pino sobre arena-suave, texto en tinta, % + noches en title/aria)
@@ -385,6 +452,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 16 — 2026-07-19 · Fase 6 (5/5 parcial) · Reservas + alta manual + inventario + tarifas
 
 **Hecho**
+
 - **API**: `/catalog` incluye extras; `PATCH /api/admin/units/:id {status}` (gerencia, auditado) para baja/alta de servicio — reasignar hacia una inactiva se rechaza (test). **35 tests** (+2, uno corregido: fechas de fixture fuera de temporada daban 422)
 - **Lista de reservas** (`/admin/#/reservas`): tabla con búsqueda por código (prefijo, en servidor), filtro por estado, paginación; titular/fechas/unidad/canal/estado/total/**pendiente en mar**; fila → ficha; accesible por teclado
 - **Alta manual** (`NewBookingPanel`): tipo (capacidades del catálogo), fechas, ocupación con edades de niños (input CSV validado 0-17), electricidad, extras del catálogo (obligatorios marcados y forzados), canal teléfono/mostrador, titular, notas. **Cotización EN VIVO contra `POST /api/quote`** con el desglose línea a línea y los errores del motor traducidos (`stay.min_stay` con params, etc.). Crear → `POST /api/admin/bookings` con **Idempotency-Key por apertura** (doble click = una reserva); 409 = "sin disponibilidad"; éxito → se abre la ficha de la nueva
@@ -400,6 +468,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 15 — 2026-07-19 · Fase 6 (4/5) · Solicitudes + llegadas = modo lite
 
 **Hecho**
+
 - **API**: `GET /api/admin/bookings` gana `arrivalsOn`/`departuresOn` (igualdad exacta con `date_from`/`date_to` — salida = día que se libera, exclusivo) y devuelve `unitCode` + `leadName` por join (unidad y titular a la vista en las listas). `GET /bookings/:id` devuelve `unitCode`. Nuevo `GET /api/admin/catalog` (tipos+unidades, para selects y nombres). **34 tests** (+2: llegadas/salidas con titular, catálogo)
 - **Bandeja de solicitudes** (`/admin/#/solicitudes`): filtros por estado con recuento (Todas·15 / Nueva·4 / …), fila expandible con mensaje completo, contacto clicable (mailto/tel), idioma y origen; **acciones de siguiente paso natural** (nueva→contactada|perdida, contactada→presupuestada|perdida, presupuestada→convertida|perdida, perdida→reabrir) sobre el PATCH existente auditado. Chips `sol-*` con los tokens
 - **Llegadas/salidas del día** (`/admin/#/llegadas`): día navegable (hoy/←/→/calendario), dos columnas con titular, unidad, pax·noches, estado y **pendiente de cobro destacado** (la cifra del check-in) o "Pagada"; canceladas fuera; click en fila → **BookingPanel reutilizado**
@@ -413,6 +482,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 14 — 2026-07-19 · Demo comercial · Selector de temas (ADR 0009) + docs de funcionalidades
 
 **Hecho** (petición directa de Andreu en sesión: temas para enseñar la demo en varios estilos + documentación de cara al cliente)
+
 - **ADR 0009**: temas = bloques `[data-theme]` en el `theme.css` del tenant (los derivados `color-mix` se recalculan solos → un tema son ~6 variables, cero cambios en componentes). Demo-only tras `config.demoThemes` — sin el flag no se renderiza ni un byte. Mismas fuentes en todos (cambiar tipografía = pagar Lighthouse).
 - **4 temas** dentro del territorio y fuera del antimodelo: `pinada` (actual, defecto), `mar` (posidonia/roca húmeda), `garriga` (oliva/tierra seca) y `nit` (**modo oscuro completo** con `color-scheme: dark` — la prueba de fuego del sistema de tokens). Botón "Ver disponibilidad" en nit ~5.5:1 AA.
 - **Selector sin islas** en la cabecera: `<details>` nativo como el de idioma, swatches que pintan el color de acción de cada tema vía el propio bloque de tokens (`.lc-swatch[data-swatch]` comparte selector — sin duplicar hex), `aria-pressed`, script inline anti-FOUC en `<head>` + persistencia `localStorage`. OJO Astro: las expresiones dentro de `<script is:inline>` NO se evalúan — hay que usar `set:html` (el primer intento emitía el JS como cadena inerte).
@@ -427,6 +497,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 13 — 2026-07-19 · Fase 6 (3/5) · Ficha de reserva: panel lateral con acciones tipadas
 
 **Hecho**
+
 - **Panel lateral no modal** (`components/BookingPanel.tsx`) sobre el planning: click en una barra (sin drag, el umbral de 4px distingue), Enter/Espacio con la barra enfocada, o click en un chip de la bandeja "sin asignar" (ahora botones). Esc cierra desde cualquier sitio (listener a nivel de documento — el foco puede salir del panel al deshabilitarse un botón) y el foco vuelve a quien la abrió
 - **Contenido**: código + chip de estado (mismos tokens que las barras), estancia (fechas→noches, ocupación con edades, unidad, canal, creada), titular y acompañantes, **desglose auditable línea a línea** (conceptos i18n con `tDyn` de fallback, descuentos en negativo en pino), total/tasa/fianza/pagado/**pendiente de pago** en mar, pagos con signo, notas editables (acción `note`, botón deshabilitado si no hay cambio)
 - **Acciones tipadas** contra `PATCH /api/admin/bookings/:id`: espejo cliente de TRANSITIONS del servidor (pending→confirm|cancel, confirmed→cancel|no_show|complete) — solo se ofrecen las que aplican, el servidor valida SIEMPRE. Cancelar exige **doble confirmación inline** ("¿Seguro? Sí, cancelar"). Éxito → mensaje `role=status` + invalidación de ficha y planning
@@ -440,6 +511,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 12 — 2026-07-19 · Fase 6 (2/5, parcial) · Drag & drop de reasignación en el planning
 
 **Hecho**
+
 - **DnD con Pointer Events nativos** (sin librería, según ADR 0008): arrastrar una barra verticalmente a otra unidad del MISMO tipo — umbral de 4px (un click no es un drag), transform directo al DOM (cero re-render por frame), resaltado de la fila destino válida en pino, detección de fila vía las posiciones del virtualizador
 - **Optimista con rollback**: `PATCH /api/admin/bookings/:id {action:'reassign'}` — la caché de Query se actualiza al soltar y se restaura si el servidor responde 409 (solape/estado); mensaje `role=status` con el resultado ("Reserva movida a A-05" / error). El servidor valida SIEMPRE — la UI nunca decide
 - **Teclado**: barra enfocable, ↑/↓ reasigna a la unidad adyacente del mismo tipo (misma mutación, mismos mensajes)
@@ -452,6 +524,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 11 — 2026-07-19 · Fase 6 (1/5) · ADR 0008 + dashboard con planning v1
 
 **Hecho** (ADR 0008 aceptado por la misma delegación)
+
 - `docs/adr/0008-dashboard-planning.md`: SPA en `/admin/` del MISMO Worker (un deploy = web+API+dashboard, misma cookie Better Auth, cero CORS), hash history (`/admin/#/…` — sin rewrites en estático), virtualización propia de FILAS + barras absolutas, DnD con pointer events nativos (sesión 17), reparto 16–20
 - `apps/dashboard` real: React 19 + Vite + **TanStack Router** (hash) + **TanStack Query** + Tailwind v4 con los tokens de la demo. Login contra Better Auth (cookie), guardia de sesión en la raíz, i18n por diccionario `t()` desde el día 1 (es)
 - **Planning v1 (tape chart ★, lectura)**: filas virtualizadas con `@tanstack/react-virtual` (~40 renderizadas de 300 posibles), cabecera de meses+días sticky, columna de unidades sticky, findes sombreados, grupos por tipo, **colores por estado con los tokens** (confirmed=pino · pending=arena · no_show=mar · completed=tinta-suave), bloqueos rayados con motivo, **bandeja "sin asignar"**, zoom semana/mes/temporada (96/42/22px), navegación ←/hoy/→ + fecha, refresco de cortesía cada 60 s, tooltips con código·estado·fechas·pax
@@ -464,6 +537,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 10 — 2026-07-19 · Fase 5 · Flujo de reserva completo (ADR 0007)
 
 **Hecho** (ADR 0007 aceptado por delegación explícita de Andreu en sesión)
+
 - **Motor**: `searchAvailability` acepta `holds` + `now` (expiración perezosa) — 4 tests nuevos ANTES de implementar (51 total). Tipo `Hold` en el dominio
 - **Modelo**: tabla `inventory_holds` (migración 0002 con drizzle-kit), hold por TIPO, índices por tipo/fechas y por expiración
 - **API**: `POST/DELETE /api/holds` (valida estancia + disponibilidad, TTL 15 min), availability y bookings cuentan holds vivos, `createBooking` consume el hold EN el mismo batch que crea la reserva (y rechaza hold caducado/ajeno con 409), `GET /bookings/:code` devuelve previsión de cancelación, `POST /bookings/:code/cancel` (libera inventario, auditado) y `/modify` (re-cotización COMPLETA en servidor, 409 si no cabe, desglose nuevo auditable). Primer **Cron Trigger** (purga de holds cada 15 min). 7 tests de integración nuevos (32 total)
@@ -479,6 +553,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 9 — 2026-07-19 · Fase 4 (remates) · Lighthouse ≥95 local + ADR 0007 propuesto
 
 **Hecho**
+
 - **Lighthouse contra el Worker local** (assets reales, red y CPU emuladas): home desktop **100/100/100/100**, detalle glamping móvil **100**, tarifas desktop **100**, home móvil **96/100/100/100**. Objetivo ≥95 cumplido en todo lo auditado
 - Los dos arreglos que lo consiguieron: **fuentes subseteadas** con fonttools a latín+latín-ext+signos (Inter 352→101 KB, Clash 29→23 KB — el render del héroe pasaba 2,1 s esperando ancho de banda) y **imágenes**: héroe webp calidad 60, separador de lona 287→~60 KB como `<img loading="lazy">`
 - `.claude/launch.json`: el server `api` crea `apps/web/dist` si falta (wrangler dev con assets exige que exista el directorio)
@@ -489,6 +564,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 8 — 2026-07-19 · Fase 4 (2/3) · Web completa, 6 idiomas, Workers Assets
 
 **Hecho**
+
 - **Páginas restantes**: alojamientos (lista por familias) + detalle por tipo (galería, ficha técnica y precios por temporada **desde los mismos datos que la D1** vía `tenants/demo/data.ts` → `generateSeed`), instalaciones, entorno, tarifas (tabla tipos×temporadas + suplementos + extras + condiciones desde `rate_plans`), contacto (datos+horario+cómo llegar+formulario), blog cableado (`content/blog/{slug}.{lang}.md`, fallback al idioma por defecto) y 404 propia con foto y CTA
 - **6 idiomas completos** (es/ca/en/fr/de/nl): content JSONs ampliados (~380 claves/idioma), selector de idioma accesible (`<details>` nativo, sin JS), menú móvil, rutas `/{lang}/…` con wrappers `[lang]` (109 páginas estáticas)
 - **API**: `GET /api/availability` devuelve `opensOn` (próxima apertura real de `seasons_calendar`) cuando las fechas caen en cerrado + 2 tests (25 total)
@@ -501,6 +577,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 - 6 fotos nuevas generadas en Higgsfield (interiores bungalow/glamping, piscina, restaurante, premium mar, autocaravana)
 
 **Pendiente fase (sesión 3)**
+
 - Redeploy de la demo con credenciales (esta sesión cloud no las tiene — el deploy NO se ha hecho): `pnpm --filter @logic-camp/api deploy:demo`
 - Descargar fotos Higgsfield (egress del contenedor bloqueaba la CDN) → `tenants/demo/content/media/`: `detalle-bungalow-interior`←job `f5ac46f2`, `detalle-glamping-interior`←`9bfdfd4b`, `instalacion-piscina`←`9a9eeb15`, `instalacion-restaurante`←`1cbee642`, `tipo-premium`←`32b5b013`, `tipo-autocaravana`←`2ba71b99` (WebP ~2000px, q78; la web ya las engancha por nombre de fichero sin tocar código)
 - Lighthouse ≥95 contra producción (aquí verificado solo funcionalmente)
@@ -511,6 +588,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 7 — 2026-07-18 · Fase 4 (1/3) · Diseño + home con mostrador
 
 **Hecho**
+
 - ADR 0006 (plan de diseño validado por Andreu): paleta 5 hex (tinta/hueso/pino/arena/mar), Clash Display + Inter self-host, wireframes de los dos héroes, elemento firma "el mostrador"
 - 6 assets fotográficos con Higgsfield (Nano Banana Pro 4K héroes 21:9, Soul 2.0 tarjetas/textura), optimizados a WebP (86MB→2.2MB) en `tenants/demo/content/media/`
 - `apps/web` real: Astro 5 + islas React + Tailwind v4. Alias `@tenant` resuelto en build (TENANT=slug), tokens en `tenants/demo/theme.css` (@theme de Tailwind mapea variables → cambiar el fichero re-viste todo)
@@ -528,6 +606,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 6 — 2026-07-18 · Fase 3 (2/2) · Better Auth + API privada
 
 **Hecho**
+
 - `docs/adr/0005-auth-privada.md`
 - Better Auth 1.6 sobre la MISMA tabla `users` (adaptador Drizzle, D1 del binding): migración `0001_auth.sql` (users ampliada + sessions/accounts/verifications), instancia por petición en `auth.ts`, registro público desactivado, provisión en servidor (`provisionUser`), `requireRole` con jerarquía readonly<reception<manager<owner
 - `routes/admin.ts` (`/api/admin`): `/planning` (el SELECT del tape chart), bookings (lista/detalle/alta manual phone|walkin/acciones tipadas confirm|cancel|no_show|complete|reassign|note), enquiries, rates, `/reports` (ocupación/ingresos/llegadas), `/settings`, users (solo owner). Toda mutación escribe `audit_log`
@@ -543,6 +622,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 5 — 2026-07-17 · Fase 3 (1/2) · API pública
 
 **Hecho**
+
 - `docs/adr/0004-api-publica.md`
 - `apps/api` reestructurada: `schemas.ts` (Zod), `tenant.ts` (contexto por binding + rate limit 60/min), `data.ts` (filas→dominio), `routes/public.ts`, `app.ts`, `client.ts` (RPC `hono/client`)
 - Endpoints: `GET /api/availability` (precio en servidor, closed≠unavailable), `POST /api/quote` (desglose + extras obligatorios + tasa), `POST /api/enquiries` (guarda SIEMPRE), `POST /api/bookings` (revalida, re-cotiza en servidor, asigna unidad, batch atómico, **Idempotency-Key** vía tabla `meta`), `GET /api/bookings/:code?email=`
@@ -556,6 +636,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 4 — 2026-07-17 · Fase 2 ★ · Motor de disponibilidad y precios
 
 **Hecho**
+
 - `docs/adr/0003-motor-core.md`
 - `packages/core` puro (sin I/O, sin Drizzle): `searchAvailability` (disponibilidad por tipo con reasignación implícita — comprobación por noche, exacta para intervalos), `quote` (desglose por tramos de temporada, sum(lines)==total por construcción), `applyRules` (stackables + mejor exclusiva, descuentos como líneas negativas), `validateStay` (acumula todos los errores, códigos i18n), `assignUnit` (menos huecos, con alternativas), `calculateTouristTax` (política como dato: valencia/catalunya/none), `calculateCancellationRefund` (tramos), `createExtensionRegistry` (los 11 hooks de §3)
 - Tests ANTES que implementación: `edge-cases.test.ts` con los 7 casos que rompen productos genéricos + `engine.test.ts` por módulo. **47 tests verdes**
@@ -567,6 +648,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 3 — 2026-07-17 · Fase 1 · Modelo de datos
 
 **Hecho**
+
 - `docs/adr/0002-modelo-de-datos.md`
 - `packages/db/src/schema.ts`: las 16 tablas de §4 tipadas (JSON tipado: Occupancy, PriceBreakdown…), índices de disponibilidad, migración única `0000_modelo-datos.sql`
 - Seed demo Cala Sereno en `tenants/demo/seed.ts`: generador puro y determinista (fecha ancla → listo para reset nocturno Fase 10). 83 unidades (60 parcelas/4 tipos, 18 bungalow-mobil/3 tipos, 5 glamping), 3 temporadas solapadas por prioridad, 12 extras, 3 reglas, 40 reservas con casos límite (cruce de temporadas, 28 noches, grupo 8 pax con niño exento de tasa, cancelada, no-show, sin asignar), 15 solicitudes en 5 estados, bloqueos (mantenimiento + longstay)
@@ -580,6 +662,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 2 — 2026-07-17 · Fase 0 · Scaffold del monorepo
 
 **Hecho**
+
 - `docs/adr/0001-scaffold.md` (aceptado con el OK de fase de Andreu)
 - Monorepo pnpm + Turborepo: `package.json`, `pnpm-workspace.yaml`, `turbo.json`, ESLint 9 flat + Prettier, `.gitignore`, git init (rama `main`)
 - `apps/api`: Hono + `GET /health` + tests Vitest + wrangler.jsonc dev + build dry-run
@@ -597,6 +680,7 @@ Las dos opciones abiertas eran columna en `units` (D1) o fichero de tenant. Se e
 ### Sesión 1 — 2026-07-17 · Fundación documental (§1 BRIEF)
 
 **Hecho**
+
 - `CLAUDE.md` (arquitectura, niveles, convenciones, visual, qué NO hacer)
 - `docs/TIERS.md`, `docs/ROADMAP.md`, `docs/DOMAIN.md`, `docs/BACKLOG.md`
 - `PROGRESS.md` (este fichero)

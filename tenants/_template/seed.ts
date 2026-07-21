@@ -225,7 +225,9 @@ export function generateSeed(year: number): SeedData {
 }
 
 export function seedToSql(data: SeedData): string {
-  const out: string[] = [`-- Seed de ${data.tenants[0]?.slug ?? '__SLUG__'} (generado — no editar a mano)`];
+  const out: string[] = [
+    `-- Seed de ${data.tenants[0]?.slug ?? '__SLUG__'} (generado — no editar a mano)`,
+  ];
   const tables: [string, Row[]][] = [
     ['tenants', data.tenants],
     ['seasons_calendar', data.seasons_calendar],

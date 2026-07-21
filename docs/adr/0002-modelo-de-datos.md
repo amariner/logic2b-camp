@@ -11,6 +11,7 @@ Implementar el esquema de §4 del super prompt en Drizzle (D1/SQLite), con seed 
 ## Decisión
 
 **Convenciones transversales**
+
 - IDs: `text` (prefijo por entidad + aleatorio, p.ej. `bkg_x7f3…`), generados en aplicación. D1 no tiene secuencias fiables y los IDs opacos viajan bien por URL/API.
 - Dinero: `integer` céntimos, sufijo `_cents`. Fechas de estancia: `text` ISO `YYYY-MM-DD`; timestamps: `text` ISO 8601 UTC.
 - JSON: columnas `text` con `{ mode: 'json' }` y `$type<>` para tipado estricto (occupancy, price_breakdown, conditions, diff…).
@@ -19,6 +20,7 @@ Implementar el esquema de §4 del super prompt en Drizzle (D1/SQLite), con seed 
 **Las 16 tablas de §4, sin desvíos**: `tenants`, `seasons_calendar`, `unit_types`, `units`, `rate_plans`, `rate_rules`, `extras`, `inventory_blocks`, `enquiries`, `bookings`, `guests`, `booking_guests`, `payments`, `notifications_log`, `users`, `audit_log`.
 
 Decisiones de detalle:
+
 - `unit_types.kind`: `'pitch' | 'lodging'` — parcela y alojamiento en la MISMA tabla, diferenciadas por kind + `features` JSON. No se duplican tablas.
 - `unit_type` es lo reservable; `unit` lo asignable → `bookings.unit_id` es **nullable** (reserva sin asignar es estado válido), `bookings.unit_type_id` no.
 - `enquiries` tabla propia: sin FK a unidad, fechas opcionales, estados `new|contacted|quoted|converted|lost`, `converted_booking_id` nullable. **Por qué no es un booking en borrador**: no bloquea inventario, no tiene precio cerrado ni unidad; sus invariantes (ninguna) difieren de las de booking (solape, sumas de pagos). Modelarlo como booking obligaría a llenar el motor de `if draft`.
@@ -29,6 +31,7 @@ Decisiones de detalle:
 **Migraciones**: `drizzle-kit generate` → `packages/db/migrations/`. La 0000 (`meta`) se conserva; el esquema real es la 0001. `migrations_dir` apuntado desde los wrangler.jsonc.
 
 **Seed demo** (Camping Cala Sereno, mediterráneo, ~83 unidades): generador TS **puro y determinista** en `tenants/demo/seed.ts` (fechas relativas a una fecha ancla parametrizable — prepara el reset nocturno de Fase 10) que emite `seed.sql`. Contenido: 60 parcelas en 4 tipos, 18 bungalows en 3 tipos, 5 glampings, 3 temporadas solapadas por prioridad, tarifas de mercado, 12 extras, ~40 reservas con casos límite (larga estancia, grupo, mascota, cancelada, no-show, sin asignar), 15 solicitudes en todos los estados. `tenants/demo` pasa a ser paquete workspace para poder testear el generador.
+
 - **Tests del generador** (Vitest): conteos exigidos, cero solapes entre reservas activas por unidad, `sum(payments) == paid_cents` por reserva, breakdown suma = total.
 
 **Comandos raíz**: `pnpm db:reset` (borra estado local + aplica migraciones a la D1 local demo) y `pnpm db:seed` (genera y ejecuta `seed.sql`), vía wrangler `--local --persist-to .wrangler-demo`.

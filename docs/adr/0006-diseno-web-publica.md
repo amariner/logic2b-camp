@@ -11,22 +11,22 @@ La web se comporta como una tienda de producto premiada: **fondo casi blanco, ti
 
 ## Paleta (5 hex nombrados)
 
-| Nombre | Hex | Rol |
-|---|---|---|
-| **Tinta de pino** | `#0E1512` | texto e iconos — negro con 5% de verde, nunca #000 |
-| **Hueso** | `#F4F2EC` | fondo global — papel cálido, no blanco puro |
-| **Pino carrasco** | `#1F4D3A` | acción: CTAs, foco, estados activos. ÚNICO color de marca |
-| **Arena compactada** | `#C9B99A` | bordes, separadores, fills suaves, precios tachados |
-| **Mar de fondo** | `#2E6E73` | enlaces, info, disponibilidad "quedan pocas" |
+| Nombre               | Hex       | Rol                                                       |
+| -------------------- | --------- | --------------------------------------------------------- |
+| **Tinta de pino**    | `#0E1512` | texto e iconos — negro con 5% de verde, nunca #000        |
+| **Hueso**            | `#F4F2EC` | fondo global — papel cálido, no blanco puro               |
+| **Pino carrasco**    | `#1F4D3A` | acción: CTAs, foco, estados activos. ÚNICO color de marca |
+| **Arena compactada** | `#C9B99A` | bordes, separadores, fills suaves, precios tachados       |
+| **Mar de fondo**     | `#2E6E73` | enlaces, info, disponibilidad "quedan pocas"              |
 
 Regla: superficie ≥90% hueso+tinta. Pino carrasco aparece solo donde se puede hacer clic. Éxito/error del sistema: derivados de pino/arena (tokens en `theme.css`, no nuevos colores).
 
 ## Tipografías (2, con rol)
 
-| Fuente | Rol | Por qué |
-|---|---|---|
-| **Clash Display** (Fontshare, variable, self-host) | Titulares y cifras grandes. Peso 500–600, tracking −2%, tamaños desmedidos (clamp 2.5rem→7rem) | Geométrica con carácter, la voz "premio" sin caer en serif-crema |
-| **Inter** (variable, self-host) | Texto, UI, formularios, widget. 400/500/600 | Legibilidad total — la recepcionista de 55 años y el francés de 70 la leen igual de bien |
+| Fuente                                             | Rol                                                                                            | Por qué                                                                                  |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Clash Display** (Fontshare, variable, self-host) | Titulares y cifras grandes. Peso 500–600, tracking −2%, tamaños desmedidos (clamp 2.5rem→7rem) | Geométrica con carácter, la voz "premio" sin caer en serif-crema                         |
+| **Inter** (variable, self-host)                    | Texto, UI, formularios, widget. 400/500/600                                                    | Legibilidad total — la recepcionista de 55 años y el francés de 70 la leen igual de bien |
 
 Números tabulares (`font-variant-numeric: tabular-nums`) en precios y fechas, siempre.
 

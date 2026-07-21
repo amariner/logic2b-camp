@@ -3,13 +3,18 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts" },
-  "bin": { "new-camping": "./src/cli.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "new-camping": "./src/cli.ts"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
-    "new:camping": "tsx src/cli.ts"
+    "new:camping": "tsx src/cli.ts",
+    "export:tenant": "tsx src/export-cli.ts"
   },
   "devDependencies": {
     "@logic-camp/tsconfig": "workspace:*",

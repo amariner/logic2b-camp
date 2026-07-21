@@ -103,6 +103,32 @@ describe('render de plantillas', () => {
     expect(ru.subject).toContain('Hemos recibido tu solicitud');
   });
 
+  it('system_error: aviso técnico en los 6 idiomas, con referencia y SIN detalle interno', () => {
+    const alerta = {
+      campName: 'Camping Cala Sereno',
+      ref: 'err_a1b2c3d4e5f6',
+      event: 'unhandled_error',
+      route: 'POST /api/bookings',
+      occurredAt: '2026-07-21T10:15:00.000Z',
+      suppressed: 0,
+    };
+    for (const lang of ['es', 'ca', 'en', 'fr', 'de', 'nl'] as const) {
+      const msg = render({ kind: 'system_error', data: alerta }, lang);
+      expect(msg.subject).toContain('Camping Cala Sereno');
+      expect(msg.html).toContain('err_a1b2c3d4e5f6');
+      expect(msg.text).toContain('err_a1b2c3d4e5f6');
+      expect(msg.html).toContain('POST /api/bookings');
+      // el correo NUNCA lleva el detalle técnico: solo la referencia
+      expect(msg.html).not.toContain('stack');
+      expect(msg.text).not.toContain('stack');
+    }
+    // el contador de silenciados solo aparece cuando hay algo que contar
+    expect(render({ kind: 'system_error', data: alerta }, 'es').text).not.toContain('silenciados');
+    expect(
+      render({ kind: 'system_error', data: { ...alerta, suppressed: 12 } }, 'es').text,
+    ).toContain('silenciados: 12');
+  });
+
   it('normalizeLang: variantes regionales y desconocidos', () => {
     expect(normalizeLang('en-GB')).toBe('en');
     expect(normalizeLang('CA')).toBe('ca');

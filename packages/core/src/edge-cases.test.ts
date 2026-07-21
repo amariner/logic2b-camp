@@ -56,7 +56,9 @@ describe('CASO 1 — estancia que cruza dos temporadas', () => {
     });
     expect(v.valid).toBe(false);
     if (!v.valid) {
-      expect(v.issues.some((i) => i.code === 'stay.min_stay' && i.params?.minStay === 7)).toBe(true);
+      expect(v.issues.some((i) => i.code === 'stay.min_stay' && i.params?.minStay === 7)).toBe(
+        true,
+      );
     }
   });
 });
@@ -194,7 +196,12 @@ describe('CASO 5 — parcela sin electricidad + caravana que la necesita', () =>
 describe('CASO 6 — larga estancia bloquea 6 meses sin ensuciar el motor diario', () => {
   const units = mkUnits('ut_std', 3);
   const blocks = [
-    { unitId: 'ut_std_1', dateFrom: '2026-04-01', dateTo: '2026-10-01', reason: 'longstay' as const },
+    {
+      unitId: 'ut_std_1',
+      dateFrom: '2026-04-01',
+      dateTo: '2026-10-01',
+      reason: 'longstay' as const,
+    },
   ];
 
   it('la unidad bloqueada no cuenta como disponible', () => {
@@ -250,12 +257,18 @@ describe('CASO 7 — cancelación a 20 días con política 50% / 7 días', () =>
 
   it('a 21 días devuelve el 100%; a 3 días, nada', () => {
     expect(
-      calculateCancellationRefund({ dateFrom: '2026-08-01', paidCents: 30000 }, policy, '2026-07-11')
-        .refundCents,
+      calculateCancellationRefund(
+        { dateFrom: '2026-08-01', paidCents: 30000 },
+        policy,
+        '2026-07-11',
+      ).refundCents,
     ).toBe(30000);
     expect(
-      calculateCancellationRefund({ dateFrom: '2026-08-01', paidCents: 30000 }, policy, '2026-07-29')
-        .refundCents,
+      calculateCancellationRefund(
+        { dateFrom: '2026-08-01', paidCents: 30000 },
+        policy,
+        '2026-07-29',
+      ).refundCents,
     ).toBe(0);
   });
 });

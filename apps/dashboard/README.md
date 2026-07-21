@@ -21,12 +21,12 @@ Luego `http://localhost:5173`. Vite hace de proxy de `/api` → `:8787` (ver `vi
 
 **Usuarios del seed demo** (contraseña `calasereno` en todos):
 
-| Email | Rol |
-|---|---|
-| `direccion@calasereno.example` | owner |
-| `gerencia@calasereno.example` | manager |
+| Email                          | Rol       |
+| ------------------------------ | --------- |
+| `direccion@calasereno.example` | owner     |
+| `gerencia@calasereno.example`  | manager   |
 | `recepcion@calasereno.example` | reception |
-| `consulta@calasereno.example` | readonly |
+| `consulta@calasereno.example`  | readonly  |
 
 Si la base está vacía: `pnpm db:reset && pnpm db:seed`.
 
@@ -52,8 +52,8 @@ rm -rf apps/site/dist/admin && cp -r apps/dashboard/dist apps/site/dist/admin
 
 ## Comandos
 
-| | |
-|---|---|
-| `pnpm --filter @logic-camp/dashboard build` | build de producción |
-| `pnpm --filter @logic-camp/dashboard typecheck` | typecheck |
-| `pnpm --filter @logic-camp/dashboard lint` | lint |
+|                                                 |                     |
+| ----------------------------------------------- | ------------------- |
+| `pnpm --filter @logic-camp/dashboard build`     | build de producción |
+| `pnpm --filter @logic-camp/dashboard typecheck` | typecheck           |
+| `pnpm --filter @logic-camp/dashboard lint`      | lint                |

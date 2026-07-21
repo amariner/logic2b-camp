@@ -1,6 +1,6 @@
 ---
-title: "Entrar al programa"
-description: "Cómo abrir el gestor, qué es cada cosa de la pantalla y cómo salir al terminar el turno."
+title: 'Entrar al programa'
+description: 'Cómo abrir el gestor, qué es cada cosa de la pantalla y cómo salir al terminar el turno.'
 lang: es
 orden: 1
 ---
@@ -38,12 +38,12 @@ El botón de la esquina inferior cambia entre **claro**, **oscuro** y **según e
 
 No todo el mundo ve lo mismo, y es a propósito:
 
-| Perfil | Qué puede hacer |
-|---|---|
-| **Consulta** | Verlo todo, tocar nada |
+| Perfil        | Qué puede hacer                                              |
+| ------------- | ------------------------------------------------------------ |
+| **Consulta**  | Verlo todo, tocar nada                                       |
 | **Recepción** | Trabajar: reservas, asignaciones, cobros, solicitudes, notas |
-| **Gerencia** | Además: tarifas, temporadas, inventario y ajustes |
-| **Dirección** | Además: dar de alta y quitar usuarios |
+| **Gerencia**  | Además: tarifas, temporadas, inventario y ajustes            |
+| **Dirección** | Además: dar de alta y quitar usuarios                        |
 
 Si un botón no te aparece, no está estropeado: es que ese perfil no lo tiene. Pídeselo a quien sí.
 

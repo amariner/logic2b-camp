@@ -1,6 +1,6 @@
 ---
-title: "Empezar el día: llegadas y salidas"
-description: "La primera pantalla de la mañana: quién llega hoy, quién se va y qué queda por cobrar."
+title: 'Empezar el día: llegadas y salidas'
+description: 'La primera pantalla de la mañana: quién llega hoy, quién se va y qué queda por cobrar.'
 lang: es
 orden: 2
 ---

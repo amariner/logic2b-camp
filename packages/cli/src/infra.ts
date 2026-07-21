@@ -24,7 +24,10 @@ export class InfraNotConfirmedError extends Error {
 export type InfraStepResult = { step: PlanStep; ranCommand: boolean; exitCode: number | null };
 
 /** Ejecuta los pasos con `command` en orden; se detiene en el primer fallo. Los pasos manuales solo se listan. */
-export function runInfraPlan(steps: PlanStep[], opts: { allowInfraEnv?: string } = {}): InfraStepResult[] {
+export function runInfraPlan(
+  steps: PlanStep[],
+  opts: { allowInfraEnv?: string } = {},
+): InfraStepResult[] {
   if ((opts.allowInfraEnv ?? process.env.LOGIC_CAMP_ALLOW_INFRA) !== '1') {
     throw new InfraNotConfirmedError();
   }

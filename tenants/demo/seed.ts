@@ -640,8 +640,7 @@ export function generateSeed(anchorYear: number): SeedData {
     // de cada 5, que "solo tiene reserva, no ha llegado". Así el planning y el plano
     // enseñan la mezcla "en casa / confirmada / entra hoy" sin un mock en el cliente.
     // Puro: solo depende de anchorYear (el reset nocturno depende del determinismo).
-    const inHouseAtAnchor =
-      opts.status === 'confirmed' && opts.from <= anchor && anchor < opts.to;
+    const inHouseAtAnchor = opts.status === 'confirmed' && opts.from <= anchor && anchor < opts.to;
     const checkedIn = inHouseAtAnchor && bkgN % 5 !== 0;
     bookings.push({
       id,
@@ -746,8 +745,7 @@ export function generateSeed(anchorYear: number): SeedData {
   /** Ocupación objetivo por fecha: la FORMA de la temporada es el argumento de venta. */
   function targetOccupancy(date: string): number {
     const month = Number(date.slice(5, 7));
-    const base =
-      month === 8 ? 0.93 : month === 7 ? 0.75 : month === 6 || month === 9 ? 0.45 : 0.2;
+    const base = month === 8 ? 0.93 : month === 7 ? 0.75 : month === 6 || month === 9 ? 0.45 : 0.2;
     // Sesgo de fin de semana SOLO fuera de temporada alta: en agosto está lleno
     // igual, y en mayo/junio las llegadas se agolpan en viernes y sábado. Es lo
     // que hace que un profesional reconozca sus propios datos.

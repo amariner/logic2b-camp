@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_CANCELLATION_POLICY, loadTenantConfig } from './tenant-config';
+import { DEFAULT_CANCELLATION_POLICY, loadTenantConfig, tenantLegalSchema } from './tenant-config';
 
 const baseRow = {
   slug: 'demo',
@@ -43,5 +43,36 @@ describe('loadTenantConfig', () => {
     const config = loadTenantConfig({ ...baseRow, tier: 9, locales: 'es' as unknown });
     expect(config.tier).toBe(1);
     expect(config.locales).toEqual(['es']);
+  });
+});
+
+describe('tenantLegalSchema', () => {
+  const legal = {
+    razonSocial: 'Cala Sereno Turisme, S.L.',
+    nif: 'B12345678',
+    domicilio: 'Partida Cala Sereno s/n, 12500 Castellón',
+    registro: 'Inscrita en el Registro Mercantil de Castellón, tomo 1234, folio 56, hoja CS-7890.',
+    emailDerechos: 'privacidad@calasereno.example',
+  };
+
+  it('acepta el bloque completo', () => {
+    expect(tenantLegalSchema.parse(legal)).toEqual(legal);
+  });
+
+  it('los datos registrales son opcionales — un empresario individual no los tiene', () => {
+    const sinRegistro = { ...legal, registro: undefined };
+    expect(tenantLegalSchema.safeParse(sinRegistro).success).toBe(true);
+  });
+
+  it('rechaza identidad incompleta: sin ella no se puede publicar el aviso legal', () => {
+    for (const campo of ['razonSocial', 'nif', 'domicilio'] as const) {
+      expect(tenantLegalSchema.safeParse({ ...legal, [campo]: '' }).success).toBe(false);
+    }
+  });
+
+  it('rechaza un canal de derechos que no es un correo válido', () => {
+    expect(tenantLegalSchema.safeParse({ ...legal, emailDerechos: 'escríbenos' }).success).toBe(
+      false,
+    );
   });
 });

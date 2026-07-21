@@ -3,7 +3,13 @@
  * Derivados del MISMO generador que siembra la D1: tarifas, temporadas y
  * fichas técnicas no pueden divergir de lo que responde la API.
  */
-import { generateSeed, type SeedExtra, type SeedRatePlan, type SeedSeason, type SeedUnitType } from './seed';
+import {
+  generateSeed,
+  type SeedExtra,
+  type SeedRatePlan,
+  type SeedSeason,
+  type SeedUnitType,
+} from './seed';
 
 // Mismo ancla por defecto que `pnpm db:seed` (write-seed.ts): el año en curso.
 const year = new Date().getUTCFullYear();

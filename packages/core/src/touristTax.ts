@@ -16,7 +16,11 @@ export const CATALUNYA_TAX: TouristTaxPolicy = {
   maxNights: 7,
 };
 
-export const NO_TAX: TouristTaxPolicy = { perPersonNightCents: 0, exemptUnderAge: 0, maxNights: null };
+export const NO_TAX: TouristTaxPolicy = {
+  perPersonNightCents: 0,
+  exemptUnderAge: 0,
+  maxNights: null,
+};
 
 export const TAX_POLICIES: Record<string, TouristTaxPolicy> = {
   valencia: VALENCIA_TAX,
