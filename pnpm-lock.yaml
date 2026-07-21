@@ -84,6 +84,9 @@ importers:
       '@fontsource-variable/space-grotesk':
         specifier: ^5.2.5
         version: 5.2.10
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@logic-camp/ui':
         specifier: workspace:*
         version: link:../../packages/ui

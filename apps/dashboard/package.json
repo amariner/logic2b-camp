@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource-variable/space-grotesk": "^5.2.5",
+    "@logic-camp/config": "workspace:*",
     "@logic-camp/ui": "workspace:*",
     "@tanstack/react-query": "^5.101.2",
     "lucide-react": "^0.550.0",

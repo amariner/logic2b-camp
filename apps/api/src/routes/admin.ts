@@ -120,6 +120,17 @@ export const adminRoutes = new Hono<AuthEnv>()
     return c.json({ unitTypes: types, units, extras });
   })
 
+  // ---------- Plano del camping (ADR 0021, C7): la geometría vive en modules.plano ----------
+  // GENÉRICO: no importa ni un dato de tenant; solo devuelve el descriptor JSON que
+  // el seed materializó desde tenants/{slug}/plano.ts. `null` si el camping no tiene
+  // plano definido → el dashboard degrada a un layout autogenerado (autoPlano).
+  .get('/map', async (c) => {
+    const db = c.get('tenant').db;
+    const row = (await db.select({ modules: schema.tenants.modules }).from(schema.tenants))[0];
+    const plano = (row?.modules as { plano?: unknown } | undefined)?.plano ?? null;
+    return c.json({ plano });
+  })
+
   // baja/alta de servicio de una unidad (inventario). No toca reservas existentes:
   // solo impide asignar/reasignar hacia ella y sale del cupo de disponibilidad.
   .patch('/units/:id', requireRole('manager'), async (c) => {

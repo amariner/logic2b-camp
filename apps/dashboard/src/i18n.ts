@@ -12,6 +12,7 @@ const es = {
   'login.entrando': 'Entrando…',
   'login.error': 'Email o contraseña incorrectos.',
   'nav.planning': 'Planning',
+  'nav.plano': 'Plano',
   'nav.solicitudes': 'Solicitudes',
   'nav.llegadas': 'Llegadas',
   'nav.reservas': 'Reservas',
@@ -378,6 +379,28 @@ const es = {
   'bloqueo.owner': 'Propietario',
   'bloqueo.longstay': 'Larga estancia',
   'bloqueo.manual': 'Manual',
+  // ---------- plano del camping (ADR 0021, C7) ----------
+  'planning.verEnPlano': 'Ver en el plano',
+  'plano.svgLabel': 'Plano del camping. Flechas para desplazar, + y − para el zoom.',
+  'plano.acercar': 'Acercar',
+  'plano.alejar': 'Alejar',
+  'plano.ajustar': 'Ajustar a la pantalla',
+  'plano.diaAnterior': 'Día anterior',
+  'plano.diaSiguiente': 'Día siguiente',
+  'plano.verEnPlanning': 'Ver en el planning',
+  'plano.ocupacion': '{occ} de {total} ocupadas · {pct}%',
+  'plano.auto': 'Plano automático',
+  'plano.autoDesc':
+    'Este camping no tiene un plano propio definido: se muestra un layout por zonas generado a partir de las unidades.',
+  'plano.vacio.titulo': 'Este camping no tiene unidades',
+  'plano.vacio.desc': 'Da de alta unidades en Inventario para verlas en el plano.',
+  'plano.estado.libre': 'Libre',
+  'plano.estado.ocupada': 'Ocupada',
+  'plano.estado.ocupadaPend': 'Ocupada · falta cobrar',
+  'plano.estado.entra': 'Entra hoy',
+  'plano.estado.sale': 'Sale hoy',
+  'plano.estado.turnover': 'Sale y entra hoy',
+  'plano.estado.bloqueada': 'Bloqueada',
 } as const;
 
 type Key = keyof typeof es;

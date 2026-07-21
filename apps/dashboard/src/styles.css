@@ -160,6 +160,51 @@ html {
   border: 1px solid var(--border);
 }
 
+/* ---------- plano del camping (ADR 0021, C7) — swatches de la leyenda ----------
+ * Mismos tokens que el planning y que las unidades del <svg>: una sola paleta. */
+.plano-lg {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.plano-lg.lg-free {
+  background: var(--background);
+  border: 1px solid var(--border);
+}
+.plano-lg.lg-confirmed {
+  background: var(--lc-status-confirmed);
+}
+.plano-lg.lg-pending {
+  background: var(--lc-status-pending);
+}
+/* entra hoy: cuña inferior-izquierda, como en el <svg> */
+.plano-lg.lg-arrival {
+  background: linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--foreground) 70%, transparent) 0 4px,
+    var(--lc-status-confirmed) 4px
+  );
+}
+/* sale hoy: neutro + cuña inferior-derecha */
+.plano-lg.lg-departure {
+  background: linear-gradient(
+    315deg,
+    color-mix(in oklab, var(--foreground) 70%, transparent) 0 4px,
+    var(--lc-status-completed) 4px
+  );
+}
+.plano-lg.lg-blocked {
+  border: 1px solid var(--border);
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--lc-status-blocked) 22%, transparent),
+    color-mix(in oklab, var(--lc-status-blocked) 22%, transparent) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
 /* chips de estado del log de notificaciones */
 .lc-chip.ntf-sent {
   background: var(--lc-status-confirmed);

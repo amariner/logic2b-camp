@@ -162,6 +162,16 @@ Cambiar una reserva de parcela es **arrastrar su barra** a otra fila del mismo t
 
 Detalle de dominio importante: el cliente reservó un **tipo**, no una parcela concreta. Reasignar no toca su reserva, ni su precio, ni requiere avisarle.
 
+### 6.2b El plano del camping ★
+
+Si el planning responde *"¿cuándo?"*, el plano responde *"¿dónde?"*. Una **vista cenital del camping de verdad** — el director **reconoce su propio recinto** en la pantalla: el mar al norte, las parcelas premium pegadas a la playa, la piscina y la recepción donde están, la pinada al fondo.
+
+- **Estado en vivo por fecha**: se elige un día y cada parcela/alojamiento se pinta con **los mismos colores que el planning** — libre, ocupada, falta cobrar, **entra hoy**, **sale hoy** (con una marca en la esquina), bloqueada. De un vistazo se ve cómo está el camping esa noche.
+- **Un clic en una unidad ocupada abre su ficha** — la misma que en el planning, sin duplicar nada.
+- **Salto plano ↔ planning** conservando la unidad y la fecha: se pasa de "¿dónde está la B-12?" a "¿qué días tiene libres?" y vuelta, sin perder el hilo. Ese ida y vuelta es la demo.
+- **Zoom y desplazamiento** con rueda, arrastre o teclado — pensado para 300 unidades, no solo para 83.
+- **Se dibuja solo**: el plano de cada camping se declara en un fichero (bloques de parcelas + servicios), no se dibuja rectángulo a rectángulo. Dar de alta el plano de un camping nuevo es cosa de una tarde. Y un camping sin plano definido no ve una pantalla rota: se le genera uno por zonas automáticamente.
+
 ### 6.3 La ficha de reserva
 
 Un clic en cualquier reserva abre su ficha junto al planning, sin perderlo de vista:

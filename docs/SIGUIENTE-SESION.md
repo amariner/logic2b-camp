@@ -1,98 +1,73 @@
 # Prompt para la siguiente sesión — Frente C
 
-> Escrito al cerrar la sesión 30 (2026-07-20). Copia el bloque de abajo tal cual al abrir la sesión siguiente.
-> Cuando esa sesión termine, **reescribe este fichero** con el prompt de la siguiente.
+> Reescrito al cerrar la sesión 32 (2026-07-21, C7 · plano del camping, ADR 0021).
+> Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de la siguiente.
 
 ---
+
+## Estado en una línea
+
+Frente C: **C0 ✅ · C2+C3 ✅ · C7 ✅**. Quedan **C1** (gestos horizontales del planning), **C4** (workflow de recepción), **C5** (fotos, cuesta créditos Higgsfield) y **C6** (documentación).
 
 ## ▶ Prompt para pegar
 
 ```
 Continuamos con el Frente C de Logic Camp (acabado profesional, prioridad visual
-en modo fake). Lee primero PROGRESS.md, CLAUDE.md, docs/ROADMAP.md y sobre todo
-docs/FRENTE-C-ACABADO.md, que es el contrato de este frente.
+en modo fake). Lee primero PROGRESS.md, CLAUDE.md, docs/ROADMAP.md y
+docs/FRENTE-C-ACABADO.md (el contrato del frente).
 
-Contexto: C0 está hecho (ADR 0019) — ya hay HMR en el dashboard y el seed es
-denso, así que el planning se ve lleno (346 reservas a la vista, agosto al 86%).
+Hecho ya: C0 (HMR + seed denso, ADR 0019), C2+C3 (DS conectado + estados, ADR
+0020) y C7 (plano del camping, ADR 0021 — geometría en modules.plano vía
+GET /api/admin/map, CampingMap SVG con pan/zoom, salto plano↔planning).
 
-El objetivo de ESTA sesión es C2 + C3 juntos, como un solo objetivo:
-"el design system conectado y los estados". Van juntos a propósito: sin
-skeleton/toast/alert-dialog en el DS, C3 no se puede hacer bien, y C2 sin C3
-no se nota en pantalla.
+El objetivo de ESTA sesión es C4 — workflow real de recepción. Es el hueco de
+DOMINIO que queda (no solo de UI):
 
-Sigue el contrato del proyecto: ADR primero (0020) y PARA a esperar mi
-validación antes de escribir código. Una sesión = una fase. `pnpm check` verde
-antes de cerrar, y cierra con /session-close.
+1. Check-in / check-out: HOY NO EXISTE ni en cliente ni en API. TRANSITIONS
+   (apps/api/src/routes/admin.ts) solo tiene confirm/cancel/no_show/complete.
+   DECISIÓN DE ADR: ¿estado `in_house` en la máquina de estados, o campo
+   `checked_in_at` sobre la reserva? Afecta a TRANSITIONS, al color del planning
+   y del plano ("en casa"), y a los informes. El plano de C7 ya tiene sitio para
+   un estado más: unitStateOn en packages/config sabe pintar por estado.
+2. Huéspedes y documentos editables (hoy la ficha solo los MUESTRA) — sin esto
+   no hay parte de viajeros, requisito legal en un camping español.
+3. "Cobrar todo lo pendiente" (hoy hay que teclear la cifra a mano) y crear
+   bloqueos desde la UI (planning Y plano los PINTAN pero no hay forma de crear).
+4. ⌘K (cmdk, ya declarado para C4 en ADR 0020): buscar reserva/huésped/unidad y
+   saltar. cmdk NO se instaló en C2 a propósito, se instala aquí.
+5. Rutas direccionables /reservas/$id y /clientes/$id: C3 las dejó EXPLÍCITAMENTE
+   para esta sesión (una reserva no se puede enviar por email a un compañero hoy).
+   El search-param de C7 (date/unit en /plano y /) es el patrón a seguir.
 
-Dos apuntes para el ADR:
-- El bloqueo de fondo de C2 es que packages/ui NO tiene ninguna dependencia de
-  Radix. Decide en el ADR el alcance exacto (qué paquetes, versiones).
-- Aprovecha y arregla C-BUG-1 y C-BUG-2, que son baratos y caen dentro de C2.
-
-Levanta el dev antes de empezar (api + dashboard) y verifica visualmente contra
-el navegador, no solo con tests.
+Sigue el contrato: ADR primero (0022) — y como esta es sesión autónoma, aplica
+tu criterio y NO PARES hasta cerrarlo, igual que en C7. Una sesión = una fase.
+`pnpm check` verde antes de cerrar (ojo: en el contenedor cloud el pool de
+workerd puede segfaultar sobre reset.test.ts y el rate-limit de la API parpadea
+bajo carga — verifica cada suite EN AISLAMIENTO si el check completo falla por
+eso). Cierra con /session-close.
 ```
 
 ---
 
 ## Orden recomendado a partir de aquí
 
-Razonado, no arbitrario — cada paso desbloquea al siguiente.
-
-### 1. **C2 + C3** — el DS conectado y los estados ← *siguiente sesión*
-
-**Por qué primero**: es lo más ancho. Sube las 11 pantallas a la vez, mientras que el resto son mejoras profundas en pocas pantallas. Con prioridad visual declarada, lo transversal va antes.
-
-- Meter **Radix** en `packages/ui` (es el bloqueo de fondo: sin primitivas no hay dialog/sheet/popover/toast/⌘K).
-- Primitivos por orden de uso real: `skeleton` · `toast`(sonner) · `dialog` · `alert-dialog` · `sheet` · `table` · `input` · `label` · `select` · `dropdown-menu` · `popover` · `tooltip` · `command`.
-- Migrar los **41 `<button>` crudos** a `<Button>`. Criterio de hecho: **0 `<button>` crudos**.
-- Skeletons con la forma real del contenido · **error boundaries** por ruta (hoy 0: un throw = pantalla blanca) · toasts con **deshacer** · confirmación en **toda** acción destructiva (hoy solo hay una; el reembolso no confirma).
-- **Rutas direccionables** (`/reservas/$id`): hoy no hay una sola ruta con parámetro, así que una reserva no se puede enviar por email a un compañero.
-- Cerrar el rename de la paleta camping y **decidir el modo oscuro** (existen 25 tokens `.dark` sin toggle: código muerto — o se conecta o se retira).
-- **C-BUG-1** y **C-BUG-2** caen aquí.
-
-### 2. **C1** — el planning como pieza de exhibición
-
-**Por qué después de C3**: necesita toasts para el "deshacer" de C1.4. Hacerlo antes obliga a rehacerlo.
-
-- El gesto que falta: **mover y estirar fechas arrastrando en horizontal** (re-cotizando siempre en servidor).
-- **Crear reserva arrastrando** sobre celdas vacías, y arrastrar desde la bandeja "sin asignar".
-- **Línea de "hoy"**, indicador de continuación, franja de temporada.
-- **C1.5 — el mapa de color por estado** desde `--chart-*`. Ojo: esto **condiciona C7**.
-
-### 3. **C4** — workflow real de recepción
-
-- **Check-in**: no existe ni en cliente ni en API (`TRANSITIONS` solo tiene confirm/cancel/no_show/complete). Decisión de dominio en el ADR: ¿estado `in_house` o campo `checked_in_at`?
-- **Huéspedes y documentos** editables — sin esto no hay parte de viajeros (requisito legal en un camping español).
-- "Cobrar todo lo pendiente" (hoy hay que teclear la cifra a mano), crear bloqueos desde la UI, **⌘K**.
-
-### 4. **C7** — plano del camping
-
-**Por qué aquí y no antes**: necesita el mapa de color de C1.5, o el plano y el planning no se parecerán — que es peor que no tener plano. Y necesitaba el seed denso de C0 (un plano con todo libre no enseña nada).
-
-- Base: `gestor-reservas/src/lib/components/camping-map.svelte` (**no** está en `logic2b-norte`).
-- Es **reescritura a React**, no copy-paste: se reutiliza el modelo y la geometría, que es la parte cara.
-- Decisión de fondo del ADR: **dónde vive la geometría** (inclinación: `tenants/{slug}/`, no columna en D1 — así no hay que migrar la D1 de todos los tenants).
-- Corregir los dos defectos del original: constantes duplicadas y decorado del recinto cableado. Añadir pan/zoom (no lo trae).
-
-### 5. **C5** — fotos (Higgsfield) · 6. **C6** — documentación
-
-- C5: 4 ficheros que el código **ya referencia** y no existen (`ut_prem` y `ut_moto` enseñan foto de parcela; galerías de 1 sola imagen). **Fijar prompts y confirmar la tanda antes de generar** — cuesta créditos. Capturas del planning para la landing: ya se pueden hacer, el planning está lleno.
-- C6: guía de recepcionista (la usuaria real es la de 55 años), guía de dueño, ficha técnica. Absorbe B4.
-
----
+1. **C4 — workflow de recepción** ← *siguiente*. Es el único hueco de **dominio** que queda (check-in). Todo lo demás del frente es pulido de UI sobre cosas que ya funcionan. Y desbloquea el color "en casa" que el planning y el plano (C7) ya pueden pintar.
+2. **C1 — gestos horizontales del planning** (mover/estirar fechas arrastrando, crear arrastrando, línea de "hoy"). Ya hereda de C3 el toast con Deshacer. Es profundo pero afecta a una sola pantalla.
+3. **C5 — fotos** (Higgsfield, cuesta créditos: **fijar prompts y confirmar la tanda con Andreu antes de generar**). Las capturas del planning/plano para la landing ya se pueden hacer (seed denso + plano en sitio).
+4. **C6 — documentación** (absorbe B4): guía recepcionista / dueño / ficha técnica, con marca Logic2B. Cero-riesgo, sin credenciales.
 
 ## Cosas que hay que saber antes de tocar nada
 
-- **`pnpm db:reset` hace `rm -rf .wrangler-demo`** → reinicia el Worker después, o queda apuntando a un directorio borrado y devuelve 500.
-- **El dashboard necesita el flag de dev**: `wrangler dev … --var LOGIC_CAMP_DEV_ORIGINS:1`. Ya está en `.claude/launch.json`. Sin él, login 403 en `:5173`. Ver `apps/dashboard/README.md`.
+- **`pnpm db:reset` hace `rm -rf .wrangler-demo`** → reinicia el Worker después.
+- **El dashboard necesita el flag de dev**: `wrangler dev … --var LOGIC_CAMP_DEV_ORIGINS:1` (ya en `.claude/launch.json`). Sin él, login 403 en `:5173`.
 - **Credenciales del seed** (contraseña `calasereno`): `direccion@` / `gerencia@` / `recepcion@` / `consulta@calasereno.example`.
-- **Cero mocks en el cliente** — es una propiedad del proyecto, no un accidente. "Modo fake" se resuelve en el seed.
-- **El seed debe seguir siendo determinista**: el reset nocturno de la demo depende de ello.
+- **Cero mocks en el cliente** — propiedad del proyecto. "Modo fake" se resuelve en el seed.
+- **El seed debe seguir siendo determinista** (el reset nocturno depende de ello).
+- **Verificación visual sin workerd**: si el contenedor no levanta wrangler, se puede renderizar SVG/HTML desde las funciones puras con Playwright/chromium (`/opt/pw-browsers`, `executablePath` + `--no-sandbox`), como se hizo con el plano en C7.
+- **El plano (C7) ya tiene `unitStateOn`** en `packages/config`: cuando C4 defina "en casa", añadir ese `kind` ahí y el plano lo pinta con un token nuevo (una línea).
 
 ## Decisiones abiertas que bloquean ADRs
 
-- **C7** — dónde vive la geometría del plano (D1 vs `tenants/{slug}/`).
-- **C2** — modo oscuro: ¿se conecta o se retira?
+- **C4** — check-in: ¿estado `in_house` o campo `checked_in_at`? (afecta a TRANSITIONS, planning, plano, informes).
+- **C1** — modo oscuro: sigue detrás de C1.5 (el mapa de color definitivo del planning). Los `.dark` ya no están rotos, pero no hay toggle.
 - **B-ii** — documentación: herramienta y audiencia (afecta a C6).
-- **B-v** — ¿el dashboard de un tenant puede teñir `--primary` con su color, o se queda neutro Logic2B?

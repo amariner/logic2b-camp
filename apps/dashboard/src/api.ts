@@ -62,6 +62,13 @@ export type PlanningData = {
   blocks: PlanningBlock[];
 };
 
+// ---------- tipos de /api/admin/map (el plano — ADR 0021, C7) ----------
+
+import type { PlanoDescriptor } from '@logic-camp/config';
+export type { PlanoDescriptor };
+/** `plano: null` = el camping no tiene geometría propia → el dashboard degrada a autoPlano. */
+export type MapData = { plano: PlanoDescriptor | null };
+
 // ---------- tipos de /api/admin/bookings/:id (la ficha) ----------
 
 export type PriceLine = {

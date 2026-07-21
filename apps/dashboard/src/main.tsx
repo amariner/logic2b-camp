@@ -26,6 +26,7 @@ import {
   DoorOpen,
   Inbox,
   LogOut,
+  Map,
   Settings,
   Tag,
   Tent,
@@ -47,6 +48,7 @@ import Login from './pages/Login';
 import Notificaciones from './pages/Notificaciones';
 import Pagos from './pages/Pagos';
 import Planning from './pages/Planning';
+import Plano from './pages/Plano';
 import Reservas from './pages/Reservas';
 import Solicitudes from './pages/Solicitudes';
 import Tarifas from './pages/Tarifas';
@@ -72,6 +74,7 @@ const NAV_GROUPS: { label: TKey; items: [string, TKey, LucideIcon][] }[] = [
     label: 'nav.grupo.operacion',
     items: [
       ['/', 'nav.planning', CalendarRange],
+      ['/plano', 'nav.plano', Map],
       ['/llegadas', 'nav.llegadas', DoorOpen],
       ['/solicitudes', 'nav.solicitudes', Inbox],
     ],
@@ -220,8 +223,26 @@ const rootRoute = createRootRoute({
   errorComponent: RouteError,
   notFoundComponent: RouteNotFound,
 });
+// El plano y el planning comparten fecha+unidad por la URL (ADR 0021 §4): el
+// salto plano ↔ planning conserva ambas. Search laxo y validado.
+const mapSearch = (s: Record<string, unknown>): { date?: string; unit?: string } => ({
+  date: typeof s.date === 'string' ? s.date : undefined,
+  unit: typeof s.unit === 'string' ? s.unit : undefined,
+});
+
 const routes = [
-  createRoute({ getParentRoute: () => rootRoute, path: '/', component: Planning }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: Planning,
+    validateSearch: mapSearch,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/plano',
+    component: Plano,
+    validateSearch: mapSearch,
+  }),
   createRoute({ getParentRoute: () => rootRoute, path: '/llegadas', component: Llegadas }),
   createRoute({ getParentRoute: () => rootRoute, path: '/solicitudes', component: Solicitudes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/reservas', component: Reservas }),

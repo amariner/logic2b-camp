@@ -8,8 +8,10 @@
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { Button, EmptyState, Skeleton, toast } from '@logic-camp/ui';
-import { useMemo, useRef, useState } from 'react';
+import { Map as MapIcon } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   apiGet,
   apiPatch,
@@ -94,8 +96,11 @@ function PlanningSkeleton() {
 }
 
 export default function Planning() {
+  // date+unit por la URL: el salto plano ↔ planning conserva ambas (ADR 0021 §4)
+  const search = useSearch({ strict: false }) as { date?: string; unit?: string };
+  const navigate = useNavigate();
   const [zoomId, setZoomId] = useState<(typeof ZOOMS)[number]['id']>('mes');
-  const [anchor, setAnchor] = useState(() => iso(new Date()));
+  const [anchor, setAnchor] = useState(() => search.date ?? iso(new Date()));
   const zoom = ZOOMS.find((z) => z.id === zoomId)!;
   const from = anchor;
   const to = addDays(anchor, zoom.days);
@@ -328,6 +333,21 @@ export default function Planning() {
     openerRef.current = null;
   };
 
+  // llegada desde el plano (ADR 0021 §4): centrar la unidad, resaltarla y abrir su
+  // ficha si esa noche está ocupada. Una sola vez, para no pelear con el scroll manual.
+  const focusedOnce = useRef(false);
+  useEffect(() => {
+    if (focusedOnce.current || !data || !search.unit) return;
+    const idx = rows.findIndex((r) => r.kind === 'unit' && r.unit.id === search.unit);
+    if (idx < 0) return;
+    focusedOnce.current = true;
+    virtualizer.scrollToIndex(idx, { align: 'center' });
+    const occ = data.bookings.find(
+      (b) => b.unitId === search.unit && b.dateFrom <= from && from < b.dateTo,
+    );
+    if (occ) setOpenId(occ.id);
+  }, [data, rows, from, search.unit, virtualizer]);
+
   const days = useMemo(
     () => Array.from({ length: zoom.days }, (_, i) => addDays(from, i)),
     [from, zoom.days],
@@ -396,6 +416,15 @@ export default function Planning() {
               </Button>
             ))}
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate({ to: '/plano', search: { date: from, unit: search.unit } })}
+            title={t('planning.verEnPlano')}
+          >
+            <MapIcon className="size-4" />
+            {t('planning.verEnPlano')}
+          </Button>
           {data && (
             <p className="tnum ml-auto text-[12px] text-muted-foreground">
               {t('planning.unidades', { n: data.units.length })} ·{' '}
@@ -497,7 +526,7 @@ export default function Planning() {
                       ) : (
                         <div className="flex h-full border-b border-border/40">
                           <div
-                            className="tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium"
+                            className={`tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium ${row.unit.id === search.unit ? 'text-primary font-semibold' : ''}`}
                             style={{ width: LABEL_W }}
                           >
                             {row.unit.code}

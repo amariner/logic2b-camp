@@ -253,9 +253,11 @@ Petición explícita: *"que todo tenga una esencia Logic2B"* y *"una documentaci
 
 ---
 
-## C7 · Plano del camping
+## C7 · Plano del camping — ✅ HECHO (ADR 0021, 2026-07-21)
 
 > **Pedido por Andreu (2026-07-20)** revisando el dashboard. Es una pieza de exhibición de primer orden: un director de camping **reconoce su propio camping** en la pantalla, y eso es un tipo de conexión que un tape chart no da. Complementa al planning, no lo sustituye — el planning responde *"¿cuándo?"*, el plano responde *"¿dónde?"*.
+>
+> **Resuelto en ADR 0021.** La decisión de fondo (§C7.1, dónde vive la geometría) se cerró por una **tercera vía**: descriptor declarativo en `tenants/{slug}/plano.ts` → `modules.plano` (columna JSON existente, **cero migración**) → `GET /api/admin/map` genérico → el dashboard lo expande con `expandPlano` (`packages/config`, puro y testeado). Los dos defectos del original cerrados (constantes únicas en `PLANO_GRID`, decorado como dato). `autoPlano` da degradación honesta. `CampingMap` (SVG, **pan/zoom** nuevo, teclado/foco/tooltip, colores `--lc-status-*` del planning) + página `Plano` (selector de fecha, estado en vivo, click→ficha, salto plano↔planning conservando unidad+fecha). Verificado visualmente con Playwright. **Diferido**: crear reserva/bloqueo desde el plano (C1.2/C4.4).
 
 ### C7.0 — El material de partida (ya existe, verificado)
 
@@ -309,7 +311,7 @@ Y lo que **no** trae: **no hay pan/zoom** (solo escalado por `viewBox`). Para 30
 
 Depende de **C0.2** (con el seed vacío, un plano en el que casi todo está libre no enseña nada) y se apoya en **C2** (tooltip/popover del DS) y **C1.5** (mapa de color de estado compartido). Por eso va después, no porque sea menos importante.
 
-> Alcance de esta noche: **registrado y pensado, no construido.** Se abre su propio ADR cuando toque.
+> ~~Alcance de esta noche: registrado y pensado, no construido.~~ **Construido en ADR 0021 (2026-07-21).**
 
 ---
 

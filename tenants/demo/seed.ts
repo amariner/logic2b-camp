@@ -5,6 +5,7 @@
  * para el reset nocturno de la Fase 10. Emite sentencias SQL.
  */
 import type { ContactInfo, Occupancy, PriceBreakdown, PriceLine } from '@logic-camp/db/schema';
+import { buildDemoPlano } from './plano';
 
 // ---------- utilidades deterministas ----------
 
@@ -984,6 +985,10 @@ export function generateSeed(anchorYear: number): SeedData {
             notifyTo: 'recepcion@calasereno.example',
             from: 'Camping Cala Sereno <reservas@calasereno.example>',
           },
+          // Geometría del plano del camping (ADR 0021, C7). Descriptor declarativo
+          // materializado aquí desde tenants/demo/plano.ts; GET /api/admin/map lo
+          // sirve al dashboard. NO es una columna nueva ni obliga a migrar la D1.
+          plano: buildDemoPlano(),
         },
       },
     ],

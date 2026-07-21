@@ -54,6 +54,13 @@ const art = {
       <path d="m40 40 14 14" strokeLinecap="round" />
     </>
   ),
+  /* Plano / mapa doblado — para el plano del camping sin unidades (C7). */
+  map: (
+    <>
+      <path d="M8 16 24 10l16 6 16-6v38l-16 6-16-6-16 6V16Z" />
+      <path d="M24 10v38M40 16v38" strokeOpacity="0.45" />
+    </>
+  ),
 } as const;
 
 export type EmptyArt = keyof typeof art;

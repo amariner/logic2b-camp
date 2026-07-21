@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { expandPlano, type PlanoDescriptor } from '@logic-camp/config';
 import { generateSeed, nightsBetween, seedToSql } from './seed';
 
 const data = generateSeed(2026);
@@ -25,6 +26,18 @@ describe('seed demo Cala Sereno', () => {
     expect(data.extras.length).toBe(12);
     expect(data.bookings.length).toBeGreaterThanOrEqual(38);
     expect(data.enquiries.length).toBe(15);
+  });
+
+  it('PLANO (C7): modules.plano coloca TODAS las unidades y solo unidades que existen', () => {
+    const plano = (data.tenants[0]!.modules as { plano?: PlanoDescriptor }).plano;
+    expect(plano).toBeDefined();
+    const placed = expandPlano(plano!).rects.map((r) => r.code);
+    const real = data.units.map((u) => u.code as string);
+    // cada unidad del seed tiene un sitio en el plano
+    expect(new Set(placed)).toEqual(new Set(real));
+    // sin códigos huérfanos ni duplicados
+    expect(placed.length).toBe(real.length);
+    expect(new Set(placed).size).toBe(placed.length);
   });
 
   it('incluye los casos límite: cancelada, no-show, sin asignar, larga estancia, grupo', () => {

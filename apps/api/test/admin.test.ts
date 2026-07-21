@@ -535,6 +535,48 @@ describe('catálogo', () => {
   });
 });
 
+describe('plano del camping (ADR 0021)', () => {
+  // IP propia: no compartir el cubo de rate-limit (60/min) del resto del fichero
+  // (mismo patrón que "pagos" — ver PROGRESS sesión 24).
+  const MAP_IP = { 'cf-connecting-ip': 'test-plano' };
+  const withMapIp = (cookie: string) => ({ headers: { cookie, ...MAP_IP } });
+
+  it('sin modules.plano → { plano: null } (degradación, readonly puede)', async () => {
+    const res = await app.request('/api/admin/map', withMapIp(readonly), envA);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ plano: null });
+  });
+
+  it('con modules.plano → lo devuelve tal cual', async () => {
+    const db = createDb(env.DB);
+    const row = (await db.select().from(schema.tenants).where(eq(schema.tenants.id, 'ten_alfa')))[0]!;
+    const plano = {
+      version: 1,
+      decor: [],
+      blocks: [{ id: 'z', label: 'Z', cell: 'pitch', x: 0, y: 0, cols: 2, units: ['A-01'] }],
+    };
+    await db
+      .update(schema.tenants)
+      .set({ modules: { ...(row.modules as Record<string, unknown>), plano } })
+      .where(eq(schema.tenants.id, 'ten_alfa'));
+
+    const res = await app.request('/api/admin/map', withMapIp(readonly), envA);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ plano });
+
+    // restaurar para no contaminar otros tests
+    await db
+      .update(schema.tenants)
+      .set({ modules: row.modules as Record<string, unknown> })
+      .where(eq(schema.tenants.id, 'ten_alfa'));
+  });
+
+  it('sin sesión → 401', async () => {
+    const res = await app.request('/api/admin/map', { headers: MAP_IP }, envA);
+    expect(res.status).toBe(401);
+  });
+});
+
 describe('inventario', () => {
   it('baja de servicio: reception 403, manager 200; reasignar hacia inactiva se rechaza', async () => {
     const catalog = await app.request(
