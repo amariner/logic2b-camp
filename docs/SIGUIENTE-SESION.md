@@ -9,22 +9,17 @@
 
 Frentes B y C **cerrados**, y la **Fase 11 con sus cuatro bloques hechos** (aislamiento, RGPD, observabilidad, copias). Lo que queda del producto ya no es construir: es **desplegar lo de esta sesión** y **conseguir el primer camping real**. Casi todo lo demás está bloqueado por credenciales o por no tener cliente.
 
-## ⚠️ Lo primero de la próxima sesión, antes que nada
+## ✅ Desplegado y verificado en producción (2026-07-21, versión `f4288603`)
 
-**La Fase 11 NO está desplegada.** El commit está en `main` pero la demo sigue sirviendo la versión anterior, y hay una **migración de D1 nueva** (`0005_rgpd.sql`, aditiva: tres columnas nulables, sin backfill).
+La Fase 11 **está en vivo** en `camp.logic2b.com`. Verificado tras el despliegue:
 
-```bash
-cd apps/api && pnpm run deploy:demo   # compone site+web+dashboard, migra la D1 remota y despliega
-```
+- **Migración `0005_rgpd.sql` aplicada en la D1 remota** — `d1_migrations` la lista y `guests` tiene `anonymized_at` y `gdpr_consent_version`.
+- **Páginas legales** `/demo/privacidad`, `/aviso-legal`, `/cookies` y `/demo/fr/privacidad` → 200, con los datos del tenant interpolados (sin marcadores `__X__` sin rellenar) y **0 errores de consola**.
+- **Ficha técnica corregida** en `/docs/tecnica/datos-rgpd/` → ya dice "42 rutas barridas" y la precisión sobre el registro de auditoría.
+- **Rutas RGPD nuevas desplegadas**: `/api/admin/guests/:id/export` y `/api/admin/rgpd/retention` responden **401** sin sesión (existen y exigen rol).
+- **`notFound` en JSON**: `/api/no-existe` → `{"error":"not_found","path":"/api/no-existe"}` en vez del HTML por defecto de Hono.
 
-Después, comprobar en vivo:
-
-- `camp.logic2b.com/docs/tecnica/datos-rgpd/` → la ficha corregida
-- `camp.logic2b.com/demo/privacidad`, `/aviso-legal`, `/cookies` → las páginas legales nuevas
-- Ficha de cliente en el dashboard → "Protección de datos" con export, supresión y consentimiento
-- Y el caso bonito: **suprimir un cliente con estancia reciente** debe responder con la fecha exacta desde la que se podrá
-
-Los assets tardan ~30 s en propagar: 404 mezclados con 200 justo después **no** es un fallo.
+**Lo único que queda por comprobar a mano** (necesita sesión en el dashboard): la ficha de cliente → bloque "Protección de datos", y el caso bonito — **suprimir un cliente con estancia reciente debe responder con la fecha exacta** desde la que se podrá. Credenciales del seed abajo.
 
 ## ▶ Prompt para pegar
 
@@ -38,12 +33,14 @@ por barrido de las 42 rutas, RGPD operativo (export, supresión que anonimiza y
 niega con fecha, consentimiento con versión, retención en cron, páginas legales),
 observabilidad mínima y copias con runbook. pnpm check verde 42/42.
 
-PRIMERO, ANTES DE NADA: la Fase 11 no está desplegada y trae migración de D1 nueva
-(0005_rgpd.sql, aditiva). Ejecuta `cd apps/api && pnpm run deploy:demo` y verifica
-en vivo las páginas legales, la ficha técnica corregida y el bloque de protección
-de datos en la ficha de cliente. Los assets tardan ~30 s en propagar.
+La Fase 11 YA ESTÁ DESPLEGADA y verificada en camp.logic2b.com (versión f4288603,
+migración 0005 aplicada en la D1 remota). Lo único sin comprobar a mano es el
+bloque "Protección de datos" de la ficha de cliente en el dashboard, que necesita
+sesión: entra con gerencia@calasereno.example / calasereno y prueba suprimir un
+cliente con estancia reciente — debe responder con la fecha exacta desde la que
+se podrá, no con un error genérico.
 
-Después, elige objetivo. Mi recomendación en orden:
+Elige objetivo. Mi recomendación en orden:
 
 1. FASE 9 — primer alta real de un tenant. Es lo único que queda para cerrar una
    fase entera y lo que de verdad desbloquea el negocio. `pnpm new:camping` está
@@ -80,7 +77,7 @@ docs/SIGUIENTE-SESION.md apuntando a lo que siga.
 
 | Candidato                              | Estado                                    | Bloqueo                                                                       |
 | -------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------- |
-| **Desplegar la Fase 11**               | ⬜ Pendiente                              | **Ninguno** ← hazlo primero                                                   |
+| **Desplegar la Fase 11**               | ✅ Hecho 2026-07-21 (versión `f4288603`)  | —                                                                             |
 | **Fase 9 · Alta real de un tenant**    | 🟨 Solo falta `--apply`                   | Credenciales + Andreu presente                                                |
 | **Parte de viajeros (SES.Hospedajes)** | ⬜ Sin empezar                            | Ninguno técnico — es fase propia con su ADR                                   |
 | Fase 11 · Sentry/Logpush               | ⬜ Enganche listo en un solo punto        | Credenciales                                                                  |

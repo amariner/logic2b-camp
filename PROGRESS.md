@@ -58,6 +58,8 @@ La última es la peor: no es una exageración, es **una invitación explícita a
 
 **`pnpm check`**: ✅ **verde 42/42** — API **172/172**, `@tenant/demo` 18/18, sin el segfault de workerd (sesión en la máquina de Andreu).
 
+**Desplegado en producción** el mismo día (versión `f4288603`): migración `0005_rgpd.sql` aplicada en la D1 remota (verificado en `d1_migrations` y en `pragma_table_info('guests')`), páginas legales en vivo con los datos del tenant interpolados y 0 errores de consola, ficha técnica corregida servida, rutas `/guests/:id/export` y `/rgpd/retention` respondiendo 401 sin sesión, y `notFound` devolviendo JSON en vez del HTML por defecto de Hono. Queda una comprobación manual con sesión: el bloque "Protección de datos" de la ficha de cliente.
+
 **Siguiente paso**: ver `docs/SIGUIENTE-SESION.md`.
 
 ### Sesión 36 — 2026-07-21 · **Frente C — C6: documentación** (ADR 0025) · **cierra el Frente C**
