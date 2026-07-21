@@ -48,7 +48,8 @@
     "kicker": "L'element distintiu",
     "titulo": "El planning que de debò fa servir la teva recepció",
     "texto": "Totes les teves unitats, tot l'estiu, en una sola pantalla. Colors per estat, bloquejos a la vista, i reassignar una unitat és arrossegar la reserva —sense cancel·lar ni tornar a cobrar. Ràpid fins i tot amb centenars de parcel·les.",
-    "cta": "Veure-ho funcionant a la demo"
+    "cta": "Veure-ho funcionant a la demo",
+    "capturaAlt": "Vista del planning del gestor amb reserves reals d'un càmping a l'agost"
   },
   "niveles": {
     "titulo": "Comença per on ets",

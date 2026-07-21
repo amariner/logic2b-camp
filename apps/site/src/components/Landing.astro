@@ -91,39 +91,17 @@ const c = getContent(locale);
           class="mt-6 inline-flex items-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
         >{c.planning.cta} →</a>
       </div>
-      {/* Maqueta de planning con los MISMOS tokens --lc-status-* que el planning real
-        (ADR 0020 §2.2): si la landing y el producto enseñaran colores distintos para
-        "pendiente", la demo desmentiría a la propia página de venta.
-        Se sustituye por captura real de la demo cuando toque (BACKLOG / C5.2). */}
-      <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
-        <div class="mb-3 flex items-center gap-2">
-          <span class="size-2 rounded-full bg-status-confirmed"></span>
-          <span class="size-2 rounded-full bg-status-pending"></span>
-          <span class="size-2 rounded-full bg-status-info"></span>
-          <span class="ml-2 text-xs text-muted-foreground tnum">Agosto · 12 unidades</span>
-        </div>
-        <div class="space-y-1.5">
-          {
-            [
-              { l: '35%', w: '30%', s: 'bg-primary' },
-              { l: '10%', w: '45%', s: 'bg-primary' },
-              { l: '55%', w: '25%', s: 'bg-status-pending text-status-pending-fg' },
-              { l: '20%', w: '35%', s: 'bg-primary' },
-              { l: '48%', w: '40%', s: 'bg-status-blocked/40' },
-              { l: '5%', w: '20%', s: 'bg-primary' },
-              { l: '60%', w: '30%', s: 'bg-primary' },
-              { l: '25%', w: '50%', s: 'bg-status-pending text-status-pending-fg' },
-            ].map((r) => (
-              <div class="relative h-6 rounded bg-muted/60">
-                <div
-                  class:list={['absolute top-0 h-6 rounded', r.s]}
-                  style={`left:${r.l};width:${r.w}`}
-                />
-              </div>
-            ))
-          }
-        </div>
-      </div>
+      {/* Captura real del planning del gestor, con datos reales del generador de
+        seed (C5.2 / ADR 0024): "fake" se resuelve siempre en el seed, nunca con
+        una maqueta en el cliente. */}
+      <img
+        src="/captura-planning.webp"
+        alt={c.planning.capturaAlt}
+        class="rounded-xl border border-border shadow-sm"
+        loading="lazy"
+        width="1376"
+        height="859"
+      />
     </div>
   </section>
 
