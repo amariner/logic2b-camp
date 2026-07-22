@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Guías de Logic Camp — recepción, dueño y ficha técnica",
-      "description": "Cómo se usa Logic Camp: la guía de recepción paso a paso, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
+      "title": "Guías de Logic Camp — recepción, gestión, dueño y ficha técnica",
+      "description": "Cómo se usa Logic Camp: la guía de recepción paso a paso, la de gestión del día a día, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
     },
     "titulo": "Guías de Logic Camp",
-    "subtitulo": "Tres guías, tres personas distintas. Cada una escrita para quien la va a leer.",
+    "subtitulo": "Cuatro guías, cuatro personas distintas. Cada una escrita para quien la va a leer.",
     "indice": "En esta guía",
     "empezar": "Empezar",
     "anterior": "Anterior",
@@ -205,6 +205,11 @@
         "nombre": "Guía de recepción",
         "para": "Para quien está en el mostrador",
         "texto": "El día a día del programa, tarea por tarea: entrar, ver quién llega, hacer el check-in, cobrar, mover una reserva en el planning y cerrar la salida. Sin palabras raras."
+      },
+      "gestion": {
+        "nombre": "Guía de gestión",
+        "para": "Para quien lleva el camping",
+        "texto": "Las pantallas de gerencia: leer los números del negocio en Informes, cambiar las tarifas por temporada, y configurar el camping y sus avisos por correo."
       },
       "dueno": {
         "nombre": "Guía del dueño",

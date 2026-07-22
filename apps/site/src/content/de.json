@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Logic-Camp-Anleitungen — Rezeption, Inhaber und technisches Datenblatt",
-      "description": "So wird Logic Camp benutzt: die Rezeptionsanleitung Schritt für Schritt, der Inhaber-Leitfaden zu den vier Stufen und das technische Datenblatt für Ihren IT-Menschen."
+      "title": "Logic-Camp-Anleitungen — Rezeption, Verwaltung, Inhaber und technisches Datenblatt",
+      "description": "So wird Logic Camp benutzt: die Rezeptionsanleitung Schritt für Schritt, die Verwaltungsanleitung für den Alltag, der Inhaber-Leitfaden zu den vier Stufen und das technische Datenblatt für Ihren IT-Menschen."
     },
     "titulo": "Logic-Camp-Anleitungen",
-    "subtitulo": "Drei Anleitungen, drei verschiedene Menschen. Jede geschrieben für die Person, die sie lesen wird.",
+    "subtitulo": "Vier Anleitungen, vier verschiedene Menschen. Jede geschrieben für die Person, die sie lesen wird.",
     "indice": "In dieser Anleitung",
     "empezar": "Anfangen",
     "anterior": "Zurück",
@@ -205,6 +205,11 @@
         "nombre": "Rezeptionsanleitung",
         "para": "Für die Person am Empfang",
         "texto": "Der Alltag der Software, Aufgabe für Aufgabe: anmelden, sehen wer anreist, einchecken, kassieren, eine Buchung im Belegungsplan verschieben und die Abreise abschließen. Ohne Fachchinesisch."
+      },
+      "gestion": {
+        "nombre": "Verwaltungsanleitung",
+        "para": "Für die Person, die den Campingplatz führt",
+        "texto": "Die Verwaltungsbildschirme: die Geschäftszahlen in Berichten lesen, die Preise pro Saison ändern und den Campingplatz und seine E-Mail-Benachrichtigungen einrichten."
       },
       "dueno": {
         "nombre": "Inhaber-Leitfaden",

@@ -26,11 +26,10 @@ const MAPA: Record<string, string | null> = {
   '/inventario': 'recepcion/bloqueos',
   '/pagos': 'recepcion/cobrar',
   '/notificaciones': 'recepcion/problemas',
-  // Pantallas de gestión (gerencia/dirección), fuera del alcance de la guía de
-  // recepción de C6. Pendientes en BACKLOG.
-  '/informes': null,
-  '/tarifas': null,
-  '/ajustes': null,
+  // Pantallas de gestión (gerencia/dirección): su propia guía, añadida tras C6.
+  '/informes': 'gestion/informes',
+  '/tarifas': 'gestion/tarifas',
+  '/ajustes': 'gestion/ajustes',
 };
 
 /**

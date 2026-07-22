@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Guies de Logic Camp — recepció, propietari i fitxa tècnica",
-      "description": "Com s'utilitza Logic Camp: la guia de recepció pas a pas, la guia del propietari amb els quatre nivells, i la fitxa tècnica per al teu informàtic."
+      "title": "Guies de Logic Camp — recepció, gestió, propietari i fitxa tècnica",
+      "description": "Com s'utilitza Logic Camp: la guia de recepció pas a pas, la de gestió del dia a dia, la guia del propietari amb els quatre nivells, i la fitxa tècnica per al teu informàtic."
     },
     "titulo": "Guies de Logic Camp",
-    "subtitulo": "Tres guies, tres persones diferents. Cadascuna escrita per a qui la llegirà.",
+    "subtitulo": "Quatre guies, quatre persones diferents. Cadascuna escrita per a qui la llegirà.",
     "indice": "En aquesta guia",
     "empezar": "Començar",
     "anterior": "Anterior",
@@ -205,6 +205,11 @@
         "nombre": "Guia de recepció",
         "para": "Per a qui és al taulell",
         "texto": "El dia a dia del programa, tasca per tasca: entrar, veure qui arriba, fer el check-in, cobrar, moure una reserva al planning i tancar la sortida. Sense paraules estranyes."
+      },
+      "gestion": {
+        "nombre": "Guia de gestió",
+        "para": "Per a qui porta el càmping",
+        "texto": "Les pantalles de gerència: llegir els números del negoci a Informes, canviar les tarifes per temporada, i configurar el càmping i els seus avisos per correu."
       },
       "dueno": {
         "nombre": "Guia del propietari",

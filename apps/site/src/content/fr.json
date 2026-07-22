@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Guides de Logic Camp — réception, propriétaire et fiche technique",
-      "description": "Comment on utilise Logic Camp : le guide de réception pas à pas, le guide du propriétaire avec les quatre niveaux, et la fiche technique pour votre informaticien."
+      "title": "Guides de Logic Camp — réception, gestion, propriétaire et fiche technique",
+      "description": "Comment on utilise Logic Camp : le guide de réception pas à pas, celui de la gestion au quotidien, le guide du propriétaire avec les quatre niveaux, et la fiche technique pour votre informaticien."
     },
     "titulo": "Guides de Logic Camp",
-    "subtitulo": "Trois guides, trois personnes différentes. Chacun écrit pour celui ou celle qui va le lire.",
+    "subtitulo": "Quatre guides, quatre personnes différentes. Chacun écrit pour celui ou celle qui va le lire.",
     "indice": "Dans ce guide",
     "empezar": "Commencer",
     "anterior": "Précédent",
@@ -205,6 +205,11 @@
         "nombre": "Guide de réception",
         "para": "Pour la personne au comptoir",
         "texto": "Le quotidien du logiciel, tâche par tâche : se connecter, voir qui arrive, faire le check-in, encaisser, déplacer une réservation sur le planning et clôturer le départ. Sans jargon."
+      },
+      "gestion": {
+        "nombre": "Guide de gestion",
+        "para": "Pour la personne qui gère le camping",
+        "texto": "Les écrans de gestion : lire les chiffres de l'activité dans Rapports, modifier les tarifs par saison, et configurer le camping et ses alertes par e-mail."
       },
       "dueno": {
         "nombre": "Guide du propriétaire",

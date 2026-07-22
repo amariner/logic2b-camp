@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Logic Camp-handleidingen — receptie, eigenaar en technisch overzicht",
-      "description": "Hoe Logic Camp wordt gebruikt: de receptiehandleiding stap voor stap, de eigenaarsgids met de vier niveaus, en het technische overzicht voor uw IT'er."
+      "title": "Logic Camp-handleidingen — receptie, beheer, eigenaar en technisch overzicht",
+      "description": "Hoe Logic Camp wordt gebruikt: de receptiehandleiding stap voor stap, de beheerhandleiding voor de dagelijkse gang van zaken, de eigenaarsgids met de vier niveaus, en het technische overzicht voor uw IT'er."
     },
     "titulo": "Logic Camp-handleidingen",
-    "subtitulo": "Drie handleidingen, drie verschillende mensen. Elk geschreven voor wie hem echt gaat lezen.",
+    "subtitulo": "Vier handleidingen, vier verschillende mensen. Elk geschreven voor wie hem echt gaat lezen.",
     "indice": "In deze handleiding",
     "empezar": "Beginnen",
     "anterior": "Vorige",
@@ -205,6 +205,11 @@
         "nombre": "Receptiehandleiding",
         "para": "Voor wie achter de balie staat",
         "texto": "De dagelijkse gang van zaken in het programma, taak voor taak: inloggen, zien wie er aankomt, inchecken, afrekenen, een boeking verplaatsen in de planning en het vertrek afsluiten. Zonder vaktaal."
+      },
+      "gestion": {
+        "nombre": "Beheerhandleiding",
+        "para": "Voor wie de camping runt",
+        "texto": "De beheerschermen: de cijfers van het bedrijf lezen in Rapporten, de tarieven per seizoen wijzigen, en de camping en de e-mailmeldingen instellen."
       },
       "dueno": {
         "nombre": "Eigenaarsgids",
