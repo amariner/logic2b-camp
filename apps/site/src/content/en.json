@@ -186,11 +186,11 @@
   },
   "docs": {
     "seo": {
-      "title": "Logic Camp guides — front desk, owner and technical sheet",
-      "description": "How Logic Camp is used: the step-by-step front desk guide, the owner's guide to the four plans, and the technical sheet for your IT person."
+      "title": "Logic Camp guides — front desk, management, owner and technical sheet",
+      "description": "How Logic Camp is used: the step-by-step front desk guide, the day-to-day management guide, the owner's guide to the four plans, and the technical sheet for your IT person."
     },
     "titulo": "Logic Camp guides",
-    "subtitulo": "Three guides, three different people. Each one written for whoever will actually read it.",
+    "subtitulo": "Four guides, four different people. Each one written for whoever will actually read it.",
     "indice": "In this guide",
     "empezar": "Start",
     "anterior": "Previous",
@@ -205,6 +205,11 @@
         "nombre": "Front desk guide",
         "para": "For whoever is at the desk",
         "texto": "The day-to-day of the software, task by task: log in, see who is arriving, check them in, take payment, move a booking on the planner and close the departure. No jargon."
+      },
+      "gestion": {
+        "nombre": "Management guide",
+        "para": "For whoever runs the campsite",
+        "texto": "The management screens: read your business numbers in Reports, change the rates by season, and configure the campsite and its email alerts."
       },
       "dueno": {
         "nombre": "Owner's guide",

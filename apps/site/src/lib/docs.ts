@@ -13,8 +13,12 @@
 import type { MarkdownInstance } from 'astro';
 import { DEFAULT_LOCALE, type Locale } from './i18n';
 
-/** Las tres audiencias del ADR 0025 §4. El orden es el del índice. */
-export const GUIAS = ['recepcion', 'dueno', 'tecnica'] as const;
+/**
+ * Las audiencias del ADR 0025 §4. El orden es el del índice, y es una escalera:
+ * mostrador → llevar el negocio → decidir → informático. `gestion` (informes,
+ * tarifas, ajustes) se añadió como remate de BACKLOG tras C6.
+ */
+export const GUIAS = ['recepcion', 'gestion', 'dueno', 'tecnica'] as const;
 export type Guia = (typeof GUIAS)[number];
 
 export type DocFrontmatter = {
