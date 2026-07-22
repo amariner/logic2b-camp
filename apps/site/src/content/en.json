@@ -18,7 +18,8 @@
     "subtitulo": "A public website that sells on its own and a manager your front desk understands from day one. No spreadsheets, no double bookings, no portal keeping its commission.",
     "ctaDemo": "Request a demo",
     "ctaVer": "See the live demo",
-    "nota": "A new campsite goes live in an afternoon. No lock-in to start."
+    "nota": "A new campsite goes live in an afternoon. No lock-in to start.",
+    "capturaWebAlt": "A campsite's public website built with Logic Camp, with its availability search"
   },
   "problema": {
     "titulo": "What's costing you money every August",
@@ -52,7 +53,8 @@
           "A real availability engine, not a mockup",
           "Direct booking with no portal commission",
           "6 languages, responsive, accessible"
-        ]
+        ],
+        "capturaAlt": "A campsite's public website home page with the date search"
       },
       {
         "titulo": "The front-desk manager",
@@ -61,7 +63,8 @@
           "Visual planner with drag and drop",
           "Today's arrivals, departures and payments",
           "Each guest's file and history"
-        ]
+        ],
+        "capturaAlt": "The manager's planner with a month of bookings on screen"
       }
     ]
   },
@@ -70,7 +73,13 @@
     "titulo": "The planner your front desk actually uses",
     "texto": "Every unit, all summer, on one screen. Colours by status, blocks in plain sight, and reassigning a unit is dragging the booking —no cancelling, no charging again. Fast even with hundreds of pitches.",
     "cta": "See it working in the demo",
-    "capturaAlt": "View of the planner with real bookings for a campsite in August"
+    "capturaAlt": "View of the planner with real bookings for a campsite in August",
+    "planoAlt": "The interactive campsite map with the state of each unit",
+    "puntos": [
+      "Drag to reassign — no cancelling, no charging again",
+      "Colours by status and blocks in plain sight",
+      "Also as a map: every unit on your campsite's plan"
+    ]
   },
   "niveles": {
     "titulo": "Start where you are",
@@ -117,7 +126,8 @@
         "aMedida": true
       }
     ],
-    "nota": "Pricing tailored to your campsite. Ask us for a proposal."
+    "nota": "Pricing tailored to your campsite. Ask us for a proposal.",
+    "recomendado": "Recommended"
   },
   "alta": {
     "titulo": "From zero to selling, in an afternoon",

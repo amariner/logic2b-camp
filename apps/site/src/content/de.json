@@ -1,0 +1,221 @@
+{
+  "seo": {
+    "title": "Logic Camp — Website und Rezeption Ihres Campingplatzes, gelöst",
+    "description": "Software für Campingplätze: moderne öffentliche Website, echtes Buchungssystem und Rezeptionsverwaltung in einem System. In einem Nachmittag online. Von Logic2B, Spanien."
+  },
+  "nav": {
+    "producto": "Produkt",
+    "niveles": "Pakete",
+    "planning": "Der Belegungsplan",
+    "docs": "Anleitungen",
+    "demo": "Demo ansehen",
+    "contacto": "Demo anfragen",
+    "verDemo": "Live-Demo ansehen"
+  },
+  "hero": {
+    "kicker": "Software für Campingplätze · von Logic2B",
+    "titulo": "Website und Rezeption Ihres Campingplatzes, in einem System.",
+    "subtitulo": "Eine öffentliche Website, die von allein verkauft, und eine Verwaltung, die Ihre Rezeption vom ersten Tag an versteht. Ohne Tabellenkalkulationen, ohne Doppelbuchungen, ohne Abhängigkeit von einem Portal, das seine Provision einbehält.",
+    "ctaDemo": "Demo anfragen",
+    "ctaVer": "Live-Demo ansehen",
+    "nota": "Ein neuer Campingplatz geht in einem Nachmittag online. Ohne Bindung zum Start.",
+    "capturaWebAlt": "Die öffentliche Website eines Campingplatzes mit Logic Camp, mit ihrer Verfügbarkeitssuche"
+  },
+  "problema": {
+    "titulo": "Was Sie heute jeden August Geld kostet",
+    "puntos": [
+      {
+        "titulo": "Ihre Website bucht nicht",
+        "texto": "Ein Formular, das per E-Mail eingeht, und ein Anruf am nächsten Tag. Inzwischen hat der Gast längst woanders gebucht."
+      },
+      {
+        "titulo": "Die Portal-Provision",
+        "texto": "Booking nimmt sich seinen Anteil von jeder Nacht. Mit Direktbuchung über Ihre eigene Website bleibt dieser Anteil bei Ihnen."
+      },
+      {
+        "titulo": "Das Heft und die Tabelle",
+        "texto": "Der Belegungsplan auf Papier überschneidet sich, wird ausradiert, und nur wer ihn geschrieben hat, versteht ihn. Ein Stellplatzwechsel dauert eine halbe Stunde."
+      },
+      {
+        "titulo": "Sechs Sprachen von Hand",
+        "texto": "Auf Französisch, Deutsch und Niederländisch einzeln antworten. Das sollte Ihre Website für Sie erledigen."
+      }
+    ]
+  },
+  "producto": {
+    "titulo": "Ein System, zwei Gesichter",
+    "subtitulo": "Dieselben Informationen, ohne etwas von einem Ort zum anderen zu übertragen.",
+    "bloques": [
+      {
+        "titulo": "Die öffentliche Website",
+        "texto": "Schnell, in sechs Sprachen, mit Ihren Fotos und Ihrer Marke. Der Gast sucht Termine, sieht echte Verfügbarkeit und bucht —oder hinterlässt seine Anfrage— ohne Ihre Domain zu verlassen. Optimiert, damit Google sie findet.",
+        "puntos": [
+          "Echte Verfügbarkeitssuche, kein Mockup",
+          "Direktbuchung ohne Portal-Provision",
+          "6 Sprachen, responsiv, barrierefrei"
+        ],
+        "capturaAlt": "Startseite der öffentlichen Website eines Campingplatzes mit der Terminsuche"
+      },
+      {
+        "titulo": "Die Rezeptionsverwaltung",
+        "texto": "Der Belegungsplan aller Einheiten auf einen Blick, Ziehen zum Umbelegen eines Stellplatzes, Kassieren, An- und Abreisen des Tages, die Gästedatei mit Historie. Gemacht für die Rezeptionistin, nicht für einen Informatiker.",
+        "puntos": [
+          "Visueller Belegungsplan mit Drag-and-drop",
+          "An- und Abreisen sowie Zahlungen des Tages",
+          "Datei und Historie jedes Gastes"
+        ],
+        "capturaAlt": "Der Belegungsplan der Verwaltung mit einem Monat Buchungen auf dem Bildschirm"
+      }
+    ]
+  },
+  "planning": {
+    "kicker": "Das Herzstück",
+    "titulo": "Der Belegungsplan, den Ihre Rezeption wirklich benutzt",
+    "texto": "Alle Einheiten, den ganzen Sommer, auf einem Bildschirm. Farben nach Status, Sperrungen auf einen Blick, und eine Einheit umbelegen heißt: die Buchung ziehen —ohne Stornieren, ohne erneutes Kassieren. Schnell auch bei Hunderten von Stellplätzen.",
+    "cta": "In der Demo in Aktion sehen",
+    "capturaAlt": "Ansicht des Belegungsplans mit echten Buchungen eines Campingplatzes im August",
+    "planoAlt": "Der interaktive Lageplan des Campingplatzes mit dem Zustand jeder Einheit",
+    "puntos": [
+      "Ziehen zum Umbelegen — ohne Stornieren, ohne erneutes Kassieren",
+      "Farben nach Status und Sperrungen auf einen Blick",
+      "Auch als Lageplan: jede Einheit auf der Karte Ihres Platzes"
+    ]
+  },
+  "niveles": {
+    "titulo": "Starten Sie dort, wo Sie stehen",
+    "subtitulo": "Ein System, vier Stufen. Sie steigen auf, indem Sie eine Einstellung ändern — nie durch einen Wechsel von Website oder Anbieter.",
+    "items": [
+      {
+        "nombre": "Camp Web",
+        "para": "Ihre erste Website, die arbeitet",
+        "texto": "Moderne mehrsprachige öffentliche Website mit Anfrageformular. Jede Anfrage wird gespeichert: Das ist die Historie, die wachsen lässt.",
+        "incluye": [
+          "Mehrsprachige öffentliche Website",
+          "Anfrageformular → Ihre E-Mail",
+          "Ihre Fotos, Ihre Marke, Ihre Domain",
+          "SEO und Geschwindigkeit gepflegt"
+        ]
+      },
+      {
+        "nombre": "Camp Anfragen",
+        "para": "Wenn Sie Ordnung wollen",
+        "texto": "Alles Vorherige plus ein Anfrage-Postfach und ein leichtes Panel, damit keine Anfrage verloren geht.",
+        "incluye": [
+          "Anfrage-Postfach mit Status",
+          "Leichtes Rezeptions-Panel",
+          "An- und Abreisen des Tages"
+        ]
+      },
+      {
+        "nombre": "Camp Buchungen",
+        "destacado": true,
+        "para": "Der komplette Campingplatz",
+        "texto": "Echtes Buchungssystem, Online-Zahlungen und die komplette Verwaltung mit dem Belegungsplan. Direktbuchung von Anfang bis Ende.",
+        "incluye": [
+          "Buchungs- und Verfügbarkeitssystem",
+          "Online-Zahlungen (Anzahlung, komplett oder Kaution)",
+          "Kompletter Belegungsplan mit Drag-and-drop",
+          "Gästedatei, Berichte und Tarife"
+        ]
+      },
+      {
+        "nombre": "Camp Motor",
+        "para": "Nur die Verwaltung",
+        "texto": "Buchungssystem und Verwaltung, verbunden mit Ihrer bestehenden Website. Maßgeschneidert, wenn Sie schon eine Website haben und nur das Gehirn fehlt.",
+        "incluye": ["System + Verwaltung auf Ihrer Website", "Maßgeschneiderte Integration"],
+        "aMedida": true
+      }
+    ],
+    "nota": "Preise nach Maß für Ihren Campingplatz. Fragen Sie uns nach einem Angebot.",
+    "recomendado": "Empfohlen"
+  },
+  "alta": {
+    "titulo": "Von null auf Verkauf, in einem Nachmittag",
+    "texto": "Sie schicken uns Ihre Fotos, Ihre Unterkunftstypen und Ihre Tarife, und wir richten Ihre Instanz ein. Ihre eigene Datenbank, Ihre Domain, Ihre Marke —isoliert von jedem anderen Campingplatz. Ohne endlose Projekte."
+  },
+  "faq": {
+    "titulo": "Fragen, die man uns stellt",
+    "items": [
+      {
+        "q": "Muss ich meine Domain wechseln?",
+        "a": "Nein. Ihre Website lebt auf Ihrer eigenen Domain, mit Ihrer Marke. Wir legen das System darunter."
+      },
+      {
+        "q": "Und wenn ich schon Booking benutze?",
+        "a": "Sie können weitermachen. Die Direktbuchung über Ihre Website spart Ihnen die Provision bei jeder Buchung, die über Sie selbst eingeht; viele Plätze nutzen beides."
+      },
+      {
+        "q": "Ist es schwierig für meine Rezeptionistin?",
+        "a": "Es ist für sie gemacht: große Bildschirme, klarer Text, Tastaturfokus und ein Belegungsplan, den man auf einen Blick versteht. Ohne 200-Seiten-Handbuch."
+      },
+      {
+        "q": "Sind meine Daten sicher?",
+        "a": "Jeder Campingplatz hat seine eigene isolierte Datenbank im Netz von Cloudflare. Kein anderer Kunde kann Ihre Buchungen sehen."
+      },
+      {
+        "q": "Wie schnell habe ich es?",
+        "a": "Ein neuer Campingplatz geht in einem Nachmittag aus Ihrem Material online. Ohne monatelanges Warten."
+      }
+    ]
+  },
+  "contacto": {
+    "kicker": "Unverbindlich",
+    "titulo": "Fragen Sie uns nach einer Demo mit den Daten Ihres Platzes",
+    "texto": "Wir zeigen sie Ihnen mit Ihrem Inventar und Ihren Terminen, damit Sie sehen, wie Ihres aussehen würde —kein generisches Beispiel.",
+    "campos": {
+      "nombre": "Ihr Name",
+      "camping": "Name des Campingplatzes",
+      "email": "E-Mail",
+      "telefono": "Telefon (optional)",
+      "mensaje": "Erzählen Sie uns, was Sie brauchen (optional)"
+    },
+    "enviar": "Demo anfragen",
+    "enviando": "Wird gesendet…",
+    "ok": "Angekommen! Wir schreiben Ihnen innerhalb von 24 h.",
+    "error": "Senden nicht möglich. Schreiben Sie uns an hola@logic2b.com und wir klären das.",
+    "verDemoTexto": "Lieber gleich ansehen? Betreten Sie die Live-Demo mit Beispieldaten."
+  },
+  "footer": {
+    "tagline": "Software für Campingplätze. Website + Buchungen + Verwaltung, in einem System.",
+    "powered": "Ein Produkt von Logic2B · Spanien",
+    "demo": "Live-Demo",
+    "producto": "Produkt",
+    "planes": "Pakete",
+    "docs": "Anleitungen",
+    "contacto": "Demo anfragen"
+  },
+  "docs": {
+    "seo": {
+      "title": "Logic-Camp-Anleitungen — Rezeption, Inhaber und technisches Datenblatt",
+      "description": "So wird Logic Camp benutzt: die Rezeptionsanleitung Schritt für Schritt, der Inhaber-Leitfaden zu den vier Stufen und das technische Datenblatt für Ihren IT-Menschen."
+    },
+    "titulo": "Logic-Camp-Anleitungen",
+    "subtitulo": "Drei Anleitungen, drei verschiedene Menschen. Jede geschrieben für die Person, die sie lesen wird.",
+    "indice": "In dieser Anleitung",
+    "empezar": "Anfangen",
+    "anterior": "Zurück",
+    "siguiente": "Weiter",
+    "volver": "Alle Anleitungen",
+    "volverGuia": "Zurück zum Index der Anleitung",
+    "paginas": "{n} Seiten",
+    "fallback": "Diese Seite ist noch auf Spanisch. Wir übersetzen die Anleitungen.",
+    "ayuda": "Sie finden nicht, was Sie suchen? Schreiben Sie uns an hola@logic2b.com und wir klären das —und verbessern nebenbei diese Anleitung.",
+    "guias": {
+      "recepcion": {
+        "nombre": "Rezeptionsanleitung",
+        "para": "Für die Person am Empfang",
+        "texto": "Der Alltag der Software, Aufgabe für Aufgabe: anmelden, sehen wer anreist, einchecken, kassieren, eine Buchung im Belegungsplan verschieben und die Abreise abschließen. Ohne Fachchinesisch."
+      },
+      "dueno": {
+        "nombre": "Inhaber-Leitfaden",
+        "para": "Für die Person, die entscheidet",
+        "texto": "Die vier Stufen von Logic Camp als Leiter erklärt: was jede enthält, was sich genau ändert, wenn Sie aufsteigen, und was Sie beisteuern müssen."
+      },
+      "tecnica": {
+        "nombre": "Technisches Datenblatt",
+        "para": "Für Ihren IT-Menschen des Vertrauens",
+        "texto": "Wie es gebaut ist: Domains und DNS, ausgehende E-Mail, Datenisolierung pro Campingplatz, DSGVO, Backups und was passiert, wenn Sie eines Tages gehen wollen."
+      }
+    }
+  }
+}

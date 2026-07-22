@@ -18,7 +18,8 @@
     "subtitulo": "Una web pública que vende sola y un gestor que tu recepción entiende desde el primer día. Sin hojas de cálculo, sin dobles reservas, sin depender de un portal que se queda tu comisión.",
     "ctaDemo": "Pedir una demo",
     "ctaVer": "Ver la demo en vivo",
-    "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar."
+    "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar.",
+    "capturaWebAlt": "La web pública de un camping hecha con Logic Camp, con su buscador de disponibilidad"
   },
   "problema": {
     "titulo": "Lo que hoy te cuesta dinero cada agosto",
@@ -52,7 +53,8 @@
           "Motor de disponibilidad de verdad, no un mockup",
           "Reserva directa sin comisiones de portal",
           "6 idiomas, responsive, accesible"
-        ]
+        ],
+        "capturaAlt": "Portada de la web pública de un camping con el buscador de fechas"
       },
       {
         "titulo": "El gestor de recepción",
@@ -61,7 +63,8 @@
           "Planning visual con arrastrar y soltar",
           "Llegadas, salidas y cobros del día",
           "Ficha e historial de cada cliente"
-        ]
+        ],
+        "capturaAlt": "El planning del gestor con las reservas de un mes en pantalla"
       }
     ]
   },
@@ -70,7 +73,13 @@
     "titulo": "El planning que de verdad usa tu recepción",
     "texto": "Todas tus unidades, todo el verano, en una sola pantalla. Colores por estado, bloqueos a la vista, y reasignar una unidad es arrastrar la reserva —sin cancelar ni volver a cobrar. Rápido incluso con cientos de parcelas.",
     "cta": "Verlo funcionando en la demo",
-    "capturaAlt": "Vista del planning del gestor con reservas reales de un camping en agosto"
+    "capturaAlt": "Vista del planning del gestor con reservas reales de un camping en agosto",
+    "planoAlt": "El plano interactivo del camping con el estado de cada unidad",
+    "puntos": [
+      "Arrastrar para reasignar — sin cancelar ni volver a cobrar",
+      "Colores por estado y bloqueos a la vista",
+      "También en plano: cada unidad sobre el mapa del camping"
+    ]
   },
   "niveles": {
     "titulo": "Empieza por donde estás",
@@ -117,7 +126,8 @@
         "aMedida": true
       }
     ],
-    "nota": "Precios a medida según tu camping. Pídenos una propuesta."
+    "nota": "Precios a medida según tu camping. Pídenos una propuesta.",
+    "recomendado": "Recomendado"
   },
   "alta": {
     "titulo": "De cero a vender, en una tarde",

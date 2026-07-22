@@ -1,0 +1,221 @@
+{
+  "seo": {
+    "title": "Logic Camp — de website en de receptie van uw camping, opgelost",
+    "description": "Software voor campings: moderne publieke website, echt boekingssysteem en receptiebeheer in één systeem. In één middag online. Van Logic2B, Spanje."
+  },
+  "nav": {
+    "producto": "Product",
+    "niveles": "Pakketten",
+    "planning": "De planning",
+    "docs": "Handleidingen",
+    "demo": "Demo bekijken",
+    "contacto": "Demo aanvragen",
+    "verDemo": "Live demo bekijken"
+  },
+  "hero": {
+    "kicker": "Software voor campings · van Logic2B",
+    "titulo": "De website en de receptie van uw camping, in één systeem.",
+    "subtitulo": "Een publieke website die vanzelf verkoopt en een beheer dat uw receptie vanaf dag één begrijpt. Zonder spreadsheets, zonder dubbele boekingen, zonder afhankelijk te zijn van een portal dat zijn commissie inhoudt.",
+    "ctaDemo": "Demo aanvragen",
+    "ctaVer": "Live demo bekijken",
+    "nota": "Een nieuwe camping gaat in één middag online. Zonder verplichtingen om te beginnen.",
+    "capturaWebAlt": "De publieke website van een camping gemaakt met Logic Camp, met de beschikbaarheidszoeker"
+  },
+  "problema": {
+    "titulo": "Wat u vandaag elke augustus geld kost",
+    "puntos": [
+      {
+        "titulo": "Uw website boekt niet",
+        "texto": "Een formulier dat per e-mail binnenkomt en een telefoontje de volgende dag. Ondertussen heeft de gast al ergens anders geboekt."
+      },
+      {
+        "titulo": "De commissie van het portal",
+        "texto": "Booking neemt zijn deel van elke nacht. Met directe boekingen via uw eigen website blijft dat deel bij u."
+      },
+      {
+        "titulo": "Het schrift en de spreadsheet",
+        "texto": "De papieren planning overlapt, wordt uitgegumd, en alleen wie hem schreef begrijpt hem. Een plaatswissel kost een half uur."
+      },
+      {
+        "titulo": "Zes talen met de hand",
+        "texto": "Eén voor één antwoorden in het Frans, Duits en Nederlands. Dat zou uw website voor u moeten doen."
+      }
+    ]
+  },
+  "producto": {
+    "titulo": "Eén systeem, twee gezichten",
+    "subtitulo": "Dezelfde informatie, zonder iets van de ene plek naar de andere over te nemen.",
+    "bloques": [
+      {
+        "titulo": "De publieke website",
+        "texto": "Snel, in zes talen, met uw foto's en uw merk. De gast zoekt data, ziet echte beschikbaarheid en boekt —of laat een aanvraag achter— zonder uw domein te verlaten. Gebouwd om door Google gevonden te worden.",
+        "puntos": [
+          "Een echt beschikbaarheidssysteem, geen mockup",
+          "Direct boeken zonder portalcommissie",
+          "6 talen, responsief, toegankelijk"
+        ],
+        "capturaAlt": "De homepage van de publieke website van een camping met de datumzoeker"
+      },
+      {
+        "titulo": "Het receptiebeheer",
+        "texto": "De planning van al uw plaatsen in één oogopslag, slepen om een plaats opnieuw toe te wijzen, afrekenen, aankomsten en vertrekken van de dag, het dossier van elke gast met historie. Gemaakt voor de receptioniste, niet voor een IT'er.",
+        "puntos": [
+          "Visuele planning met slepen en neerzetten",
+          "Aankomsten, vertrekken en betalingen van de dag",
+          "Dossier en historie van elke gast"
+        ],
+        "capturaAlt": "De planning van het beheer met een maand aan boekingen op het scherm"
+      }
+    ]
+  },
+  "planning": {
+    "kicker": "Het paradepaardje",
+    "titulo": "De planning die uw receptie écht gebruikt",
+    "texto": "Al uw plaatsen, de hele zomer, op één scherm. Kleuren per status, blokkades in het zicht, en een plaats opnieuw toewijzen is de boeking verslepen —zonder annuleren of opnieuw afrekenen. Snel, zelfs met honderden plaatsen.",
+    "cta": "Zie het werken in de demo",
+    "capturaAlt": "Weergave van de planning met echte boekingen van een camping in augustus",
+    "planoAlt": "De interactieve plattegrond van de camping met de status van elke plaats",
+    "puntos": [
+      "Slepen om opnieuw toe te wijzen — zonder annuleren of opnieuw afrekenen",
+      "Kleuren per status en blokkades in het zicht",
+      "Ook als plattegrond: elke plaats op de kaart van uw camping"
+    ]
+  },
+  "niveles": {
+    "titulo": "Begin waar u nu staat",
+    "subtitulo": "Eén systeem, vier niveaus. U stijgt door een instelling te wijzigen, nooit door van website of leverancier te veranderen.",
+    "items": [
+      {
+        "nombre": "Camp Web",
+        "para": "Uw eerste website die werkt",
+        "texto": "Een moderne meertalige publieke website met aanvraagformulier. Elke aanvraag wordt bewaard: dat is de historie die u laat groeien.",
+        "incluye": [
+          "Meertalige publieke website",
+          "Aanvraagformulier → uw e-mail",
+          "Uw foto's, uw merk, uw domein",
+          "SEO en snelheid verzorgd"
+        ]
+      },
+      {
+        "nombre": "Camp Aanvragen",
+        "para": "Als u orde wilt",
+        "texto": "Alles hierboven plus een aanvragenpostvak en een licht paneel zodat u geen enkele aanvraag verliest.",
+        "incluye": [
+          "Aanvragenpostvak met statussen",
+          "Licht receptiepaneel",
+          "Aankomsten en vertrekken van de dag"
+        ]
+      },
+      {
+        "nombre": "Camp Boekingen",
+        "destacado": true,
+        "para": "De complete camping",
+        "texto": "Een echt boekingssysteem, online betalingen en het volledige beheer met de planning. Direct boeken van begin tot eind.",
+        "incluye": [
+          "Boekings- en beschikbaarheidssysteem",
+          "Online betalingen (aanbetaling, volledig of borg)",
+          "Volledige planning met slepen en neerzetten",
+          "Gastdossier, rapporten en tarieven"
+        ]
+      },
+      {
+        "nombre": "Camp Motor",
+        "para": "Alleen het beheer",
+        "texto": "Het systeem en het beheer gekoppeld aan uw huidige website. Op maat, wanneer u al een website heeft en alleen het brein nog mist.",
+        "incluye": ["Systeem + beheer op uw website", "Integratie op maat"],
+        "aMedida": true
+      }
+    ],
+    "nota": "Prijzen op maat voor uw camping. Vraag ons om een voorstel.",
+    "recomendado": "Aanbevolen"
+  },
+  "alta": {
+    "titulo": "Van nul naar verkopen, in één middag",
+    "texto": "U stuurt ons uw foto's, uw accommodatietypes en uw tarieven, en wij zetten uw omgeving op. Uw eigen database, uw domein, uw merk —geïsoleerd van elke andere camping. Zonder eindeloze projecten."
+  },
+  "faq": {
+    "titulo": "Vragen die we krijgen",
+    "items": [
+      {
+        "q": "Moet ik van domein veranderen?",
+        "a": "Nee. Uw website leeft op uw eigen domein, met uw merk. Wij leggen het systeem eronder."
+      },
+      {
+        "q": "En als ik al Booking gebruik?",
+        "a": "U kunt doorgaan. Direct boeken via uw eigen website bespaart u de commissie op elke boeking die via uzelf binnenkomt; veel campings gebruiken beide."
+      },
+      {
+        "q": "Is het moeilijk voor mijn receptioniste?",
+        "a": "Het is voor haar ontworpen: grote schermen, duidelijke tekst, toetsenbordfocus en een planning die u in één oogopslag begrijpt. Zonder handleiding van 200 pagina's."
+      },
+      {
+        "q": "Zijn mijn gegevens veilig?",
+        "a": "Elke camping heeft zijn eigen geïsoleerde database op het netwerk van Cloudflare. Geen enkele andere klant kan uw boekingen zien."
+      },
+      {
+        "q": "Hoe snel heb ik het?",
+        "a": "Een nieuwe camping gaat in één middag online op basis van uw materiaal. Zonder maanden wachten."
+      }
+    ]
+  },
+  "contacto": {
+    "kicker": "Vrijblijvend",
+    "titulo": "Vraag ons om een demo met de gegevens van uw camping",
+    "texto": "We laten hem zien met uw inventaris en uw data, zodat u ziet hoe die van u eruit zou zien —geen generiek voorbeeld.",
+    "campos": {
+      "nombre": "Uw naam",
+      "camping": "Naam van de camping",
+      "email": "E-mail",
+      "telefono": "Telefoon (optioneel)",
+      "mensaje": "Vertel ons wat u nodig heeft (optioneel)"
+    },
+    "enviar": "Demo aanvragen",
+    "enviando": "Versturen…",
+    "ok": "Ontvangen! We schrijven u binnen 24 uur.",
+    "error": "Versturen mislukt. Mail ons op hola@logic2b.com en we lossen het op.",
+    "verDemoTexto": "Liever meteen zien? Ga naar de live demo met voorbeeldgegevens."
+  },
+  "footer": {
+    "tagline": "Software voor campings. Website + boekingen + beheer, in één systeem.",
+    "powered": "Een product van Logic2B · Spanje",
+    "demo": "Live demo",
+    "producto": "Product",
+    "planes": "Pakketten",
+    "docs": "Handleidingen",
+    "contacto": "Demo aanvragen"
+  },
+  "docs": {
+    "seo": {
+      "title": "Logic Camp-handleidingen — receptie, eigenaar en technisch overzicht",
+      "description": "Hoe Logic Camp wordt gebruikt: de receptiehandleiding stap voor stap, de eigenaarsgids met de vier niveaus, en het technische overzicht voor uw IT'er."
+    },
+    "titulo": "Logic Camp-handleidingen",
+    "subtitulo": "Drie handleidingen, drie verschillende mensen. Elk geschreven voor wie hem echt gaat lezen.",
+    "indice": "In deze handleiding",
+    "empezar": "Beginnen",
+    "anterior": "Vorige",
+    "siguiente": "Volgende",
+    "volver": "Alle handleidingen",
+    "volverGuia": "Terug naar de index van de handleiding",
+    "paginas": "{n} pagina's",
+    "fallback": "Deze pagina is nog in het Spaans. We vertalen de handleidingen.",
+    "ayuda": "Vindt u niet wat u zoekt? Mail ons op hola@logic2b.com en we lossen het op —en verbeteren meteen deze handleiding.",
+    "guias": {
+      "recepcion": {
+        "nombre": "Receptiehandleiding",
+        "para": "Voor wie achter de balie staat",
+        "texto": "De dagelijkse gang van zaken in het programma, taak voor taak: inloggen, zien wie er aankomt, inchecken, afrekenen, een boeking verplaatsen in de planning en het vertrek afsluiten. Zonder vaktaal."
+      },
+      "dueno": {
+        "nombre": "Eigenaarsgids",
+        "para": "Voor wie beslist",
+        "texto": "De vier niveaus van Logic Camp uitgelegd als een ladder: wat elk niveau bevat, wat er precies verandert als u stijgt, en wat u zelf moet aanleveren."
+      },
+      "tecnica": {
+        "nombre": "Technisch overzicht",
+        "para": "Voor uw vertrouwde IT'er",
+        "texto": "Hoe het is gebouwd: domeinen en DNS, uitgaande e-mail, gegevensisolatie per camping, AVG, back-ups en wat er gebeurt als u ooit weg wilt."
+      }
+    }
+  }
+}
