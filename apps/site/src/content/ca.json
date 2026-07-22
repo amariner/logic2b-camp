@@ -18,7 +18,8 @@
     "subtitulo": "Un web públic que ven sol i un gestor que la teva recepció entén des del primer dia. Sense fulls de càlcul, sense reserves duplicades, sense dependre d'un portal que es queda la comissió.",
     "ctaDemo": "Demanar una demo",
     "ctaVer": "Veure la demo en viu",
-    "nota": "Alta d'un càmping nou en una tarda. Sense permanència per començar."
+    "nota": "Alta d'un càmping nou en una tarda. Sense permanència per començar.",
+    "capturaWebAlt": "El web públic d'un càmping fet amb Logic Camp, amb el seu cercador de disponibilitat"
   },
   "problema": {
     "titulo": "El que avui et costa diners cada agost",
@@ -52,7 +53,8 @@
           "Motor de disponibilitat de veritat, no una maqueta",
           "Reserva directa sense comissions de portal",
           "6 idiomes, responsive, accessible"
-        ]
+        ],
+        "capturaAlt": "Portada del web públic d'un càmping amb el cercador de dates"
       },
       {
         "titulo": "El gestor de recepció",
@@ -61,7 +63,8 @@
           "Planning visual amb arrossegar i deixar anar",
           "Arribades, sortides i cobraments del dia",
           "Fitxa i historial de cada client"
-        ]
+        ],
+        "capturaAlt": "El planning del gestor amb les reserves d'un mes en pantalla"
       }
     ]
   },
@@ -70,7 +73,13 @@
     "titulo": "El planning que de debò fa servir la teva recepció",
     "texto": "Totes les teves unitats, tot l'estiu, en una sola pantalla. Colors per estat, bloquejos a la vista, i reassignar una unitat és arrossegar la reserva —sense cancel·lar ni tornar a cobrar. Ràpid fins i tot amb centenars de parcel·les.",
     "cta": "Veure-ho funcionant a la demo",
-    "capturaAlt": "Vista del planning del gestor amb reserves reals d'un càmping a l'agost"
+    "capturaAlt": "Vista del planning del gestor amb reserves reals d'un càmping a l'agost",
+    "planoAlt": "El plànol interactiu del càmping amb l'estat de cada unitat",
+    "puntos": [
+      "Arrossegar per reassignar — sense cancel·lar ni tornar a cobrar",
+      "Colors per estat i bloquejos a la vista",
+      "També en plànol: cada unitat sobre el mapa del càmping"
+    ]
   },
   "niveles": {
     "titulo": "Comença per on ets",
@@ -117,7 +126,8 @@
         "aMedida": true
       }
     ],
-    "nota": "Preus a mida segons el teu càmping. Demana'ns una proposta."
+    "nota": "Preus a mida segons el teu càmping. Demana'ns una proposta.",
+    "recomendado": "Recomanat"
   },
   "alta": {
     "titulo": "De zero a vendre, en una tarda",

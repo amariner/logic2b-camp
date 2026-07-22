@@ -13,6 +13,8 @@ Logic Camp tiene **dos superficies visuales distintas**, cada una con su dueño 
 
 Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara al huésped lleva la marca del camping.** El isotipo Logic2B aparece en el producto y, de forma discreta ("powered by Logic2B"), en el pie de las webs de tenant. Esto respeta el principio de §0 (cada cliente es su marca) sin perder que el producto es reconociblemente Logic2B.
 
+> **Excepción (ADR 0027, 2026-07-22):** la **landing de venta** puede llevar **fotografía atmosférica de camping** en el héroe (contrato de arte del ADR 0024, con scrim que garantiza AA). El resto de superficies Logic2B — `og.png`, cards, guías, dashboard — siguen neutras, y la tipografía/paleta no cambian: la foto es atmósfera, no un rebrand.
+
 ## 1. Origen técnico
 
 `ui.logic2b.com` es la instancia Logic2B de **shadcn/ui** (base de color **"neutral"**, estilo New York), construida con Astro + Tailwind v4 (tokens como CSS vars en oklch). Coincide con lo que CLAUDE.md ya declara: _"Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)"_. Alinear la marca = **poblar `packages/ui` con estos tokens y componentes**, hoy vacío.

@@ -176,6 +176,24 @@ h4 {
   margin-top: 2.4em;
 }
 
+/* ---------- reveal on scroll (ADR 0027) ----------
+ * El script de Landing añade .lc-visible al entrar en viewport; bajo
+ * prefers-reduced-motion el bloque de abajo anula la transición y el script
+ * además marca todo visible de entrada. */
+/* Solo se oculta si el script llegó a marcar <html class="lc-js">: sin JS
+ * (o si el script falla) todo el contenido es visible desde el primer paint. */
+html.lc-js .lc-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.55s ease var(--lc-delay, 0ms),
+    transform 0.55s ease var(--lc-delay, 0ms);
+}
+html.lc-js .lc-reveal.lc-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
