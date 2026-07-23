@@ -2,6 +2,10 @@
 
 Producto SaaS de Logic2B (Castellón): web + reservas + gestión para **campings**, y solo campings. Cada cliente es una **instancia**: mismo código, su propia D1, su config, su dominio. Referencia completa: `LOGIC-CAMP-Super-Prompt.md`. Este fichero es el contrato de trabajo de cada sesión.
 
+## Cómo se trabaja este proyecto
+
+Cada decisión se juzga desde **ocho lentes a la vez** (arquitecto, fullstack, backend, frontend, product designer, UX, UI, SEO) — el "equipo" que encarna una sola persona. Definición, vetos y desempate en **`docs/EQUIPO.md`**; skill `/equipo` para pasar una decisión o un diff por las ocho. Aplica siempre, no solo al invocarlo.
+
 ## Restricción que lo gobierna todo
 
 El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el trabajo por número de clientes está prohibida.** Dar de alta un camping nuevo debe costar una tarde. Regla de desempate: _¿qué necesita un camping real para operar en agosto?_ Eso gana.
