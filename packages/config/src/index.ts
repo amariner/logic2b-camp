@@ -56,10 +56,12 @@ export {
   DEFAULT_CANCELLATION_POLICY,
   loadTenantConfig,
   taxPolicySchema,
+  tenantHospedajesSchema,
   tenantLegalSchema,
   type CancellationPolicyConfig,
   type TaxPolicyName,
   type TenantConfig,
+  type TenantHospedajes,
   type TenantLegal,
 } from './tenant-config';
 

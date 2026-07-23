@@ -209,7 +209,7 @@
       "gestion": {
         "nombre": "Verwaltungsanleitung",
         "para": "Für die Person, die den Campingplatz führt",
-        "texto": "Die Verwaltungsbildschirme: die Geschäftszahlen in Berichten lesen, die Preise pro Saison ändern und den Campingplatz und seine E-Mail-Benachrichtigungen einrichten."
+        "texto": "Die Verwaltungsbildschirme: die Geschäftszahlen in Berichten lesen, die Preise pro Saison ändern, die Gästemeldung an SES.Hospedajes übermitteln und den Campingplatz und seine E-Mail-Benachrichtigungen einrichten."
       },
       "dueno": {
         "nombre": "Inhaber-Leitfaden",

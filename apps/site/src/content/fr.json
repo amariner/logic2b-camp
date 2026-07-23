@@ -209,7 +209,7 @@
       "gestion": {
         "nombre": "Guide de gestion",
         "para": "Pour la personne qui gère le camping",
-        "texto": "Les écrans de gestion : lire les chiffres de l'activité dans Rapports, modifier les tarifs par saison, et configurer le camping et ses alertes par e-mail."
+        "texto": "Les écrans de gestion : lire les chiffres de l'activité dans Rapports, modifier les tarifs par saison, transmettre le registre des voyageurs à SES.Hospedajes, et configurer le camping et ses alertes par e-mail."
       },
       "dueno": {
         "nombre": "Guide du propriétaire",

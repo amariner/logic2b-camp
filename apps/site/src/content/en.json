@@ -209,7 +209,7 @@
       "gestion": {
         "nombre": "Management guide",
         "para": "For whoever runs the campsite",
-        "texto": "The management screens: read your business numbers in Reports, change the rates by season, and configure the campsite and its email alerts."
+        "texto": "The management screens: read your business numbers in Reports, change the rates by season, file the guest register with SES.Hospedajes, and configure the campsite and its email alerts."
       },
       "dueno": {
         "nombre": "Owner's guide",

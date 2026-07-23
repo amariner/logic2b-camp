@@ -21,6 +21,7 @@ import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import { CONSENT_VERSION } from '../consent';
 import { executeRefund, recordManualPayment } from '../payments';
+import { buildParteForDate, resolveTransport } from '../hospedajes';
 import { anonymizeGuest, exportGuest, sweepRetention } from '../rgpd';
 import {
   adminBookingCreateSchema,
@@ -32,6 +33,7 @@ import {
   guestPatchSchema,
   guestsListQuerySchema,
   notificationsListQuerySchema,
+  parteQuerySchema,
   paymentsListQuerySchema,
   planningQuerySchema,
   ratePatchSchema,
@@ -471,6 +473,19 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ id, notes: action.notes });
     }
 
+    // Forma de pago de la operación para el parte de viajeros (ADR 0028): se captura
+    // explícita, no se deriva del proveedor de la pasarela. No toca precio ni estado.
+    if (action.action === 'set_payment_kind') {
+      await db
+        .update(schema.bookings)
+        .set({ paymentKind: action.paymentKind, updatedAt: nowIso() })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'set_payment_kind', {
+        paymentKind: action.paymentKind,
+      });
+      return c.json({ id, paymentKind: action.paymentKind });
+    }
+
     // Check-in / check-out (ADR 0022): hechos ortogonales al status, no
     // transiciones. "En casa" = checkedInAt != null && checkedOutAt == null; el
     // status sigue 'confirmed', así que ocupación e informes no se enteran.
@@ -845,6 +860,74 @@ export const adminRoutes = new Hono<AuthEnv>()
     return c.json(await sweepRetention(tenant.db, tenant.slug, { dryRun: true }));
   })
 
+  // ---------- Parte de viajeros (ADR 0028): SES.Hospedajes / RD 933/2021 ----------
+  // Reúne las llegadas del día, las valida contra el parte y devuelve o los datos
+  // que faltan (para arreglarlos) o el XML listo para descargar/enviar. Gerencia:
+  // es un dato de obligación legal, no una consulta de mostrador.
+  .get('/hospedajes/parte', requireRole('manager'), async (c) => {
+    const parsed = parteQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    const db = c.get('tenant').db;
+    const result = await buildParteForDate(db, parsed.data.date);
+
+    // La forma del transporte NO depende del día: dice si "enviar" está disponible.
+    const transport = resolveTransport(c.env).transport.mode;
+    if (result.status === 'disabled') return c.json({ status: 'disabled', transport });
+
+    // Resumen ligero de cada estancia para pintar la lista y señalar issues por huésped.
+    const estancias = result.estancias.map((e) => ({
+      bookingId: e.bookingId,
+      bookingCode: e.bookingCode,
+      dateFrom: e.dateFrom,
+      dateTo: e.dateTo,
+      paymentKind: e.paymentKind,
+      guests: e.huespedes.map((g) => ({
+        guestId: g.guestId,
+        name: g.name,
+        surname: g.surname,
+        isLead: g.isLead,
+      })),
+    }));
+
+    return c.json({
+      status: result.status,
+      date: result.date,
+      transport,
+      count: estancias.length,
+      estancias,
+      issues: result.status === 'issues' ? result.issues : [],
+      xml: result.status === 'ready' ? result.xml : null,
+    });
+  })
+
+  // Envío al webservice real (ADR 0028 §2). Solo con credenciales SES (secrets del
+  // Worker); sin ellas, el parte se descarga y se sube a mano. Deja rastro en
+  // audit_log: la obligación incluye poder probar QUÉ se comunicó y CUÁNDO.
+  .post('/hospedajes/enviar', requireRole('manager'), async (c) => {
+    const parsed = parteQuerySchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const tenant = c.get('tenant');
+    const result = await buildParteForDate(tenant.db, parsed.data.date);
+
+    if (result.status === 'disabled') return c.json({ error: 'not_configured' }, 409);
+    if (result.status === 'empty') return c.json({ error: 'nothing_to_send' }, 409);
+    if (result.status === 'issues')
+      return c.json({ error: 'incomplete', issues: result.issues }, 422);
+
+    const { transport, creds } = resolveTransport(c.env);
+    if (transport.mode === 'manual')
+      return c.json({ error: 'manual_only' }, 409); // descarga: no hay envío automático
+
+    const sent = await transport.send(result.xml, creds);
+    if (!sent.ok) return c.json({ error: sent.error }, 502);
+
+    await audit(tenant.db, tenant.slug, c.get('user').id, 'hospedajes', parsed.data.date, 'enviar', {
+      count: result.estancias.length,
+      reference: sent.reference,
+    });
+    return c.json({ ok: true, date: parsed.data.date, reference: sent.reference });
+  })
+
   // ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------
   // añadir un huésped a una reserva (crea guest + enlace). Si la reserva no tiene
   // titular, el primero pasa a serlo.
@@ -873,8 +956,13 @@ export const adminRoutes = new Hono<AuthEnv>()
       tenantId: tenant.slug,
       name: d.name,
       surname: d.surname,
+      // Campos del parte de viajeros (ADR 0028), opcionales en el alta.
+      secondSurname: d.secondSurname ?? null,
+      sex: d.sex ?? null,
       docType: d.docType ?? null,
       docNumber: d.docNumber ?? null,
+      docSupportNumber: d.docSupportNumber ?? null,
+      kinship: d.kinship ?? null,
       birthdate: d.birthdate ?? null,
       nationality: d.nationality ?? null,
       email: d.email || null,

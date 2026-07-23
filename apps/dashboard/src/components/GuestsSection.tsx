@@ -31,8 +31,12 @@ const DOC_TYPES = ['dni', 'nie', 'passport', 'other'] as const;
 type GuestForm = {
   name: string;
   surname: string;
+  secondSurname: string;
+  sex: string;
   docType: string;
   docNumber: string;
+  docSupportNumber: string;
+  kinship: string;
   birthdate: string;
   nationality: string;
   email: string;
@@ -42,8 +46,12 @@ type GuestForm = {
 const emptyForm: GuestForm = {
   name: '',
   surname: '',
+  secondSurname: '',
+  sex: '',
   docType: '',
   docNumber: '',
+  docSupportNumber: '',
+  kinship: '',
   birthdate: '',
   nationality: '',
   email: '',
@@ -53,8 +61,12 @@ const emptyForm: GuestForm = {
 const fromGuest = (g: BookingGuest): GuestForm => ({
   name: g.name,
   surname: g.surname,
+  secondSurname: g.secondSurname ?? '',
+  sex: g.sex ?? '',
   docType: g.docType ?? '',
   docNumber: g.docNumber ?? '',
+  docSupportNumber: g.docSupportNumber ?? '',
+  kinship: g.kinship ?? '',
   birthdate: g.birthdate ?? '',
   nationality: g.nationality ?? '',
   email: g.email ?? '',
@@ -65,8 +77,12 @@ const fromGuest = (g: BookingGuest): GuestForm => ({
 const toPatch = (f: GuestForm) => ({
   name: f.name,
   surname: f.surname,
+  secondSurname: f.secondSurname || null,
+  sex: f.sex || null,
   docType: f.docType || null,
   docNumber: f.docNumber || null,
+  docSupportNumber: f.docSupportNumber || null,
+  kinship: f.kinship || null,
   birthdate: f.birthdate || null,
   nationality: f.nationality || null,
   email: f.email || null,
@@ -105,6 +121,31 @@ function GuestFields({
           />
         </div>
       </div>
+      {/* Campos del parte de viajeros (ADR 0028): 2º apellido y sexo. */}
+      <div className="grid grid-cols-[1.5fr_1fr] gap-2">
+        <div>
+          <Label htmlFor={`${idPrefix}-surname2`}>{t('huesped.segundoApellido')}</Label>
+          <Input
+            id={`${idPrefix}-surname2`}
+            value={form.secondSurname}
+            onChange={(e) => set({ secondSurname: e.target.value })}
+            className={input}
+          />
+        </div>
+        <div>
+          <Label htmlFor={`${idPrefix}-sex`}>{t('huesped.sexo')}</Label>
+          <SelectNative
+            id={`${idPrefix}-sex`}
+            value={form.sex}
+            onChange={(e) => set({ sex: e.target.value })}
+            className={input}
+          >
+            <option value="">{t('huesped.sinDato')}</option>
+            <option value="M">{t('huesped.sexoM')}</option>
+            <option value="F">{t('huesped.sexoF')}</option>
+          </SelectNative>
+        </div>
+      </div>
       <div className="grid grid-cols-[1fr_1.2fr] gap-2">
         <div>
           <Label htmlFor={`${idPrefix}-doctype`}>{t('huesped.docTipo')}</Label>
@@ -129,6 +170,29 @@ function GuestFields({
             value={form.docNumber}
             onChange={(e) => set({ docNumber: e.target.value })}
             className={`${input} tnum`}
+          />
+        </div>
+      </div>
+      {/* Nº de soporte del documento (dato del parte distinto del número) y parentesco
+          — este último SOLO aplica a menores de 14 (ADR 0028). */}
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <Label htmlFor={`${idPrefix}-docsup`}>{t('huesped.docSoporte')}</Label>
+          <Input
+            id={`${idPrefix}-docsup`}
+            value={form.docSupportNumber}
+            onChange={(e) => set({ docSupportNumber: e.target.value })}
+            className={`${input} tnum`}
+          />
+        </div>
+        <div>
+          <Label htmlFor={`${idPrefix}-kinship`}>{t('huesped.parentesco')}</Label>
+          <Input
+            id={`${idPrefix}-kinship`}
+            value={form.kinship}
+            placeholder={t('huesped.parentescoAyuda')}
+            onChange={(e) => set({ kinship: e.target.value })}
+            className={input}
           />
         </div>
       </div>

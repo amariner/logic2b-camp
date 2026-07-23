@@ -587,6 +587,32 @@ describe('pagos (ADR 0011)', () => {
     expect(audit).toHaveLength(1);
   });
 
+  it('set_payment_kind: captura la forma de pago para el parte (ADR 0028) y la audita', async () => {
+    const create = await createManual('2026-08-20', '2026-08-23');
+    const { id } = (await create.json()) as { id: string };
+
+    const res = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch({ action: 'set_payment_kind', paymentKind: 'transfer' }, reception, PAY_IP),
+      envA,
+    );
+    expect(res.status).toBe(200);
+    expect(((await res.json()) as { paymentKind: string }).paymentKind).toBe('transfer');
+
+    const db = createDb(env.DB);
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, id))
+    )[0];
+    expect(booking?.paymentKind).toBe('transfer');
+    const audit = await db
+      .select()
+      .from(schema.auditLog)
+      .where(
+        and(eq(schema.auditLog.entityId, id), eq(schema.auditLog.action, 'set_payment_kind')),
+      );
+    expect(audit).toHaveLength(1);
+  });
+
   it('refund: nunca deja paidCents negativo; un cobro manual se reembolsa como asiento contable', async () => {
     const create = await createManual('2026-08-05', '2026-08-08');
     const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };

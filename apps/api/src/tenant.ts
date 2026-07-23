@@ -18,6 +18,14 @@ export type Bindings = {
   /** clave de comercio Redsys en base64 — "su comercio, su clave, por camping" */
   REDSYS_MERCHANT_KEY?: string;
   /**
+   * Credenciales del webservice de SES.Hospedajes (ADR 0028). Secrets del Worker,
+   * NO en `modules` (que es JSON legible en D1). Sin las tres, el envío automático
+   * no está disponible y el parte solo se descarga (modo manual).
+   */
+  SES_HOSPEDAJES_ENDPOINT?: string;
+  SES_HOSPEDAJES_USER?: string;
+  SES_HOSPEDAJES_PASSWORD?: string;
+  /**
    * SOLO desarrollo local (ADR 0019). Interruptor, NUNCA un valor: habilita la
    * lista CONSTANTE `DEV_ORIGINS` de `auth.ts` para que el dev server de Vite
    * (:5173) pueda autenticar contra `wrangler dev` (:8787).

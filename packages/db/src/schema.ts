@@ -248,6 +248,13 @@ export const bookings = sqliteTable(
     // por status (ocupación, informes, solape). ISO datetime, como sentAt.
     checkedInAt: text('checked_in_at'),
     checkedOutAt: text('checked_out_at'),
+    /**
+     * Forma de pago de la operación para el parte de viajeros (ADR 0028). Dato
+     * PROPIO, nulable: no se deriva de payments.provider (el proveedor ≠ el medio).
+     */
+    paymentKind: text('payment_kind', {
+      enum: ['cash', 'card', 'transfer', 'platform'],
+    }),
     locale: text('locale').notNull(),
     createdAt: text('created_at').notNull(),
     updatedAt: text('updated_at').notNull(),
@@ -267,8 +274,16 @@ export const guests = sqliteTable('guests', {
   surname: text('surname').notNull(),
   docType: text('doc_type', { enum: ['dni', 'nie', 'passport', 'other'] }),
   docNumber: text('doc_number'),
+  /** Nº de soporte del documento (ADR 0028): dato del parte distinto de docNumber. */
+  docSupportNumber: text('doc_support_number'),
   birthdate: text('birthdate'),
   nationality: text('nationality'),
+  /** Sexo, requerido por el parte de viajeros (ADR 0028). Nulable y aditivo. */
+  sex: text('sex', { enum: ['M', 'F'] }),
+  /** Segundo apellido, requerido por el parte. */
+  secondSurname: text('second_surname'),
+  /** Parentesco con el acompañante — SOLO para viajeros menores de 14 (ADR 0028). */
+  kinship: text('kinship'),
   email: text('email'),
   phone: text('phone'),
   address: text('address'),

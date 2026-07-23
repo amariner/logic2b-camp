@@ -129,6 +129,9 @@ export const adminBookingCreateSchema = bookingBaseSchema.extend({
   preferredUnitId: z.string().min(1).optional(),
 });
 
+/** Forma de pago de la operación para el parte de viajeros (ADR 0028). */
+export const paymentKindSchema = z.enum(['cash', 'card', 'transfer', 'platform']);
+
 /** Acciones tipadas sobre una reserva: transición, reasignación, nota o pago (ADR 0011). */
 export const bookingActionSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('confirm') }),
@@ -157,18 +160,28 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
     method: z.enum(['cash', 'card']),
   }),
   z.object({ action: z.literal('refund'), amountCents: z.number().int().positive() }),
+  // Forma de pago de la operación para el parte de viajeros (ADR 0028). Se CAPTURA
+  // explícita (no se deriva de payments.provider); nullable para poder retirarla.
+  z.object({ action: z.literal('set_payment_kind'), paymentKind: paymentKindSchema.nullable() }),
 ]);
 
 // ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------
 
 const docTypeSchema = z.enum(['dni', 'nie', 'passport', 'other']);
+const sexSchema = z.enum(['M', 'F']);
 
 /** Alta de un huésped en una reserva. Nombre y apellidos mínimos; documento opcional. */
 export const guestCreateSchema = z.object({
   name: z.string().min(1).max(120),
   surname: z.string().min(1).max(120),
+  /** Campos del parte de viajeros (ADR 0028), todos opcionales en el alta. */
+  secondSurname: z.string().max(120).optional(),
+  sex: sexSchema.optional(),
   docType: docTypeSchema.optional(),
   docNumber: z.string().max(40).optional(),
+  docSupportNumber: z.string().max(40).optional(),
+  /** Parentesco con el acompañante — solo para menores de 14. */
+  kinship: z.string().max(60).optional(),
   birthdate: isoDate.optional(),
   nationality: z.string().max(2).optional(),
   email: z.string().email().max(200).optional().or(z.literal('')),
@@ -186,8 +199,13 @@ export const guestPatchSchema = z
   .object({
     name: z.string().min(1).max(120),
     surname: z.string().min(1).max(120),
+    /** Campos del parte de viajeros (ADR 0028). */
+    secondSurname: z.string().max(120).nullable(),
+    sex: sexSchema.nullable(),
     docType: docTypeSchema.nullable(),
     docNumber: z.string().max(40).nullable(),
+    docSupportNumber: z.string().max(40).nullable(),
+    kinship: z.string().max(60).nullable(),
     birthdate: isoDate.nullable(),
     nationality: z.string().max(2).nullable(),
     email: z.string().email().max(200).nullable().or(z.literal('')),
@@ -196,6 +214,11 @@ export const guestPatchSchema = z
     gdprConsent: z.boolean(),
   })
   .partial();
+
+// ---------- Parte de viajeros (ADR 0028) ----------
+
+/** El día del que se pide el parte de entrada (llegadas de esa fecha). */
+export const parteQuerySchema = z.object({ date: isoDate });
 
 // ---------- Bloqueos de inventario desde la UI (ADR 0022 §3) ----------
 
