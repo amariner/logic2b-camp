@@ -22,6 +22,7 @@
     "drizzle-orm": "^0.44.7",
     "hono": "^4.8.0",
     "zod": "^4.4.3",
+    "@logic-camp/hospedajes": "workspace:*",
     "@logic-camp/notifications": "workspace:*",
     "@logic-camp/payments": "workspace:*"
   },

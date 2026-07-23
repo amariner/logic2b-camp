@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-07-23
 - **Fase**: propia (post-Fase 11 — el hueco funcional mayor para un camping español real)
-- **Estado**: propuesto
+- **Estado**: aceptado (validado por Andreu, sesión 43, 2026-07-23)
 
 ## Contexto
 

@@ -31,6 +31,7 @@ import {
   BookMarked,
   CalendarRange,
   ChevronLeft,
+  ClipboardList,
   CreditCard,
   DoorOpen,
   Inbox,
@@ -59,6 +60,7 @@ import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
 import Notificaciones from './pages/Notificaciones';
 import Pagos from './pages/Pagos';
+import Parte from './pages/Parte';
 import Planning from './pages/Planning';
 import Plano from './pages/Plano';
 import Reservas from './pages/Reservas';
@@ -96,6 +98,7 @@ const NAV_GROUPS: { label: TKey; items: [string, TKey, LucideIcon][] }[] = [
     items: [
       ['/reservas', 'nav.reservas', BookMarked],
       ['/clientes', 'nav.clientes', Users],
+      ['/parte', 'nav.parte', ClipboardList],
       ['/informes', 'nav.informes', BarChart3],
       ['/inventario', 'nav.inventario', Tent],
       ['/tarifas', 'nav.tarifas', Tag],
@@ -348,6 +351,7 @@ const routes = [
   createRoute({ getParentRoute: () => rootRoute, path: '/reservas/$id', component: Reservas }),
   createRoute({ getParentRoute: () => rootRoute, path: '/clientes', component: Clientes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/clientes/$id', component: Clientes }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/parte', component: Parte }),
   createRoute({ getParentRoute: () => rootRoute, path: '/informes', component: Informes }),
   createRoute({ getParentRoute: () => rootRoute, path: '/inventario', component: Inventario }),
   createRoute({ getParentRoute: () => rootRoute, path: '/tarifas', component: Tarifas }),

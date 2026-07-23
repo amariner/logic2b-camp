@@ -106,14 +106,23 @@ export type PriceLine = {
   amountCents: number;
 };
 
+/** Forma de pago de la operación para el parte de viajeros (ADR 0028). */
+export type PaymentKind = 'cash' | 'card' | 'transfer' | 'platform';
+export type Sex = 'M' | 'F';
+
 export type BookingGuest = {
   id: string;
   name: string;
   surname: string;
+  /** Campos del parte de viajeros (ADR 0028). */
+  secondSurname: string | null;
+  sex: Sex | null;
   email: string | null;
   phone: string | null;
   docType: string | null;
   docNumber: string | null;
+  docSupportNumber: string | null;
+  kinship: string | null;
   birthdate: string | null;
   nationality: string | null;
   isLead: boolean;
@@ -152,6 +161,8 @@ export type BookingDetail = {
   notes: string | null;
   checkedInAt: string | null;
   checkedOutAt: string | null;
+  /** Forma de pago de la operación para el parte de viajeros (ADR 0028). */
+  paymentKind: PaymentKind | null;
   locale: string;
   createdAt: string;
   guests: BookingGuest[];
@@ -379,6 +390,43 @@ export type PaymentLogItem = {
   amountCents: number;
   status: 'pending' | 'succeeded' | 'failed' | 'refunded';
   createdAt: string;
+};
+
+// ---------- tipos del parte de viajeros (ADR 0028) ----------
+
+export type ParteGuestRef = { guestId: string; name: string; surname: string; isLead: boolean };
+
+export type ParteEstanciaItem = {
+  bookingId: string;
+  bookingCode: string;
+  dateFrom: string;
+  dateTo: string;
+  paymentKind: PaymentKind | null;
+  guests: ParteGuestRef[];
+};
+
+/** Un dato que falta para poder comunicar el parte. `guestId` null = dato de la estancia. */
+export type ParteIssue = {
+  bookingId: string;
+  bookingCode: string;
+  guestId: string | null;
+  guestName: string | null;
+  field: string;
+  code: string;
+};
+
+/**
+ * `GET /api/admin/hospedajes/parte?date=`. `disabled` = el tenant no tiene el módulo;
+ * `empty` = sin llegadas ese día; `issues` = faltan datos; `ready` = XML listo.
+ */
+export type ParteData = {
+  status: 'disabled' | 'empty' | 'issues' | 'ready';
+  date?: string;
+  transport?: 'manual' | 'ses';
+  count?: number;
+  estancias?: ParteEstanciaItem[];
+  issues?: ParteIssue[];
+  xml?: string | null;
 };
 
 // ---------- tipos de POST /api/quote (cotización en vivo del alta manual) ----------

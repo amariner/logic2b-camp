@@ -27,6 +27,7 @@ const MAPA: Record<string, string | null> = {
   '/pagos': 'recepcion/cobrar',
   '/notificaciones': 'recepcion/problemas',
   // Pantallas de gestión (gerencia/dirección): su propia guía, añadida tras C6.
+  '/parte': 'gestion/parte',
   '/informes': 'gestion/informes',
   '/tarifas': 'gestion/tarifas',
   '/ajustes': 'gestion/ajustes',

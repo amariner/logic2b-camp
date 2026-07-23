@@ -620,15 +620,28 @@ export function generateSeed(anchorYear: number): SeedData {
     const gid = `gst_${String(gstN).padStart(3, '0')}`;
     const fn = firstNames[bkgN % firstNames.length]!;
     const ln = lastNames[(bkgN * 3) % lastNames.length]!;
+    const nationality = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
+    // Datos del parte de viajeros (ADR 0028), sembrados de verdad (cero mocks): los
+    // huéspedes españoles llevan DNI con su nº de soporte; los extranjeros, pasaporte
+    // (que ni exige soporte ni segundo apellido). ~1 de cada 6 deja un dato del parte
+    // sin rellenar, para que la pantalla enseñe también el estado "faltan datos".
+    const isSpanish = nationality === 'ES';
+    const faltaDato = bkgN % 6 === 0;
     guests.push({
       id: gid,
       tenant_id: T,
       name: fn,
       surname: ln,
-      doc_type: 'passport',
-      doc_number: `X${String(1000000 + bkgN * 137)}`,
+      second_surname: isSpanish ? lastNames[(bkgN * 7) % lastNames.length]! : null,
+      sex: bkgN % 2 === 0 ? 'M' : 'F',
+      doc_type: isSpanish ? 'dni' : 'passport',
+      doc_number: isSpanish
+        ? `${10000000 + ((bkgN * 137) % 89999999)}Z`
+        : `X${String(1000000 + bkgN * 137)}`,
+      doc_support_number: isSpanish ? (faltaDato ? null : `BAA${String(100000 + bkgN * 71)}`) : null,
+      kinship: null,
       birthdate: `${1960 + (bkgN % 40)}-0${1 + (bkgN % 9)}-15`,
-      nationality: locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase(),
+      nationality,
       email: `${fn.toLowerCase()}.${ln.toLowerCase().replace(/ /g, '')}@example.com`,
       phone: `+34 6${String(10000000 + bkgN * 9137)}`,
       address: null,
@@ -662,6 +675,10 @@ export function generateSeed(anchorYear: number): SeedData {
       notes: opts.notes ?? null,
       checked_in_at: checkedIn ? `${anchor}T09:30:00.000Z` : null,
       checked_out_at: null,
+      // Forma de pago de la operación para el parte de viajeros (ADR 0028): sembrada
+      // rotando entre los cuatro medios; ~1 de cada 6 se deja sin fijar, para que la
+      // pantalla del parte muestre el aviso "falta forma de pago" sin un mock.
+      payment_kind: bkgN % 6 === 3 ? null : (['card', 'cash', 'transfer', 'platform'] as const)[bkgN % 4],
       locale,
       created_at: now,
       updated_at: now,
@@ -992,6 +1009,20 @@ export function generateSeed(anchorYear: number): SeedData {
           notifications: {
             notifyTo: 'recepcion@calasereno.example',
             from: 'Camping Cala Sereno <reservas@calasereno.example>',
+          },
+          // Parte de viajeros (ADR 0028): activo con un código de establecimiento de
+          // demo. Sin credenciales SES (secrets del Worker), la demo opera en modo
+          // manual (descarga del XML) — el envío automático se activa con los secrets.
+          hospedajes: {
+            enabled: true,
+            codigoEstablecimiento: 'CS-DEMO-0001',
+            establecimiento: {
+              nombre: 'Camping Cala Sereno',
+              direccion: 'Ctra. de la Cala, km 3',
+              municipio: 'Alcossebre',
+              provincia: 'Castellón',
+              cp: '12579',
+            },
           },
           // Geometría del plano del camping (ADR 0021, C7). Descriptor declarativo
           // materializado aquí desde tenants/demo/plano.ts; GET /api/admin/map lo

@@ -209,7 +209,7 @@
       "gestion": {
         "nombre": "Guía de gestión",
         "para": "Para quien lleva el camping",
-        "texto": "Las pantallas de gerencia: leer los números del negocio en Informes, cambiar las tarifas por temporada, y configurar el camping y sus avisos por correo."
+        "texto": "Las pantallas de gerencia: leer los números del negocio en Informes, cambiar las tarifas por temporada, comunicar el parte de viajeros a SES.Hospedajes y configurar el camping y sus avisos por correo."
       },
       "dueno": {
         "nombre": "Guía del dueño",

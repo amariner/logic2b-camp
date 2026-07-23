@@ -209,7 +209,7 @@
       "gestion": {
         "nombre": "Guia de gestió",
         "para": "Per a qui porta el càmping",
-        "texto": "Les pantalles de gerència: llegir els números del negoci a Informes, canviar les tarifes per temporada, i configurar el càmping i els seus avisos per correu."
+        "texto": "Les pantalles de gerència: llegir els números del negoci a Informes, canviar les tarifes per temporada, comunicar el comunicat de viatgers a SES.Hospedajes i configurar el càmping i els seus avisos per correu."
       },
       "dueno": {
         "nombre": "Guia del propietari",

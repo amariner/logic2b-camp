@@ -67,6 +67,29 @@ export const tenantLegalSchema = z.object({
 });
 export type TenantLegal = z.infer<typeof tenantLegalSchema>;
 
+/**
+ * Parte de viajeros (ADR 0028): datos del establecimiento que el parte SES.Hospedajes
+ * repite en cada comunicación. Vive en `tenants.modules.hospedajes`, la misma capa que
+ * `payments`/`notifications` — no una tabla nueva (eso sería trabajo por camping).
+ *
+ * Las CREDENCIALES del webservice (usuario/contraseña) NO van aquí: son secrets del
+ * Worker (`wrangler secret`), como las claves de Stripe/Redsys/Resend. En `modules`
+ * solo va lo que no es secreto: si está activo y con qué código de establecimiento.
+ */
+export const tenantHospedajesSchema = z.object({
+  enabled: z.boolean(),
+  /** Código de establecimiento asignado por SES.Hospedajes. */
+  codigoEstablecimiento: z.string().min(1),
+  establecimiento: z.object({
+    nombre: z.string().min(1),
+    direccion: z.string().min(1),
+    municipio: z.string().min(1),
+    provincia: z.string().min(1),
+    cp: z.string().min(1),
+  }),
+});
+export type TenantHospedajes = z.infer<typeof tenantHospedajesSchema>;
+
 export type TenantConfig = {
   slug: string;
   name: string;
