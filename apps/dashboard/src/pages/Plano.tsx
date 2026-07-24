@@ -25,6 +25,7 @@ import { apiGet, type MapData, type PlanningData, type PlanningUnit } from '../a
 import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
 import CampingMap from '../components/CampingMap';
+import UnitPanel from '../components/UnitPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
@@ -154,6 +155,27 @@ export default function Plano() {
   const [bloqueoAbierto, setBloqueoAbierto] = useState(false);
   const openerRef = useRef<HTMLElement | null>(null);
 
+  // panel de unidad (C4.4): una unidad libre o bloqueada no tiene ficha que abrir —
+  // el click ofrece actuar sobre la unidad (bloquear / levantar el bloqueo)
+  const selectedUnit = search.unit ? (data?.units.find((u) => u.id === search.unit) ?? null) : null;
+  const selectedState = selectedCode ? stateByCode.get(selectedCode) : undefined;
+  // el bloqueo que cubre la noche `date` (los de tipo aplican a todas sus unidades)
+  const coveringBlock = useMemo(() => {
+    if (!data || !selectedUnit) return null;
+    return (
+      data.blocks.find(
+        (b) =>
+          (b.unitId === selectedUnit.id ||
+            (!b.unitId && b.unitTypeId === selectedUnit.unitTypeId)) &&
+          b.dateFrom <= date &&
+          date < b.dateTo,
+      ) ?? null
+    );
+  }, [data, selectedUnit, date]);
+  const selectedTypeName = selectedUnit
+    ? (data?.unitTypes.find((ut) => ut.id === selectedUnit.unitTypeId)?.nameI18n.es ?? '')
+    : '';
+
   const onSelectUnit = (code: string) => {
     const unit = unitByCode.get(code);
     setUnit(unit?.id);
@@ -276,6 +298,21 @@ export default function Plano() {
           }}
         />
       )}
+      {!openId &&
+        selectedUnit &&
+        selectedState &&
+        (selectedState.kind === 'free' || selectedState.kind === 'blocked') && (
+          <UnitPanel
+            unit={selectedUnit}
+            typeName={selectedTypeName}
+            date={date}
+            state={selectedState}
+            block={selectedState.kind === 'blocked' ? coveringBlock : null}
+            onClose={() => setUnit(undefined)}
+            onBlock={() => setBloqueoAbierto(true)}
+            onOpenPlanning={openInPlanning}
+          />
+        )}
       <BlockDialog
         open={bloqueoAbierto}
         onOpenChange={setBloqueoAbierto}

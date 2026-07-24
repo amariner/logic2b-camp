@@ -1,18 +1,25 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 46 (2026-07-24: `docs/CONTINUA.md` + iconos de
-> servicio en el plano). Cuando la próxima sesión termine, **reescribe este
-> fichero** con el prompt de la siguiente.
+> Reescrito al cerrar la sesión 47 (2026-07-24: bloqueos desde el plano, C4.4).
+> Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de
+> la siguiente.
 
 ---
 
 ## Estado en una línea
 
 Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
-proyecto" y se ejecuta `docs/CONTINUA.md` completo (elegir objetivo sin
-credenciales, implementar, verificar, documentar, commit+push). El MVP es una
-**demo fake** — nada de servicios externos reales. Frentes B y C cerrados,
-Fase 11 parcial, parte de viajeros desplegado en modo manual.
+proyecto" y se ejecuta `docs/CONTINUA.md` completo. El MVP es una **demo fake**
+— nada de servicios externos reales. El plano cierra ya el ciclo entero del
+bloqueo (crear Y levantar desde la unidad); el `BlockDialog` ya no pierde la
+selección al abrir.
+
+## ⚠ Pendiente de integrar
+
+La sesión 47 (cloud) trabajó y pusheó en la rama **`claude/continuacion-proyecto-yhq05n`**
+por mandato del entorno (no tenía permiso para pushear a `main`). Primer paso en
+local: revisar y **merge a `main`** (fast-forward limpio sobre `705ed6e`), borrar
+la rama. Después, cuando toque deploy: `pnpm --filter @logic-camp/api deploy:demo`.
 
 ## ▶ Prompt para pegar
 
@@ -20,24 +27,20 @@ Fase 11 parcial, parte de viajeros desplegado en modo manual.
 continúa con el desarrollo de este proyecto
 ```
 
-(Eso es todo: `CLAUDE.md` §"Sesiones autónomas" + `docs/CONTINUA.md` hacen el
-resto. Si Andreu está presente y quiere dirigir el objetivo, lo dice y manda.)
-
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[C4.4] Crear bloqueos desde el plano**: el plano pinta `blocked` y "Nuevo
-  bloqueo" existe en la barra, pero no hay gesto desde una unidad del propio
-  `<svg>` (click en unidad libre → ficha; falta atajo "bloquear esta unidad").
-  Verificar primero qué hace hoy el diálogo desde el plano — puede estar ya
-  cubierto por la barra (ADR 0022) y ser solo pulido.
 - **[B1] Adoptar primitivos de `packages/ui`** (Card/Badge/Input/Table…) en 2–3
   pantallas del dashboard (incremental, demo-visible).
-- **[C2] Auditar animaciones bajo `prefers-reduced-motion`** en navegador real.
-- **[B1] Rename literal de tokens camping→DS** (~400 usos, mecánico, código que
-  no mienta; valor demo nulo — solo si no hay nada visual pendiente).
-- **[10] Acceso readonly a la demo sin registro**: MUCHO valor comercial, pero
-  el alcance está sin decidir — una sesión autónoma puede escribir el ADR
-  (`propuesto`) con la propuesta de alcance y PARAR ahí.
+- **[C2] Auditar animaciones bajo `prefers-reduced-motion`** en navegador real
+  (los componentes llevan `motion-reduce:animate-none` pero nunca se probó con
+  la preferencia activa).
+- **[C1] Levantar bloqueos desde el planning** (click en la barra rayada →
+  confirmar) — el plano ya lo hace (sesión 47); en el planning las barras
+  `lc-block` siguen siendo pintura. Gesto pequeño, cuidado con el arrastre.
+- **[10] Acceso readonly a la demo sin registro**: MUCHO valor comercial, alcance
+  sin decidir — una sesión autónoma puede escribir el ADR (`propuesto`) y PARAR.
+- **[B1] Rename literal de tokens camping→DS** (~400 usos, mecánico; valor demo
+  nulo — solo si no hay nada visual pendiente).
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
@@ -45,9 +48,14 @@ resto. Si Andreu está presente y quiere dirigir el objetivo, lo dice y manda.)
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`, deploy demo.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas, siguen vivas)
+## Trampas conocidas (heredadas + una nueva)
 
 - `git fetch` y comparar con origin/main ANTES de trabajar.
+- **NUEVA (sesión 47)**: un `wrangler dev` del demo lanzado a mano necesita
+  `--persist-to <raíz>/.wrangler-demo` — sin eso levanta una D1 vacía («no such
+  table: users») aunque `pnpm db:seed` haya ido bien (los scripts `db:*` de la
+  raíz persisten ahí). Y el worker exige `apps/site/dist` construido (+ copiar
+  `apps/dashboard/dist` a `site/dist/admin` para ver el dashboard).
 - Segfault de workerd sobre `reset.test.ts` = solo contenedor cloud (45/45 local).
 - `seed.sql` gitignored; el seed LOCAL puede estar viejo → si el plano sale
   "automático" o falta `modules.*`, `pnpm db:reset && pnpm db:seed` (y reiniciar

@@ -445,6 +445,13 @@ const es = {
   'plano.estado.turnover': 'Sale y entra hoy',
   'plano.estado.bloqueada': 'Bloqueada',
   'plano.estado.enCasa': 'En casa',
+  // panel de unidad del plano (C4.4): bloquear / levantar desde la propia unidad
+  'plano.unidad.aria': 'Unidad {code}',
+  'plano.unidad.cerrar': 'Cerrar',
+  'plano.unidad.libreEl': 'Libre la noche del {date}',
+  'plano.unidad.bloquear': 'Bloquear esta unidad',
+  'plano.unidad.bloqueoTipo':
+    'Este bloqueo cubre todas las unidades del tipo, no solo esta.',
   // ---------- workflow de recepción (ADR 0022, C4) ----------
   // check-in / check-out
   'accion.check_in': 'Check-in',

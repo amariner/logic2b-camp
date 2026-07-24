@@ -17,12 +17,14 @@ import {
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ApiError, apiGet, apiPost, type Catalog } from '../api';
 import { t } from '../i18n';
 
 const REASONS = ['maintenance', 'owner', 'longstay', 'manual'] as const;
 const iso = (d: Date) => d.toISOString().slice(0, 10);
+const addDays = (isoDate: string, n: number) =>
+  iso(new Date(Date.parse(`${isoDate}T00:00:00Z`) + n * 86_400_000));
 
 export default function BlockDialog({
   open,
@@ -42,6 +44,20 @@ export default function BlockDialog({
   const [from, setFrom] = useState(defaultDate ?? iso(new Date()));
   const [to, setTo] = useState(defaultDate ? defaultDate : iso(new Date()));
   const [reason, setReason] = useState<(typeof REASONS)[number]>('maintenance');
+
+  // El diálogo vive montado (animación de Radix), así que el useState solo capta
+  // los default* del PRIMER render: "seleccionar la A-12 y bloquear" perdía la
+  // unidad y la fecha en silencio. Al abrir, resincronizar con la pantalla.
+  // "Hasta" arranca en una noche: el caso común (avería hoy) queda a un click.
+  useEffect(() => {
+    if (!open) return;
+    setScope('unit');
+    setUnitId(defaultUnitId ?? '');
+    const f = defaultDate ?? iso(new Date());
+    setFrom(f);
+    setTo(addDays(f, 1));
+    setReason('maintenance');
+  }, [open, defaultUnitId, defaultDate]);
 
   const { data: catalog } = useQuery({
     queryKey: ['catalog'],

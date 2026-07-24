@@ -97,6 +97,16 @@ html {
   color: var(--muted-foreground);
   border: 1px solid var(--border);
 }
+/* estados de UNIDAD (panel del plano, C4.4) — no son status de reserva */
+.lc-chip.st-free {
+  background: transparent;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+}
+.lc-chip.st-blocked {
+  background: var(--lc-status-blocked);
+  color: var(--background);
+}
 
 .lc-grab {
   cursor: grab;

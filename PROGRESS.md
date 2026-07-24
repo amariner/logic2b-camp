@@ -22,6 +22,29 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 47 — 2026-07-24 · **[C4.4] Bloqueos desde el propio plano: panel de unidad + fix de defaults del diálogo** (remate C4/C7, sin ADR)
+
+**Contexto**: sesión autónoma cloud (protocolo `docs/CONTINUA.md`), rama de sesión `claude/continuacion-proyecto-yhq05n` partiendo de `origin/main` = `705ed6e` (mandato del entorno: desarrollar y pushear en esa rama; el merge a `main` queda para Andreu o la próxima sesión con permiso). Objetivo elegido: el primer candidato de SIGUIENTE-SESION, **[C4.4] crear bloqueos desde el plano**, siguiendo su propia instrucción de "verificar primero qué hace hoy el diálogo".
+
+**Lo que la auditoría previa encontró** (y convirtió el "pulido" en dos arreglos de verdad):
+
+1. **`BlockDialog` perdía la unidad y la fecha en silencio**: el diálogo vive montado (animación de Radix) y sus `default*` se captaban en el `useState` del PRIMER render — "seleccionar la A-12 y pulsar Nuevo bloqueo" abría el formulario vacío. Afectaba a plano Y planning.
+2. **`DELETE /api/admin/blocks/:id` no tenía UI**: la ruta existe y está testeada (rol reception, `admin.test.ts`), y las claves i18n `bloqueo.quitar`/`confirmar.quitarBloqueo.*` estaban escritas… pero ninguna pantalla la llamaba. Un bloqueo creado era eterno salvo SQL a mano.
+
+**Hecho**
+
+- **`BlockDialog`**: al abrir, resincroniza con la pantalla (`useEffect` sobre `open`): unidad seleccionada, fecha del día mirado, y "hasta" arranca en **una noche** — el caso común (avería hoy) queda a un click. Aplica a plano y planning.
+- **`UnitPanel.tsx`** (nuevo): panel contextual de UNIDAD en el plano, mismo idiom de panel lateral que la ficha. Al pinchar una unidad **libre** → código + chip + tipo + "Libre la noche del X" + **"Bloquear esta unidad"** (diálogo precargado) + "Ver en el planning". Al pinchar una **bloqueada** → motivo y rango del bloqueo que cubre esa noche + **"Levantar el bloqueo"** con confirmación (`AlertDialog`, las claves que estaban huérfanas) → `DELETE /blocks/:id` + invalidación de `['planning']`. Si el bloqueo es **de tipo**, el panel y la confirmación avisan de que cubre todas las unidades del tipo. Esc cierra, foco al abrir, chips nuevos `st-free`/`st-blocked` en `styles.css` (tokens, sin hex).
+- **`Plano.tsx`**: resuelve unidad seleccionada + estado + bloqueo que cubre la fecha (unidad o tipo) y monta el panel solo en libre/bloqueada (ocupada sigue abriendo la ficha). 5 claves i18n nuevas `plano.unidad.*`.
+
+**Verificado**: dashboard typecheck+lint+build verdes. `pnpm check` cloud: **42/45 + los 3 ambientales documentados re-verificados en aislamiento** — `api:test` **182/182**, `web:build` verde, demo `seed.test`+`remote-seed.test` **18/18**; el único rojo real sigue siendo el segfault de workerd sobre `reset.test.ts` (señal 11, solo contenedor cloud). **En navegador contra el Worker real** (`wrangler dev` :8787 + D1 local re-sembrada + login por fetch a Better Auth): ciclo completo con Playwright — click en BM-06 libre → panel; "Bloquear esta unidad" → diálogo con **BM-06 + 12 ago → 13 ago precargados**; crear → la unidad pasa a "Bloqueada · Mantenimiento" rayada; click → panel de bloqueada con motivo y rango; levantar + confirmar → libre otra vez. Claro y oscuro, 0 errores de consola (solo el favicon del bundle local).
+
+**Trampa nueva para la lista**: el `wrangler dev` del demo lanzado a mano necesita `--persist-to <raíz>/.wrangler-demo` — sin eso levanta una D1 local vacía ("no such table: users") aunque `pnpm db:seed` haya ido bien, porque los scripts `db:*` de la raíz persisten ahí.
+
+**Sin terminar / diferido con motivo**: el gesto en el planning (click en la barra rayada de un bloqueo → levantarlo) queda en BACKLOG — el planning tiene su propio modelo de interacción (arrastre) y merece su pase; el plano ya cubre el ciclo entero.
+
+**Siguiente paso**: ver `docs/SIGUIENTE-SESION.md`.
+
 ### Sesión 46 — 2026-07-24 · **Protocolo "continúa con el desarrollo" (docs/CONTINUA.md) + iconos de servicio en el plano** (remate [C7], sin ADR)
 
 **Contexto**: `git fetch` de arranque OK (`main` = `origin/main` = `07fbe73`, árbol limpio). Mandato nuevo de Andreu para las sesiones venideras: **el MVP es una demo fake** — no configurar servicios externos reales (Resend, Stripe, SES…) y que cada chat nuevo funcione con solo "continúa con el desarrollo de este proyecto", con la IA decidiendo sola. Eso descarta las opciones B (SES real) y C (alta real) del prompt anterior (credenciales/Andreu) y D seguía descartada con motivo (ADR 0025 §3).
