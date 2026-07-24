@@ -619,6 +619,15 @@ const es = {
   'rgpd.anonimizada.badge': 'Ficha suprimida',
   'rgpd.anonimizada.desc':
     'Se atendió una petición de supresión el {fecha}. Sus datos personales ya no están y la ficha no se puede editar. Las reservas y los cobros siguen en el histórico, sin nombre.',
+  // recibo/ticket imprimible del check-out (C4.3): el desglose y los cobros de la
+  // ficha en una hoja limpia que la recepcionista entrega al huésped al cerrar cuenta
+  'recibo.imprimir': 'Imprimir recibo',
+  'recibo.titulo': 'Recibo de estancia',
+  'recibo.reserva': 'Reserva',
+  'recibo.titular': 'Titular',
+  'recibo.emitido': 'Emitido el {fecha}',
+  'recibo.gracias': 'Gracias por su estancia.',
+  'recibo.nota': 'Documento informativo del estado de cuenta. No es una factura.',
 } as const;
 
 type Key = keyof typeof es;

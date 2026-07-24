@@ -315,6 +315,107 @@ html {
   );
 }
 
+/* ---------- recibo/ticket imprimible del check-out (BACKLOG C4.3) ----------
+ * Oculto en pantalla; al imprimir es el ÚNICO contenido (se oculta #root). Montado
+ * por portal a <body> (hermano de #root, ver BookingReceipt.tsx), así no hay que
+ * teñir el planning ni pelear con contenedores posicionados. Colores FIJOS (negro
+ * sobre blanco): el modo oscuro no debe llegar nunca al papel. */
+.lc-receipt {
+  display: none;
+}
+@media print {
+  #root {
+    display: none !important;
+  }
+  .lc-receipt {
+    display: block !important;
+    color: #000;
+    background: #fff;
+    font-family: var(--font-sans);
+  }
+  @page {
+    margin: 16mm;
+  }
+}
+.lc-receipt-box {
+  max-width: 640px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.lc-receipt-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1.5px solid #000;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.lc-receipt-estab {
+  font-weight: 700;
+  font-size: 16px;
+}
+.lc-receipt-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #333;
+}
+.lc-receipt-meta {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.lc-receipt-line {
+  margin-bottom: 10px;
+}
+.lc-receipt-h {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #333;
+  margin: 14px 0 4px;
+}
+.lc-receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.lc-receipt-table th,
+.lc-receipt-table td {
+  text-align: left;
+  padding: 2px 0;
+  vertical-align: top;
+}
+.lc-receipt-stay th {
+  font-weight: 400;
+  color: #555;
+  padding-right: 12px;
+  white-space: nowrap;
+  width: 1%;
+}
+.lc-receipt-num {
+  text-align: right;
+  white-space: nowrap;
+}
+.lc-receipt-total td {
+  border-top: 1px solid #000;
+  padding-top: 4px;
+  font-weight: 700;
+}
+.lc-receipt-pending td {
+  font-weight: 700;
+}
+.lc-receipt-foot {
+  margin-top: 16px;
+  font-weight: 600;
+}
+.lc-receipt-note {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #666;
+}
+
 /* chips de estado del log de notificaciones */
 .lc-chip.ntf-sent {
   background: var(--lc-status-confirmed);

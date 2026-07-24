@@ -19,11 +19,12 @@ import {
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { DoorOpen, LogOut, Undo2 } from 'lucide-react';
+import { DoorOpen, LogOut, Printer, Undo2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { apiGet, apiPatch, type BookingDetail } from '../api';
+import { apiGet, apiPatch, type BookingDetail, type TenantSettings } from '../api';
 import { t } from '../i18n';
 import { conceptLabel, eur, fecha, noches } from '../lib/format';
+import BookingReceipt from './BookingReceipt';
 import GuestsSection from './GuestsSection';
 import { QueryError } from './QueryError';
 
@@ -59,6 +60,14 @@ export default function BookingPanel({
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['booking', bookingId],
     queryFn: () => apiGet<BookingDetail>(`/api/admin/bookings/${bookingId}`),
+  });
+
+  // nombre del establecimiento para la cabecera del recibo — misma clave que
+  // Ajustes, así comparte caché (una sola petición mientras dure la sesión)
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => apiGet<TenantSettings>('/api/admin/settings'),
+    staleTime: 5 * 60_000,
   });
 
   // al abrir: foco dentro; al cerrar: el llamante devuelve el foco a la barra
@@ -368,6 +377,18 @@ export default function BookingPanel({
                 </div>
               )}
             </dl>
+            {/* recibo para el huésped al cerrar la cuenta (C4.3): imprime la hoja
+                limpia del portal; disponible siempre que hay cuenta a la vista */}
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="mt-2"
+              onClick={() => window.print()}
+            >
+              <Printer className="size-4" />
+              {t('recibo.imprimir')}
+            </Button>
           </section>
 
           {/* pagos: con signo, sum == pagado (invariante 2) */}
@@ -585,6 +606,10 @@ export default function BookingPanel({
               </div>
             </section>
           )}
+
+          {/* recibo imprimible (C4.3): portal a <body>, oculto en pantalla,
+              único contenido al imprimir. Ver BookingReceipt.tsx + styles.css. */}
+          <BookingReceipt data={data} establishment={settings?.name ?? null} />
         </div>
       )}
     </aside>
