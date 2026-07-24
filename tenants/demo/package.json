@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "seed:sql": "tsx write-seed.ts",
+    "seed:remote": "tsx scripts/seed-remote.ts",
     "fetch:fotos": "tsx scripts/fetch-higgsfield-fotos.ts"
   },
   "dependencies": {

@@ -16,3 +16,24 @@ Contraseña de todos: `calasereno` (solo demo — el hash scrypt vive en `accoun
 | consulta@calasereno.example  | readonly  |
 
 Login: `POST /api/auth/sign-in/email` con `{ email, password }` (cookie de sesión Better Auth). Rutas privadas bajo `/api/admin/*`.
+
+## Reseed de la D1 REMOTA (`pnpm db:seed:remote`)
+
+El deploy lleva **schema** (migraciones), **no datos** — no existe reset nocturno
+remoto. Si cambias el seed (p. ej. activas un módulo en `tenants.modules`), la
+demo remota se queda con los datos viejos hasta re-sembrarla. Este comando
+encapsula el procedimiento FK-safe que antes se hacía a mano (deuda `[infra]`):
+
+```bash
+pnpm db:seed:remote            # dry-run: imprime el plan, no toca nada
+LOGIC_CAMP_ALLOW_REMOTE_SEED=1 pnpm db:seed:remote --apply   # ejecuta (destructivo)
+```
+
+Doble candado (`--apply` **y** `LOGIC_CAMP_ALLOW_REMOTE_SEED=1`) porque **borra y
+re-siembra una base de producción**; requiere además credenciales de Cloudflare.
+El plan: regenera `seed.sql` → vacía las 21 tablas **hijo→padre** con `--command`
+uno a uno (la D1 remota **sí** fuerza FKs; el `--file` masivo hace `fetch failed`)
+preservando `d1_migrations` → siembra con `--file seed.sql` (INSERT-only). El
+orden de borrado es el mismo `DELETE_ORDER` del reset local (`reset.ts`), fuente
+única; la lógica es pura y está testeada en `remote-seed.test.ts`. Ojo: el wipe
+borra sesiones, así que después toca re-login en el dashboard.

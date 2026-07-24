@@ -12,8 +12,12 @@ import { generateSeed, seedToSql } from './seed';
  * Cubre TODAS las tablas de la app, no solo las que siembra `seedToSql`
  * (notifications_log/sessions/accounts/verifications/inventory_holds/meta
  * son operativas: las llena el uso del día, hay que vaciarlas igual).
+ *
+ * Fuente ÚNICA de este orden: lo reusa también el reseed remoto
+ * (`remote-seed.ts`), donde D1 SÍ fuerza las FKs — así el wipe local y el
+ * remoto no pueden divergir. `d1_migrations` no está a propósito: se preserva.
  */
-const DELETE_ORDER = [
+export const DELETE_ORDER = [
   'notifications_log',
   'payments',
   'booking_guests',
