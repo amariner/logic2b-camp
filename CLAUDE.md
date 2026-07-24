@@ -6,6 +6,17 @@ Producto SaaS de Logic2B (Castellón): web + reservas + gestión para **campings
 
 Cada decisión se juzga desde **ocho lentes a la vez** (arquitecto, fullstack, backend, frontend, product designer, UX, UI, SEO) — el "equipo" que encarna una sola persona. Definición, vetos y desempate en **`docs/EQUIPO.md`**; skill `/equipo` para pasar una decisión o un diff por las ocho. Aplica siempre, no solo al invocarlo.
 
+## Sesiones autónomas ("continúa con el desarrollo")
+
+Si el prompt es solo **"continúa con el desarrollo de este proyecto"** (o
+equivalente), se ejecuta el protocolo de **`docs/CONTINUA.md`** completo y sin
+preguntar: sincronizar con origin → leer PROGRESS/SIGUIENTE-SESION/BACKLOG →
+elegir UN objetivo ejecutable **sin credenciales ni Andreu presente** (prioridad:
+lo que el cliente ve en la demo) → implementar → verificar → documentar (PROGRESS,
+BACKLOG, SIGUIENTE-SESION) → commit a `main` y **push a GitHub**. El MVP es una
+demo: nada de configurar servicios externos reales (Resend, Stripe, SES…); lo fake
+se resuelve en el seed.
+
 ## Restricción que lo gobierna todo
 
 El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el trabajo por número de clientes está prohibida.** Dar de alta un camping nuevo debe costar una tarde. Regla de desempate: _¿qué necesita un camping real para operar en agosto?_ Eso gana.

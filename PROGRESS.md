@@ -22,6 +22,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 46 — 2026-07-24 · **Protocolo "continúa con el desarrollo" (docs/CONTINUA.md) + iconos de servicio en el plano** (remate [C7], sin ADR)
+
+**Contexto**: `git fetch` de arranque OK (`main` = `origin/main` = `07fbe73`, árbol limpio). Mandato nuevo de Andreu para las sesiones venideras: **el MVP es una demo fake** — no configurar servicios externos reales (Resend, Stripe, SES…) y que cada chat nuevo funcione con solo "continúa con el desarrollo de este proyecto", con la IA decidiendo sola. Eso descarta las opciones B (SES real) y C (alta real) del prompt anterior (credenciales/Andreu) y D seguía descartada con motivo (ADR 0025 §3).
+
+**Hecho — objetivo 1: la metodología**. **`docs/CONTINUA.md`**: protocolo de sesión autónoma en 8 pasos (sincronizar → situarse → elegir UN objetivo ejecutable sin credenciales, prioridad "lo que el cliente ve en la demo" → implementar → verificar → documentar → commit+push a main → cerrar), con la lista explícita de lo que una sesión autónoma NO hace (`--apply` remoto, deploy de tenant, secrets, reabrir decisiones cerradas). Enganchado desde `CLAUDE.md` (sección nueva "Sesiones autónomas") para que cualquier chat lo recoja sin más prompt.
+
+**Hecho — objetivo 2: iconos de servicio en el plano** (BACKLOG [C7]). El `icon` de `PlanoServiceIcon` estaba tipado desde ADR 0021 pero nunca se dibujaba. En `CampingMap.tsx`: mapa `SERVICE_ICONS` de los 7 servicios a componentes lucide (reception→`ConciergeBell`, pool→`Waves`, restaurant→`Utensils`, wc→`ShowerHead`, playground→`Baby`, market→`ShoppingCart`, shop→`Store` — todos verificados presentes en lucide-react 0.550) renderizados **dentro** del `<svg>` del plano (svg anidado válido; color por `currentColor` → `--muted-foreground`, nunca hex suelto), tamaño derivado del recinto (`clamp(min(w,h)*0.35, 12, 18)`), icono centrado y etiqueta debajo. Sin tocar geometría, API ni descriptor: solo la piel.
+
+**Verificado**: `pnpm check` **45/45 verde** (local, incl. `reset.test` sin segfault). En navegador contra el **Worker real** (`wrangler dev` :8787, D1 local re-sembrada — el seed local estaba viejo y el plano salía "automático"): los 7 servicios con su glifo en **claro y oscuro**, 0 errores de consola. Nota de proceso: el formulario de login no responde a los eventos sintéticos del panel del navegador (React controlado); el login se hizo por `fetch` al endpoint real de Better Auth — mismo backend, sin stub.
+
+**Siguiente paso**: ver `docs/SIGUIENTE-SESION.md`.
+
 ### Sesión 45 — 2026-07-24 · **`pnpm db:seed:remote`: reseed remoto FK-safe en un comando** (deuda [infra], sin ADR)
 
 **Contexto**: `git fetch` de arranque **sí** sincronizado (`main` local = `origin/main` = `4e246c3`, árbol limpio — la trampa de sesiones anteriores no picó esta vez). Objetivo elegido con Andreu (una sesión = un objetivo): **Opción A** — cerrar la deuda `[infra]` del BACKLOG que costó media sesión 44: encapsular el reseed remoto de la demo (que **no** existe como automatismo — no hay reset nocturno remoto) en un solo comando. Pequeño, alto valor, sin credenciales nuevas para construirlo. No es fase nueva → sin ADR.

@@ -12,13 +12,47 @@
  * el cursor, arrastre para desplazar, botones +/−/ajustar, teclado. Lo que el
  * original en Svelte no traía y a 300 unidades hace falta.
  */
-import type { PlanoDecor, PlanoLayout, PlanoRect, UnitDayState } from '@logic-camp/config';
+import type {
+  PlanoDecor,
+  PlanoLayout,
+  PlanoRect,
+  PlanoServiceIcon,
+  UnitDayState,
+} from '@logic-camp/config';
 import { Button } from '@logic-camp/ui';
-import { Maximize, Minus, Plus } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import {
+  Baby,
+  ConciergeBell,
+  Maximize,
+  Minus,
+  Plus,
+  ShoppingCart,
+  ShowerHead,
+  Store,
+  Utensils,
+  Waves,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { t, tDyn } from '../i18n';
 
 type View = { x: number; y: number; w: number; h: number };
+
+/**
+ * Glifo por servicio del descriptor (C7, BACKLOG "iconos de servicio en el plano"):
+ * el `icon` de `PlanoServiceIcon` estaba tipado desde ADR 0021 pero no se dibujaba.
+ * Los componentes lucide renderizan un `<svg>`; anidado dentro del plano es SVG
+ * válido y hereda `currentColor`.
+ */
+const SERVICE_ICONS: Record<PlanoServiceIcon, LucideIcon> = {
+  reception: ConciergeBell,
+  pool: Waves,
+  restaurant: Utensils,
+  wc: ShowerHead,
+  playground: Baby,
+  market: ShoppingCart,
+  shop: Store,
+};
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -365,13 +399,24 @@ function Decor({ d }: { d: PlanoDecor }) {
         )}
       </g>
     );
-  // service
+  // service: icono + etiqueta (icono arriba, etiqueta debajo, ambos centrados)
+  const Icon = SERVICE_ICONS[d.icon];
+  const s = clamp(Math.min(d.w, d.h) * 0.35, 12, 18);
   return (
     <g>
       <rect {...common} rx={5} fill="var(--card)" stroke="var(--border)" strokeWidth={1.5} />
+      <Icon
+        x={d.x + d.w / 2 - s / 2}
+        y={d.y + d.h / 2 - s + 1}
+        width={s}
+        height={s}
+        strokeWidth={1.75}
+        aria-hidden
+        style={{ color: 'var(--muted-foreground)' }}
+      />
       <text
         x={d.x + d.w / 2}
-        y={d.y + d.h / 2 + 3}
+        y={d.y + d.h / 2 + s - 2}
         textAnchor="middle"
         className="fill-foreground"
         style={{ fontSize: 9, fontWeight: 600 }}
