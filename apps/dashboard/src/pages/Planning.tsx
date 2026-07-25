@@ -45,6 +45,7 @@ import { Ban, Map as MapIcon, Plus, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ApiError,
+  apiDelete,
   apiGet,
   apiPatch,
   apiPost,
@@ -807,6 +808,26 @@ export default function Planning() {
   const [alta, setAlta] = useState<NewBookingInitial | null>(null);
   const [bloqueoAbierto, setBloqueoAbierto] = useState(false);
 
+  // Levantar un bloqueo desde el propio planning: el plano ya cerraba el ciclo
+  // (sesión 47, UnitPanel) pero aquí las barras rayadas eran solo pintura. El
+  // gesto es un CLICK discreto, no un arrastre: el modelo de arrastre de esta
+  // pantalla es para reservas, y un bloqueo no se mueve (se levanta y se vuelve
+  // a crear). El foco vuelve a la barra al cerrar, como en la ficha.
+  const [pendingUnblock, setPendingUnblock] = useState<PlanningBlock | null>(null);
+  const unblockOpenerRef = useRef<HTMLElement | null>(null);
+  const unblockConfirmedRef = useRef(false);
+  const quitarBloqueo = useMutation({
+    mutationFn: (blockId: string) => apiDelete<{ ok: boolean }>(`/api/admin/blocks/${blockId}`),
+    onSuccess: () => toast.success(t('bloqueo.quitado')),
+    onError: () => toast.error(t('bloqueo.quitarError')),
+    onSettled: () => void qc.invalidateQueries({ queryKey: ['planning'] }),
+  });
+  const askUnblock = (blk: PlanningBlock, opener: HTMLElement) => {
+    unblockOpenerRef.current = opener;
+    unblockConfirmedRef.current = false;
+    setPendingUnblock(blk);
+  };
+
   // ---------- ficha (sesión 17): panel lateral, el foco vuelve a quien la abrió ----------
   const [openId, setOpenId] = useState<string | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -1168,9 +1189,24 @@ export default function Planning() {
                               return g ? (
                                 <div
                                   key={blk.id}
+                                  role="button"
+                                  tabIndex={0}
                                   className="lc-block"
                                   style={{ left: g.left, width: g.width }}
-                                  title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo}`}
+                                  title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo} · ${t('planning.bloqueo.pista')}`}
+                                  aria-label={t('planning.bloqueo.aria', {
+                                    motivo: t(`bloqueo.${blk.reason}`),
+                                    desde: blk.dateFrom,
+                                    hasta: blk.dateTo,
+                                    unidad: row.unit.code,
+                                  })}
+                                  onClick={(e) => askUnblock(blk, e.currentTarget)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      askUnblock(blk, e.currentTarget);
+                                    }
+                                  }}
                                 >
                                   {t(`bloqueo.${blk.reason}`)}
                                 </div>
@@ -1248,6 +1284,57 @@ export default function Planning() {
         />
       )}
       <BlockDialog open={bloqueoAbierto} onOpenChange={setBloqueoAbierto} defaultDate={from} />
+
+      {/* levantar un bloqueo pinchando su barra rayada (BACKLOG [C1], remate de C4.4) */}
+      <AlertDialog
+        open={pendingUnblock !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingUnblock(null);
+        }}
+      >
+        <AlertDialogContent
+          // volver atrás devuelve el foco a la barra que abrió el diálogo; si el
+          // bloqueo se ha levantado la barra ya no existe y no hay a dónde volver
+          onCloseAutoFocus={(e) => {
+            const opener = unblockOpenerRef.current;
+            unblockOpenerRef.current = null;
+            if (!unblockConfirmedRef.current && opener?.isConnected) {
+              e.preventDefault();
+              opener.focus();
+            }
+          }}
+        >
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('confirmar.quitarBloqueo.titulo')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('confirmar.quitarBloqueo.desc')}</AlertDialogDescription>
+          </AlertDialogHeader>
+          {pendingUnblock && (
+            <div className="text-[13px]">
+              <p className="font-medium">
+                {tDyn(`bloqueo.${pendingUnblock.reason}`, pendingUnblock.reason)}
+              </p>
+              <p className="tnum text-muted-foreground">
+                {pendingUnblock.dateFrom} → {pendingUnblock.dateTo}
+              </p>
+              {!pendingUnblock.unitId && (
+                <p className="mt-1 text-muted-foreground">{t('plano.unidad.bloqueoTipo')}</p>
+              )}
+            </div>
+          )}
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                unblockConfirmedRef.current = true;
+                if (pendingUnblock) quitarBloqueo.mutate(pendingUnblock.id);
+                setPendingUnblock(null);
+              }}
+            >
+              {t('confirmar.quitarBloqueo.ok')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* el precio cambia: desglose nuevo ANTES de confirmar (ADR 0023 §1) */}
       <AlertDialog

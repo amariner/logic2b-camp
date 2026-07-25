@@ -237,6 +237,23 @@ html {
   white-space: nowrap;
 }
 
+/* …y es pulsable: click/Enter → levantar el bloqueo (BACKLOG [C1]). La barra
+ * seguía pareciendo pintura, así que la afordancia va en el cursor y en el
+ * realce al pasar por encima; el foco de teclado usa el mismo anillo del DS. */
+.lc-block[role='button'] {
+  cursor: pointer;
+}
+
+.lc-block[role='button']:hover {
+  border-color: var(--lc-status-blocked);
+  color: var(--foreground);
+}
+
+.lc-block[role='button']:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
 /* fin de semana: cabecera por celda; en la malla es UNA capa con gradiente
  * (weekendBackground, packages/config) — mismo token, cero nodos por celda. */
 .lc-weekend {

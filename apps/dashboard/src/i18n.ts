@@ -450,8 +450,7 @@ const es = {
   'plano.unidad.cerrar': 'Cerrar',
   'plano.unidad.libreEl': 'Libre la noche del {date}',
   'plano.unidad.bloquear': 'Bloquear esta unidad',
-  'plano.unidad.bloqueoTipo':
-    'Este bloqueo cubre todas las unidades del tipo, no solo esta.',
+  'plano.unidad.bloqueoTipo': 'Este bloqueo cubre todas las unidades del tipo, no solo esta.',
   // ---------- workflow de recepción (ADR 0022, C4) ----------
   // check-in / check-out
   'accion.check_in': 'Check-in',
@@ -568,6 +567,10 @@ const es = {
   'bloqueo.creado': 'Bloqueo creado.',
   'bloqueo.error': 'No se ha podido crear el bloqueo.',
   'bloqueo.ocupado': 'Hay una reserva viva en ese rango: no se puede bloquear.',
+  // barra rayada del planning: es un botón, no pintura (BACKLOG [C1])
+  'planning.bloqueo.pista': 'pulsa para levantarlo',
+  'planning.bloqueo.aria':
+    'Bloqueo de {unidad}: {motivo}, del {desde} al {hasta}. Pulsa para levantarlo.',
   'bloqueo.quitar': 'Levantar el bloqueo',
   'bloqueo.quitado': 'Bloqueo levantado.',
   'bloqueo.quitarError': 'No se ha podido levantar el bloqueo.',
