@@ -131,23 +131,101 @@ describe('seed demo Cala Sereno', () => {
      veces seguidas (y 20 correos para todos los clientes), que es exactamente
      lo que se veía hasta la sesión 53. Se fija aquí porque el síntoma no lo
      nota ningún test de invariantes: los datos son "válidos", solo son falsos. */
-  it('los huéspedes no son veinte personas repetidas: nombre y apellido no van acoplados', () => {
+  it('no hay dos clientes que se llamen igual', () => {
+    // Garantía por construcción, no estadística: el generador recorre las
+    // 40 × 161 parejas a saltos coprimos con el total (sesión 54). Si alguien
+    // cambia el tamaño de una lista o el salto y pierde la coprimalidad, el
+    // recorrido empieza a repetir parejas y este test cae.
     const nombres = data.guests.map((g) => `${g.name} ${g.surname}`);
-    const distintos = new Set(nombres).size;
-    expect(distintos).toBeGreaterThan(nombres.length / 10);
-    // Y la primera página de /clientes no puede salir entera con la misma
-    // persona: se ordena igual que la API (apellido, luego nombre).
-    const primeraPagina = new Set(
-      [...data.guests]
-        .sort(
-          (a, b) =>
-            String(a.surname).localeCompare(String(b.surname)) ||
-            String(a.name).localeCompare(String(b.name)),
-        )
-        .slice(0, 25)
-        .map((g) => `${g.name} ${g.surname}`),
-    );
-    expect(primeraPagina.size).toBeGreaterThan(1);
+    expect(new Set(nombres).size).toBe(nombres.length);
+  });
+
+  it('la primera página de /clientes no es un bloque del mismo apellido', () => {
+    // Se ordena igual que la API (apellido, luego nombre). Con 40 apellidos para
+    // ~1 500 fichas tocaban a 38 por apellido y la primera página salía entera
+    // "Andersen" — el mismo defecto de las 20 personas repetidas, en la columna
+    // de al lado.
+    const pagina = [...data.guests]
+      .sort(
+        (a, b) =>
+          String(a.surname).localeCompare(String(b.surname)) ||
+          String(a.name).localeCompare(String(b.name)),
+      )
+      .slice(0, 25);
+    expect(new Set(pagina.map((g) => g.surname)).size).toBeGreaterThanOrEqual(3);
+  });
+
+  it('el sexo concuerda con el nombre (el parte de viajeros es un documento legal)', () => {
+    const femeninos = new Set(['María', 'Sophie', 'Emma', 'Carmen', 'Julia', 'Sara', 'Eva']);
+    const masculinos = new Set(['Jan', 'Pierre', 'Tom', 'Lars', 'David', 'Marc', 'Hugo']);
+    for (const g of data.guests) {
+      if (femeninos.has(String(g.name))) expect(g.sex, String(g.name)).toBe('F');
+      if (masculinos.has(String(g.name))) expect(g.sex, String(g.name)).toBe('M');
+    }
+    // …y ambos sexos aparecen: un mapa vacío también pasaría las dos vueltas.
+    expect(new Set(data.guests.map((g) => g.sex))).toEqual(new Set(['F', 'M']));
+  });
+
+  /* La pantalla de clientes vende UNA cosa: la memoria comercial del camping —
+     quién ha estado antes y cuántas veces. Hasta la sesión 54 el generador creaba
+     un huésped nuevo por reserva, así que la columna "Reservas" valía 1 en las
+     2 000 fichas y el historial de la ficha tenía siempre una sola estancia: la
+     demo enseñaba la pantalla sin enseñar nunca lo que la justifica. */
+  describe('huéspedes que repiten (la memoria comercial)', () => {
+    const estanciasPorFicha = () => {
+      const porFicha = new Map<string, string[]>();
+      for (const l of data.booking_guests) {
+        const gid = l.guest_id as string;
+        porFicha.set(gid, [...(porFicha.get(gid) ?? []), l.booking_id as string]);
+      }
+      return porFicha;
+    };
+
+    it('una parte de las fichas tiene varias estancias, y no todas las mismas', () => {
+      const cuentas = [...estanciasPorFicha().values()].map((b) => b.length);
+      const repiten = cuentas.filter((n) => n > 1);
+      // que repita alguien no basta: tiene que verse al abrir la lista
+      expect(repiten.length).toBeGreaterThan(cuentas.length / 10);
+      // …y con formas distintas. Si todos los que vuelven tuvieran el mismo
+      // número de estancias, la lista se delataría igual que con "todos 1".
+      expect(new Set(repiten).size).toBeGreaterThanOrEqual(3);
+      // pero la mayoría de la gente va a un camping una vez: si repitiera casi
+      // todo el mundo, el dato dejaría de significar nada
+      expect(cuentas.filter((n) => n === 1).length).toBeGreaterThan(cuentas.length / 2);
+    });
+
+    it('nadie está en dos sitios a la vez: sin estancias solapadas ni pegadas', () => {
+      const porId = new Map(data.bookings.map((b) => [b.id, b]));
+      for (const [gid, ids] of estanciasPorFicha()) {
+        const estancias = ids
+          .map((id) => porId.get(id)!)
+          .sort((a, b) => (a.date_from < b.date_from ? -1 : 1));
+        for (let i = 1; i < estancias.length; i++) {
+          const previa = estancias[i - 1]!;
+          const actual = estancias[i]!;
+          // Holgura, no solo ausencia de solape: salir el 9 y volver a entrar el
+          // 10 se lee como un fallo de datos, no como un cliente que vuelve.
+          expect(nightsBetween(previa.date_to, actual.date_from), gid).toBeGreaterThanOrEqual(7);
+        }
+      }
+    });
+
+    it('cada ficha tiene su propio correo (dos fichas con el mismo son un duplicado)', () => {
+      const correos = data.guests.map((g) => g.email);
+      expect(new Set(correos).size).toBe(correos.length);
+    });
+
+    it('el idioma de la reserva concuerda con la nacionalidad del titular', () => {
+      const porId = new Map(data.guests.map((g) => [g.id, g]));
+      const porReserva = new Map(data.bookings.map((b) => [b.id, b]));
+      for (const l of data.booking_guests) {
+        const b = porReserva.get(l.booking_id as string)!;
+        const g = porId.get(l.guest_id as string)!;
+        const locale = String(b.locale);
+        const esperada = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
+        expect(g.nationality, `${b.id} / ${g.id}`).toBe(esperada);
+      }
+    });
   });
 
   it('el SQL generado no contiene undefined ni NaN', () => {

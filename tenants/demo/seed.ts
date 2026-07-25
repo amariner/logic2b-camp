@@ -543,7 +543,37 @@ export function generateSeed(anchorYear: number): SeedData {
     'Sanz',
     'Meyer',
     'Vermeer',
+    // De 40 a 160 (sesión 54). Con 40 apellidos y ~1 500 fichas tocaban a 38
+    // por apellido, y `/clientes` se ordena por apellido: la primera página
+    // entera salía "Andersen" — mismo defecto que las 20 personas repetidas de
+    // la sesión 53, solo que en la columna de al lado. Con 160 tocan a ~9, que
+    // es lo que se ve en un listado de verdad: dos o tres hermanos seguidos,
+    // no media pantalla.
+    'Romero', 'Iglesias', 'Molina', 'Ortega', 'Delgado', 'Castro', 'Rubio',
+    'Marín', 'Santos', 'Cabrera', 'Reyes', 'Gallego', 'Lorenzo', 'Vargas',
+    'Bruguera', 'Fabra', 'Estellés', 'Salvador', 'Beltrán', 'Balaguer',
+    'Cardona', 'Company', 'Fuster', 'Llopis', 'Mestre', 'Ribes', 'Solé',
+    'Tarragó', 'Vilanova', 'Bonet',
+    'Girard', 'Lefevre', 'Roux', 'Fournier', 'Chevalier', 'Perrin', 'Marchand',
+    'Renaud', 'Bourgeois', 'Guillaume', 'Colin', 'Poirier', 'Leclerc', 'Menard',
+    'Becker', 'Wagner', 'Schulz', 'Richter', 'Neumann', 'Zimmermann', 'Braun',
+    'Krüger', 'Hartmann', 'Werner', 'Lange', 'König', 'Vogel', 'Winkler',
+    'Smit', 'Meijer', 'Boer', 'Mulder', 'Bos', 'Vos', 'Kok', 'Willems',
+    'Hendriks', 'Maas', 'Verhoeven', 'Kuipers', 'Prins', 'Blom',
+    'Ferrari', 'Esposito', 'Romano', 'Colombo', 'Greco', 'Marino', 'Gallo',
+    'Rizzo', 'Lombardi', 'Moretti', 'Barbieri', 'Fontana', 'Caruso',
+    'Taylor', 'Walker', 'Clarke', 'Hughes', 'Bennett', 'Wright', 'Harris',
+    'Palmer', 'Cooper', 'Ward', 'Ellis', 'Barnes', 'Hayes',
+    'Sørensen', 'Pedersen', 'Kristensen', 'Madsen', 'Rasmussen', 'Lund',
+    'Berg', 'Holm', 'Dahl', 'Lindqvist', 'Nyström', 'Åkesson',
+    'Novak', 'Kowalski', 'Horvat', 'Kovács', 'Szabó', 'Marek', 'Dvořák',
+    'Almeida', 'Carvalho', 'Teixeira', 'Fonseca',
   ];
+  /** Los de `firstNames` que son de mujer — de aquí sale el sexo del parte de viajeros. */
+  const nombresFemeninos = new Set([
+    'María', 'Sophie', 'Emma', 'Anna', 'Carmen', 'Julia', 'Nina', 'Sara', 'Lena',
+    'Eva', 'Greta', 'Laia', 'Rosa', 'Klara', 'Elke', 'Iris', 'Manon', 'Ingrid', 'Nadia',
+  ]);
   const locales = ['es', 'es', 'fr', 'de', 'nl', 'en', 'ca'];
 
   const seasonFor = (date: string) =>
@@ -619,6 +649,137 @@ export function generateSeed(anchorYear: number): SeedData {
 
   let bkgN = 0;
   let gstN = 0;
+
+  /**
+   * Huéspedes que REPITEN — la memoria comercial del camping (sesión 54).
+   *
+   * Hasta ahora el generador creaba un huésped nuevo por reserva: las 2 000
+   * fichas de `/clientes` valían todas "1 reserva" y el historial de la ficha
+   * tenía siempre una sola estancia. O sea, lo único que esa pantalla vende —el
+   * cliente que vuelve cada agosto— no se veía nunca en la demo.
+   *
+   * Una parte de las nuevas fichas entra en este censo de "habituales" y una
+   * parte de las reservas posteriores reutiliza una de ellas, con dos reglas
+   * que evitan datos falsos:
+   *
+   *  - **tope de estancias por ficha** (`REPEAT_SHAPE`): sin él, las ~670
+   *    reutilizaciones se acumularían en las primeras fichas del censo y
+   *    saldrían familias con ocho estancias en una sola temporada.
+   *  - **holgura de 7 días entre estancias**: dos estancias que no se solapan
+   *    pero se tocan (sale el 9, entra el 10) se leen como un fallo de datos,
+   *    no como un cliente que vuelve.
+   *
+   * La decisión de reutilizar NO consume del PRNG: sale de la aritmética de
+   * `bkgN`, igual que el resto de rasgos del huésped. Es deliberado — el
+   * relleno por curva de temporada (ocupación, precios, invariante 1) queda
+   * byte a byte como estaba, y el único diff del seed son las fichas.
+   */
+  type Habitual = { id: string; locale: string; stays: [string, string][]; cap: number };
+  const habituales: Habitual[] = [];
+  /** cursor rotatorio: reparte las reutilizaciones por todo el censo, no por la cabeza */
+  let habCursor = 0;
+  /** holgura mínima entre dos estancias de la misma ficha, en días */
+  const REPEAT_GAP_DAYS = 7;
+  /**
+   * Cuántas estancias llega a tener una ficha habitual, sorteado por `bkgN % 10`.
+   * La forma importa tanto como el hecho de que repitan: si todas las que vuelven
+   * tuvieran el mismo número de estancias, la lista volvería a delatarse como
+   * generada — el mismo defecto que "todas tienen 1", solo que con otro número.
+   * La mayoría vuelve una segunda vez; unos pocos son los fijos de la casa.
+   */
+  const REPEAT_SHAPE = [2, 2, 2, 2, 2, 2, 3, 3, 3, 4] as const;
+
+  /** Devuelve la ficha que reutiliza esta reserva, o `null` si toca una nueva. */
+  function pickHabitual(from: string, to: string): Habitual | null {
+    // 1 de cada 3 reservas intenta reutilizar; el resto estrena ficha.
+    if (bkgN % 3 !== 1 || habituales.length === 0) return null;
+    const holgadoDesde = addDays(from, -REPEAT_GAP_DAYS);
+    const holgadoHasta = addDays(to, REPEAT_GAP_DAYS);
+    // Barrido acotado: si en 12 candidatos no hay ninguno libre en estas fechas,
+    // sale ficha nueva. Recorrer el censo entero por cada reserva no compra nada
+    // (el seed corre en cada reset nocturno) y el reparto ya lo da el cursor.
+    for (let k = 0; k < Math.min(12, habituales.length); k++) {
+      habCursor = (habCursor + 1) % habituales.length;
+      const cand = habituales[habCursor]!;
+      if (cand.stays.length >= cand.cap) continue;
+      if (cand.stays.some(([f, t]) => holgadoDesde < t && f < holgadoHasta)) continue;
+      return cand;
+    }
+    return null;
+  }
+
+  /**
+   * Ficha nueva. Todos los rasgos derivan de `bkgN` — determinista y sin PRNG.
+   * Una de cada cuatro entra en el censo de habituales con su tope de estancias.
+   */
+  function addGuest(locale: string, from: string, to: string): string {
+    gstN++;
+    const gid = `gst_${String(gstN).padStart(3, '0')}`;
+    // Nombre y apellido: NO dos módulos sobre `bkgN`, sino un recorrido del
+    // espacio de parejas. Dos módulos sobre el mismo contador es justo lo que
+    // hundió el seed en la sesión 53 (`bkgN % 20` y `(bkgN * 3) % 20` quedan
+    // ambos determinados por `bkgN % 20`: 20 personas para 2 000 fichas), y
+    // repararlo con "otro ritmo" solo aplaza el problema — dos ritmos con un
+    // factor común vuelven a ser uno.
+    //
+    // Aquí se numeran las 40 × 161 = 6 440 parejas posibles y se recorren a
+    // saltos de 2 371, que es primo y por tanto coprimo con 6 440: el recorrido
+    // pasa por TODAS las parejas antes de repetir ninguna. Como las fichas son
+    // ~1 500, la consecuencia es una garantía, no una estadística: **no puede
+    // haber dos clientes que se llamen igual**. Se comprueba en el test.
+    const PARES = firstNames.length * lastNames.length;
+    const par = (gstN * 2371) % PARES;
+    const fn = firstNames[par % firstNames.length]!;
+    const ln = lastNames[Math.floor(par / firstNames.length)]!;
+    const nationality = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
+    // Datos del parte de viajeros (ADR 0028), sembrados de verdad (cero mocks): los
+    // huéspedes españoles llevan DNI con su nº de soporte; los extranjeros, pasaporte
+    // (que ni exige soporte ni segundo apellido). ~1 de cada 6 deja un dato del parte
+    // sin rellenar, para que la pantalla enseñe también el estado "faltan datos".
+    const isSpanish = nationality === 'ES';
+    const faltaDato = bkgN % 6 === 0;
+    guests.push({
+      id: gid,
+      tenant_id: T,
+      name: fn,
+      surname: ln,
+      second_surname: isSpanish ? lastNames[Math.floor(bkgN / 3) % lastNames.length]! : null,
+      // El sexo sale del NOMBRE, no de `bkgN % 2`. Hasta la sesión 54 salía del
+      // contador, que es el mismo del que salía el nombre: "María" quedaba
+      // marcada M en todas sus fichas. En una lista de clientes es feo; en el
+      // parte de viajeros, que es un documento con valor legal, es un dato falso.
+      sex: nombresFemeninos.has(fn) ? 'F' : 'M',
+      doc_type: isSpanish ? 'dni' : 'passport',
+      doc_number: isSpanish
+        ? `${10000000 + ((bkgN * 137) % 89999999)}Z`
+        : `X${String(1000000 + bkgN * 137)}`,
+      doc_support_number: isSpanish ? (faltaDato ? null : `BAA${String(100000 + bkgN * 71)}`) : null,
+      kinship: null,
+      birthdate: `${1960 + (bkgN % 40)}-0${1 + (bkgN % 9)}-15`,
+      nationality,
+      // Único porque la pareja nombre+apellido lo es (ver el recorrido de arriba);
+      // dos fichas con el mismo correo se leerían en `/clientes` como un duplicado
+      // pendiente de fusionar. Hay test.
+      email: `${fn.toLowerCase()}.${ln.toLowerCase().replace(/ /g, '')}@example.com`,
+      phone: `+34 6${String(10000000 + bkgN * 9137)}`,
+      address: null,
+      gdpr_consent_at: now,
+    });
+    // El tope se sortea con el TAMAÑO DEL CENSO, no con `bkgN`: la ficha entra
+    // aquí cuando `bkgN % 4 === 0`, así que `bkgN` es siempre par y `bkgN % 10`
+    // nunca alcanzaría los índices impares de la forma (el tope 4 no salía
+    // jamás). Es la trampa de la sesión 53 otra vez: dos módulos que comparten
+    // factor no son dos ritmos, son uno.
+    if (bkgN % 4 === 0)
+      habituales.push({
+        id: gid,
+        locale,
+        stays: [[from, to]],
+        cap: REPEAT_SHAPE[habituales.length % REPEAT_SHAPE.length]!,
+      });
+    return gid;
+  }
+
   function addBooking(opts: {
     typeId: string;
     unitIdx?: number | null;
@@ -670,46 +831,13 @@ export function generateSeed(anchorYear: number): SeedData {
     const breakdown = makeBreakdown(opts.typeId, opts.from, opts.to, occ, occ.pets);
     const total = breakdown.totalCents;
     const paid = Math.round(total * (opts.paidRatio ?? (opts.status === 'cancelled' ? 0 : 0.3)));
-    const locale = locales[bkgN % locales.length]!;
-    gstN++;
-    const gid = `gst_${String(gstN).padStart(3, '0')}`;
-    // Nombre y apellido tienen que avanzar a ritmos DISTINTOS. Antes eran
-    // `bkgN % 20` y `(bkgN * 3) % 20`: ambos quedan determinados por `bkgN % 20`,
-    // así que las 2000 fichas eran 20 personas repetidas ~100 veces — y, como
-    // el correo se deriva del nombre, también 20 correos para 2000 clientes.
-    // El apellido cambia ahora una vez por vuelta completa de nombres (20 × 20 =
-    // 400 combinaciones) y el segundo apellido corre a un tercer ritmo.
-    const fn = firstNames[bkgN % firstNames.length]!;
-    const ln = lastNames[Math.floor(bkgN / firstNames.length) % lastNames.length]!;
-    const nationality = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
-    // Datos del parte de viajeros (ADR 0028), sembrados de verdad (cero mocks): los
-    // huéspedes españoles llevan DNI con su nº de soporte; los extranjeros, pasaporte
-    // (que ni exige soporte ni segundo apellido). ~1 de cada 6 deja un dato del parte
-    // sin rellenar, para que la pantalla enseñe también el estado "faltan datos".
-    const isSpanish = nationality === 'ES';
-    const faltaDato = bkgN % 6 === 0;
-    guests.push({
-      id: gid,
-      tenant_id: T,
-      name: fn,
-      surname: ln,
-      second_surname: isSpanish
-        ? lastNames[Math.floor(bkgN / 3) % lastNames.length]!
-        : null,
-      sex: bkgN % 2 === 0 ? 'M' : 'F',
-      doc_type: isSpanish ? 'dni' : 'passport',
-      doc_number: isSpanish
-        ? `${10000000 + ((bkgN * 137) % 89999999)}Z`
-        : `X${String(1000000 + bkgN * 137)}`,
-      doc_support_number: isSpanish ? (faltaDato ? null : `BAA${String(100000 + bkgN * 71)}`) : null,
-      kinship: null,
-      birthdate: `${1960 + (bkgN % 40)}-0${1 + (bkgN % 9)}-15`,
-      nationality,
-      email: `${fn.toLowerCase()}.${ln.toLowerCase().replace(/ /g, '')}@example.com`,
-      phone: `+34 6${String(10000000 + bkgN * 9137)}`,
-      address: null,
-      gdpr_consent_at: now,
-    });
+    // ¿Vuelve alguien, o es gente nueva? El idioma de la reserva lo manda la
+    // ficha cuando se reutiliza: la nacionalidad del huésped ya está grabada y
+    // una reserva en francés a nombre de un titular español sería incoherente.
+    const repite = pickHabitual(opts.from, opts.to);
+    const locale = repite ? repite.locale : locales[bkgN % locales.length]!;
+    const gid = repite ? repite.id : addGuest(locale, opts.from, opts.to);
+    if (repite) repite.stays.push([opts.from, opts.to]);
     booking_guests.push({ booking_id: id, guest_id: gid, is_lead: true });
     // Check-in de demostración (ADR 0022): las confirmadas que están EN CASA en el
     // ancla del seed (Y-07-15, el "hoy" del seed) ya hicieron check-in — salvo ~1

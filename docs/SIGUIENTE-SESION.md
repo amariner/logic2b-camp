@@ -1,8 +1,9 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 53 (2026-07-25: Clientes y Tarifas a los
-> primitivos del DS, BACKLOG B1 5/11, y el arreglo del seed que hacía que los
-> 2 032 clientes fueran 20 personas repetidas. Sesión autónoma local).
+> Reescrito al cerrar la sesión 54 (2026-07-25: los clientes que vuelven en el
+> seed —BACKLOG `[10]`, cerrado— y, de paso, la lista de clientes deja de
+> leerse como generada: 161 apellidos, parejas nombre+apellido únicas por
+> construcción y el sexo saliendo del nombre. Sesión autónoma local).
 > Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de
 > la siguiente.
 
@@ -14,11 +15,14 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**`[B1]` llega a 5 de 11** (Clientes y Tarifas migradas; con ellas se acaban las
-pantallas que **son** tablas), y al mirarlas en el navegador saltó un fallo que
-no era de UI — **el seed acoplaba nombre y apellido al mismo índice**, así que la
-lista de clientes enseñaba 25 filas seguidas con el mismo nombre y el mismo
-correo. Ahora hay 1 600 nombres y correos distintos, con test que lo fija.
+`/clientes` **por fin enseña lo que vende**. El seed creaba un huésped nuevo por
+reserva, así que la columna "Reservas" valía 1 en las 2 032 fichas; ahora hay un
+censo de habituales y **1 521 fichas con 1, 2, 3 y 4 estancias** (1 168 / 223 /
+102 / 28). Y al mirarlo en el navegador saltó el mismo defecto de la sesión 53
+una columna a la derecha: con 40 apellidos, la primera página salía entera
+"Andersen" → 161 apellidos y, sobre todo, **otro mecanismo** (recorrido de las
+6 440 parejas a saltos coprimos), que convierte "casi no se repiten" en
+**garantía de que no pueden repetirse**.
 
 ## ▶ Prompt para pegar
 
@@ -28,13 +32,12 @@ continúa con el desarrollo de este proyecto
 
 ## Deuda de despliegue
 
-**Sí, y esta vez importa por qué.** La sesión 53 **no se ha desplegado**. El
-cambio del seed no afecta al esquema, así que **no hace falta reseed remoto
-`--apply`**: el reset nocturno (`tenants/demo/worker.ts`, cron `0 3 * * *` →
-`resetDemoData`) re-siembra desde `generateSeed()`, que es **código desplegado**.
-Es decir: con un `pnpm --filter @logic-camp/api deploy:demo` normal, la demo
-remota se arregla sola a las 3:00 de la madrugada siguiente. Si se quiere ver
-antes, está el botón de restablecer del banner de demo.
+**Sí — y sigue sin necesitar `--apply`.** Las sesiones 53 y 54 no se han
+desplegado. Ninguna toca esquema: el reset nocturno (`tenants/demo/worker.ts`,
+cron `0 3 * * *` → `resetDemoData`) re-siembra desde `generateSeed()`, que es
+**código desplegado**. Con un `pnpm --filter @logic-camp/api deploy:demo`
+normal, la demo remota se pone al día sola a las 3:00 de la madrugada
+siguiente; para verlo antes, el botón de restablecer del banner de demo.
 
 Recordatorio general: el deploy es manual desde local y **lleva schema, no
 datos**; solo un objetivo que dependa de datos que el reset **no** regenera
@@ -42,23 +45,21 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[10] Huéspedes que repiten en el seed** (recomendado si se quiere algo con
-  peso en la demo). Hoy el generador crea **un huésped nuevo por reserva**: la
-  columna "Reservas" de `/clientes` vale **1 en las 2 032 fichas** y el historial
-  de la ficha siempre tiene una sola estancia — o sea, la "memoria comercial del
-  camping", que es lo que esa pantalla vende, **no se ve nunca**. Que un
-  porcentaje de reservas reutilice un huésped existente (el que vuelve cada
-  agosto) lo arregla. **Ojo**: toca el generador de reservas y `booking_guests`,
-  hay que comprobar invariantes y el parte de viajeros, y `seed.test.ts` tiene
-  10 tests calibrados sobre el ancla. No es un retoque de datos.
-- **[B1] Seguir con los primitivos, 2–3 pantallas más**. Quedan 6 y **ninguna es
-  una tabla**: Informes e Inventario son rejillas de tiles, Llegadas y
-  Solicitudes son listas con acciones por fila (convertirlas a tabla sería una
-  regresión), Parte y Ajustes son formulario y detalle. Lo que les toca es
-  `Card`/`Input`/`Label`/`Badge`, no `Table*`. Mirar cada una antes de tocarla.
+- **[B1] Seguir con los primitivos del DS, 2–3 pantallas** (recomendado: es lo
+  único visual con final claro que queda a mano). Van 5 de 11 y **ninguna de las
+  6 restantes es una tabla**: Informes e Inventario son rejillas de tiles,
+  Llegadas y Solicitudes son listas con acciones por fila (convertirlas a tabla
+  sería una regresión), Parte y Ajustes son formulario y detalle. Lo que les
+  toca es `Card`/`Input`/`Label`/`Badge`, no `Table*`. **Mirar cada una antes de
+  tocarla** — en las tres últimas migraciones el hallazgo de valor no estuvo en
+  el markup sino en lo que el markup destapaba.
 - **[C1] Aviso inline del pendiente negativo** al mover una reserva ya pagada a
   un precio menor (hoy la ficha lo enseña después; el diálogo de precio no).
   Acotado, verificable con el planning.
+- **[10] Informes con la memoria comercial ya sembrada**: ahora que hay clientes
+  que repiten, mirar si `/informes` puede decir algo que antes era imposible
+  (cuántos vuelven, qué porcentaje de las reservas son de repetidores). **Ojo**:
+  es feature nueva, no acabado — comprobar antes si cabe sin abrir fase.
 - **[C2] Limpiar claves i18n huérfanas del dashboard** — con el aviso del
   BACKLOG: siete de las "huérfanas" eran cabeceras que faltaban por pintar. Una
   clave sin usar puede significar "falta la UI". Barato, pero es limpieza.
@@ -71,27 +72,35 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + tres nuevas de la sesión 53)
+## Trampas conocidas (heredadas + dos nuevas de la sesión 54)
 
 - `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
   contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.
-- **NUEVA (53) — un seed puede generar datos válidos y falsos a la vez**, y
-  ningún test de invariantes lo ve. `firstNames[b % 20]` y `lastNames[(b*3) % 20]`
-  quedan **ambos determinados por `b % 20`**: 20 personas para 2 032 fichas. Al
-  desacoplar índices en un generador, comprobar que los ritmos son de verdad
-  independientes (dividir, no multiplicar) **y contar los distintos**, que es lo
-  único que no se puede engañar. Ojo con lo contrario: para listas cortas
-  (solicitudes, ~12 filas) el truco correcto es el **multiplicador**, porque
-  dividir les daría el mismo apellido a todas.
-- **NUEVA (53) — `getComputedStyle().boxShadow` miente sobre el anillo de foco**
-  del DS en este Chrome: `--tw-ring-shadow` se lee correctamente (`0 0 0 3px …`)
-  pero el `box-shadow` compuesto sale a cero. El anillo **sí se pinta**. Para
-  juzgar un anillo, captura; para juzgar que la regla existe, la variable.
-- **NUEVA (53) — antes de bajar la altura de un `Input` del DS "por densidad",
-  mirar quién fija de verdad la altura de la fila**. En Tarifas la fijaba el
-  botón `size="xs"` (28px), no el campo: `h-7` alinea los dos y no cuesta ni un
-  píxel; `h-8` habría crecido sin motivo, y `h-6` habría dejado el campo
-  descolgado del botón.
+- **NUEVA (54) — ampliar el repertorio no arregla un acoplamiento, lo diluye.**
+  La sesión 53 desacopló nombre y apellido y subió las listas a 40 × 40; la 54
+  descubrió que **la primera página de `/clientes` seguía siendo un bloque del
+  mismo apellido** (40 apellidos ÷ 1 500 fichas = 38 cada uno, y la lista se
+  ordena por apellido). Y al ampliar a 161, `bkgN % 40` y `floor(bkgN/40) % 161`
+  habrían vuelto a acoplarse. Lo que lo cierra es **cambiar de mecanismo**:
+  numerar el espacio de parejas y recorrerlo a saltos coprimos con su tamaño —
+  pasa por todas antes de repetir ninguna. Entonces el test se puede escribir en
+  absoluto (`new Set(nombres).size === nombres.length`) en vez de con un umbral,
+  y **un umbral que se cumple es justo lo que deja pasar estos fallos**.
+- **NUEVA (54) — dos módulos sobre el mismo contador nunca son dos ritmos**, ni
+  aunque los números parezcan distintos. `bkgN % 4 === 0` (quién entra en el
+  censo de habituales) y `bkgN % 10` (cuántas estancias le tocan) comparten el
+  factor 2: el índice impar de la forma **no salía jamás** y el tope de 4
+  estancias no existía. Se arregló sorteando con el **tamaño del censo**, que es
+  otro contador de verdad. Regla: al sortear un rasgo, preguntarse de qué
+  contador depende **el rasgo de al lado**.
+- **Un dato puede ser válido y falso a la vez** (53, 54): el seed generaba 2 032
+  fichas correctas que eran 20 personas; y "María" iba con sexo M en todas sus
+  fichas porque el sexo salía del mismo contador que el nombre. **Ningún test de
+  invariantes ve esto** — hay que mirar la pantalla, y luego escribir el test.
+- **`getComputedStyle().boxShadow` miente sobre el anillo de foco** del DS en
+  este Chrome: `--tw-ring-shadow` se lee bien pero el compuesto sale a cero. El
+  anillo **sí se pinta**. Para juzgar un anillo, captura; para juzgar que la
+  regla existe, la variable.
 - **El primitivo `Table` y el scroll (52)**: su contenedor lleva `overflow-x-auto`
   y en CSS `overflow-y: visible` **computa a `auto`** en cuanto el otro eje no es
   `visible` → el contenedor pasa a ser el scroller de **ambos** ejes y un
@@ -119,8 +128,9 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
   script que barra fechas se come la cuota y recibe **429**; con Playwright el
   síntoma es «Process from config.webServer was not able to start».
 - En el panel del navegador, `computer` con `coordinate` usa coordenadas del
-  **viewport**, no de la captura. Su `left_click_drag` no dispara los pointer
-  events de las barras del planning: para gestos, Playwright.
+  **viewport**, no de la captura — para pulsar una fila, los `ref_N` de
+  `read_page`. Su `left_click_drag` no dispara los pointer events de las barras
+  del planning: para gestos, Playwright.
 - Cambiar el esquema de color en caliente (`resize_window colorScheme`) deja el
   dashboard **a medio repintar**: recargar antes de juzgar un contraste.
 - El **reset nocturno de la demo SÍ existe** (`tenants/demo/worker.ts`, cron
