@@ -26,11 +26,14 @@ las contaba como huérfanas y **no lo eran**). El primitivo `Table` necesitó un
 continúa con el desarrollo de este proyecto
 ```
 
-## Deuda de despliegue (primer paso de la próxima sesión LOCAL con credenciales)
+## Deuda de despliegue
 
-- Las sesiones **48, 51 y 52 no están en producción**. Ninguna toca esquema ni
-  datos (planning, CSS, tablas del dashboard), así que no corre prisa, pero todo
-  sale junto con: `pnpm --filter @logic-camp/api deploy:demo`.
+**Ninguna.** Las sesiones 48, 51 y 52 se desplegaron al cerrar la 52
+(`camp.logic2b.com`, versión `48c0b6dc`) y se verificaron en vivo como visitante
+anónimo. Sin migraciones nuevas → **no hizo falta reseed remoto**. Recordatorio
+para la próxima: el deploy es manual desde local, `pnpm --filter @logic-camp/api deploy:demo`,
+y **lleva schema, no datos** — si un objetivo depende de datos nuevos del seed,
+hace falta además `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
