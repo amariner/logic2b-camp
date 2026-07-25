@@ -17,7 +17,7 @@ import { BotonAyuda } from '../components/BotonAyuda';
 
 /** Foco visible en las filas clicables: son rejillas enteras, no botones. */
 const FILA_FOCO =
-  'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 motion-reduce:transition-none';
+  'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50';
 
 function GuestPanel({
   guestId,

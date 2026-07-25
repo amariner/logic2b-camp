@@ -200,3 +200,28 @@ html {
     animation: none;
   }
 }
+
+/* ---------- prefers-reduced-motion: el freno de toda la web (BACKLOG C2) ----------
+ *
+ * Las reglas de arriba (.lc-ticker, .lc-settle, .lc-skeleton) apagan las
+ * animaciones decorativas, pero dejaban vivas TODAS las transiciones de
+ * Tailwind: `transition-colors`, el `duration-700` del zoom de las fotos, la
+ * opacidad de los desplegables… Auditado en navegador con la preferencia
+ * activada (sesión 51) y arreglado con el reset canónico, que además cubre lo
+ * que se escriba mañana sin acordarse de esto.
+ *
+ * `0.01ms` en vez de `none` para que los `transitionend`/`animationend` sigan
+ * llegando; `animation-iteration-count: 1` porque 0,01ms en bucle infinito
+ * repinta para siempre. Mismo bloque, y por el mismo motivo, en el DS
+ * (packages/ui/src/theme.css) y en la landing de producto (apps/site).
+ * Lo vigila `e2e/reduced-motion.spec.ts`. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

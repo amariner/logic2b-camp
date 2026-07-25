@@ -194,9 +194,15 @@ html.lc-js .lc-reveal.lc-visible {
   transform: none;
 }
 
+/* El reset canónico, igual que en el DS y en la web de tenant (BACKLOG C2).
+ * `animation-iteration-count: 1` faltaba: sin él, una animación en bucle
+ * infinito sigue repintando para siempre aunque cada vuelta dure 0,01ms. */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }

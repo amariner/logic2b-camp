@@ -31,11 +31,11 @@ export function SheetContent({
 }: ComponentProps<typeof DialogPrimitive.Content> & { side?: keyof typeof sides }) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-foreground/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 motion-reduce:animate-none" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-foreground/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
       <DialogPrimitive.Content
         className={cn(
           'fixed z-50 flex flex-col border-border bg-background shadow-lg outline-none',
-          'data-[state=open]:animate-in data-[state=closed]:animate-out motion-reduce:animate-none',
+          'data-[state=open]:animate-in data-[state=closed]:animate-out',
           sides[side],
           className,
         )}

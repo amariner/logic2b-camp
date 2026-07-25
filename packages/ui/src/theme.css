@@ -8,8 +8,10 @@
  */
 
 /* Utilidades de animación de shadcn en Tailwind v4 (animate-in, fade-in-0…).
- * Las usan dialog/sheet/dropdown/popover/tooltip. Todas se anulan bajo
- * `prefers-reduced-motion` con `motion-reduce:animate-none` en cada componente. */
+ * Las usan dialog/sheet/dropdown/popover/tooltip. Quien las anula bajo
+ * `prefers-reduced-motion` es el bloque del final de este fichero, UNO y solo
+ * uno — ver allí por qué el `motion-reduce:animate-none` por componente no
+ * servía (auditoría del BACKLOG C2, e2e `reduced-motion.spec.ts`). */
 @import 'tw-animate-css';
 
 :root {
@@ -259,4 +261,35 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: 1rem;
+}
+
+/* ---------- prefers-reduced-motion: el único freno del DS (BACKLOG C2) ----------
+ *
+ * Hasta la auditoría de la sesión 51 cada componente llevaba
+ * `motion-reduce:animate-none` y NO servía de nada. El motivo, comprobado en
+ * navegador: las variantes de Radix generan `.clase[data-state=open]`
+ * —especificidad (0,2,0)— mientras que `motion-reduce:animate-none` vive dentro
+ * de un `@media`, que NO suma especificidad: (0,1,0). Perdía siempre, en
+ * cualquier orden. Diálogos, sheets, popovers, menús y tooltips seguían
+ * animándose con la preferencia activada.
+ *
+ * Un solo bloque con `!important` en lugar de N clases por componente: es el
+ * reset canónico, y sobre todo no puede fallar en silencio la próxima vez que
+ * alguien escriba `data-[state=…]:animate-…`.
+ *
+ * `0.01ms` y no `none` a propósito: Radix desmonta al recibir `animationend`,
+ * y con `animation: none` ese evento no llega. `animation-iteration-count: 1`
+ * es igual de obligatorio — 0,01ms repetido «infinite» repinta para siempre.
+ *
+ * Lo vigila `apps/web/e2e/reduced-motion.spec.ts`: barre el DOM y falla si algo
+ * se mueve. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

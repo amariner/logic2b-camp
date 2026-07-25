@@ -6,14 +6,15 @@ import { cn } from '../lib/cn';
  * contenido real**, no un rectángulo genérico: por eso se compone, no se
  * parametriza. Ver `SkeletonText`/`SkeletonRows` para los casos frecuentes.
  *
- * `prefers-reduced-motion` corta el pulso: quien lo pide no quiere nada latiendo.
+ * `prefers-reduced-motion` corta el pulso —quien lo pide no quiere nada
+ * latiendo— desde el bloque único de `theme.css`, no desde aquí.
  */
 export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-slot="skeleton"
       aria-hidden="true"
-      className={cn('animate-pulse rounded-md bg-muted motion-reduce:animate-none', className)}
+      className={cn('animate-pulse rounded-md bg-muted', className)}
       {...props}
     />
   );

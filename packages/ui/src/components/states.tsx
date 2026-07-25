@@ -16,7 +16,7 @@ export function Spinner({ className, ...props }: ComponentProps<'svg'>) {
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className={cn('size-4 animate-spin motion-reduce:animate-none', className)}
+      className={cn('size-4 animate-spin', className)}
       {...props}
     >
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.2" strokeWidth="2.5" />

@@ -199,7 +199,7 @@ function SidebarInner({
             >
               <ChevronLeft
                 className={cn(
-                  'size-4 transition-transform motion-reduce:transition-none',
+                  'size-4 transition-transform',
                   collapsed && 'rotate-180',
                 )}
               />
@@ -258,7 +258,7 @@ function Shell() {
       {/* Escritorio: sidebar persistente y plegable (la usuaria real está a 1366px). */}
       <aside
         className={cn(
-          'hidden shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] motion-reduce:transition-none md:flex',
+          'hidden shrink-0 flex-col border-r border-sidebar-border bg-sidebar transition-[width] md:flex',
           collapsed ? 'w-14' : 'w-56',
         )}
       >

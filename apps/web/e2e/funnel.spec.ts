@@ -3,12 +3,18 @@
  * Corre contra el Worker real (web estática + API + D1 local sembrada).
  */
 import { expect, test, type APIRequestContext } from '@playwright/test';
+import { estanciaLibre, WEB } from './base';
 
-// fechas de septiembre variables por ejecución: los reruns no agotan el inventario
-const day = 10 + (Math.floor(Date.now() / 60000) % 12);
-const FROM = `2026-09-${String(day).padStart(2, '0')}`;
-const TO = `2026-09-${String(day + 3).padStart(2, '0')}`;
-const QS = `from=${FROM}&to=${TO}&adults=2&children=1`;
+// Fechas preguntadas a la API, no inventadas: ver `estanciaLibre` en base.ts —
+// las de antes (`10 + minutos % 12`) caían en septiembre lleno 4 de cada 12
+// minutos y reciclaban holds vivos, y la suite fallaba por el reloj.
+let FROM: string;
+let TO: string;
+let QS: string;
+
+test.beforeAll(async ({ request }) => {
+  ({ from: FROM, to: TO, qs: QS } = await estanciaLibre(request));
+});
 
 const hold = (api: APIRequestContext, unitTypeId: string, dateFrom: string, dateTo: string) =>
   api.post('/api/holds', { data: { unitTypeId, dateFrom, dateTo } });
@@ -17,11 +23,11 @@ test('camino feliz: buscar → detalle → titular con hold → confirmada → p
   page,
 }) => {
   // paso 1: resultados por deep-link
-  await page.goto(`/reservar?${QS}`);
+  await page.goto(`${WEB}/reservar?${QS}`);
   await expect(page.locator('ul li h3').first()).toBeVisible();
 
   // paso 2: detalle del glamping con desglose del servidor; un extra re-cotiza
-  await page.goto(`/reservar/ut_glamp?${QS}`);
+  await page.goto(`${WEB}/reservar/ut_glamp?${QS}`);
   const quote = page.waitForResponse('**/api/quote');
   await page.locator('label', { hasText: 'Ropa de cama' }).locator('input').check();
   await quote;
@@ -65,7 +71,7 @@ test('infeliz 1: el tipo se agota entre el detalle y el titular', async ({ page,
   }
   expect(ids.length).toBeGreaterThan(0);
 
-  await page.goto(`/reservar/ut_glamp/titular?${QS}`);
+  await page.goto(`${WEB}/reservar/ut_glamp/titular?${QS}`);
   // sin hueco: aviso claro y vuelta a los resultados, sin cobrar nada
   await expect(page.locator('text=/última unidad/')).toBeVisible();
 
@@ -76,7 +82,7 @@ test('infeliz 2: el hold caduca al confirmar — se avisa y el reintento revalid
   page,
   request,
 }) => {
-  await page.goto(`/reservar/ut_glamp/titular?${QS}`);
+  await page.goto(`${WEB}/reservar/ut_glamp/titular?${QS}`);
   const holdRes = await page.waitForResponse('**/api/holds');
   const { holdId } = (await holdRes.json()) as { holdId: string };
   await expect(page.locator('[role=timer]')).toBeVisible();
@@ -107,7 +113,7 @@ test('infeliz 3: estancia inválida en alta — errores i18n del motor en el det
   page,
 }) => {
   // bungalow 6 en agosto: mínimo 7 noches y llegada en sábado → 2 noches entre semana falla
-  await page.goto('/reservar/ut_bung6?from=2026-08-03&to=2026-08-05&adults=2&children=0');
+  await page.goto(`${WEB}/reservar/ut_bung6?from=2026-08-03&to=2026-08-05&adults=2&children=0`);
   await expect(page.locator('text=/Estancia mínima de 7 noches/')).toBeVisible();
   await expect(page.locator('text=/llegada es en sábado/')).toBeVisible();
   // y sin botón de continuar: no se puede avanzar con una estancia inválida

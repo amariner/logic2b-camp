@@ -1,4 +1,11 @@
+import { existsSync } from 'node:fs';
 import { defineConfig } from '@playwright/test';
+
+/* En el contenedor cloud el navegador vive fuera del proyecto; en local lo
+ * resuelve Playwright solo. Forzar la ruta de /opt en un Mac rompía `pnpm e2e`. */
+const CHROMIUM =
+  process.env.CHROMIUM_PATH ??
+  (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
 
 /**
  * E2E del funnel (ADR 0007) contra el Worker real con la web construida.
@@ -12,7 +19,7 @@ export default defineConfig({
   workers: 1, // el estado de la D1 local es compartido: secuencial a propósito
   use: {
     baseURL: 'http://localhost:8787',
-    launchOptions: { executablePath: process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium' },
+    launchOptions: { executablePath: CHROMIUM },
   },
   webServer: {
     command:
