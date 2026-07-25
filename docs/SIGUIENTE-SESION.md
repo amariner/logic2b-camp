@@ -9,17 +9,12 @@
 ## Estado en una línea
 
 Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
-proyecto" y se ejecuta `docs/CONTINUA.md` completo. El MVP es una **demo fake**
-— nada de servicios externos reales. El plano cierra ya el ciclo entero del
-bloqueo (crear Y levantar desde la unidad); el `BlockDialog` ya no pierde la
-selección al abrir.
-
-## ⚠ Pendiente de integrar
-
-La sesión 47 (cloud) trabajó y pusheó en la rama **`claude/continuacion-proyecto-yhq05n`**
-por mandato del entorno (no tenía permiso para pushear a `main`). Primer paso en
-local: revisar y **merge a `main`** (fast-forward limpio sobre `705ed6e`), borrar
-la rama. Después, cuando toque deploy: `pnpm --filter @logic-camp/api deploy:demo`.
+proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
+`main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
+es una **demo fake** — nada de servicios externos reales. El plano cierra ya el
+ciclo entero del bloqueo (crear Y levantar desde la unidad); el `BlockDialog`
+ya no pierde la selección al abrir. Pendiente de deploy en la próxima sesión
+local: `pnpm --filter @logic-camp/api deploy:demo`.
 
 ## ▶ Prompt para pegar
 

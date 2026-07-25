@@ -24,7 +24,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ### Sesión 47 — 2026-07-24 · **[C4.4] Bloqueos desde el propio plano: panel de unidad + fix de defaults del diálogo** (remate C4/C7, sin ADR)
 
-**Contexto**: sesión autónoma cloud (protocolo `docs/CONTINUA.md`), rama de sesión `claude/continuacion-proyecto-yhq05n` partiendo de `origin/main` = `705ed6e` (mandato del entorno: desarrollar y pushear en esa rama; el merge a `main` queda para Andreu o la próxima sesión con permiso). Objetivo elegido: el primer candidato de SIGUIENTE-SESION, **[C4.4] crear bloqueos desde el plano**, siguiendo su propia instrucción de "verificar primero qué hace hoy el diálogo".
+**Contexto**: sesión autónoma cloud (protocolo `docs/CONTINUA.md`), rama de sesión `claude/continuacion-proyecto-yhq05n` partiendo de `origin/main` = `705ed6e`. Objetivo elegido: el primer candidato de SIGUIENTE-SESION, **[C4.4] crear bloqueos desde el plano**, siguiendo su propia instrucción de "verificar primero qué hace hoy el diálogo". **Cierre**: Andreu dio en la misma sesión **permiso permanente** para que las sesiones cloud hagan merge a `main` — hecho aquí (ff `705ed6e → 27b9918` + este commit de docs), mandato escrito en `docs/CONTINUA.md` §7, rama de sesión borrada. Trampa que picó: el `main` local del contenedor era un resto del día 1 con historia pre-reescritura (6 commits del 17-jul que ya no son ancestros de origin) — `git reset --hard origin/main` antes del merge, sin pérdida (su contenido lleva en origin desde entonces).
 
 **Lo que la auditoría previa encontró** (y convirtió el "pulido" en dos arreglos de verdad):
 

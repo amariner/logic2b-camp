@@ -42,7 +42,12 @@ escritas con su motivo. Andreu revisa a posteriori leyendo PROGRESS.md.
    `docs/SIGUIENTE-SESION.md`** con el prompt de la siguiente.
 7. **Entregar**: commit(s) en `main` (mensaje `Sesión NN: …`), merge si se trabajó
    en rama, y **push a GitHub**. Las ramas de sesión se borran (memoria
-   [[ramas-archivo-tags]]).
+   [[ramas-archivo-tags]]). **Esto aplica también a las sesiones cloud**: si el
+   entorno impone una rama de sesión (`claude/...`), se desarrolla ahí, pero el
+   cierre es merge a `main` + push de `main` + borrar la rama — permiso
+   permanente de Andreu (2026-07-25). Ojo con la trampa del `main` local viejo:
+   comparar con `origin/main` y, si divergió por historia reescrita antigua,
+   `git reset --hard origin/main` antes del merge.
 8. **Cerrar**: `/session-close` si está disponible; si no, los pasos 6–7 son el
    cierre. Nunca cerrar en rojo sin explicarlo en PROGRESS.
 
