@@ -28,6 +28,24 @@ const fecha = (iso: string) =>
     new Date(`${iso.slice(0, 10)}T12:00:00Z`),
   );
 
+/**
+ * La rejilla de la fila, en un solo sitio: la usan la cabecera de columnas y la
+ * fila, y si vive dos veces se desalinean el día que alguien toque una anchura
+ * (la lección de la sidebar de la sesión 38: una fuente, dos vistas).
+ *
+ * La columna de estado va a ANCHO FIJO, no `auto`. Cada fila es su propia
+ * rejilla —son `<button>` sueltos, no un `<table>`—, así que con `auto` la
+ * anchura la decidía la palabra del chip de esa fila: «Presupuestada» empujaba
+ * la columna «Tipo solicitado» 46 px a la izquierda respecto de «Nueva». Las
+ * columnas de esta lista nunca han estado alineadas entre sí; sin cabecera
+ * contra la que mirar, no se veía. 104px entran los cinco estados con aire.
+ */
+const REJILLA =
+  'grid w-full grid-cols-[90px_1fr_104px] items-center gap-3 px-4 sm:grid-cols-[90px_170px_1fr_130px_104px]';
+
+/** Misma tipografía que `TableHead` del DS: la cabecera se lee igual en todo el dashboard. */
+const CABECERA = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
+
 export default function Solicitudes() {
   const qc = useQueryClient();
   const [filtro, setFiltro] = useState<EnquiryStatus | 'todas'>('todas');
@@ -117,6 +135,24 @@ export default function Solicitudes() {
         />
       )}
 
+      {/*
+        Cabecera de columnas. Las claves `sol.recibida`/`sol.fechas`/`sol.tipo`
+        llevaban desde la sesión 18 en el diccionario sin que las usara nadie: no
+        sobraba la clave, faltaba la UI (el mismo hallazgo que Pagos y
+        Notificaciones en la 52). Va `aria-hidden` a propósito — las filas son
+        `<button>`, no celdas, así que el lector de pantalla ya lee cada valor
+        dentro de su fila y esto solo añadiría una hilera suelta de palabras.
+      */}
+      {!isPending && !isError && visibles.length > 0 && (
+        <div aria-hidden="true" className={cn(REJILLA, CABECERA, 'border-b border-border/60 py-2')}>
+          <span>{t('sol.recibida')}</span>
+          <span>{t('sol.contacto')}</span>
+          <span className="hidden sm:block">{t('sol.fechas')}</span>
+          <span className="hidden sm:block">{t('sol.tipo')}</span>
+          <span className="justify-self-end">{t('res.estado')}</span>
+        </div>
+      )}
+
       <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
         {visibles.map((e) => {
           const pax = e.occupancy ? e.occupancy.adults + e.occupancy.childrenAges.length : null;
@@ -135,7 +171,8 @@ export default function Solicitudes() {
                 onClick={() => setAbierta(abiertaEsta ? null : e.id)}
                 aria-expanded={abiertaEsta}
                 className={cn(
-                  'grid w-full grid-cols-[90px_1fr_auto] items-center gap-3 rounded-md px-4 py-2.5 text-left text-[13px] hover:bg-accent/50 sm:grid-cols-[90px_170px_1fr_130px_auto]',
+                  REJILLA,
+                  'rounded-md py-2.5 text-left text-[13px] hover:bg-accent/50',
                   focusRing,
                 )}
               >

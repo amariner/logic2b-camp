@@ -68,6 +68,178 @@ describe('seed demo Cala Sereno', () => {
     ).toBe(true);
   });
 
+  /**
+   * SOLICITUDES (sesión 55). El reset nocturno re-siembra con el AÑO EN CURSO
+   * (`reset.ts`: `new Date().getUTCFullYear()`), así que la tirada del PRNG
+   * cambia cada 1 de enero. Un test que solo mira 2026 comprueba una tirada, no
+   * una propiedad: estos corren sobre diez temporadas seguidas.
+   */
+  describe('SOLICITUDES: la bandeja no puede leerse como generada', () => {
+    type Enq = {
+      id: string;
+      status: string;
+      date_from: string | null;
+      date_to: string | null;
+      created_at: string;
+      source: string;
+      locale: string;
+      message: string;
+      unit_type_id: string | null;
+      contact: { phone?: string };
+      occupancy: { adults: number; childrenAges: number[] } | null;
+    };
+    const AÑOS = Array.from({ length: 10 }, (_, i) => 2026 + i);
+    const porAño = new Map(
+      AÑOS.map((y) => [y, generateSeed(y)] as const).map(([y, d]) => [
+        y,
+        { seed: d, enqs: d.enquiries as unknown as Enq[] },
+      ]),
+    );
+    const cadaAño = (
+      fn: (enqs: Enq[], seed: ReturnType<typeof generateSeed>, año: number) => void,
+    ) => {
+      for (const [año, { seed, enqs }] of porAño) fn(enqs, seed, año);
+    };
+
+    /**
+     * La invariante de verdad: una solicitud pide una estancia FUTURA. Antes,
+     * `date_from` salía de `${Y}-07-01` sin mirar la recepción, y había
+     * solicitudes escritas el 15 de julio pidiendo del 3 al 10 de julio.
+     */
+    it('ninguna pide una estancia anterior a su propia recepción', () => {
+      cadaAño((enqs, _s, año) => {
+        for (const e of enqs) {
+          if (!e.date_from) continue;
+          const recibida = e.created_at.slice(0, 10);
+          expect(
+            e.date_from > recibida,
+            `${año}/${e.id}: recibida ${recibida}, estancia ${e.date_from}`,
+          ).toBe(true);
+          expect(e.date_to! > e.date_from).toBe(true);
+        }
+      });
+    });
+
+    it('llegan escalonadas: nunca todas el mismo día', () => {
+      cadaAño((enqs, _s, año) => {
+        const dias = new Set(enqs.map((e) => e.created_at.slice(0, 10)));
+        expect(dias.size, `${año}: ${dias.size} días distintos`).toBeGreaterThanOrEqual(9);
+      });
+    });
+
+    it('el estado ordena por edad: lo "nuevo" es más reciente que lo resuelto', () => {
+      cadaAño((enqs, _s, año) => {
+        const t = (s: string, f: (n: number[]) => number) =>
+          f(enqs.filter((e) => e.status === s).map((e) => Date.parse(e.created_at)));
+        const min = (n: number[]) => Math.min(...n);
+        const max = (n: number[]) => Math.max(...n);
+        // ni la más antigua de las nuevas alcanza a la más antigua de las perdidas
+        expect(t('new', min), `${año}`).toBeGreaterThan(t('lost', min));
+        expect(t('new', max), `${año}`).toBeGreaterThan(t('converted', max));
+      });
+    });
+
+    /**
+     * El acoplamiento que traía el bloque: `source` y "trae fechas" salían los
+     * dos de `n % 4`, así que NINGUNA solicitud de teléfono traía fechas y
+     * NINGUNA de web las omitía. El test se escribe sobre el síntoma —existe la
+     * combinación que era imposible—, no sobre el mecanismo. Y como la mezcla
+     * está declarada y no sorteada, esto vale para cualquier temporada.
+     */
+    it('los rasgos no van atados: hay teléfono con fechas y web sin fechas', () => {
+      cadaAño((enqs, _s, año) => {
+        expect(
+          enqs.some((e) => e.source === 'phone' && e.date_from !== null),
+          `${año}`,
+        ).toBe(true);
+        expect(
+          enqs.some((e) => e.source === 'web' && e.date_from === null),
+          `${año}`,
+        ).toBe(true);
+        expect(
+          enqs.some((e) => e.source === 'phone' && e.date_from === null),
+          `${año}`,
+        ).toBe(true);
+        // «Cualquiera» también está plantado: la columna Tipo enseña las dos caras
+        expect(
+          enqs.some((e) => e.unit_type_id === null),
+          `${año}`,
+        ).toBe(true);
+        expect(
+          enqs.some((e) => e.unit_type_id !== null),
+          `${año}`,
+        ).toBe(true);
+      });
+    });
+
+    /**
+     * El otro acoplamiento: `unit_type_id` y los niños salían los dos de `n % 3`,
+     * y «sin tipo» implicaba «sin niños», SIEMPRE. Los niños siguen sorteados —no
+     * hay nada que la demo necesite garantizar de ellos—, así que este se mira
+     * sobre las diez temporadas juntas: si siguieran atados, la combinación no
+     * saldría **ninguna** de las 150 veces. Contar en una sola temporada sería
+     * otra vez un umbral, y un umbral que se cumple es lo que dejó pasar esto.
+     */
+    it('el tipo pedido y los niños ya no son el mismo contador', () => {
+      const todas = [...porAño.values()].flatMap(({ enqs }) => enqs);
+      const con = (tipo: boolean, niños: boolean) =>
+        todas.filter(
+          (e) =>
+            (e.unit_type_id !== null) === tipo &&
+            (e.occupancy?.childrenAges.length ?? 0) > 0 === niños,
+        ).length;
+      for (const tipo of [true, false])
+        for (const niños of [true, false])
+          expect(con(tipo, niños), `tipo=${tipo} niños=${niños} no sale nunca`).toBeGreaterThan(0);
+    });
+
+    it('el teléfono solo entra con recepción abierta', () => {
+      cadaAño((enqs, _s, año) => {
+        for (const e of enqs) {
+          if (e.source !== 'phone') continue;
+          const h = Number(e.created_at.slice(11, 13));
+          expect(h >= 9 && h < 20, `${año}/${e.id} por teléfono a las ${h}h`).toBe(true);
+        }
+      });
+    });
+
+    it('el tipo solicitado admite a la gente que viene', () => {
+      cadaAño((enqs, seed, año) => {
+        for (const e of enqs) {
+          if (!e.unit_type_id || !e.occupancy) continue;
+          const ut = seed.unit_types.find((u) => u.id === e.unit_type_id)!;
+          const pax = e.occupancy.adults + e.occupancy.childrenAges.length;
+          expect(pax, `${año}/${e.id} pide ${e.unit_type_id} para ${pax} pax`).toBeLessThanOrEqual(
+            ut.capacity_max as number,
+          );
+        }
+      });
+    });
+
+    it('cada una escribe en su idioma, y el prefijo del teléfono va con él', () => {
+      const prefijos: Record<string, string> = {
+        es: '+34',
+        ca: '+34',
+        fr: '+33',
+        de: '+49',
+        nl: '+31',
+        en: '+44',
+      };
+      cadaAño((enqs, _s, año) => {
+        // el mensaje ya no es el mismo párrafo quince veces
+        expect(new Set(enqs.map((e) => e.locale)).size, `${año}`).toBeGreaterThanOrEqual(4);
+        expect(new Set(enqs.map((e) => e.message)).size, `${año}`).toBeGreaterThanOrEqual(6);
+        for (const e of enqs) {
+          if (!e.contact.phone) continue;
+          expect(
+            e.contact.phone.startsWith(prefijos[e.locale]!),
+            `${año}/${e.id}: ${e.locale} con ${e.contact.phone}`,
+          ).toBe(true);
+        }
+      });
+    });
+  });
+
   it('INVARIANTE: ninguna unidad tiene dos reservas activas solapadas (to exclusive)', () => {
     const active = data.bookings.filter((b) =>
       ['confirmed', 'pending', 'completed'].includes(b.status),

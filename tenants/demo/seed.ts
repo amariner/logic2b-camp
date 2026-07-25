@@ -549,30 +549,149 @@ export function generateSeed(anchorYear: number): SeedData {
     // la sesión 53, solo que en la columna de al lado. Con 160 tocan a ~9, que
     // es lo que se ve en un listado de verdad: dos o tres hermanos seguidos,
     // no media pantalla.
-    'Romero', 'Iglesias', 'Molina', 'Ortega', 'Delgado', 'Castro', 'Rubio',
-    'Marín', 'Santos', 'Cabrera', 'Reyes', 'Gallego', 'Lorenzo', 'Vargas',
-    'Bruguera', 'Fabra', 'Estellés', 'Salvador', 'Beltrán', 'Balaguer',
-    'Cardona', 'Company', 'Fuster', 'Llopis', 'Mestre', 'Ribes', 'Solé',
-    'Tarragó', 'Vilanova', 'Bonet',
-    'Girard', 'Lefevre', 'Roux', 'Fournier', 'Chevalier', 'Perrin', 'Marchand',
-    'Renaud', 'Bourgeois', 'Guillaume', 'Colin', 'Poirier', 'Leclerc', 'Menard',
-    'Becker', 'Wagner', 'Schulz', 'Richter', 'Neumann', 'Zimmermann', 'Braun',
-    'Krüger', 'Hartmann', 'Werner', 'Lange', 'König', 'Vogel', 'Winkler',
-    'Smit', 'Meijer', 'Boer', 'Mulder', 'Bos', 'Vos', 'Kok', 'Willems',
-    'Hendriks', 'Maas', 'Verhoeven', 'Kuipers', 'Prins', 'Blom',
-    'Ferrari', 'Esposito', 'Romano', 'Colombo', 'Greco', 'Marino', 'Gallo',
-    'Rizzo', 'Lombardi', 'Moretti', 'Barbieri', 'Fontana', 'Caruso',
-    'Taylor', 'Walker', 'Clarke', 'Hughes', 'Bennett', 'Wright', 'Harris',
-    'Palmer', 'Cooper', 'Ward', 'Ellis', 'Barnes', 'Hayes',
-    'Sørensen', 'Pedersen', 'Kristensen', 'Madsen', 'Rasmussen', 'Lund',
-    'Berg', 'Holm', 'Dahl', 'Lindqvist', 'Nyström', 'Åkesson',
-    'Novak', 'Kowalski', 'Horvat', 'Kovács', 'Szabó', 'Marek', 'Dvořák',
-    'Almeida', 'Carvalho', 'Teixeira', 'Fonseca',
+    'Romero',
+    'Iglesias',
+    'Molina',
+    'Ortega',
+    'Delgado',
+    'Castro',
+    'Rubio',
+    'Marín',
+    'Santos',
+    'Cabrera',
+    'Reyes',
+    'Gallego',
+    'Lorenzo',
+    'Vargas',
+    'Bruguera',
+    'Fabra',
+    'Estellés',
+    'Salvador',
+    'Beltrán',
+    'Balaguer',
+    'Cardona',
+    'Company',
+    'Fuster',
+    'Llopis',
+    'Mestre',
+    'Ribes',
+    'Solé',
+    'Tarragó',
+    'Vilanova',
+    'Bonet',
+    'Girard',
+    'Lefevre',
+    'Roux',
+    'Fournier',
+    'Chevalier',
+    'Perrin',
+    'Marchand',
+    'Renaud',
+    'Bourgeois',
+    'Guillaume',
+    'Colin',
+    'Poirier',
+    'Leclerc',
+    'Menard',
+    'Becker',
+    'Wagner',
+    'Schulz',
+    'Richter',
+    'Neumann',
+    'Zimmermann',
+    'Braun',
+    'Krüger',
+    'Hartmann',
+    'Werner',
+    'Lange',
+    'König',
+    'Vogel',
+    'Winkler',
+    'Smit',
+    'Meijer',
+    'Boer',
+    'Mulder',
+    'Bos',
+    'Vos',
+    'Kok',
+    'Willems',
+    'Hendriks',
+    'Maas',
+    'Verhoeven',
+    'Kuipers',
+    'Prins',
+    'Blom',
+    'Ferrari',
+    'Esposito',
+    'Romano',
+    'Colombo',
+    'Greco',
+    'Marino',
+    'Gallo',
+    'Rizzo',
+    'Lombardi',
+    'Moretti',
+    'Barbieri',
+    'Fontana',
+    'Caruso',
+    'Taylor',
+    'Walker',
+    'Clarke',
+    'Hughes',
+    'Bennett',
+    'Wright',
+    'Harris',
+    'Palmer',
+    'Cooper',
+    'Ward',
+    'Ellis',
+    'Barnes',
+    'Hayes',
+    'Sørensen',
+    'Pedersen',
+    'Kristensen',
+    'Madsen',
+    'Rasmussen',
+    'Lund',
+    'Berg',
+    'Holm',
+    'Dahl',
+    'Lindqvist',
+    'Nyström',
+    'Åkesson',
+    'Novak',
+    'Kowalski',
+    'Horvat',
+    'Kovács',
+    'Szabó',
+    'Marek',
+    'Dvořák',
+    'Almeida',
+    'Carvalho',
+    'Teixeira',
+    'Fonseca',
   ];
   /** Los de `firstNames` que son de mujer — de aquí sale el sexo del parte de viajeros. */
   const nombresFemeninos = new Set([
-    'María', 'Sophie', 'Emma', 'Anna', 'Carmen', 'Julia', 'Nina', 'Sara', 'Lena',
-    'Eva', 'Greta', 'Laia', 'Rosa', 'Klara', 'Elke', 'Iris', 'Manon', 'Ingrid', 'Nadia',
+    'María',
+    'Sophie',
+    'Emma',
+    'Anna',
+    'Carmen',
+    'Julia',
+    'Nina',
+    'Sara',
+    'Lena',
+    'Eva',
+    'Greta',
+    'Laia',
+    'Rosa',
+    'Klara',
+    'Elke',
+    'Iris',
+    'Manon',
+    'Ingrid',
+    'Nadia',
   ]);
   const locales = ['es', 'es', 'fr', 'de', 'nl', 'en', 'ca'];
 
@@ -753,7 +872,11 @@ export function generateSeed(anchorYear: number): SeedData {
       doc_number: isSpanish
         ? `${10000000 + ((bkgN * 137) % 89999999)}Z`
         : `X${String(1000000 + bkgN * 137)}`,
-      doc_support_number: isSpanish ? (faltaDato ? null : `BAA${String(100000 + bkgN * 71)}`) : null,
+      doc_support_number: isSpanish
+        ? faltaDato
+          ? null
+          : `BAA${String(100000 + bkgN * 71)}`
+        : null,
       kinship: null,
       birthdate: `${1960 + (bkgN % 40)}-0${1 + (bkgN % 9)}-15`,
       nationality,
@@ -869,7 +992,8 @@ export function generateSeed(anchorYear: number): SeedData {
       // Forma de pago de la operación para el parte de viajeros (ADR 0028): sembrada
       // rotando entre los cuatro medios; ~1 de cada 6 se deja sin fijar, para que la
       // pantalla del parte muestre el aviso "falta forma de pago" sin un mock.
-      payment_kind: bkgN % 6 === 3 ? null : (['card', 'cash', 'transfer', 'platform'] as const)[bkgN % 4],
+      payment_kind:
+        bkgN % 6 === 3 ? null : (['card', 'cash', 'transfer', 'platform'] as const)[bkgN % 4],
       locale,
       created_at: now,
       updated_at: now,
@@ -1069,25 +1193,114 @@ export function generateSeed(anchorYear: number): SeedData {
   }
 
   // --- 15 solicitudes en todos los estados ---
-  const enquiries: Row[] = [];
-  const enqStatuses = [
-    'new',
-    'new',
-    'new',
-    'new',
-    'contacted',
-    'contacted',
-    'contacted',
-    'quoted',
-    'quoted',
-    'quoted',
-    'converted',
-    'converted',
-    'lost',
-    'lost',
-    'lost',
+  //
+  // El estado de una solicitud es, sobre todo, EDAD: lo que sigue "nueva" entró
+  // esta semana, y lo que se ganó o se perdió lleva semanas en la bandeja. Este
+  // bloque las sembraba TODAS en el ancla, así que la columna "recibida" repetía
+  // quince veces «15 jul» — un dato válido y falso a la vez, el mismo defecto que
+  // destaparon las sesiones 53 y 54 en la lista de clientes. Peor: `date_from`
+  // salía de `${Y}-07-01` sin mirar la recepción, y había solicitudes pidiendo
+  // una estancia que ya había TERMINADO el día que se escribieron.
+  //
+  // Ahora cada estado tiene su banda de antigüedad (se solapan, como en una
+  // bandeja real) y la estancia se pide siempre con antelación sobre su propia
+  // recepción. Lo que varía sin consecuencias —hora, pax, tipo pedido— se sortea
+  // con `rand()`, que es el generador ya sembrado y determinista, y NO con
+  // `n % k`: dos rasgos que salen del mismo contador nunca son dos ritmos
+  // (trampa de la sesión 54). Aquí eran dos parejas atadas de nacimiento:
+  // `source`/`hasDates` compartían `n % 4` (ninguna solicitud de teléfono traía
+  // fechas, ninguna de web las omitía) y `unit_type_id`/niños compartían `n % 3`
+  // (quien no pedía tipo no traía niños, jamás).
+  //
+  /** Días que lleva la solicitud en la bandeja, por estado. Bandas solapadas. */
+  const ENQ_EDAD: Record<string, [number, number]> = {
+    new: [0, 5],
+    contacted: [2, 12],
+    quoted: [6, 21],
+    converted: [12, 40],
+    lost: [16, 52],
+  };
+  /**
+   * Lo que escribe quien pregunta, en su idioma. Un camping del Mediterráneo
+   * recibe la bandeja en seis idiomas, y tenerla entera en castellano —con el
+   * mismo párrafo repetido quince veces y un «(solicitud demo nº7)» al final—
+   * era el otro modo de leerse como generada.
+   */
+  const ENQ_MENSAJES: Record<string, string[]> = {
+    es: [
+      'Buenas, ¿os queda algo libre esas fechas? Somos familia con niños y nos gustaría estar cerca de la piscina.',
+      'Hola, querríamos una parcela con sombra y enchufe para la nevera. ¿Qué precio tendría?',
+      '¿Admitís perro pequeño? Va siempre atado y es muy tranquilo. Gracias.',
+    ],
+    ca: [
+      'Bon dia, tenim caravana i busquem parcel·la amb ombra. Hi ha disponibilitat?',
+      'Hola! Voldríem reservar aquests dies. Ens podríeu passar pressupost, si us plau?',
+    ],
+    fr: [
+      "Bonjour, auriez-vous encore de la place à ces dates ? Nous venons en van aménagé, merci d'avance.",
+      'Bonsoir, nous cherchons un bungalow avec climatisation pour deux adultes et un enfant. Quel est le tarif ?',
+    ],
+    de: [
+      'Guten Tag, haben Sie in diesem Zeitraum noch einen Stellplatz mit Schatten frei? Vielen Dank!',
+      'Hallo, wir reisen mit Wohnmobil (7 m) an. Ist die Einfahrt breit genug?',
+    ],
+    nl: [
+      'Goedendag, is er nog plaats in deze periode? Wij komen met een caravan en twee kinderen.',
+      'Hallo, kunnen wij een plek dicht bij het strand reserveren? Alvast bedankt.',
+    ],
+    en: [
+      'Hello, do you still have availability on these dates? We are two adults travelling with a small tent.',
+      'Hi there, is the pool open in September? We would like to book a mobile home. Thanks!',
+    ],
+  };
+
+  /** Prefijo telefónico del mercado emisor de cada idioma. */
+  const ENQ_PREFIJO: Record<string, string> = {
+    es: '+34',
+    ca: '+34',
+    fr: '+33',
+    de: '+49',
+    nl: '+31',
+    en: '+44',
+  };
+
+  /**
+   * Los quince casos, declarados uno a uno. En el formulario público las fechas
+   * son OPCIONALES (`EnquiryForm.astro`, y `dateFrom` es `.optional()` en el
+   * esquema), y por teléfono las apunta recepción: lo normal es web sin fechas y
+   * teléfono con ellas — justo las dos combinaciones que `n % 4` hacía
+   * imposibles. La bandeja de la demo tiene que enseñar SIEMPRE la mezcla, y una
+   * mezcla sorteada es una mezcla que algún año no sale (el reset nocturno
+   * re-siembra con el año en curso, así que la tirada cambia cada 1 de enero).
+   * Se plantan, como los casos límite de las reservas.
+   */
+  const ENQ_CASOS: {
+    status: string;
+    source: 'web' | 'phone';
+    fechas: boolean;
+    /** false = «Cualquiera»: no pide un tipo concreto. También va plantado. */
+    tipo: boolean;
+  }[] = [
+    { status: 'new', source: 'web', fechas: true, tipo: true },
+    { status: 'new', source: 'phone', fechas: true, tipo: false },
+    { status: 'new', source: 'web', fechas: false, tipo: true },
+    { status: 'new', source: 'web', fechas: true, tipo: true },
+    { status: 'contacted', source: 'phone', fechas: true, tipo: true },
+    { status: 'contacted', source: 'web', fechas: true, tipo: false },
+    { status: 'contacted', source: 'web', fechas: false, tipo: false },
+    { status: 'quoted', source: 'web', fechas: true, tipo: true },
+    { status: 'quoted', source: 'phone', fechas: false, tipo: true },
+    { status: 'quoted', source: 'web', fechas: true, tipo: true },
+    { status: 'converted', source: 'web', fechas: true, tipo: true },
+    { status: 'converted', source: 'phone', fechas: true, tipo: false },
+    { status: 'lost', source: 'web', fechas: false, tipo: false },
+    { status: 'lost', source: 'web', fechas: true, tipo: true },
+    { status: 'lost', source: 'phone', fechas: true, tipo: true },
   ];
-  enqStatuses.forEach((status, i) => {
+
+  const enquiries: Row[] = [];
+  ENQ_CASOS.forEach((caso, i) => {
+    const { status, source, fechas: hasDates, tipo: pideTipo } = caso;
     const n = i + 1;
     // Aquí los multiplicadores SÍ valen: son ~una docena de solicitudes, y con
     // n pequeño cada una cae en una pareja distinta. El truco de dividir que usa
@@ -1095,12 +1308,38 @@ export function generateSeed(anchorYear: number): SeedData {
     const fn = firstNames[(n * 7) % firstNames.length]!;
     const ln = lastNames[(n * 11) % lastNames.length]!;
     const locale = locales[n % locales.length]!;
-    const hasDates = n % 4 !== 0;
-    const from = hasDates ? addDays(`${Y}-07-01`, (n * 3) % 60) : null;
+
+    // Recepción: dentro de la banda de su estado, hacia atrás desde el ancla.
+    const [edadMin, edadMax] = ENQ_EDAD[status]!;
+    const recibida = addDays(anchor, -(edadMin + Math.floor(rand() * (edadMax - edadMin + 1))));
+    // El teléfono solo suena con recepción abierta; el formulario web entra a
+    // cualquier hora, y de hecho buena parte de las solicitudes llegan de noche.
+    const hora = source === 'phone' ? 9 + Math.floor(rand() * 11) : Math.floor(rand() * 24);
+    const minuto = Math.floor(rand() * 60);
+
+    // Quién viene, antes de qué pide: el tipo solicitado tiene que caberles.
+    const adults = [2, 2, 2, 3, 4, 1, 2, 5][Math.floor(rand() * 8)]!;
+    const childrenAges =
+      rand() < 0.45
+        ? Array.from({ length: 1 + Math.floor(rand() * 2) }, () => 2 + Math.floor(rand() * 14))
+        : [];
+    const pax = adults + childrenAges.length;
+    const caben = unitTypeDefs.filter((d) => d.capMax >= pax);
+    const tipoPedido = pideTipo ? (caben[Math.floor(rand() * caben.length)]?.id ?? null) : null;
+
+    // Antelación con la que se pide la estancia: de 4 días (última hora) a ~11
+    // semanas. El mínimo es la invariante: nadie escribe pidiendo una estancia
+    // que ya ha empezado.
+    const antelacion = 4 + Math.floor(rand() * 74);
+    const from = hasDates ? addDays(recibida, antelacion) : null;
+
+    const mensajes = ENQ_MENSAJES[locale] ?? ENQ_MENSAJES.es!;
     const contact: ContactInfo = {
       name: `${fn} ${ln}`,
       email: `${fn.toLowerCase()}${n}@example.com`,
-      phone: n % 2 ? `+33 6${10000000 + n * 731}` : undefined,
+      // El prefijo va con el idioma: un +33 en una solicitud en neerlandés es la
+      // misma clase de mentira que el mensaje en castellano firmado por Klara.
+      phone: n % 2 ? `${ENQ_PREFIJO[locale] ?? '+34'} 6${10000000 + n * 731}` : undefined,
       locale,
     };
     enquiries.push({
@@ -1108,17 +1347,17 @@ export function generateSeed(anchorYear: number): SeedData {
       tenant_id: T,
       status,
       date_from: from,
-      date_to: from ? addDays(from, 3 + (n % 7)) : null,
+      date_to: from ? addDays(from, 3 + Math.floor(rand() * 9)) : null,
       occupancy: hasDates
-        ? { adults: 2, childrenAges: n % 3 ? [4] : [], pets: n % 5 === 0 ? 1 : 0, vehicles: 1 }
+        ? { adults, childrenAges, pets: rand() < 0.2 ? 1 : 0, vehicles: 1 }
         : null,
-      unit_type_id: n % 3 === 0 ? 'ut_bung4' : n % 3 === 1 ? 'ut_std' : null,
-      message: `Hola, ¿tenéis disponibilidad? Somos una familia y nos interesa (solicitud demo nº${n}).`,
+      unit_type_id: tipoPedido,
+      message: mensajes[Math.floor(rand() * mensajes.length)]!,
       contact,
       locale,
-      source: n % 4 === 0 ? 'phone' : 'web',
+      source,
       converted_booking_id: status === 'converted' ? `bkg_${String(n).padStart(3, '0')}` : null,
-      created_at: `${anchor}T0${n % 10}:15:00.000Z`,
+      created_at: `${recibida}T${String(hora).padStart(2, '0')}:${String(minuto).padStart(2, '0')}:00.000Z`,
     });
   });
 
