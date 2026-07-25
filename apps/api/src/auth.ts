@@ -6,13 +6,42 @@
 import { createDb, schema } from '@logic-camp/db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import type { MiddlewareHandler } from 'hono';
+import type { Context, MiddlewareHandler } from 'hono';
 import type { Bindings, Env } from './tenant';
 
-export type Role = 'owner' | 'manager' | 'reception' | 'readonly';
+export type Role = 'owner' | 'manager' | 'reception' | 'readonly' | 'demo';
 
-/** Jerarquía: cada rol incluye lo del anterior. */
-const ROLE_LEVEL: Record<Role, number> = { readonly: 0, reception: 1, manager: 2, owner: 3 };
+/**
+ * Jerarquía: cada rol incluye lo del anterior.
+ *
+ * `demo` empata con `readonly` A PROPÓSITO (ADR 0029 §1): el visitante anónimo
+ * de la demo nace en el suelo, así que sin escribir una línea más ya lee lo
+ * mismo que un `readonly` y se estrella contra un 403 en TODA mutación. Lo que
+ * puede tocar se abre después, explícitamente y por acción — nunca al revés.
+ * El sentido en el que falla la autorización es la decisión, no un detalle.
+ */
+const ROLE_LEVEL: Record<Role, number> = {
+  demo: 0,
+  readonly: 0,
+  reception: 1,
+  manager: 2,
+  owner: 3,
+};
+
+/**
+ * Lo ÚNICO que el rol `demo` puede mutar (ADR 0029 §2).
+ *
+ * `PATCH /bookings/:id` es la puerta de las 13 acciones de la unión discriminada
+ * (`schemas.ts`), así que autorizar por RUTA le regalaría al visitante `cancel`,
+ * `record_payment` y `refund`. La unidad de autorización aquí es la acción.
+ */
+export const DEMO_ACTIONS = [
+  'move',
+  'reassign',
+  'check_in',
+  'check_out',
+  'undo_checkin',
+] as const;
 
 export type AuthUser = {
   id: string;
@@ -105,18 +134,88 @@ export async function provisionUser(
   };
 }
 
+/** Fail-closed: un rol que no esté en la tabla no alcanza ningún nivel. */
+function alcanza(role: Role, min: Role): boolean {
+  return ROLE_LEVEL[role] !== undefined && ROLE_LEVEL[role] >= ROLE_LEVEL[min];
+}
+
+/**
+ * Resuelve la sesión de la petición. Cada guarda la resuelve por su cuenta (no
+ * lee `c.get('user')`) para que ninguna dependa del orden en que se monte.
+ */
+async function resolverUsuario(c: Context<AuthEnv>): Promise<AuthUser | null> {
+  const auth = createAuth(c.env);
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  if (!session) return null;
+  const user = session.user as unknown as AuthUser;
+  return { ...user, role: (user.role ?? 'readonly') as Role };
+}
+
 /** Exige sesión y rol mínimo. readonly=GETs; el nivel de escritura lo fija cada ruta. */
 export function requireRole(min: Role): MiddlewareHandler<AuthEnv> {
   return async (c, next) => {
-    const auth = createAuth(c.env);
-    const session = await auth.api.getSession({ headers: c.req.raw.headers });
-    if (!session) return c.json({ error: 'unauthorized' }, 401);
-    const user = session.user as unknown as AuthUser;
-    const role = (user.role ?? 'readonly') as Role;
-    if (ROLE_LEVEL[role] === undefined || ROLE_LEVEL[role] < ROLE_LEVEL[min]) {
-      return c.json({ error: 'forbidden', required: min }, 403);
+    const user = await resolverUsuario(c);
+    if (!user) return c.json({ error: 'unauthorized' }, 401);
+    if (!alcanza(user.role, min)) return negar(c, user, min);
+    c.set('user', user);
+    await next();
+  };
+}
+
+/**
+ * El "no", con motivo. A un rol normal se le dice qué nivel hacía falta; al
+ * visitante de la demo se le dice que ESTO es la demo (ADR 0029 §5) — porque
+ * si no, el dashboard le enseñaría el error genérico de la pantalla ("no se ha
+ * podido aplicar, recarga la ficha"), que además de feo sería mentira.
+ *
+ * Es el servidor quien lo decide, no el cliente: una sola verdad.
+ */
+function negar(c: Context<AuthEnv>, user: AuthUser, min: Role) {
+  if (user.role === 'demo') return c.json({ error: 'demo_readonly' }, 403);
+  return c.json({ error: 'forbidden', required: min }, 403);
+}
+
+/**
+ * `requireRole('reception')` con UNA excepción declarada: el rol `demo` pasa si
+ * —y solo si— la acción que trae el cuerpo está en `DEMO_ACTIONS` (ADR 0029 §2).
+ *
+ * Leer el cuerpo aquí no cuesta un segundo parseo: Hono cachea `c.req.json()`,
+ * de modo que el handler recibe el mismo objeto ya leído.
+ */
+export function requireReceptionOrDemoAction(): MiddlewareHandler<AuthEnv> {
+  return async (c, next) => {
+    const user = await resolverUsuario(c);
+    if (!user) return c.json({ error: 'unauthorized' }, 401);
+    if (user.role === 'demo') {
+      const body: unknown = await c.req.json().catch(() => null);
+      const action =
+        typeof body === 'object' && body !== null && 'action' in body
+          ? (body as { action: unknown }).action
+          : null;
+      if (typeof action !== 'string' || !DEMO_ACTIONS.includes(action as never)) {
+        return c.json({ error: 'demo_readonly' }, 403);
+      }
+    } else if (!alcanza(user.role, 'reception')) {
+      return negar(c, user, 'reception');
     }
-    c.set('user', { ...user, role });
+    c.set('user', user);
+    await next();
+  };
+}
+
+/**
+ * `requireRole('reception')` con la misma excepción, pero SIN mirar el cuerpo:
+ * para rutas que no escriben nada. Hoy solo `POST /bookings/:id/requote`, que
+ * es el dry-run del gesto del planning (ADR 0023) — cotiza y no guarda.
+ */
+export function requireReceptionOrDemo(): MiddlewareHandler<AuthEnv> {
+  return async (c, next) => {
+    const user = await resolverUsuario(c);
+    if (!user) return c.json({ error: 'unauthorized' }, 401);
+    if (user.role !== 'demo' && !alcanza(user.role, 'reception')) {
+      return negar(c, user, 'reception');
+    }
+    c.set('user', user);
     await next();
   };
 }

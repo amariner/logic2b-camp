@@ -3,6 +3,7 @@
  * Una solicitud NO es una reserva a medias (ADR 0002): sin inventario, sin precio
  * cerrado. Flujo: nueva → contactada → presupuestada → convertida | perdida.
  */
+import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
@@ -50,7 +51,7 @@ export default function Solicitudes() {
       toast.success(t('sol.cambiada', { estado: t(`sol.${input.status}`) }));
       void qc.invalidateQueries({ queryKey: ['enquiries'] });
     },
-    onError: () => toast.error(t('sol.cambioError')),
+    onError: (e) => errorMutacion(e, t('sol.cambioError')),
   });
 
   const items = data?.items ?? [];

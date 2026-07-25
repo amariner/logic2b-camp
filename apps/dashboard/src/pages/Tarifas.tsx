@@ -3,6 +3,7 @@
  * Guardar exige gerencia (el servidor manda). Invariante 3 a la vista:
  * cambiar una tarifa JAMÁS modifica una reserva ya confirmada.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,7 +52,7 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
       setDraft({});
       void qc.invalidateQueries({ queryKey: ['rates'] });
     },
-    onError: () => toast.error(t('tar.errorGuardar')),
+    onError: (e) => errorMutacion(e, t('tar.errorGuardar')),
   });
 
   const sucia = Object.keys(draft).length > 0;

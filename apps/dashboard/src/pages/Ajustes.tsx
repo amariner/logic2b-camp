@@ -6,6 +6,7 @@
  * C3 (ADR 0020): feedback por toast, esqueleto con forma de formulario y los
  * toggles de notificación con el `Switch` del DS.
  */
+import { errorMutacion } from '../avisos';
 import { Button, Input, Label, Skeleton, Switch, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -55,7 +56,7 @@ export default function Ajustes() {
       setDraft({});
       void qc.invalidateQueries({ queryKey: ['settings'] });
     },
-    onError: () => toast.error(t('aju.errorGuardar')),
+    onError: (e) => errorMutacion(e, t('aju.errorGuardar')),
   });
 
   const sucia = Object.keys(draft).length > 0;
@@ -160,7 +161,7 @@ function Notificaciones({ data }: { data: TenantSettings }) {
       toast.success(t('aju.guardado'));
       void qc.invalidateQueries({ queryKey: ['settings'] });
     },
-    onError: () => toast.error(t('aju.errorGuardar')),
+    onError: (e) => errorMutacion(e, t('aju.errorGuardar')),
   });
 
   return (

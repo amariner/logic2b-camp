@@ -3,6 +3,7 @@
  * Acciones tipadas contra PATCH /api/admin/bookings/:id — el servidor valida SIEMPRE
  * la transición; aquí solo se ofrecen las que aplican al estado actual.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -102,7 +103,7 @@ export default function BookingPanel({
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
     },
-    onError: () => toast.error(t('ficha.accionError')),
+    onError: (e) => errorMutacion(e, t('ficha.accionError')),
   });
 
   const saveNote = useMutation({
@@ -115,7 +116,7 @@ export default function BookingPanel({
       toast.success(t('ficha.notaGuardada'));
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => toast.error(t('ficha.accionError')),
+    onError: (e) => errorMutacion(e, t('ficha.accionError')),
   });
 
   // cobro en efectivo/TPV físico ya recibido en recepción (ADR 0011) — sin pasarela
@@ -130,7 +131,7 @@ export default function BookingPanel({
       setPayAmount('');
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => toast.error(t('ficha.pagoError')),
+    onError: (e) => errorMutacion(e, t('ficha.pagoError')),
   });
 
   // check-in / check-out (ADR 0022): hechos de recepción, no transiciones. "En
@@ -155,7 +156,7 @@ export default function BookingPanel({
       void qc.invalidateQueries({ queryKey: ['planning'] });
       void qc.invalidateQueries({ queryKey: ['bookings'] });
     },
-    onError: () => toast.error(t('ficha.checkinError')),
+    onError: (e) => errorMutacion(e, t('ficha.checkinError')),
   });
 
   // reembolso (ADR 0011): si hay cobro de pasarela detrás, el servidor llama
@@ -171,7 +172,7 @@ export default function BookingPanel({
       setRefundAmount('');
       void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
     },
-    onError: () => toast.error(t('ficha.reembolsoError')),
+    onError: (e) => errorMutacion(e, t('ficha.reembolsoError')),
   });
 
   const unitCode = data?.unitCode ?? null;

@@ -4,6 +4,7 @@
  * MOSTRABA. Añadir / editar documento / quitar acompañante, contra las rutas
  * genéricas de /admin. El servidor audita cada cambio.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -263,7 +264,7 @@ function GuestRow({
       setEditing(false);
       invalidate();
     },
-    onError: () => toast.error(t('ficha.huespedError')),
+    onError: (e) => errorMutacion(e, t('ficha.huespedError')),
   });
   const remove = useMutation({
     mutationFn: () => apiDelete(`/api/admin/bookings/${bookingId}/guests/${guest.id}`),
@@ -271,7 +272,7 @@ function GuestRow({
       toast.success(t('ficha.huespedQuitado'));
       invalidate();
     },
-    onError: () => toast.error(t('ficha.huespedError')),
+    onError: (e) => errorMutacion(e, t('ficha.huespedError')),
   });
 
   if (editing)
@@ -390,7 +391,7 @@ export default function GuestsSection({
       setAdding(false);
       invalidate();
     },
-    onError: () => toast.error(t('ficha.huespedError')),
+    onError: (e) => errorMutacion(e, t('ficha.huespedError')),
   });
 
   return (

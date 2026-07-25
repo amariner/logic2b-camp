@@ -3,6 +3,7 @@
  * El planning y el plano YA los pintan; hasta ahora no había forma de crear uno.
  * Por unidad o por tipo; el servidor valida el solape con reservas vivas.
  */
+import { errorMutacion } from '../avisos';
 import {
   Button,
   Dialog,
@@ -80,7 +81,8 @@ export default function BlockDialog({
       onOpenChange(false);
     },
     onError: (e) =>
-      toast.error(
+      errorMutacion(
+        e,
         e instanceof ApiError && e.status === 409 ? t('bloqueo.ocupado') : t('bloqueo.error'),
       ),
   });

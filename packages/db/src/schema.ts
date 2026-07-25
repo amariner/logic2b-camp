@@ -351,7 +351,11 @@ export const users = sqliteTable(
     id: text('id').primaryKey(),
     tenantId: text('tenant_id').notNull(),
     email: text('email').notNull(),
-    role: text('role', { enum: ['owner', 'manager', 'reception', 'readonly'] }).notNull(),
+    // `demo` es el visitante anónimo de la demo (ADR 0029), no un rol que un
+    // camping reparta a su plantilla: se siembra, no se provisiona — por eso
+    // `userCreateSchema` sigue aceptando solo los cuatro reales.
+    // Sin migración: la columna es `text NOT NULL` pelada, el enum es solo tipo.
+    role: text('role', { enum: ['owner', 'manager', 'reception', 'readonly', 'demo'] }).notNull(),
     name: text('name').notNull().default(''),
     emailVerified: integer('email_verified', { mode: 'boolean' }).notNull().default(false),
     image: text('image'),

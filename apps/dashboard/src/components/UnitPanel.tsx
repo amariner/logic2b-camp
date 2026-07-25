@@ -5,6 +5,7 @@
  * bloqueo (DELETE /api/admin/blocks/:id, que ya existía sin UI que lo llamara).
  * Mismo idiom de panel lateral que la ficha (BookingPanel), en pequeño.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,7 +72,7 @@ export default function UnitPanel({
       toast.success(t('bloqueo.quitado'));
       void qc.invalidateQueries({ queryKey: ['planning'] });
     },
-    onError: () => toast.error(t('bloqueo.quitarError')),
+    onError: (e) => errorMutacion(e, t('bloqueo.quitarError')),
   });
 
   return (

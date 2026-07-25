@@ -12,6 +12,7 @@
  * confirmar (candado expectedTotalCents contra el servidor). La geometría
  * fecha↔píxel vive en @logic-camp/config (pura, testeada).
  */
+import { errorMutacion } from '../avisos';
 import {
   addDaysIso,
   barGeometry,
@@ -752,7 +753,7 @@ export default function Planning() {
       const code = data?.bookings.find((b) => b.id === input.id)?.code ?? '';
       toast.success(t('planning.asignada', { code, unit: unit?.code ?? input.unitId }));
     },
-    onError: () => toast.error(t('planning.asignarError')),
+    onError: (e) => errorMutacion(e, t('planning.asignarError')),
     onSettled: () => void qc.invalidateQueries({ queryKey: ['planning'] }),
   });
 
@@ -819,7 +820,7 @@ export default function Planning() {
   const quitarBloqueo = useMutation({
     mutationFn: (blockId: string) => apiDelete<{ ok: boolean }>(`/api/admin/blocks/${blockId}`),
     onSuccess: () => toast.success(t('bloqueo.quitado')),
-    onError: () => toast.error(t('bloqueo.quitarError')),
+    onError: (e) => errorMutacion(e, t('bloqueo.quitarError')),
     onSettled: () => void qc.invalidateQueries({ queryKey: ['planning'] }),
   });
   const askUnblock = (blk: PlanningBlock, opener: HTMLElement) => {

@@ -4,6 +4,7 @@
  * en vivo sale de POST /api/quote y la creación revalida y re-cotiza en el
  * servidor (POST /api/admin/bookings, auditado). La UI nunca calcula un precio.
  */
+import { errorMutacion } from '../avisos';
 import { Button, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -139,7 +140,7 @@ export default function NewBookingPanel({
     },
     onError: (e) => {
       const agotado = e instanceof ApiError && e.status === 409;
-      toast.error(agotado ? t('alta.agotado') : t('alta.errorCrear'));
+      errorMutacion(e, agotado ? t('alta.agotado') : t('alta.errorCrear'));
     },
   });
 

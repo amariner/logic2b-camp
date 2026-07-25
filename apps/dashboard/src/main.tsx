@@ -49,6 +49,7 @@ import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
 import { useSession, useSignOut } from './auth';
 import CommandPalette from './components/CommandPalette';
+import DemoBanner from './components/DemoBanner';
 import { RouteError, RouteNotFound } from './components/RouteError';
 import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
@@ -286,6 +287,9 @@ function Shell() {
             Logic<span className="text-muted-foreground">Camp</span>
           </span>
         </header>
+
+        {/* Solo se pinta para el visitante anónimo de la demo (ADR 0029). */}
+        <DemoBanner />
 
         {/* Contenedor flex-col como el padre anterior de las páginas: sus raíces
             usan `h-full`/`flex-1` esperando serlo. Bajo `md` descuenta la barra. */}

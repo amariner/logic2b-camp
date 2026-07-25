@@ -4,6 +4,7 @@
  * cuando está completo, deja descargar el XML o enviarlo al webservice si el camping
  * tiene credenciales. Pantalla de GESTIÓN — es una obligación legal, no de mostrador.
  */
+import { errorMutacion } from '../avisos';
 import { Button, SelectNative, Skeleton, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
@@ -50,7 +51,7 @@ function PaymentKindSelect({ estancia }: { estancia: ParteEstanciaItem }) {
       toast.success(t('parte.pagoGuardado'));
       void qc.invalidateQueries({ queryKey: ['parte'] });
     },
-    onError: () => toast.error(t('parte.pagoError')),
+    onError: (e) => errorMutacion(e, t('parte.pagoError')),
   });
 
   return (

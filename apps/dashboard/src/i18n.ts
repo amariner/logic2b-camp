@@ -14,6 +14,21 @@ const es = {
   'login.entrar': 'Entrar',
   'login.entrando': 'Entrando…',
   'login.error': 'Email o contraseña incorrectos.',
+  // acceso anónimo a la demo (ADR 0029)
+  'login.oDemo': '¿Solo quieres echar un vistazo?',
+  'login.demo': 'Ver la demo',
+  'login.demoEntrando': 'Abriendo la demo…',
+  'login.demoError': 'No se ha podido abrir la demo. Inténtalo otra vez.',
+  'demo.banner':
+    'Estás viendo una demostración con datos ficticios. Puedes mover reservas en el planning y hacer check-in; lo demás es solo lectura.',
+  'demo.soloLectura': 'En la demo esto es solo lectura. El planning sí se puede tocar.',
+  'demo.restablecer': 'Restablecer datos',
+  'demo.restableciendo': 'Restableciendo…',
+  'demo.restablecerTitulo': '¿Restablecer los datos de la demo?',
+  'demo.restablecerCuerpo':
+    'Vuelve todo al punto de partida: se deshacen los cambios que haya hecho cualquiera. No afecta a ningún camping real.',
+  'demo.restablecerOk': 'Demo restablecida.',
+  'demo.restablecerError': 'No se ha podido restablecer. Inténtalo otra vez.',
   'nav.planning': 'Planning',
   'nav.plano': 'Plano',
   'nav.solicitudes': 'Solicitudes',

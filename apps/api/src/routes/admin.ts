@@ -15,7 +15,13 @@ import {
 import { schema, type Db } from '@logic-camp/db';
 import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
 import { Hono } from 'hono';
-import { provisionUser, requireRole, type AuthEnv } from '../auth';
+import {
+  provisionUser,
+  requireReceptionOrDemo,
+  requireReceptionOrDemoAction,
+  requireRole,
+  type AuthEnv,
+} from '../auth';
 import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
@@ -434,7 +440,7 @@ export const adminRoutes = new Hono<AuthEnv>()
   // dry-run del gesto horizontal (ADR 0023): valida y cotiza un cambio de
   // fechas/unidad SIN escribir. El cliente lo llama al soltar el arrastre para
   // enseñar el desglose nuevo antes de confirmar si el importe cambia.
-  .post('/bookings/:id/requote', requireRole('reception'), async (c) => {
+  .post('/bookings/:id/requote', requireReceptionOrDemo(), async (c) => {
     const parsed = requoteSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const db = c.get('tenant').db;
@@ -453,7 +459,7 @@ export const adminRoutes = new Hono<AuthEnv>()
     });
   })
 
-  .patch('/bookings/:id', requireRole('reception'), async (c) => {
+  .patch('/bookings/:id', requireReceptionOrDemoAction(), async (c) => {
     const parsed = bookingActionSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const action = parsed.data;

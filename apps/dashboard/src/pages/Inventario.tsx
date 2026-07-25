@@ -6,6 +6,7 @@
  * C3 (ADR 0020): la baja se confirma (es destructiva de cupo), el feedback va
  * por toast y la carga tiene la forma real de las fichas de unidad.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -66,7 +67,7 @@ export default function Inventario() {
       void qc.invalidateQueries({ queryKey: ['catalog'] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
     },
-    onError: () => toast.error(t('inv.errorCambio')),
+    onError: (e) => errorMutacion(e, t('inv.errorCambio')),
   });
 
   const units = data?.units ?? [];

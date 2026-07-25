@@ -10,6 +10,7 @@
  * mensaje del 409 — un "no se puede" sin fecha es indistinguible de un producto
  * roto, y el camping necesita algo que reenviarle al interesado.
  */
+import { errorMutacion } from '../avisos';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -103,7 +104,7 @@ export default function GuestRgpdSection({ guest }: { guest: GuestDetail }) {
       toast.success(valor ? t('rgpd.consent.guardado') : t('rgpd.consent.retirado'));
       refrescar();
     },
-    onError: () => toast.error(t('rgpd.consent.error')),
+    onError: (e) => errorMutacion(e, t('rgpd.consent.error')),
   });
 
   const exportar = useMutation({
@@ -112,7 +113,7 @@ export default function GuestRgpdSection({ guest }: { guest: GuestDetail }) {
       descargarJson(datos, guest.id);
       toast.success(t('rgpd.exportado'));
     },
-    onError: () => toast.error(t('rgpd.exportError')),
+    onError: (e) => errorMutacion(e, t('rgpd.exportError')),
   });
 
   const suprimir = useMutation({

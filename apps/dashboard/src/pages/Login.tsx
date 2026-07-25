@@ -7,11 +7,13 @@
  */
 import { Button, Card, CardContent, Input, Label, LogoMark, Spinner } from '@logic-camp/ui';
 import { useState } from 'react';
-import { useSignIn } from '../auth';
+import { useDemoDisponible, useEntrarDemo, useSignIn } from '../auth';
 import { t } from '../i18n';
 
 export default function Login() {
   const signIn = useSignIn();
+  const hayDemo = useDemoDisponible();
+  const entrarDemo = useEntrarDemo();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -79,6 +81,33 @@ export default function Login() {
                 {signIn.isPending ? t('login.entrando') : t('login.entrar')}
               </Button>
             </form>
+
+            {/*
+              Puerta anónima (ADR 0029). Solo aparece si el Worker la ofrece:
+              en un camping real la sonda da 404 y aquí no se pinta nada.
+              Separada del formulario a propósito — es otra intención, no una
+              alternativa de credenciales.
+            */}
+            {hayDemo && (
+              <div className="mt-5 flex flex-col gap-2 border-t pt-4">
+                <p className="text-center text-[13px] text-muted-foreground">{t('login.oDemo')}</p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  disabled={entrarDemo.isPending}
+                  onClick={() => entrarDemo.mutate()}
+                >
+                  {entrarDemo.isPending && <Spinner />}
+                  {entrarDemo.isPending ? t('login.demoEntrando') : t('login.demo')}
+                </Button>
+                {entrarDemo.isError && (
+                  <p role="alert" className="text-[13px] font-medium text-destructive">
+                    {t('login.demoError')}
+                  </p>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

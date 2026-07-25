@@ -19,6 +19,20 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await res.json()) as T;
 }
 
+/**
+ * El 403 del visitante de la demo (ADR 0029 §5), distinto de un 403 de rol.
+ *
+ * Lo usa `errorMutacion()` (`avisos.ts`) para explicar el "no" en vez de
+ * escupir el mensaje de error genérico de cada pantalla, que además mentiría:
+ * "no se ha podido aplicar, recarga la ficha" no describe lo que ha pasado.
+ */
+export const esDemoSoloLectura = (error: unknown): boolean =>
+  error instanceof ApiError &&
+  error.status === 403 &&
+  typeof error.body === 'object' &&
+  error.body !== null &&
+  (error.body as { error?: unknown }).error === 'demo_readonly';
+
 export const apiGet = <T>(path: string) => request<T>(path);
 export const apiPost = <T>(path: string, body: unknown, headers?: Record<string, string>) =>
   request<T>(path, { method: 'POST', body: JSON.stringify(body), headers });

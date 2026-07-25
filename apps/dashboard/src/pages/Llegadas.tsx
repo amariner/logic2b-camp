@@ -3,6 +3,7 @@
  * La hoja que recepción imprime mentalmente cada mañana: quién entra, quién sale,
  * qué queda por cobrar. La ficha (BookingPanel) se abre desde cada fila.
  */
+import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, type ReactNode } from 'react';
 import { Button, EmptyState, Skeleton, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
@@ -130,7 +131,7 @@ export default function Llegadas() {
       void qc.invalidateQueries({ queryKey: ['bookings'] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
     },
-    onError: () => toast.error(t('ficha.checkinError')),
+    onError: (e) => errorMutacion(e, t('ficha.checkinError')),
   });
 
   const llegadas = useQuery({

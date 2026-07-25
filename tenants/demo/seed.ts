@@ -27,6 +27,16 @@ const addDays = (isoDate: string, days: number) => {
   d.setUTCDate(d.getUTCDate() + days);
   return iso(d);
 };
+/**
+ * Credenciales del visitante anónimo de la demo (ADR 0029 §4).
+ *
+ * Las usa `worker.ts` para abrir sesión en nombre de quien pulsa "Ver la demo",
+ * y por eso NO viajan en el bundle del dashboard: el navegador pide la puerta,
+ * el Worker la abre. La contraseña es la misma de siempre (`calasereno`, ya
+ * documentada en el README); su hash scrypt está junto a los usuarios, abajo.
+ */
+export const DEMO_LOGIN = { email: 'demo@calasereno.example', password: 'calasereno' } as const;
+
 export const nightsBetween = (from: string, to: string) =>
   Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
 
@@ -930,6 +940,9 @@ export function generateSeed(anchorYear: number): SeedData {
 
   // Usuarios del dashboard, uno por rol. Contraseña demo: "calasereno" —
   // hash scrypt de Better Auth precomputado (constante ⇒ seed determinista, ADR 0005).
+  // El par en claro del visitante anónimo vive en `DEMO_LOGIN`, justo debajo de
+  // este hash a propósito: si algún día se rota la contraseña, las dos líneas
+  // que hay que cambiar están a la vista la una de la otra.
   const DEMO_PASSWORD_HASH =
     '931abc0463c0d2df6516487fdc25c1b3:d6bac2bf4c8ad0619f9355e39697834c72f0381a538bcb36beba1890b6fb90831ccd3fe61de0378819d76ea71806f198efa575673fab62a4a2f012be4bfc164a';
   const authTs = Date.parse(`${anchor}T00:00:00.000Z`);
@@ -961,6 +974,19 @@ export function generateSeed(anchorYear: number): SeedData {
       email: 'consulta@calasereno.example',
       role: 'readonly',
       name: 'Consulta',
+    },
+    // El visitante anónimo de la demo (ADR 0029). NO es lo mismo que
+    // `usr_consulta`: aquel es el ejemplo de un empleado con permisos de solo
+    // lectura —un rol de producto real—, y este es atrezzo comercial que además
+    // puede mover reservas en el planning. Se siembra, nunca se provisiona por
+    // la API. Como el reset regenera `users` desde el seed, sobrevive a los
+    // resets, incluido al que dispara el propio botón de restablecer.
+    {
+      id: 'usr_demo',
+      tenant_id: T,
+      email: 'demo@calasereno.example',
+      role: 'demo',
+      name: 'Visita',
     },
   ].map((u) => ({
     ...u,

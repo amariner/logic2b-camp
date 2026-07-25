@@ -59,7 +59,18 @@ describe('resetDemoData contra D1 real', () => {
     expect(c.units).toBe(83);
     expect(c.bookings).toBeGreaterThanOrEqual(38);
     expect(c.enquiries).toBe(15);
-    expect(c.users).toBe(4);
+    // 4 empleados (uno por rol) + el visitante anónimo de la demo (ADR 0029)
+    expect(c.users).toBe(5);
+  });
+
+  it('el visitante de la demo sobrevive al reset: es quien abre la puerta anónima', async () => {
+    await resetDemoData(env.DB, 2026);
+    const visitante = (await db.select().from(schema.users)).find((u) => u.id === 'usr_demo');
+    // el reset borra `sessions` y `users` y los regenera desde el seed: si este
+    // usuario no volviera, el botón "Restablecer" dejaría la demo sin puerta
+    // por la que volver a entrar (ADR 0029 §4)
+    expect(visitante?.role).toBe('demo');
+    expect(visitante?.email).toBe('demo@calasereno.example');
   });
 
   it('borra la basura acumulada durante el día en vez de acumularla', async () => {
@@ -111,12 +122,12 @@ describe('resetDemoData contra D1 real', () => {
     expect(survivors).toHaveLength(0);
   });
 
-  it('vuelve a sembrar 83 unidades y 4 usuarios aunque se llame dos veces seguidas', async () => {
+  it('vuelve a sembrar 83 unidades y 5 usuarios aunque se llame dos veces seguidas', async () => {
     await resetDemoData(env.DB, 2026);
     await resetDemoData(env.DB, 2026);
     const c = await counts();
     expect(c.units).toBe(83);
-    expect(c.users).toBe(4);
+    expect(c.users).toBe(5);
   });
 
   it('el ancla es el año en curso por defecto, sin pasarlo explícito', async () => {
