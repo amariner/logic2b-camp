@@ -49,6 +49,8 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 **Trampa nueva para la lista**: en el panel del navegador, `computer` con `coordinate` usa coordenadas del **viewport** (1280×720), no de la captura (800×450) — factor 1,6. Un arrastre con las coordenadas de la captura cae en otro sitio y parece un fallo de la app.
 
+**DESPLEGADO a producción en esta misma sesión** (Andreu presente, autorizó las dos operaciones): `deploy:demo` → versión **`454cec71`**, y **`pnpm db:seed:remote --apply`** con su doble candado (26.567 filas). El reseed remoto **no era opcional**: `usr_demo` vive en el seed, así que desplegar solo el código habría dejado el botón "Ver la demo" a la vista y **fallando** hasta el reset de las 3:00. Con esto se despliegan por fin las sesiones **47, 48 y 50** juntas. Verificado contra `camp.logic2b.com`: sonda `{"enabled":true}`, sign-in anónimo 200 con rol `demo`, `GET /planning` 200, `POST /blocks` → `{"error":"demo_readonly"}`, `GET /users` → 403, y en navegador el recorrido completo (botón → planning con banner, 0 errores de consola).
+
 **Siguiente paso**: ver `docs/SIGUIENTE-SESION.md`.
 
 ### Sesión 49 — 2026-07-25 · **[infra] El workflow de deploy deja de mentir: llama al script real** (sin ADR)

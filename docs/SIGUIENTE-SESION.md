@@ -15,7 +15,9 @@ proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 es una **demo fake** — nada de servicios externos reales. La Fase 10 cierra su
 pieza de más valor comercial: **cualquiera puede entrar al dashboard de la demo
 sin registro** (botón "Ver la demo" → rol `demo`, lee todo, mueve reservas en el
-planning y hace check-in, y puede restablecer los datos).
+planning y hace check-in, y puede restablecer los datos). **Está DESPLEGADO y
+verificado en producción** (versión `454cec71` + reseed remoto): no queda deuda
+de deploy — las sesiones 47, 48 y 50 salieron juntas.
 
 ## ▶ Prompt para pegar
 
