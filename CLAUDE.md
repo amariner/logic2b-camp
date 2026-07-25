@@ -63,7 +63,7 @@ Un código, cuatro flags. Subir de nivel = cambiar config, nunca un proyecto nue
 | Email                           | Resend + React Email — una cuenta, N dominios verificados, `from` por tenant    |
 | Colas / Cron / Ficheros / Cache | Cloudflare Queues · Cron Triggers · R2 (prefijo por tenant) · KV                |
 | Pagos                           | capa propia `PaymentProvider`: stripe \| redsys \| none                         |
-| Deploy                          | Wrangler + GitHub Actions (main→demo automático; producción por tenant, manual) |
+| Deploy                          | Wrangler. **Demo: manual desde local** (`pnpm --filter @logic-camp/api deploy:demo`) — el workflow `deploy-demo.yml` invoca ese mismo script pero está apagado (`DEPLOY_DEMO_ENABLED` sin poner). Producción por tenant: manual siempre |
 | Tests                           | Vitest (unit + integración D1 local) + Playwright (E2E)                         |
 
 ## Convenciones no negociables

@@ -337,7 +337,7 @@ Empieza por A, ten B en el radar. La migración de A a B es transparente para el
 ### GitHub Actions
 
 - PR → `pnpm check` (typecheck + lint + tests + build)
-- Push a `main` → deploy automático **solo a demo**
+- Push a `main` → deploy automático **solo a demo** — _diseño; **hoy apagado**: `deploy-demo.yml` existe y llama a `deploy:demo`, pero sin `DEPLOY_DEMO_ENABLED=true` el job no corre y la demo se despliega **a mano desde local**. Ver la decisión 2026-07-19 en `docs/ROADMAP.md`._
 - Producción → `workflow_dispatch` manual, por tenant. **Nunca automático**: el día que un camping esté vendiendo en agosto no quieres que un merge le tumbe las reservas.
 
 ---

@@ -1,11 +1,24 @@
 name: deploy-demo
+# El deploy de la demo vive en UN SOLO SITIO: el script `deploy:demo` de `apps/api`
+# (compone `apps/site/dist` = landing en la raíz + web en /demo/ + dashboard en /admin/,
+# aplica las migraciones en la D1 remota y despliega el Worker). Este workflow NO duplica
+# esos pasos: los invoca. Si cambia el bundle, cambia el script y el CI le sigue solo.
+#
+# ESTADO HOY: APAGADO. Sin la variable de repo DEPLOY_DEMO_ENABLED=true el job no corre y
+# el deploy de la demo se hace a mano desde local con ese mismo comando
+# (decisión 2026-07-19, ver docs/ROADMAP.md). Para encenderlo: crear un API token de
+# Cloudflare con permisos Workers Scripts Edit + D1 Edit, guardarlo como secret
+# CLOUDFLARE_API_TOKEN junto a CLOUDFLARE_ACCOUNT_ID, y poner DEPLOY_DEMO_ENABLED=true.
+#
+# Producción de tenants reales: SIEMPRE manual (workflow aparte, Fase 9). Esto solo toca la demo.
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 jobs:
   deploy:
+    if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
     runs-on: ubuntu-latest
-    # Producción de tenants reales: SIEMPRE manual (workflow aparte, Fase 9). Esto solo toca la demo.
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -14,23 +27,17 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Build web (tenant demo)
-        if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
-        run: pnpm --filter @logic-camp/web build
-        env:
-          TENANT: demo
-      - name: Build dashboard (→ /admin/)
-        if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
-        run: |
-          pnpm --filter @logic-camp/dashboard build
-          rm -rf apps/web/dist/admin && cp -r apps/dashboard/dist apps/web/dist/admin
-      - name: Deploy demo worker (web + API)
-        if: ${{ vars.DEPLOY_DEMO_ENABLED == 'true' }}
-        working-directory: apps/api
-        run: pnpm exec wrangler deploy --config ../../tenants/demo/wrangler.jsonc
+      # site + web(BASE_PATH=/demo) + dashboard → composición del bundle → migraciones → deploy
+      - name: Build, migrar y desplegar la demo (apps/api → deploy:demo)
+        run: pnpm --filter @logic-camp/api deploy:demo
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      - name: Skip notice
-        if: ${{ vars.DEPLOY_DEMO_ENABLED != 'true' }}
-        run: echo "Deploy demo desactivado — configura secrets CLOUDFLARE_* y la variable DEPLOY_DEMO_ENABLED=true"
+  disabled-notice:
+    if: ${{ vars.DEPLOY_DEMO_ENABLED != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Deploy automático de la demo DESACTIVADO (DEPLOY_DEMO_ENABLED != 'true')."
+          echo "Nada se ha desplegado. La demo se despliega a mano desde local:"
+          echo "  pnpm --filter @logic-camp/api deploy:demo"
