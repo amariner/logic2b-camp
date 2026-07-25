@@ -36,7 +36,19 @@ export function Table({ className, containerClassName, ...props }: TableProps) {
 }
 
 export function TableHeader({ className, ...props }: ComponentProps<'thead'>) {
-  return <thead className={cn('[&_tr]:border-b [&_tr]:border-border', className)} {...props} />;
+  return (
+    <thead
+      className={cn(
+        '[&_tr]:border-b [&_tr]:border-border',
+        // Una cabecera no es una fila clicable: se anula aquí el realce al pasar
+        // por encima que `TableRow` aplica a todas sus filas. Va en el DS y no en
+        // cada pantalla porque el error es de la primitiva, no de quien la usa.
+        '[&_tr]:hover:bg-transparent',
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export function TableBody({ className, ...props }: ComponentProps<'tbody'>) {

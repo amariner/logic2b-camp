@@ -3,7 +3,23 @@
  * Búsqueda en servidor, historial por cliente y salto directo a la ficha
  * de cualquiera de sus reservas.
  */
-import { Badge, Button, EmptyState, Skeleton, SkeletonRows, SkeletonText } from '@logic-camp/ui';
+import {
+  Badge,
+  Button,
+  EmptyState,
+  Input,
+  Skeleton,
+  SkeletonRows,
+  SkeletonText,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  cn,
+  focusRing,
+} from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
@@ -14,10 +30,6 @@ import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
 import { BotonAyuda } from '../components/BotonAyuda';
-
-/** Foco visible en las filas clicables: son rejillas enteras, no botones. */
-const FILA_FOCO =
-  'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50';
 
 function GuestPanel({
   guestId,
@@ -146,7 +158,10 @@ function GuestPanel({
                         onOpenBooking(b.id);
                       }
                     }}
-                    className={`grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-border/40 py-2 text-left hover:bg-accent/50 ${FILA_FOCO}`}
+                    className={cn(
+                      'grid w-full cursor-pointer grid-cols-[1fr_auto] items-center gap-x-2 gap-y-0.5 border-b border-border/40 py-2 text-left hover:bg-accent/50',
+                      focusRing,
+                    )}
                   >
                     <span className="tnum font-semibold">
                       {b.code}
@@ -202,7 +217,7 @@ export default function Clientes() {
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-          <input
+          <Input
             type="search"
             placeholder={t('cli.buscar')}
             aria-label={t('cli.buscar')}
@@ -211,7 +226,7 @@ export default function Clientes() {
               setQ(e.target.value);
               setPage(1);
             }}
-            className="w-56 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
+            className="w-56"
           />
           <div className="flex items-center gap-1 text-[13px]">
             <Button
@@ -267,56 +282,52 @@ export default function Clientes() {
         )}
 
         {items.length > 0 && (
-          <div className="min-h-0 flex-1 overflow-auto">
-            <table className="w-full border-collapse text-[13px]">
-              <thead className="sticky top-0 z-10 bg-background">
-                <tr className="border-b-2 border-foreground/20 text-left">
-                  {[
-                    t('cli.nombre'),
-                    t('cli.contacto'),
-                    t('cli.documento'),
-                    t('cli.reservas'),
-                    t('cli.ultimaEstancia'),
-                  ].map((h) => (
-                    <th
-                      key={h}
-                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4 last:pr-4"
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((g) => (
-                  <tr
-                    key={g.id}
-                    onClick={() => openGuest(g.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openGuest(g.id);
-                      }
-                    }}
-                    tabIndex={0}
-                    className={`cursor-pointer border-b border-border/40 hover:bg-accent/50 ${FILA_FOCO}`}
-                  >
-                    <td className="px-3 py-2 font-medium first:pl-4">
-                      {`${g.name} ${g.surname}`.trim()}
-                    </td>
-                    <td className="max-w-52 truncate px-3 py-2 text-muted-foreground">
-                      {g.email ?? g.phone ?? '—'}
-                    </td>
-                    <td className="tnum px-3 py-2 text-muted-foreground">{g.docNumber ?? '—'}</td>
-                    <td className="tnum px-3 py-2">{g.bookingsCount}</td>
-                    <td className="tnum px-3 py-2 text-muted-foreground last:pr-4">
-                      {g.lastStay ? fecha(g.lastStay) : '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          /* Tabla del DS (B1, sesión 52→53). `containerClassName` es el
+             contenedor de scroll: quien desplaza es él, y por eso la cabecera
+             pegajosa se queda quieta. */
+          <Table containerClassName="min-h-0 flex-1 overflow-auto">
+            <TableHeader className="sticky top-0 z-10 bg-background">
+              <TableRow>
+                <TableHead className="pl-4">{t('cli.nombre')}</TableHead>
+                <TableHead>{t('cli.contacto')}</TableHead>
+                <TableHead>{t('cli.documento')}</TableHead>
+                <TableHead className="text-right">{t('cli.reservas')}</TableHead>
+                <TableHead className="pr-4">{t('cli.ultimaEstancia')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((g) => (
+                <TableRow
+                  key={g.id}
+                  onClick={() => openGuest(g.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openGuest(g.id);
+                    }
+                  }}
+                  tabIndex={0}
+                  /* El anillo va por dentro: en una fila de tabla el de fuera lo
+                     recorta el contenedor de scroll (mismo caso que /reservas). */
+                  className={cn('cursor-pointer focus-visible:ring-inset', focusRing)}
+                >
+                  <TableCell className="pl-4 font-medium">
+                    {`${g.name} ${g.surname}`.trim()}
+                  </TableCell>
+                  <TableCell className="max-w-52 truncate text-muted-foreground">
+                    {g.email ?? g.phone ?? '—'}
+                  </TableCell>
+                  <TableCell className="tnum whitespace-nowrap text-muted-foreground">
+                    {g.docNumber ?? '—'}
+                  </TableCell>
+                  <TableCell className="tnum text-right">{g.bookingsCount}</TableCell>
+                  <TableCell className="tnum pr-4 whitespace-nowrap text-muted-foreground">
+                    {g.lastStay ? fecha(g.lastStay) : '—'}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         )}
       </div>
 

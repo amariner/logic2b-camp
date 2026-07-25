@@ -302,6 +302,30 @@ describe('Table', () => {
     expect(contenedor).toHaveClass('overflow-auto', 'flex-1', 'min-h-0');
     expect(contenedor).not.toHaveClass('overflow-x-auto');
   });
+
+  /* La cabecera no es una fila clicable (B1, sesión 53): `TableRow` realza al
+     pasar por encima y eso, aplicado al `thead`, promete un click que no existe.
+     Se anula en `TableHeader` para que ninguna pantalla tenga que acordarse. */
+  it('la cabecera no se realza al pasar por encima, las filas del cuerpo sí', () => {
+    render(
+      <Table>
+        <TableHeader>
+          <TableRow data-testid="fila-cabecera">
+            <TableHead>Código</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow data-testid="fila-cuerpo">
+            <TableCell>CS-2026-0001</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    );
+    expect(screen.getByTestId('fila-cabecera').parentElement).toHaveClass(
+      '[&_tr]:hover:bg-transparent',
+    );
+    expect(screen.getByTestId('fila-cuerpo')).toHaveClass('hover:bg-accent/60');
+  });
 });
 
 describe('Input y Label', () => {

@@ -476,6 +476,31 @@ export function generateSeed(anchorYear: number): SeedData {
     'Hugo',
     'Eva',
     'Jordi',
+    // Segunda veintena (sesión 53): con 20 × 20 y ~2000 huéspedes, cada pareja
+    // nombre+apellido salía 5 veces, y ordenada por apellido la lista enseñaba
+    // bloques de cinco filas idénticas — que se leen como un fallo de datos.
+    // 40 × 40 baja la repetición a ~1,3. Sin acentos a propósito: el correo se
+    // deriva del nombre y no queremos meter más partes locales no ASCII.
+    'Bram',
+    'Matteo',
+    'Greta',
+    'Antoine',
+    'Laia',
+    'Finn',
+    'Rosa',
+    'Mads',
+    'Klara',
+    'Alvaro',
+    'Elke',
+    'Guillem',
+    'Iris',
+    'Thomas',
+    'Manon',
+    'Pau',
+    'Ingrid',
+    'Vicent',
+    'Nadia',
+    'Bruno',
   ];
   const lastNames = [
     'García',
@@ -498,6 +523,26 @@ export function generateSeed(anchorYear: number): SeedData {
     'Costa',
     'Peeters',
     'Vidal',
+    'Navarro',
+    'Bianchi',
+    'Schmidt',
+    'Visser',
+    'Andersen',
+    'Roca',
+    'Fischer',
+    'Mercier',
+    'Conti',
+    'Jensen',
+    'Blanco',
+    'Dekker',
+    'Bernard',
+    'Ricci',
+    'Hoffmann',
+    'Puig',
+    'Larsen',
+    'Sanz',
+    'Meyer',
+    'Vermeer',
   ];
   const locales = ['es', 'es', 'fr', 'de', 'nl', 'en', 'ca'];
 
@@ -628,8 +673,14 @@ export function generateSeed(anchorYear: number): SeedData {
     const locale = locales[bkgN % locales.length]!;
     gstN++;
     const gid = `gst_${String(gstN).padStart(3, '0')}`;
+    // Nombre y apellido tienen que avanzar a ritmos DISTINTOS. Antes eran
+    // `bkgN % 20` y `(bkgN * 3) % 20`: ambos quedan determinados por `bkgN % 20`,
+    // así que las 2000 fichas eran 20 personas repetidas ~100 veces — y, como
+    // el correo se deriva del nombre, también 20 correos para 2000 clientes.
+    // El apellido cambia ahora una vez por vuelta completa de nombres (20 × 20 =
+    // 400 combinaciones) y el segundo apellido corre a un tercer ritmo.
     const fn = firstNames[bkgN % firstNames.length]!;
-    const ln = lastNames[(bkgN * 3) % lastNames.length]!;
+    const ln = lastNames[Math.floor(bkgN / firstNames.length) % lastNames.length]!;
     const nationality = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
     // Datos del parte de viajeros (ADR 0028), sembrados de verdad (cero mocks): los
     // huéspedes españoles llevan DNI con su nº de soporte; los extranjeros, pasaporte
@@ -642,7 +693,9 @@ export function generateSeed(anchorYear: number): SeedData {
       tenant_id: T,
       name: fn,
       surname: ln,
-      second_surname: isSpanish ? lastNames[(bkgN * 7) % lastNames.length]! : null,
+      second_surname: isSpanish
+        ? lastNames[Math.floor(bkgN / 3) % lastNames.length]!
+        : null,
       sex: bkgN % 2 === 0 ? 'M' : 'F',
       doc_type: isSpanish ? 'dni' : 'passport',
       doc_number: isSpanish
@@ -908,6 +961,9 @@ export function generateSeed(anchorYear: number): SeedData {
   ];
   enqStatuses.forEach((status, i) => {
     const n = i + 1;
+    // Aquí los multiplicadores SÍ valen: son ~una docena de solicitudes, y con
+    // n pequeño cada una cae en una pareja distinta. El truco de dividir que usa
+    // el generador de huéspedes daría el mismo apellido a las doce.
     const fn = firstNames[(n * 7) % firstNames.length]!;
     const ln = lastNames[(n * 11) % lastNames.length]!;
     const locale = locales[n % locales.length]!;

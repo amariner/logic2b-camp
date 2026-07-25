@@ -15,8 +15,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Input,
   Skeleton,
   SkeletonRows,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -69,15 +76,20 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
     if (Object.keys(patch).length) guardar.mutate(patch);
   };
 
-  const celda =
-    'tnum w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-1.5 py-0.5 text-right text-[13px]';
+  /* `Input` del DS con la altura a `h-7` (28px) y no la de serie (`h-8`): quien
+     fijaba la altura de esta fila era ya el botón `size="xs"`, también de 28px.
+     Con `h-7` el campo y el botón quedan a la misma línea y la fila no crece ni
+     un píxel; con `h-8` crecería sin motivo. La densidad manda (CLAUDE.md), y el
+     borde, el radio y el anillo de foco pasan a ser los del DS en vez de
+     copiados a mano. */
+  const celda = 'tnum h-7 w-20 px-1.5 text-right';
 
   return (
-    <tr className="border-b border-border/40">
-      <td className="px-3 py-1.5 font-medium first:pl-4">{tipoNombre}</td>
+    <TableRow>
+      <TableCell className="py-1.5 pl-4 font-medium">{tipoNombre}</TableCell>
       {CAMPOS.map(([campo, etiqueta]) => (
-        <td key={campo} className="px-1.5 py-1.5">
-          <input
+        <TableCell key={campo} className="px-1.5 py-1.5">
+          <Input
             type="text"
             inputMode="decimal"
             aria-label={`${t(etiqueta)} · ${tipoNombre}`}
@@ -85,10 +97,10 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
             onChange={(e) => setDraft((d) => ({ ...d, [campo]: e.target.value }))}
             className={celda}
           />
-        </td>
+        </TableCell>
       ))}
-      <td className="px-1.5 py-1.5">
-        <input
+      <TableCell className="px-1.5 py-1.5">
+        <Input
           type="number"
           min={1}
           aria-label={`${t('tar.minStay')} · ${tipoNombre}`}
@@ -96,8 +108,8 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
           onChange={(e) => setDraft((d) => ({ ...d, minStay: e.target.value }))}
           className={`${celda} w-14`}
         />
-      </td>
-      <td className="px-3 py-1.5 last:pr-4">
+      </TableCell>
+      <TableCell className="py-1.5 pr-4">
         {/* Guardar una tarifa afecta a las reservas NUEVAS: se confirma (ADR 0020). */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -116,8 +128,8 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -180,34 +192,27 @@ export default function Tarifas() {
                   {fecha(s.dateFrom)} → {fecha(s.dateTo)}
                 </span>
               </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-[13px]">
-                  <thead>
-                    <tr className="border-b-2 border-foreground/20 text-left">
-                      <th className="px-3 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4">
-                        {t('tar.tipo')}
-                      </th>
-                      {CAMPOS.map(([campo, etiqueta]) => (
-                        <th
-                          key={campo}
-                          className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase"
-                        >
-                          {t(etiqueta)}
-                        </th>
-                      ))}
-                      <th className="px-1.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-                        {t('tar.minStay')}
-                      </th>
-                      <th className="px-3 py-1 last:pr-4" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {planes.map((p) => (
-                      <Fila key={p.id} plan={p} tipoNombre={tipoNombre(p.unitTypeId)} />
+              {/* Tabla del DS (B1, sesión 53). Aquí NO hay cabecera pegajosa: son
+                  N tablas cortas dentro de un mismo scroll, una por temporada. */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="py-1 pl-4">{t('tar.tipo')}</TableHead>
+                    {CAMPOS.map(([campo, etiqueta]) => (
+                      <TableHead key={campo} className="px-1.5 py-1 text-right">
+                        {t(etiqueta)}
+                      </TableHead>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                    <TableHead className="px-1.5 py-1 text-right">{t('tar.minStay')}</TableHead>
+                    <TableHead className="py-1 pr-4" />
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {planes.map((p) => (
+                    <Fila key={p.id} plan={p} tipoNombre={tipoNombre(p.unitTypeId)} />
+                  ))}
+                </TableBody>
+              </Table>
             </section>
           );
         })}

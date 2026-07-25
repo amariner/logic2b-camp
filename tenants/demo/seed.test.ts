@@ -126,6 +126,30 @@ describe('seed demo Cala Sereno', () => {
     expect(taxable).toBeLessThan(occ.adults + occ.childrenAges.length);
   });
 
+  /* La lista de clientes es una pantalla de la demo comercial: si el generador
+     acopla nombre y apellido al mismo índice, salen 20 personas repetidas ~100
+     veces seguidas (y 20 correos para todos los clientes), que es exactamente
+     lo que se veía hasta la sesión 53. Se fija aquí porque el síntoma no lo
+     nota ningún test de invariantes: los datos son "válidos", solo son falsos. */
+  it('los huéspedes no son veinte personas repetidas: nombre y apellido no van acoplados', () => {
+    const nombres = data.guests.map((g) => `${g.name} ${g.surname}`);
+    const distintos = new Set(nombres).size;
+    expect(distintos).toBeGreaterThan(nombres.length / 10);
+    // Y la primera página de /clientes no puede salir entera con la misma
+    // persona: se ordena igual que la API (apellido, luego nombre).
+    const primeraPagina = new Set(
+      [...data.guests]
+        .sort(
+          (a, b) =>
+            String(a.surname).localeCompare(String(b.surname)) ||
+            String(a.name).localeCompare(String(b.name)),
+        )
+        .slice(0, 25)
+        .map((g) => `${g.name} ${g.surname}`),
+    );
+    expect(primeraPagina.size).toBeGreaterThan(1);
+  });
+
   it('el SQL generado no contiene undefined ni NaN', () => {
     const sql = seedToSql(data);
     expect(sql).not.toMatch(/undefined|NaN/);
