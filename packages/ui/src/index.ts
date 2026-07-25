@@ -55,7 +55,15 @@ export {
   SheetTrigger,
 } from './components/sheet';
 
-export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/table';
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  type TableProps,
+} from './components/table';
 
 export {
   Command,

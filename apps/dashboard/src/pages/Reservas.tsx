@@ -6,7 +6,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
-import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
+import {
+  Button,
+  EmptyState,
+  Input,
+  SelectNative,
+  SkeletonRows,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  cn,
+  focusRing,
+} from '@logic-camp/ui';
 import { apiGet, type BookingDetail, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel from '../components/NewBookingPanel';
@@ -62,7 +76,7 @@ export default function Reservas() {
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-          <input
+          <Input
             type="search"
             placeholder={t('res.buscar')}
             aria-label={t('res.buscar')}
@@ -71,16 +85,15 @@ export default function Reservas() {
               setQ(e.target.value);
               setPage(1);
             }}
-            className="tnum w-44 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
+            className="tnum w-44"
           />
-          <select
+          <SelectNative
             aria-label={t('res.estado')}
             value={estado}
             onChange={(e) => {
               setEstado(e.target.value as BookingDetail['status'] | '');
               setPage(1);
             }}
-            className="rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
           >
             <option value="">{t('res.todas')}</option>
             {ESTADOS.map((s) => (
@@ -88,7 +101,7 @@ export default function Reservas() {
                 {t(`estado.${s}`)}
               </option>
             ))}
-          </select>
+          </SelectNative>
           <div className="flex items-center gap-1 text-[13px]">
             <Button
               variant="outline"
@@ -158,84 +171,85 @@ export default function Reservas() {
         )}
 
         {items.length > 0 && (
-          <div className="min-h-0 flex-1 overflow-auto">
-            <table className="w-full border-collapse text-[13px]">
-              <thead className="sticky top-0 z-10 bg-background">
-                <tr className="border-b-2 border-foreground/20 text-left">
-                  {(
-                    [
-                      t('res.codigo'),
-                      t('res.titular'),
-                      t('res.fechas'),
-                      t('res.unidad'),
-                      t('res.canal'),
-                      t('res.estado'),
-                      t('res.total'),
-                      t('res.pendiente'),
-                    ] as const
-                  ).map((h) => (
-                    <th
-                      key={h}
-                      className="px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase first:pl-4 last:pr-4"
+          /* Tabla del DS (B1, sesión 52): antes era markup propio con las clases
+             de `TableHead`/`TableCell` copiadas a mano — copiadas se
+             desincronizan, importadas no. `containerClassName` es el contenedor
+             de scroll, que es quien tiene que desplazar para que la cabecera se
+             quede pegada. */
+          <Table containerClassName="min-h-0 flex-1 overflow-auto">
+            <TableHeader className="sticky top-0 z-10 bg-background">
+              <TableRow>
+                <TableHead className="pl-4 whitespace-nowrap">{t('res.codigo')}</TableHead>
+                <TableHead>{t('res.titular')}</TableHead>
+                <TableHead>{t('res.fechas')}</TableHead>
+                <TableHead>{t('res.unidad')}</TableHead>
+                <TableHead>{t('res.canal')}</TableHead>
+                <TableHead>{t('res.estado')}</TableHead>
+                <TableHead className="text-right">{t('res.total')}</TableHead>
+                <TableHead className="pr-4 text-right">{t('res.pendiente')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((b) => {
+                const pendiente = b.totalCents - b.paidCents;
+                // "En casa" se deriva (ADR 0022), igual que en el planning/plano.
+                const estadoVista =
+                  b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt
+                    ? 'inhouse'
+                    : b.status;
+                const debe = pendiente > 0 && b.status !== 'cancelled';
+                return (
+                  <TableRow
+                    key={b.id}
+                    onClick={(e) => openPanel(b.id, e.currentTarget)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openPanel(b.id, e.currentTarget);
+                      }
+                    }}
+                    tabIndex={0}
+                    /* Fila entera clicable: no es un <button> (rompería la
+                       tabla). El anillo de foco viene del DS (`focusRing`), no
+                       copiado clase a clase. */
+                    className={cn('cursor-pointer focus-visible:ring-inset', focusRing)}
+                  >
+                    {/* El código NO se parte: con la ficha abierta la lista se
+                        estrecha y `CS-2026-0008` se partía en tres líneas,
+                        triplicando la altura de cada fila (la densidad es
+                        requisito, CLAUDE.md). Antes de que sobre ancho, scroll. */}
+                    <TableCell className="tnum pl-4 font-semibold whitespace-nowrap">
+                      {b.code}
+                    </TableCell>
+                    <TableCell className="max-w-40 truncate font-medium">
+                      {b.leadName ?? '—'}
+                    </TableCell>
+                    <TableCell className="tnum whitespace-nowrap text-muted-foreground">
+                      {fecha(b.dateFrom)} → {fecha(b.dateTo)} · {noches(b.dateFrom, b.dateTo)}n
+                    </TableCell>
+                    <TableCell className="tnum">{b.unitCode ?? '—'}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {t(`canal.${b.channel}`)}
+                    </TableCell>
+                    <TableCell>
+                      <span className={`lc-chip st-${estadoVista}`}>
+                        {t(`estado.${estadoVista}`)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="tnum text-right">{eur(b.totalCents)}</TableCell>
+                    <TableCell
+                      className={cn(
+                        'tnum pr-4 text-right',
+                        debe ? 'font-medium text-destructive' : 'text-muted-foreground',
+                      )}
                     >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((b) => {
-                  const pendiente = b.totalCents - b.paidCents;
-                  // "En casa" se deriva (ADR 0022), igual que en el planning/plano.
-                  const estadoVista =
-                    b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt
-                      ? 'inhouse'
-                      : b.status;
-                  return (
-                    <tr
-                      key={b.id}
-                      onClick={(e) => openPanel(b.id, e.currentTarget)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          openPanel(b.id, e.currentTarget);
-                        }
-                      }}
-                      tabIndex={0}
-                      /* Fila entera clicable: no es un <button> (rompería la
-                         tabla). Solo se le asegura el foco visible del DS. */
-                      className="cursor-pointer border-b border-border/40 outline-none hover:bg-accent/50 focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:ring-inset"
-                    >
-                      <td className="tnum px-3 py-2 font-semibold first:pl-4">{b.code}</td>
-                      <td className="max-w-40 truncate px-3 py-2 font-medium">
-                        {b.leadName ?? '—'}
-                      </td>
-                      <td className="tnum px-3 py-2 whitespace-nowrap text-muted-foreground">
-                        {fecha(b.dateFrom)} → {fecha(b.dateTo)} · {noches(b.dateFrom, b.dateTo)}n
-                      </td>
-                      <td className="tnum px-3 py-2">{b.unitCode ?? '—'}</td>
-                      <td className="px-3 py-2 text-muted-foreground">{t(`canal.${b.channel}`)}</td>
-                      <td className="px-3 py-2">
-                        <span className={`lc-chip st-${estadoVista}`}>
-                          {t(`estado.${estadoVista}`)}
-                        </span>
-                      </td>
-                      <td className="tnum px-3 py-2">{eur(b.totalCents)}</td>
-                      <td
-                        className={`tnum px-3 py-2 last:pr-4 ${
-                          pendiente > 0 && b.status !== 'cancelled'
-                            ? 'font-medium text-destructive'
-                            : 'text-muted-foreground'
-                        }`}
-                      >
-                        {pendiente > 0 && b.status !== 'cancelled' ? eur(pendiente) : '—'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      {debe ? eur(pendiente) : '—'}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         )}
       </div>
 

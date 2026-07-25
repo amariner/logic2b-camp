@@ -10,9 +10,23 @@ import { cn } from '../lib/cn';
  * hacia el default de shadcn es una regresión, no una mejora estética.
  */
 
-export function Table({ className, ...props }: ComponentProps<'table'>) {
+export type TableProps = ComponentProps<'table'> & {
+  /**
+   * Clases del contenedor de scroll (el `div` que envuelve la `<table>`), no de
+   * la tabla. Existe porque `overflow-x-auto` hace de ese `div` el contenedor de
+   * scroll de AMBOS ejes (`overflow-y: visible` computa a `auto` cuando el otro
+   * eje no es visible), y entonces un `<thead className="sticky top-0">` se
+   * queda pegado a un contenedor que nunca desplaza: la cabecera se va con el
+   * scroll de fuera. Una lista a pantalla completa pasa aquí
+   * `min-h-0 flex-1 overflow-auto` y el contenedor pasa a ser el que desplaza,
+   * que es lo que la cabecera pegajosa necesita.
+   */
+  containerClassName?: string;
+};
+
+export function Table({ className, containerClassName, ...props }: TableProps) {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className={cn('w-full overflow-x-auto', containerClassName)}>
       <table
         className={cn('w-full caption-bottom border-collapse text-[13px]', className)}
         {...props}

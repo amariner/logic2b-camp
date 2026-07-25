@@ -5,7 +5,17 @@
  * un `RESEND_API_KEY` real con el que probarlo (sin él todo es "desactivada",
  * nunca "fallida" — no hay nada que reenviar todavía, ver ADR 0010).
  */
-import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
+import {
+  Button,
+  EmptyState,
+  SkeletonRows,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, type NotificationLogItem, type NotificationStatus } from '../api';
@@ -83,7 +93,7 @@ export default function Notificaciones() {
         {t('ntf.nota')}
       </p>
 
-      {/* Columnas del esqueleto = la rejilla real: fecha · evento · destino · canal · intentos · estado. */}
+      {/* Columnas del esqueleto = las de la tabla: fecha · evento · destino · canal · intentos · estado. */}
       {isPending && (
         <div aria-busy="true" aria-label={t('ntf.cargando')} className="pt-1">
           <SkeletonRows rows={8} cols={['w-16', 'w-48', 'w-28', 'w-10', 'w-14', 'w-16']} />
@@ -105,25 +115,50 @@ export default function Notificaciones() {
         />
       )}
 
-      <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
-        {items.map((n) => (
-          <li
-            key={n.id}
-            className="grid grid-cols-[100px_1fr_auto] items-center gap-3 px-4 py-2.5 text-[13px] sm:grid-cols-[100px_260px_1fr_60px_auto_auto]"
-          >
-            <span className="tnum text-muted-foreground">{fechaHora(n.createdAt)}</span>
-            <span className="truncate">{tDyn(`notif.${n.template}`, n.template)}</span>
-            <span className="hidden truncate font-medium sm:block">{destino(n)}</span>
-            <span className="hidden text-muted-foreground sm:block">{n.channel}</span>
-            <span className="tnum hidden text-muted-foreground sm:block">
-              {t('ntf.intentos')}: {n.attempts}
-            </span>
-            <span className={`lc-chip ntf-${n.status} justify-self-end`}>
-              {t(`ntf.${n.status}`)}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {/* Tabla del DS: la cabecera es lo que faltaba. Con ella, la columna de
+          intentos deja de repetir su etiqueta en cada fila ("Intentos: 1") y
+          pasa a ser un número alineado a la derecha, comparable de un vistazo.
+          El chip de estado sigue siendo `lc-chip` y NO un `Badge` del DS a
+          propósito: comparte el mapa de color con las barras del planning
+          (`lc-bar`, ADR 0017) — cambiarlo lo rompería en dos sitios. */}
+      {items.length > 0 && (
+        <Table containerClassName="min-h-0 flex-1 overflow-auto">
+          <TableHeader className="sticky top-0 z-10 bg-background">
+            <TableRow>
+              <TableHead className="pl-4">{t('ntf.fecha')}</TableHead>
+              <TableHead>{t('ntf.evento')}</TableHead>
+              <TableHead className="hidden sm:table-cell">{t('ntf.destino')}</TableHead>
+              <TableHead className="hidden sm:table-cell">{t('ntf.canal')}</TableHead>
+              <TableHead className="hidden text-right sm:table-cell">{t('ntf.intentos')}</TableHead>
+              <TableHead className="pr-4 text-right">{t('res.estado')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.map((n) => (
+              <TableRow key={n.id}>
+                <TableCell className="tnum w-[110px] pl-4 whitespace-nowrap text-muted-foreground">
+                  {fechaHora(n.createdAt)}
+                </TableCell>
+                <TableCell className="max-w-64 truncate">
+                  {tDyn(`notif.${n.template}`, n.template)}
+                </TableCell>
+                <TableCell className="hidden max-w-40 truncate font-medium sm:table-cell">
+                  {destino(n)}
+                </TableCell>
+                <TableCell className="hidden text-muted-foreground sm:table-cell">
+                  {n.channel}
+                </TableCell>
+                <TableCell className="tnum hidden text-right text-muted-foreground sm:table-cell">
+                  {n.attempts}
+                </TableCell>
+                <TableCell className="pr-4 text-right">
+                  <span className={`lc-chip ntf-${n.status}`}>{t(`ntf.${n.status}`)}</span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 }

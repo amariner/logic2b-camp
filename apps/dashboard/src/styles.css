@@ -64,6 +64,10 @@ html {
   font-weight: 600;
   line-height: 18px;
   padding-inline: 6px;
+  /* Un chip es una etiqueta atómica: "No presentada" partido en dos líneas deja
+     de leerse como una insignia y estira la fila (sesión 52). Va aquí y no en
+     cada celda porque el chip se pinta en 6 pantallas. */
+  white-space: nowrap;
 }
 
 .lc-bar.st-confirmed,

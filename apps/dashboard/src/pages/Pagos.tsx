@@ -3,7 +3,18 @@
  * invariante 2 (sum(amount_cents) == paid_cents) — esta pantalla solo lo
  * hace visible con filtros, en vez de tener que abrir ficha por ficha.
  */
-import { Button, EmptyState, SkeletonRows } from '@logic-camp/ui';
+import {
+  Button,
+  EmptyState,
+  SkeletonRows,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  cn,
+} from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, type PaymentLogItem } from '../api';
@@ -92,7 +103,7 @@ export default function Pagos() {
         <BotonAyuda />
       </div>
 
-      {/* Columnas del esqueleto = la rejilla real: fecha · reserva · proveedor · estado · importe. */}
+      {/* Columnas del esqueleto = las de la tabla: fecha · reserva · proveedor · estado · importe. */}
       {isPending && (
         <div aria-busy="true" aria-label={t('pagl.cargando')} className="pt-1">
           <SkeletonRows rows={8} cols={['w-16', 'w-28', 'w-16', 'w-16', 'w-14']} />
@@ -121,24 +132,49 @@ export default function Pagos() {
         />
       )}
 
-      <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
-        {items.map((p) => (
-          <li
-            key={p.id}
-            className="grid grid-cols-[100px_1fr_auto] items-center gap-3 px-4 py-2.5 text-[13px] sm:grid-cols-[100px_1fr_120px_120px_auto]"
-          >
-            <span className="tnum text-muted-foreground">{fecha(p.createdAt)}</span>
-            <span className="truncate font-medium">{p.bookingCode}</span>
-            <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.provider}`)}</span>
-            <span className="hidden text-muted-foreground sm:block">{t(`pago.${p.status}`)}</span>
-            <span
-              className={`tnum justify-self-end ${p.amountCents < 0 ? 'text-destructive' : ''}`}
-            >
-              {eur(p.amountCents)}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {/* Tabla del DS, no una rejilla de `<li>`: hasta la sesión 52 estas cinco
+          columnas no tenían cabecera — sus nombres vivían en el comentario de
+          arriba y las claves i18n `pagl.fecha/reserva/proveedor/importe` estaban
+          escritas y sin usar. Un importe sin etiqueta no se lee. */}
+      {items.length > 0 && (
+        <Table containerClassName="min-h-0 flex-1 overflow-auto">
+          <TableHeader className="sticky top-0 z-10 bg-background">
+            <TableRow>
+              <TableHead className="pl-4">{t('pagl.fecha')}</TableHead>
+              <TableHead>{t('pagl.reserva')}</TableHead>
+              <TableHead className="hidden sm:table-cell">{t('pagl.proveedor')}</TableHead>
+              <TableHead className="hidden sm:table-cell">{t('res.estado')}</TableHead>
+              <TableHead className="pr-4 text-right">{t('pagl.importe')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.map((p) => (
+              <TableRow key={p.id}>
+                <TableCell className="tnum w-[110px] pl-4 whitespace-nowrap text-muted-foreground">
+                  {fecha(p.createdAt)}
+                </TableCell>
+                <TableCell className="max-w-40 truncate font-medium">{p.bookingCode}</TableCell>
+                <TableCell className="hidden text-muted-foreground sm:table-cell">
+                  {t(`pago.${p.provider}`)}
+                </TableCell>
+                <TableCell className="hidden text-muted-foreground sm:table-cell">
+                  {t(`pago.${p.status}`)}
+                </TableCell>
+                {/* Una devolución va en negativo (invariante 2): el signo manda,
+                    el color solo lo acompaña. */}
+                <TableCell
+                  className={cn(
+                    'tnum pr-4 text-right',
+                    p.amountCents < 0 && 'font-medium text-destructive',
+                  )}
+                >
+                  {eur(p.amountCents)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 }

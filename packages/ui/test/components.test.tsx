@@ -283,6 +283,25 @@ describe('Table', () => {
     expect(screen.getByRole('columnheader', { name: 'Código' })).toBeInTheDocument();
     expect(screen.getByRole('cell', { name: 'CS-2026-0001' })).toBeInTheDocument();
   });
+
+  /* `containerClassName` es lo que hace posible la cabecera pegajosa (B1,
+     sesión 52): si el contenedor se queda con `overflow-x-auto`, ES él el que
+     desplaza en los dos ejes y un `thead sticky` se pega a algo que nunca se
+     mueve. Al pasar `overflow-auto` tiene que GANAR, no acumularse. */
+  it('containerClassName va al contenedor de scroll y gana al overflow por defecto', () => {
+    render(
+      <Table containerClassName="min-h-0 flex-1 overflow-auto" data-testid="tabla">
+        <TableBody>
+          <TableRow>
+            <TableCell>CS-2026-0001</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>,
+    );
+    const contenedor = screen.getByTestId('tabla').parentElement;
+    expect(contenedor).toHaveClass('overflow-auto', 'flex-1', 'min-h-0');
+    expect(contenedor).not.toHaveClass('overflow-x-auto');
+  });
 });
 
 describe('Input y Label', () => {
