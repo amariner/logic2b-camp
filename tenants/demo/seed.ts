@@ -455,6 +455,17 @@ export function generateSeed(anchorYear: number): SeedData {
   const occupied = new Map<string, [string, string][]>();
   const overlaps = (a: [string, string], b: [string, string]) => a[0] < b[1] && b[0] < a[1];
 
+  /**
+   * PRNG **propio** para lo que se ha cobrado (ver `defaultPaidRatio`). No sale
+   * del general a propósito: el relleno por curva sortea fechas, duraciones y
+   * huecos contra `rand()`, así que una tirada más movería la temporada entera
+   * y con ella los diez tests calibrados. Y tampoco puede colgar de `bkgN` —
+   * de ahí ya cuelgan el medio de pago (`% 6`, `% 4`), el idioma (`% 6`), el
+   * censo de habituales (`% 4`) y el check-in (`% 5`): dos rasgos sobre el
+   * mismo contador no son dos ritmos (la lección de la sesión 54).
+   */
+  const payRand = rng(anchorYear * 104729 + 17);
+
   const firstNames = [
     'María',
     'Jan',
@@ -903,6 +914,36 @@ export function generateSeed(anchorYear: number): SeedData {
     return gid;
   }
 
+  /**
+   * Cuánto se ha cobrado de una reserva. Era **una constante**: todas las
+   * confirmadas llevaban el mismo 30 %, así que la columna "saldo" de Llegadas
+   * repetía «Pendiente: …» en las veinte filas del día y la palabra «Pagada» no
+   * salía jamás — un dato válido y falso a la vez, como los 2 032 clientes que
+   * eran 20 personas (sesión 53). En un camping real depende de **dónde está la
+   * estancia** y de **por dónde entró**:
+   *
+   * - terminada, o ya empezada en el ancla → **liquidada**: el saldo se cobra en
+   *   recepción al entrar, nadie pasa una semana dentro debiendo el 70 %.
+   * - futura sin confirmar (pendiente, cancelada) → 0, que es justo por lo que
+   *   está pendiente.
+   * - futura por **mostrador** → 0: quien aparece sin reserva no ha podido
+   *   pagar nada por adelantado.
+   * - futura por **teléfono** → señal del 30 % por transferencia, o nada
+   *   (recepción la apunta y ya cobrará).
+   * - futura por **web** → señal del 30 %, o la estancia entera: una parte de la
+   *   gente paga el total al reservar, y es el caso que hace aparecer «Pagada».
+   *
+   * Las cifras salen de `payRand` (ver arriba), no de `bkgN` ni del PRNG general.
+   */
+  function defaultPaidRatio(from: string, status: string, channel: string): number {
+    if (status !== 'confirmed' && status !== 'completed') return 0;
+    if (from <= anchor) return 1;
+    if (channel === 'walkin') return 0;
+    const r = payRand();
+    if (channel === 'phone') return r < 0.5 ? 0.3 : 0;
+    return r < 0.35 ? 1 : 0.3;
+  }
+
   function addBooking(opts: {
     typeId: string;
     unitIdx?: number | null;
@@ -953,7 +994,9 @@ export function generateSeed(anchorYear: number): SeedData {
     }
     const breakdown = makeBreakdown(opts.typeId, opts.from, opts.to, occ, occ.pets);
     const total = breakdown.totalCents;
-    const paid = Math.round(total * (opts.paidRatio ?? (opts.status === 'cancelled' ? 0 : 0.3)));
+    const paid = Math.round(
+      total * (opts.paidRatio ?? defaultPaidRatio(opts.from, opts.status, opts.channel ?? 'web')),
+    );
     // ¿Vuelve alguien, o es gente nueva? El idioma de la reserva lo manda la
     // ficha cuando se reutiliza: la nacionalidad del huésped ya está grabada y
     // una reserva en francés a nombre de un titular español sería incoherente.
@@ -1182,7 +1225,8 @@ export function generateSeed(anchorYear: number): SeedData {
         status,
         channel: chR < 0.14 ? 'phone' : chR < 0.19 ? 'walkin' : 'web',
         occ: { adults, childrenAges, pets: rand() < 0.25 ? 1 : 0, vehicles: 1 },
-        paidRatio: status === 'completed' ? 1 : status === 'pending' ? 0 : undefined,
+        // lo cobrado ya no se decide aquí: `defaultPaidRatio` lo saca de la
+        // posición de la estancia y del canal, en un solo sitio para las 40.
       });
 
       // Hueco tras la salida. El de 1 noche es el que todo camping odia y el que

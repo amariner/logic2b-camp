@@ -6,7 +6,16 @@
 import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState, type ReactNode } from 'react';
-import { Button, EmptyState, Skeleton, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
+import {
+  Button,
+  EmptyState,
+  Input,
+  Skeleton,
+  SkeletonRows,
+  cn,
+  focusRing,
+  toast,
+} from '@logic-camp/ui';
 import { DoorOpen, LogOut } from 'lucide-react';
 import { apiGet, apiPatch, type BookingListItem } from '../api';
 import BookingPanel from '../components/BookingPanel';
@@ -34,6 +43,102 @@ const fechaLarga = (iso: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+/**
+ * La rejilla de la fila. Ninguna columna es `auto` y eso NO es un detalle: cada
+ * fila es su propia rejilla —son `<button>` sueltos, no un `<table>`—, así que
+ * una columna `auto` la dimensiona el contenido *de esa fila* y desplaza a las
+ * vecinas. Medido en la demo antes de arreglarlo (1366px, 26 jul):
+ *
+ * - columna 1 (`código` arriba, `unidad` abajo): 33,8px con «A-01» y **46,7px
+ *   con «MH-03»** → la columna del titular empezaba 13px más a la derecha en
+ *   una fila de mobil-home que en las diez de al lado.
+ * - columna 3 (`estado` arriba, `saldo` abajo): 117,4px con «Pendiente: 823,20 €»
+ *   y **74,6px** con «Pagada» → el día que una llegada aparece pagada, los
+ *   chips de estado de esa fila saltan 43px. Hasta la sesión 56 no aparecía
+ *   ninguna: el seed cobraba el mismo 30% a todas.
+ *
+ * Va en UNA constante porque la usan las dos listas (llegadas y salidas), y dos
+ * copias se desincronizan el día que alguien toque una anchura.
+ *
+ * Las anchuras son `minmax(0, …)`, no fijas: son un TOPE. Todas las filas de una
+ * lista miden ya lo mismo (ver `ACCION`), así que si la lista se estrecha las
+ * tres columnas encogen igual en todas y siguen alineadas — pero nunca desbordan.
+ */
+const REJILLA =
+  'grid grid-cols-[minmax(0,72px)_1fr_minmax(0,136px)] items-center gap-x-3 gap-y-0.5';
+
+/**
+ * Hueco del botón de recepción, reservado para TODA la lista o para ninguna
+ * fila. El botón vive fuera del `<button>` de la fila (no se anida), así que sin
+ * hueco fijo la fila que no lo tiene —una llegada aún pendiente de pago, que no
+ * se puede registrar— se estiraba 96px más que sus vecinas y sacaba su estado y
+ * su saldo fuera de la columna. `w-28` entra «Check-out», el más largo.
+ *
+ * En un hueco de móvil el botón se queda en el icono. No es cosmética: con los
+ * 112px del botón rotulado, la columna del saldo bajaba a 78px para un texto de
+ * 117px («Pendiente: 229,25 €») y, al ir pegado a la derecha, se PINTABA ENCIMA
+ * del nombre del titular. Seis datos y un botón rotulado no caben en 375px.
+ */
+const ACCION = 'flex w-9 shrink-0 justify-end @sm:w-28';
+
+/**
+ * Llegadas y salidas, una al lado de la otra… mientras quepan. El corte iba por
+ * `lg:` —el ANCHO DE PANTALLA— y quien estrecha estas listas no es la pantalla,
+ * es la ficha de reserva: a 1366px con el panel abierto el hueco baja de 1126 a
+ * 766px y las dos columnas seguían partiéndoselo a 383px cada una, con el nombre
+ * del titular reducido a «Pierre B…». Es la trampa de la sesión 52 («la densidad
+ * se rompe donde la lista se estrecha») en su forma más literal: la media query
+ * medía otra cosa distinta de la que se estaba rompiendo.
+ *
+ * Con `@container` el corte lo decide el hueco real: si no llega a 1024px, las
+ * listas se apilan y cada una se queda con todo el ancho. El umbral sale de la
+ * cuenta de la fila, no de un número redondo: hueco del botón (112) + rejilla
+ * (72 + 136 + separaciones + margen = 264) dejan al titular con 178px por lista
+ * a 1142px de hueco, y con 45px —«Pierre B…»— si se parten 782px entre dos.
+ *
+ * OJO: el `@container` va en la COLUMNA DE LA PÁGINA, no aquí. Un elemento no
+ * puede consultarse a sí mismo — declararse contenedor y llevar encima el
+ * `@3xl:` no falla, hace algo peor: `container-type` queda aplicado, la consulta
+ * se resuelve contra un contenedor ancestro que no existe y no coincide nunca.
+ * Medido: 1142px de ancho y `flex-direction: column`.
+ */
+const COLUMNAS =
+  'flex min-h-0 flex-1 flex-col gap-2 @5xl:flex-row @5xl:divide-x @5xl:divide-border/60';
+
+/**
+ * El botón de recepción de una fila (check-in / check-out). En hueco de móvil se
+ * queda en el icono, pero NUNCA se queda sin nombre: el rótulo sigue ahí como
+ * `aria-label` y como `title`, así que el lector de pantalla lee lo mismo que se
+ * lee con el ratón encima.
+ */
+function BotonRecepcion({
+  icono: Icono,
+  rotulo,
+  disabled,
+  onClick,
+}: {
+  icono: typeof DoorOpen;
+  rotulo: string;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Button
+      type="button"
+      size="xs"
+      variant="outline"
+      disabled={disabled}
+      onClick={onClick}
+      title={rotulo}
+      aria-label={rotulo}
+      className="w-full justify-center px-0 @sm:px-2.5"
+    >
+      <Icono className="size-3.5 shrink-0" />
+      <span className="hidden @sm:inline">{rotulo}</span>
+    </Button>
+  );
+}
+
 function Lista({
   titulo,
   items,
@@ -48,6 +153,10 @@ function Lista({
   /** botón de recepción (check-in/check-out) por fila, FUERA del <button> de la fila */
   action?: (b: BookingListItem) => ReactNode;
 }) {
+  // Se resuelve una vez por lista: si NINGUNA fila puede registrarse, la lista
+  // no reserva el hueco y no deja un canalón vacío de 112px a la derecha.
+  const acciones = items.map((b) => action?.(b) ?? null);
+  const hayAcciones = acciones.some(Boolean);
   return (
     <section className="min-w-0 flex-1">
       <h2 className="lc-panel-h px-4 pt-3">
@@ -55,7 +164,7 @@ function Lista({
       </h2>
       {items.length === 0 && vacio}
       <ul className="divide-y divide-border/40">
-        {items.map((b) => {
+        {items.map((b, i) => {
           const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
           const pendiente = b.totalCents - b.paidCents;
           const here = inHouse(b);
@@ -74,11 +183,14 @@ function Lista({
                 aria-label={t('dia.abrir', { code: b.code })}
                 onClick={(e) => onOpen(b.id, e.currentTarget)}
                 className={cn(
-                  'grid min-w-0 flex-1 grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-0.5 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50',
+                  REJILLA,
+                  'min-w-0 flex-1 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50',
                   focusRing,
                 )}
               >
-                <span className="tnum font-semibold">{b.code.replace(/^[A-Z]+-\d{4}-/, '')}</span>
+                <span className="tnum truncate font-semibold">
+                  {b.code.replace(/^[A-Z]+-\d{4}-/, '')}
+                </span>
                 <span className="truncate font-medium">{b.leadName ?? '—'}</span>
                 {here ? (
                   <span className="lc-chip st-inhouse justify-self-end">
@@ -89,7 +201,7 @@ function Lista({
                     {t(`estado.${b.status}`)}
                   </span>
                 )}
-                <span className="tnum col-start-1 text-muted-foreground">
+                <span className="tnum col-start-1 truncate text-muted-foreground">
                   {b.unitCode ?? t('dia.sinUnidad')}
                 </span>
                 <span className="tnum col-start-2 text-muted-foreground">
@@ -97,7 +209,7 @@ function Lista({
                   {t('dia.noches', { n: noches(b.dateFrom, b.dateTo) })}
                 </span>
                 <span
-                  className={`tnum col-start-3 justify-self-end text-[12px] font-medium ${
+                  className={`tnum col-start-3 justify-self-end text-[12px] font-medium whitespace-nowrap ${
                     pendiente > 0 ? 'text-destructive' : 'text-primary'
                   }`}
                 >
@@ -106,7 +218,7 @@ function Lista({
                     : t('dia.alCorriente')}
                 </span>
               </button>
-              {action?.(b)}
+              {hayAcciones && <div className={ACCION}>{acciones[i]}</div>}
             </li>
           );
         })}
@@ -168,7 +280,9 @@ export default function Llegadas() {
 
   return (
     <div className="flex h-full">
-      <div className="flex min-w-0 flex-1 flex-col">
+      {/* el contenedor de consulta: lo que mide aquí es el hueco que deja la
+          ficha de reserva cuando está abierta, que es quien estrecha las listas */}
+      <div className="@container flex min-w-0 flex-1 flex-col">
         <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
           <div className="flex items-center gap-1">
             <Button
@@ -191,11 +305,16 @@ export default function Llegadas() {
               →
             </Button>
           </div>
-          <input
+          {/* `Input` del DS (B1): el campo llevaba borde y radio propios, así que
+              no tenía el anillo de foco del sistema —el único que se ve contra
+              cualquier fondo— y encima iba sin nombre accesible: un lector de
+              pantalla anunciaba «editar fecha», sin decir de qué. */}
+          <Input
             type="date"
             value={dia}
             onChange={(e) => e.target.value && setDia(e.target.value)}
-            className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
+            aria-label={t('dia.elegir')}
+            className="tnum w-auto"
           />
           <p className="text-[13px] font-medium">{fechaLarga(dia)}</p>
           <p className="tnum ml-auto text-[12px] text-muted-foreground">
@@ -211,7 +330,7 @@ export default function Llegadas() {
           <div
             aria-busy="true"
             aria-label={t('dia.cargando')}
-            className="flex min-h-0 flex-1 flex-col gap-2 pb-4 lg:flex-row lg:divide-x lg:divide-border/60"
+            className={cn(COLUMNAS, 'pb-4')}
           >
             {[t('dia.llegadas'), t('dia.salidas')].map((titulo) => (
               <section key={titulo} className="min-w-0 flex-1">
@@ -233,24 +352,19 @@ export default function Llegadas() {
         )}
 
         {!cargando && !error && (
-          <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pb-4 lg:flex-row lg:divide-x lg:divide-border/60">
+          <div className={cn(COLUMNAS, 'overflow-y-auto pb-4')}>
             <Lista
               titulo={t('dia.llegadas')}
               items={llegadasHoy}
               onOpen={openPanel}
               action={(b) =>
                 b.status === 'confirmed' && !b.checkedInAt ? (
-                  <Button
-                    type="button"
-                    size="xs"
-                    variant="outline"
+                  <BotonRecepcion
+                    icono={DoorOpen}
+                    rotulo={t('accion.check_in')}
                     disabled={recepcion.isPending}
                     onClick={() => recepcion.mutate({ id: b.id, action: 'check_in' })}
-                    title={t('accion.check_in')}
-                  >
-                    <DoorOpen className="size-3.5" />
-                    {t('accion.check_in')}
-                  </Button>
+                  />
                 ) : null
               }
               vacio={
@@ -273,17 +387,12 @@ export default function Llegadas() {
               onOpen={openPanel}
               action={(b) =>
                 inHouse(b) ? (
-                  <Button
-                    type="button"
-                    size="xs"
-                    variant="outline"
+                  <BotonRecepcion
+                    icono={LogOut}
+                    rotulo={t('accion.check_out')}
                     disabled={recepcion.isPending}
                     onClick={() => recepcion.mutate({ id: b.id, action: 'check_out' })}
-                    title={t('accion.check_out')}
-                  >
-                    <LogOut className="size-3.5" />
-                    {t('accion.check_out')}
-                  </Button>
+                  />
                 ) : null
               }
               vacio={<EmptyState art="calendar" title={t('vacio.salidas.titulo')} />}

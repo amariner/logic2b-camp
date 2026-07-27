@@ -184,11 +184,14 @@ const es = {
   'dia.salidas': 'Salidas',
   'dia.hoy': 'Hoy',
   'dia.cargando': 'Cargando el día…',
-  'dia.error': 'No se ha podido cargar el día.',
-  'dia.sinLlegadas': 'Sin llegadas este día.',
-  'dia.sinSalidas': 'Sin salidas este día.',
-  'dia.titular': 'Titular',
-  'dia.unidad': 'Unidad',
+  'dia.elegir': 'Día que se muestra',
+  // `dia.error`/`dia.sinLlegadas`/`dia.sinSalidas` murieron cuando la pantalla
+  // pasó a `QueryError` y `EmptyState` (`vacio.llegadas.*`), y `dia.titular`/
+  // `dia.unidad` eran la cabecera de columnas que nunca se pintó. Aquí, al
+  // contrario que en Solicitudes, la cabecera NO falta: la fila son 3 columnas
+  // en DOS renglones (código/unidad, titular/ocupación, estado/saldo) y tres
+  // rótulos nombrarían la mitad de los seis valores. Se borran en vez de
+  // dejarlas muertas, para que la próxima sesión no las lea como "falta la UI".
   'dia.sinUnidad': 'Sin asignar',
   'dia.noches': '{n} noches',
   'dia.pendiente': 'Pendiente: {importe}',

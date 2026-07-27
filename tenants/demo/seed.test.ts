@@ -54,6 +54,104 @@ describe('seed demo Cala Sereno', () => {
     }
   });
 
+  /**
+   * SALDO (sesión 56). La columna de la derecha de `/llegadas` decía
+   * «Pendiente: …» en las veinte filas del día y nunca «Pagada»: todas las
+   * confirmadas se sembraban con el mismo 30 %. Dato válido y falso a la vez,
+   * la tercera vez que aparece el patrón (53: 2 032 fichas que eran 20
+   * personas; 55: quince solicitudes recibidas el mismo día).
+   *
+   * Se comprueba sobre diez temporadas seguidas por lo de siempre: el reset
+   * nocturno re-siembra con el año en curso, así que un test sobre 2026
+   * comprueba una tirada, no una propiedad.
+   */
+  describe('SALDO: lo cobrado no puede ser una constante', () => {
+    type Bkg = {
+      id: string;
+      status: string;
+      channel: string;
+      date_from: string;
+      date_to: string;
+      total_cents: number;
+      paid_cents: number;
+      payment_kind: string | null;
+      checked_in_at: string | null;
+    };
+    const AÑOS = Array.from({ length: 10 }, (_, i) => 2026 + i);
+    const porAño = AÑOS.map((y) => {
+      const seed = generateSeed(y);
+      return { año: y, anchor: seed.anchor, bkgs: seed.bookings as unknown as Bkg[] };
+    });
+    /** confirmadas que en el ancla todavía no han empezado: las que se ven llegar */
+    const futuras = (b: Bkg[], anchor: string) =>
+      b.filter((x) => x.status === 'confirmed' && x.date_from > anchor);
+
+    it('las dos palabras salen: hay llegadas pagadas y llegadas con saldo', () => {
+      for (const { año, anchor, bkgs } of porAño) {
+        const f = futuras(bkgs, anchor);
+        const pagadas = f.filter((b) => b.paid_cents >= b.total_cents);
+        const conSaldo = f.filter((b) => b.paid_cents < b.total_cents);
+        expect(pagadas.length, `${año}: ninguna llegada pagada de ${f.length}`).toBeGreaterThan(0);
+        expect(conSaldo.length, `${año}: ninguna llegada con saldo`).toBeGreaterThan(0);
+        // y ninguna de las dos es una anécdota de una fila suelta
+        const ratio = pagadas.length / f.length;
+        expect(ratio, `${año}: ${Math.round(ratio * 100)}% pagadas`).toBeGreaterThan(0.1);
+        expect(ratio).toBeLessThan(0.6);
+      }
+    });
+
+    it('nadie pasa la estancia dentro debiendo: lo ya empezado está liquidado', () => {
+      for (const { año, anchor, bkgs } of porAño) {
+        for (const b of bkgs) {
+          const activa = b.status === 'confirmed' || b.status === 'completed';
+          if (!activa || b.date_from > anchor) continue;
+          expect(
+            b.paid_cents,
+            `${año}/${b.id}: entró el ${b.date_from} y debe ${b.total_cents - b.paid_cents}`,
+          ).toBe(b.total_cents);
+        }
+      }
+    });
+
+    it('el canal manda: quien llega a mostrador no ha pagado por adelantado', () => {
+      for (const { año, anchor, bkgs } of porAño) {
+        const mostrador = futuras(bkgs, anchor).filter((b) => b.channel === 'walkin');
+        expect(mostrador.length, `${año}: sin reservas de mostrador`).toBeGreaterThan(0);
+        for (const b of mostrador) expect(b.paid_cents, `${año}/${b.id}`).toBe(0);
+      }
+    });
+
+    it('nunca se cobra de más, ni en negativo', () => {
+      for (const { año, bkgs } of porAño) {
+        for (const b of bkgs) {
+          expect(b.paid_cents, `${año}/${b.id}`).toBeGreaterThanOrEqual(0);
+          expect(b.paid_cents, `${año}/${b.id}`).toBeLessThanOrEqual(b.total_cents);
+          expect(Number.isInteger(b.paid_cents)).toBe(true);
+        }
+      }
+    });
+
+    /**
+     * El saldo NO puede colgar del mismo contador que el medio de pago ni que el
+     * idioma (ambos cuelgan de `bkgN`): si colgara, la ficha diría cosas atadas
+     * entre sí —"todas las de tarjeta van pagadas"— y eso se lee como generado.
+     * Por eso sale de un PRNG propio; esto lo comprueba desde fuera.
+     */
+    it('el saldo no va atado al medio de pago', () => {
+      for (const { año, anchor, bkgs } of porAño) {
+        for (const kind of ['card', 'cash', 'transfer', 'platform']) {
+          const delKind = futuras(bkgs, anchor).filter((b) => b.payment_kind === kind);
+          if (delKind.length < 4) continue;
+          const pagadas = delKind.filter((b) => b.paid_cents >= b.total_cents).length;
+          expect(pagadas, `${año}/${kind}: ${pagadas} de ${delKind.length} pagadas`).toBeGreaterThan(
+            0,
+          );
+          expect(pagadas).toBeLessThan(delKind.length);
+        }
+      }
+    });
+  });
+
   it('incluye los casos límite: cancelada, no-show, sin asignar, larga estancia, grupo', () => {
     const statuses = data.bookings.map((b) => b.status);
     expect(statuses).toContain('cancelled');

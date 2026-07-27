@@ -1,9 +1,9 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 55 (2026-07-25: la bandeja de solicitudes deja
-> de leerse como generada —BACKLOG `[B1]`, 6/11— y, de paso, se descubre que las
-> columnas de esa lista nunca estuvieron alineadas entre sí. Sesión autónoma
-> local, con el dev levantado).
+> Reescrito al cerrar la sesión 56 (2026-07-27: Llegadas deja de repetir la
+> misma palabra veinte veces —BACKLOG `[B1]`, 7/11— y salen tres
+> desalineaciones que se tapaban entre sí). Sesión autónoma local, con el dev
+> levantado.
 > Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de
 > la siguiente.
 
@@ -15,14 +15,21 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-`/solicitudes`. Las quince solicitudes se sembraban **el mismo día** y varias
-pedían una estancia **anterior a su propia fecha de recepción**; ahora llegan
-escalonadas por edad del estado, piden siempre con antelación, y caen los dos
-acoplamientos que las ataban (`source`/fechas por `n % 4`, tipo/niños por
-`n % 3`). Además cada una escribe **en su idioma** con el prefijo de su mercado.
-Y la cabecera de columnas que le faltaba destapó que **la columna "Tipo
-solicitado" bailaba 46 px de una fila a otra**: cada fila es su propia rejilla y
-la última columna era `auto`.
+`/llegadas`. La columna del saldo decía «Pendiente: …» en las veinte filas del
+día y **nunca «Pagada»** (el seed cobraba el mismo 30% a todas), y eso tapaba una
+rejilla que nunca alineó: las **dos** columnas de los extremos eran `auto` y la
+fila sin botón de recepción medía **109px más** que sus vecinas. Además el corte
+de las dos listas iba por el ancho de **pantalla** cuando quien las estrecha es
+**la ficha de reserva** — con el panel abierto el titular quedaba en 45px.
+
+## Estado de la entrega
+
+**Sesión 56 en `origin/main`.** Se desarrolló sin red —el entorno no resolvía
+`github.com`, así que ni el `git fetch` de apertura ni el push del cierre
+funcionaron— y se empujó al recuperarse la conexión, en fast-forward: `main`
+iba 1 commit por delante y 0 por detrás, sin nada que rebasar. Comprobado
+también que **ninguna rama `claude/*`** (ni la local ni las dos remotas) tiene
+commits fuera de `main`: no hay trabajo colgando en ninguna parte.
 
 ## ▶ Prompt para pegar
 
@@ -32,7 +39,7 @@ continúa con el desarrollo de este proyecto
 
 ## Deuda de despliegue
 
-**Sí — y sigue sin necesitar `--apply`.** Las sesiones 53, 54 y 55 no se han
+**Sí — y sigue sin necesitar `--apply`.** Las sesiones 53, 54, 55 y 56 no se han
 desplegado. Ninguna toca esquema: el reset nocturno (`tenants/demo/worker.ts`,
 cron `0 3 * * *` → `resetDemoData`) re-siembra desde `generateSeed()`, que es
 **código desplegado**. Con un `pnpm --filter @logic-camp/api deploy:demo`
@@ -45,29 +52,32 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[B1] Llegadas** (recomendado): es la gemela de Solicitudes —lista con
-  acciones por fila— y es la pantalla de **la operación diaria**, la que la
-  recepcionista mira más veces al día. Primero mirar si arrastra el mismo
-  defecto que acaba de aparecer: **última columna `auto` en filas que son
-  rejillas independientes**. Y comprobar si le falta cabecera igual que a las
-  otras tres (buscar claves `lleg.*` escritas y sin usar — el detector es
-  `grep` de la clave fuera de `i18n.ts`).
+- **[10] Reset nocturno v2: el ancla móvil** (recomendado, y la sesión 56 le ha
+  puesto precio a no hacerlo). Estaba declarado fuera de v1 (ADR 0013 §1), pero
+  la evidencia nueva es dura: **el botón de check-out no aparece nunca en la
+  demo, ningún día del año**, porque el seed estampa `checked_in_at` solo sobre
+  las estancias que contienen el ancla `Y-07-15` y la pantalla mira el día real.
+  Y fuera de julio, `/llegadas` —la pantalla que la recepcionista mira más veces
+  al día— sale **vacía**. Es trabajo de verdad (redistribuir `generateSeed` con
+  una franja alrededor de la fecha real, y 10 tests calibrados sobre el ancla
+  fija), así que **ADR primero** y marcado `propuesto`. Ojo con el determinismo:
+  el reset re-siembra a diario, así que el ancla nueva tiene que ser función de
+  su entrada, no de `Date.now()` leído dentro de `generateSeed`.
 - **[B1] Informes e Inventario** (rejillas de tiles → `Card` del DS). En
   Informes hay un defecto visible ya anotado: el titular "Ingresos (por
   llegada)" ocupa dos líneas y **hunde su cifra** respecto de las otras cuatro
-  tarjetas, que quedan desalineadas en la fila.
+  tarjetas, que quedan desalineadas en la fila. Quedan 4 de 11 para cerrar B1.
 - **[C1] Aviso inline del pendiente negativo** al mover una reserva ya pagada a
   un precio menor (hoy la ficha lo enseña después; el diálogo de precio no).
-  Acotado, verificable con el planning.
-- **[10] Informes con la memoria comercial ya sembrada**: desde la sesión 54 hay
-  clientes que repiten; mirar si `/informes` puede decir algo que antes era
-  imposible (cuántos vuelven, qué porcentaje de reservas son de repetidores).
-  **Ojo**: es feature nueva, no acabado — comprobar antes si cabe sin abrir fase.
-- **[seed] Nombre y idioma discordantes** (nuevo en BACKLOG): "Guten Tag"
-  firmado Matteo Ricci. No es un retoque — el recorrido de parejas
-  nombre×apellido es lo que **garantiza** que no haya dos clientes iguales
-  (sesión 54), así que atarlo al `locale` exige decidir cómo se cruzan las dos
-  propiedades. Afecta a las ~1 500 fichas, no solo a las 15 solicitudes.
+  Acotado, verificable con el planning. **Y ahora es más fácil de ver**: desde
+  la sesión 56 hay reservas pagadas al 100% en el seed, que antes no había.
+- **[C4] La ficha de reserva en móvil**: `BookingPanel` es `w-[360px] shrink-0`,
+  así que a 375px deja **15px** a la lista de detrás. Debería ser `Sheet` a
+  pantalla completa bajo `md`. Afecta a todas las pantallas que abren ficha.
+- **[seed] Nombre y idioma discordantes**: "Guten Tag" firmado Matteo Ricci. No
+  es un retoque — el recorrido de parejas nombre×apellido es lo que
+  **garantiza** que no haya dos clientes iguales (sesión 54), así que atarlo al
+  `locale` exige decidir cómo se cruzan las dos propiedades.
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
@@ -75,47 +85,54 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + tres nuevas de la sesión 55)
+## Trampas conocidas (heredadas + cuatro nuevas de la sesión 56)
 
 - `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
   contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.
-- **NUEVA (55) — en una lista de filas-`<button>`, ninguna columna `auto`.** No
-  hay `<table>` que las alinee: **cada fila es su propia rejilla**, así que una
-  columna `auto` la dimensiona el contenido *de esa fila* y todo lo que hay a su
-  izquierda se desplaza. Medido en Solicitudes: la columna "Tipo solicitado"
-  empezaba en 1116, 1134, 1137, 1153 o 1162 px según lo largo que fuera el chip
-  de estado. **Nadie lo había visto porque no había cabecera contra la que
-  mirar** — poner la cabecera fue lo que lo destapó. Y la rejilla va en **una
-  constante compartida** por cabecera y fila, o se desincronizan.
-- **NUEVA (55) — un test sobre un solo año comprueba una tirada, no una
-  propiedad.** El reset nocturno re-siembra con `new Date().getUTCFullYear()`,
-  así que el PRNG del seed **cambia cada 1 de enero**. Los tests de solicitudes
-  corren sobre 2026–2035 y eso cazó en el acto que "sin tipo y con niños" no
-  salía en 2028: era un umbral estadístico disfrazado de garantía. Corolario:
-  **lo que la demo deba enseñar SIEMPRE se planta, no se sortea** (como los
-  casos límite de las reservas); lo que solo aporta variedad, se sortea.
-- **NUEVA (55) — antes de "arreglar" un dato del seed, mirar qué dice el
-  dominio.** El acoplamiento `n % 4` hacía que ninguna solicitud de teléfono
-  trajera fechas y ninguna de web las omitiera. La verdad va **al revés**: en el
-  formulario público las fechas son opcionales (`EnquiryForm.astro`,
-  `dateFrom.optional()`) y por teléfono las apunta recepción. Arreglar el
-  acoplamiento sin mirar el formulario habría dado datos igual de falsos.
-- **La lección de las sesiones 53, 54 y 55, ya tres veces**: un dato puede ser
-  **válido y falso a la vez**, y ningún test de invariantes lo ve — 2 032 fichas
-  correctas que eran 20 personas; "María" con sexo M en todas sus fichas; quince
-  solicitudes correctas recibidas todas el mismo día pidiendo estancias
-  pasadas. **Hay que mirar la pantalla, y luego escribir el test.**
-- **Ampliar el repertorio no arregla un acoplamiento, lo diluye** (54): lo que
-  lo cierra es cambiar de mecanismo. Y **dos módulos sobre el mismo contador
-  nunca son dos ritmos**, ni aunque los números parezcan distintos (`% 4` y
-  `% 2` comparten el factor 2). Al sortear un rasgo, preguntarse de qué contador
-  depende **el rasgo de al lado**.
-- **Una clave i18n sin usar puede ser "falta la UI"** (52, y otra vez en la 55
-  con `sol.recibida`/`sol.fechas`/`sol.tipo`), no "sobra la clave".
+- **NUEVA (56) — `@container` y su `@md:`/`@3xl:` no pueden ir en el MISMO
+  elemento.** Un elemento no puede consultarse a sí mismo. Y no falla ruidoso:
+  `container-type` queda aplicado, la consulta se resuelve contra un contenedor
+  ancestro que no existe y **no coincide nunca**. Medido: 1142px de ancho y
+  `flex-direction: column` con un `@3xl:flex-row` puesto. El `@container` va en
+  el padre.
+- **NUEVA (56) — una media query `lg:` mide la PANTALLA, y lo que estrecha una
+  lista casi nunca es la pantalla.** En `/llegadas` era la ficha de reserva
+  (`w-[360px]`): a 1366px el hueco baja de 1142 a 782px y las dos columnas
+  seguían partiéndoselo. El umbral del corte se saca de **la cuenta de la fila**
+  (hueco del botón + columnas fijas + lo que necesita el nombre), no de un
+  número redondo.
+- **NUEVA (56) — dos defectos pueden taparse el uno al otro.** La columna del
+  saldo saltaba 43px entre «Pendiente: …» y «Pagada», y era invisible porque el
+  seed no generaba ni una «Pagada». Corolario: **si una columna solo toma un
+  valor en toda la pantalla, el defecto está en el dato, y probablemente hay
+  otro escondido detrás.**
+- **NUEVA (56) — una clave i18n muerta también puede sobrar de verdad.** En
+  Solicitudes faltaba la UI (sesión 55); en Llegadas, no: la fila son 3 columnas
+  en **dos renglones**, y tres rótulos nombrarían la mitad de los seis valores.
+  Se borran, pero **con el motivo escrito al lado**, o la sesión siguiente las
+  vuelve a leer como "falta la UI".
+- **En una lista de filas-`<button>`, ninguna columna `auto`** (55). No hay
+  `<table>` que las alinee: cada fila es su propia rejilla. Y si hay un botón de
+  acción **fuera** del `<button>` de la fila, el hueco se reserva para toda la
+  lista o para ninguna fila, o las filas no miden lo mismo (56: 109px).
+- **Un test sobre un solo año comprueba una tirada, no una propiedad** (55). El
+  reset re-siembra con `new Date().getUTCFullYear()`, así que el PRNG del seed
+  cambia cada 1 de enero: los tests corren sobre 2026–2035.
+- **Al sortear un rasgo nuevo del seed, mirar de qué contador depende el rasgo
+  de al lado** (54). `bkgN` ya lleva encima el medio de pago (`% 6`, `% 4`), el
+  idioma (`% 6`), los habituales (`% 4`) y el check-in (`% 5`). En la 56 la
+  solución fue un **PRNG propio** (`payRand`): ni comparte contador, ni consume
+  del general (que movería el relleno por curva entero).
+- **La lección de las sesiones 53, 54, 55 y 56, ya cuatro veces**: un dato puede
+  ser **válido y falso a la vez**, y ningún test de invariantes lo ve — 2 032
+  fichas correctas que eran 20 personas; quince solicitudes recibidas el mismo
+  día; veinte reservas debiendo exactamente el 70%. **Hay que mirar la pantalla,
+  y luego escribir el test.**
 - **`getComputedStyle().boxShadow` miente sobre el anillo de foco** del DS en
   este Chrome: `--tw-ring-shadow` se lee bien pero el compuesto sale a cero. El
   anillo **sí se pinta**. Para juzgar un anillo, captura; para juzgar que la
-  regla existe, la variable.
+  regla existe, la variable. Y `:focus-visible` **no** lo activa `.focus()`:
+  hay que pulsar Tab de verdad.
 - **El primitivo `Table` y el scroll (52)**: su contenedor lleva `overflow-x-auto`
   y en CSS `overflow-y: visible` **computa a `auto`** en cuanto el otro eje no es
   `visible` → el contenedor pasa a ser el scroller de **ambos** ejes y un
@@ -138,22 +155,19 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
   navegar a la misma URL con hash **no recarga**. Y `pnpm db:reset` borra
   `.wrangler-demo` bajo los pies del `wrangler dev` y lo mata: **parar el
   preview, resembrar, y volver a levantarlo** (`preview_start` con `name: "api"`).
-- **Un test de accesibilidad puede pasar por el motivo equivocado** (51):
-  `test.use({ reducedMotion })` no activó la preferencia; usar
-  `page.emulateMedia()` **y afirmar que está activa**. Lo mismo con `:focus-visible`
-  — `.focus()` programático **no** lo activa (hay que pulsar Tab de verdad).
-- **`@media` no suma especificidad** (51): `motion-reduce:X` (0,1,0) pierde contra
-  `data-[state=open]:Y` (0,2,0) en cualquier orden.
-- **`/api/*` va con rate limit de 60 req/min por IP** (`createRateLimiter`): un
-  script que barra fechas se come la cuota y recibe **429**; con Playwright el
-  síntoma es «Process from config.webServer was not able to start».
+  **Atajo de la 56**: para volver a datos limpios sin parar nada,
+  `POST /api/demo/reset` desde la consola de la página (es lo que hace el botón
+  del banner) y luego `POST /api/demo/sign-in`, que el wipe borra la sesión.
 - En el panel del navegador, `computer` con `coordinate` usa coordenadas del
   **viewport**, no de la captura — para pulsar una fila, los `ref_N` de
-  `read_page`. Su `left_click_drag` no dispara los pointer events de las barras
-  del planning: para gestos, Playwright. **Y (55) `resize_window` y la captura se
-  desincronizan tras recargar**: si la captura sale con la página metida en una
-  esquina, volver a fijar el viewport; para juzgar geometría, medir el DOM
-  (`getBoundingClientRect`), que no miente.
+  `read_page`. **Y ojo (56): un `left_click` sobre un `ref` viejo, después de
+  navegar, aterriza donde caiga** — en esta sesión hizo un check-in real y dejó
+  un huésped "En casa" que el seed no había sembrado; tres minutos perdidos
+  buscando el fallo en el seed. Si un dato no cuadra, mirar primero su
+  `updated_at`/`checked_in_at`. Su `left_click_drag` no dispara los pointer
+  events de las barras del planning: para gestos, Playwright. **Y `resize_window`
+  y la captura se desincronizan tras recargar**: para juzgar geometría, medir el
+  DOM (`getBoundingClientRect`), que no miente.
 - Cambiar el esquema de color en caliente (`resize_window colorScheme`) deja el
   dashboard **a medio repintar**: recargar antes de juzgar un contraste.
 - El **reset nocturno de la demo SÍ existe** (`tenants/demo/worker.ts`, cron
@@ -162,6 +176,9 @@ necesita `pnpm db:seed:remote --apply` (doble candado, solo con Andreu).
 - En Playwright, ir de `/admin/` a `/admin/#/…` **no recarga** (sólo cambia el
   hash) → `await p.reload()` después. El **planning vive en `/`**, no en
   `/planning`; con `?date=&unit=unt_…` la virtualización desplaza hasta la unidad.
+- **`/api/*` va con rate limit de 60 req/min por IP** (`createRateLimiter`): un
+  script que barra fechas se come la cuota y recibe **429**; con Playwright el
+  síntoma es «Process from config.webServer was not able to start».
 - En el contenedor cloud, Playwright no encuentra su navegador solo: la config
   ya usa `/opt/pw-browsers/chromium` **si existe** (y `CHROMIUM_PATH` manda).
 - Segfault de workerd sobre `reset.test.ts` = solo contenedor cloud (45/45 local).
@@ -171,6 +188,6 @@ pnpm db:seed` si el plano sale "automático" o falta `modules.*`.
   coordenadas; usar los `ref_N` del árbol de accesibilidad, o `fetch` a
   `/api/auth/sign-in/email`. Demo: gerencia@calasereno.example / calasereno,
   rutas hash. **Para entrar como visitante ya no hacen falta credenciales**:
-  botón "Ver la demo". Ojo: `db:reset` **cierra la sesión**, hay que volver a
-  entrar.
+  botón "Ver la demo" (o `POST /api/demo/sign-in`). Ojo: `db:reset` **cierra la
+  sesión**, hay que volver a entrar.
 - exports/ en .gitignore. Scripts de sesión nunca se commitean.
