@@ -12,9 +12,12 @@ import {
   type SeedUnitType,
 } from './seed';
 
-// Mismo ancla por defecto que `pnpm db:seed` (write-seed.ts): el año en curso.
-const year = new Date().getUTCFullYear();
-const seed = generateSeed(year);
+// Mismo ancla por defecto que `pnpm db:seed` (write-seed.ts): el día del build.
+// Para la web pública solo cuentan temporadas, tarifas y fichas, que dependen
+// del AÑO del ancla y no del día (ADR 0030 §2).
+const anchor = new Date().toISOString().slice(0, 10);
+const year = Number(anchor.slice(0, 4));
+const seed = generateSeed(anchor);
 
 export type WebSeason = SeedSeason;
 export type WebRatePlan = SeedRatePlan;

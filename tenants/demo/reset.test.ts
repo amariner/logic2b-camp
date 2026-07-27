@@ -33,7 +33,7 @@ async function counts() {
 
 describe('buildResetStatements (puro)', () => {
   it('borra las 21 tablas de la app antes de sembrar', () => {
-    const statements = buildResetStatements(2026);
+    const statements = buildResetStatements('2026-07-15');
     const deletes = statements.filter((s) => s.startsWith('DELETE FROM'));
     expect(deletes.length).toBe(21);
     expect(deletes[0]).toBe('DELETE FROM notifications_log;');
@@ -47,14 +47,23 @@ describe('buildResetStatements (puro)', () => {
     );
   });
 
-  it('es determinista para el mismo año', () => {
-    expect(buildResetStatements(2026)).toEqual(buildResetStatements(2026));
+  it('es determinista para la misma ancla', () => {
+    expect(buildResetStatements('2026-07-15')).toEqual(buildResetStatements('2026-07-15'));
+  });
+
+  /**
+   * ADR 0030: el ancla es ahora el día real, así que el reset de mañana NO
+   * produce lo mismo que el de hoy — y eso es el objetivo, no un fallo. Lo que
+   * sí tiene que quedarse quieto es el camping: el PRNG se siembra con el año.
+   */
+  it('mover el ancla un día mueve los datos', () => {
+    expect(buildResetStatements('2026-07-15')).not.toEqual(buildResetStatements('2026-07-16'));
   });
 });
 
 describe('resetDemoData contra D1 real', () => {
   it('siembra el inventario completo en una base vacía', async () => {
-    await resetDemoData(env.DB, 2026);
+    await resetDemoData(env.DB, '2026-07-15');
     const c = await counts();
     expect(c.units).toBe(83);
     expect(c.bookings).toBeGreaterThanOrEqual(38);
@@ -64,7 +73,7 @@ describe('resetDemoData contra D1 real', () => {
   });
 
   it('el visitante de la demo sobrevive al reset: es quien abre la puerta anónima', async () => {
-    await resetDemoData(env.DB, 2026);
+    await resetDemoData(env.DB, '2026-07-15');
     const visitante = (await db.select().from(schema.users)).find((u) => u.id === 'usr_demo');
     // el reset borra `sessions` y `users` y los regenera desde el seed: si este
     // usuario no volviera, el botón "Restablecer" dejaría la demo sin puerta
@@ -74,7 +83,7 @@ describe('resetDemoData contra D1 real', () => {
   });
 
   it('borra la basura acumulada durante el día en vez de acumularla', async () => {
-    await resetDemoData(env.DB, 2026);
+    await resetDemoData(env.DB, '2026-07-15');
     const before = await counts();
 
     // simula lo que deja un día de demo: una notificación, una entrada de
@@ -111,7 +120,7 @@ describe('resetDemoData contra D1 real', () => {
     expect(dirty.audit).toBe(before.audit + 1);
     expect(dirty.sessions).toBe(before.sessions + 1);
 
-    await resetDemoData(env.DB, 2026);
+    await resetDemoData(env.DB, '2026-07-15');
     const after = await counts();
     expect(after).toEqual(before);
 
@@ -123,20 +132,31 @@ describe('resetDemoData contra D1 real', () => {
   });
 
   it('vuelve a sembrar 83 unidades y 5 usuarios aunque se llame dos veces seguidas', async () => {
-    await resetDemoData(env.DB, 2026);
-    await resetDemoData(env.DB, 2026);
+    await resetDemoData(env.DB, '2026-07-15');
+    await resetDemoData(env.DB, '2026-07-15');
     const c = await counts();
     expect(c.units).toBe(83);
     expect(c.users).toBe(5);
   });
 
-  it('el ancla es el año en curso por defecto, sin pasarlo explícito', async () => {
-    const currentYear = new Date().getUTCFullYear();
+  /**
+   * ADR 0030: por defecto el ancla es HOY, no "mediados de julio del año en
+   * curso". Esto es lo que hace que la demo del cron nocturno tenga siempre
+   * llegadas y salidas del día — la propiedad que se comprueba aquí contra la
+   * D1 real, no solo sobre el objeto del generador.
+   */
+  it('el ancla por defecto es el día de hoy: la demo tiene llegadas y salidas del día', async () => {
+    const hoy = new Date().toISOString().slice(0, 10);
     await resetDemoData(env.DB);
     const tenant = (await db.select().from(schema.tenants))[0]!;
     const bookings = await db.select().from(schema.bookings);
-    // el ancla mid-julio del año en curso está en las fechas de la primera reserva
-    expect(bookings.some((b) => b.dateFrom.startsWith(String(currentYear)))).toBe(true);
     expect(tenant.slug).toBe('demo');
+    expect(bookings.filter((b) => b.dateFrom === hoy).length).toBeGreaterThan(0);
+    // y al menos una salida de hoy ofrece el gesto que hasta ADR 0030 no
+    // aparecía NUNCA: registrada dentro, sin cerrar
+    const cerrables = bookings.filter(
+      (b) => b.dateTo === hoy && b.status === 'confirmed' && b.checkedInAt && !b.checkedOutAt,
+    );
+    expect(cerrables.length, `sin check-out posible el ${hoy}`).toBeGreaterThan(0);
   });
 });

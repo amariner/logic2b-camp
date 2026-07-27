@@ -2,11 +2,51 @@ import { describe, expect, it } from 'vitest';
 import { expandPlano, type PlanoDescriptor } from '@logic-camp/config';
 import { generateSeed, nightsBetween, seedToSql } from './seed';
 
-const data = generateSeed(2026);
+/** Ancla de referencia: el 15 de julio que fue ancla FIJA hasta ADR 0030. */
+const ANCLA = '2026-07-15';
+const data = generateSeed(ANCLA);
+
+/**
+ * Muestra de anclas (ADR 0030). Desde que el "hoy" del seed es el día real,
+ * **el ancla es una variable de entrada**: un test sobre una fecha comprueba una
+ * tirada, no una propiedad — la lección de las sesiones 54-56, aquí en su forma
+ * literal. La muestra recorre los doce meses (el defecto que se arregla era
+ * justamente estacional: fuera de abril-octubre no había nada sembrado), los
+ * bordes duros del calendario (1 de enero, 31 de diciembre, 29 de febrero) y
+ * **diez temporadas seguidas**, porque el reset re-siembra con el año en curso y
+ * el PRNG cambia cada 1 de enero.
+ */
+const ANCLAS = [
+  '2026-01-15',
+  '2026-02-03',
+  '2026-03-08',
+  '2026-04-22',
+  '2026-05-30',
+  '2026-06-11',
+  '2026-07-27',
+  '2026-08-10',
+  '2026-09-14',
+  '2026-10-20',
+  '2026-11-03',
+  '2026-12-28',
+  '2027-01-01',
+  '2027-06-18',
+  '2028-02-29',
+  '2028-12-31',
+  '2029-04-05',
+  '2030-07-15',
+  '2031-09-23',
+  '2032-05-01',
+  '2033-11-11',
+  '2034-03-17',
+  '2035-08-24',
+];
+/** Se genera UNA vez y la comparten las tres baterías que barren anclas. */
+const MUESTRA = ANCLAS.map((anchor) => ({ anchor, seed: generateSeed(anchor) }));
 
 describe('seed demo Cala Sereno', () => {
   it('es determinista', () => {
-    expect(seedToSql(generateSeed(2026))).toBe(seedToSql(data));
+    expect(seedToSql(generateSeed(ANCLA))).toBe(seedToSql(data));
   });
 
   it('tiene el inventario exigido: 60 parcelas, 18 bungalows/mobil, 5 glamping', () => {
@@ -40,18 +80,160 @@ describe('seed demo Cala Sereno', () => {
     expect(new Set(placed).size).toBe(placed.length);
   });
 
-  it('CHECK-IN (ADR 0022): hay huéspedes "en casa" en el ancla, y solo confirmadas', () => {
-    const anchor = data.anchor;
-    const checkedIn = data.bookings.filter((b) => b.checked_in_at !== null);
-    // el planning/plano de la demo tienen que enseñar la mezcla "en casa"
-    expect(checkedIn.length).toBeGreaterThan(0);
-    // "en casa" solo se estampa sobre confirmadas presentes en el ancla; nadie
-    // con check-in ha hecho check-out todavía (seguiría 'confirmed', no completada)
-    for (const b of checkedIn) {
-      expect(b.status).toBe('confirmed');
-      expect(b.checked_out_at).toBeNull();
-      expect(b.date_from <= anchor && anchor < b.date_to).toBe(true);
-    }
+  /**
+   * EL ANCLA MÓVIL (ADR 0030, sesión 57). El seed tenía un "hoy" —el 15 de
+   * julio— y el dashboard tenía otro —el día real del navegador—, y las dos
+   * líneas solo coincidían un día al año. Medido en la sesión 56: el botón de
+   * check-out **no aparecía nunca, ningún día**, y fuera de abril-octubre la
+   * pantalla de la operación diaria salía vacía.
+   *
+   * Toda esta batería se juzga sobre la MUESTRA de anclas, nunca sobre una
+   * fecha: el defecto que arregla era estacional, así que un test estacional lo
+   * habría dejado pasar exactamente igual que lo dejó pasar la aplicación.
+   */
+  describe('EL ANCLA MÓVIL: el "hoy" del seed es el día real', () => {
+    type Bkg = (typeof data)['bookings'][number];
+    const viva = (b: Bkg) => b.status !== 'cancelled' && b.status !== 'no_show';
+    const enCasa = (b: Bkg) =>
+      b.status === 'confirmed' && b.checked_in_at !== null && b.checked_out_at === null;
+    const cada = (fn: (bkgs: Bkg[], anchor: string) => void) => {
+      for (const { anchor, seed } of MUESTRA) fn(seed.bookings, anchor);
+    };
+
+    it('el ancla es exactamente el día que se le pasa', () => {
+      for (const { anchor, seed } of MUESTRA) expect(seed.anchor).toBe(anchor);
+    });
+
+    it('cualquier día del año tiene llegadas y salidas', () => {
+      cada((bkgs, a) => {
+        const lleg = bkgs.filter((b) => b.date_from === a && viva(b));
+        const sal = bkgs.filter((b) => b.date_to === a && viva(b));
+        expect(lleg.length, `${a}: ${lleg.length} llegadas`).toBeGreaterThanOrEqual(3);
+        expect(sal.length, `${a}: ${sal.length} salidas`).toBeGreaterThanOrEqual(3);
+      });
+    });
+
+    /** El defecto de la sesión 56, escrito como test: el gesto tiene que existir. */
+    it('cualquier día del año se puede CERRAR una salida (el botón de check-out)', () => {
+      cada((bkgs, a) => {
+        const conGesto = bkgs.filter((b) => b.date_to === a && enCasa(b));
+        expect(conGesto.length, `${a}: ninguna salida ofrece check-out`).toBeGreaterThanOrEqual(2);
+      });
+    });
+
+    it('cualquier día del año se puede REGISTRAR una llegada', () => {
+      cada((bkgs, a) => {
+        const conGesto = bkgs.filter(
+          (b) => b.date_from === a && b.status === 'confirmed' && b.checked_in_at === null,
+        );
+        expect(conGesto.length, `${a}: ninguna llegada por registrar`).toBeGreaterThanOrEqual(2);
+      });
+    });
+
+    it('cualquier día del año hay gente en casa (planning y plano no salen vacíos)', () => {
+      cada((bkgs, a) => {
+        const dentro = bkgs.filter(enCasa);
+        expect(dentro.length, `${a}: ${dentro.length} en casa`).toBeGreaterThanOrEqual(5);
+      });
+    });
+
+    it('hay pasado Y futuro: ni la demo empieza hoy ni se acaba hoy', () => {
+      cada((bkgs, a) => {
+        expect(bkgs.filter((b) => b.date_to < a).length, `${a}: sin histórico`).toBeGreaterThan(20);
+        expect(bkgs.filter((b) => b.date_from > a).length, `${a}: sin futuro`).toBeGreaterThan(0);
+      });
+    });
+
+    it('el año entero está sembrado: los doce meses tienen llegadas', () => {
+      for (const { anchor, seed } of MUESTRA) {
+        const meses = new Set(
+          seed.bookings
+            .filter((b) => b.date_from.startsWith(anchor.slice(0, 4)))
+            .map((b) => b.date_from.slice(5, 7)),
+        );
+        expect(meses.size, `${anchor}: solo ${meses.size} meses con llegadas`).toBe(12);
+      }
+    });
+
+    /**
+     * Coherencia de los sellos con la línea temporal. Sin esto se cuelan los
+     * datos "válidos y falsos" de siempre: un huésped registrado en una estancia
+     * que aún no ha empezado, o un check-out sin check-in.
+     */
+    it('los sellos del mostrador no contradicen al calendario', () => {
+      cada((bkgs, a) => {
+        for (const b of bkgs) {
+          if (b.checked_out_at) {
+            expect(b.checked_in_at, `${a}/${b.id}: salió sin haber entrado`).not.toBeNull();
+            expect(b.date_to <= a, `${a}/${b.id}: salió antes de irse`).toBe(true);
+            expect(b.status, `${a}/${b.id}`).toBe('completed');
+          }
+          if (b.checked_in_at) {
+            expect(b.date_from <= a, `${a}/${b.id}: registrado antes de llegar`).toBe(true);
+            expect(['confirmed', 'completed']).toContain(b.status);
+          }
+          // nada que ya terminó puede seguir "confirmado": es la lista de
+          // salidas de ayer que nadie cerró
+          if (b.date_to < a && viva(b)) expect(b.status, `${a}/${b.id}`).toBe('completed');
+        }
+      });
+    });
+
+    it('el histórico dice que aquella gente llegó a entrar', () => {
+      cada((bkgs, a) => {
+        const pasadas = bkgs.filter((b) => b.date_to < a && b.status === 'completed');
+        expect(pasadas.length, `${a}`).toBeGreaterThan(20);
+        for (const b of pasadas) {
+          expect(b.checked_in_at, `${a}/${b.id} sin check-in`).not.toBeNull();
+          expect(b.checked_out_at, `${a}/${b.id} sin check-out`).not.toBeNull();
+        }
+      });
+    });
+
+    /**
+     * La otra mitad de ADR 0030: el PRNG se siembra con el AÑO, no con el día.
+     * Si colgara del ancla completa, la demo se reorganizaría entera cada
+     * madrugada y el `CS-2026-0412` que un comercial enseñó ayer sería hoy otra
+     * cosa. Lo que se mueve es la línea de HOY, no el camping.
+     */
+    it('el camping es el mismo todos los días del año: solo se mueve la línea de HOY', () => {
+      const delMismoAño = (año: string) => MUESTRA.filter((m) => m.anchor.startsWith(año));
+      const huella = (s: (typeof MUESTRA)[number]['seed']) =>
+        s.bookings
+          .filter((b) => !b.notes?.toString().startsWith('Salida de hoy'))
+          .filter((b) => !b.notes?.toString().startsWith('Llegada de hoy'))
+          .filter((b) => !b.notes?.toString().startsWith('Sin unidad'))
+          .map((b) => `${b.date_from}|${b.date_to}|${b.unit_id}`)
+          .join('\n');
+      const doceMeses = delMismoAño('2026');
+      expect(doceMeses.length).toBe(12); // la muestra recorre el año entero
+      const base = huella(doceMeses[0]!.seed);
+      for (const m of doceMeses.slice(1))
+        expect(huella(m.seed), `${m.anchor} reparte la temporada de otra forma`).toBe(base);
+    });
+
+    /**
+     * La reserva sin unidad llena la bandeja "sin asignar" del planning (ADR
+     * 0023): es una TAREA del mostrador. Clavada en agosto como estaba, once
+     * meses al año era historia — nadie asigna unidad a una estancia que ya
+     * terminó, así que la bandeja enseñaba una tarea imposible.
+     */
+    it('la reserva sin unidad asignada es una TAREA, no historia', () => {
+      cada((bkgs, a) => {
+        const tarea = bkgs.filter((b) => b.notes?.toString().startsWith('Sin unidad asignada'));
+        expect(tarea.length, `${a}`).toBe(1);
+        expect(tarea[0]!.unit_id).toBeNull();
+        expect(tarea[0]!.date_from > a, `${a}: sin asignar y ya terminó`).toBe(true);
+      });
+    });
+
+    it('las llegadas de hoy no vienen todas pagadas ni todas debiendo', () => {
+      const hoy = MUESTRA.flatMap(({ anchor, seed }) =>
+        seed.bookings.filter((b) => b.date_from === anchor && b.status === 'confirmed'),
+      );
+      expect(hoy.filter((b) => b.paid_cents >= b.total_cents).length).toBeGreaterThan(0);
+      expect(hoy.filter((b) => b.paid_cents < b.total_cents).length).toBeGreaterThan(0);
+    });
   });
 
   /**
@@ -77,11 +259,11 @@ describe('seed demo Cala Sereno', () => {
       payment_kind: string | null;
       checked_in_at: string | null;
     };
-    const AÑOS = Array.from({ length: 10 }, (_, i) => 2026 + i);
-    const porAño = AÑOS.map((y) => {
-      const seed = generateSeed(y);
-      return { año: y, anchor: seed.anchor, bkgs: seed.bookings as unknown as Bkg[] };
-    });
+    const porAño = MUESTRA.map(({ anchor, seed }) => ({
+      año: anchor,
+      anchor,
+      bkgs: seed.bookings as unknown as Bkg[],
+    }));
     /** confirmadas que en el ancla todavía no han empezado: las que se ven llegar */
     const futuras = (b: Bkg[], anchor: string) =>
       b.filter((x) => x.status === 'confirmed' && x.date_from > anchor);
@@ -104,7 +286,10 @@ describe('seed demo Cala Sereno', () => {
       for (const { año, anchor, bkgs } of porAño) {
         for (const b of bkgs) {
           const activa = b.status === 'confirmed' || b.status === 'completed';
-          if (!activa || b.date_from > anchor) continue;
+          // `>=`, no `>`: quien entra HOY todavía no ha pasado por el mostrador
+          // — el saldo que se le cobra al registrar la llegada es justo lo que
+          // la pantalla de Llegadas existe para enseñar (ADR 0030).
+          if (!activa || b.date_from >= anchor) continue;
           expect(
             b.paid_cents,
             `${año}/${b.id}: entró el ${b.date_from} y debe ${b.total_cents - b.paid_cents}`,
@@ -186,15 +371,14 @@ describe('seed demo Cala Sereno', () => {
       contact: { phone?: string };
       occupancy: { adults: number; childrenAges: number[] } | null;
     };
-    const AÑOS = Array.from({ length: 10 }, (_, i) => 2026 + i);
     const porAño = new Map(
-      AÑOS.map((y) => [y, generateSeed(y)] as const).map(([y, d]) => [
-        y,
-        { seed: d, enqs: d.enquiries as unknown as Enq[] },
+      MUESTRA.map(({ anchor, seed }) => [
+        anchor,
+        { seed, enqs: seed.enquiries as unknown as Enq[] },
       ]),
     );
     const cadaAño = (
-      fn: (enqs: Enq[], seed: ReturnType<typeof generateSeed>, año: number) => void,
+      fn: (enqs: Enq[], seed: ReturnType<typeof generateSeed>, año: string) => void,
     ) => {
       for (const [año, { seed, enqs }] of porAño) fn(enqs, seed, año);
     };
@@ -415,6 +599,15 @@ describe('seed demo Cala Sereno', () => {
     // ~1 500 fichas tocaban a 38 por apellido y la primera página salía entera
     // "Andersen" — el mismo defecto de las 20 personas repetidas, en la columna
     // de al lado.
+    //
+    // OJO con lo que este test NO garantiza (medido en la sesión 57): el
+    // emparejamiento es una biyección UNIFORME, así que cada apellido toca a
+    // exactamente `fichas / apellidos` fichas — hoy ~11— y la pantalla enseña
+    // once "Aalto" seguidos. Que pase este test significa "no está colapsado",
+    // no "se lee bien". Arreglarlo de verdad no es alargar la lista (el bloque
+    // sigue midiendo N/L), sino repartir los apellidos con la cola larga que
+    // tienen en la realidad — y eso pelea con la biyección que garantiza que no
+    // haya dos clientes iguales. Está en BACKLOG con ese diagnóstico.
     const pagina = [...data.guests]
       .sort(
         (a, b) =>

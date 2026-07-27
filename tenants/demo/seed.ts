@@ -138,22 +138,54 @@ export type SeedData = {
 // ---------- generador ----------
 
 /**
- * @param anchorYear año de la temporada "en curso" del seed (las fechas se derivan de él)
+ * @param anchor el **"hoy" de la demo**, ISO `YYYY-MM-DD` (ADR 0030).
+ *
+ * Hasta la sesión 57 el parámetro era un AÑO y el ancla salía siempre del
+ * `15 de julio`: el seed tenía un "hoy" y el dashboard otro, y las dos líneas
+ * temporales solo coincidían un día al año. La consecuencia medida: el botón
+ * de check-out no aparecía **nunca**, ningún día, y fuera de abril–octubre la
+ * pantalla de llegadas y salidas salía vacía.
+ *
+ * El generador **sigue siendo puro**: no lee el reloj por dentro. Quien lo lee
+ * es el llamante (`reset.ts`, `write-seed.ts`, `data.ts`), que es lo que
+ * permite que el reset nocturno siga siendo determinista dado su ancla.
  */
-export function generateSeed(anchorYear: number): SeedData {
-  const rand = rng(anchorYear * 7919);
-  const Y = anchorYear;
-  const anchor = `${Y}-07-15`; // mitad de la temporada alta
+export function generateSeed(anchor: string): SeedData {
+  const Y = Number(anchor.slice(0, 4));
+  /**
+   * El PRNG se siembra con el AÑO, no con el día — y eso es media decisión
+   * (ADR 0030 §2). Si colgara del ancla completa, la demo se reorganizaría
+   * entera cada madrugada: otras reservas, otros clientes, otros códigos, y el
+   * `CS-2026-0412` que un comercial enseñó ayer sería hoy otra cosa. Con el año,
+   * el reparto de la temporada es el mismo los 365 días y lo único que se mueve
+   * es la línea de HOY que lo recorre.
+   */
+  const rand = rng(Y * 7919);
   const T = 'ten_calasereno';
   const now = `${anchor}T08:00:00.000Z`;
 
   // --- temporadas: solapadas, resueltas por prioridad ---
+  //
+  // La apertura abarca el AÑO ENTERO desde ADR 0030: para que "hoy" caiga
+  // siempre dentro de la ventana sembrada, la ventana tiene que ser el año. Eso
+  // convierte a Cala Sereno en un camping abierto todo el año —lo que son
+  // muchos de la costa de Castellón, y lo que ya insinuaban sus dos bloqueos
+  // `longstay`—, a cambio de que el estado "cerrado" del motor (`is_open:false`)
+  // deje de verse en la web pública de la demo. Se acepta con motivo escrito en
+  // el ADR: un mes de pantallas vacías cuesta más que un argumento de
+  // conversación, y la capacidad sigue teniendo su test en `packages/core`.
   const seasons = [
     {
       id: 'sea_apertura',
       name: 'Apertura',
-      date_from: `${Y}-03-15`,
-      date_to: `${Y}-11-01`,
+      // El año natural, que es lo que la tabla de tarifas de la web pública
+      // sabe leer: "Apertura · 1 ene – 31 dic" dice **abierto todo el año** de
+      // un vistazo. Se probó declararla sobre la ventana sembrada entera y la
+      // página quedaba diciendo "Apertura · 15 nov – 15 feb", que es
+      // exactamente lo contrario de lo que significa. La ventana de siembra
+      // desborda el año por su cuenta (ver `SEED_FROM`/`SEED_TO`).
+      date_from: `${Y}-01-01`,
+      date_to: `${Y}-12-31`,
       priority: 0,
       is_open: true,
     },
@@ -443,6 +475,19 @@ export function generateSeed(anchorYear: number): SeedData {
       date_to: `${Y}-09-30`,
       reason: 'longstay',
     },
+    // Invernante (ADR 0030): la autocaravana del norte de Europa que pasa el
+    // invierno en la costa. Los otros dos `longstay` son de verano, así que
+    // hasta ahora el planning de enero no tenía ni una barra rayada — y el
+    // invernante es justo lo que explica que un camping de costa abra en enero.
+    {
+      id: 'blk_long3',
+      tenant_id: T,
+      unit_id: 'unt_moto_08',
+      unit_type_id: null,
+      date_from: `${Y}-01-01`,
+      date_to: `${Y}-03-20`,
+      reason: 'longstay',
+    },
   ];
 
   // --- reservas: 40 con casos límite; ocupación por unidad sin solapes activos ---
@@ -464,7 +509,17 @@ export function generateSeed(anchorYear: number): SeedData {
    * censo de habituales (`% 4`) y el check-in (`% 5`): dos rasgos sobre el
    * mismo contador no son dos ritmos (la lección de la sesión 54).
    */
-  const payRand = rng(anchorYear * 104729 + 17);
+  const payRand = rng(Y * 104729 + 17);
+  /**
+   * PRNG propio del **mostrador**: quién ha registrado su llegada, quién ya se
+   * ha ido esta mañana. Mismo motivo que `payRand` (no colgar de `bkgN`, que ya
+   * carga cuatro rasgos) más uno nuevo de ADR 0030: se consulta **una vez por
+   * reserva y sin condiciones**, de forma que la tirada de cada reserva no
+   * dependa de dónde caiga el ancla. Si se consultara solo en algunas ramas, la
+   * secuencia se desplazaría cada día y el mostrador de la demo cambiaría de
+   * protagonistas cada madrugada sin motivo.
+   */
+  const recepRand = rng(Y * 15485863 + 101);
 
   const firstNames = [
     'María',
@@ -681,6 +736,94 @@ export function generateSeed(anchorYear: number): SeedData {
     'Carvalho',
     'Teixeira',
     'Fonseca',
+    // De 161 a 241 (sesión 57). No es un retoque del retoque: al sembrar el año
+    // entero el censo pasa de ~1 500 fichas a ~2 400, y con 161 apellidos vuelven
+    // a tocar a 15 por apellido — la primera página de `/clientes`, que se ordena
+    // por apellido, volvía a salir con DOS apellidos en veinticinco filas. Es la
+    // misma cuenta de la sesión 54 con otro numerador: el repertorio tiene que
+    // crecer con el censo, y una lista de 2 400 clientes reales de un camping de
+    // costa tiene bastantes más de 161 apellidos distintos.
+    'Aguilar',
+    'Alonso',
+    'Benítez',
+    'Bravo',
+    'Calvo',
+    'Camps',
+    'Cano',
+    'Carbonell',
+    'Cerdá',
+    'Domínguez',
+    'Esteve',
+    'Gimeno',
+    'Guerrero',
+    'Herrero',
+    'Ibáñez',
+    'Jordán',
+    'Lozano',
+    'Martorell',
+    'Medina',
+    'Montero',
+    'Nadal',
+    'Olivares',
+    'Pastor',
+    'Quiles',
+    'Rovira',
+    'Sabater',
+    'Tomás',
+    'Ureña',
+    'Valls',
+    'Zapata',
+    'Barbier',
+    'Caron',
+    'Dumont',
+    'Faure',
+    'Gaillard',
+    'Humbert',
+    'Joly',
+    'Lemoine',
+    'Masson',
+    'Noël',
+    'Berger',
+    'Dietrich',
+    'Engel',
+    'Frank',
+    'Gruber',
+    'Haas',
+    'Jäger',
+    'Keller',
+    'Ludwig',
+    'Baas',
+    'Cornelissen',
+    'Driessen',
+    'Groen',
+    'Hoekstra',
+    'Jonker',
+    'Kramer',
+    'Veenstra',
+    'Amato',
+    'Bellini',
+    'Cattaneo',
+    'De Luca',
+    'Farina',
+    'Grassi',
+    'Leone',
+    'Sartori',
+    'Abbott',
+    'Bailey',
+    'Chapman',
+    'Dawson',
+    'Fletcher',
+    'Gibson',
+    'Newton',
+    'Sharpe',
+    'Aalto',
+    'Bergström',
+    'Eriksen',
+    'Halvorsen',
+    'Karlsen',
+    'Moen',
+    'Solberg',
+    'Vik',
   ];
   /** Los de `firstNames` que son de mujer — de aquí sale el sexo del parte de viajeros. */
   const nombresFemeninos = new Set([
@@ -936,13 +1079,42 @@ export function generateSeed(anchorYear: number): SeedData {
    * Las cifras salen de `payRand` (ver arriba), no de `bkgN` ni del PRNG general.
    */
   function defaultPaidRatio(from: string, status: string, channel: string): number {
-    if (status !== 'confirmed' && status !== 'completed') return 0;
-    if (from <= anchor) return 1;
-    if (channel === 'walkin') return 0;
+    // La tirada se consume SIEMPRE, antes de mirar nada: así el `r` de cada
+    // reserva es el mismo caiga donde caiga el ancla (ADR 0030 §2). Cuando se
+    // sorteaba dentro de las ramas, mover el ancla un día desplazaba la
+    // secuencia entera y cambiaba lo cobrado de media temporada.
     const r = payRand();
+    if (status !== 'confirmed' && status !== 'completed') return 0;
+    // `<`, no `<=`: quien ENTRA hoy todavía no ha pasado por el mostrador, y el
+    // saldo que se le cobra al registrar la llegada es justo lo que la pantalla
+    // de Llegadas existe para enseñar. Con `<=` las once llegadas del día salían
+    // todas «Pagada», que es el defecto de la sesión 56 al revés.
+    if (from < anchor) return 1;
+    if (channel === 'walkin') return 0;
     if (channel === 'phone') return r < 0.5 ? 0.3 : 0;
     return r < 0.35 ? 1 : 0.3;
   }
+
+  /**
+   * Dónde está una estancia respecto del "hoy" de la demo (ADR 0030 §4). Los
+   * cinco casos son los cinco que distingue una recepción, y dos de ellos —los
+   * que salen hoy y los que llegan hoy— no existían: el seed solo sabía de
+   * "terminada", "en casa" y "futura", y por eso el botón de check-out no
+   * aparecía nunca (la lista de Salidas pide `checked_in_at`, y quien se iba hoy
+   * quedaba fuera del `anchor < to` que lo estampaba).
+   */
+  type Situacion = 'pasada' | 'sale_hoy' | 'en_casa' | 'llega_hoy' | 'futura';
+  function situacionDe(from: string, to: string): Situacion {
+    if (to < anchor) return 'pasada';
+    if (to === anchor) return 'sale_hoy';
+    if (from === anchor) return 'llega_hoy';
+    if (from < anchor) return 'en_casa';
+    return 'futura';
+  }
+
+  /** Tarde de entrada / mañana de salida: las horas del mostrador, no medianoche. */
+  const LLEGADA_H = 'T16:20:00.000Z';
+  const SALIDA_H = 'T10:35:00.000Z';
 
   function addBooking(opts: {
     typeId: string;
@@ -957,6 +1129,13 @@ export function generateSeed(anchorYear: number): SeedData {
     pets?: number;
     notes?: string | null;
     paidRatio?: number;
+    /**
+     * Sustituye la tirada del mostrador para esta reserva (0 = ya pasó por
+     * recepción, 1 = todavía no). Solo lo usa la banda del día, que planta lo
+     * que el sorteo no puede garantizar. El PRNG se consume igual, para no
+     * mover la secuencia de las demás.
+     */
+    recepcion?: number;
   }) {
     bkgN++;
     const id = `bkg_${String(bkgN).padStart(3, '0')}`;
@@ -1005,18 +1184,56 @@ export function generateSeed(anchorYear: number): SeedData {
     const gid = repite ? repite.id : addGuest(locale, opts.from, opts.to);
     if (repite) repite.stays.push([opts.from, opts.to]);
     booking_guests.push({ booking_id: id, guest_id: gid, is_lead: true });
-    // Check-in de demostración (ADR 0022): las confirmadas que están EN CASA en el
-    // ancla del seed (Y-07-15, el "hoy" del seed) ya hicieron check-in — salvo ~1
-    // de cada 5, que "solo tiene reserva, no ha llegado". Así el planning y el plano
-    // enseñan la mezcla "en casa / confirmada / entra hoy" sin un mock en el cliente.
-    // Puro: solo depende de anchorYear (el reset nocturno depende del determinismo).
-    const inHouseAtAnchor = opts.status === 'confirmed' && opts.from <= anchor && anchor < opts.to;
-    const checkedIn = inHouseAtAnchor && bkgN % 5 !== 0;
+    /**
+     * El mostrador (ADR 0022 + ADR 0030 §4). La tirada se consume SIEMPRE,
+     * incluso para las canceladas, por lo mismo que en `defaultPaidRatio`: si
+     * dependiera de la rama, movería la secuencia al mover el ancla.
+     *
+     * Solo se estampa sobre reservas que llegaron a existir de verdad —una
+     * cancelada o un no-show no pisan la recepción— y el estado se recalcula
+     * aquí para los dos casos del día: quien sale hoy sigue `confirmed` y en
+     * casa (es lo que hace aparecer el botón de check-out), y una parte de las
+     * salidas del día ya ha pasado por recepción esta mañana.
+     */
+    const recepSorteo = recepRand();
+    const recepR = opts.recepcion ?? recepSorteo;
+    const situacion =
+      opts.status === 'confirmed' || opts.status === 'completed'
+        ? situacionDe(opts.from, opts.to)
+        : 'futura';
+    let status = opts.status;
+    let checkedInAt: string | null = null;
+    let checkedOutAt: string | null = null;
+    if (situacion === 'pasada') {
+      // Hasta ADR 0030 el histórico no tenía ni check-in ni check-out: la ficha
+      // de cliente decía que aquel huésped nunca llegó a entrar.
+      status = 'completed';
+      checkedInAt = `${opts.from}${LLEGADA_H}`;
+      checkedOutAt = `${opts.to}${SALIDA_H}`;
+    } else if (situacion === 'sale_hoy') {
+      checkedInAt = `${opts.from}${LLEGADA_H}`;
+      if (recepR < 0.25) {
+        // madrugadores: ya han entregado la llave (el check_out real de la API
+        // sella `checked_out_at` Y completa la reserva — apps/api, admin.ts)
+        checkedOutAt = `${anchor}${SALIDA_H}`;
+        status = 'completed';
+      } else {
+        status = 'confirmed';
+      }
+    } else if (situacion === 'en_casa') {
+      // ~1 de cada 6 sigue sin registrar: recepción no siempre lo hace al entrar
+      if (recepR < 0.84) checkedInAt = `${opts.from}${LLEGADA_H}`;
+    } else if (situacion === 'llega_hoy') {
+      // La mayoría NO ha llegado aún: es lo que pone el botón "Registrar
+      // llegada" en la pantalla. Una parte ya está dentro, para que la lista de
+      // Llegadas enseñe también el estado "En casa".
+      if (recepR < 0.25) checkedInAt = `${anchor}T11:20:00.000Z`;
+    }
     bookings.push({
       id,
       tenant_id: T,
       code: `CS-${Y}-${String(bkgN).padStart(4, '0')}`,
-      status: opts.status,
+      status,
       channel: opts.channel ?? 'web',
       date_from: opts.from,
       date_to: opts.to,
@@ -1030,8 +1247,8 @@ export function generateSeed(anchorYear: number): SeedData {
       tourist_tax_cents: breakdown.touristTaxCents,
       deposit_cents: opts.typeId.startsWith('ut_bung') || opts.typeId === 'ut_mobil' ? 10000 : 0,
       notes: opts.notes ?? null,
-      checked_in_at: checkedIn ? `${anchor}T09:30:00.000Z` : null,
-      checked_out_at: null,
+      checked_in_at: checkedInAt,
+      checked_out_at: checkedOutAt,
       // Forma de pago de la operación para el parte de viajeros (ADR 0028): sembrada
       // rotando entre los cuatro medios; ~1 de cada 6 se deja sin fijar, para que la
       // pantalla del parte muestre el aviso "falta forma de pago" sin un mock.
@@ -1056,7 +1273,34 @@ export function generateSeed(anchorYear: number): SeedData {
     return id;
   }
 
-  // Casos límite explícitos
+  /**
+   * Ventana de siembra (ADR 0030 §3). Antes iba de mediados de abril a mediados
+   * de octubre y la mitad del calendario no tenía ni una reserva: la pantalla de
+   * la operación diaria salía vacía medio año.
+   *
+   * Desborda el año natural **dos meses y medio por cada lado**, y ese desborde
+   * es lo que evita que el ancla se quede pegada a un borde: el 1 de enero
+   * seguiría sin un solo día de pasado (`/informes` en blanco) y el 28 de
+   * diciembre sin futuro (el planning acabando en una pared). Son los meses más
+   * flojos del año, así que es el trozo de calendario más barato de sembrar.
+   *
+   * Esas colas caen fuera de la temporada declarada, así que `seasonFor` les da
+   * la apertura por defecto — que es justo la temporada que les tocaría. La
+   * contrapartida, asumida: para el motor esas fechas son "cerrado", de modo que
+   * la web pública diría "cerrado" en enero del año siguiente al del seed. A
+   * trece meses vista no lo mira nadie, y a cambio la tabla de tarifas —que sí
+   * se enseña— dice la verdad.
+   */
+  const SEED_FROM = `${Y - 1}-11-15`;
+  const SEED_TO = `${Y + 1}-02-15`;
+
+  // Casos límite explícitos.
+  //
+  // Los tres primeros se declaran `confirmed` y **dejan que el ancla decida** su
+  // estado (ADR 0030 §4): el estado no es el caso que ilustran —el cruce de
+  // temporada, la estancia larga, el grupo familiar—, así que escribirlo a mano
+  // solo garantizaba que fuera falso la mayor parte del año. Los dos que SÍ son
+  // su estado (cancelada, no-show) se conservan literales.
   addBooking({
     typeId: 'ut_bung6',
     from: `${Y}-06-25`,
@@ -1068,9 +1312,8 @@ export function generateSeed(anchorYear: number): SeedData {
     typeId: 'ut_std',
     from: `${Y}-05-02`,
     to: `${Y}-05-30`,
-    status: 'completed',
+    status: 'confirmed',
     occ: { adults: 2, childrenAges: [], pets: 1, vehicles: 1 },
-    paidRatio: 1,
     notes: 'Estancia larga 28 noches con mascota',
   });
   addBooking({
@@ -1097,11 +1340,23 @@ export function generateSeed(anchorYear: number): SeedData {
     paidRatio: 0.3,
     notes: 'No-show',
   });
+  // La reserva sin unidad es la que llena la bandeja "sin asignar" del planning
+  // (ADR 0023), o sea una TAREA PENDIENTE del mostrador. Clavada en agosto, once
+  // meses al año era historia: nadie asigna una unidad a una estancia que ya
+  // terminó. Se coloca relativa al ancla, sin salirse del año sembrado.
+  const sinAsignarFrom = (() => {
+    const tope = addDays(SEED_TO, -12);
+    const d = addDays(anchor, 20);
+    const f = d < tope ? d : tope;
+    // en la última quincena de diciembre el tope queda DETRÁS del ancla: entonces
+    // manda estar en el futuro, aunque la estancia asome al año siguiente.
+    return f > anchor ? f : addDays(anchor, 2);
+  })();
   addBooking({
     typeId: 'ut_bung4',
     unitIdx: null,
-    from: `${Y}-08-16`,
-    to: `${Y}-08-23`,
+    from: sinAsignarFrom,
+    to: addDays(sinAsignarFrom, 7),
     status: 'confirmed',
     notes: 'Sin unidad asignada — para probar asignación',
   });
@@ -1117,10 +1372,30 @@ export function generateSeed(anchorYear: number): SeedData {
   // no por comprobación — el cursor nunca retrocede. Es lo que permite subir al
   // ~93% de agosto sin pelearse con el generador.
 
-  /** Ocupación objetivo por fecha: la FORMA de la temporada es el argumento de venta. */
+  /**
+   * Ocupación objetivo por MES: la FORMA de la temporada es el argumento de
+   * venta. Desde ADR 0030 el relleno cubre el año entero, así que los meses de
+   * invierno dejan de caer en un `else` y se declaran: un camping de la costa de
+   * Castellón abierto todo el año hace un 18-22% en enero, no un cero.
+   */
+  const OCUPACION_MES = [
+    0.18, // ene
+    0.18, // feb
+    0.22, // mar
+    0.22, // abr
+    0.26, // may
+    0.45, // jun
+    0.75, // jul
+    0.93, // ago
+    0.45, // sep
+    0.22, // oct
+    0.18, // nov
+    0.22, // dic — el puente y la Navidad levantan un poco el mes
+  ] as const;
+
   function targetOccupancy(date: string): number {
     const month = Number(date.slice(5, 7));
-    const base = month === 8 ? 0.93 : month === 7 ? 0.75 : month === 6 || month === 9 ? 0.45 : 0.2;
+    const base = OCUPACION_MES[month - 1]!;
     // Sesgo de fin de semana SOLO fuera de temporada alta: en agosto está lleno
     // igual, y en mayo/junio las llegadas se agolpan en viernes y sábado. Es lo
     // que hace que un profesional reconozca sus propios datos.
@@ -1155,11 +1430,13 @@ export function generateSeed(anchorYear: number): SeedData {
     const r = rand();
     if (month === 8) return r < 0.45 ? 7 : r < 0.75 ? 14 : r < 0.9 ? 10 : 4;
     if (month === 7) return r < 0.5 ? 7 : r < 0.85 ? 5 : 10;
+    // Invierno (nov-mar): la mezcla de un camping de costa abierto todo el año.
+    // El fin de semana corto de siempre CONVIVE con el invernante que se planta
+    // meses. Sin la parte larga no hay ocupación que enseñar; sin la corta no
+    // hay llegadas ningún día, que es justo el defecto que arregla ADR 0030.
+    if (month <= 3 || month >= 11) return r < 0.45 ? 3 : r < 0.78 ? 7 : r < 0.93 ? 14 : 45;
     return r < 0.55 ? 2 : r < 0.85 ? 3 : 5;
   }
-
-  const SEASON_FROM = `${Y}-04-15`;
-  const SEASON_TO = `${Y}-10-15`;
 
   /** Rangos bloqueados por unidad — el relleno debe respetarlos (averías, larga estancia). */
   const blockedByUnit = new Map<string, [string, string][]>();
@@ -1181,9 +1458,9 @@ export function generateSeed(anchorYear: number): SeedData {
     const blocks = [...(blockedByUnit.get(uid) ?? []), ...(occupied.get(uid) ?? [])].sort((a, b) =>
       a[0] < b[0] ? -1 : 1,
     );
-    let cursor = SEASON_FROM;
+    let cursor = SEED_FROM;
 
-    while (cursor < SEASON_TO) {
+    while (cursor < SEED_TO) {
       // La duración se sortea ANTES de decidir: la probabilidad de arranque
       // depende de cuántas noches va a ocupar esta estancia concreta.
       const nights = pickNights(cursor);
@@ -1192,7 +1469,7 @@ export function generateSeed(anchorYear: number): SeedData {
         continue;
       }
       const to = addDays(cursor, nights);
-      if (to > SEASON_TO) break;
+      if (to > SEED_TO) break;
 
       // No pisar un bloqueo (avería o larga estancia): saltar al final del que estorbe.
       const clash = blocks.find(([bf, bt]) => cursor < bt && bf < to);
@@ -1201,17 +1478,22 @@ export function generateSeed(anchorYear: number): SeedData {
         continue;
       }
 
-      // Estado coherente con la línea temporal del ancla (Y-07-15 = "hoy" del seed):
-      // lo terminado está completado, lo que está en curso o por venir, confirmado.
-      // Un ~9% de las futuras quedan pendientes de pago, y un ~3% se cancela —
-      // la cancelada NO ocupa, así que deja un hueco real en el planning.
-      let status: string;
-      if (to <= anchor) status = 'completed';
-      else if (cursor <= anchor) status = 'confirmed';
-      else {
-        const r = rand();
-        status = r < 0.09 ? 'pending' : r < 0.12 ? 'cancelled' : 'confirmed';
-      }
+      // La coherencia con la línea temporal la resuelve `addBooking` a partir del
+      // ancla (ADR 0030 §4) — aquí solo se decide lo que el ancla NO puede saber:
+      // que un ~9% de las futuras se queda pendiente de pago y un ~3% se cancela.
+      // La cancelada NO ocupa, así que deja un hueco real en el planning.
+      // La tirada se consume SIEMPRE aunque solo se use en el futuro: si
+      // dependiera del ancla, mover un día el "hoy" desplazaría el PRNG y con él
+      // TODA la temporada que viene detrás (ADR 0030 §2).
+      const rEstado = rand();
+      const status =
+        cursor > anchor
+          ? rEstado < 0.09
+            ? 'pending'
+            : rEstado < 0.12
+              ? 'cancelled'
+              : 'confirmed'
+          : 'confirmed';
 
       const adults = 2 + Math.floor(rand() * 3);
       const nChildren = rand() < 0.45 ? 1 + Math.floor(rand() * 2) : 0;
@@ -1235,6 +1517,72 @@ export function generateSeed(anchorYear: number): SeedData {
       cursor = addDays(to, g < 0.22 ? 1 : g < 0.3 ? 2 : 0);
     }
   }
+
+  // --- La banda del día: lo que el sorteo no puede garantizar ------------------
+  //
+  // Con el ancla móvil, "hoy" cae siempre dentro de la temporada sembrada, pero
+  // dentro no es lo mismo que encima: el 15 de enero, con el camping al 18 %, el
+  // relleno dejaba UNA salida en todo el día, y esa una estaba entre el 25 % que
+  // ya había entregado la llave → el botón de check-out volvía a no existir. Un
+  // día concreto es una tirada, no una propiedad.
+  //
+  // Así que la mezcla que la pantalla de la operación diaria TIENE que enseñar
+  // se planta, como los quince casos de la bandeja de solicitudes (sesión 55) y
+  // como los casos límite de arriba: dos salidas con el gesto disponible, una
+  // que ya se fue esta mañana, dos llegadas por registrar, una ya registrada.
+  //
+  // Va DESPUÉS del relleno a propósito: si fuera antes, sus fechas —que dependen
+  // del ancla— empujarían el cursor del recorrido por unidad y con él la
+  // temporada entera, y la demo dejaría de ser la misma todos los días del año.
+  const BANDA_HOY: { desde: number; hasta: number; recepcion: number; nota: string }[] = [
+    { desde: -5, hasta: 0, recepcion: 0.9, nota: 'Salida de hoy — pendiente de check-out' },
+    { desde: -9, hasta: 0, recepcion: 0.9, nota: 'Salida de hoy — pendiente de check-out' },
+    { desde: -3, hasta: 0, recepcion: 0.1, nota: 'Salida de hoy — ya entregó la llave' },
+    { desde: 0, hasta: 4, recepcion: 0.9, nota: 'Llegada de hoy — pendiente de registrar' },
+    { desde: 0, hasta: 7, recepcion: 0.9, nota: 'Llegada de hoy — pendiente de registrar' },
+    { desde: 0, hasta: 3, recepcion: 0.1, nota: 'Llegada de hoy — ya registrada' },
+  ];
+  /** Primera unidad libre en el rango, empezando por un punto rotatorio del parque. */
+  function unidadLibre(from: string, to: string, arranque: number): Row | null {
+    for (let k = 0; k < units.length; k++) {
+      const u = units[(arranque + k) % units.length]!;
+      const uid = u.id as string;
+      const ocupada = (occupied.get(uid) ?? []).some(([f, t]) => from < t && f < to);
+      const bloqueada = (blockedByUnit.get(uid) ?? []).some(([f, t]) => from < t && f < to);
+      if (!ocupada && !bloqueada) return u;
+    }
+    return null;
+  }
+  BANDA_HOY.forEach((caso, i) => {
+    // El arranque separa las seis por el parque: seis filas seguidas de A-01 a
+    // A-06 se leerían como generadas incluso siendo correctas.
+    const arranque = i * 17 + 3;
+    // Un hueco de nueve noches seguidas puede sencillamente no existir —en junio
+    // el parque va al 45 % pero con estancias de tres noches, así que está
+    // troceado, y en agosto va al 93 %—. Antes que renunciar a la unidad, se
+    // ACORTA la estancia: lo que la pantalla necesita es la fecha del día, no la
+    // duración. Solo si no cabe ni la más corta se queda sin asignar.
+    let from = addDays(anchor, caso.desde);
+    let to = addDays(anchor, caso.hasta);
+    let unidad: Row | null = null;
+    for (let recorte = 0; recorte <= Math.abs(caso.hasta - caso.desde) - 2; recorte++) {
+      from = addDays(anchor, caso.desde < 0 ? caso.desde + recorte : caso.desde);
+      to = addDays(anchor, caso.hasta > 0 ? caso.hasta - recorte : caso.hasta);
+      unidad = unidadLibre(from, to, arranque);
+      if (unidad) break;
+    }
+    addBooking({
+      typeId: (unidad?.unit_type_id as string) ?? 'ut_std',
+      unitId: unidad ? (unidad.id as string) : undefined,
+      unitIdx: unidad ? undefined : null,
+      from,
+      to,
+      status: 'confirmed',
+      channel: i % 3 === 2 ? 'phone' : 'web',
+      recepcion: caso.recepcion,
+      notes: caso.nota,
+    });
+  });
 
   // --- 15 solicitudes en todos los estados ---
   //

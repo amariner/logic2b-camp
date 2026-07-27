@@ -41,9 +41,17 @@ export const DELETE_ORDER = [
   'tenants',
 ];
 
+/**
+ * El "hoy" de la demo. Se lee AQUÍ y no dentro de `generateSeed`, que sigue
+ * siendo puro: el reset es determinista dado su ancla, y eso es lo que permite
+ * testearlo (ADR 0030 §1). El cron corre a las 03:00 UTC, así que la fecha UTC
+ * y la de Europe/Madrid coinciden.
+ */
+export const hoyIso = () => new Date().toISOString().slice(0, 10);
+
 /** Puro: construye las sentencias sin tocar ninguna base — testeable sin D1. */
-export function buildResetStatements(anchorYear: number): string[] {
-  const inserts = seedToSql(generateSeed(anchorYear))
+export function buildResetStatements(anchor: string): string[] {
+  const inserts = seedToSql(generateSeed(anchor))
     .split('\n')
     .filter((line) => line.startsWith('INSERT INTO'));
   const deletes = DELETE_ORDER.map((table) => `DELETE FROM ${table};`);
@@ -54,10 +62,7 @@ export function buildResetStatements(anchorYear: number): string[] {
  * Ejecuta el wipe + reseed en un único `db.batch()` — D1 lo trata como una
  * transacción: todo o nada. Un reset a medias sería peor que no resetear.
  */
-export async function resetDemoData(
-  db: D1Database,
-  anchorYear = new Date().getUTCFullYear(),
-): Promise<void> {
-  const statements = buildResetStatements(anchorYear);
+export async function resetDemoData(db: D1Database, anchor = hoyIso()): Promise<void> {
+  const statements = buildResetStatements(anchor);
   await db.batch(statements.map((sql) => db.prepare(sql)));
 }
