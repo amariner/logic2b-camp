@@ -3,7 +3,7 @@
  * Tiles de titular + ocupación por tipo como medidor de un solo tono (magnitud):
  * el color es primary, el texto SIEMPRE en foreground, la estructura recesiva.
  */
-import { Button, Skeleton } from '@logic-camp/ui';
+import { Button, Card, CardDescription, CardHeader, CardTitle, Skeleton } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, type Catalog, type ReportsData } from '../api';
@@ -43,13 +43,17 @@ function rangos(): { id: string; label: string; from: string; to: string }[] {
 
 function Tile({ titulo, valor, detalle }: { titulo: string; valor: string; detalle?: string }) {
   return (
-    <div className="rounded-(--lc-radius-lg) border border-border/60 px-4 py-3">
-      <p className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
-        {titulo}
-      </p>
-      <p className="tnum mt-0.5 text-[22px] leading-tight font-semibold">{valor}</p>
-      {detalle && <p className="tnum text-[12px] text-muted-foreground">{detalle}</p>}
-    </div>
+    <Card>
+      <CardHeader className="gap-0.5 px-4 py-3">
+        {/* min-h de 2 líneas: un titular largo (o su traducción) no hunde la cifra
+            respecto a las tarjetas vecinas — las cinco comparten línea base. */}
+        <CardDescription className="min-h-[2lh] text-[11px] leading-snug font-semibold tracking-[0.1em] uppercase">
+          {titulo}
+        </CardDescription>
+        <CardTitle className="tnum text-[22px] leading-tight">{valor}</CardTitle>
+        {detalle && <p className="tnum text-[12px] text-muted-foreground">{detalle}</p>}
+      </CardHeader>
+    </Card>
   );
 }
 
@@ -62,11 +66,15 @@ function InformesEsqueleto() {
     <div aria-busy="true" className="min-h-0 flex-1 overflow-hidden p-4">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         {Array.from({ length: 5 }, (_, i) => (
-          <div key={i} className="rounded-(--lc-radius-lg) border border-border/60 px-4 py-3">
-            <Skeleton className="h-2.5 w-20" />
-            <Skeleton className="mt-2 h-5 w-24" />
-            {i === 1 && <Skeleton className="mt-1.5 h-2.5 w-16" />}
-          </div>
+          <Card key={i}>
+            <CardHeader className="gap-0.5 px-4 py-3">
+              <div className="min-h-[2lh] text-[11px] leading-snug">
+                <Skeleton className="h-2.5 w-20" />
+              </div>
+              <Skeleton className="h-5 w-24" />
+              {i === 1 && <Skeleton className="mt-1 h-2.5 w-16" />}
+            </CardHeader>
+          </Card>
         ))}
       </div>
       <section className="mt-6 max-w-3xl">

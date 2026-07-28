@@ -18,6 +18,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   Skeleton,
   toast,
 } from '@logic-camp/ui';
@@ -27,19 +30,23 @@ import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
 
-/** Esqueleto con la forma real: dos bloques de tipo con su hilera de códigos. */
+/** Esqueleto con la forma real: dos fichas de tipo con su hilera de códigos. */
 function InventarioEsqueleto() {
   return (
-    <div aria-busy="true" className="p-4">
+    <div aria-busy="true" className="grid content-start gap-3 p-4 lg:grid-cols-2">
       {[0, 1].map((s) => (
-        <section key={s} className="mb-5">
-          <Skeleton className="mb-2 h-2.5 w-40" />
-          <div className="flex flex-wrap gap-1.5">
-            {Array.from({ length: s === 0 ? 12 : 8 }, (_, i) => (
-              <Skeleton key={i} className="h-7 w-14" />
-            ))}
-          </div>
-        </section>
+        <Card key={s}>
+          <CardHeader className="px-4 pt-3 pb-0">
+            <Skeleton className="mb-1 h-2.5 w-40" />
+          </CardHeader>
+          <CardContent className="px-4 pb-3">
+            <div className="flex flex-wrap gap-1.5">
+              {Array.from({ length: s === 0 ? 12 : 8 }, (_, i) => (
+                <Skeleton key={i} className="h-7 w-14" />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       ))}
     </div>
   );
@@ -92,72 +99,76 @@ export default function Inventario() {
       {isPending && <InventarioEsqueleto />}
       {isError && <QueryError error={error} onRetry={() => void refetch()} />}
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+      <div className="grid min-h-0 flex-1 content-start gap-3 overflow-y-auto p-4 lg:grid-cols-2">
         {data?.unitTypes.map((ut) => {
           const propias = units.filter((u) => u.unitTypeId === ut.id);
           if (!propias.length) return null;
           return (
-            <section key={ut.id} className="mb-5">
-              <h2 className="lc-panel-h">
-                {ut.nameI18n.es ?? ut.id} · {propias.length}
-              </h2>
-              <ul className="flex flex-wrap gap-1.5">
-                {propias.map((u) => {
-                  const activa = u.status === 'active';
-                  const chip = (
-                    <Button
-                      type="button"
-                      size="xs"
-                      variant={activa ? 'outline' : 'destructiveOutline'}
-                      disabled={cambiar.isPending}
-                      title={activa ? t('inv.darBaja') : t('inv.darAlta')}
-                      aria-pressed={!activa}
-                      className={activa ? 'tnum' : 'tnum bg-destructive/10 line-through'}
-                      onClick={
-                        activa
-                          ? undefined
-                          : () => cambiar.mutate({ id: u.id, code: u.code, status: 'active' })
-                      }
-                    >
-                      {u.code}
-                    </Button>
-                  );
+            <Card key={ut.id}>
+              <CardHeader className="px-4 pt-3 pb-0">
+                <h2 className="lc-panel-h">
+                  {ut.nameI18n.es ?? ut.id} · {propias.length}
+                </h2>
+              </CardHeader>
+              <CardContent className="px-4 pb-3">
+                <ul className="flex flex-wrap gap-1.5">
+                  {propias.map((u) => {
+                    const activa = u.status === 'active';
+                    const chip = (
+                      <Button
+                        type="button"
+                        size="xs"
+                        variant={activa ? 'outline' : 'destructiveOutline'}
+                        disabled={cambiar.isPending}
+                        title={activa ? t('inv.darBaja') : t('inv.darAlta')}
+                        aria-pressed={!activa}
+                        className={activa ? 'tnum' : 'tnum bg-destructive/10 line-through'}
+                        onClick={
+                          activa
+                            ? undefined
+                            : () => cambiar.mutate({ id: u.id, code: u.code, status: 'active' })
+                        }
+                      >
+                        {u.code}
+                      </Button>
+                    );
 
-                  return (
-                    <li key={u.id}>
-                      {activa ? (
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>{chip}</AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                {t('confirmar.unidad.titulo', { code: u.code })}
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                {t('confirmar.unidad.desc')}
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
-                              <AlertDialogAction
-                                variant="destructive"
-                                onClick={() =>
-                                  cambiar.mutate({ id: u.id, code: u.code, status: 'inactive' })
-                                }
-                              >
-                                {t('confirmar.unidad.ok')}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      ) : (
-                        chip
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
+                    return (
+                      <li key={u.id}>
+                        {activa ? (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>{chip}</AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  {t('confirmar.unidad.titulo', { code: u.code })}
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t('confirmar.unidad.desc')}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                                <AlertDialogAction
+                                  variant="destructive"
+                                  onClick={() =>
+                                    cambiar.mutate({ id: u.id, code: u.code, status: 'inactive' })
+                                  }
+                                >
+                                  {t('confirmar.unidad.ok')}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        ) : (
+                          chip
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </CardContent>
+            </Card>
           );
         })}
       </div>
