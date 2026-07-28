@@ -3,9 +3,11 @@
 > Reescrito al cerrar la sesión 58 (2026-07-28, **con Andreu**: deuda de deploy
 > 53–57 saldada —versión `9d85c8c5`—, B1 Informes + Inventario al DS —9/11— y,
 > en su segunda parte, el **Frente D documentado por mandato de Andreu**:
-> portfolio de 12 demos + landing de escalabilidad + maquetas Ads, ver
-> `docs/FRENTE-D-ESCAPARATE.md`). Cuando la próxima sesión termine,
-> **reescribe este fichero** con el prompt de la siguiente.
+> portfolio de 12 demos **de campings** + landing de escalabilidad + maquetas
+> Ads, ver `docs/FRENTE-D-ESCAPARATE.md` — con rectificación del mismo día:
+> **solo campings**; hoteles/casas rurales serán un **clon del proyecto**
+> cuando toque). Cuando la próxima sesión termine, **reescribe este fichero**
+> con el prompt de la siguiente.
 
 ---
 
@@ -89,14 +91,16 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
-- **Frente D entero (portfolio de 12 demos, landing v2, maquetas Ads)** —
-  documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58, mandato de Andreu),
-  pero **cuelga del ADR D0 con Andreu presente** porque toca el alcance §0
-  (rural/hostal/hotel además de campings), y su momento es "backend demo muy
-  avanzado". Lo único del tema que SÍ es de ahora: el candidato
+- **Frente D entero (portfolio de 12 demos de campings, landing v2, maquetas
+  Ads)** — documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58, mandato de
+  Andreu, **rectificado el mismo día: solo campings** — hoteles y casas
+  rurales serán un **clon del proyecto** cuando toque, nunca una ampliación de
+  este). Cuelga del **ADR D0 con Andreu presente** (nombres/temas, infra ×12,
+  presupuesto de fotos, honestidad de las maquetas) y su momento es "backend
+  demo muy avanzado". Lo único del tema que SÍ es de ahora: el candidato
   [4.x/web] del mostrador en el detalle (arriba), que es deuda de la demo
-  actual. Regla mientras tanto: el core no adquiere supuestos campistas
-  nuevos (donde el dominio dice "unidad", no escribir "parcela").
+  actual. Regla mientras tanto: seguir usando el vocabulario del glosario
+  (unidad/tipo), que es lo que abarata la parametrización del seed y el clon.
 - Verificar SES.Hospedajes real / secrets (opción B histórica).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).

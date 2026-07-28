@@ -5,6 +5,12 @@
 > portfolio de demos, las piezas de marketing y las decisiones que quedan
 > abiertas para su ADR. El resumen ejecutivo vive en `docs/ROADMAP.md` §Frente D.
 >
+> **Alcance, cerrado el mismo día**: **campings, y solo campings** — la primera
+> redacción de este documento incluía casas rurales, un hostal y un hotel, y
+> Andreu lo rectificó en la misma sesión. Los otros verticales (hoteles, casas
+> rurales) **serán un CLON del proyecto cuando llegue el momento**, no una
+> ampliación de este. Ver §1.1.
+>
 > **Cuándo se construye**: cuando el backend de la demo esté **muy avanzado**
 > (palabras de Andreu). No es trabajo de la próxima sesión: es la dirección de
 > producto que las próximas sesiones deben conocer y no contradecir. **Este
@@ -21,55 +27,59 @@ y es buena: motor real, pagos simulados, planning firma, reset nocturno. Pero
 una sola demo cuenta la historia de **un** camping. Lo que un prospecto no
 puede ver es justo lo que hace valioso el producto:
 
-- que el **mismo código** sirve a un micro-camping de 18 parcelas y a un
+- que el **mismo código** sirve a un micro-camping de 16 parcelas y a un
   resort de 300 unidades;
 - que **subir de nivel es cambiar config**, no comprar otro producto
   (`docs/TIERS.md`: cuatro niveles, cuatro flags);
-- que la marca de cada alojamiento es **suya** (tema, fotos, textos, dominio)
+- que la marca de cada camping es **suya** (tema, fotos, textos, dominio)
   y aún así el alta cuesta **una tarde** (`pnpm new:camping`);
-- que el modelo de dominio —se reserva un **tipo**, el establecimiento asigna
-  la **unidad**— no es una peculiaridad campista: es exactamente cómo funciona
-  una casa rural, un hostal o un hotel.
+- que "camping" no es un solo negocio: el familiar de interior, el resort de
+  costa, el de autocaravanas abierto todo el año y el surfero de 20 plazas
+  operan **distinto** — y el producto los viste a todos.
 
 **La decisión de producto (Andreu, 2026-07-28): construir un portfolio de 12
-demos** que enseñe esa escalera entera, con el objetivo comercial explícito de
-**dar sensación de escalabilidad y abarcar el máximo de clientes posibles**.
-El portfolio ES el argumento de venta: no un eslogan que dice "escala", sino
-doce webs vivas que lo demuestran clicando.
+demos de campings** que enseñe esa escalera entera, con el objetivo comercial
+explícito de **dar sensación de escalabilidad y abarcar el máximo de clientes
+posibles dentro del vertical**. El portfolio ES el argumento de venta: no un
+eslogan que dice "escala", sino doce webs vivas que lo demuestran clicando.
 
-### 1.1 · El matiz de alcance que esto introduce (y que hay que formalizar)
+### 1.1 · El alcance NO cambia: solo campings (y qué pasa con los demás verticales)
 
-`CLAUDE.md` y el Super Prompt §0 dicen hoy "**para campings, y solo
-campings**". Este frente lo matiza **por decisión del propietario del
-producto**: el portfolio incluye **casas rurales, un hostal y un hotel**. No
-es un capricho: el modelo de dominio ya generaliza (tipos de unidad ↔
-categorías de habitación; parcela ≠ alojamiento está resuelto desde el
-glosario; temporadas, tasa turística por persona/noche y fianza aplican igual
-en rural y hotelería). Lo que cambia es el **posicionamiento comercial**:
-de "SaaS de campings" a "SaaS de alojamiento turístico con el camping como
-especialidad de origen".
+Decisión de Andreu (2026-07-28, rectificando la primera redacción de este
+documento en la misma sesión): **Logic Camp sigue siendo "para campings, y
+solo campings"**, exactamente como dicen `CLAUDE.md` y el Super Prompt §0 —
+que quedan **intactos y verdaderos**.
 
-**Esto reabre una decisión cerrada de §0 y por tanto exige su momento formal**:
-el **ADR D0** (ver §7) debe recoger el cambio de alcance, y `CLAUDE.md` +
-`LOGIC-CAMP-Super-Prompt.md` se revisan **entonces**, no antes. Hasta ese ADR,
-la regla operativa para las sesiones es: **el core no adquiere ninguna
-dependencia conceptual campista nueva** (nada de asumir "parcela" donde el
-dominio dice "unidad"), pero tampoco se construye nada hotelero todavía.
+Hoteles y casas rurales **no entran en este producto ni en su portfolio**:
+cuando llegue el momento, **se clonará el proyecto** como producto hermano
+(el mismo patrón de casa que ya separa `ecom.logic2b.com` de este repo — un
+vertical, un producto). Lo que ese clon costará ya lo abarata la arquitectura
+actual por sí sola: instancias + config + una D1 por cliente + `custom/` por
+puntos de extensión.
+
+Dos consecuencias operativas para las sesiones de ahora:
+
+1. **El pitch no se diluye**: "software DE campings" le vende a un camping
+   mejor que "software de alojamientos". La landing, las demos y los anuncios
+   de muestra hablan SOLO de campings.
+2. **Higiene de dominio barata**: el glosario ya distingue unidad/tipo — 
+   mantenerlo limpio (no cablear supuestos que el glosario no impone) es lo
+   que mañana abarata el clon. No es un mandato nuevo: es seguir usando el
+   vocabulario de `docs/DOMAIN.md`.
 
 ---
 
-## 2 · El portfolio: 12 demos en tres escalones
+## 2 · El portfolio: 12 demos de campings en tres escalones
 
-Regla de composición que pidió Andreu, literal:
+Composición que pidió Andreu (2026-07-28, con la rectificación del mismo día:
+todo campings):
 
-- **Grupo A** — 4 demos "landing" de alojamientos **muy pequeños** (nivel 1,
-  Camp Web): 3 micro-campings de temas diversos + **1 casa rural**.
-- **Grupo B** — 4 demos de alojamientos **medianos con solo solicitud**
-  (nivel 2, Camp Solicitudes — petición **sin cobro**): 2 campings de estilos
-  distintos + **1 conjunto de casas rurales** + **1 hostal**.
-- **Grupo C** — 4 demos **grandes con reserva y pago** (nivel 3, Camp
-  Reservas): 2 campings de formas diversas + **1 gran hotel** + **1 complejo
-  de 5 casas rurales**.
+- **Grupo A** — 4 demos "landing" de campings **muy pequeños** (nivel 1,
+  Camp Web), de temas diversos propuestos por la sesión.
+- **Grupo B** — 4 demos de campings **medianos con solo solicitud**
+  (nivel 2, Camp Solicitudes — petición **sin cobro**), de estilos distintos.
+- **Grupo C** — 4 demos de campings **grandes con reserva y pago**
+  (nivel 3, Camp Reservas), de formas diversas.
 
 Los nombres, temas y perfiles siguientes son **propuesta de esta sesión**
 (Andreu delegó los temas: "de los que se te ocurran"); se validan en el ADR
@@ -89,7 +99,7 @@ de upgrade a nivel 2). Cuatro marcas, cuatro paletas, un solo código.
 | A1 | `olivar` | **Camping L'Olivar** | Micro-camping de secano entre olivos centenarios (interior, Maestrat) | 18 parcelas + 4 tiendas premontadas | Tierra, sombra de olivo, cal y esparto; agroturismo slow | El caso arquetípico del nivel 1: camping familiar que solo quiere "salir bonito en Google" y recibir peticiones por email |
 | A2 | `riuclar` | **Càmping Riu Clar** | Micro-camping fluvial de montaña (Prepirineo) | 24 parcelas | Río, chopos, piedra oscura, niebla de mañana | Otro héroe, otra luz, otra lengua de arranque (ca) — misma plantilla |
 | A3 | `duna` | **Camping La Duna** | Micro-camping surfero/vanlife junto a playa de levante | 20 plazas autocaravana + tienda | Duna, madera lavada por el sol, furgonetas; estética joven | Que el sistema de temas aguanta una marca radicalmente distinta (la antípoda del "crema+serif" y del SaaS azul) |
-| A4 | `elterrer` | **Masía El Terrer** | **Casa rural única** que se alquila entera | 1 casa · 8 plazas | Masía de piedra, interior, chimenea, viña | **El caso mínimo absoluto del modelo: 1 tipo × 1 unidad.** Si la web y el formulario funcionan aquí, el dominio no tiene nada campista cableado |
+| A4 | `delta` | **Camping El Delta** | Micro-camping de humedal (arrozales, observación de aves) | 16 parcelas | Arrozal, luz plana de delta, cañizo, bicicletas | El nivel 1 en su mínimo: 16 parcelas y un negocio estacional de temporada corta — si aquí sale a cuenta, sale a cuenta en todas partes |
 
 ### Grupo B — Nivel 2 · Camp Solicitudes (bandeja + dashboard lite, sin cobro)
 
@@ -103,30 +113,35 @@ quiere (aún) cobro online.
 |---|---|---|---|---|---|---|
 | B1 | `pinadamar` | **Camping Pinada del Mar** | Camping mediano costero | ~110 uds (parcelas + bungalows) | Pinada litoral, lona verde, arena compactada | La bandeja de solicitudes con volumen realista y estados vivos (nueva/contestada/convertida/perdida) |
 | B2 | `serralta` | **Camping Serralta** | Camping mediano de montaña/naturaleza | ~80 uds | Bosque húmedo, pizarra, hoguera | Mismo lite, otra marca; solicitudes en varios idiomas (mercado francés/alemán de rutas) |
-| B3 | `valldecases` | **Les Cases de la Vall** | **4 casas rurales** de un mismo pueblo gestionadas juntas | 4 casas (4 tipos × 1 ud) | Pueblo de interior, piedra y teja, huerto | Multi-unidad rural con petición: el calendario manual del lite gestionando cuatro casas distintas |
-| B4 | `laplaceta` | **Hostal La Placeta** | **Hostal de pueblo** | 14 habitaciones en 3 tipos | Plaza mayor, azulejo, balcón de forja | **Habitaciones como tipos de unidad**: el glosario (tipo→unidad) estirándose a hotelería pequeña sin tocar el core |
+| B3 | `vinyes` | **Camping Entre Vinyes** | Camping mediano agro/enoturismo entre viñedos | ~70 uds | Viña, cepa vieja, bodega, tierra calcárea | Un negocio de temporada distinta (vendimia = su agosto): las temporadas solapadas por prioridad del glosario, a la vista |
+| B4 | `tarongers` | **Camping Els Tarongers** | Camping mediano familiar entre naranjos (llanura de costa) | ~100 uds | Azahar, acequia, sombra de cítrico | El mediano familiar clásico de la costa: el comprador mayoritario del nivel 2 viéndose a sí mismo |
 
 ### Grupo C — Nivel 3 · Camp Reservas (motor real + pago online)
 
 Lo que este grupo debe demostrar: el producto **completo** a escala — motor de
 disponibilidad, funnel con hold de 15 min, pago (señal/completo, simulado en
 demo con el mismo criterio fake de siempre), dashboard entero con el planning
-firma. Y que "grande" tiene formas muy distintas.
+firma. Y que "camping grande" tiene **cuatro modelos de negocio distintos**,
+no cuatro decorados:
 
 | # | Slug propuesto | Nombre | Qué es | Tamaño | Tema visual | Qué demuestra específicamente |
 |---|---|---|---|---|---|---|
-| C1 | `mardefondo` | **Camping Resort Mar de Fondo** | Camping-resort grande costero | ~300 uds (parcelas, bungalows, glamping, mobil-homes) | Resort mediterráneo: piscina lagoon, palmeral, lona blanca | **El planning a plena escala** (300 uds × 90 días fluido — la cifra de la Fase 6) y el catálogo más ancho |
-| C2 | `carrasca` | **Camping La Carrasca** | Camping grande de interior/eco | ~150 uds | Encinar, cal, barro cocido, spa rural | Misma escala funcional con otra política (otra tasa turística regional, otra política de cancelación — todo config) |
-| C3 | `granmiramar` | **Gran Hotel Miramar** | **Hotel clásico de costa** | ~90 habitaciones en 5 categorías | Paseo marítimo años 20 renovado, latón y azul profundo | **El motor en hotelería**: categorías=tipos, asignación de habitación en recepción (reasignable sin cancelar — nuestra ventaja de dominio aplicada a hotel), pago completo |
-| C4 | `cincmases` | **Els Cinc Masos** | **Complejo de 5 casas rurales** con reserva y pago online | 5 casas (5 tipos × 1 ud) | Aldea recuperada, premium rural, piedra seca | Rural premium con cobro y fianza; el planning pequeño pero vivo — y el contraste directo con A4/B3: misma tipología, tres niveles distintos |
+| C1 | `mardefondo` | **Camping Resort Mar de Fondo** | Camping-resort premium costero | ~300 uds (parcelas, bungalows, glamping, mobil-homes) | Resort mediterráneo: piscina lagoon, palmeral, lona blanca | **El planning a plena escala** (300 uds × 90 días fluido — la cifra de la Fase 6) y el catálogo más ancho |
+| C2 | `carrasca` | **Camping La Carrasca** | Camping grande de interior/eco con spa | ~150 uds | Encinar, cal, barro cocido | Misma escala funcional con otra política (otra tasa turística regional, otra política de cancelación — todo config) |
+| C3 | `ballena` | **Camping La Ballena** | Camping grande familiar de animación (parque acuático) | ~250 uds | Toboganes, color, mascota; familias con niños | El gigante vacacional de rotación semanal: ocupación al límite, llegadas de sábado en bloque (los `arrival_days` del dominio, a la vista) |
+| C4 | `soldhivern` | **Camping Sol d'Hivern** | Camping de larga estancia abierto todo el año (invernantes, autocaravanas) | ~200 uds | Invierno suave, autocaravanas nórdicas, almendro en flor | El negocio que NO es agosto: estancias de 45+ noches, ocupación plana de invierno — justo la mezcla que ADR 0030 metió en el seed, hecha demo |
 
 ### 2.1 · Lo que el portfolio cuenta como conjunto (el guion comercial)
 
-La lectura vertical (A4 → B3 → C4: casa rural en los tres niveles) enseña la
-**escalera de precio** con el mismo tipo de negocio. La lectura horizontal
-(cuatro marcas por nivel) enseña **variedad visual sobre un solo código**. La
-lectura de esquina a esquina (L'Olivar de 18 parcelas → Mar de Fondo de 300)
-enseña **rango**. Ninguna de esas tres frases hay que decirla: se ve.
+La lectura vertical (A3 `duna` → B1 `pinadamar` → C1 `mardefondo`: camping de
+costa en los tres niveles) enseña la **escalera de precio** con el mismo tipo
+de negocio — el camino de upgrade que un cliente recorrería de verdad. La
+lectura horizontal (cuatro marcas por nivel) enseña **variedad visual sobre un
+solo código**. La lectura de esquina a esquina (El Delta de 16 parcelas → Mar
+de Fondo de 300) enseña **rango**. Y el grupo C entero enseña que "grande" son
+**cuatro negocios distintos** (premium, eco/interior, animación familiar,
+invernante todo-el-año), no cuatro fachadas. Ninguna de esas frases hay que
+decirla: se ve.
 
 Además, construir el portfolio **es** el test de estrés de la Fase 9: cada
 demo debe nacer con `pnpm new:camping` + config + contenido + seed. Si alguna
@@ -144,23 +159,20 @@ venta". La landing (raíz de `camp.logic2b.com`, marca Logic2B, Frente B3) hoy
 vende **un** producto con **una** demo. Piezas propuestas, de menor a mayor
 coste:
 
-1. **La galería del portfolio** ("Un motor, doce marcas"): rejilla de tarjetas
-   con captura + logo + una línea ("18 parcelas · web y solicitudes por
-   email") + enlace a la demo viva. Es la sección que convierte "escalable" de
-   adjetivo en evidencia. Mientras el portfolio no exista, la versión honesta
-   es Cala Sereno + los conmutadores actuales — la galería se abre cuando haya
-   ≥3 demos que enseñar (criterio: nunca prometer en la landing lo que no se
-   puede clicar).
-2. **La franja de cifras**: "1 código · N alojamientos · una D1 aislada por
+1. **La galería del portfolio** ("Un motor, doce campings"): rejilla de
+   tarjetas con captura + logo + una línea ("18 parcelas · web y solicitudes
+   por email") + enlace a la demo viva. Es la sección que convierte
+   "escalable" de adjetivo en evidencia. Mientras el portfolio no exista, la
+   versión honesta es Cala Sereno + los conmutadores actuales — la galería se
+   abre cuando haya ≥3 demos que enseñar (criterio: nunca prometer en la
+   landing lo que no se puede clicar).
+2. **La franja de cifras**: "1 código · N campings · una D1 aislada por
    cliente · alta en una tarde". Cifras que ya son verdad hoy y no dependen
    del portfolio.
 3. **La escalera de niveles como recorrido**, no como tabla: el visitante
-   elige "¿cuántas plazas tienes?" y la landing le señala su nivel y su demo
+   elige "¿cuántas parcelas tienes?" y la landing le señala su nivel y su demo
    más parecida (cuando exista). Barato en UI, muy vendedor, y reutiliza
    `TIERS.md` sin duplicarlo.
-4. **El bloque de dominio como diferencia**: "No solo campings: casas rurales,
-   hostales, hoteles" — SOLO publicable después del ADR D0 (cambio de alcance
-   formalizado) y con al menos una demo no-camping viva. Antes sería humo.
 
 Nota de coherencia con el Frente B: todo esto es evolución de B3 (misma app
 `apps/site`, misma marca, mismos tokens). No es una landing nueva.
@@ -248,8 +260,7 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
   (11/11), el ADR 0030 validado, y con la demo Cala Sereno estable sin deuda
   visual — es decir, el Frente D **no compite** con las sesiones inmediatas.
   Este documento existe para que mientras tanto **nada se construya en
-  contra** (p. ej., no cablear nada campista nuevo en el core) y para poderse
-  **enseñar ya** como visión.
+  contra** y para poderse **enseñar ya** como visión.
 - **La restricción de siempre manda**: ~6h/semana y "nada que multiplique el
   trabajo por número de clientes". Doce demos solo son viables si cada una es
   **config + contenido + seed** sobre el mismo código — que es a la vez la
@@ -261,8 +272,10 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
   con el pipeline ya probado en C5); los textos y temas son horas de las
   sesiones. El seed necesita **parametrización** (hoy `generateSeed` está
   escrito con la forma de Cala Sereno: curva de costa mediterránea, 8 tipos,
-  83 unidades — generalizarlo por tamaño/estacionalidad/tipología es LA pieza
-  técnica del frente).
+  83 unidades — generalizarlo por tamaño/estacionalidad/mezcla de tipos es LA
+  pieza técnica del frente; `soldhivern` con su curva plana de invierno y
+  `ballena` con sus sábados en bloque son justo los dos casos que la
+  parametrización tiene que poder expresar).
 - **Infra por demo**: cada demo es un tenant → una D1, un reset nocturno, un
   host. Doce D1s de demo caben de sobra en Cloudflare, pero el **esquema de
   hosts** (¿`{slug}.camp.logic2b.com`? ¿un Worker por demo como hoy, o uno
@@ -272,6 +285,9 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
   contenido).
 - **Fase 12 (Camp Motor) sigue intacta**: NO construir. Ninguna demo del
   portfolio la necesita.
+- **Hoteles y casas rurales: fuera** (decisión §1.1). Cuando llegue su
+  momento serán un **clon del proyecto**, con su propia marca y su propio
+  portfolio — nada de este frente los anticipa ni los menciona en la landing.
 
 ---
 
@@ -279,12 +295,12 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 
 | Fase | Nombre | Objetivo | Hecho cuando |
 |---|---|---|---|
-| **D0** | Decisiones de fondo (ADR, con Andreu) | Formalizar el cambio de alcance §0 (campings → alojamiento turístico), validar nombres/temas del portfolio, esquema de hosts e infra ×12, presupuesto de fotos, criterio de honestidad de las maquetas Ads | ADR `aceptado`; CLAUDE.md y Super Prompt §0 revisados en consecuencia |
-| **D1** | La fábrica de demos | `generateSeed` parametrizable (tamaño, tipología, estacionalidad, idioma); plantilla de contenido por tema; que `pnpm new:camping` + seed produzca una demo completa | Una demo nueva de prueba nace en una tarde medida, sin tocar `apps/` ni `packages/` |
-| **D2** | Grupo A (4 × nivel 1) | Las cuatro landings micro con formulario→email y histórico silencioso | Las 4 vivas con su marca, reset nocturno y `noindex`; Lighthouse ≥95 en las cuatro |
+| **D0** | Decisiones de fondo (ADR, con Andreu) | Validar nombres/temas del portfolio, esquema de hosts e infra ×12, presupuesto de fotos, criterio de honestidad de las maquetas Ads | ADR `aceptado` |
+| **D1** | La fábrica de demos | `generateSeed` parametrizable (tamaño, mezcla de tipos, estacionalidad, idioma); plantilla de contenido por tema; que `pnpm new:camping` + seed produzca una demo completa | Una demo nueva de prueba nace en una tarde medida, sin tocar `apps/` ni `packages/` |
+| **D2** | Grupo A (4 × nivel 1) | Las cuatro landings micro con formulario→email e histórico silencioso | Las 4 vivas con su marca, reset nocturno y `noindex`; Lighthouse ≥95 en las cuatro |
 | **D3** | Grupo B (4 × nivel 2) | Los cuatro medianos con bandeja de solicitudes sin cobro | Las 4 vivas; una solicitud enviada desde cada web cae en su bandeja y se gestiona |
 | **D4** | Grupo C (4 × nivel 3) | Los cuatro grandes con motor y pago (fake) | Las 4 vivas; una reserva completa en cada una aparece en su planning; Mar de Fondo mueve 300 uds fluido |
-| **D5** | Landing de venta v2 | Galería del portfolio, franja de cifras, recorrido por tamaño, bloque de dominio ampliado | Un visitante entiende el rango del producto sin leer un párrafo; todo lo que se promete se clica |
+| **D5** | Landing de venta v2 | Galería del portfolio, franja de cifras, recorrido por tamaño | Un visitante entiende el rango del producto sin leer un párrafo; todo lo que se promete se clica |
 | **D6** | Campañas de muestra | Creatividades display Google/Meta + búsqueda, con UTM fake, enlazadas al funnel de sus demos; sección "Campañas que reservan" + anexo en `DEMO-SCRIPT.md` | En una presentación se recorre anuncio → web → reserva sin salir del navegador |
 
 El orden D2→D3→D4 es el de la escalera (barato→caro), pero D5.2 (franja de
@@ -295,11 +311,12 @@ dependen del portfolio — decidir en D0 si se adelantan.
 
 ## 8 · Qué pueden hacer las sesiones de AHORA con este documento
 
-1. **No contradecirlo**: ninguna decisión nueva del core debe asumir
-   "camping" donde el dominio dice "unidad/alojamiento".
+1. **No contradecirlo**: seguir usando el vocabulario del glosario
+   (`docs/DOMAIN.md` — unidad/tipo), que es lo que mañana abarata tanto la
+   parametrización del seed como el clon de otros verticales.
 2. **El candidato cercano que sí es de ahora**: el mostrador dentro de la
    página de alojamiento (§5) — es deuda de la demo actual, no del frente.
 3. **Enseñarlo**: este fichero + `docs/TIERS.md` + la demo viva son hoy el
    pitch de escalabilidad mientras el portfolio no existe.
-4. **No empezar D1–D6 sin D0**: el frente entero cuelga de un ADR con Andreu
-   presente, porque toca §0.
+4. **No empezar D1–D6 sin D0**: nombres, infra y presupuesto de fotos se
+   cierran con Andreu presente.

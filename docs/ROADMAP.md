@@ -164,46 +164,53 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 > Aquí solo la tesis y el estado.
 >
 > **La tesis**: una demo no demuestra escalabilidad — doce sí. Un **portfolio
-> de 12 demos** en tres escalones de nivel (4 × nivel 1 micro con
+> de 12 demos de campings** en tres escalones de nivel (4 × nivel 1 micro con
 > formulario→email · 4 × nivel 2 medianos con solicitud sin cobro · 4 × nivel 3
-> grandes con motor y pago), que además de campings incluye **casas rurales, un
-> hostal y un hotel** — el objetivo comercial declarado es dar **sensación de
-> escalabilidad y abarcar el máximo de clientes posibles**. Completan el frente:
-> la **landing de venta v2** (galería del portfolio, franja de cifras, recorrido
-> por tamaño) y las **creatividades de campaña de muestra** (display Google/Meta
-> + búsqueda, maquetas fake con UTM que clican al funnel de su demo — el
-> argumento anti-OTA cerrado: canal propio + motor propio + campaña propia).
+> grandes con motor y pago), con el objetivo comercial declarado de dar
+> **sensación de escalabilidad y abarcar el máximo de clientes posibles dentro
+> del vertical**. Completan el frente: la **landing de venta v2** (galería del
+> portfolio, franja de cifras, recorrido por tamaño) y las **creatividades de
+> campaña de muestra** (display Google/Meta + búsqueda, maquetas fake con UTM
+> que clican al funnel de su demo — el argumento anti-OTA cerrado: canal propio
+> + motor propio + campaña propia).
 >
-> **⚠ Toca §0**: incluir rural/hostal/hotel matiza el "para campings, y solo
-> campings" de CLAUDE.md. Por eso el frente entero cuelga del **ADR D0 con
-> Andreu presente** (cambio de alcance, nombres/temas, infra ×12, presupuesto de
-> fotos, honestidad de las maquetas). **Nada de D1–D6 se empieza sin D0.**
+> **Alcance, cerrado el mismo día**: **solo campings** — el "para campings, y
+> solo campings" de CLAUDE.md queda intacto. Hoteles y casas rurales **serán un
+> CLON del proyecto cuando llegue el momento** (un vertical, un producto — el
+> mismo patrón que separa ecom de camp), no una ampliación de este. El frente
+> cuelga del **ADR D0 con Andreu presente** (nombres/temas, infra ×12,
+> presupuesto de fotos, honestidad de las maquetas). **Nada de D1–D6 se empieza
+> sin D0.**
 >
 > **Cuándo**: cuando el backend de la demo esté **muy avanzado** (palabras de
 > Andreu) — después de cerrar B1 (11/11), validar ADR 0030 y dejar Cala Sereno
 > sin deuda visual. Mientras tanto, las sesiones **no construyen nada en
-> contra** (el core no adquiere supuestos campistas nuevos) y el documento
-> sirve para **enseñar la visión ya**.
+> contra** (el vocabulario del glosario, unidad/tipo, se mantiene limpio) y el
+> documento sirve para **enseñar la visión ya**.
 
 | Fase   | Nombre                          | Objetivo                                                                                                          | Hecho cuando                                                                       |
 | ------ | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **D0** | Decisiones de fondo (ADR)       | Cambio de alcance §0, nombres/temas del portfolio, esquema de hosts e infra ×12, presupuesto fotos, honestidad Ads | ADR `aceptado`; CLAUDE.md y Super Prompt §0 revisados                              |
-| **D1** | La fábrica de demos             | `generateSeed` parametrizable (tamaño/tipología/estacionalidad) + plantillas de contenido por tema                 | Una demo nueva nace en una tarde medida, sin tocar `apps/` ni `packages/`          |
-| **D2** | Grupo A (4 × nivel 1)           | Landings micro: 3 campings + 1 casa rural, formulario→email, histórico silencioso                                  | Las 4 vivas con su marca, reset y `noindex`; Lighthouse ≥95                        |
-| **D3** | Grupo B (4 × nivel 2)           | Medianos con solicitud sin cobro: 2 campings + conjunto rural + hostal                                             | Una solicitud desde cada web cae en su bandeja y se gestiona                       |
-| **D4** | Grupo C (4 × nivel 3)           | Grandes con motor y pago fake: 2 campings + gran hotel + 5 casas rurales                                           | Una reserva completa en cada una llega a su planning; 300 uds fluido en el resort  |
-| **D5** | Landing de venta v2             | Galería del portfolio, franja de cifras, recorrido por tamaño, bloque de dominio ampliado                          | El rango del producto se entiende sin leer un párrafo; lo prometido se clica       |
+| **D0** | Decisiones de fondo (ADR)       | Nombres/temas del portfolio, esquema de hosts e infra ×12, presupuesto fotos, honestidad Ads                       | ADR `aceptado`                                                                     |
+| **D1** | La fábrica de demos             | `generateSeed` parametrizable (tamaño/mezcla de tipos/estacionalidad) + plantillas de contenido por tema           | Una demo nueva nace en una tarde medida, sin tocar `apps/` ni `packages/`          |
+| **D2** | Grupo A (4 × nivel 1)           | Landings de micro-campings (olivar, río, surf, delta), formulario→email, histórico silencioso                      | Las 4 vivas con su marca, reset y `noindex`; Lighthouse ≥95                        |
+| **D3** | Grupo B (4 × nivel 2)           | Campings medianos con solicitud sin cobro (costa, montaña, viñedo, naranjal)                                       | Una solicitud desde cada web cae en su bandeja y se gestiona                       |
+| **D4** | Grupo C (4 × nivel 3)           | Campings grandes con motor y pago fake (resort premium, interior/eco, animación familiar, invernante todo-el-año)  | Una reserva completa en cada una llega a su planning; 300 uds fluido en el resort  |
+| **D5** | Landing de venta v2             | Galería del portfolio, franja de cifras, recorrido por tamaño                                                      | El rango del producto se entiende sin leer un párrafo; lo prometido se clica       |
 | **D6** | Campañas de muestra (Ads)       | Creatividades display Google/Meta + búsqueda, UTM fake → funnel de su demo; sección "Campañas que reservan"        | Anuncio → web → reserva recorrido en una presentación sin salir del navegador      |
 
 **Estado del Frente D** (2026-07-28): **documentado, no empezado** — esperando
-su momento (backend demo muy avanzado) y el ADR D0. Deuda relacionada de la
-demo ACTUAL que no espera al frente: **el mostrador dentro de la página de
-alojamiento** (hoy el CTA del detalle devuelve a la home sin precargar el tipo
-— `AlojamientoDetalle.astro:57`; en BACKLOG, candidato cercano).
+su momento (backend demo muy avanzado) y el ADR D0. La primera redacción del
+mismo día incluía casas rurales, hostal y hotel; **Andreu lo rectificó en la
+misma sesión**: solo campings, y los otros verticales serán un clon del
+proyecto cuando toque. Deuda relacionada de la demo ACTUAL que no espera al
+frente: **el mostrador dentro de la página de alojamiento** (hoy el CTA del
+detalle devuelve a la home sin precargar el tipo —
+`AlojamientoDetalle.astro:57`; en BACKLOG, candidato cercano).
 
 ## Decisiones tomadas
 
-- 2026-07-28: **Frente D abierto** (portfolio de 12 demos + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. Documentado en `docs/FRENTE-D-ESCAPARATE.md`; **no se construye** hasta que el backend demo esté muy avanzado, y **nada empieza sin el ADR D0** (toca el alcance §0: el portfolio incluye casas rurales, hostal y hotel — de "solo campings" a "alojamiento turístico con el camping como origen").
+- 2026-07-28: **Frente D abierto** (portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. Documentado en `docs/FRENTE-D-ESCAPARATE.md`; **no se construye** hasta que el backend demo esté muy avanzado, y **nada empieza sin el ADR D0** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas).
+- 2026-07-28: **El alcance NO cambia: campings, y solo campings.** La primera redacción del Frente D incluía casas rurales, un hostal y un hotel; Andreu la rectificó en la misma sesión. **Hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto — el mismo patrón que separa ecom de camp), nunca una ampliación de este. `CLAUDE.md` y el Super Prompt §0 quedan intactos.
 - 2026-07-20: **Frente C abierto** (acabado visual + workflow + documentación), en paralelo a A y B. Prioridad visual en modo fake, con la regla dura de que "fake" se resuelve en el **seed**, nunca con mocks en el cliente. **B4 (documentación) se absorbe en C6.** Detalle en `docs/FRENTE-C-ACABADO.md`.
 - 2026-07-25: **`deploy-demo.yml` deja de duplicar el deploy y llama al script**. El workflow construía `apps/web` sin `BASE_PATH`, copiaba el dashboard a `apps/web/dist/admin` y desplegaba — pero desde el ADR 0016 el Worker sirve `apps/site/dist` (landing en la raíz + web en `/demo/` + dashboard en `/admin/`), que el workflow nunca construía: de haberse encendido habría desplegado un directorio inexistente o viejo. Ahora ejecuta `pnpm --filter @logic-camp/api deploy:demo`, el mismo comando del deploy manual, así que el bundle y las migraciones no pueden volver a desincronizarse. El guard `DEPLOY_DEMO_ENABLED` pasa a nivel de job (antes hacía `pnpm install` para nada en cada push) y se añade `workflow_dispatch`. **Verificado**: los 52 runs previos en `main` terminaron en verde con los tres pasos de deploy en `skipped` — el "deploy automático main→demo" **nunca ha desplegado nada**; el verde solo decía que el skip funcionaba.
 - 2026-07-19: **Deploy de la demo = MANUAL**, con un único comando `pnpm --filter @logic-camp/api deploy:demo` (ahora incluye `wrangler d1 migrations apply --remote` antes del deploy — el hueco que tumbó la demo el 2026-07-19). CI automático (GitHub Actions) **descartado a propósito**: la sesión OAuth de wrangler no puede crear un API Token (falta el scope `user:tokens`, verificado con 403/9109) y habría que pegar secrets en GitHub a mano. El workflow `deploy-demo.yml` sigue existiendo pero apagado (`DEPLOY_DEMO_ENABLED` sin poner). Si algún día se automatiza: crear token con `D1 Edit` + pegar secrets (el paso de migraciones ya lo trae el script).
