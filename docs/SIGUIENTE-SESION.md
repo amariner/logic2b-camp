@@ -1,9 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
 > Reescrito al cerrar la sesión 58 (2026-07-28, **con Andreu**: deuda de deploy
-> 53–57 saldada —versión `9d85c8c5`— y B1 Informes + Inventario al DS, 9/11).
-> Cuando la próxima sesión termine, **reescribe este fichero** con el prompt de
-> la siguiente.
+> 53–57 saldada —versión `9d85c8c5`—, B1 Informes + Inventario al DS —9/11— y,
+> en su segunda parte, el **Frente D documentado por mandato de Andreu**:
+> portfolio de 12 demos + landing de escalabilidad + maquetas Ads, ver
+> `docs/FRENTE-D-ESCAPARATE.md`). Cuando la próxima sesión termine,
+> **reescribe este fichero** con el prompt de la siguiente.
 
 ---
 
@@ -69,6 +71,13 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
   cabecera de Inventario explica no se ve nunca — y de paso se vería en
   planning y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el
   relleno ni los invariantes.
+- **[4.x/web] El mostrador dentro de la página de alojamiento** (nuevo, 58 —
+  observación de Andreu verificada en código): el CTA del detalle en nivel 3
+  (`AlojamientoDetalle.astro:57`) devuelve a la home (`#mostrador`) **sin
+  precargar el tipo** que el visitante miraba — justo donde se pierden
+  reservas. Montar el mostrador (o variante compacta) en el detalle
+  precargado con ese `unit_type`; conservar la degradación 1/2 → contacto.
+  Cliente-visible, sin API nueva: encaja de lleno en el criterio CONTINUA.
 - **[C4] La ficha de reserva en móvil**: `BookingPanel` es `w-[360px]
   shrink-0`; a 375px deja **15px** a la lista. Debería ser `Sheet` a pantalla
   completa bajo `md`. Afecta a todas las pantallas que abren ficha.
@@ -80,6 +89,14 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
+- **Frente D entero (portfolio de 12 demos, landing v2, maquetas Ads)** —
+  documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58, mandato de Andreu),
+  pero **cuelga del ADR D0 con Andreu presente** porque toca el alcance §0
+  (rural/hostal/hotel además de campings), y su momento es "backend demo muy
+  avanzado". Lo único del tema que SÍ es de ahora: el candidato
+  [4.x/web] del mostrador en el detalle (arriba), que es deuda de la demo
+  actual. Regla mientras tanto: el core no adquiere supuestos campistas
+  nuevos (donde el dominio dice "unidad", no escribir "parcela").
 - Verificar SES.Hospedajes real / secrets (opción B histórica).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
