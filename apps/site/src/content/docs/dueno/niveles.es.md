@@ -1,11 +1,11 @@
 ---
 title: 'Los cuatro niveles'
-description: 'Qué incluye cada nivel de Logic Camp y para qué camping está pensado cada uno.'
+description: 'Qué incluye cada nivel de Logic2B Campings y para qué camping está pensado cada uno.'
 lang: es
 orden: 1
 ---
 
-Logic Camp es **un solo producto con cuatro niveles**. No son cuatro programas distintos: es el mismo sistema con más o menos módulos encendidos.
+Logic2B Campings es **un solo producto con cuatro niveles**. No son cuatro programas distintos: es el mismo sistema con más o menos módulos encendidos.
 
 Eso tiene una consecuencia práctica que conviene entender antes de elegir: **subir de nivel no es cambiar de proveedor ni rehacer la web**. Es encender lo que estaba apagado.
 

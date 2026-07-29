@@ -15,6 +15,7 @@ export { Button, buttonVariants, type ButtonProps } from './components/button';
 export { Badge, badgeVariants, type BadgeProps } from './components/badge';
 export { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/card';
 export { LogoMark } from './components/logo-mark';
+export { Wordmark } from './components/wordmark';
 
 export { Skeleton, SkeletonText, SkeletonRows } from './components/skeleton';
 export { Spinner, EmptyState, ErrorState, type EmptyArt } from './components/states';

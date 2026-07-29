@@ -22,13 +22,40 @@ Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara a
 Navegación del DS de referencia: `Home · Docs · Components · Blocks · Charts · Create · Typeset`.
 Tagline: _"The Foundation for your Design System — for humans and coding agents alike. Open Source. Open Code."_
 
-## 2. Isotipo
+## 2. Logo — wordmark «Logic2B Campings», sin isotipo
+
+**Decisión de Andreu, sesión 59 (2026-07-29)**: el logo del producto es **solo
+texto**. El isotipo se retira del lockup; la referencia es el wordmark de
+`logic2b-norte`, que ya había hecho el mismo movimiento.
+
+- Componentes: `Wordmark` (`packages/ui/src/components/wordmark.tsx`) y su gemelo
+  `Wordmark.astro` (`apps/site`). **Comparten clases**; la tipografía y el color
+  viven en `packages/ui/theme.css` (`--font-wordmark`, `--logo-2b`), así que
+  cabecera, pie y login no pueden divergir.
+- Lockup: **Poppins**. «Logic» en **600** a plena tinta · «2B» en **800** sobre
+  `--logo-2b` (un punto por debajo de `--foreground`) · «Campings» en 600 sobre
+  `--muted-foreground`. `letter-spacing: .015em` → lockup geométrico.
+- El salto 600→800 **es** la marca: hacen falta las dos caras reales. Con
+  negrita sintética el «2B» sale sucio en hidpi.
+- De norte se replica la **relación** de color, no sus hex: allí `--text` arranca
+  más oscuro que el `--foreground` de este DS.
+- Tres variantes, porque el hueco del isotipo hay que ocuparlo: `full`
+  (Logic2B Campings) · `brand` (Logic2B) · `compact` (**2B**, para la sidebar
+  plegada de 56px, con `aria-label` completo).
+- Fuentes: dashboard vía `@fontsource/poppins/latin-600|latin-800` (**nunca**
+  `600.css`/`800.css`: arrastran todos los subsets, 180 kB de Devanagari para dos
+  palabras). Landing self-hosted en `/fonts/`, con el 800 subsetado a sus dos
+  glifos (824 B) — si cambia el texto del logo hay que regenerarlo:
+  `fonts.googleapis.com/css2?family=Poppins:wght@800&text=2B`.
+
+### El isotipo, que sigue existiendo para dos usos
 
 - Fichero: [`docs/brand/logo-mark.svg`](brand/logo-mark.svg) — capturado de `ui.logic2b.com/logo-mark.svg`.
 - Forma: un **trazo/pincelada fluida** continua, monocroma. `viewBox="0 0 523.83 536.87"`, un solo `<path>`.
 - Uso: `fill="currentColor"` — hereda el color del contexto (tinta sobre claro, hueso sobre oscuro). Nunca recolorear con un tercer color.
-- Favicon del DS: el propio `logo-mark.svg` (`<link rel="icon" href="/logo-mark.svg" type="image/svg+xml">`).
-- Falta por conseguir de Andreu/Logic2B: **logotipo completo** (isotipo + palabra "Logic2B") y versiones en color de marca si existen. Anotado en decisiones pendientes del ROADMAP.
+- **Sigue siendo el favicon** (`<link rel="icon" href="/logo-mark.svg">`): un wordmark no funciona a 32px.
+- **Sigue firmando el pie de la web del tenant** («powered by Logic2B»): ahí no es el logo del producto, es un crédito.
+- `apps/site/src/components/LogoMark.astro` queda **sin uso** pero conservado y anotado — como norte conserva `.logo-mark` por si se recupera la decisión.
 
 ## 3. Tipografía
 

@@ -1,13 +1,10 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 58 (2026-07-28, **con Andreu**: deuda de deploy
-> 53–57 saldada —versión `9d85c8c5`—, B1 Informes + Inventario al DS —9/11— y,
-> en su segunda parte, el **Frente D documentado por mandato de Andreu**:
-> portfolio de 12 demos **de campings** + landing de escalabilidad + maquetas
-> Ads, ver `docs/FRENTE-D-ESCAPARATE.md` — con rectificación del mismo día:
-> **solo campings**; hoteles/casas rurales serán un **clon del proyecto**
-> cuando toque). Cuando la próxima sesión termine, **reescribe este fichero**
-> con el prompt de la siguiente.
+> Reescrito al cerrar la sesión 59 (2026-07-29). Empezó autónoma con
+> **`[B1]` Parte y Ajustes → B1 CERRADO 11/11**, y a mitad Andreu pidió, como
+> **petición extraordinaria**, cambiar el logo a **«Logic2B Campings»** con la
+> tipografía y el estilo de `logic2b-norte` y **sin isotipo**. Cuando la próxima
+> sesión termine, **reescribe este fichero** con el prompt de la siguiente.
 
 ---
 
@@ -17,29 +14,28 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**Informes e Inventario al DS** (B1 en 9/11 — quedan Parte y Ajustes) y, antes,
-**la deuda de deploy de cinco sesiones saldada**: `camp.logic2b.com` corre la 57
-con el ancla móvil, y su reset contra D1 real tarda **1,2 s** (verificado
-pulsándolo — la mitad de la vigilancia de ADR 0030 §2 ya está despejada).
+**la adopción del DS en el dashboard (B1, 11/11)** y **el cambio de logo**.
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Comprobar que el cron de las 3:00 corrió** (la otra mitad de ADR 0030 §2).
-   No hacen falta credenciales: entrar como visitante
-   (`POST /api/demo/sign-in` contra `camp.logic2b.com`) y pedir
-   `/api/admin/reports?from=HOY&to=HOY+1` — si devuelve la ocupación del día es
-   que el reset nocturno re-ancló. Si NO corrió, la demo se queda con los datos
-   de la víspera y no avisa nadie: diagnosticarlo pasa a ser EL objetivo.
-2. **ADR 0030 sigue en `propuesto`** (la sesión 58 fue con Andreu pero eligió
-   deploy + B1; leerlo sigue pendiente). Reabre ADR 0013 §1: le toca a Andreu
-   pasarlo a `aceptado` o discutirlo. Los dos puntos que piden su opinión están
-   escritos allí: Cala Sereno abre todo el año (el estado "cerrado" deja de
-   verse en la web demo) y el seed crece a 3,4 MB.
+1. **La deuda de despliegue son ya DOS sesiones (58 y 59), y la 59 se ve.**
+   Hasta ahora la deuda era markup; ahora incluye **el logo de la landing y del
+   dashboard**, que es lo primero que ve un prospecto en `camp.logic2b.com`.
+   Un `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema, sin
+   datos. Es el primer paso natural de la próxima sesión **local** (necesita
+   credenciales de Cloudflare: si la sesión es autónoma, dejarlo anotado otra
+   vez y elegir otro objetivo).
+2. **ADR 0030 sigue en `propuesto`** y ya no queda nada que vigilar: sus dos
+   comprobaciones están hechas (reset a mano en 1,2 s en la 58; **cron de las
+   3:00 confirmado en la 59** — las reservas remotas traen el `createdAt` del
+   día). Le toca a Andreu pasarlo a `aceptado` o discutirlo. Los dos puntos que
+   piden su opinión están escritos allí: Cala Sereno abre todo el año y el seed
+   crece a 3,4 MB.
 
 ## Estado de la entrega
 
-**Sesión 58 en `main`** (push al cerrar). Desplegado en producción: hasta la 57
-(versión `9d85c8c5`, 2026-07-28).
+**Sesiones 58 y 59 en `main`** (push al cerrar). Desplegado en producción: hasta
+la 57 (versión `9d85c8c5`, 2026-07-28).
 
 ## ▶ Prompt para pegar
 
@@ -47,44 +43,38 @@ pulsándolo — la mitad de la vigilancia de ADR 0030 §2 ya está despejada).
 continúa con el desarrollo de este proyecto
 ```
 
-## Deuda de despliegue
-
-**Solo la sesión 58** (markup del dashboard: Informes + Inventario). Sin
-esquema, sin datos: un `pnpm --filter @logic-camp/api deploy:demo` normal
-cuando acumule compañía. Recordatorio general: el deploy es manual desde local
-y **lleva schema, no datos**; el reset nocturno re-siembra desde
-`generateSeed()` (código desplegado) con el ancla del día en que corre.
-
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[B1] Parte y Ajustes** (recomendado): las DOS últimas pantallas — con ellas
-  **B1 queda 11/11 y se cierra**. Son formulario y detalle, no tablas ni
-  rejillas: lo suyo es `Card`/`Input`/`Label` donde toque. Ajustes ya usa
-  `Input`/`Label`/`Switch` (le queda poco); Parte tiene además el campo de
-  fecha crudo anotado abajo. Y la regla de seis sesiones seguidas: **mirar la
-  pantalla antes de tocar el markup** — en Inventario (58) el encargo del
-  BACKLOG describía mal el trabajo real.
+- **[4.x/web] El mostrador dentro de la página de alojamiento** (recomendado —
+  el mejor candidato cliente-visible que queda): el CTA del detalle en nivel 3
+  (`AlojamientoDetalle.astro:57`) devuelve al visitante a la home
+  (`#mostrador`) **sin precargar el tipo** que estaba mirando — justo donde se
+  pierden reservas. Montar el mostrador (o una variante compacta) en el detalle,
+  precargado con ese `unit_type`; conservar la degradación de nivel 1/2 →
+  contacto. Sin API nueva. Observación de Andreu verificada en código (58).
 - **[seed] Los once "Aalto" seguidos de `/clientes`**: diagnóstico hecho y
   escrito dentro del test que pasa (biyección uniforme → cada apellido toca a
   `fichas/apellidos`; alargar el repertorio NO lo arregla, ya se alargó dos
-  veces). Hace falta cola larga de apellidos reales sin perder la unicidad de
-  la 54. Objetivo de verdad, no retoque.
-- **[seed] Una o dos unidades fuera de servicio** (nuevo, 58): el estado que la
-  cabecera de Inventario explica no se ve nunca — y de paso se vería en
-  planning y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el
-  relleno ni los invariantes.
-- **[4.x/web] El mostrador dentro de la página de alojamiento** (nuevo, 58 —
-  observación de Andreu verificada en código): el CTA del detalle en nivel 3
-  (`AlojamientoDetalle.astro:57`) devuelve a la home (`#mostrador`) **sin
-  precargar el tipo** que el visitante miraba — justo donde se pierden
-  reservas. Montar el mostrador (o variante compacta) en el detalle
-  precargado con ese `unit_type`; conservar la degradación 1/2 → contacto.
-  Cliente-visible, sin API nueva: encaja de lleno en el criterio CONTINUA.
+  veces). Hace falta cola larga de apellidos reales sin perder la unicidad de la
+  54. Objetivo de verdad, no retoque.
+- **[seed] Una o dos unidades fuera de servicio** (58): el estado que la
+  cabecera de Inventario explica no se ve nunca — y de paso se vería en planning
+  y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el relleno ni los
+  invariantes.
+- **[marca] Rematar el cambio de logo** (nuevo, 59): la **OG image** de la
+  landing sigue llevando el isotipo, así que al compartir el enlace se ve una
+  marca distinta de la de la cabecera. Regenerarla con el wordmark. El
+  **favicon** es decisión de Andreu, no de sesión autónoma (ver BACKLOG).
+- **[dashboard] El enlace muerto de la sidebar** (nuevo, 59): «Parte de
+  viajeros» es un muro de permisos para el visitante de la demo **y para
+  cualquier recepcionista real** — el muro es decisión aceptada (ADR 0029), pero
+  enseñar el enlace a quien nunca podrá abrirlo no lo es. Ocultarlo por rol, o
+  explicar «esto es de gerencia» desde el propio menú.
 - **[C4] La ficha de reserva en móvil**: `BookingPanel` es `w-[360px]
   shrink-0`; a 375px deja **15px** a la lista. Debería ser `Sheet` a pantalla
   completa bajo `md`. Afecta a todas las pantallas que abren ficha.
-- **[C1] Aviso inline del pendiente negativo** al mover una reserva pagada a un
-  precio menor (hoy la ficha lo enseña después; el diálogo de precio no).
+- **[B1] El último campo de fecha crudo**: queda `Planning.tsx` (Parte cayó en
+  la 59, Llegadas en la 56). Va además **sin nombre accesible**.
 - **[seed] `created_at` de las ~3 500 reservas es el ancla**: en `/reservas`
   ordenado por alta todas empatan. Derivarlo del canal (mostrador = el día de
   llegada; web = meses antes).
@@ -93,22 +83,40 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
 
 - **Frente D entero (portfolio de 12 demos de campings, landing v2, maquetas
   Ads)** — documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58, mandato de
-  Andreu, **rectificado el mismo día: solo campings** — hoteles y casas
-  rurales serán un **clon del proyecto** cuando toque, nunca una ampliación de
-  este). Cuelga del **ADR D0 con Andreu presente** (nombres/temas, infra ×12,
-  presupuesto de fotos, honestidad de las maquetas) y su momento es "backend
-  demo muy avanzado". Lo único del tema que SÍ es de ahora: el candidato
-  [4.x/web] del mostrador en el detalle (arriba), que es deuda de la demo
-  actual. Regla mientras tanto: seguir usando el vocabulario del glosario
-  (unidad/tipo), que es lo que abarata la parametrización del seed y el clon.
+  Andreu, **rectificado el mismo día: solo campings** — hoteles y casas rurales
+  serán un **clon del proyecto** cuando toque, nunca una ampliación de este).
+  Cuelga del **ADR D0 con Andreu presente** y su momento es "backend demo muy
+  avanzado". Lo único del tema que SÍ es de ahora: el candidato [4.x/web] del
+  mostrador en el detalle (arriba). Regla mientras tanto: seguir usando el
+  vocabulario del glosario (unidad/tipo), que es lo que abarata la
+  parametrización del seed y el clon.
+- **El favicon** (ver BACKLOG `[marca]`): cambiarlo o no es decisión de marca.
 - Verificar SES.Hospedajes real / secrets (opción B histórica).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de la sesión 58)
+## Trampas conocidas (heredadas + las nuevas de la sesión 59)
 
 - `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
   contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.
+- **NUEVA (59) — un `<form>` de más y el Intro guarda otra cosa.** La sumisión
+  implícita de un `<input>` va a **`input.form`**, no al botón más cercano: dos
+  bloques con botón propio dentro de un mismo `<form>` es un guardado silencioso
+  y equivocado. No lo ve ningún test de markup; se ve pulsando Intro y mirando
+  la petición. Al separarlos, **el toast también hay que separarlo**.
+- **NUEVA (59) — `@fontsource/<fuente>/<peso>.css` arrastra TODOS los subsets.**
+  Metió 180 kB de Poppins Devanagari para pintar dos palabras. Se importa
+  `latin-<peso>.css`. Mirar el listado de assets de la build, que lo canta.
+- **NUEVA (59) — el panel del navegador de esta sesión no entregaba los clicks**
+  (`computer` con `ref` o con coordenadas correctas → `activeElement` seguía
+  siendo `BODY`, y `resize_window` reportaba 1366×800 mientras la captura salía
+  a otra escala). Para gestos reales y medidas fiables: **Playwright** contra el
+  Worker (`node_modules/.pnpm/playwright@*/node_modules/playwright/index.mjs` —
+  no hay `playwright` resoluble desde la raíz) y **medir el DOM**, no la captura.
+- **La lección de las sesiones 53–59, ya siete veces**: un dato o un markup puede
+  ser **válido y falso a la vez** y ningún test de invariantes lo ve. **Hay que
+  mirar la pantalla, y luego escribir el test.** En la 59 lo que se veía bien
+  era el markup, y lo roto era el Intro.
 - **NUEVA (58) — el atajo del reset local de la 56 HA MUERTO.**
   `POST /api/demo/reset` contra el wrangler dev local **cuelga workerd** con el
   seed de 3,4 MB: 180 s sin contestar y el proceso deja de servir hasta
@@ -121,14 +129,12 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
 - **NUEVA (58) — navegar el dashboard cambiando el hash por URL o con
   `.click()` sintético deja DOS enlaces activos en la sidebar** (el
   `aria-current` viejo no se limpia; el contenido sí cambia). Con click real de
-  puntero, perfecto. Para verificar en navegador: refs de `read_page` y clicks
-  reales, o recargar tras navegar por URL — y no diagnosticar como defecto lo
-  que es el artefacto (está en BACKLOG como menor).
+  puntero, perfecto. Para verificar en navegador: clicks reales, o recargar tras
+  navegar por URL — y no diagnosticar como defecto lo que es el artefacto.
 - **NUEVA (58) — si la API de Cloudflare da timeout desde la máquina de Andreu,
   prueba `-4`/`-6` antes de culpar a wrangler**: el resolutor DNS de la red
   local tarda 200–300 ms por consulta y a ratos se atasca cuando se piden A y
-  AAAA a la vez (google va, Cloudflare no — parece caída y es DNS). Es
-  intermitente: reintentar en ventana buena.
+  AAAA a la vez (google va, Cloudflare no — parece caída y es DNS).
 - **Un sorteo dentro de un `if` no es un sorteo, es un desplazamiento** (57).
   Los cuatro PRNGs del seed se consumen **una vez por reserva y sin
   condiciones**; la propiedad que lo vigila: las doce anclas de 2026 producen
@@ -142,18 +148,21 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
   renunciar a la unidad.
 - **Un test verde puede describir mal lo que garantiza** (57): lo que NO
   garantiza, escrito dentro del test (ej.: los once "Aalto").
-- **La lección de las sesiones 53–58, ya seis veces**: un dato puede ser
-  **válido y falso a la vez** y ningún test de invariantes lo ve (…las 83
-  unidades todas en servicio). **Hay que mirar la pantalla, y luego escribir el
-  test.**
 - **En una lista de filas-`<button>`, ninguna columna `auto`** (55); si hay un
   botón de acción fuera del `<button>` de la fila, el hueco se reserva para
-  toda la lista o para ninguna (56).
+  toda la lista o para ninguna (56). Y si la fila ocupa todo el ancho, un
+  `justify-between` manda el control al otro extremo del lienzo (59: 810px).
+- **Cuando cabecera y fila comparten rejilla, la fila con borde arranca 1px
+  después** (59): la cabecera necesita `border border-transparent`, o las dos
+  columnas no coinciden.
 - **`@container` y su `@md:`/`@3xl:` no pueden ir en el MISMO elemento** (56).
   No falla ruidoso: la consulta no coincide nunca. El `@container` va en el
   padre.
 - **Una media query `lg:` mide la PANTALLA, y lo que estrecha una lista casi
   nunca es la pantalla** (56) — en `/llegadas` era la ficha de reserva.
+- **En una rejilla, dos fichas cortas y una alta no son tres celdas** (59): la
+  fila la estira la más alta y las cortas dejan hueco muerto. Las cortas se
+  apilan en UNA celda.
 - **Un test sobre un solo año comprueba una tirada, no una propiedad** (55), y
   desde la 57 tampoco basta un solo día: la muestra canónica está en
   `seed.test.ts` (`ANCLAS`).
@@ -179,27 +188,24 @@ y **lleva schema, no datos**; el reset nocturno re-siembra desde
   `apps/site/dist` → tras cada cambio, rebuild + copiar + **recarga real**
   (`window.location.reload()`; navegar a la misma URL con hash no recarga).
   `pnpm db:reset` mata el `wrangler dev` que esté corriendo: parar antes.
-- En el panel del navegador, `computer` con `coordinate` usa coordenadas del
-  **viewport**, no de la captura — para pulsar, los `ref_N` de `read_page`
-  (que caducan al navegar o recargar: releer). `left_click_drag` no dispara los
-  pointer events del planning: para gestos, Playwright. `resize_window` y la
-  captura se desincronizan tras recargar: re-fijar medidas o medir el DOM.
-- Cambiar el esquema de color en caliente deja el dashboard a medio repintar:
-  **recargar antes de juzgar un contraste**.
-- El **reset nocturno de la demo SÍ existe** (`tenants/demo/worker.ts`, cron
-  `0 3 * * *` → `resetDemoData`) y re-siembra desde `generateSeed()` con el
-  ancla del día: un cambio del seed llega a la demo con un deploy normal.
 - En Playwright, ir de `/admin/` a `/admin/#/…` no recarga → `await p.reload()`.
   El planning vive en `/`; con `?date=&unit=unt_…` la virtualización desplaza.
 - **`/api/*` va con rate limit de 60 req/min por IP** (`createRateLimiter`).
 - En el contenedor cloud, Playwright usa `/opt/pw-browsers/chromium` si existe
   (`CHROMIUM_PATH` manda). Segfault de workerd sobre `reset.test.ts` = solo
   contenedor cloud (57/57 local).
+- Cambiar el esquema de color en caliente deja el dashboard a medio repintar:
+  **recargar antes de juzgar un contraste**.
+- El **reset nocturno de la demo SÍ existe** (`tenants/demo/worker.ts`, cron
+  `0 3 * * *` → `resetDemoData`) y re-siembra desde `generateSeed()` con el
+  ancla del día: un cambio del seed llega a la demo con un deploy normal.
+  **Confirmado corriendo en producción el 2026-07-29** (sesión 59).
 - `seed.sql` gitignored; si el plano sale "automático" o falta `modules.*`:
   `pnpm db:reset && pnpm db:seed`.
 - Login del dashboard: para entrar como visitante, botón "Ver la demo" o
   `POST /api/demo/sign-in` (el reset/`db:reset` **cierra la sesión**: volver a
-  entrar). Con credenciales: gerencia@calasereno.example / calasereno. El
+  entrar). Con credenciales: gerencia@calasereno.example / calasereno — hace
+  falta ese rol para ver **Parte de viajeros** e Informes elevados. El
   formulario React no responde a eventos sintéticos por coordenadas: `ref_N`
   del árbol de accesibilidad o `fetch` a `/api/auth/sign-in/email`.
 - exports/ en .gitignore. Scripts de sesión nunca se commitean.

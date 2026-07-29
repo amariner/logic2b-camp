@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Logic Camp — la web y la recepción de tu camping, resueltas",
+    "title": "Logic2B Campings — la web y la recepción de tu camping, resueltas",
     "description": "Software para campings: web pública moderna, motor de reservas y gestor de recepción en un solo sistema. Alta en una tarde. De Logic2B, Castellón."
   },
   "nav": {
@@ -19,7 +19,7 @@
     "ctaDemo": "Pedir una demo",
     "ctaVer": "Ver la demo en vivo",
     "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar.",
-    "capturaWebAlt": "La web pública de un camping hecha con Logic Camp, con su buscador de disponibilidad"
+    "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
   "problema": {
     "titulo": "Lo que hoy te cuesta dinero cada agosto",
@@ -186,10 +186,10 @@
   },
   "docs": {
     "seo": {
-      "title": "Guías de Logic Camp — recepción, gestión, dueño y ficha técnica",
-      "description": "Cómo se usa Logic Camp: la guía de recepción paso a paso, la de gestión del día a día, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
+      "title": "Guías de Logic2B Campings — recepción, gestión, dueño y ficha técnica",
+      "description": "Cómo se usa Logic2B Campings: la guía de recepción paso a paso, la de gestión del día a día, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
     },
-    "titulo": "Guías de Logic Camp",
+    "titulo": "Guías de Logic2B Campings",
     "subtitulo": "Cuatro guías, cuatro personas distintas. Cada una escrita para quien la va a leer.",
     "indice": "En esta guía",
     "empezar": "Empezar",
@@ -214,7 +214,7 @@
       "dueno": {
         "nombre": "Guía del dueño",
         "para": "Para quien decide",
-        "texto": "Los cuatro niveles de Logic Camp explicados como una escalera: qué incluye cada uno, qué cambia exactamente cuando subes, y qué tienes que aportar tú."
+        "texto": "Los cuatro niveles de Logic2B Campings explicados como una escalera: qué incluye cada uno, qué cambia exactamente cuando subes, y qué tienes que aportar tú."
       },
       "tecnica": {
         "nombre": "Ficha técnica",

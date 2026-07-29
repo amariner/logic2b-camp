@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Logic Camp — le site web et la réception de votre camping, résolus",
+    "title": "Logic2B Campings — le site web et la réception de votre camping, résolus",
     "description": "Logiciel pour campings : site web public moderne, moteur de réservation et gestion de réception dans un seul système. En ligne en un après-midi. Par Logic2B, Espagne."
   },
   "nav": {
@@ -19,7 +19,7 @@
     "ctaDemo": "Demander une démo",
     "ctaVer": "Voir la démo en direct",
     "nota": "Mise en ligne d'un nouveau camping en un après-midi. Sans engagement pour commencer.",
-    "capturaWebAlt": "Le site public d'un camping créé avec Logic Camp, avec sa recherche de disponibilités"
+    "capturaWebAlt": "Le site public d'un camping créé avec Logic2B Campings, avec sa recherche de disponibilités"
   },
   "problema": {
     "titulo": "Ce qui vous coûte de l'argent chaque mois d'août",
@@ -186,10 +186,10 @@
   },
   "docs": {
     "seo": {
-      "title": "Guides de Logic Camp — réception, gestion, propriétaire et fiche technique",
-      "description": "Comment on utilise Logic Camp : le guide de réception pas à pas, celui de la gestion au quotidien, le guide du propriétaire avec les quatre niveaux, et la fiche technique pour votre informaticien."
+      "title": "Guides de Logic2B Campings — réception, gestion, propriétaire et fiche technique",
+      "description": "Comment on utilise Logic2B Campings : le guide de réception pas à pas, celui de la gestion au quotidien, le guide du propriétaire avec les quatre niveaux, et la fiche technique pour votre informaticien."
     },
-    "titulo": "Guides de Logic Camp",
+    "titulo": "Guides de Logic2B Campings",
     "subtitulo": "Quatre guides, quatre personnes différentes. Chacun écrit pour celui ou celle qui va le lire.",
     "indice": "Dans ce guide",
     "empezar": "Commencer",
@@ -214,7 +214,7 @@
       "dueno": {
         "nombre": "Guide du propriétaire",
         "para": "Pour la personne qui décide",
-        "texto": "Les quatre niveaux de Logic Camp expliqués comme une échelle : ce que chacun inclut, ce qui change exactement quand vous montez, et ce que vous devez apporter."
+        "texto": "Les quatre niveaux de Logic2B Campings expliqués comme une échelle : ce que chacun inclut, ce qui change exactement quand vous montez, et ce que vous devez apporter."
       },
       "tecnica": {
         "nombre": "Fiche technique",

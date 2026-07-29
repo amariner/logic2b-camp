@@ -64,6 +64,15 @@
   --font-heading: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk Variable', 'Inter Variable', ui-sans-serif, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Tipo del wordmark: Poppins, como en logic2b-norte. NO es --font-display:
+   * el lockup de marca es lo único que la usa, y mezclar las dos caras en la
+   * misma variable acabaría metiendo Poppins en titulares. */
+  --font-wordmark: 'Poppins', var(--font-display);
+
+  /* «2B» del wordmark: un punto por debajo de --foreground, no gris de cuerpo.
+   * Réplica de la relación de norte (--text #08090a vs --logo-2b #2a2c30), no
+   * de su valor: allí el texto arranca más oscuro que aquí. */
+  --logo-2b: oklch(28% 0 0);
 }
 
 .dark {
@@ -106,6 +115,9 @@
   --sidebar-accent-foreground: oklch(98.5% 0 0);
   --sidebar-border: oklch(100% 0 0 / 0.1);
   --sidebar-ring: oklch(55.6% 0 0);
+
+  /* En oscuro el «2B» baja desde --foreground (98,5%), no sube. */
+  --logo-2b: oklch(94% 0 0);
 }
 
 /* ---------- estado de reserva → color (ADR 0020 §2.2) ----------
@@ -254,7 +266,10 @@
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
   --font-display: var(--font-display);
+  --font-wordmark: var(--font-wordmark);
   --font-mono: var(--font-mono);
+
+  --color-logo-2b: var(--logo-2b);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

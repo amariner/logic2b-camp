@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Logic Camp — your campsite's website and front desk, solved",
+    "title": "Logic2B Campings — your campsite's website and front desk, solved",
     "description": "Software for campsites: a modern public website, a real booking engine and a front-desk manager in one system. Live in an afternoon. By Logic2B, Spain."
   },
   "nav": {
@@ -19,7 +19,7 @@
     "ctaDemo": "Request a demo",
     "ctaVer": "See the live demo",
     "nota": "A new campsite goes live in an afternoon. No lock-in to start.",
-    "capturaWebAlt": "A campsite's public website built with Logic Camp, with its availability search"
+    "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
   },
   "problema": {
     "titulo": "What's costing you money every August",
@@ -186,10 +186,10 @@
   },
   "docs": {
     "seo": {
-      "title": "Logic Camp guides — front desk, management, owner and technical sheet",
-      "description": "How Logic Camp is used: the step-by-step front desk guide, the day-to-day management guide, the owner's guide to the four plans, and the technical sheet for your IT person."
+      "title": "Logic2B Campings guides — front desk, management, owner and technical sheet",
+      "description": "How Logic2B Campings is used: the step-by-step front desk guide, the day-to-day management guide, the owner's guide to the four plans, and the technical sheet for your IT person."
     },
-    "titulo": "Logic Camp guides",
+    "titulo": "Logic2B Campings guides",
     "subtitulo": "Four guides, four different people. Each one written for whoever will actually read it.",
     "indice": "In this guide",
     "empezar": "Start",
@@ -214,7 +214,7 @@
       "dueno": {
         "nombre": "Owner's guide",
         "para": "For whoever decides",
-        "texto": "The four Logic Camp plans explained as a ladder: what each one includes, what exactly changes when you move up, and what you need to provide."
+        "texto": "The four Logic2B Campings plans explained as a ladder: what each one includes, what exactly changes when you move up, and what you need to provide."
       },
       "tecnica": {
         "nombre": "Technical sheet",

@@ -9,7 +9,7 @@ Esta guía está escrita para quien lleva la informática del camping y quiere s
 
 ## En una frase
 
-Logic Camp es una aplicación **serverless en el borde de Cloudflare**: web estática + API en Workers + una base de datos **SQLite (D1) por cliente**. No hay servidores que administrar, ni sistema operativo que parchear, ni base de datos compartida.
+Logic2B Campings es una aplicación **serverless en el borde de Cloudflare**: web estática + API en Workers + una base de datos **SQLite (D1) por cliente**. No hay servidores que administrar, ni sistema operativo que parchear, ni base de datos compartida.
 
 ## Las piezas
 

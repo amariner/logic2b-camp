@@ -5,7 +5,7 @@
  * shadcn neutro, isotipo + wordmark como en el shell — no la paleta mediterránea
  * de la web pública del tenant.
  */
-import { Button, Card, CardContent, Input, Label, LogoMark, Spinner } from '@logic-camp/ui';
+import { Button, Card, CardContent, Input, Label, Spinner, Wordmark } from '@logic-camp/ui';
 import { useState } from 'react';
 import { useDemoDisponible, useEntrarDemo, useSignIn } from '../auth';
 import { t } from '../i18n';
@@ -21,10 +21,7 @@ export default function Login() {
     <main className="flex min-h-screen items-center justify-center bg-muted/30 px-5 py-10">
       <div className="flex w-full max-w-sm flex-col gap-5">
         <div className="flex items-center justify-center gap-2">
-          <LogoMark className="size-7 shrink-0 text-primary" />
-          <span className="font-display text-lg font-bold tracking-tight">
-            Logic<span className="text-muted-foreground">Camp</span>
-          </span>
+          <Wordmark className="text-lg" />
         </div>
 
         <Card>

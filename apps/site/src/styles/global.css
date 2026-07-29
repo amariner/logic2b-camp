@@ -25,6 +25,23 @@
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074,
     U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* Poppins: SOLO la sirve el wordmark (docs/BRAND.md §2). Dos caras reales —el
+ * salto 600→800 es el lockup, y con negrita sintética el «2B» sale sucio.
+ * El 800 va subsetado a sus dos glifos (824 B); si cambia el texto del logo hay
+ * que regenerarlo: fonts.googleapis.com/css2?family=Poppins:wght@800&text=2B */
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-600-latin.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-800-logo.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+  unicode-range: U+30-32, U+42;
+}
 @font-face {
   font-family: 'Space Grotesk Variable';
   src: url('/fonts/SpaceGrotesk-latin-ext.woff2') format('woff2');

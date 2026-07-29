@@ -5,15 +5,21 @@
  */
 import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
+/* Solo los dos pesos del wordmark: 600 para «Logic» y «Campings», 800 para el
+ * «2B». Poppins no es variable — un archivo por peso — y no la usa nada más.
+ * `latin-*` y NO `600.css`/`800.css`: esos arrastran todos los subsets, y la
+ * build se llevaba 180 kB de Poppins Devanagari para pintar dos palabras. */
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/poppins/latin-800.css';
 import {
   Button,
   cn,
-  LogoMark,
   Sheet,
   SheetContent,
   SheetTitle,
   Toaster,
   TooltipProvider,
+  Wordmark,
 } from '@logic-camp/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -142,12 +148,11 @@ function SidebarInner({
   return (
     <>
       <div className="flex h-14 items-center gap-2 px-3">
-        <LogoMark className="size-6 shrink-0 text-primary" />
-        {!collapsed && (
-          <span className="font-display text-base font-bold tracking-tight">
-            Logic<span className="text-muted-foreground">Camp</span>
-          </span>
-        )}
+        {/* Plegada, la sidebar son 56px: ahí solo cabe «2B» (sesión 59). */}
+        <Wordmark
+          className="text-base"
+          variant={collapsed ? 'compact' : 'full'}
+        />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 pb-2">
@@ -282,10 +287,7 @@ function Shell() {
           >
             <Menu className="size-5" />
           </Button>
-          <LogoMark className="size-5 shrink-0 text-primary" />
-          <span className="font-display text-sm font-bold tracking-tight">
-            Logic<span className="text-muted-foreground">Camp</span>
-          </span>
+          <Wordmark className="text-sm" />
         </header>
 
         {/* Solo se pinta para el visitante anónimo de la demo (ADR 0029). */}

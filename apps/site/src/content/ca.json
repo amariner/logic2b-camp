@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Logic Camp — el web i la recepció del teu càmping, resolts",
+    "title": "Logic2B Campings — el web i la recepció del teu càmping, resolts",
     "description": "Programari per a càmpings: web pública moderna, motor de reserves i gestor de recepció en un sol sistema. Alta en una tarda. De Logic2B, Castelló."
   },
   "nav": {
@@ -19,7 +19,7 @@
     "ctaDemo": "Demanar una demo",
     "ctaVer": "Veure la demo en viu",
     "nota": "Alta d'un càmping nou en una tarda. Sense permanència per començar.",
-    "capturaWebAlt": "El web públic d'un càmping fet amb Logic Camp, amb el seu cercador de disponibilitat"
+    "capturaWebAlt": "El web públic d'un càmping fet amb Logic2B Campings, amb el seu cercador de disponibilitat"
   },
   "problema": {
     "titulo": "El que avui et costa diners cada agost",
@@ -186,10 +186,10 @@
   },
   "docs": {
     "seo": {
-      "title": "Guies de Logic Camp — recepció, gestió, propietari i fitxa tècnica",
-      "description": "Com s'utilitza Logic Camp: la guia de recepció pas a pas, la de gestió del dia a dia, la guia del propietari amb els quatre nivells, i la fitxa tècnica per al teu informàtic."
+      "title": "Guies de Logic2B Campings — recepció, gestió, propietari i fitxa tècnica",
+      "description": "Com s'utilitza Logic2B Campings: la guia de recepció pas a pas, la de gestió del dia a dia, la guia del propietari amb els quatre nivells, i la fitxa tècnica per al teu informàtic."
     },
-    "titulo": "Guies de Logic Camp",
+    "titulo": "Guies de Logic2B Campings",
     "subtitulo": "Quatre guies, quatre persones diferents. Cadascuna escrita per a qui la llegirà.",
     "indice": "En aquesta guia",
     "empezar": "Començar",
@@ -214,7 +214,7 @@
       "dueno": {
         "nombre": "Guia del propietari",
         "para": "Per a qui decideix",
-        "texto": "Els quatre nivells de Logic Camp explicats com una escala: què inclou cadascun, què canvia exactament quan puges, i què has d'aportar tu."
+        "texto": "Els quatre nivells de Logic2B Campings explicats com una escala: què inclou cadascun, què canvia exactament quan puges, i què has d'aportar tu."
       },
       "tecnica": {
         "nombre": "Fitxa tècnica",

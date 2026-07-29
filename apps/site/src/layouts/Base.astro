@@ -1,5 +1,5 @@
 ---
-import LogoMark from '../components/LogoMark.astro';
+import Wordmark from '../components/Wordmark.astro';
 import { LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
 
@@ -54,6 +54,10 @@ const nav = [
       type="font/woff2"
       crossorigin
     />
+    {/* El wordmark está en la cabecera: sin precarga, el logo repinta al llegar
+        la fuente. Las dos caras, que el «2B» es media marca. */}
+    <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/poppins-800-logo.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={meta.title} />
     <meta property="og:description" content={meta.description} />
@@ -66,9 +70,8 @@ const nav = [
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <a href={localePath(locale)} class="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-          <LogoMark class="h-6 w-6 text-primary" />
-          <span>Logic<span class="text-muted-foreground">Camp</span></span>
+        <a href={localePath(locale)} class="flex items-center">
+          <Wordmark class="text-lg" />
         </a>
         <nav class="ml-4 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
@@ -94,9 +97,8 @@ const nav = [
       <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div class="max-w-sm">
-            <div class="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-              <LogoMark class="h-6 w-6 text-primary" />
-              <span>Logic<span class="text-muted-foreground">Camp</span></span>
+            <div class="flex items-center">
+              <Wordmark class="text-lg" />
             </div>
             <p class="mt-3 text-sm text-muted-foreground">{c.footer.tagline}</p>
           </div>

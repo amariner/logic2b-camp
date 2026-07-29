@@ -1,0 +1,28 @@
+---
+/**
+ * Wordmark «Logic2B Campings» (docs/BRAND.md §2) — gemelo Astro del `Wordmark`
+ * de `packages/ui`. Las clases son LAS MISMAS y los tokens (`--font-wordmark`,
+ * `--logo-2b`) viven en el DS: si el lockup cambia, cambia en los dos a la vez
+ * porque ninguno de los dos define la tipografía ni el color por su cuenta.
+ *
+ * El isotipo queda retirado del logo del producto (sesión 59). `LogoMark.astro`
+ * sigue existiendo: la web pública del tenant lo usa como firma «powered by».
+ */
+interface Props {
+  class?: string;
+  /** `full` = Logic2B Campings · `brand` = Logic2B */
+  variant?: 'full' | 'brand';
+}
+const { class: klass = 'text-lg', variant = 'full' } = Astro.props;
+---
+
+<span
+  class:list={[
+    'font-wordmark inline-block leading-none font-semibold tracking-[0.015em] text-foreground',
+    klass,
+  ]}
+>
+  Logic<span class="font-extrabold text-logo-2b">2B</span>{
+    variant === 'full' && <span class="text-muted-foreground"> Campings</span>
+  }
+</span>
