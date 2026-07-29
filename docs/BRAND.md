@@ -42,6 +42,16 @@ texto**. El isotipo se retira del lockup; la referencia es el wordmark de
 - Tres variantes, porque el hueco del isotipo hay que ocuparlo: `full`
   (Logic2B Campings) · `brand` (Logic2B) · `compact` (**2B**, para la sidebar
   plegada de 56px, con `aria-label` completo).
+- **En la landing el lockup son DOS enlaces** (decisión de Andreu, sesión 59):
+  «**Logic2B**» → `https://logic2b.com` (la matriz) · «**Campings**» → el inicio
+  de la landing, consciente del idioma (`localePath(locale)`). Consecuencias que
+  no se pueden olvidar: el envoltorio **no puede ser un `<a>`** (HTML no permite
+  anidar enlaces — la cabecera lo era, y dejó de serlo), cada mitad necesita su
+  `aria-label` porque «Campings» a secas no dice adónde va, y **el espacio que
+  las separa va fuera de los dos** o el área activa se come un espacio ajeno
+  (Astro deja los saltos de línea del JSX dentro del `<a>` y colapsan a espacio).
+  En el dashboard el wordmark **no enlaza**: sacar a la recepcionista de la
+  aplicación desde el logo no es lo que quiere una herramienta de mostrador.
 - Fuentes: dashboard vía `@fontsource/poppins/latin-600|latin-800` (**nunca**
   `600.css`/`800.css`: arrastran todos los subsets, 180 kB de Devanagari para dos
   palabras). Landing self-hosted en `/fonts/`, con el 800 subsetado a sus dos

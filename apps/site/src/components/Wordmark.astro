@@ -7,22 +7,44 @@
  *
  * El isotipo queda retirado del logo del producto (sesión 59). `LogoMark.astro`
  * sigue existiendo: la web pública del tenant lo usa como firma «powered by».
+ *
+ * `href` parte el lockup en DOS enlaces (decisión de Andreu, sesión 59):
+ * «Logic2B» va a la matriz (logic2b.com) y «Campings» al home de esta landing.
+ * Por eso el envoltorio NO puede ser un `<a>`: HTML no permite anidar enlaces.
+ * Cada mitad lleva su `aria-label`, porque «Campings» a secas no dice adónde va
+ * — y el espacio que las separa queda FUERA de los dos, para que al pasar por
+ * encima no se subraye un espacio suelto.
  */
 interface Props {
   class?: string;
+  /** Home de la landing. Si se omite, el wordmark es texto y no enlaza. */
+  href?: string;
   /** `full` = Logic2B Campings · `brand` = Logic2B */
   variant?: 'full' | 'brand';
 }
-const { class: klass = 'text-lg', variant = 'full' } = Astro.props;
+const { class: klass = 'text-lg', href, variant = 'full' } = Astro.props;
+
+const MATRIZ = 'https://logic2b.com';
+const base =
+  'font-wordmark inline-block leading-none font-semibold tracking-[0.015em] text-foreground';
+const mitad = 'transition-opacity hover:opacity-70';
 ---
 
-<span
-  class:list={[
-    'font-wordmark inline-block leading-none font-semibold tracking-[0.015em] text-foreground',
-    klass,
-  ]}
->
-  Logic<span class="font-extrabold text-logo-2b">2B</span>{
-    variant === 'full' && <span class="text-muted-foreground"> Campings</span>
-  }
-</span>
+{
+  href ? (
+    <span class:list={[base, klass]}>
+      {/* Sin saltos de línea DENTRO de los `<a>`: Astro los deja en el HTML y
+          colapsan a un espacio, así que el área activa de cada mitad se comía
+          un espacio que no le toca. El que separa las dos mitades va fuera. */}
+      {/* prettier-ignore */}
+      <a href={MATRIZ} class={mitad} aria-label="Logic2B — ir a logic2b.com">Logic<span class="font-extrabold text-logo-2b">2B</span></a>{variant === 'full' && ' '}
+      {/* prettier-ignore */}
+      {variant === 'full' && <a href={href} class:list={[mitad, 'text-muted-foreground']} aria-label="Logic2B Campings — ir al inicio">Campings</a>}
+    </span>
+  ) : (
+    <span class:list={[base, klass]}>
+      Logic<span class="font-extrabold text-logo-2b">2B</span>
+      {variant === 'full' && <span class="text-muted-foreground"> Campings</span>}
+    </span>
+  )
+}

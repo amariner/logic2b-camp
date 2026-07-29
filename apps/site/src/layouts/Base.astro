@@ -70,9 +70,10 @@ const nav = [
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <a href={localePath(locale)} class="flex items-center">
-          <Wordmark class="text-lg" />
-        </a>
+        {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
+            enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
+            permite anidarlos. */}
+        <Wordmark class="text-lg" href={localePath(locale)} />
         <nav class="ml-4 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
@@ -98,7 +99,7 @@ const nav = [
         <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div class="max-w-sm">
             <div class="flex items-center">
-              <Wordmark class="text-lg" />
+              <Wordmark class="text-lg" href={localePath(locale)} />
             </div>
             <p class="mt-3 text-sm text-muted-foreground">{c.footer.tagline}</p>
           </div>
