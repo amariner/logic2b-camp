@@ -3,9 +3,17 @@
  * un día, avisa de los datos que faltan (con salto a la ficha para rellenarlos) y,
  * cuando está completo, deja descargar el XML o enviarlo al webservice si el camping
  * tiene credenciales. Pantalla de GESTIÓN — es una obligación legal, no de mostrador.
+ *
+ * B1 (sesión 59): campo de fecha al `Input` del DS (era un `<input>` a mano sin
+ * anillo de foco), estados vacíos al `EmptyState`, y la forma de pago deja de ir
+ * en un `justify-between` a lo ancho de la fila: medida a 1366px, el desplegable
+ * quedaba a **810px** del código de reserva al que pertenece — más cerca de la
+ * fila de abajo que de la suya. Ahora es una columna de ancho fijo con cabecera,
+ * compartida por cabecera y filas en UNA constante (regla de la sesión 55: en una
+ * lista de filas que no son `<table>`, ninguna columna `auto`).
  */
 import { errorMutacion } from '../avisos';
-import { Button, SelectNative, Skeleton, toast } from '@logic-camp/ui';
+import { Button, EmptyState, Input, SelectNative, Skeleton, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { AlertTriangle, CheckCircle2, Download, Send } from 'lucide-react';
@@ -60,7 +68,7 @@ function PaymentKindSelect({ estancia }: { estancia: ParteEstanciaItem }) {
       value={estancia.paymentKind ?? ''}
       disabled={set.isPending}
       onChange={(e) => set.mutate((e.target.value || null) as PaymentKind | null)}
-      className="w-40 text-[13px]"
+      className="w-full text-[13px]"
     >
       <option value="">{t('parte.sinFormaPago')}</option>
       {PAYMENT_KINDS.map((k) => (
@@ -72,12 +80,19 @@ function PaymentKindSelect({ estancia }: { estancia: ParteEstanciaItem }) {
   );
 }
 
+/**
+ * Las dos columnas de la lista, en un solo sitio: cabecera y filas se mueven a
+ * la vez o no se mueven. La segunda es de ancho FIJO — con `auto` la anchura del
+ * desplegable la fijaría la fila más ancha y la columna bailaría.
+ */
+const FILA = 'grid grid-cols-[minmax(0,1fr)_11rem] items-start gap-x-4';
+
 function EstanciaRow({ estancia, issues }: { estancia: ParteEstanciaItem; issues: ParteIssue[] }) {
   const propias = issues.filter((i) => i.bookingId === estancia.bookingId);
   return (
-    <li className="rounded-(--lc-radius-lg) border border-border/60 p-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="min-w-0">
+    <li className={`${FILA} rounded-(--lc-radius-lg) border border-border/60 p-3`}>
+      <div className="min-w-0">
+        <div>
           <Link
             to="/reservas/$id"
             params={{ id: estancia.bookingId }}
@@ -89,40 +104,41 @@ function EstanciaRow({ estancia, issues }: { estancia: ParteEstanciaItem; issues
             {fecha(estancia.dateFrom)} → {fecha(estancia.dateTo)}
           </span>
         </div>
-        <PaymentKindSelect estancia={estancia} />
+
+        <p className="mt-1 truncate text-[13px] text-muted-foreground">
+          {estancia.guests.length
+            ? estancia.guests.map((g) => `${g.name} ${g.surname}`.trim()).join(', ')
+            : t('parte.sinHuespedes')}
+        </p>
+
+        {propias.length > 0 && (
+          <ul className="mt-2 flex flex-col gap-1">
+            {propias.map((i, idx) => (
+              <li
+                key={`${i.guestId ?? 'stay'}-${i.field}-${idx}`}
+                className="flex items-center gap-1.5 text-[13px] text-muted-foreground"
+              >
+                <AlertTriangle
+                  className="size-3.5 shrink-0 text-(--lc-status-pending)"
+                  aria-hidden="true"
+                />
+                {issueLabel(i)}
+              </li>
+            ))}
+            <li>
+              <Link
+                to="/reservas/$id"
+                params={{ id: estancia.bookingId }}
+                className="text-[13px] text-primary hover:underline"
+              >
+                {t('parte.completar')}
+              </Link>
+            </li>
+          </ul>
+        )}
       </div>
 
-      <p className="mt-1 truncate text-[13px] text-muted-foreground">
-        {estancia.guests.length
-          ? estancia.guests.map((g) => `${g.name} ${g.surname}`.trim()).join(', ')
-          : t('parte.sinHuespedes')}
-      </p>
-
-      {propias.length > 0 && (
-        <ul className="mt-2 flex flex-col gap-1">
-          {propias.map((i, idx) => (
-            <li
-              key={`${i.guestId ?? 'stay'}-${i.field}-${idx}`}
-              className="flex items-center gap-1.5 text-[13px] text-muted-foreground"
-            >
-              <AlertTriangle
-                className="size-3.5 shrink-0 text-(--lc-status-pending)"
-                aria-hidden="true"
-              />
-              {issueLabel(i)}
-            </li>
-          ))}
-          <li>
-            <Link
-              to="/reservas/$id"
-              params={{ id: estancia.bookingId }}
-              className="text-[13px] text-primary hover:underline"
-            >
-              {t('parte.completar')}
-            </Link>
-          </li>
-        </ul>
-      )}
+      <PaymentKindSelect estancia={estancia} />
     </li>
   );
 }
@@ -137,10 +153,8 @@ export default function Parte() {
   });
 
   const enviar = useMutation({
-    mutationFn: () => apiPost<{ ok: true; reference: string | null }>(
-      '/api/admin/hospedajes/enviar',
-      { date },
-    ),
+    mutationFn: () =>
+      apiPost<{ ok: true; reference: string | null }>('/api/admin/hospedajes/enviar', { date }),
     onSuccess: (r) => {
       toast.success(r.reference ? t('parte.enviadoRef', { ref: r.reference }) : t('parte.enviado'));
       void qc.invalidateQueries({ queryKey: ['parte'] });
@@ -171,23 +185,26 @@ export default function Parte() {
         <div className="flex items-center gap-1">
           <Button
             type="button"
-            size="xs"
+            size="iconSm"
             variant="outline"
             onClick={() => setDate((d) => addDays(d, -1))}
             aria-label={t('parte.diaAnterior')}
           >
             ←
           </Button>
-          <input
+          {/* `Input` del DS, como en Llegadas (sesión 56): el campo a mano no
+              tenía el anillo de foco del sistema y no llegaba a la altura de sus
+              vecinos (29,5px contra 28px — desalineado por 1,5px). */}
+          <Input
             type="date"
             value={date}
             onChange={(e) => e.target.value && setDate(e.target.value)}
             aria-label={t('parte.dia')}
-            className="tnum rounded-(--lc-radius) border border-border bg-transparent px-2 py-1 text-[13px]"
+            className="tnum w-auto"
           />
           <Button
             type="button"
-            size="xs"
+            size="iconSm"
             variant="outline"
             onClick={() => setDate((d) => addDays(d, 1))}
             aria-label={t('parte.diaSiguiente')}
@@ -197,13 +214,7 @@ export default function Parte() {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <Button
-            type="button"
-            size="xs"
-            variant="outline"
-            onClick={descargar}
-            disabled={!ready}
-          >
+          <Button type="button" size="xs" variant="outline" onClick={descargar} disabled={!ready}>
             <Download className="size-3.5" />
             {t('parte.descargar')}
           </Button>
@@ -234,13 +245,19 @@ export default function Parte() {
       {data && (
         <div className="min-h-0 flex-1 overflow-y-auto p-4">
           {data.status === 'disabled' && (
-            <p className="max-w-xl text-[13px] text-muted-foreground">{t('parte.noConfigurado')}</p>
+            <EmptyState
+              art="inbox"
+              title={t('parte.noConfiguradoTitulo')}
+              description={t('parte.noConfigurado')}
+            />
           )}
 
           {data.status === 'empty' && (
-            <p className="text-[13px] text-muted-foreground">
-              {t('parte.sinLlegadas', { fecha: fecha(date) })}
-            </p>
+            <EmptyState
+              art="calendar"
+              title={t('parte.sinLlegadasTitulo')}
+              description={t('parte.sinLlegadas', { fecha: fecha(date) })}
+            />
           )}
 
           {(data.status === 'issues' || data.status === 'ready') && (
@@ -261,11 +278,21 @@ export default function Parte() {
                   </span>
                 )}
               </div>
-              <ul className="flex flex-col gap-2">
-                {(data.estancias ?? []).map((e) => (
-                  <EstanciaRow key={e.bookingId} estancia={e} issues={data.issues ?? []} />
-                ))}
-              </ul>
+              <div className="max-w-3xl">
+                <div
+                  /* `border-transparent`: la fila lleva borde de 1px, y sin él la
+                     cabecera arrancaría 1px a la izquierda de su columna. */
+                  className={`${FILA} border border-transparent px-3 pb-1.5 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase`}
+                >
+                  <span>{t('parte.colEstancia')}</span>
+                  <span>{t('parte.formaPago')}</span>
+                </div>
+                <ul className="flex flex-col gap-2">
+                  {(data.estancias ?? []).map((e) => (
+                    <EstanciaRow key={e.bookingId} estancia={e} issues={data.issues ?? []} />
+                  ))}
+                </ul>
+              </div>
             </>
           )}
         </div>

@@ -3,7 +3,7 @@
  * Arranca en es (la usuaria es la recepcionista); añadir un idioma = un objeto más.
  */
 const es = {
-  'app.nombre': 'Logic Camp',
+  'app.nombre': 'Logic2B Campings',
   'app.cerrarSesion': 'Salir',
   // ayuda contextual: el `?` de cada pantalla (ADR 0025, C6)
   'ayuda.aria': 'Abrir la guía de esta pantalla (se abre en otra pestaña)',
@@ -332,12 +332,16 @@ const es = {
   'aju.errorGuardar': 'No se han podido guardar (¿permisos de gerencia?).',
   'aju.nota':
     'El nivel de producto y los idiomas se cambian con Logic2B (afectan al despliegue de la web).',
+  'aju.datos': 'Datos del camping',
+  'aju.datosNota': 'Se guardan al momento y quedan en el registro de auditoría.',
+  'aju.gestionado': 'Nivel e idiomas',
   'aju.notificaciones': 'Notificaciones por email',
   'aju.notifNota':
     'Se activan y desactivan al momento, sin despliegue. El envío real requiere el dominio verificado en Resend (lo gestiona Logic2B); mientras tanto quedan registradas como desactivadas.',
   'aju.notifFrom': 'Remitente (From)',
   'aju.notifTo': 'Buzón interno de avisos',
   'aju.guardarNotif': 'Guardar notificaciones',
+  'aju.guardadoNotif': 'Notificaciones guardadas.',
   'notif.enquiry_received': 'Aviso al camping de solicitud nueva',
   'notif.enquiry_autoreply': 'Acuse de recibo al solicitante',
   'notif.booking_confirmed': 'Confirmación de reserva al cliente',
@@ -540,9 +544,12 @@ const es = {
   'parte.completar': 'Completar en la ficha de la reserva →',
   'parte.descargar': 'Descargar XML',
   'parte.enviar': 'Enviar a SES.Hospedajes',
+  'parte.noConfiguradoTitulo': 'El parte de viajeros no está activado',
   'parte.noConfigurado':
     'Este camping todavía no tiene activado el parte de viajeros. Se activa en los ajustes de la instancia (código de establecimiento de SES.Hospedajes).',
   'parte.sinLlegadas': 'No hay llegadas confirmadas el {fecha}.',
+  'parte.sinLlegadasTitulo': 'Nada que comunicar',
+  'parte.colEstancia': 'Estancia y huéspedes',
   'parte.listo': 'Parte completo: {n} estancia(s) listas para comunicar.',
   'parte.faltanDatos': 'Faltan datos en {n} campo(s) antes de poder comunicar.',
   'parte.enviado': 'Parte comunicado a SES.Hospedajes.',
