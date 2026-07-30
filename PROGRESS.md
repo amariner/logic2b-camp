@@ -59,6 +59,24 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 **Pendiente que deja**: la deuda de despliegue ya son **TRES sesiones (58, 59 y 60)** y esta es la más visible — la landing de venta entera. La galería del portfolio sigue esperando ≥3 demos (gate del ADR D0 intacto).
 
+### Sesión 61 — 2026-07-30 · **La landing fuera de la landing: la tarjeta al compartir y lo que lee Google**
+
+**Objetivo elegido** (CONTINUA, prioridad "lo que el cliente ve" + el mandato de marketing de la 60): lo que un prospecto ve de la landing **sin estar en la landing** — al compartir el enlace y en los resultados de búsqueda. Motivo de urgencia: la OG image seguía diciendo **«LogicCamp» con el isotipo**, una marca que desde la 59 **no existe en ninguna pantalla**; compartir el enlace enseñaba un producto distinto del que se abre al clicar.
+
+**La OG regenerada, y esta vez con generador commiteado.** La tarjeta de C5.2 se renderizó con un script de sesión que no se guardó, así que rehacerla ha costado reconstruir el generador entero — exactamente el coste que la regla de "no multiplicar trabajo" existe para evitar. Ahora vive en `apps/site/scripts/og.mjs` (`pnpm --filter @logic-camp/site og`): un cambio de marca es **un comando**. Dos tarjetas, **una por idioma** (`og.png` / `og-en.png`), con el texto sacado del **mismo `content/{lang}.json`** que pinta la landing — compartir el enlace en inglés y recibir una tarjeta en español es el detalle que delata a un producto descuidado.
+
+**Los colores NO se copian al generador: se leen del `:root` de `packages/ui/src/theme.css`.** Empezaron como literales y era la misma deuda en pequeño (la marca cambia en el DS y no en la tarjeta). Prueba de que la lectura es fiel: al sustituir los literales por la lectura, el PNG salió **byte a byte idéntico** (mismo `shasum`). Trampa encontrada al hacerlo: cortar el CSS por `indexOf('.dark')` corta **en un comentario de la línea 42** que menciona `.dark`, dejando fuera medio `:root` — se corta por el selector (`/^\.dark\s*\{/m`).
+
+**Composición**: sin isotipo (retirado en la 59), el hueco que dejaba lo ocupa una jerarquía real — kicker · wordmark «Logic2B Campings» (Poppins 600/800, el mismo lockup del header) · titular del héroe en Space Grotesk · la promesa de alta · pie con dominio. Primera versión rechazada por dos motivos mirando el PNG: el tercio central quedaba hueco y **la rejilla se veía justo en la mitad sin contenido** (el velo la apagaba solo bajo el texto), así que el lado vacío se leía como un descuido en vez de como aire.
+
+**Datos estructurados, que no había ninguno.** `Organization` + `SoftwareApplication` en el layout (todas las páginas) y **`FAQPage` en la landing**, construida desde el **mismo array** que pinta los `<details>` — Google exige que la respuesta esté visible, lo está, y si alguien borra la sección el marcado se va con ella. Escrito con una regla explícita: **cero `aggregateRating` y cero reseñas** (no existen, inventarlas es mentir y Google lo penaliza) y **sin `offers`** (los precios son a medida; declararlos exigiría un número que no existe). Un fallo propio corregido al verificar: `applicationSubCategory` acababa valiendo «Logic2B Campings» —el nombre, no una categoría— y se elimina: un valor incorrecto es peor que ninguno.
+
+**Meta social completa**: `og:site_name`, `og:locale` + `og:locale:alternate`, `og:image:width/height` (sin ellos algunas redes recortan a cuadrado en vez de servir la tarjeta ancha), `og:image:alt` y `twitter:image:alt`.
+
+**Verificado** — `pnpm check` **45/45 verde**. En navegador y **en el HTML construido** (no solo en dev): los tres tipos de JSON-LD parsean en es y en en, `/` sirve `og.png` y `/en/` sirve `og-en.png` (200, `image/png`), 5 preguntas en el marcado y 5 visibles en la página.
+
+**Pendiente que deja**: la deuda de despliegue sigue siendo de tres sesiones (58–60) y suma esta. Sin desplegar, la tarjeta vieja seguirá saliendo al compartir `camp.logic2b.com`.
+
 ### Sesión 59 — 2026-07-29 · **B1 cerrado (11/11) — el formulario que guardaba el otro formulario** · y, a petición de Andreu, **el logo pasa a «Logic2B Campings»**
 
 **Objetivo**: `[B1]` Parte y Ajustes, las dos pantallas que faltaban para cerrar la adopción del DS. Elegido del prompt de la 58 (dashboard = lo que el cliente ve en la demo, sin credenciales).

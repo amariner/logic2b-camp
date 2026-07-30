@@ -8,6 +8,20 @@ interface Props {
 const { locale } = Astro.props;
 const c = getContent(locale);
 
+/* FAQPage de schema.org, construido desde las MISMAS preguntas que se pintan
+ * abajo. Google exige que la respuesta esté visible en la página — lo está, en
+ * los `<details>`; el día que alguien quite la sección, este marcado se va con
+ * ella porque lee el mismo array. */
+const faqEstructurada = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: c.faq.items.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 /* Iconos lucide inline (sin dependencia de runtime): uno por punto de dolor. */
 const iconosProblema = [
   // calendar-x — "tu web no reserva"
@@ -385,6 +399,11 @@ const iconosProblema = [
 
   {/* ---------- FAQ ---------- */}
   <section class="border-t border-border bg-muted/30">
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(faqEstructurada).replace(/</g, '\\u003c')}
+    />
     <div class="mx-auto max-w-3xl px-4 py-20 sm:px-6">
       <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.faq.titulo}</h2>
       <div class="mt-8 divide-y divide-border">

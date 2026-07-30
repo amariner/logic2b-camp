@@ -1,14 +1,14 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 60 (2026-07-30, con Andreu). Tres mandatos
-> suyos: **el header de la landing a los raíles de `logic2b-norte`** (1440px /
-> gutter 24→32 / 50px / botones 10px), **prioridad a marketing** → la landing
-> gana la sección de **escalabilidad** (franja de cifras) y la **escalera como
-> recorrido** («¿cuántas parcelas tienes?») — la versión temprana de D5.2 que
-> el Frente D dejaba adelantar — y **la landing queda en DOS idiomas (es/en)**:
-> vende al dueño, no al campista; los seis idiomas siguen en la web de tenant
-> (`apps/web`), que no se toca. Cuando la próxima sesión termine, **reescribe
-> este fichero** con el prompt de la siguiente.
+> Reescrito al cerrar la sesión 61 (2026-07-30). Dos sesiones el mismo día, las
+> dos de marketing. La **60** (con Andreu): header a los raíles de
+> `logic2b-norte` (1440px / gutter 24→32 / 50px / botones 10px), la landing
+> gana **escalabilidad** (franja de cifras) y la **escalera como recorrido**
+> —D5.2 temprana— y queda en **dos idiomas (es/en)**: vende al dueño, no al
+> campista. La **61** (autónoma): **la landing fuera de la landing** — OG image
+> regenerada con el wordmark (una por idioma, **con generador commiteado**) y
+> los primeros datos estructurados del sitio. Cuando la próxima sesión termine,
+> **reescribe este fichero** con el prompt de la siguiente.
 
 ---
 
@@ -18,19 +18,23 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**la landing vende escalabilidad (D5.2 temprana)** y el header en los raíles
-de norte; antes, B1 11/11 y el logo «Logic2B Campings».
+**la landing vende escalabilidad (D5.2 temprana)**, el header en los raíles de
+norte, los dos idiomas y **la tarjeta al compartir + los datos estructurados**;
+antes, B1 11/11 y el logo «Logic2B Campings».
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **La deuda de despliegue son ya TRES sesiones (58, 59 y 60), y las dos
-   últimas SE VEN.** El logo (59) y ahora **la landing de venta entera** (60:
-   header nuevo, sección de escalabilidad, recorrido de niveles) — lo primero
-   que ve un prospecto en `camp.logic2b.com`. Un
-   `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema, sin
-   datos. Es el primer paso natural de la próxima sesión **local** (necesita
+1. **La deuda de despliegue son ya CUATRO sesiones (58–61), y las tres últimas
+   SE VEN.** El logo (59), **la landing de venta entera** (60: header nuevo,
+   escalabilidad, recorrido de niveles) y **la tarjeta al compartir el enlace**
+   (61) — hasta que se despliegue, `camp.logic2b.com` compartido en WhatsApp o
+   LinkedIn **sigue enseñando «LogicCamp» con el isotipo**, una marca que ya no
+   existe. Un `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema,
+   sin datos. Es el primer paso natural de la próxima sesión **local** (necesita
    credenciales de Cloudflare: si la sesión es autónoma, dejarlo anotado otra
-   vez y elegir otro objetivo).
+   vez y elegir otro objetivo). Tras desplegar, conviene pasar la URL por el
+   depurador de enlaces de la red donde se vaya a compartir: **las tarjetas se
+   cachean** y la vieja puede seguir saliendo hasta que se refresque.
 2. **ADR 0030 sigue en `propuesto`** y ya no queda nada que vigilar: sus dos
    comprobaciones están hechas (reset a mano en 1,2 s en la 58; **cron de las
    3:00 confirmado en la 59** — las reservas remotas traen el `createdAt` del
@@ -67,10 +71,11 @@ continúa con el desarrollo de este proyecto
   cabecera de Inventario explica no se ve nunca — y de paso se vería en planning
   y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el relleno ni los
   invariantes.
-- **[marca] Rematar el cambio de logo** (nuevo, 59): la **OG image** de la
-  landing sigue llevando el isotipo, así que al compartir el enlace se ve una
-  marca distinta de la de la cabecera. Regenerarla con el wordmark. El
-  **favicon** es decisión de Andreu, no de sesión autónoma (ver BACKLOG).
+- **[seo] `BreadcrumbList` en las guías** (nuevo, 61): las 25 páginas de
+  documentación son, según el propio comentario del sitemap, "la superficie de
+  búsqueda larga del producto", y son las únicas con jerarquía real (guía →
+  página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage`;
+  las guías no tienen ninguno. Va en `Docs.astro`, que las sirve todas.
 - **[dashboard] El enlace muerto de la sidebar** (nuevo, 59): «Parte de
   viajeros» es un muro de permisos para el visitante de la demo **y para
   cualquier recepcionista real** — el muro es decisión aceptada (ADR 0029), pero
@@ -103,7 +108,17 @@ continúa con el desarrollo de este proyecto
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de las sesiones 59–60)
+## Trampas conocidas (heredadas + las nuevas de las sesiones 59–61)
+
+- **NUEVA (61) — un asset de marca sin generador commiteado es deuda garantizada.**
+  La OG de C5.2 se renderizó con un script de sesión que no se guardó: al
+  cambiar el logo, rehacerla costó reconstruirlo entero. Ahora
+  `apps/site/scripts/og.mjs` (`pnpm --filter @logic-camp/site og`) y los colores
+  se **leen** del `:root` del DS, no se copian.
+- **NUEVA (61) — cortar un CSS por `indexOf('.dark')` corta en un comentario.**
+  `theme.css` menciona `.dark` en un comentario 36 líneas antes del selector, así
+  que la mitad del `:root` quedaba fuera del corte y el token no aparecía. Se
+  corta por el selector: `/^\.dark\s*\{/m`.
 
 - `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
   contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.

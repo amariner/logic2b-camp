@@ -1,6 +1,6 @@
 ---
 import Wordmark from '../components/Wordmark.astro';
-import { LOCALES, localePath, type Locale } from '../lib/i18n';
+import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -21,6 +21,42 @@ const c = content;
 const site = 'https://camp.logic2b.com';
 const meta = seo ?? c.seo;
 const canonical = new URL(localePath(locale, ruta), site).href;
+// Una tarjeta por idioma (`pnpm --filter @logic-camp/site og` las genera desde
+// este mismo content/{lang}.json): compartir el enlace en inglés y que salga
+// una tarjeta en español es el detalle que delata a un producto descuidado.
+const ogImage = `${site}${locale === DEFAULT_LOCALE ? '/og.png' : `/og-${locale}.png`}`;
+const OG_LOCALE: Record<Locale, string> = { es: 'es_ES', en: 'en_GB' };
+
+/* ---------- Datos estructurados (JSON-LD) ----------
+ * Solo hechos verificables del producto: nada de `aggregateRating` ni reseñas
+ * inventadas —además de ser mentira, Google las penaliza cuando no hay reseñas
+ * reales que las respalden—. Sin `offers`: los precios son a medida y decirlo
+ * en el marcado exigiría un número que no existe. */
+const datosEstructurados = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site}/#logic2b`,
+      name: 'Logic2B',
+      url: 'https://logic2b.com',
+      email: 'hola@logic2b.com',
+      address: { '@type': 'PostalAddress', addressLocality: 'Castellón', addressCountry: 'ES' },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${site}/#producto`,
+      name: 'Logic2B Campings',
+      url: site,
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      description: c.seo.description,
+      inLanguage: LOCALES as unknown as string[],
+      publisher: { '@id': `${site}/#logic2b` },
+      image: ogImage,
+    },
+  ],
+};
 // Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
@@ -61,11 +97,29 @@ const nav = [
     <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/poppins-800-logo.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Logic2B Campings" />
     <meta property="og:title" content={meta.title} />
     <meta property="og:description" content={meta.description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={site + '/og.png'} />
+    <meta property="og:locale" content={OG_LOCALE[locale]} />
+    {
+      LOCALES.filter((l) => l !== locale).map((l) => (
+        <meta property="og:locale:alternate" content={OG_LOCALE[l]} />
+      ))
+    }
+    {/* Sin `width`/`height` algunas redes recortan a cuadrado en vez de servir
+        la tarjeta ancha; el `alt` es lo que oye quien navega con lector. */}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={meta.title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content={meta.title} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(datosEstructurados).replace(/</g, '\\u003c')}
+    />
   </head>
   <body class="min-h-screen bg-background text-foreground antialiased">
     <header

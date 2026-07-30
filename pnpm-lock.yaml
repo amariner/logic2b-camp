@@ -161,6 +161,9 @@ importers:
       '@logic-camp/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      playwright:
+        specifier: ^1.61.1
+        version: 1.61.1
       sharp:
         specifier: ^0.35.3
         version: 0.35.3(@types/node@26.1.1)
