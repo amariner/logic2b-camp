@@ -77,6 +77,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 **Pendiente que deja**: la deuda de despliegue sigue siendo de tres sesiones (58–60) y suma esta. Sin desplegar, la tarjeta vieja seguirá saliendo al compartir `camp.logic2b.com`.
 
+### Sesión 62 — 2026-07-30 · **Desplegadas las sesiones 58–61 · y el renombrado de la 59 estaba incompleto**
+
+**Andreu dio el visto bueno y pidió desplegar.** `pnpm --filter @logic-camp/api deploy:demo` (reconstruye landing + web con `BASE_PATH=/demo` + dashboard, recompone `apps/site/dist`, aplica migraciones remotas y despliega). Versión **`78616a9d`**, 86 assets nuevos, migraciones sin cambios pendientes. **La deuda de cuatro sesiones (58–61) queda en producción.**
+
+**Dos hallazgos que solo aparecieron verificando contra producción, no contra el build local:**
+
+**1. Un HIT de caché de borde enseñando el título viejo.** La primera comprobación de `camp.logic2b.com/` devolvió `<title>Logic Camp — …`, el nombre anterior al cambio de logo. No era un deploy a medias: `cf-cache-status: HIT` sobre una copia rancia; con `?v=` o `Cache-Control: no-cache` salía ya el título nuevo, y minutos después el HIT también. **La comprobación que sí vale para un asset que conserva la URL**: `og.png` no cambia de nombre entre versiones, así que se comparó el **shasum de producción contra el local** — idénticos, o sea que el borde ya servía los bytes nuevos de la tarjeta. Nota para futuros deploys de marca: verificar contenido, no código de estado, y hacerlo con cache-buster antes de dar nada por roto.
+
+**2. El renombrado de la sesión 59 dejó cuatro sitios vivos** — sus «34 apariciones» cubrieron i18n del producto, títulos de docs y `app.nombre`, pero no el HTML estático ni las cadenas de servidor. El peor, con diferencia: **el banner de la demo del tenant en los seis idiomas** («Estás viendo la demo comercial de **Logic Camp**») — lo lee todo prospecto que clica "Ver la demo en vivo", justo después de que la landing le haya dicho «Logic2B Campings». Los otros tres: el `<title>` del dashboard (`apps/dashboard/index.html`, la pestaña del navegador de la recepcionista), el remitente de los avisos de plataforma (`notify.ts`) y el remitente + asunto del correo de peticiones de demo (`leads.ts`). Corregidos los cuatro; el banner es contenido de build, así que **no hace falta reseed**.
+
+**`pnpm check` falló dos veces y a la tercera dio verde, sin tocar nada entre medias**: `@logic-camp/api#test` en aislamiento da **237/237**, y bajo turbo con el dev server y el navegador abiertos se cae. Es contención de recursos de la suite de workerd, no una regresión — pero queda escrito porque un rojo intermitente que nadie explica acaba normalizándose.
+
 ### Sesión 59 — 2026-07-29 · **B1 cerrado (11/11) — el formulario que guardaba el otro formulario** · y, a petición de Andreu, **el logo pasa a «Logic2B Campings»**
 
 **Objetivo**: `[B1]` Parte y Ajustes, las dos pantallas que faltaban para cerrar la adopción del DS. Elegido del prompt de la 58 (dashboard = lo que el cliente ve en la demo, sin credenciales).

@@ -21,7 +21,7 @@ import { loadTenantConfig } from './tenant-config';
 import type { Env, TenantContext } from './tenant';
 
 /** Remitente de plataforma hasta que el tenant verifique su dominio en Resend. */
-const PLATFORM_FROM = 'Logic Camp <noreply@logic2b.com>';
+const PLATFORM_FROM = 'Logic2B Campings <noreply@logic2b.com>';
 
 type NotifyContext = Context<{
   Bindings: { DB: D1Database; RESEND_API_KEY?: string };

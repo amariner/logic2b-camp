@@ -20,7 +20,7 @@ const leadSchema = z.object({
 
 /** Buzón comercial de Logic2B. Remitente de plataforma (dominio verificado en Resend). */
 const LEADS_TO = 'marinerandreu@gmail.com';
-const LEADS_FROM = 'Logic Camp <leads@logic2b.com>';
+const LEADS_FROM = 'Logic2B Campings <leads@logic2b.com>';
 
 export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
   const parsed = leadSchema.safeParse(await c.req.json().catch(() => null));
@@ -34,10 +34,10 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     ['Teléfono', d.phone || '—'],
     ['Idioma', d.lang || '—'],
   ];
-  const text = `Nueva petición de demo — Logic Camp\n\n${rows
+  const text = `Nueva petición de demo — Logic2B Campings\n\n${rows
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n')}\n\nMensaje:\n${d.message || '—'}`;
-  const html = `<h2>Nueva petición de demo — Logic Camp</h2><table>${rows
+  const html = `<h2>Nueva petición de demo — Logic2B Campings</h2><table>${rows
     .map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${escapeHtml(v)}</td></tr>`)
     .join('')}</table><p><strong>Mensaje:</strong><br>${escapeHtml(d.message || '—')}</p>`;
 

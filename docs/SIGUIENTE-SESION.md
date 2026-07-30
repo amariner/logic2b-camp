@@ -1,14 +1,19 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 61 (2026-07-30). Dos sesiones el mismo día, las
-> dos de marketing. La **60** (con Andreu): header a los raíles de
+> Reescrito al cerrar la sesión 62 (2026-07-30). Tres sesiones el mismo día:
+> dos de marketing y el despliegue. La **60** (con Andreu): header a los raíles de
 > `logic2b-norte` (1440px / gutter 24→32 / 50px / botones 10px), la landing
 > gana **escalabilidad** (franja de cifras) y la **escalera como recorrido**
 > —D5.2 temprana— y queda en **dos idiomas (es/en)**: vende al dueño, no al
 > campista. La **61** (autónoma): **la landing fuera de la landing** — OG image
 > regenerada con el wordmark (una por idioma, **con generador commiteado**) y
-> los primeros datos estructurados del sitio. Cuando la próxima sesión termine,
-> **reescribe este fichero** con el prompt de la siguiente.
+> los primeros datos estructurados del sitio. La **62** (Andreu: «está todo ok,
+> despliégalo»): **desplegadas las cuatro sesiones** (versión `78616a9d`) y, al
+> verificar contra producción, se descubre que **el renombrado de la 59 estaba
+> incompleto** — el banner de la demo en seis idiomas, el `<title>` del
+> dashboard y dos remitentes de correo seguían diciendo «Logic Camp». Cuando la
+> próxima sesión termine, **reescribe este fichero** con el prompt de la
+> siguiente.
 
 ---
 
@@ -19,33 +24,30 @@ proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
 **la landing vende escalabilidad (D5.2 temprana)**, el header en los raíles de
-norte, los dos idiomas y **la tarjeta al compartir + los datos estructurados**;
-antes, B1 11/11 y el logo «Logic2B Campings».
+norte, los dos idiomas, **la tarjeta al compartir + los datos estructurados** y
+**el despliegue de todo ello**; antes, B1 11/11 y el logo «Logic2B Campings».
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **La deuda de despliegue son ya CUATRO sesiones (58–61), y las tres últimas
-   SE VEN.** El logo (59), **la landing de venta entera** (60: header nuevo,
-   escalabilidad, recorrido de niveles) y **la tarjeta al compartir el enlace**
-   (61) — hasta que se despliegue, `camp.logic2b.com` compartido en WhatsApp o
-   LinkedIn **sigue enseñando «LogicCamp» con el isotipo**, una marca que ya no
-   existe. Un `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema,
-   sin datos. Es el primer paso natural de la próxima sesión **local** (necesita
-   credenciales de Cloudflare: si la sesión es autónoma, dejarlo anotado otra
-   vez y elegir otro objetivo). Tras desplegar, conviene pasar la URL por el
-   depurador de enlaces de la red donde se vaya a compartir: **las tarjetas se
-   cachean** y la vieja puede seguir saliendo hasta que se refresque.
+1. **Nada bloquea: no hay deuda de despliegue.** Se desplegó todo el 2026-07-30
+   (versión `78616a9d`). Si la sesión toca la landing o la marca, verificar
+   **contra producción con cache-buster** (`?v=…`) y, para assets que conservan
+   la URL como `og.png`, comparar **shasum** local vs producción — el código de
+   estado no dice nada.
 2. **ADR 0030 sigue en `propuesto`** y ya no queda nada que vigilar: sus dos
-   comprobaciones están hechas (reset a mano en 1,2 s en la 58; **cron de las
-   3:00 confirmado en la 59** — las reservas remotas traen el `createdAt` del
-   día). Le toca a Andreu pasarlo a `aceptado` o discutirlo. Los dos puntos que
-   piden su opinión están escritos allí: Cala Sereno abre todo el año y el seed
-   crece a 3,4 MB.
+   comprobaciones están hechas (reset a mano en 1,2 s en la 58; cron de las 3:00
+   confirmado en la 59). Le toca a Andreu pasarlo a `aceptado` o discutirlo. Los
+   dos puntos que piden su opinión están escritos allí: Cala Sereno abre todo el
+   año y el seed crece a 3,4 MB.
+3. **Las tarjetas sociales se cachean fuera de nuestro control**: si Andreu va a
+   compartir `camp.logic2b.com` en LinkedIn/WhatsApp y sale la tarjeta vieja,
+   hay que pasar la URL por el depurador de enlaces de esa red.
 
 ## Estado de la entrega
 
-**Sesiones 58, 59 y 60 en `main`** (push al cerrar). Desplegado en producción:
-hasta la 57 (versión `9d85c8c5`, 2026-07-28).
+**Todo desplegado y al día**: sesiones 58–62 en `main` y en producción — versión
+**`78616a9d`** (2026-07-30). La deuda de despliegue que arrastraban cuatro
+sesiones queda cerrada.
 
 ## ▶ Prompt para pegar
 
@@ -108,8 +110,23 @@ continúa con el desarrollo de este proyecto
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de las sesiones 59–61)
+## Trampas conocidas (heredadas + las nuevas de las sesiones 59–62)
 
+- **NUEVA (62) — un renombrado "de 34 apariciones" no cubre lo que no es i18n.**
+  La 59 renombró el producto y aun así quedaron vivos el `<title>` del HTML
+  estático del dashboard, dos remitentes de correo en `apps/api` y **el banner
+  de la demo del tenant en seis idiomas** — el que lee todo prospecto. Tras un
+  rename, `grep -rn "<nombre viejo>" apps/ packages/ tenants/` incluyendo
+  `*.html` y las cadenas de servidor, no solo los JSON de i18n.
+- **NUEVA (62) — verificar un deploy por código de estado no verifica nada.**
+  `camp.logic2b.com/` devolvía 200 con el **título anterior**: `cf-cache-status:
+  HIT` sobre una copia rancia. Se comprueba con cache-buster (`?v=…`), y para un
+  asset que conserva la URL entre versiones (`og.png`), comparando **shasum**
+  local vs producción.
+- **NUEVA (62) — `pnpm check` falla de forma intermitente en `api#test`** si hay
+  dev server y navegador abiertos: la suite de workerd compite por recursos. En
+  aislamiento da 237/237. Antes de diagnosticar una regresión, correr
+  `pnpm --filter @logic-camp/api test` solo.
 - **NUEVA (61) — un asset de marca sin generador commiteado es deuda garantizada.**
   La OG de C5.2 se renderizó con un script de sesión que no se guardó: al
   cambiar el logo, rehacerla costó reconstruirlo entero. Ahora
