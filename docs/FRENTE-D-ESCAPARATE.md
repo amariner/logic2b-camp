@@ -180,9 +180,10 @@ Nota de coherencia con el Frente B: todo esto es evolución de B3 (misma app
 > **Estado (2026-07-30, sesión 60, Andreu presente)**: las piezas **2 y 3
 > están hechas en su versión temprana** — sección `#escala` con la franja de
 > cifras (solo cifras verdad hoy: 1 código · 1 D1 por camping · 4 niveles ·
-> 1 tarde) y el recorrido «¿cuántas parcelas tienes?» dentro de `#niveles`,
-> en los seis idiomas. La pieza **1 (galería) sigue cerrada** hasta tener ≥3
-> demos que clicar.
+> 1 tarde) y el recorrido «¿cuántas parcelas tienes?» dentro de `#niveles`.
+> En la misma sesión Andreu dejó la landing en **dos idiomas (es/en)**: vende
+> al dueño, no al campista — los seis idiomas siguen en la web de tenant. La
+> pieza **1 (galería) sigue cerrada** hasta tener ≥3 demos que clicar.
 
 ---
 

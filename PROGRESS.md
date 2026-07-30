@@ -55,6 +55,8 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 **Verificado** — `pnpm check` **45/45 verde**, 186 páginas construidas. En navegador: métricas del header computadas, recorrido funcionando en es y fr (el mensaje coge el nombre del nivel **ya traducido**: «Camp Moteur»), sin errores de consola.
 
+**Segunda parte (decisión de Andreu en la misma sesión): la landing se queda en DOS idiomas, es/en.** El razonamiento que la sostiene: la landing le vende al **dueño** del camping (mercado es/en); los seis idiomas son para el **campista**, y viven en la web de tenant (`apps/web`), **que no se toca** — así los textos de la landing que presumen de «6 idiomas» siguen siendo verdad, porque hablan del producto, no de la landing. Ejecución barata porque solo había UN punto cableado: `LOCALES` en `lib/i18n.ts` (páginas `[lang]`, sitemap, hreflang y selector del pie derivan todos de ahí) + borrar `ca/fr/de/nl.json` (las traducciones de la primera parte incluidas — dos horas de vida, cero deuda). Verificado: hreflang es/en/x-default, pie ES·EN, `/en/` 200, `/fr/` y `/de/` 404, `pnpm check` 45/45 verde.
+
 **Pendiente que deja**: la deuda de despliegue ya son **TRES sesiones (58, 59 y 60)** y esta es la más visible — la landing de venta entera. La galería del portfolio sigue esperando ≥3 demos (gate del ADR D0 intacto).
 
 ### Sesión 59 — 2026-07-29 · **B1 cerrado (11/11) — el formulario que guardaba el otro formulario** · y, a petición de Andreu, **el logo pasa a «Logic2B Campings»**

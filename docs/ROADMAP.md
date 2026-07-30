@@ -201,8 +201,10 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 **Estado del Frente D** (2026-07-30): **documentado; D5.2 hecha en versión
 temprana** (sesión 60, con Andreu presente pidiendo priorizar marketing): la
 landing gana la sección `#escala` (franja de cifras — solo cifras que ya son
-verdad hoy) y la **escalera como recorrido** en `#niveles`, en los seis
-idiomas. La **galería del portfolio no se abre** (criterio: nunca prometer lo
+verdad hoy) y la **escalera como recorrido** en `#niveles`. La landing queda
+en **dos idiomas (es/en)** — 2ª parte de la 60: le vende al dueño, no al
+campista; los seis idiomas siguen en la web de tenant, que es donde son
+argumento. La **galería del portfolio no se abre** (criterio: nunca prometer lo
 que no se puede clicar) y el resto del frente (portfolio, Ads) sigue esperando
 su momento (backend demo muy avanzado) y el ADR D0. La primera redacción del
 mismo día incluía casas rurales, hostal y hotel; **Andreu lo rectificó en la

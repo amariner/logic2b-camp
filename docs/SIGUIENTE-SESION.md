@@ -1,12 +1,14 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 60 (2026-07-30, con Andreu). Dos mandatos
+> Reescrito al cerrar la sesión 60 (2026-07-30, con Andreu). Tres mandatos
 > suyos: **el header de la landing a los raíles de `logic2b-norte`** (1440px /
-> gutter 24→32 / 50px / botones 10px) y **prioridad a marketing** → la landing
+> gutter 24→32 / 50px / botones 10px), **prioridad a marketing** → la landing
 > gana la sección de **escalabilidad** (franja de cifras) y la **escalera como
-> recorrido** («¿cuántas parcelas tienes?»), en los seis idiomas — la versión
-> temprana de D5.2 que el Frente D dejaba adelantar. Cuando la próxima sesión
-> termine, **reescribe este fichero** con el prompt de la siguiente.
+> recorrido** («¿cuántas parcelas tienes?») — la versión temprana de D5.2 que
+> el Frente D dejaba adelantar — y **la landing queda en DOS idiomas (es/en)**:
+> vende al dueño, no al campista; los seis idiomas siguen en la web de tenant
+> (`apps/web`), que no se toca. Cuando la próxima sesión termine, **reescribe
+> este fichero** con el prompt de la siguiente.
 
 ---
 
