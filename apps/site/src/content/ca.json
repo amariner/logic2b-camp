@@ -7,6 +7,7 @@
     "producto": "Producte",
     "niveles": "Plans",
     "planning": "El planning",
+    "escala": "Escalabilitat",
     "docs": "Guies",
     "demo": "Veure demo",
     "contacto": "Demanar demo",
@@ -81,6 +82,34 @@
       "També en plànol: cada unitat sobre el mapa del càmping"
     ]
   },
+  "escala": {
+    "kicker": "Fet per escalar",
+    "titulo": "Un sol motor. Cada càmping, el seu.",
+    "subtitulo": "La mateixa tecnologia serveix el micro-càmping familiar i el resort de costa: el que canvia és la teva marca, la teva configuració i les teves dades. El producte és un — i sempre al dia.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "codi per a tots els càmpings",
+        "texto": "Cada millora arriba a tots alhora. Ningú no es queda enrere en una versió antiga."
+      },
+      {
+        "n": "1",
+        "titulo": "base de dades per càmping",
+        "texto": "La teva, aïllada per disseny. Barrejar dades de dos càmpings no és improbable: és impossible."
+      },
+      {
+        "n": "4",
+        "titulo": "nivells del mateix producte",
+        "texto": "De la web amb formulari al motor amb pagaments en línia. Pujar és activar un ajust, no migrar."
+      },
+      {
+        "n": "1",
+        "titulo": "tarda per a l’alta",
+        "texto": "Amb les teves fotos, els teus tipus i les teves tarifes, la teva instància queda muntada i funcionant en una tarda."
+      }
+    ],
+    "nota": "I a tots els nivells: sis idiomes de sèrie, el teu domini i la teva marca."
+  },
   "niveles": {
     "titulo": "Comença per on ets",
     "subtitulo": "Un mateix sistema, quatre nivells. Puges de nivell canviant un ajust, mai canviant de web ni de proveïdor.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Motor",
         "para": "Només el gestor",
         "texto": "El motor i el gestor connectats al teu web actual. A mida, quan ja tens web i només et falta el cervell.",
-        "incluye": ["Motor + gestor sobre el teu web", "Integració a mida"],
+        "incluye": [
+          "Motor + gestor sobre el teu web",
+          "Integració a mida"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Preus a mida segons el teu càmping. Demana'ns una proposta.",
-    "recomendado": "Recomanat"
+    "recomendado": "Recomanat",
+    "selector": {
+      "pregunta": "Quantes parcel·les tens?",
+      "opciones": [
+        "Menys de 25",
+        "Entre 25 i 100",
+        "Més de 100",
+        "Ja tinc web"
+      ],
+      "resultado": "El teu punt de partida: {nivel}. Quan creixis, puges canviant un ajust."
+    }
   },
   "alta": {
     "titulo": "De zero a vendre, en una tarda",

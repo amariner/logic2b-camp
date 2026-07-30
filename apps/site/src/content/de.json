@@ -7,6 +7,7 @@
     "producto": "Produkt",
     "niveles": "Pakete",
     "planning": "Der Belegungsplan",
+    "escala": "Skalierbarkeit",
     "docs": "Anleitungen",
     "demo": "Demo ansehen",
     "contacto": "Demo anfragen",
@@ -81,6 +82,34 @@
       "Auch als Lageplan: jede Einheit auf der Karte Ihres Platzes"
     ]
   },
+  "escala": {
+    "kicker": "Gemacht zum Wachsen",
+    "titulo": "Ein Motor für alle. Und jeder Campingplatz bleibt er selbst.",
+    "subtitulo": "Dieselbe Technik trägt den kleinen Familienplatz wie das Resort an der Küste: Was sich ändert, sind Ihre Marke, Ihre Konfiguration und Ihre Daten. Das Produkt ist eines — und immer aktuell.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "Code für alle Campingplätze",
+        "texto": "Jede Verbesserung erreicht alle gleichzeitig. Niemand bleibt auf einer alten Version zurück."
+      },
+      {
+        "n": "1",
+        "titulo": "Datenbank pro Campingplatz",
+        "texto": "Ihre eigene, isoliert per Design. Daten zweier Plätze zu vermischen ist nicht unwahrscheinlich, sondern unmöglich."
+      },
+      {
+        "n": "4",
+        "titulo": "Stufen desselben Produkts",
+        "texto": "Von der Website mit Formular bis zum Buchungsmotor mit Online-Zahlung. Aufsteigen heißt: eine Einstellung ändern, nicht migrieren."
+      },
+      {
+        "n": "1",
+        "titulo": "Nachmittag bis zum Start",
+        "texto": "Mit Ihren Fotos, Ihren Unterkunftstypen und Ihren Tarifen ist Ihre Instanz an einem Nachmittag eingerichtet und in Betrieb."
+      }
+    ],
+    "nota": "Und auf jeder Stufe: sechs Sprachen ab Werk, Ihre Domain und Ihre Marke."
+  },
   "niveles": {
     "titulo": "Starten Sie dort, wo Sie stehen",
     "subtitulo": "Ein System, vier Stufen. Sie steigen auf, indem Sie eine Einstellung ändern — nie durch einen Wechsel von Website oder Anbieter.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Motor",
         "para": "Nur die Verwaltung",
         "texto": "Buchungssystem und Verwaltung, verbunden mit Ihrer bestehenden Website. Maßgeschneidert, wenn Sie schon eine Website haben und nur das Gehirn fehlt.",
-        "incluye": ["System + Verwaltung auf Ihrer Website", "Maßgeschneiderte Integration"],
+        "incluye": [
+          "System + Verwaltung auf Ihrer Website",
+          "Maßgeschneiderte Integration"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Preise nach Maß für Ihren Campingplatz. Fragen Sie uns nach einem Angebot.",
-    "recomendado": "Empfohlen"
+    "recomendado": "Empfohlen",
+    "selector": {
+      "pregunta": "Wie viele Stellplätze haben Sie?",
+      "opciones": [
+        "Weniger als 25",
+        "25 bis 100",
+        "Mehr als 100",
+        "Ich habe schon eine Website"
+      ],
+      "resultado": "Ihr Einstieg: {nivel}. Wenn Sie wachsen, steigen Sie auf, indem Sie eine Einstellung ändern."
+    }
   },
   "alta": {
     "titulo": "Von null auf Verkauf, in einem Nachmittag",

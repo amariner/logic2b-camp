@@ -7,6 +7,7 @@
     "producto": "Producto",
     "niveles": "Planes",
     "planning": "El planning",
+    "escala": "Escalabilidad",
     "docs": "Guías",
     "demo": "Ver demo",
     "contacto": "Pedir demo",
@@ -81,6 +82,34 @@
       "También en plano: cada unidad sobre el mapa del camping"
     ]
   },
+  "escala": {
+    "kicker": "Hecho para escalar",
+    "titulo": "Un solo motor. Cada camping, el suyo.",
+    "subtitulo": "La misma tecnología sirve al micro-camping familiar y al resort de costa: lo que cambia es tu marca, tu configuración y tus datos. El producto es uno — y siempre al día.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "código para todos los campings",
+        "texto": "Cada mejora llega a todos a la vez. Nadie se queda atrás en una versión antigua."
+      },
+      {
+        "n": "1",
+        "titulo": "base de datos por camping",
+        "texto": "La tuya, aislada por diseño. Mezclar datos de dos campings no es improbable: es imposible."
+      },
+      {
+        "n": "4",
+        "titulo": "niveles del mismo producto",
+        "texto": "De la web con formulario al motor con pagos online. Subir es activar un ajuste, no migrar."
+      },
+      {
+        "n": "1",
+        "titulo": "tarde para el alta",
+        "texto": "Con tus fotos, tus tipos y tus tarifas, tu instancia queda montada y funcionando en una tarde."
+      }
+    ],
+    "nota": "Y en todos los niveles: seis idiomas de serie, tu dominio y tu marca."
+  },
   "niveles": {
     "titulo": "Empieza por donde estás",
     "subtitulo": "Un mismo sistema, cuatro niveles. Subes de nivel cambiando un ajuste, nunca cambiando de web ni de proveedor.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Motor",
         "para": "Solo el gestor",
         "texto": "El motor y el gestor conectados a tu web actual. A medida, cuando ya tienes web y solo te falta el cerebro.",
-        "incluye": ["Motor + gestor sobre tu web", "Integración a medida"],
+        "incluye": [
+          "Motor + gestor sobre tu web",
+          "Integración a medida"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Precios a medida según tu camping. Pídenos una propuesta.",
-    "recomendado": "Recomendado"
+    "recomendado": "Recomendado",
+    "selector": {
+      "pregunta": "¿Cuántas parcelas tienes?",
+      "opciones": [
+        "Menos de 25",
+        "Entre 25 y 100",
+        "Más de 100",
+        "Ya tengo web"
+      ],
+      "resultado": "Tu punto de partida: {nivel}. Cuando crezcas, subes cambiando un ajuste."
+    }
   },
   "alta": {
     "titulo": "De cero a vender, en una tarde",

@@ -55,11 +55,11 @@ const iconosProblema = [
         <div class="mt-8 flex flex-wrap items-center gap-3">
           <a
             href="#contacto"
-            class="inline-flex items-center rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
+            class="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
           >{c.hero.ctaDemo}</a>
           <a
             href="/demo/"
-            class="inline-flex items-center rounded-md border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+            class="inline-flex items-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
           >{c.hero.ctaVer} →</a>
         </div>
         <p class="mt-6 text-sm text-white/70">{c.hero.nota}</p>
@@ -209,9 +209,32 @@ const iconosProblema = [
       }
       <a
         href="/demo/admin/"
-        class="lc-reveal inline-flex items-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
+        class="lc-reveal inline-flex items-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
       >{c.planning.cta} →</a>
     </div>
+  </section>
+
+  {/* ---------- Escalabilidad: la franja de cifras ----------
+      Versión temprana de D5.2 (docs/FRENTE-D-ESCAPARATE.md §3): solo cifras
+      que ya son verdad hoy — nada que dependa del portfolio de demos. */}
+  <section id="escala" class="mx-auto max-w-6xl px-4 py-20 sm:px-6 scroll-mt-16">
+    <div class="lc-reveal max-w-2xl">
+      <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.escala.kicker}</p>
+      <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.escala.titulo}</h2>
+      <p class="mt-4 leading-relaxed text-muted-foreground">{c.escala.subtitulo}</p>
+    </div>
+    <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        c.escala.cifras.map((cf, i) => (
+          <div class="lc-reveal border-t border-border pt-5" style={`--lc-delay:${i * 70}ms`}>
+            <p class="font-display text-5xl font-bold tracking-tighter">{cf.n}</p>
+            <h3 class="mt-3 font-medium">{cf.titulo}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{cf.texto}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="lc-reveal mt-10 text-sm text-muted-foreground">{c.escala.nota}</p>
   </section>
 
   {/* ---------- Niveles / planes: la escalera ---------- */}
@@ -219,16 +242,48 @@ const iconosProblema = [
     <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.niveles.titulo}</h2>
       <p class="lc-reveal mt-3 max-w-2xl text-muted-foreground">{c.niveles.subtitulo}</p>
-      <div class="mt-10 grid items-end gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {/* La escalera como recorrido (Frente D §3): eliges tu tamaño y la landing
+          te señala tu nivel. Orientación, no un quiz — sin datos ni backend. */}
+      <div
+        class="lc-reveal mt-8 flex flex-wrap items-center gap-x-3 gap-y-2"
+        role="group"
+        aria-label={c.niveles.selector.pregunta}
+      >
+        <p class="mr-1 text-sm font-medium">{c.niveles.selector.pregunta}</p>
+        {
+          c.niveles.selector.opciones.map((o, i) => (
+            <button
+              type="button"
+              data-nivel-chip={i}
+              aria-pressed="false"
+              class="inline-flex items-center rounded-lg border border-border bg-background px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-accent aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground"
+            >
+              {o}
+            </button>
+          ))
+        }
+      </div>
+      <p
+        id="nivel-sugerido"
+        data-plantilla={c.niveles.selector.resultado}
+        class="mt-4 text-sm font-medium"
+        role="status"
+        aria-live="polite"
+        hidden
+      >
+      </p>
+      <div class="lc-niveles-grid mt-10 grid items-end gap-5 md:grid-cols-2 lg:grid-cols-4">
         {
           c.niveles.items.map((n, i) => (
             <div
               class:list={[
-                'lc-reveal flex flex-col rounded-xl border bg-card p-6',
+                'lc-reveal lc-nivel flex flex-col rounded-xl border bg-card p-6',
                 n.destacado
                   ? 'border-primary shadow-lg ring-1 ring-primary lg:-translate-y-3 lg:pb-9'
                   : 'border-border',
               ]}
+              data-nivel-card={i}
+              data-nombre={n.nombre}
               style={`--lc-delay:${i * 70}ms`}
             >
               {/* Escalera: el número de nivel da la progresión de un vistazo. */}
@@ -272,7 +327,7 @@ const iconosProblema = [
               <a
                 href="#contacto"
                 class:list={[
-                  'mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+                  'mt-6 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors',
                   n.destacado
                     ? 'bg-primary text-primary-foreground hover:opacity-90'
                     : 'border border-border hover:bg-accent',
@@ -399,7 +454,7 @@ const iconosProblema = [
       <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
         <button
           type="submit"
-          class="inline-flex items-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           data-send={c.contacto.enviar}
           data-sending={c.contacto.enviando}
         >{c.contacto.enviar}</button>
@@ -445,6 +500,47 @@ const iconosProblema = [
     }
   });
 </script>
+
+<script>
+  // La escalera como recorrido: el chip señala el nivel (y se desmarca al
+  // repetir el clic). Mientras hay elección, el anillo es del visitante — la
+  // tarjeta destacada estática cede el protagonismo (CSS de abajo).
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-nivel-chip]')];
+  const niveles = [...document.querySelectorAll<HTMLElement>('[data-nivel-card]')];
+  const grid = document.querySelector<HTMLElement>('.lc-niveles-grid');
+  const sugerido = document.getElementById('nivel-sugerido');
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const idx = Number(chip.dataset.nivelChip);
+      const repetido = chip.getAttribute('aria-pressed') === 'true';
+      chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch === chip && !repetido)));
+      niveles.forEach((card, i) => card.classList.toggle('lc-elegido', !repetido && i === idx));
+      grid?.classList.toggle('lc-con-eleccion', !repetido);
+      if (sugerido) {
+        sugerido.hidden = repetido;
+        if (!repetido) {
+          const nombre = niveles[idx]?.dataset.nombre ?? '';
+          sugerido.textContent = (sugerido.dataset.plantilla ?? '').replace('{nivel}', nombre);
+        }
+      }
+      if (!repetido) niveles[idx]?.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'nearest' });
+    });
+  });
+</script>
+
+<style>
+  /* El nivel elegido en el recorrido lleva el anillo; la tarjeta destacada
+     estática (ring-1 de Tailwind) lo suelta mientras la elección dure. */
+  .lc-nivel.lc-elegido {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+  .lc-niveles-grid.lc-con-eleccion .lc-nivel:not(.lc-elegido) {
+    border-color: var(--border);
+    box-shadow: none;
+  }
+</style>
 
 <script>
   // Reveal on scroll, sutil. prefers-reduced-motion ya anula la transición vía

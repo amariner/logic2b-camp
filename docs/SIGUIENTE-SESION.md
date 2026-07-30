@@ -1,10 +1,12 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 59 (2026-07-29). Empezó autónoma con
-> **`[B1]` Parte y Ajustes → B1 CERRADO 11/11**, y a mitad Andreu pidió, como
-> **petición extraordinaria**, cambiar el logo a **«Logic2B Campings»** con la
-> tipografía y el estilo de `logic2b-norte` y **sin isotipo**. Cuando la próxima
-> sesión termine, **reescribe este fichero** con el prompt de la siguiente.
+> Reescrito al cerrar la sesión 60 (2026-07-30, con Andreu). Dos mandatos
+> suyos: **el header de la landing a los raíles de `logic2b-norte`** (1440px /
+> gutter 24→32 / 50px / botones 10px) y **prioridad a marketing** → la landing
+> gana la sección de **escalabilidad** (franja de cifras) y la **escalera como
+> recorrido** («¿cuántas parcelas tienes?»), en los seis idiomas — la versión
+> temprana de D5.2 que el Frente D dejaba adelantar. Cuando la próxima sesión
+> termine, **reescribe este fichero** con el prompt de la siguiente.
 
 ---
 
@@ -14,14 +16,16 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**la adopción del DS en el dashboard (B1, 11/11)** y **el cambio de logo**.
+**la landing vende escalabilidad (D5.2 temprana)** y el header en los raíles
+de norte; antes, B1 11/11 y el logo «Logic2B Campings».
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **La deuda de despliegue son ya DOS sesiones (58 y 59), y la 59 se ve.**
-   Hasta ahora la deuda era markup; ahora incluye **el logo de la landing y del
-   dashboard**, que es lo primero que ve un prospecto en `camp.logic2b.com`.
-   Un `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema, sin
+1. **La deuda de despliegue son ya TRES sesiones (58, 59 y 60), y las dos
+   últimas SE VEN.** El logo (59) y ahora **la landing de venta entera** (60:
+   header nuevo, sección de escalabilidad, recorrido de niveles) — lo primero
+   que ve un prospecto en `camp.logic2b.com`. Un
+   `pnpm --filter @logic-camp/api deploy:demo` normal — sin esquema, sin
    datos. Es el primer paso natural de la próxima sesión **local** (necesita
    credenciales de Cloudflare: si la sesión es autónoma, dejarlo anotado otra
    vez y elegir otro objetivo).
@@ -34,8 +38,8 @@ es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
 
 ## Estado de la entrega
 
-**Sesiones 58 y 59 en `main`** (push al cerrar). Desplegado en producción: hasta
-la 57 (versión `9d85c8c5`, 2026-07-28).
+**Sesiones 58, 59 y 60 en `main`** (push al cerrar). Desplegado en producción:
+hasta la 57 (versión `9d85c8c5`, 2026-07-28).
 
 ## ▶ Prompt para pegar
 
@@ -81,24 +85,31 @@ continúa con el desarrollo de este proyecto
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
-- **Frente D entero (portfolio de 12 demos de campings, landing v2, maquetas
-  Ads)** — documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58, mandato de
-  Andreu, **rectificado el mismo día: solo campings** — hoteles y casas rurales
-  serán un **clon del proyecto** cuando toque, nunca una ampliación de este).
-  Cuelga del **ADR D0 con Andreu presente** y su momento es "backend demo muy
-  avanzado". Lo único del tema que SÍ es de ahora: el candidato [4.x/web] del
-  mostrador en el detalle (arriba). Regla mientras tanto: seguir usando el
-  vocabulario del glosario (unidad/tipo), que es lo que abarata la
-  parametrización del seed y el clon.
+- **El resto del Frente D (portfolio de 12 demos, galería de la landing,
+  maquetas Ads)** — documentado en `docs/FRENTE-D-ESCAPARATE.md` (sesión 58,
+  mandato de Andreu, **rectificado el mismo día: solo campings** — hoteles y
+  casas rurales serán un **clon del proyecto** cuando toque, nunca una
+  ampliación de este). Cuelga del **ADR D0 con Andreu presente** y su momento
+  es "backend demo muy avanzado". **La 60 ya adelantó lo adelantable** (D5.2
+  temprana: franja de cifras + recorrido, con Andreu presente); la **galería**
+  espera a tener **≥3 demos clicables**. Lo único del tema que SÍ es de ahora:
+  el candidato [4.x/web] del mostrador en el detalle (arriba). Regla mientras
+  tanto: seguir usando el vocabulario del glosario (unidad/tipo), que es lo
+  que abarata la parametrización del seed y el clon.
 - **El favicon** (ver BACKLOG `[marca]`): cambiarlo o no es decisión de marca.
 - Verificar SES.Hospedajes real / secrets (opción B histórica).
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de la sesión 59)
+## Trampas conocidas (heredadas + las nuevas de las sesiones 59–60)
 
 - `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
   contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.
+- **NUEVA (60) — con `transition-colors`, `getComputedStyle` en el mismo tick
+  del click devuelve el color VIEJO** (t=0 de la transición): parecía que
+  `aria-pressed:bg-primary` no aplicaba, y aplicaba perfectamente. Para juzgar
+  un estilo tras una interacción: esperar a que acabe la transición (o medir
+  un clon sin `transition-*`).
 - **NUEVA (59) — un `<form>` de más y el Intro guarda otra cosa.** La sumisión
   implícita de un `<input>` va a **`input.form`**, no al botón más cercano: dos
   bloques con botón propio dentro de un mismo `<form>` es un guardado silencioso

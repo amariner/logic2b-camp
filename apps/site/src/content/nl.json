@@ -7,6 +7,7 @@
     "producto": "Product",
     "niveles": "Pakketten",
     "planning": "De planning",
+    "escala": "Schaalbaarheid",
     "docs": "Handleidingen",
     "demo": "Demo bekijken",
     "contacto": "Demo aanvragen",
@@ -81,6 +82,34 @@
       "Ook als plattegrond: elke plaats op de kaart van uw camping"
     ]
   },
+  "escala": {
+    "kicker": "Gemaakt om te schalen",
+    "titulo": "Eén motor voor iedereen. En elke camping blijft zichzelf.",
+    "subtitulo": "Dezelfde techniek draagt de kleine familiecamping én het resort aan de kust: wat verandert zijn uw merk, uw configuratie en uw gegevens. Het product is één — en altijd actueel.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "code voor alle campings",
+        "texto": "Elke verbetering bereikt iedereen tegelijk. Niemand blijft achter op een oude versie."
+      },
+      {
+        "n": "1",
+        "titulo": "database per camping",
+        "texto": "Die van u, geïsoleerd door ontwerp. Gegevens van twee campings mengen is niet onwaarschijnlijk, maar onmogelijk."
+      },
+      {
+        "n": "4",
+        "titulo": "niveaus van hetzelfde product",
+        "texto": "Van website met formulier tot boekingsmotor met onlinebetaling. Upgraden is een instelling omzetten, geen migratie."
+      },
+      {
+        "n": "1",
+        "titulo": "middag tot de start",
+        "texto": "Met uw foto’s, uw accommodatietypes en uw tarieven staat uw omgeving in één middag klaar en draait hij."
+      }
+    ],
+    "nota": "En op elk niveau: zes talen standaard, uw eigen domein en uw eigen merk."
+  },
   "niveles": {
     "titulo": "Begin waar u nu staat",
     "subtitulo": "Eén systeem, vier niveaus. U stijgt door een instelling te wijzigen, nooit door van website of leverancier te veranderen.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Motor",
         "para": "Alleen het beheer",
         "texto": "Het systeem en het beheer gekoppeld aan uw huidige website. Op maat, wanneer u al een website heeft en alleen het brein nog mist.",
-        "incluye": ["Systeem + beheer op uw website", "Integratie op maat"],
+        "incluye": [
+          "Systeem + beheer op uw website",
+          "Integratie op maat"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Prijzen op maat voor uw camping. Vraag ons om een voorstel.",
-    "recomendado": "Aanbevolen"
+    "recomendado": "Aanbevolen",
+    "selector": {
+      "pregunta": "Hoeveel plaatsen heeft u?",
+      "opciones": [
+        "Minder dan 25",
+        "25 tot 100",
+        "Meer dan 100",
+        "Ik heb al een website"
+      ],
+      "resultado": "Uw startpunt: {nivel}. Groeit u, dan stijgt u door een instelling te wijzigen."
+    }
   },
   "alta": {
     "titulo": "Van nul naar verkopen, in één middag",

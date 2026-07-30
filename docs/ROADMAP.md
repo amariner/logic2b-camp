@@ -198,7 +198,12 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 | **D5** | Landing de venta v2             | Galería del portfolio, franja de cifras, recorrido por tamaño                                                      | El rango del producto se entiende sin leer un párrafo; lo prometido se clica       |
 | **D6** | Campañas de muestra (Ads)       | Creatividades display Google/Meta + búsqueda, UTM fake → funnel de su demo; sección "Campañas que reservan"        | Anuncio → web → reserva recorrido en una presentación sin salir del navegador      |
 
-**Estado del Frente D** (2026-07-28): **documentado, no empezado** — esperando
+**Estado del Frente D** (2026-07-30): **documentado; D5.2 hecha en versión
+temprana** (sesión 60, con Andreu presente pidiendo priorizar marketing): la
+landing gana la sección `#escala` (franja de cifras — solo cifras que ya son
+verdad hoy) y la **escalera como recorrido** en `#niveles`, en los seis
+idiomas. La **galería del portfolio no se abre** (criterio: nunca prometer lo
+que no se puede clicar) y el resto del frente (portfolio, Ads) sigue esperando
 su momento (backend demo muy avanzado) y el ADR D0. La primera redacción del
 mismo día incluía casas rurales, hostal y hotel; **Andreu lo rectificó en la
 misma sesión**: solo campings, y los otros verticales serán un clon del
@@ -209,6 +214,7 @@ detalle devuelve a la home sin precargar el tipo —
 
 ## Decisiones tomadas
 
+- 2026-07-30: **La landing empieza a vender escalabilidad (D5.2 temprana)**, por mandato de Andreu en sesión presencial (60): franja de cifras + escalera como recorrido, **solo con cifras que ya son verdad hoy**; la galería del portfolio no se abre hasta tener ≥3 demos clicables. Además, el header y el footer de la landing pasan a los **raíles visuales de `logic2b-norte`** (contenedor 1440px, gutter 24→32px, 50px de alto, botones a 10px = el `--radius` que el DS ya tenía). El gate del ADR D0 para D1–D4/D6 queda **intacto**.
 - 2026-07-28: **Frente D abierto** (portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. Documentado en `docs/FRENTE-D-ESCAPARATE.md`; **no se construye** hasta que el backend demo esté muy avanzado, y **nada empieza sin el ADR D0** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas).
 - 2026-07-28: **El alcance NO cambia: campings, y solo campings.** La primera redacción del Frente D incluía casas rurales, un hostal y un hotel; Andreu la rectificó en la misma sesión. **Hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto — el mismo patrón que separa ecom de camp), nunca una ampliación de este. `CLAUDE.md` y el Super Prompt §0 quedan intactos.
 - 2026-07-20: **Frente C abierto** (acabado visual + workflow + documentación), en paralelo a A y B. Prioridad visual en modo fake, con la regla dura de que "fake" se resuelve en el **seed**, nunca con mocks en el cliente. **B4 (documentación) se absorbe en C6.** Detalle en `docs/FRENTE-C-ACABADO.md`.

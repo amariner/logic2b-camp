@@ -7,6 +7,7 @@
     "producto": "Product",
     "niveles": "Plans",
     "planning": "The planner",
+    "escala": "Scalability",
     "docs": "Guides",
     "demo": "See demo",
     "contacto": "Request a demo",
@@ -81,6 +82,34 @@
       "Also as a map: every unit on your campsite's plan"
     ]
   },
+  "escala": {
+    "kicker": "Built to scale",
+    "titulo": "One engine. Every campsite its own.",
+    "subtitulo": "The same technology serves the small family site and the coastal resort: what changes is your brand, your configuration and your data. The product is one — and always up to date.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "codebase for every campsite",
+        "texto": "Every improvement reaches everyone at once. Nobody is left behind on an old version."
+      },
+      {
+        "n": "1",
+        "titulo": "database per campsite",
+        "texto": "Yours, isolated by design. Mixing two campsites’ data is not unlikely: it is impossible."
+      },
+      {
+        "n": "4",
+        "titulo": "levels of the same product",
+        "texto": "From a website with a form to an engine with online payments. Upgrading is switching a setting, not migrating."
+      },
+      {
+        "n": "1",
+        "titulo": "afternoon to go live",
+        "texto": "With your photos, your unit types and your rates, your instance is set up and running in an afternoon."
+      }
+    ],
+    "nota": "And at every level: six languages built in, your own domain and your own brand."
+  },
   "niveles": {
     "titulo": "Start where you are",
     "subtitulo": "One system, four levels. You move up by changing a setting, never by changing website or provider.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Engine",
         "para": "Just the manager",
         "texto": "The engine and manager wired into your current website. Custom, when you already have a site and only need the brain.",
-        "incluye": ["Engine + manager on your site", "Custom integration"],
+        "incluye": [
+          "Engine + manager on your site",
+          "Custom integration"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Pricing tailored to your campsite. Ask us for a proposal.",
-    "recomendado": "Recommended"
+    "recomendado": "Recommended",
+    "selector": {
+      "pregunta": "How many pitches do you have?",
+      "opciones": [
+        "Fewer than 25",
+        "25 to 100",
+        "More than 100",
+        "I already have a website"
+      ],
+      "resultado": "Your starting point: {nivel}. As you grow, you move up by changing a setting."
+    }
   },
   "alta": {
     "titulo": "From zero to selling, in an afternoon",

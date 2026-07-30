@@ -24,10 +24,12 @@ const canonical = new URL(localePath(locale, ruta), site).href;
 // Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
+// En el orden en que las secciones aparecen al hacer scroll.
 const nav = [
   { href: `${inicio}#producto`, label: c.nav.producto },
-  { href: `${inicio}#niveles`, label: c.nav.niveles },
   { href: `${inicio}#planning`, label: c.nav.planning },
+  { href: `${inicio}#escala`, label: c.nav.escala },
+  { href: `${inicio}#niveles`, label: c.nav.niveles },
   { href: localePath(locale, 'docs/'), label: c.nav.docs },
 ];
 ---
@@ -69,22 +71,23 @@ const nav = [
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
-      <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
+      {/* Raíles de logic2b.com: contenedor 1440px, gutter 24→32px, 50px de alto. */}
+      <div class="mx-auto flex h-[50px] max-w-[1440px] items-center gap-[34px] px-[clamp(24px,4vw,32px)]">
         {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}
         <Wordmark class="text-lg" href={localePath(locale)} />
-        <nav class="ml-4 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+        <nav class="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
-        <div class="ml-auto flex items-center gap-2">
+        <div class="ml-auto flex items-center gap-4">
           <a
             href="/demo/"
-            class="hidden rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+            class="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
           >{c.nav.demo}</a>
           <a
             href={`${inicio}#contacto`}
-            class="inline-flex items-center rounded-md bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            class="inline-flex items-center rounded-lg bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >{c.nav.contacto}</a>
         </div>
       </div>
@@ -95,7 +98,8 @@ const nav = [
     </main>
 
     <footer class="border-t border-border bg-muted/40">
-      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      {/* Mismos raíles que el header: el wordmark de arriba y el de abajo alinean. */}
+      <div class="mx-auto max-w-[1440px] px-[clamp(24px,4vw,32px)] py-12">
         <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div class="max-w-sm">
             <div class="flex items-center">

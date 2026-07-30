@@ -37,6 +37,26 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 60 — 2026-07-30 · **El header a los raíles de norte y la landing empieza a vender escalabilidad** (con Andreu · D5.2 temprana)
+
+**Sesión interactiva, dos mandatos de Andreu**: (1) igualar los márgenes del header de la landing con `logic2b-norte`, y los bordes de los botones — que se asemeje a la imagen Logic2B; (2) **prioridad a marketing**: empezar a promocionar el servicio, orientado a **transmitir escalabilidad** (el mandato que el roadmap ya recogía en el Frente D), lo más profesional posible.
+
+**El header, medido contra norte, no estimado.** Norte usa contenedor de `--maxw: 1440px` con gutter `clamp(24px, 4vw, 32px)` y 50px de alto; el nuestro era `max-w-6xl` (1152px), `px-4` (16px) y 56px. En botones, norte fija `--r-btn: 10px` «el mismo en header, prefooter y forms» — y nuestro DS **ya tenía ese valor** en `--radius` (0.625rem), así que igualar es pasar de `rounded-md` (8px) a `rounded-lg` (= `var(--radius)`): **cero tokens nuevos**. Aplicado a los 7 botones/CTA de la landing (header ×2, héroe ×2, planning, niveles, formulario); el footer sube a los mismos raíles para que los dos wordmarks alineen. Verificado computado en navegador: 50px de alto, 1440px, 24px de gutter al viewport de prueba, 10px de radio.
+
+**Marketing: la versión temprana de D5.2 que el propio Frente D deja adelantar** (`FRENTE-D-ESCAPARATE.md` §7: la franja de cifras tiene versión que no depende del portfolio — y Andreu presente pidiendo priorizar marketing es exactamente el «decidir en D0 si se adelantan»). Se construyen las dos piezas de §3 que **no prometen nada inclicable**:
+
+- **La franja de cifras** (§3.2): sección nueva `#escala` entre el planning y los niveles — «1 código para todos los campings · 1 base de datos por camping · 4 niveles del mismo producto · 1 tarde para el alta», numerales grandes en Space Grotesk sobre hairlines. **Solo cifras que ya son verdad hoy**, como exige el doc. La **galería del portfolio (§3.1) NO se abre**: el criterio «nunca prometer en la landing lo que no se puede clicar» sigue mandando y no hay ≥3 demos.
+- **La escalera como recorrido** (§3.3): «¿Cuántas parcelas tienes?» con cuatro chips (menos de 25 · 25–100 · más de 100 · ya tengo web) que señalan la tarjeta de su nivel con el anillo y lo dicen en texto («Tu punto de partida: Camp Solicitudes…»). Vanilla JS sin backend, `aria-pressed` + `role=status`; mientras hay elección, la tarjeta destacada estática **cede el anillo** (CSS por especificidad, no JS), y el segundo clic desmarca.
+- El nav de la landing gana **«Escalabilidad»** y pasa a ordenarse como las secciones al hacer scroll (Producto · El planning · Escalabilidad · Planes · Guías).
+
+**Los seis idiomas a la vez, cada uno en su tono** (es/ca tutean, fr de vous, de con Sie, nl con u): los 6 JSON ganan `nav.escala`, el bloque `escala` y `niveles.selector`, insertados por script para que el diff sean solo las claves nuevas (+46/−2 por fichero, cero ruido de reformateo).
+
+**Trampa de verificación nueva** (a SIGUIENTE-SESION): con `transition-colors` en el elemento, `getComputedStyle` leído en el mismo tick del click devuelve el color **viejo** (t=0 de la transición) — parecía que `aria-pressed:bg-primary` no aplicaba, y aplicaba perfectamente. Se mide tras dejar acabar la transición.
+
+**Verificado** — `pnpm check` **45/45 verde**, 186 páginas construidas. En navegador: métricas del header computadas, recorrido funcionando en es y fr (el mensaje coge el nombre del nivel **ya traducido**: «Camp Moteur»), sin errores de consola.
+
+**Pendiente que deja**: la deuda de despliegue ya son **TRES sesiones (58, 59 y 60)** y esta es la más visible — la landing de venta entera. La galería del portfolio sigue esperando ≥3 demos (gate del ADR D0 intacto).
+
 ### Sesión 59 — 2026-07-29 · **B1 cerrado (11/11) — el formulario que guardaba el otro formulario** · y, a petición de Andreu, **el logo pasa a «Logic2B Campings»**
 
 **Objetivo**: `[B1]` Parte y Ajustes, las dos pantallas que faltaban para cerrar la adopción del DS. Elegido del prompt de la 58 (dashboard = lo que el cliente ve en la demo, sin credenciales).

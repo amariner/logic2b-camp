@@ -7,6 +7,7 @@
     "producto": "Produit",
     "niveles": "Formules",
     "planning": "Le planning",
+    "escala": "Évolutivité",
     "docs": "Guides",
     "demo": "Voir la démo",
     "contacto": "Demander une démo",
@@ -81,6 +82,34 @@
       "Aussi en plan : chaque unité sur la carte de votre camping"
     ]
   },
+  "escala": {
+    "kicker": "Conçu pour évoluer",
+    "titulo": "Un seul moteur. Chaque camping, le sien.",
+    "subtitulo": "La même technologie sert le petit camping familial et le resort du littoral : ce qui change, c’est votre marque, votre configuration et vos données. Le produit est unique — et toujours à jour.",
+    "cifras": [
+      {
+        "n": "1",
+        "titulo": "code pour tous les campings",
+        "texto": "Chaque amélioration arrive chez tous en même temps. Personne ne reste sur une ancienne version."
+      },
+      {
+        "n": "1",
+        "titulo": "base de données par camping",
+        "texto": "La vôtre, isolée par conception. Mélanger les données de deux campings n’est pas improbable : c’est impossible."
+      },
+      {
+        "n": "4",
+        "titulo": "niveaux d’un même produit",
+        "texto": "Du site avec formulaire au moteur avec paiement en ligne. Monter de niveau, c’est activer un réglage, pas migrer."
+      },
+      {
+        "n": "1",
+        "titulo": "après-midi pour la mise en route",
+        "texto": "Avec vos photos, vos types d’hébergement et vos tarifs, votre instance est montée et opérationnelle en un après-midi."
+      }
+    ],
+    "nota": "Et à tous les niveaux : six langues incluses, votre domaine et votre marque."
+  },
   "niveles": {
     "titulo": "Commencez là où vous êtes",
     "subtitulo": "Un même système, quatre niveaux. Vous montez de niveau en changeant un réglage, jamais en changeant de site ni de prestataire.",
@@ -122,12 +151,25 @@
         "nombre": "Camp Moteur",
         "para": "Seulement la gestion",
         "texto": "Le moteur et la gestion connectés à votre site actuel. Sur mesure, quand vous avez déjà un site et qu'il ne manque que le cerveau.",
-        "incluye": ["Moteur + gestion sur votre site", "Intégration sur mesure"],
+        "incluye": [
+          "Moteur + gestion sur votre site",
+          "Intégration sur mesure"
+        ],
         "aMedida": true
       }
     ],
     "nota": "Tarifs sur mesure selon votre camping. Demandez-nous une proposition.",
-    "recomendado": "Recommandé"
+    "recomendado": "Recommandé",
+    "selector": {
+      "pregunta": "Combien d’emplacements avez-vous ?",
+      "opciones": [
+        "Moins de 25",
+        "De 25 à 100",
+        "Plus de 100",
+        "J’ai déjà un site"
+      ],
+      "resultado": "Votre point de départ : {nivel}. Quand vous grandissez, vous montez de niveau en changeant un réglage."
+    }
   },
   "alta": {
     "titulo": "De zéro à la vente, en un après-midi",

@@ -177,6 +177,13 @@ coste:
 Nota de coherencia con el Frente B: todo esto es evolución de B3 (misma app
 `apps/site`, misma marca, mismos tokens). No es una landing nueva.
 
+> **Estado (2026-07-30, sesión 60, Andreu presente)**: las piezas **2 y 3
+> están hechas en su versión temprana** — sección `#escala` con la franja de
+> cifras (solo cifras verdad hoy: 1 código · 1 D1 por camping · 4 niveles ·
+> 1 tarde) y el recorrido «¿cuántas parcelas tienes?» dentro de `#niveles`,
+> en los seis idiomas. La pieza **1 (galería) sigue cerrada** hasta tener ≥3
+> demos que clicar.
+
 ---
 
 ## 4 · Anuncios de muestra (Ads display Google/Meta): "así se captan reservas"
