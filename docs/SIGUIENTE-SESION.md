@@ -6,8 +6,9 @@
 > otra— y destapó un **404 vivo desde ADR 0016** en el único enlace que la
 > landing tenía al mostrador. La **64** (autónoma) metió **el mostrador dentro
 > de la ficha de alojamiento**, precargado con su tipo, con salida conservando
-> fechas cuando ese tipo no entra. Cuando la próxima sesión termine,
-> **reescribe este fichero** con el prompt de la siguiente.
+> fechas cuando ese tipo no entra. **Las dos están desplegadas.** Cuando la
+> próxima sesión termine, **reescribe este fichero** con el prompt de la
+> siguiente.
 
 ---
 
@@ -18,23 +19,24 @@ proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado: **el
 recorrido del prospecto**, por los dos extremos — que las dos caras de la demo se
-encuentren entre sí (63, desplegada) y que la ficha de alojamiento deje reservar
-sin volver a empezar (64, sin desplegar).
+encuentren entre sí (63) y que la ficha de alojamiento deje reservar sin volver
+a empezar (64). **Las dos, en producción.**
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Hay deuda de despliegue: la sesión 64 NO está en producción.** Lo último
-   desplegado es la **63** (versión `c86d5793`, 2026-07-31). La 64 no toca
-   esquema ni datos, así que basta `pnpm --filter @logic-camp/api deploy:demo`
-   desde local. Verificar **contra producción con cache-buster** (`?v=…`): un
-   200 no dice nada (trampa de la 62).
+1. **Nada bloquea: no hay deuda de despliegue.** Las sesiones 63 y 64 salieron
+   a producción el mismo día (versiones `c86d5793` y `bfc479ac`). Si la próxima
+   sesión toca landing, web o marca, verificar **contra producción con
+   cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
+   (trampa de la 62). Ojo con las rutas de la web del tenant: **sin la barra
+   final devuelven 307**, no 404 — seguir la redirección al comprobarlas.
 2. **ADR 0030 sigue en `propuesto`** y no queda nada que vigilar: sus dos
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 
 ## Estado de la entrega
 
-Producción va por la **63** (`c86d5793`). En `main` sin desplegar: la **64**.
+**Todo desplegado y al día**: 63 y 64 en `main` y en producción — última versión **`bfc479ac`** (2026-07-31).
 
 ## ▶ Prompt para pegar
 
