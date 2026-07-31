@@ -489,7 +489,7 @@
   },
   "demo": {
     "banner": "Estás viendo la demo comercial de Logic2B Campings. Los datos se reinician cada noche — habla con nosotros para tu camping.",
-    "mostrador": "Ver el mostrador",
+    "mostrador": "Ver el gestor de camping",
     "nivel": "Nivel",
     "nivel1": "Web",
     "nivel3": "Reservas"

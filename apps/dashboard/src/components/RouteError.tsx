@@ -22,7 +22,7 @@ export function RouteError({ reset }: { error?: unknown; reset?: () => void }) {
               {t('err.reintentar')}
             </Button>
             <Button size="sm" variant="outline" asChild>
-              <Link to="/">{t('err.alPlanning')}</Link>
+              <Link to="/planning">{t('err.alPlanning')}</Link>
             </Button>
           </>
         }
@@ -40,7 +40,7 @@ export function RouteNotFound() {
         description={t('err.noExiste.desc')}
         action={
           <Button size="sm" asChild>
-            <Link to="/">{t('err.alPlanning')}</Link>
+            <Link to="/planning">{t('err.alPlanning')}</Link>
           </Button>
         }
       />

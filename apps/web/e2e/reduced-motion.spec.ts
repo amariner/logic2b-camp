@@ -112,7 +112,15 @@ test('dashboard: planning, diálogo, tooltip y menú sin animación', async ({ p
   await page.goto('/admin/');
   await page.locator('button', { hasText: 'Ver la demo' }).click();
 
-  // el visitante aterriza en el planning (tape chart)
+  // desde la sesión 65 el visitante aterriza en la PORTADA, no en el planning:
+  // al planning se va por la barra lateral (click real — navegar por hash no
+  // recarga y deja dos enlaces activos, trampa de la sesión 58)
+  await expect(page.locator('h1', { hasText: 'Hoy en el camping' })).toBeVisible({
+    timeout: 20_000,
+  });
+  await esperarQuieto(page, 'dashboard portada');
+
+  await page.locator('nav a', { hasText: 'Planning' }).click();
   await expect(page.locator('.lc-bar').first()).toBeVisible({ timeout: 20_000 });
   await esperarQuieto(page, 'dashboard planning');
 

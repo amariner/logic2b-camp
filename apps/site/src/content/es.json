@@ -11,8 +11,7 @@
     "docs": "Guías",
     "demo": "Ver demo",
     "contacto": "Pedir demo",
-    "verDemo": "Ver la demo en vivo",
-    "mostrador": "Ver el mostrador"
+    "verDemo": "Ver la demo en vivo"
   },
   "hero": {
     "kicker": "Software para campings · de Logic2B",
@@ -20,7 +19,7 @@
     "subtitulo": "Una web pública que vende sola y un gestor que tu recepción entiende desde el primer día. Sin hojas de cálculo, sin dobles reservas, sin depender de un portal que se queda tu comisión.",
     "ctaDemo": "Pedir una demo",
     "ctaVer": "Ver la web de ejemplo",
-    "ctaMostrador": "Entrar al mostrador",
+    "ctaMostrador": "Entrar al gestor de camping",
     "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
@@ -217,14 +216,14 @@
     "enviando": "Enviando…",
     "ok": "¡Recibido! Te escribimos en menos de 24 h.",
     "error": "No se pudo enviar. Escríbenos a hola@logic2b.com y lo resolvemos.",
-    "verDemoTexto": "¿Prefieres verla ya? La demo tiene dos caras y las dos están abiertas: la web del camping y el mostrador donde se gestiona.",
-    "verMostrador": "Entrar al mostrador"
+    "verDemoTexto": "¿Prefieres verla ya? La demo tiene dos caras y las dos están abiertas: la web del camping y el gestor con el que se lleva.",
+    "verMostrador": "Entrar al gestor de camping"
   },
   "footer": {
     "tagline": "Software para campings. Web + reservas + gestión, en un solo sistema.",
     "powered": "Un producto de Logic2B · Castellón",
     "demo": "Demo en vivo",
-    "mostrador": "Mostrador en vivo",
+    "mostrador": "Gestor en vivo",
     "producto": "Producto",
     "planes": "Planes",
     "docs": "Guías",

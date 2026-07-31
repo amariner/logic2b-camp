@@ -1,5 +1,12 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 65 (2026-07-31). La **65** (dos encargos de
+> Andreu): el producto pasa a llamarse **«Gestor de camping»** donde era «el
+> mostrador» —respetando los otros dos sentidos de la palabra— y el gestor
+> estrena **portada**: cifras de hoy, rejilla de los trece módulos y las últimas
+> solicitudes, en vez de aterrizar en el planning. **Sin desplegar.** Antes, la
+> 63 y la 64. Texto de la 64 abajo.
+>
 > Reescrito al cerrar la sesión 64 (2026-07-31). Dos sesiones seguidas: la **63**
 > (apunte prioritario de Andreu, **desplegada**) enlazó **las dos caras de la
 > demo** entre sí —web ↔ mostrador, desde la landing y desde cada una a la
@@ -19,13 +26,15 @@ proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado: **el
 recorrido del prospecto**, por los dos extremos — que las dos caras de la demo se
-encuentren entre sí (63) y que la ficha de alojamiento deje reservar sin volver
-a empezar (64). **Las dos, en producción.**
+encuentren entre sí (63), que la ficha de alojamiento deje reservar sin volver a
+empezar (64) y que **entrar al gestor enseñe todo lo que hay** en vez de soltarte
+en el planning (65, sin desplegar).
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Nada bloquea: no hay deuda de despliegue.** Las sesiones 63 y 64 salieron
-   a producción el mismo día (versiones `c86d5793` y `bfc479ac`). Si la próxima
+1. **Hay deuda de despliegue: la sesión 65 NO está en producción.** Lo último
+   desplegado es la **64** (versión `bfc479ac`). La 65 no toca esquema ni datos,
+   así que basta `pnpm --filter @logic-camp/api deploy:demo` desde local. Si la próxima
    sesión toca landing, web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
    (trampa de la 62). Ojo con las rutas de la web del tenant: **sin la barra
@@ -36,7 +45,7 @@ a empezar (64). **Las dos, en producción.**
 
 ## Estado de la entrega
 
-**Todo desplegado y al día**: 63 y 64 en `main` y en producción — última versión **`bfc479ac`** (2026-07-31).
+Producción va por la **64** (`bfc479ac`). En `main` sin desplegar: la **65**.
 
 ## ▶ Prompt para pegar
 
@@ -105,9 +114,16 @@ continúa con el desarrollo de este proyecto
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de las sesiones 63–64)
+## Trampas conocidas (heredadas + las nuevas de las sesiones 63–65)
 
-- **NUEVA (64) — en CSS grid, `1fr` es `minmax(auto, 1fr)`, y `auto` respeta el
+- **NUEVA (65) — «mostrador» significa TRES cosas en este repo y solo una es el
+  nombre del producto.** Antes de renombrar nada: (1) el **widget de
+  disponibilidad** de la web pública (`c.mostrador`, `#mostrador`,
+  `Mostrador.tsx`) es el elemento firma del nivel 3 (ADR 0006); (2) el **canal
+  `walkin`** y la prosa de las guías («el ordenador del mostrador») son el mueble
+  de recepción; (3) solo el **dashboard** era el nombre a cambiar. Un
+  `sed` global habría roto el vocabulario de dominio y el ADR 0006 de una vez.
+- **NUEVA (65) — en CSS grid, `1fr` es `minmax(auto, 1fr)`, y `auto` respeta el
   ancho mínimo INTRÍNSECO del contenido.** Meter el mostrador (cuatro campos y
   un botón) en la columna `1fr` de una rejilla `[1.5fr_1fr]` no lo comprimió:
   **encogió la otra columna** hasta dejar la galería en una tira de ~300px. No

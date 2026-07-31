@@ -17,7 +17,9 @@ export const DOCS_BASE = 'https://camp.logic2b.com/docs';
  * responde la pregunta es peor que no tener `?`.
  */
 const MAPA: Record<string, string | null> = {
-  '/': 'recepcion/planning',
+  // La portada no tiene guía propia todavía: sin página, no se pinta el `?`.
+  '/': null,
+  '/planning': 'recepcion/planning',
   '/plano': 'recepcion/plano',
   '/llegadas': 'recepcion/el-dia',
   '/solicitudes': 'recepcion/solicitudes',

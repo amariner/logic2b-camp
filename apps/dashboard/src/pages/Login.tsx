@@ -1,5 +1,5 @@
 /**
- * Login del mostrador: Better Auth por cookie, sin registro público (ADR 0005).
+ * Login del gestor de camping: Better Auth por cookie, sin registro público (ADR 0005).
  *
  * Es la PRIMERA pantalla del producto (ADR 0020, C3): lleva marca Logic2B —
  * shadcn neutro, isotipo + wordmark como en el shell — no la paleta mediterránea

@@ -31,25 +31,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import {
-  BarChart3,
-  Bell,
-  BookMarked,
-  CalendarRange,
-  ChevronLeft,
-  ClipboardList,
-  CreditCard,
-  DoorOpen,
-  Inbox,
-  LogOut,
-  Map,
-  Menu,
-  Settings,
-  Tag,
-  Tent,
-  Users,
-  type LucideIcon,
-} from 'lucide-react';
+import { ChevronLeft, Home, LogOut, Menu } from 'lucide-react';
 import { StrictMode, useState } from 'react';
 import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
@@ -59,9 +41,11 @@ import DemoBanner from './components/DemoBanner';
 import { RouteError, RouteNotFound } from './components/RouteError';
 import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
+import { NAV_GROUPS } from './lib/nav';
 import Ajustes from './pages/Ajustes';
 import Clientes from './pages/Clientes';
 import Informes from './pages/Informes';
+import Inicio from './pages/Inicio';
 import Inventario from './pages/Inventario';
 import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
@@ -87,39 +71,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-/** Navegación agrupada al estilo ui.logic2b.com (ADR 0017 §3): lo de cada día primero. */
-type TKey = Parameters<typeof t>[0];
-const NAV_GROUPS: { label: TKey; items: [string, TKey, LucideIcon][] }[] = [
-  {
-    label: 'nav.grupo.operacion',
-    items: [
-      ['/', 'nav.planning', CalendarRange],
-      ['/plano', 'nav.plano', Map],
-      ['/llegadas', 'nav.llegadas', DoorOpen],
-      ['/solicitudes', 'nav.solicitudes', Inbox],
-    ],
-  },
-  {
-    label: 'nav.grupo.gestion',
-    items: [
-      ['/reservas', 'nav.reservas', BookMarked],
-      ['/clientes', 'nav.clientes', Users],
-      ['/parte', 'nav.parte', ClipboardList],
-      ['/informes', 'nav.informes', BarChart3],
-      ['/inventario', 'nav.inventario', Tent],
-      ['/tarifas', 'nav.tarifas', Tag],
-    ],
-  },
-  {
-    label: 'nav.grupo.config',
-    items: [
-      ['/notificaciones', 'nav.notificaciones', Bell],
-      ['/pagos', 'nav.pagos', CreditCard],
-      ['/ajustes', 'nav.ajustes', Settings],
-    ],
-  },
-];
 
 const COLLAPSE_KEY = 'lc-sidebar-collapsed';
 
@@ -156,6 +107,21 @@ function SidebarInner({
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 pb-2">
+        {/* Inicio va suelto y arriba, fuera de los grupos: no es "operación
+           diaria", es la portada desde la que se llega a todo lo demás. */}
+        <Link
+          to="/"
+          title={t('nav.inicio')}
+          onClick={onNavigate}
+          activeOptions={{ exact: true }}
+          className={cn(
+            'mt-2 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
+            collapsed && 'justify-center px-0',
+          )}
+        >
+          <Home className="size-4 shrink-0" strokeWidth={2} />
+          {!collapsed && <span className="truncate">{t('nav.inicio')}</span>}
+        </Link>
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
             {!collapsed && (
@@ -338,9 +304,10 @@ const mapSearch = (s: Record<string, unknown>): { date?: string; unit?: string }
 });
 
 const routes = [
+  createRoute({ getParentRoute: () => rootRoute, path: '/', component: Inicio }),
   createRoute({
     getParentRoute: () => rootRoute,
-    path: '/',
+    path: '/planning',
     component: Planning,
     validateSearch: mapSearch,
   }),

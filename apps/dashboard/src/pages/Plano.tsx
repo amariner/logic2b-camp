@@ -185,7 +185,7 @@ export default function Plano() {
     else setOpenId(null);
   };
 
-  const openInPlanning = () => navigate({ to: '/', search: { date, unit: search.unit } as never });
+  const openInPlanning = () => navigate({ to: '/planning', search: { date, unit: search.unit } as never });
 
   return (
     <div className="flex h-full">
