@@ -11,9 +11,12 @@ interface Props {
   typeNames: Record<string, string>;
   locale: string;
   reservarBase?: string;
+  /** ficha de alojamiento: el mostrador contesta solo por este tipo */
+  soloTipo?: string;
+  verOtrosBase?: string;
 }
 
-const { labels, typeNames, locale, reservarBase } = Astro.props;
+const { labels, typeNames, locale, reservarBase, soloTipo, verOtrosBase } = Astro.props;
 ---
 
 <Mostrador
@@ -22,4 +25,6 @@ const { labels, typeNames, locale, reservarBase } = Astro.props;
   typeNames={typeNames}
   locale={locale}
   reservarBase={reservarBase}
+  soloTipo={soloTipo}
+  verOtrosBase={verOtrosBase}
 />

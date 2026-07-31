@@ -26,6 +26,15 @@ type Props = {
   locale: string;
   /** base del funnel (p.ej. /reservar): cada resultado gana su botón "Reservar" */
   reservarBase?: string;
+  /**
+   * Ficha de alojamiento: el mostrador contesta SOLO por este tipo. La API
+   * sigue devolviendo el camping entero (una consulta, sin endpoint nuevo) —
+   * lo que cambia es qué se pinta y, sobre todo, qué se dice cuando ESTE tipo
+   * no entra: sin salida, la ficha es un callejón.
+   */
+  soloTipo?: string;
+  /** a dónde mandar al visitante cuando su tipo no queda libre (el mostrador general) */
+  verOtrosBase?: string;
 };
 
 const plus = (days: number) => {
@@ -43,7 +52,14 @@ const eur = (cents: number, locale: string) =>
     minimumFractionDigits: 0,
   }).format(cents / 100);
 
-export default function Mostrador({ labels, typeNames, locale, reservarBase }: Props) {
+export default function Mostrador({
+  labels,
+  typeNames,
+  locale,
+  reservarBase,
+  soloTipo,
+  verOtrosBase,
+}: Props) {
   const [from, setFrom] = useState(plus(14));
   const [to, setTo] = useState(plus(17));
   const [adults, setAdults] = useState(2);
@@ -102,8 +118,23 @@ export default function Mostrador({ labels, typeNames, locale, reservarBase }: P
 
   const closed =
     state === 'done' && results.length > 0 && results.every((r) => r.status === 'closed');
-  const available = results.filter((r) => r.status === 'available' && r.totalPriceCents !== null);
+  const libres = results.filter((r) => r.status === 'available' && r.totalPriceCents !== null);
+  // en la ficha solo interesa SU tipo; el resto del camping se sigue consultando
+  // igual porque es lo que permite ofrecer la salida cuando este no entra.
+  const available = soloTipo ? libres.filter((r) => r.unitTypeId === soloTipo) : libres;
   const soldOut = state === 'done' && !closed && available.length === 0;
+  // ¿el camping tiene algo libre aunque ESTE tipo no? entonces hay a dónde ir
+  const hayAlternativa = soloTipo ? libres.length > 0 : false;
+
+  // el enlace de salida conserva las fechas y el grupo: el visitante no los reescribe
+  const verOtrosHref =
+    verOtrosBase &&
+    `${verOtrosBase}?${new URLSearchParams({
+      from,
+      to,
+      adults: String(adults),
+      children: String(children),
+    })}#mostrador`;
 
   // "cerrado" con la fecha REAL de apertura que devuelve la API (seasons_calendar)
   const closedMessage = useMemo(() => {
@@ -190,7 +221,16 @@ export default function Mostrador({ labels, typeNames, locale, reservarBase }: P
       {!datesOk && <p className="mt-3 text-[13px] text-mar">{labels.fechasInvalidas}</p>}
       {state === 'error' && <p className="mt-3 text-[13px] text-mar">{labels.error}</p>}
       {closed && <p className="mt-4 text-[15px] font-medium">{closedMessage}</p>}
-      {soldOut && <p className="mt-4 text-[15px] font-medium">{labels.agotado}</p>}
+      {soldOut && (
+        <p className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[15px] font-medium">
+          <span>{soloTipo ? (labels.agotadoTipo ?? labels.agotado) : labels.agotado}</span>
+          {hayAlternativa && verOtrosHref && (
+            <a href={verOtrosHref} className="text-[14px] font-semibold text-pino underline">
+              {labels.verOtros} →
+            </a>
+          )}
+        </p>
+      )}
 
       {/* skeleton mientras responde la API: la página no salta */}
       {state === 'loading' && (
@@ -212,7 +252,11 @@ export default function Mostrador({ labels, typeNames, locale, reservarBase }: P
 
       {/* resultados EN la página, sin salto */}
       {state !== 'loading' && available.length > 0 && (
-        <ul className="mt-5 grid gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/10 bg-tinta/10 sm:grid-cols-2 lg:grid-cols-3">
+        <ul
+          className={`mt-5 grid gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/10 bg-tinta/10 ${
+            soloTipo ? '' : 'sm:grid-cols-2 lg:grid-cols-3'
+          }`}
+        >
           {available.map((r) => (
             <li key={r.unitTypeId} className="flex flex-col gap-1 bg-hueso p-5">
               <div className="flex items-baseline justify-between gap-2">

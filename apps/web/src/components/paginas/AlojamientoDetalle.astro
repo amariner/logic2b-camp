@@ -54,7 +54,14 @@ const jsonLd = {
   },
 };
 
-const ctaHref = mode === 'instant' ? `${localePath(locale)}#mostrador` : localePath(locale, '/contacto');
+const instant = mode === 'instant';
+// conmutador de nivel de demo (ADR 0013): mismo patrón que Home — con el switch
+// se generan LAS DOS variantes y el CSS decide, sin recargar ni pedir nada.
+const showTierSwitch = config.demoTierSwitch === true;
+// regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle
+// no lo arrastra (misma razón que en Home.astro).
+const HeroMostrador =
+  instant || showTierSwitch ? (await import('../HeroMostrador.astro')).default : null;
 ---
 
 <Base locale={locale} path={path} title={`${nombre} | ${config.name}`} description={a.fichas[tipo.id]}>
@@ -135,13 +142,43 @@ const ctaHref = mode === 'instant' ? `${localePath(locale)}#mostrador` : localeP
           </ul>
         </div>
 
-        <a
-          href={ctaHref}
-          class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
-        >
-          {a.consultar} →
-        </a>
+        {/* Nivel 1: sin motor no hay nada que consultar — se pregunta. */}
+        {(!instant || showTierSwitch) && (
+          <a
+            href={localePath(locale, '/contacto')}
+            data-hero-nivel={showTierSwitch ? '1' : undefined}
+            class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
+          >
+            {a.consultar} →
+          </a>
+        )}
       </div>
     </div>
+
+    {/* Nivel 3: el mostrador AQUÍ, contestando por este tipo. Antes el CTA
+       devolvía al visitante a la home y perdía por el camino lo único que
+       importaba: qué estaba mirando.
+
+       A ancho completo y FUERA de la rejilla a propósito: la barra tiene cuatro
+       campos y un botón, así que su ancho mínimo intrínseco es grande, y dentro
+       de la columna de `1fr` se comía el `1.5fr` de la galería —las fotos, que
+       son lo que vende— hasta dejarla en una tira. */}
+    {(instant || showTierSwitch) && HeroMostrador && (
+      <div
+        id="mostrador"
+        class="mt-14 scroll-mt-28 border-t border-arena/50 pt-10"
+        data-hero-nivel={showTierSwitch ? '3' : undefined}
+      >
+        <h2 class="font-display mb-4 text-[22px] font-semibold">{f.disponibilidadTitulo}</h2>
+        <HeroMostrador
+          labels={c.mostrador}
+          typeNames={c.tipos.nombres}
+          locale={locale}
+          reservarBase={localePath(locale, '/reservar')}
+          soloTipo={tipo.id}
+          verOtrosBase={localePath(locale)}
+        />
+      </div>
+    )}
   </section>
 </Base>

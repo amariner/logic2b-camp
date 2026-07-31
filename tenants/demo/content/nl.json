@@ -44,6 +44,8 @@
     "unidadesLibres": "vrij",
     "quedanPocas": "nog maar enkele",
     "agotado": "Geen beschikbaarheid op die data",
+    "agotadoTipo": "Deze accommodatie is niet vrij op die data.",
+    "verOtros": "Bekijk wat wel vrij is",
     "cerrado": "Gesloten op die data",
     "cerradoEl": "Gesloten op die data — we openen op {fecha}",
     "noEntra": "Niet beschikbaar voor die groep",
@@ -152,7 +154,8 @@
       "estanciaMin": "minimaal verblijf {n} nachten",
       "estanciaMin1": "geen minimaal verblijf",
       "llegadaSabado": "aankomst op zaterdag",
-      "notaPrecios": "Basisprijs per nacht met {n} personen inbegrepen. De eindprijs wordt altijd berekend bij het zoeken naar data."
+      "notaPrecios": "Basisprijs per nacht met {n} personen inbegrepen. De eindprijs wordt altijd berekend bij het zoeken naar data.",
+      "disponibilidadTitulo": "Vrij op uw data?"
     }
   },
   "instalaciones": {

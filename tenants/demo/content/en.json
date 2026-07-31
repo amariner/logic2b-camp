@@ -44,6 +44,8 @@
     "unidadesLibres": "available",
     "quedanPocas": "only a few left",
     "agotado": "No availability on those dates",
+    "agotadoTipo": "This accommodation isn't available on those dates.",
+    "verOtros": "See what is available",
     "cerrado": "Closed on those dates",
     "cerradoEl": "Closed on those dates — we open on {fecha}",
     "noEntra": "Not available for that group",
@@ -152,7 +154,8 @@
       "estanciaMin": "minimum stay {n} nights",
       "estanciaMin1": "no minimum stay",
       "llegadaSabado": "Saturday arrival",
-      "notaPrecios": "Base price per night with {n} people included. The final price is always calculated when you search for dates."
+      "notaPrecios": "Base price per night with {n} people included. The final price is always calculated when you search for dates.",
+      "disponibilidadTitulo": "Available for your dates?"
     }
   },
   "instalaciones": {

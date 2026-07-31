@@ -44,6 +44,8 @@
     "unidadesLibres": "frei",
     "quedanPocas": "nur noch wenige",
     "agotado": "Keine Verfügbarkeit an diesen Daten",
+    "agotadoTipo": "Diese Unterkunft ist an diesen Daten nicht frei.",
+    "verOtros": "Sehen, was noch frei ist",
     "cerrado": "An diesen Daten geschlossen",
     "cerradoEl": "An diesen Daten geschlossen — wir öffnen am {fecha}",
     "noEntra": "Für diese Gruppe nicht verfügbar",
@@ -152,7 +154,8 @@
       "estanciaMin": "Mindestaufenthalt {n} Nächte",
       "estanciaMin1": "kein Mindestaufenthalt",
       "llegadaSabado": "Anreise samstags",
-      "notaPrecios": "Grundpreis pro Nacht mit {n} inbegriffenen Personen. Der Endpreis wird immer bei der Datumssuche berechnet."
+      "notaPrecios": "Grundpreis pro Nacht mit {n} inbegriffenen Personen. Der Endpreis wird immer bei der Datumssuche berechnet.",
+      "disponibilidadTitulo": "Zu Ihren Daten frei?"
     }
   },
   "instalaciones": {

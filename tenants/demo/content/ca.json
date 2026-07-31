@@ -44,6 +44,8 @@
     "unidadesLibres": "lliures",
     "quedanPocas": "en queden poques",
     "agotado": "Sense disponibilitat en eixes dates",
+    "agotadoTipo": "Aquest allotjament no queda lliure en aquestes dates.",
+    "verOtros": "Veure què queda lliure",
     "cerrado": "Tancat en eixes dates",
     "cerradoEl": "Tancat en eixes dates — obrim el {fecha}",
     "noEntra": "No disponible per a eixe grup",
@@ -152,7 +154,8 @@
       "estanciaMin": "estada mínima {n} nits",
       "estanciaMin1": "sense estada mínima",
       "llegadaSabado": "arribada en dissabte",
-      "notaPrecios": "Preu base per nit amb {n} persones incloses. El preu final es calcula sempre en buscar dates."
+      "notaPrecios": "Preu base per nit amb {n} persones incloses. El preu final es calcula sempre en buscar dates.",
+      "disponibilidadTitulo": "Lliure per a les teves dates?"
     }
   },
   "instalaciones": {

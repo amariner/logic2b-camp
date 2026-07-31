@@ -44,6 +44,8 @@
     "unidadesLibres": "libres",
     "quedanPocas": "quedan pocas",
     "agotado": "Sin disponibilidad en esas fechas",
+    "agotadoTipo": "Este alojamiento no queda libre en esas fechas.",
+    "verOtros": "Ver qué queda libre",
     "cerrado": "Cerrado en esas fechas",
     "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
     "noEntra": "No disponible para ese grupo",
@@ -152,7 +154,8 @@
       "estanciaMin": "estancia mínima {n} noches",
       "estanciaMin1": "sin estancia mínima",
       "llegadaSabado": "llegada en sábado",
-      "notaPrecios": "Precio base por noche con {n} personas incluidas. El precio final se calcula siempre al buscar fechas."
+      "notaPrecios": "Precio base por noche con {n} personas incluidas. El precio final se calcula siempre al buscar fechas.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
     }
   },
   "instalaciones": {
