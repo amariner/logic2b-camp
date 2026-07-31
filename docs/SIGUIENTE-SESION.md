@@ -4,7 +4,7 @@
 > Andreu): la portada gana **las tres listas del día** —entradas, salidas y
 > solicitudes en tres columnas— y el **wordmark del gestor enlaza** («Logic2B» a
 > la matriz, «Campings» al sitio del producto, como en la landing).
-> **Sin desplegar.** Texto de la 65 abajo.
+> **Desplegada.** Texto de la 65 abajo.
 >
 > Reescrito al cerrar la sesión 65 (2026-07-31). La **65** (dos encargos de
 > Andreu): el producto pasa a llamarse **«Gestor de camping»** donde era «el
@@ -38,9 +38,8 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Hay deuda de despliegue: la sesión 66 NO está en producción.** Lo último
-   desplegado es la **65** (versión `f133e692`). La 66 no toca esquema ni datos:
-   basta `pnpm --filter @logic-camp/api deploy:demo` desde local. Si la próxima
+1. **Nada bloquea: no hay deuda de despliegue.** De la 63 a la 66, todo en
+   producción (última versión `b65a5dfb`). Si la próxima
    sesión toca landing, web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
    (trampa de la 62, que **volvió a morder en la 65**: `Cache-Control: no-cache`
@@ -53,7 +52,7 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## Estado de la entrega
 
-Producción va por la **65** (`f133e692`). En `main` sin desplegar: la **66**.
+**Todo desplegado y al día**: 63–66 en `main` y en producción — última versión **`b65a5dfb`** (2026-08-01).
 
 ## ▶ Prompt para pegar
 
