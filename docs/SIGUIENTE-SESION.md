@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 66 (2026-08-01). La **66** (dos encargos de
+> Andreu): la portada gana **las tres listas del día** —entradas, salidas y
+> solicitudes en tres columnas— y el **wordmark del gestor enlaza** («Logic2B» a
+> la matriz, «Campings» al sitio del producto, como en la landing).
+> **Sin desplegar.** Texto de la 65 abajo.
+>
 > Reescrito al cerrar la sesión 65 (2026-07-31). La **65** (dos encargos de
 > Andreu): el producto pasa a llamarse **«Gestor de camping»** donde era «el
 > mostrador» —respetando los otros dos sentidos de la palabra— y el gestor
@@ -28,12 +34,13 @@ es una **demo fake** — nada de servicios externos reales. Lo último cerrado: 
 recorrido del prospecto**, por los dos extremos — que las dos caras de la demo se
 encuentren entre sí (63), que la ficha de alojamiento deje reservar sin volver a
 empezar (64) y que **entrar al gestor enseñe todo lo que hay** en vez de soltarte
-en el planning (65). **Las tres, en producción.**
+en el planning (65), con **las tres listas del día** y el wordmark enlazado (66).
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Nada bloquea: no hay deuda de despliegue.** 63, 64 y 65 están en
-   producción (última versión `f133e692`). Si la próxima
+1. **Hay deuda de despliegue: la sesión 66 NO está en producción.** Lo último
+   desplegado es la **65** (versión `f133e692`). La 66 no toca esquema ni datos:
+   basta `pnpm --filter @logic-camp/api deploy:demo` desde local. Si la próxima
    sesión toca landing, web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
    (trampa de la 62, que **volvió a morder en la 65**: `Cache-Control: no-cache`
@@ -46,7 +53,7 @@ en el planning (65). **Las tres, en producción.**
 
 ## Estado de la entrega
 
-**Todo desplegado y al día**: 63, 64 y 65 en `main` y en producción — última versión **`f133e692`** (2026-07-31).
+Producción va por la **65** (`f133e692`). En `main` sin desplegar: la **66**.
 
 ## ▶ Prompt para pegar
 
@@ -115,7 +122,15 @@ continúa con el desarrollo de este proyecto
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de las sesiones 63–65)
+## Trampas conocidas (heredadas + las nuevas de las sesiones 63–66)
+
+- **NUEVA (66) — un estado que hoy vale lo mismo en TODAS las filas no informa,
+  decora.** La columna de salidas marcaba con chip lo pendiente; con los datos
+  reales de una mañana normal (10 salidas vivas, 0 con check-out) eso son diez
+  chips negros idénticos. No se ve en la captura —parece deliberado—: se ve
+  **contando los datos** (`?departuresOn=` y mirar cuántos `checkedOutAt` hay).
+  Criterio que queda: el chip marca lo que ya pasó por recepción, el gris es el
+  defecto.
 
 - **NUEVA (65) — «mostrador» significa TRES cosas en este repo y solo una es el
   nombre del producto.** Antes de renombrar nada: (1) el **widget de

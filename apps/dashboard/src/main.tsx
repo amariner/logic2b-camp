@@ -99,10 +99,12 @@ function SidebarInner({
   return (
     <>
       <div className="flex h-14 items-center gap-2 px-3">
-        {/* Plegada, la sidebar son 56px: ahí solo cabe «2B» (sesión 59). */}
+        {/* Plegada, la sidebar son 56px: ahí solo cabe «2B» (sesión 59) — y
+           plegada no enlaza: lo que se recorta es el dibujo, no la marca. */}
         <Wordmark
           className="text-base"
           variant={collapsed ? 'compact' : 'full'}
+          enlazado={!collapsed}
         />
       </div>
 
@@ -253,7 +255,7 @@ function Shell() {
           >
             <Menu className="size-5" />
           </Button>
-          <Wordmark className="text-sm" />
+          <Wordmark className="text-sm" enlazado />
         </header>
 
         {/* Solo se pinta para el visitante anónimo de la demo (ADR 0029). */}

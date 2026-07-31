@@ -18,7 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton, cn
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
-import { apiGet, type EnquiryItem, type ReportsData } from '../api';
+import { apiGet, type BookingListItem, type EnquiryItem, type ReportsData } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur } from '../lib/format';
@@ -106,6 +106,90 @@ function KpiEsqueleto() {
   );
 }
 
+/**
+ * Una de las tres listas del día. Las tres comparten cabecera, esqueleto, vacío
+ * y error: si vivieran por separado, la de solicitudes acabaría con un estado
+ * vacío distinto del de entradas el día que alguien toque una — el mismo motivo
+ * por el que la rejilla de las listas vive en una constante (sesiones 55 y 59).
+ *
+ * Lo único que cambia por lista es CÓMO se pinta la fila, así que eso es lo que
+ * se recibe: las tres columnas son `[nombre, dato, estado]`, y la del medio se
+ * encoge antes que el nombre.
+ */
+function Panel<T extends { id: string }>({
+  titulo,
+  to,
+  enlace,
+  query,
+  filas,
+  fila,
+  vacio,
+}: {
+  titulo: string;
+  to: string;
+  enlace: string;
+  query: { isPending: boolean; isError: boolean; error: unknown; refetch: () => unknown };
+  filas: T[];
+  fila: (item: T) => React.ReactNode;
+  vacio: string;
+}) {
+  return (
+    <section className="flex min-w-0 flex-col">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+          {titulo}
+        </h2>
+        <Link
+          to={to}
+          className={cn(
+            'shrink-0 rounded-(--radius) text-[13px] font-medium text-primary',
+            focusRing,
+          )}
+        >
+          {enlace} →
+        </Link>
+      </div>
+
+      <Card className="mt-3 flex-1">
+        <CardContent className="p-0">
+          {query.isError ? (
+            <div className="p-4">
+              <QueryError error={query.error} onRetry={() => void query.refetch()} />
+            </div>
+          ) : query.isPending ? (
+            <ul className="divide-y divide-border">
+              {Array.from({ length: 3 }, (_, i) => (
+                <li key={i} className="flex items-center gap-3 px-4 py-3">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="ml-auto h-4 w-16" />
+                </li>
+              ))}
+            </ul>
+          ) : filas.length === 0 ? (
+            <p className="px-4 py-6 text-center text-[13px] text-muted-foreground">{vacio}</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {filas.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    to={to}
+                    className={cn(
+                      'grid w-full grid-cols-[minmax(0,1fr)_minmax(0,auto)_auto] items-center gap-x-3 px-4 py-2.5 text-left transition-colors hover:bg-muted/50',
+                      focusRing,
+                    )}
+                  >
+                    {fila(item)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+    </section>
+  );
+}
+
 export default function Inicio() {
   const { hoy, mes } = rangos();
 
@@ -121,6 +205,22 @@ export default function Inicio() {
     queryKey: ['enquiries'],
     queryFn: () => apiGet<{ items: EnquiryItem[] }>('/api/admin/enquiries'),
   });
+  // Mismas claves que la pantalla de Llegadas: al saltar de aquí a `/llegadas`
+  // la lista ya está en caché y no parpadea.
+  const qEntradas = useQuery({
+    queryKey: ['bookings', 'arrivals', hoy.from],
+    queryFn: () =>
+      apiGet<{ items: BookingListItem[] }>(
+        `/api/admin/bookings?arrivalsOn=${hoy.from}&pageSize=100`,
+      ),
+  });
+  const qSalidas = useQuery({
+    queryKey: ['bookings', 'departures', hoy.from],
+    queryFn: () =>
+      apiGet<{ items: BookingListItem[] }>(
+        `/api/admin/bookings?departuresOn=${hoy.from}&pageSize=100`,
+      ),
+  });
 
   // Ocupación de hoy: unidades ocupadas sobre el parque entero. `occupancy` viene
   // por tipo y en NOCHES; como el rango es de una sola noche, noches = unidades.
@@ -134,6 +234,11 @@ export default function Inicio() {
 
   // Las cinco más recientes: `/enquiries` ya llega ordenado por fecha descendente.
   const solicitudes = (qSol.data?.items ?? []).slice(0, 5);
+  // Canceladas fuera: no llegan ni salen (mismo criterio que `Llegadas`).
+  const vivas = (items?: BookingListItem[]) =>
+    (items ?? []).filter((b) => b.status !== 'cancelled');
+  const entradas = vivas(qEntradas.data?.items).slice(0, 5);
+  const salidas = vivas(qSalidas.data?.items).slice(0, 5);
 
   return (
     <div className="min-h-0 flex-1 overflow-auto">
@@ -226,67 +331,85 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* ---------- lo que ha entrado solo ---------- */}
-        <section>
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-              {t('ini.solicitudes')}
-            </h2>
-            <Link
-              to="/solicitudes"
-              className={cn('rounded-(--radius) text-[13px] font-medium text-primary', focusRing)}
-            >
-              {t('ini.solicitudesTodas')} →
-            </Link>
-          </div>
-
-          <Card className="mt-3">
-            <CardContent className="p-0">
-              {qSol.isError ? (
-                <div className="p-4">
-                  <QueryError error={qSol.error} onRetry={() => void qSol.refetch()} />
-                </div>
-              ) : qSol.isPending ? (
-                <ul className="divide-y divide-border">
-                  {Array.from({ length: 3 }, (_, i) => (
-                    <li key={i} className="flex items-center gap-3 px-4 py-3">
-                      <Skeleton className="h-3 w-16" />
-                      <Skeleton className="h-3 w-40" />
-                      <Skeleton className="ml-auto h-4 w-20" />
-                    </li>
-                  ))}
-                </ul>
-              ) : solicitudes.length === 0 ? (
-                <p className="px-4 py-6 text-center text-[13px] text-muted-foreground">
-                  {t('ini.solicitudesVacio')}
-                </p>
-              ) : (
-                <ul className="divide-y divide-border">
-                  {solicitudes.map((s) => (
-                    <li key={s.id}>
-                      <Link
-                        to="/solicitudes"
-                        className={cn(
-                          'grid w-full grid-cols-[1fr_auto] items-center gap-x-3 gap-y-0.5 px-4 py-3 text-left transition-colors hover:bg-muted/50 sm:grid-cols-[150px_1fr_104px]',
-                          focusRing,
-                        )}
-                      >
-                        <span className="truncate font-medium">{s.contact.name}</span>
-                        <span className="tnum truncate text-[13px] text-muted-foreground">
-                          {s.dateFrom && s.dateTo
-                            ? `${fechaCorta(s.dateFrom)} – ${fechaCorta(s.dateTo)}`
-                            : t('ini.sinFechas')}
-                        </span>
-                        <span className={`lc-chip sol-${s.status} justify-self-end`}>
-                          {t(`sol.${s.status}`)}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+        {/* ---------- las tres listas del día, en paralelo ----------
+           Entradas y salidas son la operación de HOY; solicitudes es lo que ha
+           entrado sin que estuvieras. Las tres caben de un vistazo y cada una
+           sale a su pantalla. Debajo de `xl` se apilan: tres columnas a 1024px
+           dejarían los nombres en un acordeón ilegible. */}
+        <section className="grid gap-4 xl:grid-cols-3">
+          <Panel
+            titulo={t('ini.entradas')}
+            to="/llegadas"
+            enlace={t('ini.verTodas')}
+            query={qEntradas}
+            vacio={t('ini.entradasVacio')}
+            filas={entradas}
+            fila={(b) => (
+              <>
+                <span className="truncate font-medium">{b.leadName ?? b.code}</span>
+                <span className="tnum truncate text-[13px] text-muted-foreground">
+                  {b.unitCode ?? t('dia.sinUnidad')}
+                </span>
+                {b.checkedInAt ? (
+                  <span className="lc-chip sol-converted justify-self-end">
+                    {t('ini.dentro')}
+                  </span>
+                ) : (
+                  <span className="justify-self-end text-[12px] text-muted-foreground">
+                    {t('ini.porLlegar')}
+                  </span>
+                )}
+              </>
+            )}
+          />
+          <Panel
+            titulo={t('ini.salidas')}
+            to="/llegadas"
+            enlace={t('ini.verTodas')}
+            query={qSalidas}
+            vacio={t('ini.salidasVacio')}
+            filas={salidas}
+            fila={(b) => (
+              <>
+                <span className="truncate font-medium">{b.leadName ?? b.code}</span>
+                <span className="tnum truncate text-[13px] text-muted-foreground">
+                  {b.unitCode ?? t('dia.sinUnidad')}
+                </span>
+                {/* Mismo criterio que en entradas: el chip marca lo que YA pasó
+                   por recepción y el gris es el estado por defecto. Al revés,
+                   una mañana normal —hoy: 10 salidas, 0 con check-out— son diez
+                   chips idénticos gritando, que es ruido, no información. */}
+                {b.checkedOutAt ? (
+                  <span className="lc-chip sol-converted justify-self-end">{t('ini.fuera')}</span>
+                ) : (
+                  <span className="justify-self-end text-[12px] text-muted-foreground">
+                    {t('ini.porSalir')}
+                  </span>
+                )}
+              </>
+            )}
+          />
+          <Panel
+            titulo={t('ini.solicitudes')}
+            to="/solicitudes"
+            enlace={t('ini.solicitudesTodas')}
+            query={qSol}
+            vacio={t('ini.solicitudesVacio')}
+            filas={solicitudes}
+            fila={(e) => (
+              <>
+                <span className="truncate font-medium">{e.contact.name}</span>
+                <span className="tnum truncate text-[13px] text-muted-foreground">
+                  {e.dateFrom && e.dateTo
+                    ? `${fechaCorta(e.dateFrom)} – ${fechaCorta(e.dateTo)}`
+                    : t('ini.sinFechas')}
+                </span>
+                <span className={`lc-chip sol-${e.status} justify-self-end`}>
+                  {t(`sol.${e.status}`)}
+                </span>
+              </>
+            )}
+          />
         </section>
       </div>
     </div>
