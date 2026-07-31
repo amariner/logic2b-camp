@@ -11,14 +11,16 @@
     "docs": "Guides",
     "demo": "See demo",
     "contacto": "Request a demo",
-    "verDemo": "See the live demo"
+    "verDemo": "See the live demo",
+    "mostrador": "See the front desk"
   },
   "hero": {
     "kicker": "Software for campsites · by Logic2B",
     "titulo": "Your campsite's website and front desk, in one system.",
     "subtitulo": "A public website that sells on its own and a manager your front desk understands from day one. No spreadsheets, no double bookings, no portal keeping its commission.",
     "ctaDemo": "Request a demo",
-    "ctaVer": "See the live demo",
+    "ctaVer": "See the example website",
+    "ctaMostrador": "Enter the front desk",
     "nota": "A new campsite goes live in an afternoon. No lock-in to start.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
   },
@@ -215,12 +217,14 @@
     "enviando": "Sending…",
     "ok": "Got it! We'll write to you within 24 h.",
     "error": "Couldn't send. Email us at hola@logic2b.com and we'll sort it out.",
-    "verDemoTexto": "Rather see it now? Enter the live demo with sample data."
+    "verDemoTexto": "Rather see it now? The demo has two sides and both are open: the campsite website and the front desk where it's all managed.",
+    "verMostrador": "Enter the front desk"
   },
   "footer": {
     "tagline": "Software for campsites. Website + bookings + management, in one system.",
     "powered": "A Logic2B product · Spain",
     "demo": "Live demo",
+    "mostrador": "Live front desk",
     "producto": "Product",
     "planes": "Plans",
     "docs": "Guides",

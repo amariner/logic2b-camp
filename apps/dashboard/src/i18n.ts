@@ -22,6 +22,7 @@ const es = {
   'demo.banner':
     'Estás viendo una demostración con datos ficticios. Puedes mover reservas en el planning y hacer check-in; lo demás es solo lectura.',
   'demo.soloLectura': 'En la demo esto es solo lectura. El planning sí se puede tocar.',
+  'demo.verWeb': 'Ver la web del camping',
   'demo.restablecer': 'Restablecer datos',
   'demo.restableciendo': 'Restableciendo…',
   'demo.restablecerTitulo': '¿Restablecer los datos de la demo?',

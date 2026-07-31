@@ -22,7 +22,7 @@ import {
   Spinner,
   toast,
 } from '@logic-camp/ui';
-import { Info } from 'lucide-react';
+import { ExternalLink, Info } from 'lucide-react';
 import { useResetDemo, useRol } from '../auth';
 import { t } from '../i18n';
 
@@ -35,6 +35,14 @@ export default function DemoBanner() {
     <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground">
       <Info className="size-3.5 shrink-0" aria-hidden />
       <p className="min-w-0 flex-1">{t('demo.banner')}</p>
+      {/* La vuelta a la otra cara de la demo: quien entra por la landing
+          directo al mostrador no tiene forma de llegar a la web del camping. */}
+      <Button asChild type="button" variant="ghost" size="sm">
+        <a href="/demo/">
+          <ExternalLink className="size-3.5" aria-hidden />
+          {t('demo.verWeb')}
+        </a>
+      </Button>
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button type="button" variant="outline" size="sm" disabled={reset.isPending}>

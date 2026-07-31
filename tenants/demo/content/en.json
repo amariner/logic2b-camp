@@ -486,6 +486,7 @@
   },
   "demo": {
     "banner": "You're viewing the Logic2B Campings commercial demo. Data resets nightly — get in touch about your own campsite.",
+    "mostrador": "See the front desk",
     "nivel": "Level",
     "nivel1": "Web",
     "nivel3": "Bookings"

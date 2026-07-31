@@ -71,10 +71,17 @@ const iconosProblema = [
             href="#contacto"
             class="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
           >{c.hero.ctaDemo}</a>
+          {/* Las DOS caras de la demo, con el mismo peso: quien llega aquí no
+              sabe que existe un mostrador detrás de la web, y ese es justo el
+              producto que se vende. Un solo enlace escondía la mitad. */}
           <a
             href="/demo/"
             class="inline-flex items-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
           >{c.hero.ctaVer} →</a>
+          <a
+            href="/admin/"
+            class="inline-flex items-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          >{c.hero.ctaMostrador} →</a>
         </div>
         <p class="mt-6 text-sm text-white/70">{c.hero.nota}</p>
       </div>
@@ -222,7 +229,7 @@ const iconosProblema = [
         ))
       }
       <a
-        href="/demo/admin/"
+        href="/admin/"
         class="lc-reveal inline-flex items-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
       >{c.planning.cta} →</a>
     </div>
@@ -482,7 +489,10 @@ const iconosProblema = [
     </form>
 
     <p class="mt-6 text-sm text-muted-foreground">
-      {c.contacto.verDemoTexto} <a href="/demo/" class="font-medium text-foreground underline underline-offset-4">{c.nav.verDemo} →</a>
+      {c.contacto.verDemoTexto}
+      <a href="/demo/" class="font-medium text-foreground underline underline-offset-4">{c.nav.verDemo} →</a>
+      <span class="mx-1.5 text-border" aria-hidden="true">·</span>
+      <a href="/admin/" class="font-medium text-foreground underline underline-offset-4">{c.contacto.verMostrador} →</a>
     </p>
   </section>
 </Base>
