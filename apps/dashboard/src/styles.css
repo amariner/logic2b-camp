@@ -111,6 +111,11 @@ html {
   background: var(--lc-status-blocked);
   color: var(--background);
 }
+.lc-chip.st-inactive {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+  text-decoration: line-through;
+}
 
 .lc-grab {
   cursor: grab;
@@ -258,6 +263,31 @@ html {
   outline-offset: 1px;
 }
 
+/* Baja de servicio: toda la ventana del planning deja claro que esa unidad no
+ * acepta altas ni reasignaciones. No es un inventory_block: Inventario la
+ * devuelve a servicio, no el diálogo de levantar bloqueos. */
+.lc-inactive {
+  position: absolute;
+  top: 4px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--destructive) 22%, transparent),
+    color-mix(in oklab, var(--destructive) 22%, transparent) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  border: 1px solid color-mix(in oklab, var(--destructive) 50%, var(--border));
+  color: var(--destructive);
+  font-size: 10px;
+  line-height: 22px;
+  padding-inline: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 /* fin de semana: cabecera por celda; en la malla es UNA capa con gradiente
  * (weekendBackground, packages/config) — mismo token, cero nodos por celda. */
 .lc-weekend {
@@ -341,6 +371,16 @@ html {
     45deg,
     color-mix(in oklab, var(--lc-status-blocked) 22%, transparent),
     color-mix(in oklab, var(--lc-status-blocked) 22%, transparent) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+.plano-lg.lg-inactive {
+  border: 1px solid var(--destructive);
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--destructive) 35%, transparent),
+    color-mix(in oklab, var(--destructive) 35%, transparent) 3px,
     transparent 3px,
     transparent 6px
   );

@@ -61,6 +61,15 @@ describe('seed demo Cala Sereno', () => {
     expect(data.unit_types.length).toBe(8);
   });
 
+  it('siembra dos unidades fuera de servicio sin asignarles reservas', () => {
+    for (const { anchor, seed } of MUESTRA) {
+      const inactivas = seed.units.filter((u) => u.status === 'inactive');
+      expect(inactivas.map((u) => u.code).sort(), anchor).toEqual(['C-10', 'MH-04']);
+      const ids = new Set(inactivas.map((u) => u.id));
+      expect(seed.bookings.some((b) => b.unit_id && ids.has(b.unit_id)), anchor).toBe(false);
+    }
+  });
+
   it('tiene 3 temporadas, 12 extras, ~40 reservas y 15 solicitudes', () => {
     expect(data.seasons_calendar.length).toBe(3);
     expect(data.extras.length).toBe(12);

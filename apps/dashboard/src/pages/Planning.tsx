@@ -553,6 +553,7 @@ export default function Planning() {
       if (
         row?.kind === 'unit' &&
         row.unit.unitTypeId === b.unitTypeId &&
+        row.unit.status === 'active' &&
         row.unit.id !== d.sourceUnitId
       ) {
         const el =
@@ -662,7 +663,7 @@ export default function Planning() {
     if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
     e.preventDefault();
     if (!data) return;
-    const sameType = data.units.filter((u) => u.unitTypeId === b.unitTypeId);
+    const sameType = data.units.filter((u) => u.unitTypeId === b.unitTypeId && u.status === 'active');
     const idx = sameType.findIndex((u) => u.id === sourceUnitId);
     const next = sameType[idx + (e.key === 'ArrowDown' ? 1 : -1)];
     if (next) reassign.mutate({ id: b.id, unitId: next.id, fromUnitId: sourceUnitId });
@@ -697,7 +698,13 @@ export default function Planning() {
 
   const onRowPointerDown = (e: React.PointerEvent<HTMLDivElement>, row: Row, rowTop: number) => {
     // solo el lienzo vacío: las barras y bloqueos capturan su propio pointerdown
-    if (e.button !== 0 || e.target !== e.currentTarget || row.kind !== 'unit') return;
+    if (
+      e.button !== 0 ||
+      e.target !== e.currentTarget ||
+      row.kind !== 'unit' ||
+      row.unit.status !== 'active'
+    )
+      return;
     e.currentTarget.setPointerCapture(e.pointerId);
     const day = dayAtClientX(e.clientX);
     createRef.current = { unit: row.unit, rowTop, startDay: day, endDay: day, moved: false };
@@ -780,7 +787,11 @@ export default function Planning() {
     c.el.style.opacity = '0.5';
     if (c.targetEl) c.targetEl.style.boxShadow = '';
     const row = unitRowUnder(e.clientY);
-    if (row?.kind === 'unit' && row.unit.unitTypeId === c.booking.unitTypeId) {
+    if (
+      row?.kind === 'unit' &&
+      row.unit.unitTypeId === c.booking.unitTypeId &&
+      row.unit.status === 'active'
+    ) {
       const el =
         rowsRef.current?.querySelector<HTMLElement>(`[data-unit-row="${row.unit.id}"]`) ?? null;
       if (el) el.style.boxShadow = 'inset 0 0 0 2px var(--primary)';
@@ -1142,6 +1153,7 @@ export default function Planning() {
 
                 {virtualizer.getVirtualItems().map((vi) => {
                   const row = rows[vi.index]!;
+                  const inactive = row.kind === 'unit' && row.unit.status === 'inactive';
                   return (
                     <div
                       key={row.id}
@@ -1164,7 +1176,7 @@ export default function Planning() {
                       ) : (
                         <div className="flex h-full border-b border-border/40">
                           <div
-                            className={`tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium ${row.unit.id === search.unit ? 'text-primary font-semibold' : ''}`}
+                            className={`tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium ${row.unit.id === search.unit ? 'text-primary font-semibold' : ''}${inactive ? ' text-destructive line-through' : ''}`}
                             style={{ width: LABEL_W }}
                           >
                             {row.unit.code}
@@ -1178,6 +1190,16 @@ export default function Planning() {
                             onPointerUp={onRowPointerUp}
                             onPointerCancel={onRowPointerUp}
                           >
+                            {inactive && (
+                              <div
+                                className="lc-inactive"
+                                style={{ left: 0, width: gridW }}
+                                title={t('inv.inactiva')}
+                                aria-label={t('inv.inactiva')}
+                              >
+                                {t('inv.inactiva')}
+                              </div>
+                            )}
                             {/* bloqueos */}
                             {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
                               const g = barGeometry(

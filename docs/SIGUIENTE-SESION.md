@@ -38,9 +38,10 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Nada bloquea: no hay deuda de despliegue.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`). Si la próxima
-   sesión toca landing, web o marca, verificar **contra producción con
+1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
+   producción (última versión `b65a5dfb`); las sesiones 67–69 esperan un
+   deploy manual con credenciales locales. Si la próxima sesión toca landing,
+   web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
    (trampa de la 62, que **volvió a morder en la 65**: `Cache-Control: no-cache`
    no bastó y `/demo/` devolvió la copia vieja con `cf-cache-status: HIT` — el
@@ -52,7 +53,7 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–68. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–68 quedan pendientes de deploy manual con credenciales locales.
+**Código al día en `main`**: 63–69. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–69 quedan pendientes de deploy manual con credenciales locales.
 
 ## ▶ Prompt para pegar
 
@@ -62,11 +63,7 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[seed] Una o dos unidades fuera de servicio** (recomendado, 58): el estado que la
-  cabecera de Inventario explica no se ve nunca — y de paso se vería en planning
-  y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el relleno ni los
-  invariantes.
-- **[seo] `BreadcrumbList` en las guías** (61): las 25 páginas de documentación
+- **[seo] `BreadcrumbList` en las guías** (recomendado, 61): las 25 páginas de documentación
   son "la superficie de búsqueda larga del producto" y son las únicas con
   jerarquía real (guía → página). La landing ya tiene
   `Organization`/`SoftwareApplication`/`FAQPage`; las guías, ninguno. Va en

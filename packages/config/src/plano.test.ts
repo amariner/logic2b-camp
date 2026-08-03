@@ -117,6 +117,15 @@ describe('unitStateOn', () => {
     expect(unitStateOn('2026-08-10', 'u1', [], [])).toEqual({ kind: 'free' });
   });
 
+  it('fuera de servicio cuando la unidad está inactiva y no tiene una reserva previa', () => {
+    expect(unitStateOn('2026-08-10', 'u1', [], [], 'inactive')).toEqual({ kind: 'inactive' });
+  });
+
+  it('conserva visible una reserva existente aunque la unidad pase a inactiva', () => {
+    const s = unitStateOn('2026-08-12', 'u1', [b({})], [], 'inactive');
+    expect(s).toMatchObject({ kind: 'occupied', bookingId: 'bkg' });
+  });
+
   it('ocupada en una noche intermedia', () => {
     const s = unitStateOn('2026-08-12', 'u1', [b({})], []);
     expect(s).toMatchObject({ kind: 'occupied', bookingId: 'bkg', status: 'confirmed' });

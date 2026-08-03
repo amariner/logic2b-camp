@@ -46,6 +46,7 @@ const LEGEND: { key: TKey; className: string }[] = [
   { key: 'plano.estado.entra', className: 'lg-arrival' },
   { key: 'plano.estado.sale', className: 'lg-departure' },
   { key: 'plano.estado.bloqueada', className: 'lg-blocked' },
+  { key: 'inv.inactiva', className: 'lg-inactive' },
 ];
 
 function PlanoSkeleton() {
@@ -134,7 +135,11 @@ export default function Plano() {
   const stateByCode = useMemo(() => {
     const m = new Map<string, UnitDayState>();
     if (!data) return m;
-    for (const u of data.units) m.set(u.code, unitStateOn(date, u.id, bookings, blocksByUnit));
+    for (const u of data.units)
+      m.set(
+        u.code,
+        unitStateOn(date, u.id, bookings, blocksByUnit, u.status === 'inactive' ? 'inactive' : 'active'),
+      );
     return m;
   }, [data, date, bookings, blocksByUnit]);
 
@@ -301,7 +306,9 @@ export default function Plano() {
       {!openId &&
         selectedUnit &&
         selectedState &&
-        (selectedState.kind === 'free' || selectedState.kind === 'blocked') && (
+        (selectedState.kind === 'free' ||
+          selectedState.kind === 'blocked' ||
+          selectedState.kind === 'inactive') && (
           <UnitPanel
             unit={selectedUnit}
             typeName={selectedTypeName}

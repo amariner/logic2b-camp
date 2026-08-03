@@ -51,6 +51,7 @@ export default function UnitPanel({
   const qc = useQueryClient();
   const panelRef = useRef<HTMLElement>(null);
   const blocked = state.kind === 'blocked';
+  const inactive = state.kind === 'inactive';
 
   // al abrir o cambiar de unidad: foco dentro, como en la ficha
   useEffect(() => {
@@ -85,8 +86,8 @@ export default function UnitPanel({
       {/* cabecera: código + estado + cerrar */}
       <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         <span className="tnum text-[14px] font-semibold">{unit.code}</span>
-        <span className={`lc-chip ${blocked ? 'st-blocked' : 'st-free'}`}>
-          {blocked ? t('plano.estado.bloqueada') : t('plano.estado.libre')}
+        <span className={`lc-chip ${inactive ? 'st-inactive' : blocked ? 'st-blocked' : 'st-free'}`}>
+          {inactive ? t('inv.inactiva') : blocked ? t('plano.estado.bloqueada') : t('plano.estado.libre')}
         </span>
         <Button
           type="button"
@@ -104,7 +105,9 @@ export default function UnitPanel({
         <div className="text-[13px]">
           <p className="font-medium">{typeName}</p>
           <p className="tnum text-muted-foreground">
-            {blocked && block
+            {inactive
+              ? t('inv.nota')
+              : blocked && block
               ? `${tDyn(`bloqueo.${block.reason}`, block.reason)} · ${fecha(block.dateFrom)} → ${fecha(block.dateTo)}`
               : t('plano.unidad.libreEl', { date: fecha(date) })}
           </p>
@@ -115,7 +118,7 @@ export default function UnitPanel({
         )}
 
         <div className="flex flex-col gap-1.5">
-          {blocked && block ? (
+          {inactive ? null : blocked && block ? (
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" size="sm" disabled={quitar.isPending}>

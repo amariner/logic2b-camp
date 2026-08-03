@@ -249,6 +249,7 @@ export type PlanoBlockRange = {
 
 export type UnitDayState =
   | { kind: 'free' }
+  | { kind: 'inactive' }
   | { kind: 'blocked'; reason: string }
   | { kind: 'occupied'; bookingId: string; status: string; turnover: boolean }
   | { kind: 'arrival'; bookingId: string; status: string; turnover: boolean }
@@ -279,6 +280,7 @@ export function unitStateOn(
   unitId: string,
   bookings: PlanoBooking[],
   blocks: PlanoBlockRange[],
+  unitStatus: 'active' | 'inactive' = 'active',
 ): UnitDayState {
   const forUnit = bookings.filter((b) => b.unitId === unitId && OCCUPIES(b.status));
   const occupant = forUnit.find((b) => b.dateFrom <= date && date < b.dateTo);
@@ -294,6 +296,11 @@ export function unitStateOn(
       : { kind: 'occupied', ...base };
   }
   if (departing) return { kind: 'departure', bookingId: departing.id, status: departing.status };
+
+  // Dar de baja una unidad no borra una reserva ya asignada (Inventario lo
+  // explica así); cuando no hay estancia que mostrar, sí manda sobre el resto
+  // de estados porque no cuenta para nueva disponibilidad.
+  if (unitStatus === 'inactive') return { kind: 'inactive' };
 
   const blk = blocks.find((b) => b.unitId === unitId && b.dateFrom <= date && date < b.dateTo);
   if (blk) return { kind: 'blocked', reason: blk.reason };

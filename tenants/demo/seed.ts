@@ -347,15 +347,21 @@ export function generateSeed(anchor: string): SeedData {
     ut_mobil: 'MH',
     ut_glamp: 'GL',
   };
+  // Inventario tiene que enseñar la baja de servicio con datos reales, no con
+  // una interfaz vacía: una parcela eléctrica pendiente de reparación y un
+  // mobil-home en reforma. Al ser inactivas no entran ni en el relleno ni en la
+  // banda del día; no reducen la capacidad de otro tipo entero.
+  const outOfServiceUnitIds = new Set(['unt_prem_10', 'unt_mobil_04']);
   for (const d of unitTypeDefs) {
     for (let i = 1; i <= d.count; i++) {
+      const id = `unt_${d.id.slice(3)}_${String(i).padStart(2, '0')}`;
       units.push({
-        id: `unt_${d.id.slice(3)}_${String(i).padStart(2, '0')}`,
+        id,
         tenant_id: T,
         unit_type_id: d.id,
         code: `${prefixes[d.id]}-${String(i).padStart(2, '0')}`,
         attributes: {},
-        status: 'active',
+        status: outOfServiceUnitIds.has(id) ? 'inactive' : 'active',
       });
     }
   }
@@ -1162,7 +1168,7 @@ export function generateSeed(anchor: string): SeedData {
       pets: opts.pets ?? 0,
       vehicles: 1,
     };
-    const typeUnits = units.filter((u) => u.unit_type_id === opts.typeId);
+    const typeUnits = units.filter((u) => u.unit_type_id === opts.typeId && u.status === 'active');
     let unit_id: string | null = null;
     const isActiveStatus =
       opts.status === 'confirmed' || opts.status === 'pending' || opts.status === 'completed';
@@ -1467,6 +1473,7 @@ export function generateSeed(anchor: string): SeedData {
   }
 
   for (const unit of units) {
+    if (unit.status !== 'active') continue;
     const uid = unit.id as string;
     const typeId = unit.unit_type_id as string;
     // Ocupación previa = bloqueos + las reservas de caso límite ya colocadas
@@ -1563,6 +1570,7 @@ export function generateSeed(anchor: string): SeedData {
   function unidadLibre(from: string, to: string, arranque: number): Row | null {
     for (let k = 0; k < units.length; k++) {
       const u = units[(arranque + k) % units.length]!;
+      if (u.status !== 'active') continue;
       const uid = u.id as string;
       const ocupada = (occupied.get(uid) ?? []).some(([f, t]) => from < t && f < to);
       const bloqueada = (blockedByUnit.get(uid) ?? []).some(([f, t]) => from < t && f < to);

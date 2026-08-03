@@ -61,15 +61,22 @@ const prefersReducedMotion = () =>
 function unitVisual(state: UnitDayState): {
   fill: string;
   fg: string;
-  pattern: boolean;
+  pattern: 'blocked' | 'inactive' | false;
   free: boolean;
 } {
   switch (state.kind) {
+    case 'inactive':
+      return {
+        fill: 'var(--destructive)',
+        fg: 'var(--destructive-foreground)',
+        pattern: 'inactive',
+        free: false,
+      };
     case 'blocked':
       return {
         fill: 'var(--lc-status-blocked)',
         fg: 'var(--background)',
-        pattern: true,
+        pattern: 'blocked',
         free: false,
       };
     case 'free':
@@ -120,6 +127,8 @@ function stateLabel(state: UnitDayState): string {
   switch (state.kind) {
     case 'free':
       return t('plano.estado.libre');
+    case 'inactive':
+      return t('inv.inactiva');
     case 'blocked':
       return `${t('plano.estado.bloqueada')} · ${tDyn(`bloqueo.${state.reason}`, state.reason)}`;
     case 'arrival':
@@ -276,9 +285,9 @@ export default function CampingMap({
         style={smooth ? { transition: 'none' } : undefined}
       >
         <defs>
-          {/* rayado de bloqueo (mismo lenguaje que .lc-block del planning) */}
+          {/* rayados: bloqueo temporal y baja de servicio indefinida. */}
           <pattern
-            id="plano-hatch"
+            id="plano-blocked-hatch"
             width="8"
             height="8"
             patternUnits="userSpaceOnUse"
@@ -291,6 +300,24 @@ export default function CampingMap({
               x2="0"
               y2="8"
               stroke="var(--lc-status-blocked)"
+              strokeWidth="3"
+              opacity="0.5"
+            />
+          </pattern>
+          <pattern
+            id="plano-inactive-hatch"
+            width="8"
+            height="8"
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(45)"
+          >
+            <rect width="8" height="8" fill="var(--destructive)" opacity="0.18" />
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="8"
+              stroke="var(--destructive)"
               strokeWidth="3"
               opacity="0.5"
             />
@@ -478,7 +505,7 @@ function Unit({
           width={rect.w}
           height={rect.h}
           rx={4}
-          fill="url(#plano-hatch)"
+          fill={`url(#plano-${v.pattern}-hatch)`}
         />
       )}
       {/* marca de entra/sale hoy: cuña en la esquina */}
