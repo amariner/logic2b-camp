@@ -107,6 +107,8 @@ export type { WebUnitType };
 const tierOverride = Number(import.meta.env.TIER_OVERRIDE || '') || null;
 export const tier = (tierOverride ?? config.tier) as TenantWebConfig['tier'];
 export const mode = bookingMode(tier);
+/** El conmutador es atrezzo solo para el build normal de la demo. */
+export const demoTierSwitch = config.demoTierSwitch === true && tier === config.tier;
 
 const locales = import.meta.glob<{ default: Content }>('@tenant/content/*.json', { eager: true });
 

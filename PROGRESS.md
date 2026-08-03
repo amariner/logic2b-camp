@@ -42,6 +42,25 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Sesiones
 
+### Sesión 67 — 2026-08-03 · **La regla dura de niveles queda realmente aislada** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: corregir el incumplimiento de la regla dura de niveles
+que SIGUIENTE-SESION marcaba como candidato recomendado: un build de nivel 1
+emitía el motor de reservas, sus islas y las rutas del funnel.
+
+**Implementación**: el build lee el `tier` literal del tenant y resuelve los
+componentes del motor mediante aliases: niveles 1–2 apuntan a un componente
+vacío y nivel 3 al componente real. Las entradas raíz/localizadas del funnel
+son rutas dinámicas con `getStaticPaths()` vacío sin motor; las rutas por tipo
+mantienen la misma guarda. `Home.astro` solo emite `data-hero-nivel="1"` para
+el conmutador de demo, así que un Camp Web real muestra su héroe.
+
+**Verificación**: `TIER=1` → **126 páginas, cero rutas `/reservar`/`/reserva`,
+cero chunks `Mostrador`/`Funnel*`/`ReservaGestion` y héroe visible**. `TIER=3`
+conserva las rutas y los cuatro chunks del motor. `pnpm check` **45/45 verde**.
+No se desplegó: producción sigue en `b65a5dfb`; requiere deploy manual con
+credenciales locales.
+
 ### Sesión 66 — 2026-08-01 · **Las tres listas del día en la portada, y el wordmark del gestor enlaza** (dos encargos de Andreu)
 
 **Encargo 1: entradas y salidas al lado de las solicitudes, en tres columnas.** La portada de la 65 tenía las cifras de llegadas y salidas pero no decía **quién**. Ahora el bloque de abajo son tres listas en paralelo —entradas de hoy · salidas de hoy · últimas solicitudes—, cinco filas cada una, con nombre, unidad (o fechas) y estado, y cada columna sale a su pantalla. Reutiliza `/api/admin/bookings?arrivalsOn=` y `?departuresOn=` con **las mismas claves de caché que la pantalla de Llegadas**, así que saltar de aquí allí no parpadea.

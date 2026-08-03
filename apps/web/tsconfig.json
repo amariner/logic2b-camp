@@ -4,7 +4,14 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     // el typecheck se hace contra el tenant demo; en build el alias lo fija TENANT=
-    "paths": { "@tenant/*": ["../../tenants/demo/*"] }
+    "paths": {
+      "@tenant/*": ["../../tenants/demo/*"],
+      "@booking/hero": ["src/components/HeroMostrador.astro"],
+      "@booking/reservar": ["src/components/paginas/Reservar.astro"],
+      "@booking/reserva": ["src/components/paginas/Reserva.astro"],
+      "@booking/detalle": ["src/components/paginas/ReservarDetalle.astro"],
+      "@booking/titular": ["src/components/paginas/ReservarTitular.astro"]
+    }
   },
   "include": [".astro/types.d.ts", "src/**/*"]
 }

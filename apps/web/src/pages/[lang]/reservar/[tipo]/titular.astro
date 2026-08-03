@@ -1,9 +1,9 @@
 ---
-import ReservarTitular from '../../../../components/paginas/ReservarTitular.astro';
-import { data, extraLocales, mode } from '../../../../lib/content';
+import { data, extraLocales } from '../../../../lib/content';
+import ReservarTitular from '@booking/titular';
 
 export function getStaticPaths() {
-  if (mode !== 'instant') return [];
+  if (import.meta.env.BOOKING_ENGINE !== 'instant') return [];
   return extraLocales.flatMap((lang) => data.unitTypes.map((t) => ({ params: { lang, tipo: t.id } })));
 }
 const { lang, tipo } = Astro.params;

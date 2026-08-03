@@ -1,5 +1,5 @@
 ---
-import { config, getContent, localePath, media } from '../lib/content';
+import { config, demoTierSwitch, getContent, localePath, media } from '../lib/content';
 import { getLegalUi } from '../lib/legal';
 import LogoMark from '../components/LogoMark.astro';
 import '../styles/global.css';
@@ -98,7 +98,7 @@ const themeMenuScript = `
 
 // conmutador de nivel de demo (ADR 0013): mismo patrón que el de temas —
 // anti-FOUC en <head> vía atributo en <html>, CSS puro decide qué héroe se ve
-const showTierSwitch = config.demoTierSwitch === true;
+const showTierSwitch = demoTierSwitch;
 const tierBootScript = `try{
 var n=localStorage.getItem('lc-nivel');
 if(n==='1')document.documentElement.dataset.nivel='1';

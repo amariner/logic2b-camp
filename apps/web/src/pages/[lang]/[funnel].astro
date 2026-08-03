@@ -1,0 +1,17 @@
+---
+import { extraLocales } from '../../lib/content';
+import Reservar from '@booking/reservar';
+import Reserva from '@booking/reserva';
+
+export function getStaticPaths() {
+  if (import.meta.env.BOOKING_ENGINE !== 'instant') return [];
+  return extraLocales.flatMap((lang) =>
+    ['reservar', 'reserva'].map((funnel) => ({ params: { lang, funnel } })),
+  );
+}
+
+const { lang, funnel } = Astro.params;
+const Page = funnel === 'reservar' ? Reservar : Reserva;
+---
+
+<Page locale={lang!} />

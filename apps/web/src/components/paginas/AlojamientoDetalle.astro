@@ -1,7 +1,8 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { config, data, eur, fecha, fill, getContent, localePath, mode } from '../../lib/content';
+import { config, data, demoTierSwitch, eur, fecha, fill, getContent, localePath, mode } from '../../lib/content';
+import HeroMostrador from '@booking/hero';
 import { galeriaTipo } from '../../lib/fotos';
 import PageIntro from '../PageIntro.astro';
 
@@ -57,11 +58,9 @@ const jsonLd = {
 const instant = mode === 'instant';
 // conmutador de nivel de demo (ADR 0013): mismo patrón que Home — con el switch
 // se generan LAS DOS variantes y el CSS decide, sin recargar ni pedir nada.
-const showTierSwitch = config.demoTierSwitch === true;
+const showTierSwitch = demoTierSwitch;
 // regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle
 // no lo arrastra (misma razón que en Home.astro).
-const HeroMostrador =
-  instant || showTierSwitch ? (await import('../HeroMostrador.astro')).default : null;
 ---
 
 <Base locale={locale} path={path} title={`${nombre} | ${config.name}`} description={a.fichas[tipo.id]}>

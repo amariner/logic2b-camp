@@ -1,7 +1,8 @@
 ---
 import { getImage, Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { config, getContent, images, localePath, mode } from '../lib/content';
+import { demoTierSwitch, getContent, images, localePath, mode } from '../lib/content';
+import HeroMostrador from '@booking/hero';
 import EnquiryForm from './EnquiryForm.astro';
 
 interface Props {
@@ -14,11 +15,8 @@ const instant = mode === 'instant';
 // conmutador de nivel de demo (ADR 0013): SOLO tras config.demoTierSwitch — atrezzo
 // comercial dentro de un build tier 3 real, no un segundo build. Un camping real
 // (demoTierSwitch nunca definido) sigue con el único héroe de su propio `instant`.
-const showTierSwitch = config.demoTierSwitch === true;
+const showTierSwitch = demoTierSwitch;
 // regla dura de niveles: si no hay motor, el wrapper no se importa y el bundle no lo arrastra
-const HeroMostrador =
-  instant || showTierSwitch ? (await import('./HeroMostrador.astro')).default : null;
-
 // héroe = LCP: srcset webp + preload en <head> (Lighthouse ≥95)
 async function buildHero(src: (typeof images)[string]) {
   return getImage({ src, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 60 });
@@ -87,7 +85,7 @@ const lona = await getImage({
     </section>
   )}
   {(!instant || showTierSwitch) && heroAnochecer && (
-    <section class="relative" data-hero-nivel="1">
+    <section class="relative" data-hero-nivel={showTierSwitch ? '1' : undefined}>
       <div class="relative h-[88svh] min-h-130 overflow-hidden">
         <img
           src={heroAnochecer.src}

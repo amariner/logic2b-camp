@@ -52,7 +52,7 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## Estado de la entrega
 
-**Todo desplegado y al día**: 63–66 en `main` y en producción — última versión **`b65a5dfb`** (2026-08-01).
+**Código al día en `main`**: 63–67. Producción sigue en **`b65a5dfb`** (2026-08-01); la sesión 67 queda pendiente de deploy manual con credenciales locales.
 
 ## ▶ Prompt para pegar
 
@@ -62,23 +62,11 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[web] La regla dura de niveles está incumplida** (recomendado — es la única
-  candidata que `CLAUDE.md` llama "dura"): un build `TIER=1` sin conmutador
-  **sí** emite `Mostrador.*.js`. Medido en la 64 y confirmado **preexistente**
-  (se construyó el código de la 63 en las mismas condiciones). El import
-  dinámico del wrapper no sirve de nada mientras las rutas del funnel
-  (`/reservar`, `/reserva`) se sigan generando en nivel 1: sus tres islas
-  arrastran lo mismo, y el build emite 139 páginas donde un Camp Web no debería
-  tener ninguna ruta de reserva. Arreglo: `getStaticPaths` vacío con
-  `mode !== 'instant'`, y verificar que `_astro/` no contiene ninguna de las
-  cuatro islas. **De paso** cae la hermana: el héroe de nivel 1 de la home queda
-  **invisible** en un build de nivel 1 real (`Home.astro` emite
-  `data-hero-nivel` siempre; `AlojamientoDetalle.astro` ya lo hace bien).
-- **[seed] Los once "Aalto" seguidos de `/clientes`**: diagnóstico hecho y
-  escrito dentro del test que pasa (biyección uniforme → cada apellido toca a
-  `fichas/apellidos`; alargar el repertorio NO lo arregla, ya se alargó dos
-  veces). Hace falta cola larga de apellidos reales sin perder la unicidad de la
-  54. Objetivo de verdad, no retoque.
+- **[seed] Los once "Aalto" seguidos de `/clientes`** (recomendado): diagnóstico
+  hecho y escrito dentro del test que pasa (biyección uniforme → cada apellido
+  toca a `fichas/apellidos`; alargar el repertorio NO lo arregla, ya se alargó
+  dos veces). Hace falta cola larga de apellidos reales sin perder la unicidad
+  de la 54. Objetivo de verdad, no retoque.
 - **[seed] Una o dos unidades fuera de servicio** (58): el estado que la
   cabecera de Inventario explica no se ve nunca — y de paso se vería en planning
   y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el relleno ni los

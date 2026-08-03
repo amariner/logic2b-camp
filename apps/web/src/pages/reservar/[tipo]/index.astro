@@ -1,10 +1,10 @@
 ---
-import ReservarDetalle from '../../../components/paginas/ReservarDetalle.astro';
-import { config, data, mode } from '../../../lib/content';
+import { config, data } from '../../../lib/content';
+import ReservarDetalle from '@booking/detalle';
 
 // nivel sin motor → estas rutas no existen (0 páginas, 0 islas)
 export function getStaticPaths() {
-  if (mode !== 'instant') return [];
+  if (import.meta.env.BOOKING_ENGINE !== 'instant') return [];
   return data.unitTypes.map((t) => ({ params: { tipo: t.id } }));
 }
 const { tipo } = Astro.params;
