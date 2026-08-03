@@ -4,6 +4,15 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Repriorización comercial de Andreu (2026-08-03, pendiente de desplegar)**:
+  al terminar el modo demo, manda el **portfolio de demos** para vender; el alta
+  real y el registro exhaustivo de intervenciones pasan detrás. Nueva página
+  `/precios/` es/en con altas 1.490/2.490/4.900 €, cuotas 69/119/249 €, packs y
+  bolsas; modelo y referencias en `docs/TARIFAS-LOGIC2B.md`, a recalibrar con
+  horas por bloque de las tres primeras demos. Azahar conserva la propuesta y
+  baja sus activos de ~15 MB a ~4,1 MB. Deuda SEO barata cerrada (OG del tenant,
+  `x-default` en sitemaps, `BreadcrumbList` en guías). BACKLOG gana el Frente M
+  completo para el dashboard móvil. `pnpm check` 45/45 verde.
 - **Última sesión autónoma (69, 2026-08-03)**: Cala Sereno muestra dos
   unidades fuera de servicio reales (`C-10` y `MH-04`) en Inventario, Planning
   y Plano, sin reservas asignadas ni cupo ficticio. Código en `main`, pendiente

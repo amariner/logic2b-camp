@@ -9,6 +9,7 @@
     "planning": "The planner",
     "escala": "Scalability",
     "docs": "Guides",
+    "precios": "Pricing",
     "demo": "See demo",
     "contacto": "Request a demo",
     "verDemo": "See the live demo"
@@ -159,7 +160,7 @@
         "aMedida": true
       }
     ],
-    "nota": "Pricing tailored to your campsite. Ask us for a proposal.",
+    "nota": "Setup from €1,490 and plans from €69/month. No booking commission.",
     "recomendado": "Recommended",
     "selector": {
       "pregunta": "How many pitches do you have?",
@@ -171,6 +172,42 @@
       ],
       "resultado": "Your starting point: {nivel}. As you grow, you move up by changing a setting."
     }
+  },
+  "precios": {
+    "seo": { "title": "Logic2B Campings pricing — plans, setup and development", "description": "Transparent pricing for your campsite website, enquiries and booking engine, separating setup, subscription, maintenance and custom development." },
+    "kicker": "Clear pricing · no booking commission",
+    "titulo": "Pay for the level you need today.",
+    "intro": "Setup, product subscription and custom development are separate, so you always know what keeps the system running and what is a new improvement.",
+    "iva": "Prices exclude VAT. Third-party services, domain and payment fees are billed separately where applicable.",
+    "planesTitulo": "Product plans",
+    "altaLabel": "Setup",
+    "cuotaLabel": "Subscription",
+    "planes": [
+      { "nombre": "Camp Web", "alta": "€1,490", "cuota": "€69/month", "texto": "Multilingual website with your brand, domain, technical SEO and email enquiries.", "para": "Start selling direct" },
+      { "nombre": "Camp Enquiries", "alta": "€2,490", "cuota": "€119/month", "texto": "Everything in Camp Web plus an enquiry inbox, history and a light front-desk manager.", "para": "Organise what arrives by email" },
+      { "nombre": "Camp Bookings", "alta": "€4,900", "cuota": "€249/month", "texto": "Booking engine, planner, guests, payments and reports, with no percentage fee on bookings.", "para": "Run the complete campsite", "destacado": true }
+    ],
+    "incluyeTitulo": "The subscription includes real maintenance",
+    "incluye": ["Hosting and operation of your isolated instance", "General updates and security patches", "Monitoring, backups and product incident resolution", "Email support with a two-business-day response target"],
+    "noIncluye": "Recurring content changes, custom integrations, campaigns and new features are quoted as development.",
+    "desarrolloTitulo": "Development and improvements",
+    "desarrolloIntro": "We agree the scope before starting. A product incident is included; a new idea is estimated and approved.",
+    "bolsas": [
+      { "nombre": "Assessment and proposal", "precio": "€290", "texto": "Audit, scope and fixed quote, deducted if we deliver the project." },
+      { "nombre": "5-hour bundle", "precio": "€350", "texto": "For small, clearly defined changes." },
+      { "nombre": "10-hour bundle", "precio": "€650", "texto": "Group several improvements at a better rate." },
+      { "nombre": "20-hour sprint", "precio": "€1,200", "texto": "A scoped delivery with implementation and review." }
+    ],
+    "packsTitulo": "Launch services",
+    "packs": [
+      { "nombre": "Migration", "precio": "from €600", "texto": "Import from structured data after reviewing a sample." },
+      { "nombre": "Identity and content", "precio": "from €900", "texto": "Visual direction, brand adaptation and core page copy." },
+      { "nombre": "Local SEO launch", "precio": "€490", "texto": "Metadata, Search Console, business profile and initial measurement." },
+      { "nombre": "Launch campaign", "precio": "from €750", "texto": "Creative and campaign setup; media spend excluded." }
+    ],
+    "ctaTitulo": "See the right level with your own data",
+    "ctaTexto": "Tell us your number of units, how you manage bookings today and what material is ready. We will return a fixed scope.",
+    "cta": "Request a proposal"
   },
   "alta": {
     "titulo": "From zero to selling, in an afternoon",

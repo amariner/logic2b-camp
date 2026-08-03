@@ -14,8 +14,9 @@ escritas con su motivo. Andreu revisa a posteriori leyendo PROGRESS.md.
   `sesTransport`/Stripe: escrito, testeado, sin verificar), pero cualquier objetivo
   que **requiera credenciales o a Andreu presente queda descartado para la sesión
   autónoma** — se anota en BACKLOG/SIGUIENTE-SESION y se elige otro.
-- Prioridad de elección: **lo que el cliente ve en la demo** (web pública, dashboard,
-  planning/plano, docs) > deuda técnica barata > limpieza.
+- Prioridad de elección: **terminar y ampliar las demos vendibles del Frente D**
+  (web pública, dashboard, planning/plano y propuesta comercial) > deuda visible
+  en demo > deuda técnica barata > limpieza. Decisión de Andreu, 2026-08-03.
 
 ## Los 8 pasos de cada sesión
 

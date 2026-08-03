@@ -8,6 +8,7 @@ const site = 'https://camp.logic2b.com';
 function rutas(): string[] {
   return [
     '/',
+    'precios/',
     'docs/',
     ...GUIAS.map((g) => `docs/${g}/`),
     // Las guías son la superficie de búsqueda larga del producto ("cómo hacer
@@ -24,6 +25,8 @@ export const GET: APIRoute = () => {
         const alts = LOCALES.map(
           (a) =>
             `    <xhtml:link rel="alternate" hreflang="${a}" href="${new URL(localePath(a, ruta), site).href}"/>`,
+        ).concat(
+          `    <xhtml:link rel="alternate" hreflang="x-default" href="${new URL(localePath('es', ruta), site).href}"/>`,
         ).join('\n');
         return `  <url>\n    <loc>${loc}</loc>\n${alts}\n  </url>`;
       }),

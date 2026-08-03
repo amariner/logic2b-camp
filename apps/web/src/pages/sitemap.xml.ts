@@ -30,6 +30,7 @@ export const GET: APIRoute = () => {
       config.locales.map((locale) => {
         const alternates = config.locales
           .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url(l, path)}"/>`)
+          .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${url(config.defaultLocale, path)}"/>`)
           .join('\n');
         return `  <url>\n    <loc>${url(locale, path)}</loc>\n${alternates}\n  </url>`;
       }),

@@ -26,9 +26,26 @@ const { locale, guia, paginas, actual, seo, ruta } = Astro.props;
 const c = getContent(locale);
 const d = c.docs;
 const meta = d.guias[guia];
+const site = 'https://camp.logic2b.com';
+const breadcrumbItems = [
+  { name: d.volver, url: new URL(localePath(locale, 'docs/'), site).href },
+  { name: meta.nombre, url: new URL(localePath(locale, `docs/${guia}/`), site).href },
+  ...(actual ? [{ name: seo.title, url: new URL(localePath(locale, ruta), site).href }] : []),
+];
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: item.url,
+  })),
+};
 ---
 
 <Base locale={locale} content={c} ruta={ruta} seo={seo}>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')} />
   <div
     class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:py-14"
   >

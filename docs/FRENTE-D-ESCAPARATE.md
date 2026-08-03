@@ -263,12 +263,17 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 
 ## 6 · Encaje temporal, dependencias y coste
 
-- **Cuándo**: "cuando esté muy avanzado el backend demo" (Andreu). Traducción
-  operativa propuesta: después de cerrar los remates del frente B1 en curso
-  (11/11), el ADR 0030 validado, y con la demo Cala Sereno estable sin deuda
-  visual — es decir, el Frente D **no compite** con las sesiones inmediatas.
-  Este documento existe para que mientras tanto **nada se construya en
-  contra** y para poderse **enseñar ya** como visión.
+> **Decisión 2026-08-03 (Andreu): el Frente D pasa a prioridad comercial.**
+> Las demos no esperan al primer cliente: son la herramienta para conseguirlo.
+> Se mantiene el ADR D0 como contrato de fábrica, pero su objetivo es evitar
+> artesanía irrepetible, no frenar el escaparate. La medición de horas se hace
+> durante las demos y alimenta `docs/TARIFAS-LOGIC2B.md`; el registro detallado
+> de cada intervención manual queda para el final.
+
+- **Cuándo**: desde el cierre del modo demo. La prioridad inmediata es que el
+  portfolio se pueda enseñar y vender; deuda no visible o verificaciones del
+  primer cliente no desplazan una demo salvo riesgo de seguridad o pérdida de
+  datos.
 - **La restricción de siempre manda**: ~6h/semana y "nada que multiplique el
   trabajo por número de clientes". Doce demos solo son viables si cada una es
   **config + contenido + seed** sobre el mismo código — que es a la vez la
@@ -284,6 +289,10 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
   pieza técnica del frente; `soldhivern` con su curva plana de invierno y
   `ballena` con sus sábados en bloque son justo los dos casos que la
   parametrización tiene que poder expresar).
+- **Medición comercial mínima**: cada demo anota horas por cinco bloques
+  (identidad/contenido, inventario/tarifas, configuración, QA y publicación).
+  No se registra todavía cada intervención. Tras las tres primeras se revisan
+  altas, cuotas, bolsas y packs de la página `/precios/`.
 - **Infra por demo**: cada demo es un tenant → una D1, un reset nocturno, un
   host. Doce D1s de demo caben de sobra en Cloudflare, pero el **esquema de
   hosts** (¿`{slug}.camp.logic2b.com`? ¿un Worker por demo como hoy, o uno

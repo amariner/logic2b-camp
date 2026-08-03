@@ -214,8 +214,16 @@ frente: **el mostrador dentro de la página de alojamiento** (hoy el CTA del
 detalle devuelve a la home sin precargar el tipo —
 `AlojamientoDetalle.astro:57`; en BACKLOG, candidato cercano).
 
+**Repriorización 2026-08-03 (Andreu)**: terminado el modo demo, **las demos son
+la prioridad comercial** por delante del ensayo de alta real y del registro
+exhaustivo de intervenciones. D0 sigue siendo necesario, pero como contrato
+rápido para que las doce muestras nazcan de una fábrica común. Las tres primeras
+demos medirán horas por bloque y fundamentarán la nueva página `/precios/`
+(`docs/TARIFAS-LOGIC2B.md`); registrar cada intervención queda para el final.
+
 ## Decisiones tomadas
 
+- 2026-08-03: **prioridad a las demos y a vender**. El portfolio del Frente D empieza al cerrar el modo demo; medir horas durante las tres primeras sirve para recalibrar tarifas, pero el registro detallado de intervenciones se pospone. Se publica una primera estructura de precios que separa alta, cuota, mantenimiento incluido y desarrollo evolutivo.
 - 2026-07-30: **La landing empieza a vender escalabilidad (D5.2 temprana)**, por mandato de Andreu en sesión presencial (60): franja de cifras + escalera como recorrido, **solo con cifras que ya son verdad hoy**; la galería del portfolio no se abre hasta tener ≥3 demos clicables. Además, el header y el footer de la landing pasan a los **raíles visuales de `logic2b-norte`** (contenedor 1440px, gutter 24→32px, 50px de alto, botones a 10px = el `--radius` que el DS ya tenía). El gate del ADR D0 para D1–D4/D6 queda **intacto**.
 - 2026-07-28: **Frente D abierto** (portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. Documentado en `docs/FRENTE-D-ESCAPARATE.md`; **no se construye** hasta que el backend demo esté muy avanzado, y **nada empieza sin el ADR D0** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas).
 - 2026-07-28: **El alcance NO cambia: campings, y solo campings.** La primera redacción del Frente D incluía casas rurales, un hostal y un hotel; Andreu la rectificó en la misma sesión. **Hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto — el mismo patrón que separa ecom de camp), nunca una ampliación de este. `CLAUDE.md` y el Super Prompt §0 quedan intactos.

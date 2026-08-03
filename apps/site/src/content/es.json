@@ -9,6 +9,7 @@
     "planning": "El planning",
     "escala": "Escalabilidad",
     "docs": "Guías",
+    "precios": "Precios",
     "demo": "Ver demo",
     "contacto": "Pedir demo",
     "verDemo": "Ver la demo en vivo"
@@ -159,7 +160,7 @@
         "aMedida": true
       }
     ],
-    "nota": "Precios a medida según tu camping. Pídenos una propuesta.",
+    "nota": "Alta desde 1.490 € y planes desde 69 €/mes. Sin comisión por reserva.",
     "recomendado": "Recomendado",
     "selector": {
       "pregunta": "¿Cuántas parcelas tienes?",
@@ -171,6 +172,50 @@
       ],
       "resultado": "Tu punto de partida: {nivel}. Cuando crezcas, subes cambiando un ajuste."
     }
+  },
+  "precios": {
+    "seo": {
+      "title": "Precios de Logic2B Campings — planes, altas y desarrollo",
+      "description": "Precios transparentes para la web, las solicitudes y el motor de reservas de tu camping. Alta, cuota, mantenimiento y desarrollo a medida separados."
+    },
+    "kicker": "Precios claros · sin comisión por reserva",
+    "titulo": "Paga por el nivel que necesitas hoy.",
+    "intro": "Separamos la puesta en marcha, la cuota del producto y los desarrollos propios. Así sabes qué mantiene el sistema y qué corresponde a una mejora nueva.",
+    "iva": "Importes sin IVA. Los servicios de terceros, dominio y comisiones de pasarela se facturan aparte cuando apliquen.",
+    "planesTitulo": "Planes del producto",
+    "altaLabel": "Alta",
+    "cuotaLabel": "Cuota",
+    "planes": [
+      { "nombre": "Camp Web", "alta": "1.490 €", "cuota": "69 €/mes", "texto": "Web multi-idioma con tu marca, dominio, SEO técnico y solicitudes por email.", "para": "Para empezar a vender directo" },
+      { "nombre": "Camp Solicitudes", "alta": "2.490 €", "cuota": "119 €/mes", "texto": "Todo Camp Web más bandeja, histórico y gestor ligero para recepción.", "para": "Para ordenar lo que hoy llega por correo" },
+      { "nombre": "Camp Reservas", "alta": "4.900 €", "cuota": "249 €/mes", "texto": "Motor de reservas, planning, clientes, cobros e informes. Sin porcentaje sobre tus reservas.", "para": "Para operar el camping completo", "destacado": true }
+    ],
+    "incluyeTitulo": "La cuota incluye mantenimiento de verdad",
+    "incluye": [
+      "Alojamiento y operación de tu instancia aislada",
+      "Actualizaciones generales y parches de seguridad",
+      "Monitorización, copias y resolución de incidencias del producto",
+      "Soporte por email con respuesta objetivo de 2 días laborables"
+    ],
+    "noIncluye": "Los cambios de contenido recurrentes, integraciones propias, campañas y nuevas funcionalidades se presupuestan como desarrollo.",
+    "desarrolloTitulo": "Desarrollo y mejoras",
+    "desarrolloIntro": "Antes de empezar acordamos el alcance. Una incidencia del producto está incluida; una idea nueva se estima y se aprueba.",
+    "bolsas": [
+      { "nombre": "Diagnóstico y propuesta", "precio": "290 €", "texto": "Auditoría, alcance y presupuesto cerrado. Se descuenta si ejecutamos el proyecto." },
+      { "nombre": "Bolsa de 5 horas", "precio": "350 €", "texto": "Para cambios pequeños y bien definidos." },
+      { "nombre": "Bolsa de 10 horas", "precio": "650 €", "texto": "Para agrupar varias mejoras con mejor tarifa." },
+      { "nombre": "Sprint de 20 horas", "precio": "1.200 €", "texto": "Una entrega acotada con implementación y revisión." }
+    ],
+    "packsTitulo": "Servicios de lanzamiento",
+    "packs": [
+      { "nombre": "Migración", "precio": "desde 600 €", "texto": "Importación desde una fuente estructurada, tras revisar una muestra." },
+      { "nombre": "Identidad y contenido", "precio": "desde 900 €", "texto": "Dirección visual, adaptación de marca y textos principales." },
+      { "nombre": "SEO local de salida", "precio": "490 €", "texto": "Metadatos, Search Console, ficha de negocio y medición inicial." },
+      { "nombre": "Campaña de lanzamiento", "precio": "desde 750 €", "texto": "Creatividades y configuración. Inversión publicitaria aparte." }
+    ],
+    "ctaTitulo": "Te enseñamos el nivel con tus datos",
+    "ctaTexto": "Cuéntanos cuántas unidades tienes, cómo gestionas hoy las reservas y qué material ya está listo. Te devolvemos un alcance cerrado.",
+    "cta": "Pedir una propuesta"
   },
   "alta": {
     "titulo": "De cero a vender, en una tarde",

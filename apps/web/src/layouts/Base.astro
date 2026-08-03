@@ -16,6 +16,9 @@ interface Props {
 }
 
 const { locale, path = '/', title, description, noindex = false } = Astro.props;
+const OG_LOCALE: Record<string, string> = {
+  es: 'es_ES', ca: 'ca_ES', en: 'en_GB', fr: 'fr_FR', de: 'de_DE', nl: 'nl_NL',
+};
 const c = getContent(locale);
 const pageTitle = title ?? c.seo.title;
 const pageDescription = description ?? c.seo.description;
@@ -152,9 +155,15 @@ const tierMenuScript = `
     <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={config.name} />
-    <meta property="og:locale" content={locale} />
+    <meta property="og:url" content={`${config.domain}${localePath(locale, path)}`} />
+    <meta property="og:locale" content={OG_LOCALE[locale] ?? locale} />
+    {config.locales.filter((l) => l !== locale).map((l) => <meta property="og:locale:alternate" content={OG_LOCALE[l] ?? l} />)}
     {media['og'] && <meta property="og:image" content={`${config.domain}${media['og']}`} />}
+    {media['og'] && <meta property="og:image:width" content="1200" />}
+    {media['og'] && <meta property="og:image:height" content="630" />}
+    {media['og'] && <meta property="og:image:alt" content={pageTitle} />}
     {media['og'] && <meta name="twitter:card" content="summary_large_image" />}
+    {media['og'] && <meta name="twitter:image:alt" content={pageTitle} />}
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {demoThemes.length > 0 && <script is:inline set:html={themeBootScript} />}
     {showTierSwitch && <script is:inline set:html={tierBootScript} />}
