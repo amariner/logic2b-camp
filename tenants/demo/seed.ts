@@ -825,6 +825,27 @@ export function generateSeed(anchor: string): SeedData {
     'Solberg',
     'Vik',
   ];
+  /**
+   * Una lista de clientes real no reparte los apellidos por igual: unos pocos
+   * son muy frecuentes y la mayoría aparecen pocas veces. Cada plaza conserva
+   * un nombre distinto, así que la cola larga no rompe la unicidad de la ficha.
+   *
+   * Las bandas suman 2 684 plazas (el mayor censo actual tiene 2 612 fichas) y
+   * ninguna supera los 40 nombres disponibles. La posición en `lastNames` es
+   * deliberadamente estable: los apellidos de la primera lista son los más
+   * comunes de la muestra y las ampliaciones quedan en la cola larga.
+   */
+  const surnameSlots = lastNames.flatMap((_, index) => {
+    const capacity =
+      index < 10 ? 40 : index < 30 ? 27 : index < 70 ? 16 : index < 140 ? 10 : index < 240 ? 4 : 2;
+    return Array.from({ length: capacity }, () => index);
+  });
+  const surnameUses = Array.from({ length: lastNames.length }, () => 0);
+  const greatestCommonDivisor = (a: number, b: number): number =>
+    b === 0 ? a : greatestCommonDivisor(b, a % b);
+  /** Paso coprimo: reparte las plazas no usadas entre todos los apellidos. */
+  let surnameSlotStep = Math.floor(surnameSlots.length / 2) + 1;
+  while (greatestCommonDivisor(surnameSlotStep, surnameSlots.length) !== 1) surnameSlotStep++;
   /** Los de `firstNames` que son de mujer — de aquí sale el sexo del parte de viajeros. */
   const nombresFemeninos = new Set([
     'María',
@@ -988,22 +1009,18 @@ export function generateSeed(anchor: string): SeedData {
   function addGuest(locale: string, from: string, to: string): string {
     gstN++;
     const gid = `gst_${String(gstN).padStart(3, '0')}`;
-    // Nombre y apellido: NO dos módulos sobre `bkgN`, sino un recorrido del
-    // espacio de parejas. Dos módulos sobre el mismo contador es justo lo que
-    // hundió el seed en la sesión 53 (`bkgN % 20` y `(bkgN * 3) % 20` quedan
-    // ambos determinados por `bkgN % 20`: 20 personas para 2 000 fichas), y
-    // repararlo con "otro ritmo" solo aplaza el problema — dos ritmos con un
-    // factor común vuelven a ser uno.
-    //
-    // Aquí se numeran las 40 × 161 = 6 440 parejas posibles y se recorren a
-    // saltos de 2 371, que es primo y por tanto coprimo con 6 440: el recorrido
-    // pasa por TODAS las parejas antes de repetir ninguna. Como las fichas son
-    // ~1 500, la consecuencia es una garantía, no una estadística: **no puede
-    // haber dos clientes que se llamen igual**. Se comprueba en el test.
-    const PARES = firstNames.length * lastNames.length;
-    const par = (gstN * 2371) % PARES;
-    const fn = firstNames[par % firstNames.length]!;
-    const ln = lastNames[Math.floor(par / firstNames.length)]!;
+    if (gstN > surnameSlots.length)
+      throw new Error(`El censo (${gstN}) supera las plazas únicas de apellidos (${surnameSlots.length})`);
+    // Se recorre el conjunto de plazas de apellidos con un paso coprimo: no hay
+    // una banda que se quede fuera cuando el censo no llena las 2 684 plazas.
+    // Para cada apellido, los nombres avanzan sin repetir; por tanto la pareja
+    // nombre+apellido (y el correo que deriva de ella) sigue siendo única.
+    const slot = (gstN * surnameSlotStep) % surnameSlots.length;
+    const surnameIndex = surnameSlots[slot]!;
+    const surnameUse = surnameUses[surnameIndex]!;
+    surnameUses[surnameIndex] = surnameUse + 1;
+    const fn = firstNames[(surnameIndex * 17 + surnameUse * 19) % firstNames.length]!;
+    const ln = lastNames[surnameIndex]!;
     const nationality = locale === 'es' || locale === 'ca' ? 'ES' : locale.toUpperCase();
     // Datos del parte de viajeros (ADR 0028), sembrados de verdad (cero mocks): los
     // huéspedes españoles llevan DNI con su nº de soporte; los extranjeros, pasaporte

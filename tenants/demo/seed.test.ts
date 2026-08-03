@@ -586,36 +586,44 @@ describe('seed demo Cala Sereno', () => {
      lo que se veía hasta la sesión 53. Se fija aquí porque el síntoma no lo
      nota ningún test de invariantes: los datos son "válidos", solo son falsos. */
   it('no hay dos clientes que se llamen igual', () => {
-    // Garantía por construcción, no estadística: el generador recorre las
-    // 40 × 161 parejas a saltos coprimos con el total (sesión 54). Si alguien
-    // cambia el tamaño de una lista o el salto y pierde la coprimalidad, el
-    // recorrido empieza a repetir parejas y este test cae.
-    const nombres = data.guests.map((g) => `${g.name} ${g.surname}`);
-    expect(new Set(nombres).size).toBe(nombres.length);
+    // Garantía por construcción, no estadística: cada apellido tiene como
+    // máximo 40 plazas y sus nombres se recorren sin repetir. Se barre la
+    // muestra temporal porque el censo cambia con el ancla móvil.
+    for (const { anchor, seed } of MUESTRA) {
+      const nombres = seed.guests.map((g) => `${g.name} ${g.surname}`);
+      expect(new Set(nombres).size, anchor).toBe(nombres.length);
+    }
   });
 
-  it('la primera página de /clientes no es un bloque del mismo apellido', () => {
-    // Se ordena igual que la API (apellido, luego nombre). Con 40 apellidos para
-    // ~1 500 fichas tocaban a 38 por apellido y la primera página salía entera
-    // "Andersen" — el mismo defecto de las 20 personas repetidas, en la columna
-    // de al lado.
-    //
-    // OJO con lo que este test NO garantiza (medido en la sesión 57): el
-    // emparejamiento es una biyección UNIFORME, así que cada apellido toca a
-    // exactamente `fichas / apellidos` fichas — hoy ~11— y la pantalla enseña
-    // once "Aalto" seguidos. Que pase este test significa "no está colapsado",
-    // no "se lee bien". Arreglarlo de verdad no es alargar la lista (el bloque
-    // sigue midiendo N/L), sino repartir los apellidos con la cola larga que
-    // tienen en la realidad — y eso pelea con la biyección que garantiza que no
-    // haya dos clientes iguales. Está en BACKLOG con ese diagnóstico.
-    const pagina = [...data.guests]
-      .sort(
-        (a, b) =>
-          String(a.surname).localeCompare(String(b.surname)) ||
-          String(a.name).localeCompare(String(b.name)),
-      )
-      .slice(0, 25);
-    expect(new Set(pagina.map((g) => g.surname)).size).toBeGreaterThanOrEqual(3);
+  it('la primera página de /clientes refleja una cola larga de apellidos', () => {
+    // La API ordena por apellido y luego nombre. La población real no reparte
+    // los apellidos a partes iguales: unos pocos son frecuentes y hay una cola
+    // larga de apellidos poco comunes. El seed debe conservar esa lectura sin
+    // repetir una misma persona ni volver a enseñar once "Aalto" seguidos.
+    for (const { anchor, seed } of MUESTRA) {
+      const pagina = [...seed.guests]
+        .sort(
+          (a, b) =>
+            String(a.surname).localeCompare(String(b.surname)) ||
+            String(a.name).localeCompare(String(b.name)),
+        )
+        .slice(0, 25);
+      const apellidos = pagina.map((g) => String(g.surname));
+      const repeticiones = [...new Set(apellidos)].map(
+        (apellido) => apellidos.filter((a) => a === apellido).length,
+      );
+      expect(new Set(apellidos).size, anchor).toBeGreaterThanOrEqual(7);
+      expect(Math.max(...repeticiones), anchor).toBeLessThanOrEqual(4);
+
+      const frecuencias = new Map<string, number>();
+      for (const guest of seed.guests)
+        frecuencias.set(
+          String(guest.surname),
+          (frecuencias.get(String(guest.surname)) ?? 0) + 1,
+        );
+      expect(Math.max(...frecuencias.values()), anchor).toBeGreaterThanOrEqual(25);
+      expect(Math.min(...frecuencias.values()), anchor).toBeLessThanOrEqual(4);
+    }
   });
 
   it('el sexo concuerda con el nombre (el parte de viajeros es un documento legal)', () => {

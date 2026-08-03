@@ -52,7 +52,7 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–67. Producción sigue en **`b65a5dfb`** (2026-08-01); la sesión 67 queda pendiente de deploy manual con credenciales locales.
+**Código al día en `main`**: 63–68. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–68 quedan pendientes de deploy manual con credenciales locales.
 
 ## ▶ Prompt para pegar
 
@@ -62,12 +62,7 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[seed] Los once "Aalto" seguidos de `/clientes`** (recomendado): diagnóstico
-  hecho y escrito dentro del test que pasa (biyección uniforme → cada apellido
-  toca a `fichas/apellidos`; alargar el repertorio NO lo arregla, ya se alargó
-  dos veces). Hace falta cola larga de apellidos reales sin perder la unicidad
-  de la 54. Objetivo de verdad, no retoque.
-- **[seed] Una o dos unidades fuera de servicio** (58): el estado que la
+- **[seed] Una o dos unidades fuera de servicio** (recomendado, 58): el estado que la
   cabecera de Inventario explica no se ve nunca — y de paso se vería en planning
   y plano. Ojo: dar de baja resta cupo; plantarlas sin romper el relleno ni los
   invariantes.
