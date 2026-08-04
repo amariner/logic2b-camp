@@ -127,11 +127,11 @@ const nav = [
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
       {/* Raíles de logic2b.com: contenedor 1440px, gutter 24→32px, 50px de alto. */}
-      <div class="mx-auto flex h-[50px] max-w-[1440px] items-center gap-[34px] px-[clamp(24px,4vw,32px)]">
+      <div class="mx-auto flex h-[50px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
         {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}
-        <Wordmark class="text-lg" href={localePath(locale)} />
+        <Wordmark class="shrink-0 text-base sm:text-lg" href={localePath(locale)} />
         <nav class="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
@@ -142,7 +142,7 @@ const nav = [
           >{c.nav.demo}</a>
           <a
             href={`${inicio}#contacto`}
-            class="inline-flex items-center rounded-lg bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            class="inline-flex shrink-0 items-center rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:px-3.5"
           >{c.nav.contacto}</a>
         </div>
       </div>

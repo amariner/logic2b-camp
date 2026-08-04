@@ -19,6 +19,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
   Spinner,
   toast,
 } from '@logic-camp/ui';
@@ -32,44 +38,103 @@ export default function DemoBanner() {
   if (!esDemo) return null;
 
   return (
-    <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground">
-      <Info className="size-3.5 shrink-0" aria-hidden />
-      <p className="min-w-0 flex-1">{t('demo.banner')}</p>
-      {/* La vuelta a la otra cara de la demo: quien entra por la landing
-          directo al mostrador no tiene forma de llegar a la web del camping. */}
-      <Button asChild type="button" variant="ghost" size="sm">
-        <a href="/demo/">
-          <ExternalLink className="size-3.5" aria-hidden />
-          {t('demo.verWeb')}
-        </a>
-      </Button>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button type="button" variant="outline" size="sm" disabled={reset.isPending}>
-            {reset.isPending && <Spinner />}
-            {reset.isPending ? t('demo.restableciendo') : t('demo.restablecer')}
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('demo.restablecerTitulo')}</AlertDialogTitle>
-            <AlertDialogDescription>{t('demo.restablecerCuerpo')}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() =>
-                reset.mutate(undefined, {
-                  onSuccess: () => toast.success(t('demo.restablecerOk')),
-                  onError: () => toast.error(t('demo.restablecerError')),
-                })
-              }
+    <>
+      {/* En móvil el aviso vive en la barra superior, junto a búsqueda. No roba
+          altura útil ni intenta encajar tres acciones en una sola línea. */}
+      <Sheet>
+        <div className="absolute right-11 top-0 z-30 flex h-12 items-center md:hidden">
+          <SheetTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="iconSm"
+              className="size-11"
+              aria-label={t('demo.informacion')}
             >
-              {t('demo.restablecer')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+              <Info className="size-5" aria-hidden />
+            </Button>
+          </SheetTrigger>
+        </div>
+        <SheetContent side="bottom" className="max-h-[85dvh] rounded-t-xl p-0 md:hidden">
+          <SheetHeader>
+            <SheetTitle>{t('demo.titulo')}</SheetTitle>
+            <SheetDescription className="pr-4 leading-relaxed">{t('demo.banner')}</SheetDescription>
+          </SheetHeader>
+          <div className="grid gap-3 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <Button asChild type="button" variant="outline" className="min-h-11 justify-center">
+              <a href="/demo/">
+                <ExternalLink className="size-4" aria-hidden />
+                {t('demo.verWeb')}
+              </a>
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button type="button" variant="outline" className="min-h-11" disabled={reset.isPending}>
+                  {reset.isPending && <Spinner />}
+                  {reset.isPending ? t('demo.restableciendo') : t('demo.restablecer')}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('demo.restablecerTitulo')}</AlertDialogTitle>
+                  <AlertDialogDescription>{t('demo.restablecerCuerpo')}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      reset.mutate(undefined, {
+                        onSuccess: () => toast.success(t('demo.restablecerOk')),
+                        onError: () => toast.error(t('demo.restablecerError')),
+                      })
+                    }
+                  >
+                    {t('demo.restablecer')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <div className="hidden shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground md:flex">
+        <Info className="size-3.5 shrink-0" aria-hidden />
+        <p className="min-w-0 flex-1">{t('demo.banner')}</p>
+        <Button asChild type="button" variant="ghost" size="sm">
+          <a href="/demo/">
+            <ExternalLink className="size-3.5" aria-hidden />
+            {t('demo.verWeb')}
+          </a>
+        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button type="button" variant="outline" size="sm" disabled={reset.isPending}>
+              {reset.isPending && <Spinner />}
+              {reset.isPending ? t('demo.restableciendo') : t('demo.restablecer')}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('demo.restablecerTitulo')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('demo.restablecerCuerpo')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() =>
+                  reset.mutate(undefined, {
+                    onSuccess: () => toast.success(t('demo.restablecerOk')),
+                    onError: () => toast.error(t('demo.restablecerError')),
+                  })
+                }
+              >
+                {t('demo.restablecer')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Logic2B Campings — la web y la recepción de tu camping, resueltas",
-    "description": "Software para campings: web pública moderna, motor de reservas y gestor de recepción en un solo sistema. Alta en una tarde. De Logic2B, Castellón."
+    "description": "Software para campings: web, reservas directas y operativa de recepción conectadas en un solo sistema. De Logic2B, Castellón."
   },
   "nav": {
     "producto": "Producto",
@@ -16,52 +16,52 @@
   },
   "hero": {
     "kicker": "Software para campings · de Logic2B",
-    "titulo": "La web y la recepción de tu camping, en un solo sistema.",
-    "subtitulo": "Una web pública que vende sola y un gestor que tu recepción entiende desde el primer día. Sin hojas de cálculo, sin dobles reservas, sin depender de un portal que se queda tu comisión.",
+    "titulo": "Más reservas directas. Menos trabajo manual en recepción.",
+    "subtitulo": "Conecta la web, la disponibilidad y la operativa diaria de tu camping. El cliente reserva desde tu dominio y el equipo gestiona cada estancia desde una única herramienta.",
     "ctaDemo": "Pedir una demo",
     "ctaVer": "Ver la web de ejemplo",
-    "ctaMostrador": "Entrar al gestor de camping",
-    "nota": "Alta de un camping nuevo en una tarde. Sin permanencia para empezar.",
+    "ctaMostrador": "Probar el gestor",
+    "nota": "Implantación guiada, datos aislados por camping y sin comisión por reserva directa.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
   "problema": {
-    "titulo": "Lo que hoy te cuesta dinero cada agosto",
+    "titulo": "Cuando cada canal funciona por separado, recepción acaba haciendo el trabajo dos veces",
     "puntos": [
       {
         "titulo": "Tu web no reserva",
-        "texto": "Un formulario que llega por email y una llamada al día siguiente. Mientras, el cliente ya reservó en otro sitio."
+        "texto": "Las consultas por formulario o correo exigen comprobar disponibilidad y responder a mano. Cada espera reduce las opciones de convertir la solicitud."
       },
       {
-        "titulo": "La comisión del portal",
-        "texto": "Booking se lleva su parte de cada noche. Con reserva directa desde tu web, esa parte se queda en casa."
+        "titulo": "Demasiada dependencia de intermediarios",
+        "texto": "Los portales aportan visibilidad, pero no deberían ser el único canal. La reserva directa mejora el margen y la relación con el huésped."
       },
       {
         "titulo": "El cuaderno y el Excel",
-        "texto": "El planning en papel se solapa, se borra, y solo lo entiende quien lo escribió. Un cambio de parcela es media hora."
+        "texto": "Las hojas de cálculo y los apuntes dispersos dificultan saber qué está libre, qué se ha cobrado y qué cambia durante el día."
       },
       {
-        "titulo": "Seis idiomas a mano",
-        "texto": "Responder en francés, alemán y neerlandés uno a uno. La web debería hacerlo por ti."
+        "titulo": "La información no siempre llega clara",
+        "texto": "Una web multilingüe ayuda a resolver dudas antes de la reserva y reduce consultas repetitivas al equipo de recepción."
       }
     ]
   },
   "producto": {
-    "titulo": "Un sistema, dos caras",
-    "subtitulo": "La misma información, sin copiar nada de un sitio a otro.",
+    "titulo": "De la búsqueda al check-out, sin duplicar información",
+    "subtitulo": "La web capta la reserva y el gestor la convierte en una estancia operativa para recepción.",
     "bloques": [
       {
         "titulo": "La web pública",
-        "texto": "Rápida, en seis idiomas, con tus fotos y tu marca. El cliente busca fechas, ve disponibilidad real y reserva —o deja su solicitud— sin salir de tu dominio. Optimizada para que Google la encuentre.",
+        "texto": "Una web rápida, multilingüe y adaptada a tu marca. El cliente consulta fechas, revisa los alojamientos disponibles y reserva —o envía una solicitud— sin salir de tu dominio.",
         "puntos": [
-          "Motor de disponibilidad de verdad, no un mockup",
+          "Disponibilidad conectada con el inventario",
           "Reserva directa sin comisiones de portal",
-          "6 idiomas, responsive, accesible"
+          "Seis idiomas y experiencia adaptada a móvil"
         ],
         "capturaAlt": "Portada de la web pública de un camping con el buscador de fechas"
       },
       {
         "titulo": "El gestor de recepción",
-        "texto": "El planning de todas tus unidades de un vistazo, arrastrar para reasignar una parcela, cobrar, ver llegadas y salidas del día, la ficha de cada cliente con su historial. Pensado para la recepcionista, no para un informático.",
+        "texto": "Recepción consulta ocupación, llegadas, salidas y cobros desde el mismo lugar. Puede reasignar una parcela, abrir la ficha del huésped y seguir el estado de cada estancia sin saltar entre herramientas.",
         "puntos": [
           "Planning visual con arrastrar y soltar",
           "Llegadas, salidas y cobros del día",
@@ -72,22 +72,24 @@
     ]
   },
   "planning": {
-    "kicker": "El elemento firma",
-    "titulo": "El planning que de verdad usa tu recepción",
-    "texto": "Todas tus unidades, todo el verano, en una sola pantalla. Colores por estado, bloqueos a la vista, y reasignar una unidad es arrastrar la reserva —sin cancelar ni volver a cobrar. Rápido incluso con cientos de parcelas.",
+    "kicker": "La operativa, de un vistazo",
+    "titulo": "Un planning pensado para el ritmo real de recepción",
+    "texto": "Consulta la ocupación por fechas y unidades, distingue estados y bloqueos, y reasigna una estancia con un gesto. Cada cambio mantiene la reserva y su trazabilidad, para que el equipo pueda actuar con seguridad incluso en temporada alta.",
+    "ventana": "Planning de ocupación · agosto de 2026",
+    "pieMovil": "La vista móvil muestra el tramo operativo con fechas, parcelas y estados. En escritorio, el planning amplía el horizonte para gestionar más unidades a la vez.",
     "cta": "Verlo funcionando en la demo",
     "capturaAlt": "Vista del planning del gestor con reservas reales de un camping en agosto",
     "planoAlt": "El plano interactivo del camping con el estado de cada unidad",
     "puntos": [
-      "Arrastrar para reasignar — sin cancelar ni volver a cobrar",
+      "Reasigna una unidad sin rehacer la reserva",
       "Colores por estado y bloqueos a la vista",
       "También en plano: cada unidad sobre el mapa del camping"
     ]
   },
   "escala": {
     "kicker": "Hecho para escalar",
-    "titulo": "Un solo motor. Cada camping, el suyo.",
-    "subtitulo": "La misma tecnología sirve al micro-camping familiar y al resort de costa: lo que cambia es tu marca, tu configuración y tus datos. El producto es uno — y siempre al día.",
+    "titulo": "Una base común, configurada para cada camping",
+    "subtitulo": "La plataforma se adapta a tu marca, inventario y forma de trabajar. Cada camping mantiene su propia configuración y sus datos en un entorno aislado.",
     "cifras": [
       {
         "n": "1",
@@ -97,7 +99,7 @@
       {
         "n": "1",
         "titulo": "base de datos por camping",
-        "texto": "La tuya, aislada por diseño. Mezclar datos de dos campings no es improbable: es imposible."
+        "texto": "Cada camping trabaja en un entorno de datos independiente, con controles de acceso propios."
       },
       {
         "n": "4",
@@ -107,7 +109,7 @@
       {
         "n": "1",
         "titulo": "tarde para el alta",
-        "texto": "Con tus fotos, tus tipos y tus tarifas, tu instancia queda montada y funcionando en una tarde."
+        "texto": "Preparamos la configuración inicial con tu inventario, tarifas, contenidos y material de marca."
       }
     ],
     "nota": "Y en todos los niveles: seis idiomas de serie, tu dominio y tu marca."
@@ -218,8 +220,8 @@
     "cta": "Pedir una propuesta"
   },
   "alta": {
-    "titulo": "De cero a vender, en una tarde",
-    "texto": "Nos pasas tus fotos, tus tipos de alojamiento y tus tarifas, y montamos tu instancia. Tu propia base de datos, tu dominio, tu marca —aislada de cualquier otro camping. Sin proyectos eternos."
+    "titulo": "Una implantación guiada, con un alcance claro",
+    "texto": "Recopilamos tus alojamientos, tarifas, contenidos y material de marca; configuramos el entorno y revisamos contigo el flujo completo antes de publicar. El calendario se acuerda según el alcance y el estado de los datos de partida."
   },
   "faq": {
     "titulo": "Preguntas que nos hacen",
@@ -234,7 +236,7 @@
       },
       {
         "q": "¿Es difícil para mi recepcionista?",
-        "a": "Está diseñado para ella: pantallas grandes, texto claro, foco en teclado, y el planning que se entiende de un vistazo. Sin manual de 200 páginas."
+        "a": "Está diseñado alrededor de las tareas habituales de recepción: revisar llegadas, localizar una reserva, cobrar, reasignar una unidad y registrar la salida. La puesta en marcha incluye acompañamiento al equipo."
       },
       {
         "q": "¿Mis datos están seguros?",
@@ -242,7 +244,7 @@
       },
       {
         "q": "¿En cuánto tiempo lo tengo?",
-        "a": "Un camping nuevo se pone en marcha en una tarde a partir de tu material. Sin esperas de meses."
+        "a": "Depende del plan, las integraciones y la calidad de los datos de partida. Antes de comenzar acordamos el alcance, los materiales necesarios y una fecha realista de publicación."
       }
     ]
   },

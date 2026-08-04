@@ -75,6 +75,8 @@
     "kicker": "The signature piece",
     "titulo": "The planner your front desk actually uses",
     "texto": "Every unit, all summer, on one screen. Colours by status, blocks in plain sight, and reassigning a unit is dragging the booking —no cancelling, no charging again. Fast even with hundreds of pitches.",
+    "ventana": "Occupancy planner · August 2026",
+    "pieMovil": "The mobile view focuses on the operational detail: dates, pitches and booking status. On desktop, the planner expands to show more units at once.",
     "cta": "See it working in the demo",
     "capturaAlt": "View of the planner with real bookings for a campsite in August",
     "planoAlt": "The interactive campsite map with the state of each unit",

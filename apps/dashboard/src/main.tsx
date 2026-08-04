@@ -267,7 +267,7 @@ function Shell() {
         />
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative flex min-w-0 flex-1 flex-col">
         {/* Móvil: barra con dos entradas táctiles de 44px. El trigger real del
             Sheet permite que Radix devuelva el foco a la hamburguesa al cerrar. */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
