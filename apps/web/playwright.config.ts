@@ -6,6 +6,8 @@ import { defineConfig } from '@playwright/test';
 const CHROMIUM =
   process.env.CHROMIUM_PATH ??
   (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
+const E2E_PORT = Number(process.env.E2E_PORT ?? 8787);
+const E2E_ORIGIN = `http://127.0.0.1:${E2E_PORT}`;
 
 /**
  * E2E del funnel (ADR 0007) contra el Worker real con la web construida.
@@ -18,13 +20,14 @@ export default defineConfig({
   retries: 0,
   workers: 1, // el estado de la D1 local es compartido: secuencial a propósito
   use: {
-    baseURL: 'http://localhost:8787',
+    baseURL: E2E_ORIGIN,
     launchOptions: { executablePath: CHROMIUM },
   },
   webServer: {
     command:
-      'pnpm exec wrangler dev --config ../../tenants/demo/wrangler.jsonc --persist-to ../../.wrangler-demo --port 8787',
-    url: 'http://localhost:8787/api/health',
+      `pnpm exec wrangler dev --config ../../tenants/demo/wrangler.jsonc ` +
+      `--persist-to ../../.wrangler-demo --port ${E2E_PORT}`,
+    url: `${E2E_ORIGIN}/api/health`,
     reuseExistingServer: true,
     timeout: 60_000,
   },

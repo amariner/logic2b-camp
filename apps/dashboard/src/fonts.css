@@ -1,0 +1,37 @@
+/* M6: el gestor trabaja en lenguas latinas. Declarar solo estos ficheros evita
+ * que la salida publique subsets cirílicos, griegos y vietnamitas que nunca se
+ * solicitan. `font-display: swap` mantiene texto visible durante la descarga. */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Space Grotesk Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
+/* El wordmark solo usa 600 («Logic», «Campings») y 800 («2B»). */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('@fontsource/poppins/files/poppins-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url('@fontsource/poppins/files/poppins-latin-800-normal.woff2') format('woff2');
+}

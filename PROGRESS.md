@@ -4,6 +4,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (77, 2026-08-04)**: M6 cierra el Frente M reduciendo
+  la entrada del gestor de **785,80/234,75 kB a 533,71/170,04 kB min/gzip**.
+  Las 14 pantallas son chunks de ruta con `lazyRouteComponent`, fallback
+  accesible y precarga por intención; Planning (17,26 kB gzip) y Plano (8,47
+  kB) solo viajan al abrirlos y quedan cacheados. El build conserva un
+  manifiesto y falla si la entrada vuelve a ≥200 kB gzip o esas dos pantallas
+  dejan de ser dinámicas. Las fuentes pasan de 15 activos a cuatro WOFF2
+  latinos. Playwright nuevo comprueba peticiones reales y caché; el puerto E2E
+  es configurable porque 8787 puede estar ocupado por otro proyecto local.
+  `pnpm check` **46/46**, bundle compuesto **9.286 enlaces**, regresiones
+  móviles previas **7/7** en dos Workers y regresión M6 **1/1**. Sin deploy
+  remoto: producción queda en la sesión 76.
 - **Última sesión autónoma (76, 2026-08-04)**: M4 sustituye bajo `md` el tape
   chart comprimido por una agenda móvil real de día/semana. Cada estancia y su
   unidad son objetivos independientes de al menos 44 px; ficha y plano abren
@@ -135,6 +147,44 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 77 — 2026-08-04 · **M6: carga inicial por debajo de 200 kB gzip** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M6] Rendimiento móvil del dashboard`, último P1 y
+candidato recomendado tras M4. La build arrastraba las 14 pantallas desde
+`main.tsx`: 785,80 kB minificados / 234,75 kB gzip antes de mostrar la portada,
+incluidos Planning y Plano.
+
+**Una pantalla, un chunk**: las rutas usan `lazyRouteComponent`; TanStack
+precarga por intención en hover/touchstart y conserva el import resuelto al
+volver. Un `defaultPendingComponent` común mantiene shell, navegación y un
+estado `role=status` traducido mientras llega una pantalla. La portada ya no
+pide Planning ni Plano: quedan en 17,26 y 8,47 kB gzip respectivamente.
+
+**Presupuesto, no captura**: Vite genera manifiesto y
+`scripts/check-entry-budget.mjs` recorre el grafo estático real, comprime sus
+JS y rompe la build si llega a 200 kB o si Planning/Plano dejan de ser entradas
+dinámicas. Resultado estable: **533,71 kB min / 170,04 kB gzip**, 27,6 % menos
+que la línea base. La advertencia de Vite sobre 500 kB minificados permanece:
+no se oculta, pero el criterio de red fijado por M6 queda verde.
+
+**Fuentes y navegador**: las importaciones generales de Fontsource emitían
+cirílico, griego, vietnamita y latin-ext. `fonts.css` declara únicamente Inter,
+Space Grotesk y los dos pesos Poppins como cuatro WOFF2 latinos (15 → 4
+activos). Una regresión Playwright escucha las respuestas del Worker: portada
+sin chunks densos, cada ruta los pide una vez y la segunda visita no repite la
+descarga. `E2E_PORT` permite verificar sin parar otro Worker local que ya use 8787.
+
+**Verificación**: `pnpm check` **46/46**; build M6 en 170,04 kB gzip; bundle
+compuesto **9.286 enlaces en 304 HTML**; regresiones M1–M5 **7/7** repartidas en
+dos Workers limpios y M6 **1/1**. Sin deploy remoto ni cambio de datos.
+
+**Pase EQUIPO**: Arquitectura/Fullstack conservan una SPA y el despliegue único;
+Backend y dominio no cambian; Frontend añade pending/error sin duplicar rutas;
+Producto/UX hacen más corta la primera visita móvil y conservan navegación
+instantánea tras caché; UI mantiene las tres familias tipográficas con subsets
+latinos; SEO no aplica a la SPA `noindex`. No abre fase ni ADR: ejecuta M6 del
+ADR 0031 propuesto.
 
 ### Sesión 76 — 2026-08-04 · **M4: el Planning móvil se convierte en agenda** (autónoma, protocolo CONTINUA)
 

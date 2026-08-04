@@ -151,7 +151,12 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   abren un `Sheet` inferior, las ocupadas conservan la ficha completa y ambas
   devuelven el foco. Roles/nombres accesibles, Enter/Espacio/flechas/Escape y
   escritorio fijados en Playwright. Corregida además la apertura de `inhouse`.
-- [M6] **Rendimiento móvil del dashboard**: dividir el bundle por rutas (medido
-  tras M4: 785,80 kB minificado / 234,75 kB gzip), cargar Planning/Plano bajo
-  demanda y limitar fuentes a subsets necesarios. Objetivo inicial: JS de
-  entrada <200 kB gzip y navegación posterior cacheada.
+- ~~[M6] **Rendimiento móvil del dashboard**~~ → **hecho 2026-08-04 (sesión 77)**: las 14 pantallas son entradas dinámicas de TanStack Router con
+  precarga por intención y estado de carga accesible. La entrada baja de
+  785,80/234,75 kB a **533,71/170,04 kB min/gzip**; Planning queda en 17,26 kB
+  gzip y Plano en 8,47 kB, ambos bajo demanda y cacheados tras abrirlos. El
+  build genera manifiesto y falla si la entrada vuelve a ≥200 kB gzip o si
+  cualquiera de esas dos pantallas deja de ser dinámica. Fontsource pasa de 15
+  ficheros emitidos a cuatro WOFF2 latinos. Playwright prueba la red real:
+  portada sin Planning/Plano, descarga al entrar y cero segunda descarga al
+  volver.

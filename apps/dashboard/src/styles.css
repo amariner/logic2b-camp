@@ -1,5 +1,5 @@
 /* Dashboard — marca Logic2B (ADR 0017, docs/BRAND.md). Producto = DS neutro shadcn.
- * Las fuentes (Inter Variable + Space Grotesk) se importan en main.tsx vía @fontsource. */
+ * Las fuentes latinas del producto se declaran en fonts.css. */
 @import 'tailwindcss';
 @import '@logic-camp/ui/theme.css';
 

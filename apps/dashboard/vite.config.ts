@@ -7,6 +7,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: '/admin/',
   plugins: [react(), tailwindcss()],
+  build: {
+    // M6: el manifiesto permite comprobar el peso de la entrada y que las
+    // vistas densas continúan fuera de su grafo estático.
+    manifest: true,
+  },
   server: {
     port: 5173,
     proxy: { '/api': 'http://localhost:8787' },

@@ -4,6 +4,7 @@
  */
 const es = {
   'app.nombre': 'Logic2B Campings',
+  'app.cargando': 'Cargando la pantalla…',
   'app.cerrarSesion': 'Salir',
   // ayuda contextual: el `?` de cada pantalla (ADR 0025, C6)
   'ayuda.aria': 'Abrir la guía de esta pantalla (se abre en otra pestaña)',

@@ -1,5 +1,12 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 77 (2026-08-04). **M6** cierra el Frente M: las
+> 14 pantallas pasan a chunks de ruta; la entrada baja de 234,75 a **170,04 kB
+> gzip**, Planning/Plano viajan bajo demanda y quedan cacheados. El build fija
+> presupuesto <200 kB y naturaleza dinámica; Fontsource publica solo cuatro
+> WOFF2 latinos. `pnpm check` 46/46, Playwright móvil previo 7/7 y nueva prueba
+> de red/caché 1/1. Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 76 (2026-08-04). **M4** convierte Planning en
 > agenda móvil de día/semana: filas y controles ≥44 px, campos de 16 px, ficha
 > y unidad tocables, cambio explícito de fechas/unidad sobre la misma
@@ -76,14 +83,15 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M4 (76)**, Planning móvil como agenda de día/semana con cambios explícitos y
-tape chart de escritorio intacto. M0 (71) sigue siendo el contrato de medida
-para M6.
+**M6 (77)**, carga inicial móvil en 170,04 kB gzip con rutas bajo demanda. El
+Frente M queda cerrado de M0 a M6; ADR 0031 sigue propuesto para validación de
+Andreu.
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Nada bloquea en código ni queda deuda de deploy.** Las sesiones 63–70 y
-   72–76 están en producción; la 71 solo cambió documentación. Último deploy:
+1. **Nada bloquea en código. La sesión 77 queda pendiente de deploy manual.**
+   Las sesiones 63–70 y 72–76 están en producción; la 71 solo cambió
+   documentación. Último deploy:
    commit de producto `b017d7b`, versión Cloudflare
    `cfe8405b-810a-4a1f-9f27-aaef7852b88e`. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
@@ -96,13 +104,14 @@ para M6.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1–M5 ya lo aplican con evidencia verde; Andreu puede
-   aceptar o discutir sus umbrales antes de M6.
+   44 px, foco, roles y carga). M1–M6 ya lo aplican con evidencia verde; Andreu
+   puede aceptarlo o discutir sus umbrales.
 
 ## Estado de la entrega
 
-**Código al día en `main` y producción**: 63–76. El producto desplegado
-corresponde a `b017d7b` (2026-08-04), versión Cloudflare
+**Código al día en `main`; producción hasta la 76**. La sesión 77 espera el
+próximo deploy manual. El producto desplegado corresponde a `b017d7b`
+(2026-08-04), versión Cloudflare
 `cfe8405b-810a-4a1f-9f27-aaef7852b88e`; la 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
@@ -113,11 +122,9 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M6] Carga inicial móvil (recomendado)**: 785,80 kB min / 234,75 kB gzip.
-  Lazy por rutas, Planning/Plano bajo demanda, entrada <200 kB gzip y revisión
-  de subsets.
-- **[seed] `created_at` de las ~3.500 reservas**: hoy coincide con el ancla;
-  derivarlo del canal (mostrador = llegada, web = meses antes).
+- **[seed] `created_at` de las ~3.500 reservas (recomendado)**: hoy coincide con
+  el ancla; derivarlo del canal (mostrador = llegada, web = meses antes) sin
+  perder determinismo ni las propiedades temporales del seed.
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
@@ -136,6 +143,14 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (77) — code splitting sin presupuesto vuelve a degradarse en
+  silencio.** `dashboard build` lee el manifiesto de Vite, suma el grafo JS
+  estático comprimido y exige <200 kB; también exige que Planning y Plano sean
+  `isDynamicEntry`. Mantener la comprobación alineada con `index.html`, no con
+  el nombre hash de un fichero.
+- **NUEVA (77) — 8787 puede pertenecer a otro proyecto local.** No matar el
+  Worker ajeno: usar `E2E_PORT=8788` al lanzar Playwright cambia `baseURL`,
+  healthcheck y `wrangler dev` juntos. El default sigue siendo 8787.
 - **NUEVA (76) — una vista responsive compleja debe montar un solo modelo
   interactivo.** Ocultar la agenda y el tape chart solo con CSS habría dejado
   dos árboles, focos e IDs vivos, además de mantener el rango de 31 días en la

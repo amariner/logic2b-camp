@@ -3,14 +3,9 @@
  * (hash history: /admin/#/…) + TanStack Query. Shell = sidebar agrupada plegable,
  * marca Logic2B (packages/ui). Guardia de sesión en la raíz: sin cookie → login.
  */
-import '@fontsource-variable/inter';
-import '@fontsource-variable/space-grotesk';
-/* Solo los dos pesos del wordmark: 600 para «Logic» y «Campings», 800 para el
- * «2B». Poppins no es variable — un archivo por peso — y no la usa nada más.
- * `latin-*` y NO `600.css`/`800.css`: esos arrastran todos los subsets, y la
- * build se llevaba 180 kB de Poppins Devanagari para pintar dos palabras. */
-import '@fontsource/poppins/latin-600.css';
-import '@fontsource/poppins/latin-800.css';
+// El gestor solo declara los glifos latinos que usa. Importar los CSS generales
+// de Fontsource emitía cirílico, griego y vietnamita en cada build (M6).
+import './fonts.css';
 import {
   Button,
   cn,
@@ -28,6 +23,7 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  lazyRouteComponent,
   Link,
   Outlet,
   RouterProvider,
@@ -43,22 +39,37 @@ import { RouteError, RouteNotFound } from './components/RouteError';
 import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
 import { navGroupsForRole } from './lib/nav';
-import Ajustes from './pages/Ajustes';
-import Clientes from './pages/Clientes';
-import Informes from './pages/Informes';
-import Inicio from './pages/Inicio';
-import Inventario from './pages/Inventario';
-import Llegadas from './pages/Llegadas';
 import Login from './pages/Login';
-import Notificaciones from './pages/Notificaciones';
-import Pagos from './pages/Pagos';
-import Parte from './pages/Parte';
-import Planning from './pages/Planning';
-import Plano from './pages/Plano';
-import Reservas from './pages/Reservas';
-import Solicitudes from './pages/Solicitudes';
-import Tarifas from './pages/Tarifas';
 import './styles.css';
+
+// Una pantalla = un chunk. `lazyRouteComponent` permite además precargar por
+// intención desde los Link de TanStack y conserva el módulo en caché tras la
+// primera navegación. Planning y Plano dejan de penalizar la entrada móvil.
+const Inicio = lazyRouteComponent(() => import('./pages/Inicio'));
+const Planning = lazyRouteComponent(() => import('./pages/Planning'));
+const Plano = lazyRouteComponent(() => import('./pages/Plano'));
+const Llegadas = lazyRouteComponent(() => import('./pages/Llegadas'));
+const Solicitudes = lazyRouteComponent(() => import('./pages/Solicitudes'));
+const Reservas = lazyRouteComponent(() => import('./pages/Reservas'));
+const Clientes = lazyRouteComponent(() => import('./pages/Clientes'));
+const Parte = lazyRouteComponent(() => import('./pages/Parte'));
+const Informes = lazyRouteComponent(() => import('./pages/Informes'));
+const Inventario = lazyRouteComponent(() => import('./pages/Inventario'));
+const Tarifas = lazyRouteComponent(() => import('./pages/Tarifas'));
+const Notificaciones = lazyRouteComponent(() => import('./pages/Notificaciones'));
+const Pagos = lazyRouteComponent(() => import('./pages/Pagos'));
+const Ajustes = lazyRouteComponent(() => import('./pages/Ajustes'));
+
+function RoutePending() {
+  return (
+    <div
+      role="status"
+      className="flex flex-1 items-center justify-center text-sm text-muted-foreground"
+    >
+      {t('app.cargando')}
+    </div>
+  );
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -353,7 +364,11 @@ const mapSearch = (s: Record<string, unknown>): { date?: string; unit?: string }
 });
 
 const routes = [
-  createRoute({ getParentRoute: () => rootRoute, path: '/', component: Inicio }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: Inicio,
+  }),
   createRoute({
     getParentRoute: () => rootRoute,
     path: '/planning',
@@ -366,29 +381,81 @@ const routes = [
     component: Plano,
     validateSearch: mapSearch,
   }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/llegadas', component: Llegadas }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/solicitudes', component: Solicitudes }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/reservas', component: Reservas }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/llegadas',
+    component: Llegadas,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/solicitudes',
+    component: Solicitudes,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/reservas',
+    component: Reservas,
+  }),
   // rutas direccionables (ADR 0022 §4): una reserva/cliente se puede enviar por URL
-  createRoute({ getParentRoute: () => rootRoute, path: '/reservas/$id', component: Reservas }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/clientes', component: Clientes }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/clientes/$id', component: Clientes }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/parte', component: Parte }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/informes', component: Informes }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/inventario', component: Inventario }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/tarifas', component: Tarifas }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/reservas/$id',
+    component: Reservas,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/clientes',
+    component: Clientes,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/clientes/$id',
+    component: Clientes,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/parte',
+    component: Parte,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/informes',
+    component: Informes,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/inventario',
+    component: Inventario,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/tarifas',
+    component: Tarifas,
+  }),
   createRoute({
     getParentRoute: () => rootRoute,
     path: '/notificaciones',
     component: Notificaciones,
   }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/pagos', component: Pagos }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/ajustes', component: Ajustes }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/pagos',
+    component: Pagos,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/ajustes',
+    component: Ajustes,
+  }),
 ] as const;
 
 const router = createRouter({
   routeTree: rootRoute.addChildren(routes),
   history: createHashHistory(),
+  // En escritorio el hover y en móvil el touchstart adelantan el chunk; no se
+  // descarga ninguna pantalla durante la entrada si no existe intención.
+  defaultPreload: 'intent',
+  defaultPendingComponent: RoutePending,
 });
 
 declare module '@tanstack/react-router' {

@@ -31,7 +31,9 @@ de interacción:
 No se encontró ningún P0. Hay **seis P1**, cinco P2 y un P3. El orden que sale de
 la evidencia es **M1 → M2 → M3 → M5 → M4 → M6**: primero poder cerrar una cuenta
 y encontrar una reserva; después la operación del día; luego las dos vistas
-densas con una interacción propia; finalmente carga inicial.
+densas con una interacción propia; finalmente carga inicial. **El recorrido
+M1–M6 quedó cerrado en la sesión 77**; este informe conserva la línea base que
+lo justificó.
 
 ## Matriz recorrida
 
@@ -169,7 +171,7 @@ viewport y ocultar la acción que se pretendía completar.
 **Aceptación transversal M1–M5**: entradas editables a 16 px bajo `md`, sin
 cambiar necesariamente su escala en escritorio.
 
-### M0-11 · P2 · Entrada de 230,42 kB gzip → M6
+### M0-11 · P2 · Entrada de 230,42 kB gzip → M6 · cerrado
 
 La build produce un único JS de **768,96 kB minificado / 230,42 kB gzip**. Supera
 en 30,42 kB el objetivo inicial de 200 kB y carga Planning/Plano aunque la
@@ -180,6 +182,12 @@ sigue cargada de activos que M6 debe revisar.
 **Aceptación de M6**: rutas lazy, chunk inicial <200 kB gzip, Planning/Plano bajo
 demanda y navegación posterior cacheada. Medir red real, no solo ficheros
 emitidos.
+
+**Resultado (sesión 77)**: entrada en 170,04 kB gzip; Planning 17,26 kB y Plano
+8,47 kB bajo demanda. El build fija presupuesto y naturaleza dinámica mediante
+el manifiesto de Vite; Playwright confirma sobre el Worker que la portada no
+los solicita, cada ruta carga su chunk una vez y volver usa el módulo cacheado.
+Solo se publican cuatro WOFF2 latinos.
 
 ### M0-12 · P3 · Enlaces compactos secundarios
 
