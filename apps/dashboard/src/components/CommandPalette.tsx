@@ -15,14 +15,21 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { BookMarked, MapPin, Users } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ComponentProps } from 'react';
 import { apiGet, type BookingListItem, type Catalog, type GuestListItem } from '../api';
 import { t } from '../i18n';
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 
-export default function CommandPalette() {
-  const [open, setOpen] = useState(false);
+export default function CommandPalette({
+  open,
+  onOpenChange,
+  onCloseAutoFocus,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onCloseAutoFocus?: ComponentProps<typeof CommandDialog>['onCloseAutoFocus'];
+}) {
   const [term, setTerm] = useState('');
   const [debounced, setDebounced] = useState('');
   const navigate = useNavigate();
@@ -32,12 +39,12 @@ export default function CommandPalette() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setOpen((v) => !v);
+        onOpenChange(!open);
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, []);
+  }, [onOpenChange, open]);
 
   // debounce del término (no una petición por tecla)
   useEffect(() => {
@@ -88,7 +95,7 @@ export default function CommandPalette() {
   }, [enabled, catalog.data, debounced]);
 
   const go = (fn: () => void) => {
-    setOpen(false);
+    onOpenChange(false);
     fn();
   };
 
@@ -101,7 +108,12 @@ export default function CommandPalette() {
     units.length === 0;
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen} label={t('cmdk.placeholder')}>
+    <CommandDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      onCloseAutoFocus={onCloseAutoFocus}
+      label={t('cmdk.placeholder')}
+    >
       <CommandInput
         autoFocus
         value={term}

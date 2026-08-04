@@ -7,14 +7,24 @@
  * entra en la demo— le pasaba lo mismo que en la web: veía una cara y se perdía
  * el resto.
  *
- * Tres bloques, en el orden en que se miran: cómo va HOY (cifras), qué hay
- * (rejilla de módulos) y qué ha entrado sin que estuvieras (solicitudes).
+ * Tres bloques. En móvil prima la jornada: cifras, listas de hoy y después el
+ * catálogo de módulos. En escritorio se mantiene la composición histórica,
+ * con el catálogo antes de las listas, mediante `order` responsivo.
  *
  * Sin API nueva: se compone de `/reports` (dos rangos) y `/enquiries`, que ya
  * existían y que el rol `demo` puede leer — comprobado, porque el visitante
  * anónimo de la demo es justo quien más va a ver esta pantalla.
  */
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton, cn, focusRing } from '@logic-camp/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+  cn,
+  focusRing,
+} from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
@@ -297,48 +307,12 @@ export default function Inicio() {
           )}
         </section>
 
-        {/* ---------- la rejilla de módulos ---------- */}
-        <section>
-          <h2 className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-            {t('ini.modulos')}
-          </h2>
-          <div className="mt-3 flex flex-col gap-5">
-            {navGroups.map((grupo) => (
-              <div key={grupo.label}>
-                <h3 className="mb-2 text-[12px] font-medium text-muted-foreground">
-                  {t(grupo.label)}
-                </h3>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  {grupo.items.map(([ruta, rotulo, Icono, frase]) => (
-                    <Card key={ruta} className="transition-colors hover:border-primary/40">
-                      <Link
-                        to={ruta}
-                        className={cn('block rounded-(--radius) p-4', focusRing)}
-                      >
-                        <span className="flex items-center gap-2.5">
-                          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-(--radius) bg-primary/10 text-primary">
-                            <Icono className="size-4" aria-hidden />
-                          </span>
-                          <span className="font-medium">{t(rotulo)}</span>
-                        </span>
-                        <span className="mt-2 block text-[13px] leading-snug text-muted-foreground">
-                          {t(frase)}
-                        </span>
-                      </Link>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* ---------- las tres listas del día, en paralelo ----------
            Entradas y salidas son la operación de HOY; solicitudes es lo que ha
            entrado sin que estuvieras. Las tres caben de un vistazo y cada una
            sale a su pantalla. Debajo de `xl` se apilan: tres columnas a 1024px
            dejarían los nombres en un acordeón ilegible. */}
-        <section className="grid gap-4 xl:grid-cols-3">
+        <section className="order-2 grid gap-4 md:order-3 xl:grid-cols-3">
           <Panel
             titulo={t('ini.entradas')}
             to="/llegadas"
@@ -353,9 +327,7 @@ export default function Inicio() {
                   {b.unitCode ?? t('dia.sinUnidad')}
                 </span>
                 {b.checkedInAt ? (
-                  <span className="lc-chip sol-converted justify-self-end">
-                    {t('ini.dentro')}
-                  </span>
+                  <span className="lc-chip sol-converted justify-self-end">{t('ini.dentro')}</span>
                 ) : (
                   <span className="justify-self-end text-[12px] text-muted-foreground">
                     {t('ini.porLlegar')}
@@ -412,6 +384,41 @@ export default function Inicio() {
               </>
             )}
           />
+        </section>
+
+        {/* ---------- la rejilla de módulos ----------
+           El DOM sigue el recorrido móvil (lo urgente antes que el catálogo).
+           Desde `md`, `order-2` conserva la portada de escritorio anterior. */}
+        <section className="order-3 md:order-2">
+          <h2 className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+            {t('ini.modulos')}
+          </h2>
+          <div className="mt-3 flex flex-col gap-5">
+            {navGroups.map((grupo) => (
+              <div key={grupo.label}>
+                <h3 className="mb-2 text-[12px] font-medium text-muted-foreground">
+                  {t(grupo.label)}
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {grupo.items.map(([ruta, rotulo, Icono, frase]) => (
+                    <Card key={ruta} className="transition-colors hover:border-primary/40">
+                      <Link to={ruta} className={cn('block rounded-(--radius) p-4', focusRing)}>
+                        <span className="flex items-center gap-2.5">
+                          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-(--radius) bg-primary/10 text-primary">
+                            <Icono className="size-4" aria-hidden />
+                          </span>
+                          <span className="font-medium">{t(rotulo)}</span>
+                        </span>
+                        <span className="mt-2 block text-[13px] leading-snug text-muted-foreground">
+                          {t(frase)}
+                        </span>
+                      </Link>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </div>

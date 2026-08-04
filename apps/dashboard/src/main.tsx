@@ -17,6 +17,7 @@ import {
   Sheet,
   SheetContent,
   SheetTitle,
+  SheetTrigger,
   Toaster,
   TooltipProvider,
   Wordmark,
@@ -31,8 +32,8 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { ChevronLeft, Home, LogOut, Menu } from 'lucide-react';
-import { StrictMode, useState } from 'react';
+import { ChevronLeft, Home, LogOut, Menu, Search } from 'lucide-react';
+import { StrictMode, useCallback, useRef, useState } from 'react';
 import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
 import { useRol, useSession, useSignOut } from './auth';
@@ -114,12 +115,13 @@ function SidebarInner({
         {/* Inicio va suelto y arriba, fuera de los grupos: no es "operación
            diaria", es la portada desde la que se llega a todo lo demás. */}
         <Link
+          data-mobile-menu-start
           to="/"
           title={t('nav.inicio')}
           onClick={onNavigate}
           activeOptions={{ exact: true }}
           className={cn(
-            'mt-2 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
+            'mt-2 flex min-h-11 items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:min-h-0 [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
             collapsed && 'justify-center px-0',
           )}
         >
@@ -143,7 +145,7 @@ function SidebarInner({
                 title={t(key)}
                 onClick={onNavigate}
                 className={cn(
-                  'mt-0.5 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
+                  'mt-0.5 flex min-h-11 items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:min-h-0 [&.active]:bg-accent [&.active]:font-medium [&.active]:text-accent-foreground',
                   collapsed && 'justify-center px-0',
                 )}
               >
@@ -173,10 +175,7 @@ function SidebarInner({
               className="size-8"
             >
               <ChevronLeft
-                className={cn(
-                  'size-4 transition-transform',
-                  collapsed && 'rotate-180',
-                )}
+                className={cn('size-4 transition-transform', collapsed && 'rotate-180')}
               />
             </Button>
           )}
@@ -186,7 +185,10 @@ function SidebarInner({
             onClick={onSignOut}
             title={t('app.cerrarSesion')}
             aria-label={t('app.cerrarSesion')}
-            className={cn('text-muted-foreground', collapsed ? 'size-8 px-0' : 'ml-auto')}
+            className={cn(
+              'min-h-11 text-muted-foreground md:min-h-8',
+              collapsed ? 'size-8 px-0' : 'ml-auto',
+            )}
           >
             <LogOut className="size-4" />
             {!collapsed && <span>{t('app.cerrarSesion')}</span>}
@@ -211,6 +213,15 @@ function Shell() {
   // desde la hamburguesa (BACKLOG B1). El primitivo Sheet aporta trampa de foco,
   // cierre con Escape y overlay.
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const searchTriggerRef = useRef<HTMLButtonElement>(null);
+  const commandOpenedFromSearchRef = useRef(false);
+
+  const onCommandOpenChange = useCallback((next: boolean) => {
+    if (next) commandOpenedFromSearchRef.current = false;
+    setCommandOpen(next);
+  }, []);
 
   const toggle = () => {
     setCollapsed((v) => {
@@ -246,19 +257,60 @@ function Shell() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Móvil: barra con hamburguesa; la sidebar vive en el off-canvas. */}
-        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-sidebar-border bg-sidebar px-2 md:hidden">
-          <Button
-            variant="ghost"
-            size="iconSm"
-            onClick={() => setMobileOpen(true)}
-            aria-label={t('nav.abrirMenu')}
-            className="size-9"
+        {/* Móvil: barra con dos entradas táctiles de 44px. El trigger real del
+            Sheet permite que Radix devuelva el foco a la hamburguesa al cerrar. */}
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <header className="flex h-12 shrink-0 items-center gap-1 border-b border-sidebar-border bg-sidebar px-0.5 md:hidden">
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="iconSm"
+                aria-label={t('nav.abrirMenu')}
+                className="size-11"
+              >
+                <Menu className="size-5" />
+              </Button>
+            </SheetTrigger>
+            <Wordmark
+              className="text-sm [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center"
+              enlazado
+            />
+            <Button
+              ref={searchTriggerRef}
+              variant="ghost"
+              size="iconSm"
+              aria-label={t('cmdk.abrir')}
+              className="ml-auto size-11"
+              onClick={() => {
+                commandOpenedFromSearchRef.current = true;
+                setCommandOpen(true);
+              }}
+            >
+              <Search className="size-5" />
+            </Button>
+          </header>
+
+          <SheetContent
+            ref={mobileMenuRef}
+            side="left"
+            className="w-64 border-sidebar-border bg-sidebar p-0 md:hidden"
+            onOpenAutoFocus={(event) => {
+              event.preventDefault();
+              mobileMenuRef.current
+                ?.querySelector<HTMLElement>('[data-mobile-menu-start]')
+                ?.focus();
+            }}
           >
-            <Menu className="size-5" />
-          </Button>
-          <Wordmark className="text-sm" enlazado />
-        </header>
+            {/* Título accesible del diálogo, oculto: el logo ya identifica visualmente. */}
+            <SheetTitle className="sr-only">{t('nav.menu')}</SheetTitle>
+            <SidebarInner
+              collapsed={false}
+              onNavigate={() => setMobileOpen(false)}
+              email={email}
+              onSignOut={() => signOut.mutate()}
+            />
+          </SheetContent>
+        </Sheet>
 
         {/* Solo se pinta para el visitante anónimo de la demo (ADR 0029). */}
         <DemoBanner />
@@ -270,24 +322,17 @@ function Shell() {
         </main>
       </div>
 
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent
-          side="left"
-          className="w-64 border-sidebar-border bg-sidebar p-0 md:hidden"
-        >
-          {/* Título accesible del diálogo, oculto: el logo ya identifica visualmente. */}
-          <SheetTitle className="sr-only">{t('nav.menu')}</SheetTitle>
-          <SidebarInner
-            collapsed={false}
-            onNavigate={() => setMobileOpen(false)}
-            email={email}
-            onSignOut={() => signOut.mutate()}
-          />
-        </SheetContent>
-      </Sheet>
-
       {/* Paleta ⌘K global (ADR 0022): buscar reserva/cliente/unidad y saltar */}
-      <CommandPalette />
+      <CommandPalette
+        open={commandOpen}
+        onOpenChange={onCommandOpenChange}
+        onCloseAutoFocus={(event) => {
+          if (!commandOpenedFromSearchRef.current) return;
+          event.preventDefault();
+          commandOpenedFromSearchRef.current = false;
+          searchTriggerRef.current?.focus();
+        }}
+      />
     </div>
   );
 }

@@ -4,6 +4,17 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (73, 2026-08-04)**: M2 ordena la portada móvil por
+  urgencia —KPIs → entradas/salidas/solicitudes → módulos— y conserva en
+  escritorio la composición anterior. El shell gana botón táctil de búsqueda
+  global de 44×44 px conectado a la misma paleta que `⌘/Ctrl+K`; campo enfocado
+  al abrir y retorno al botón al cerrar. El menú usa por fin un `SheetTrigger`
+  real, entra por Inicio, vuelve a la hamburguesa con Escape y eleva rutas,
+  tema, salir y cierre a 44 px bajo `md`. `Button` admite `ref` sin romper
+  `asChild`. Playwright contra bundle compuesto + D1 recorre 320/375/430 y
+  escritorio, además de la ficha móvil existente: **4/4 verde**. `pnpm check`
+  **46/46 verde**. Sin deploy: producción suma la 73 a la deuda manual de
+  67–70 y 72.
 - **Última sesión autónoma (72, 2026-08-04)**: M1 convierte la ficha de reserva
   en un **Sheet móvil a pantalla completa** bajo 768 px sin alterar el panel
   lateral de escritorio. A 320/375/430 px: ancho exacto, cero desborde, cabecera
@@ -85,6 +96,50 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 73 — 2026-08-04 · **M2: lo urgente aparece primero y el shell recupera el foco** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M2] Portada y shell móvil orientados a hoy`, siguiente
+P1 recomendado por la auditoría M0 y por `SIGUIENTE-SESION`. Era el camino más
+corto para que recepción pueda orientarse y buscar desde un teléfono; no exige
+API, credenciales ni una bifurcación del producto. Se implementa bajo el ADR
+0031 todavía `propuesto`, con cambios responsivos y reversibles.
+
+**Portada**: el DOM sigue ahora el recorrido móvil: cifras, las tres listas de
+la jornada y, al final, el catálogo de módulos. Las clases `order` a partir de
+`md` preservan la lectura histórica de escritorio —cifras, módulos, listas— sin
+duplicar componentes, datos ni consultas.
+
+**Shell y búsqueda**: la cabecera móvil suma un botón Buscar de 44×44 px. La
+paleta deja de esconder su estado en el componente y acepta un único contrato
+controlado, de modo que botón y `⌘/Ctrl+K` abren la misma instancia. El input
+conserva el foco inicial y `onCloseAutoFocus` devuelve el foco al botón solo
+cuando ese fue el origen. `Button` expone su nodo con `forwardRef`, también a
+través de `asChild`.
+
+**Menú accesible**: la hamburguesa pasa a ser `SheetTrigger`; Radix puede así
+restaurarla al cerrar con Escape. `onOpenAutoFocus` lleva el foco a Inicio en
+vez de al tema, y los objetivos táctiles del menú —rutas, tema, salir y cierre—
+suben a 44 px bajo `md` sin cambiar la densidad de la sidebar de escritorio.
+Los dos enlaces del wordmark reciben también altura táctil en la barra móvil.
+
+**Verificación**: UI **57/57**, dashboard **7/7** y `pnpm check` **46/46**.
+Playwright sobre el bundle compuesto, Worker y D1 sembrada valida a 320, 375 y
+430 px el orden móvil, blancos de 44 px, foco inicial y retorno de búsqueda y
+menú; a 1366 px fija el orden anterior. Se ejecutó junto a la regresión M1 para
+confirmar que el cambio compartido del `Sheet` no rompe la ficha: **4/4 verde**.
+La prueba recorre los tres anchos en una sola sesión de demo para no consumir el
+rate limit de autenticación.
+
+**Pase EQUIPO**: Arquitectura conserva una SPA y una instancia por control;
+Fullstack no cambia contratos API ni el despliegue; Backend no recibe rutas ni
+permisos nuevos; Frontend unifica estado y deja regresión de teclado; Producto y
+UX ponen la jornada y la búsqueda antes que el catálogo; UI conserva 1366 px y
+fija 44 px/foco en los tres anchos; SEO no aplica a la SPA privada. No hace falta
+ADR nuevo: M2 ejecuta el contrato ya documentado en ADR 0031. Sin deploy remoto.
+
+**Siguiente**: M3 — llegadas, salidas y solicitudes operables con una mano,
+elevando acciones primarias y filtros a 44 px sin perder datos ni densidad.
 
 ### Sesión 72 — 2026-08-04 · **M1: la ficha cabe en el móvil y vuelve a su origen** (autónoma, protocolo CONTINUA)
 

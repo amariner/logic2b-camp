@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 73 (2026-08-04). **M2** pone la operación del
+> día antes que los módulos en móvil, añade búsqueda táctil y cierra el circuito
+> de foco del buscador y del menú; escritorio conserva su composición.
+> Regresiones: `pnpm check` 46/46 y Playwright 4/4 contra bundle compuesto + D1.
+> Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 72 (2026-08-04). **M1** lleva la ficha de
 > reserva a un Sheet móvil real, sin desborde y con foco recuperable a
 > 320/375/430 px; escritorio conserva su panel lateral. La navegación común ya
@@ -50,13 +56,13 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M1 (72)**, ficha de reserva móvil a pantalla completa y navegación honesta por
-rol. M0 (71) sigue siendo el contrato de medida para M2–M6.
+**M2 (73)**, portada móvil orientada a hoy, búsqueda táctil y foco recuperable
+en el shell. M0 (71) sigue siendo el contrato de medida para M3–M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–73 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -68,13 +74,13 @@ rol. M0 (71) sigue siendo el contrato de medida para M2–M6.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1 ya lo aplica con evidencia verde; Andreu puede
+   44 px, foco y roles). M1 y M2 ya lo aplican con evidencia verde; Andreu puede
    aceptar o discutir sus umbrales antes de M4/M5, que cambian más interacción.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–72. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 y 72 quedan pendientes de deploy manual con
+**Código al día en `main`**: 63–73. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 y 72–73 quedan pendientes de deploy manual con
 credenciales locales. La 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
@@ -85,12 +91,9 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M2] Portada y shell móvil (recomendado)**: KPIs → listas del día → módulos;
-  botón táctil de búsqueda global (hoy solo existe `⌘/Ctrl+K`) y foco correcto
-  del menú móvil —ahora abre en el tema y Escape no vuelve a la hamburguesa.
-- **[M3] Llegadas/salidas/solicitudes con una mano**: subir acciones primarias a
-  44 px sin perder la densidad que ya funciona. Check-in/out mide 36×28;
-  filtros/cambios de solicitud 28 y filas 40.
+- **[M3] Llegadas/salidas/solicitudes con una mano (recomendado)**: subir
+  acciones primarias a 44 px sin perder la densidad que ya funciona.
+  Check-in/out mide 36×28; filtros/cambios de solicitud 28 y filas 40.
 - **[M5] Plano táctil**: unidades actuales de 10–17 px, controles 28×28. Área
   efectiva ≥44, pan/zoom que conviva con el scroll, recentrar y ficha inferior,
   conservando el teclado del SVG.
@@ -121,6 +124,15 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (73) — una matriz de anchos no necesita una sesión nueva por ancho.**
+  El acceso demo está rate-limited: abrir siete contextos seguidos hizo fallar
+  el último login aunque cada escenario fuese correcto. Reutilizar una sesión y
+  redimensionar la misma página conserva la cobertura 320/375/430 sin probar el
+  rate limit por accidente.
+- **NUEVA (73) — un diálogo con botón externo necesita recordar quién lo abrió.**
+  La paleta comparte estado entre botón y `⌘/Ctrl+K`; solo se fuerza el retorno
+  al botón cuando fue el origen. Si se restaura siempre, cerrar una búsqueda de
+  teclado roba el foco a la tarea que la invocó.
 - **NUEVA (72) — el foco puede restaurarse y perderse un instante después.**
   En un diálogo controlado, enfocar el origen dentro de `onOpenChange` no basta:
   la limpieza de Radix todavía puede mandar el foco a `body`. Se previene su

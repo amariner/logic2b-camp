@@ -21,11 +21,13 @@ export const Command = ({ className, ...props }: ComponentProps<typeof CommandPr
 export function CommandDialog({
   open,
   onOpenChange,
+  onCloseAutoFocus,
   label,
   children,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onCloseAutoFocus?: ComponentProps<typeof DialogContent>['onCloseAutoFocus'];
   label: string;
   children: React.ReactNode;
 }) {
@@ -36,6 +38,7 @@ export function CommandDialog({
         aria-label={label}
         // el foco lo gestiona el CommandInput de dentro
         onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={onCloseAutoFocus}
       >
         <Command shouldFilter={false}>{children}</Command>
       </DialogContent>

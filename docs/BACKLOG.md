@@ -118,11 +118,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   retorno al elemento de origen. Regresión real con D1 a 320/375/430: 3/3, sin
   desborde. `NAV_GROUPS` declara además `manager` para `/parte`; sidebar y
   portada filtran la misma fuente, mientras el servidor conserva su 403.
-- [M2] **Portada y shell móvil orientados a hoy**: cifras → tres listas en una
-  columna → módulos secundarios; hoy hay que barrer trece accesos antes de ver
-  llegadas. Añadir entrada táctil de 44×44 a la búsqueda global (ahora solo
-  `⌘/Ctrl+K`) y arreglar el foco del menú: abre en el control de tema y Escape no
-  vuelve a la hamburguesa.
+- ~~[M2] **Portada y shell móvil orientados a hoy**~~ → **hecho 2026-08-04
+  (sesión 73)**: bajo `md`, cifras → tres listas → módulos; desde `md` se
+  conserva el orden de escritorio. Botón Buscar 44×44 conectado a la misma
+  paleta que `⌘/Ctrl+K`, con foco inicial y retorno al origen. El menú usa
+  `SheetTrigger`, abre enfocado en Inicio, vuelve a la hamburguesa con Escape y
+  sus rutas/tema/salir/cierre alcanzan 44 px. Regresión real a 320/375/430 y
+  control de escritorio.
 - [M3] **Llegadas, salidas y solicitudes operables con una mano**: los datos ya
   caben sin scroll horizontal; faltan objetivos táctiles. Check-in/out mide
   36×28 a 320/375, filtros 28, filas de solicitud 40 y cambios de estado 28.
