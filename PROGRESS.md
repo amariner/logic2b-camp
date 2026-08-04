@@ -4,6 +4,16 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (70, 2026-08-04)**: el despliegue de la demo ahora
+  comprueba el **bundle compuesto** antes de migrar o publicar: recorre los
+  enlaces navegables internos de landing, web `/demo/` y gestor `/admin/` y
+  falla señalando el HTML de origen si alguno no resuelve. El barrido real
+  validó **9.286 enlaces en 304 páginas**; tres tests nativos fijan rutas entre
+  superficies, rutas rotas y el fallback `404.html`. Código en `main`, pendiente
+  del mismo deploy manual con credenciales que las sesiones 67–69. `pnpm check`
+  queda bloqueado solo por el fallo ambiental intermitente de workerd/Miniflare
+  (`node:vm`/`EADDRNOTAVAIL`) al ejecutar API y tenant demo en paralelo; el test
+  API aislado (237 + 3) y las builds del bundle compuesto quedaron verdes.
 - **Repriorización comercial de Andreu (2026-08-03, pendiente de desplegar)**:
   al terminar el modo demo, manda el **portfolio de demos** para vender; el alta
   real y el registro exhaustivo de intervenciones pasan detrás. Nueva página

@@ -10,9 +10,10 @@
     "dev": "wrangler dev",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vitest run",
+    "test": "vitest run && pnpm test:demo-links",
+    "test:demo-links": "node --test scripts/check-demo-links.node.mjs",
     "build": "wrangler deploy --dry-run --outdir dist",
-    "deploy:demo": "pnpm --filter @logic-camp/site build && BASE_PATH=/demo pnpm --filter @logic-camp/web build && pnpm --filter @logic-camp/dashboard build && rm -rf ../site/dist/demo ../site/dist/admin && cp -r ../web/dist ../site/dist/demo && cp -r ../dashboard/dist ../site/dist/admin && wrangler d1 migrations apply logic-camp-demo --config ../../tenants/demo/wrangler.jsonc --remote && wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
+    "deploy:demo": "pnpm --filter @logic-camp/site build && BASE_PATH=/demo pnpm --filter @logic-camp/web build && pnpm --filter @logic-camp/dashboard build && rm -rf ../site/dist/demo ../site/dist/admin && cp -r ../web/dist ../site/dist/demo && cp -r ../dashboard/dist ../site/dist/admin && node scripts/check-demo-links.mjs && wrangler d1 migrations apply logic-camp-demo --config ../../tenants/demo/wrangler.jsonc --remote && wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
   },
   "dependencies": {
     "@logic-camp/config": "workspace:*",

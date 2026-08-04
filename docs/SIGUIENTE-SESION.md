@@ -1,5 +1,12 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 70 (2026-08-04). La **70** cierra el hueco de
+> verificación que dejó vivir el 404 `/demo/admin/`: `deploy:demo` comprueba ya
+> el bundle compuesto después de ensamblar landing + demo + gestor y antes de
+> tocar la D1 o publicar. El primer barrido real: **9.286 enlaces internos en
+> 304 HTML, OK**. Código en `main`; sigue pendiente el deploy manual con
+> credenciales. Texto de la 66 abajo.
+
 > Reescrito al cerrar la sesión 66 (2026-08-01). La **66** (dos encargos de
 > Andreu): la portada gana **las tres listas del día** —entradas, salidas y
 > solicitudes en tres columnas— y el **wordmark del gestor enlaza** («Logic2B» a
@@ -30,11 +37,11 @@
 Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
-es una **demo fake** — nada de servicios externos reales. Lo último cerrado: **el
-recorrido del prospecto**, por los dos extremos — que las dos caras de la demo se
-encuentren entre sí (63), que la ficha de alojamiento deje reservar sin volver a
-empezar (64) y que **entrar al gestor enseñe todo lo que hay** en vez de soltarte
-en el planning (65), con **las tres listas del día** y el wordmark enlazado (66).
+es una **demo fake** — nada de servicios externos reales. Lo último cerrado: el
+guardia de enlaces entre las tres caras del producto (70): un build ya no puede
+publicar un CTA de landing, demo o gestor que no exista en el bundle compuesto.
+Antes, el recorrido del prospecto quedó cerrado por los dos extremos (63–64) y
+el gestor ganó portada y las tres listas del día (65–66).
 
 ## ⚠ Lo primero de la próxima sesión
 
@@ -53,7 +60,7 @@ en el planning (65), con **las tres listas del día** y el wordmark enlazado (66
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–69. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–69 quedan pendientes de deploy manual con credenciales locales.
+**Código al día en `main`**: 63–70. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–70 quedan pendientes de deploy manual con credenciales locales.
 
 ## ▶ Prompt para pegar
 
@@ -63,28 +70,22 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[seo] `BreadcrumbList` en las guías** (recomendado, 61): las 25 páginas de documentación
-  son "la superficie de búsqueda larga del producto" y son las únicas con
-  jerarquía real (guía → página). La landing ya tiene
-  `Organization`/`SoftwareApplication`/`FAQPage`; las guías, ninguno. Va en
-  `Docs.astro`, que las sirve todas.
-- **[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle
-  compuesto** (63): es la razón de que el `/demo/admin/` durara tantas sesiones,
-  y no lo cazaría un test de `apps/site` porque esas rutas solo existen cuando
-  `deploy:demo` compone los tres `dist/`. Un paso post-ensamblado que recorra
-  los `href` absolutos del HTML emitido y verifique que resuelven.
-- **[dashboard] El enlace muerto de la sidebar** (59): «Parte de viajeros» es un
-  muro de permisos para el visitante de la demo **y para cualquier recepcionista
-  real**. El muro es decisión aceptada (ADR 0029); enseñar el enlace a quien
-  nunca podrá abrirlo no lo es.
-- **[C4] La ficha de reserva en móvil**: `BookingPanel` es `w-[360px]
-  shrink-0`; a 375px deja **15px** a la lista. Debería ser `Sheet` a pantalla
-  completa bajo `md`. Afecta a todas las pantallas que abren ficha.
-- **[B1] El último campo de fecha crudo**: queda `Planning.tsx` (Parte cayó en
-  la 59, Llegadas en la 56). Va además **sin nombre accesible**.
-- **[seed] `created_at` de las ~3 500 reservas es el ancla**: en `/reservas`
-  ordenado por alta todas empatan. Derivarlo del canal (mostrador = el día de
-  llegada; web = meses antes).
+- **[M0] Auditoría móvil del gestor por tarea y rol (recomendado)**: nueva prioridad
+  comercial de Andreu. Recorrer a 320/375/430 px portada, llegadas, solicitudes,
+  búsqueda, ficha, cobro, check-in/out, planning y plano; registrar desbordes,
+  targets <44 px, teclado, foco y acciones inaccesibles. El resultado es el
+  contrato medible para M1–M6, no una colección de capturas.
+- **[dashboard] Navegación honesta por rol**: «Parte de viajeros» es un muro
+  aceptado para visitante demo y recepción; no debe aparecer como enlace
+  alcanzable ni en sidebar ni en los trece módulos de portada. Resolverlo desde
+  `NAV_GROUPS`, fuente común, sin abrir el permiso.
+- **[M1/C4] Ficha de reserva móvil**: `BookingPanel` conserva `w-[360px]` y a
+  375px deja 15 px de contexto. Convertirla en `Sheet` a pantalla completa bajo
+  `md`, preservando la pantalla origen al cerrar.
+- **[B1] Último campo de fecha crudo**: queda `Planning.tsx`, además sin nombre
+  accesible.
+- **[seed] `created_at` de las ~3.500 reservas**: hoy coincide con el ancla;
+  derivarlo del canal (mostrador = llegada, web = meses antes).
 
 ## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
 
@@ -110,6 +111,13 @@ continúa con el desarrollo de este proyecto
   **contando los datos** (`?departuresOn=` y mirar cuántos `checkedOutAt` hay).
   Criterio que queda: el chip marca lo que ya pasó por recepción, el gris es el
   defecto.
+
+- **NUEVA (70) — los enlaces entre superficies solo existen después de componer
+  los tres `dist/`.** El guardia correcto vive justo ahí y antes de migrar o
+  publicar: `check-demo-links.mjs` valida únicamente `<a href>` navegables (no
+  canonical/hreflang) y excluye `404.html`, que Astro sirve como fallback pero
+  no como ruta `/404/`. Su prueba usa Node nativo y no el runtime Workers; por
+  eso se llama `*.node.mjs`, fuera del patrón de Vitest.
 
 - **NUEVA (65) — «mostrador» significa TRES cosas en este repo y solo una es el
   nombre del producto.** Antes de renombrar nada: (1) el **widget de
