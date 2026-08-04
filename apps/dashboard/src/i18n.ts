@@ -494,7 +494,10 @@ const es = {
   'plano.ajustar': 'Ajustar a la pantalla',
   'plano.diaAnterior': 'Día anterior',
   'plano.diaSiguiente': 'Día siguiente',
+  'plano.elegirDia': 'Día que se muestra',
   'plano.verEnPlanning': 'Ver en el planning',
+  'plano.mover': 'Mover plano',
+  'plano.moverTerminar': 'Terminar de mover',
   'plano.ocupacion': '{occ} de {total} ocupadas · {pct}%',
   'plano.auto': 'Plano automático',
   'plano.autoDesc':

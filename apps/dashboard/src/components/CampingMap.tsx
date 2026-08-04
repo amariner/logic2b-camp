@@ -26,6 +26,7 @@ import {
   ConciergeBell,
   Maximize,
   Minus,
+  Move,
   Plus,
   ShoppingCart,
   ShowerHead,
@@ -33,7 +34,7 @@ import {
   Utensils,
   Waves,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { t, tDyn } from '../i18n';
 
 type View = { x: number; y: number; w: number; h: number };
@@ -56,6 +57,24 @@ const SERVICE_ICONS: Record<PlanoServiceIcon, LucideIcon> = {
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const MOBILE_MAP_QUERY = '(max-width: 767px)';
+
+function useMobileMap(): boolean {
+  const [mobile, setMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.matchMedia(MOBILE_MAP_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_MAP_QUERY);
+    const update = () => setMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  return mobile;
+}
 
 /** Estado del día → color de relleno/texto, desde los tokens del DS (nunca hex suelto). */
 function unitVisual(state: UnitDayState): {
@@ -153,22 +172,52 @@ export default function CampingMap({
   layout: PlanoLayout;
   stateByCode: Map<string, UnitDayState>;
   selectedCode: string | null;
-  onSelectUnit: (code: string) => void;
+  onSelectUnit: (code: string, opener: SVGGElement) => void;
 }) {
   const base = layout.viewBox;
   const svgRef = useRef<SVGSVGElement>(null);
+  const mobile = useMobileMap();
+  const initialCodeRef = useRef(selectedCode);
+  const [touchPan, setTouchPan] = useState(false);
   const [view, setView] = useState<View>({ x: base.minX, y: base.minY, w: base.w, h: base.h });
-
-  // reajustar cuando cambia el camping (otra geometría)
-  useEffect(() => {
-    setView({ x: base.minX, y: base.minY, w: base.w, h: base.h });
-  }, [base.minX, base.minY, base.w, base.h]);
 
   const fit = () => setView({ x: base.minX, y: base.minY, w: base.w, h: base.h });
 
   // zoom limitado: entre 1/8 del ancho base (muy cerca) y 1.5× (todo el recinto)
   const MIN_W = base.w / 8;
   const MAX_W = base.w * 1.5;
+
+  /**
+   * En móvil se entra a 8×, centrado en una unidad. En la geometría más pequeña
+   * del descriptor (34×22), ese suelo convierte los 7–12px auditados en un
+   * blanco físico superior a 44px en 320/375/430. `Ajustar` sigue disponible
+   * para recuperar contexto y elegir otra zona.
+   */
+  const focusUnit = useCallback(
+    (code: string | null | undefined) => {
+      const rect = layout.rects.find((candidate) => candidate.code === code) ?? layout.rects[0];
+      if (!rect) return;
+      const w = base.w / 8;
+      const h = base.h / 8;
+      const x = clamp(rect.x + rect.w / 2 - w / 2, base.minX, base.minX + base.w - w);
+      const y = clamp(rect.y + rect.h / 2 - h / 2, base.minY, base.minY + base.h - h);
+      setView({ x, y, w, h });
+    },
+    [base.h, base.minX, base.minY, base.w, layout.rects],
+  );
+
+  // Reajustar cuando cambia el camping o el breakpoint. En móvil, la primera
+  // unidad visible nace ya a escala de pulgar; escritorio conserva el encaje.
+  useEffect(() => {
+    setTouchPan(false);
+    if (mobile) focusUnit(initialCodeRef.current);
+    else fit();
+  }, [base.minX, base.minY, base.w, base.h, focusUnit, mobile]);
+
+  // Una selección procedente de URL o teclado siempre queda centrada y legible.
+  useEffect(() => {
+    if (mobile && selectedCode) focusUnit(selectedCode);
+  }, [focusUnit, mobile, selectedCode]);
 
   /** Escala "meet" real (con letterbox) para convertir px de pantalla a coords de plano. */
   const meet = () => {
@@ -205,6 +254,7 @@ export default function CampingMap({
   // pan por arrastre del fondo (los clicks en unidades no llegan aquí)
   const pan = useRef<{ x: number; y: number; scale: number } | null>(null);
   const onBgPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch' && !touchPan) return;
     const m = meet();
     if (!m) return;
     (e.currentTarget as Element).setPointerCapture(e.pointerId);
@@ -239,6 +289,12 @@ export default function CampingMap({
 
   const smooth = !prefersReducedMotion();
 
+  const selectUnit = (code: string, opener: SVGGElement) => {
+    opener.focus();
+    if (mobile) focusUnit(code);
+    onSelectUnit(code, opener);
+  };
+
   return (
     <div className="relative min-h-0 flex-1 overflow-hidden bg-muted/30">
       {/* controles */}
@@ -249,6 +305,7 @@ export default function CampingMap({
           onClick={() => centerZoom(1.2)}
           aria-label={t('plano.acercar')}
           title={t('plano.acercar')}
+          className="size-11 md:size-7"
         >
           <Plus className="size-4" />
         </Button>
@@ -258,6 +315,7 @@ export default function CampingMap({
           onClick={() => centerZoom(1 / 1.2)}
           aria-label={t('plano.alejar')}
           title={t('plano.alejar')}
+          className="size-11 md:size-7"
         >
           <Minus className="size-4" />
         </Button>
@@ -267,17 +325,32 @@ export default function CampingMap({
           onClick={fit}
           aria-label={t('plano.ajustar')}
           title={t('plano.ajustar')}
+          className="size-11 md:size-7"
         >
           <Maximize className="size-4" />
         </Button>
       </div>
+
+      <Button
+        type="button"
+        variant={touchPan ? 'primary' : 'outline'}
+        size="sm"
+        aria-pressed={touchPan}
+        onClick={() => setTouchPan((active) => !active)}
+        className="absolute bottom-3 left-3 z-10 h-11 md:hidden"
+      >
+        <Move className="size-4" />
+        {touchPan ? t('plano.moverTerminar') : t('plano.mover')}
+      </Button>
 
       <svg
         ref={svgRef}
         role="application"
         aria-label={t('plano.svgLabel')}
         tabIndex={0}
-        className="h-full w-full touch-none outline-none select-none"
+        className={`h-full w-full outline-none select-none ${
+          touchPan ? 'touch-none' : 'touch-pan-y md:touch-none'
+        }`}
         viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         preserveAspectRatio="xMidYMid meet"
         onWheel={onWheel}
@@ -359,7 +432,7 @@ export default function CampingMap({
             rect={r}
             state={stateByCode.get(r.code) ?? { kind: 'free' }}
             selected={r.code === selectedCode}
-            onSelect={onSelectUnit}
+            onSelect={selectUnit}
           />
         ))}
       </svg>
@@ -465,7 +538,7 @@ function Unit({
   rect: PlanoRect;
   state: UnitDayState;
   selected: boolean;
-  onSelect: (code: string) => void;
+  onSelect: (code: string, opener: SVGGElement) => void;
 }) {
   const v = unitVisual(state);
   const showCode = rect.w >= 26;
@@ -478,11 +551,11 @@ function Unit({
       tabIndex={0}
       aria-label={`${rect.code} · ${stateLabel(state)}`}
       style={{ cursor: 'pointer', outline: 'none' }}
-      onClick={() => onSelect(rect.code)}
+      onClick={(event) => onSelect(rect.code, event.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onSelect(rect.code);
+          onSelect(rect.code, e.currentTarget);
         }
       }}
       filter={selected ? 'url(#plano-halo)' : undefined}

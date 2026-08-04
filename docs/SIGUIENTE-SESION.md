@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 75 (2026-08-04). **M5** hace táctil el plano:
+> zoom móvil 8× con unidades ≥44 px, selección centrada, controles grandes,
+> scroll vertical libre salvo modo «Mover», ficha inferior y foco recuperable.
+> Corrige además que «En casa» no abría ficha. Regresiones: `pnpm check` 46/46
+> y Playwright M1–M5 6/6 contra bundle compuesto + D1. Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 74 (2026-08-04). **M3** eleva a 44 px la
 > operación diaria de Llegadas, Salidas y Solicitudes, conserva los datos
 > críticos y la densidad de escritorio, y confirma check-out con retorno de
@@ -62,13 +68,13 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M3 (74)**, blancos táctiles y confirmación con foco recuperable en Llegadas,
-Salidas y Solicitudes. M0 (71) sigue siendo el contrato de medida para M4–M6.
+**M5 (75)**, plano móvil ampliado, desplazamiento explícito, ficha inferior y
+foco recuperable. M0 (71) sigue siendo el contrato de medida para M4 y M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–74 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–75 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -80,13 +86,13 @@ Salidas y Solicitudes. M0 (71) sigue siendo el contrato de medida para M4–M6.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1–M3 ya lo aplican con evidencia verde; Andreu puede
-   aceptar o discutir sus umbrales antes de M4/M5, que cambian más interacción.
+   44 px, foco y roles). M1–M3 y M5 ya lo aplican con evidencia verde; Andreu
+   puede aceptar o discutir sus umbrales antes de M4, que cambia más interacción.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–74. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 y 72–74 quedan pendientes de deploy manual con
+**Código al día en `main`**: 63–75. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 y 72–75 quedan pendientes de deploy manual con
 credenciales locales. La 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
@@ -97,14 +103,10 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M5] Plano táctil (recomendado)**: unidades actuales de 10–17 px, controles
-  28×28. Área
-  efectiva ≥44, pan/zoom que conviva con el scroll, recentrar y ficha inferior,
-  conservando el teclado del SVG.
-- **[M4] Planning como agenda móvil**: no inflar el tape chart de barras 24 px y
-  asas 8 px. Dar día/semana, lista tocable y cambios explícitos; chart intacto
-  en tablet/escritorio.
-- **[M6] Carga inicial móvil**: 772,92 kB min / 231,62 kB gzip. Lazy por rutas,
+- **[M4] Planning como agenda móvil (recomendado)**: no inflar el tape chart de
+  barras 24 px y asas 8 px. Dar día/semana, lista tocable y cambios explícitos;
+  chart intacto en tablet/escritorio.
+- **[M6] Carga inicial móvil**: 775,78 kB min / 232,45 kB gzip. Lazy por rutas,
   Planning/Plano bajo demanda, entrada <200 kB gzip y revisión de subsets.
 - **[B1] Último campo de fecha crudo**: queda `Planning.tsx`, además sin nombre
   accesible.
@@ -128,6 +130,19 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (75) — un estado derivado debe aparecer en cada apertura, no solo en
+  el color.** `inhouse` se pintaba y etiquetaba correctamente en el plano, pero
+  faltaba en la condición que abría `BookingPanel`; el click parecía responder
+  porque había halo, aunque la tarea terminaba en nada. Barrer exhaustivamente
+  la unión `UnitDayState` cuando se decide qué panel abre cada rama.
+- **NUEVA (75) — “visible” en Playwright no significa dentro del `viewBox`.**
+  Los grupos SVG existen y el motor los considera visibles aunque estén
+  recortados. Para probar un toque real, escoger un nodo cuyo centro geométrico
+  cae dentro del rectángulo del SVG y fuera de los controles superpuestos.
+- **NUEVA (75) — `touch-none` permanente convierte el mapa en una trampa de
+  scroll.** El patrón móvil deja `pan-y` por defecto y solo captura el gesto tras
+  una acción explícita «Mover plano»; acercar/alejar siguen disponibles como
+  botones y el teclado no depende de ese modo.
 - **NUEVA (74) — `asChild` necesita que el componente hijo exponga su ref.**
   El AlertDialog de check-out cerraba correctamente, pero Radix no podía
   devolver el foco al disparador porque `BotonRecepcion` escondía el nodo DOM.

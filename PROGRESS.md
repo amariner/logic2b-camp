@@ -4,6 +4,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (75, 2026-08-04)**: M5 convierte el plano móvil en
+  una superficie táctil sin alterar el escritorio. Bajo `md` entra ampliado 8×
+  y centrado en una unidad: los rectángulos auditados en 10×7 px superan ahora
+  44×44 a 320/375/430; seleccionar vuelve a centrar y «Ajustar» recupera el
+  recinto completo. Los controles, fecha y acciones alcanzan 44 px y el campo
+  usa 16 px. Un dedo vertical conserva `touch-action: pan-y`; el modo explícito
+  «Mover plano» activa `touch-none` solo mientras se necesita. Unidades libres,
+  bloqueadas o inactivas abren ficha inferior con foco/retorno; reservas
+  conservan la ficha completa de M1. La prueba real descubrió y corrigió que el
+  estado derivado `inhouse` se resaltaba pero no abría reserva. Playwright M1–M5
+  **6/6 verde** contra bundle compuesto + D1; `pnpm check` **46/46 verde**. Sin
+  deploy: producción suma la 75 a la deuda manual de 67–70 y 72–74.
 - **Última sesión autónoma (74, 2026-08-04)**: M3 hace operables con una mano
   Llegadas, Salidas y Solicitudes sin rebajar la densidad de escritorio. La
   fecha, navegación del día, filtros, filas, contactos y cambios de estado
@@ -108,6 +120,58 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 75 — 2026-08-04 · **M5: el plano deja de ser una miniatura** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M5] Plano táctil`, siguiente P1 del orden medido por M0
+y candidato recomendado por `SIGUIENTE-SESION`. La vista cabía en móvil, pero
+sus unidades de 10–17 × 7–12 px exigían precisión de ratón. Se ejecuta dentro
+del contrato reversible del ADR 0031, sin rutas, datos ni permisos nuevos.
+
+**Escala y orientación**: bajo `md`, `CampingMap` entra al zoom máximo ya
+existente (8×), centrado en la unidad seleccionada o en la primera del recinto.
+La geometría mínima del descriptor pasa así el blanco físico de 44 px en los
+tres anchos auditados. Cada selección vuelve a centrar su unidad; acercar,
+alejar y ajustar miden 44 px, y «Ajustar a la pantalla» conserva la visión
+general cuando se necesita recuperar contexto. Escritorio sigue entrando con
+todo el recinto encajado y controles de 28 px.
+
+**Gestos sin secuestro**: el SVG abandona `touch-none` permanente. Por defecto
+declara `touch-action: pan-y`, de modo que un dedo vertical pertenece a la
+página; el botón visible «Mover plano» activa y desactiva `touch-none` de forma
+explícita para desplazar el recinto. La rueda, botones, flechas y activación de
+unidades con Enter/Espacio permanecen intactos. Barra de mando y leyenda usan
+scroll horizontal local en una sola línea para devolver altura útil al mapa;
+fecha, navegación, acciones y ayuda alcanzan 44 px y el input usa 16 px.
+
+**Ficha inferior y foco**: las unidades libres, bloqueadas o inactivas montan
+`UnitPanel` en un `Sheet` inferior bajo `md`, con trampa de foco, Escape,
+acciones de 44 px, safe area y retorno al grupo SVG que la abrió. Las reservas
+siguen usando la ficha completa móvil de M1. En escritorio se conserva el panel
+lateral de 360 px. No se duplican consultas, mutaciones ni formularios.
+
+**Hallazgo de navegador**: la primera unidad del seed estaba «En casa». El mapa
+la seleccionaba y resaltaba, pero no abría ficha: la condición contemplaba
+`occupied`, `arrival` y `departure`, no el estado derivado `inhouse`. Se añadió
+esa rama y se mantuvo la aserción de apertura. La propia regresión aprendió a no
+confundir `toBeVisible()` con estar dentro del `viewBox`: elige un blanco cuyo
+centro está realmente dentro del SVG antes de pulsarlo.
+
+**Verificación**: dashboard **7/7** y `pnpm check` **46/46**. Playwright contra
+bundle compuesto, Worker y D1 sembrada recorre 320/375/430 y 1366 px; mide
+unidades/controles, tipografía, cero desborde, `touch-action`, posición de la
+hoja inferior, roles/nombres accesibles, Enter, flechas, Escape y retorno de
+foco. Ejecutado junto a las regresiones M1–M3: **6/6 verde**.
+
+**Pase EQUIPO**: Arquitectura mantiene un componente y geometría compartidos;
+Fullstack y Backend no cambian contratos ni servidor; Frontend conserva todos
+los estados y corrige `inhouse`; Producto y UX hacen localizable y accionable
+una unidad desde el teléfono sin sacrificar el plano de mostrador; UI fija 44 px
+y semántica accesible sin tocar tokens/contraste; SEO no aplica a la SPA
+privada. No hace falta ADR nuevo: M5 ejecuta el ADR 0031. Sin deploy remoto.
+
+**Siguiente**: M4 — ofrecer una agenda día/semana móvil con reservas y unidades
+tocables y cambios explícitos, manteniendo el tape chart intacto desde `md`.
 
 ### Sesión 74 — 2026-08-04 · **M3: la operación diaria ya cabe bajo el pulgar** (autónoma, protocolo CONTINUA)
 

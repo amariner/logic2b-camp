@@ -138,7 +138,13 @@ export default function Plano() {
     for (const u of data.units)
       m.set(
         u.code,
-        unitStateOn(date, u.id, bookings, blocksByUnit, u.status === 'inactive' ? 'inactive' : 'active'),
+        unitStateOn(
+          date,
+          u.id,
+          bookings,
+          blocksByUnit,
+          u.status === 'inactive' ? 'inactive' : 'active',
+        ),
       );
     return m;
   }, [data, date, bookings, blocksByUnit]);
@@ -158,7 +164,7 @@ export default function Plano() {
   const selectedCode = search.unit ? (codeById.get(search.unit) ?? null) : null;
   const [openId, setOpenId] = useState<string | null>(null);
   const [bloqueoAbierto, setBloqueoAbierto] = useState(false);
-  const openerRef = useRef<HTMLElement | null>(null);
+  const openerRef = useRef<HTMLElement | SVGElement | null>(null);
 
   // panel de unidad (C4.4): una unidad libre o bloqueada no tiene ficha que abrir —
   // el click ofrece actuar sobre la unidad (bloquear / levantar el bloqueo)
@@ -181,32 +187,63 @@ export default function Plano() {
     ? (data?.unitTypes.find((ut) => ut.id === selectedUnit.unitTypeId)?.nameI18n.es ?? '')
     : '';
 
-  const onSelectUnit = (code: string) => {
+  const onSelectUnit = (code: string, opener: SVGGElement) => {
+    openerRef.current = opener;
     const unit = unitByCode.get(code);
     setUnit(unit?.id);
     const st = stateByCode.get(code);
-    if (st && (st.kind === 'occupied' || st.kind === 'arrival' || st.kind === 'departure'))
+    if (
+      st &&
+      (st.kind === 'occupied' ||
+        st.kind === 'arrival' ||
+        st.kind === 'inhouse' ||
+        st.kind === 'departure')
+    )
       setOpenId(st.bookingId);
     else setOpenId(null);
   };
 
-  const openInPlanning = () => navigate({ to: '/planning', search: { date, unit: search.unit } as never });
+  const restoreMapFocus = () => {
+    const opener = openerRef.current;
+    requestAnimationFrame(() => {
+      if (opener?.isConnected) opener.focus();
+    });
+  };
+
+  const closeBooking = () => {
+    setOpenId(null);
+    restoreMapFocus();
+  };
+
+  const closeUnit = () => {
+    setUnit(undefined);
+    restoreMapFocus();
+  };
+
+  const openInPlanning = () =>
+    navigate({ to: '/planning', search: { date, unit: search.unit } as never });
 
   return (
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col">
         {/* barra de mando */}
-        <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
-          <div className="flex items-center gap-1">
+        <div className="flex flex-nowrap items-center gap-2 overflow-x-auto border-b border-border/60 px-2 py-2 md:flex-wrap md:gap-3 md:overflow-visible md:px-4 md:py-2.5">
+          <div className="flex shrink-0 items-center gap-1">
             <Button
               variant="outline"
               size="iconSm"
               onClick={() => setDate(addDays(date, -1))}
               aria-label={t('plano.diaAnterior')}
+              className="size-11 md:size-7"
             >
               ←
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setDate(today)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setDate(today)}
+              className="h-11 md:h-8"
+            >
               {t('planning.hoy')}
             </Button>
             <Button
@@ -214,6 +251,7 @@ export default function Plano() {
               size="iconSm"
               onClick={() => setDate(addDays(date, 1))}
               aria-label={t('plano.diaSiguiente')}
+              className="size-11 md:size-7"
             >
               →
             </Button>
@@ -222,13 +260,15 @@ export default function Plano() {
             type="date"
             value={date}
             onChange={(e) => e.target.value && setDate(e.target.value)}
-            className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
+            aria-label={t('plano.elegirDia')}
+            className="tnum h-11 shrink-0 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 text-base md:h-8 md:py-1 md:text-[13px]"
           />
           <Button
             variant="outline"
             size="sm"
             onClick={openInPlanning}
             title={t('plano.verEnPlanning')}
+            className="h-11 shrink-0 md:h-8"
           >
             <CalendarRange className="size-4" />
             {t('plano.verEnPlanning')}
@@ -238,24 +278,25 @@ export default function Plano() {
             size="sm"
             onClick={() => setBloqueoAbierto(true)}
             title={t('bloqueo.crear')}
+            className="h-11 shrink-0 md:h-8"
           >
             <Ban className="size-4" />
             {t('bloqueo.crear')}
           </Button>
           {data && (
-            <p className="tnum ml-auto text-[12px] text-muted-foreground">
+            <p className="tnum ml-auto shrink-0 text-[12px] text-muted-foreground">
               {t('plano.ocupacion', { pct: summary.pct, occ: summary.occ, total: summary.total })}
             </p>
           )}
-          <BotonAyuda />
+          <BotonAyuda className="size-11 shrink-0 md:size-7" />
         </div>
 
         {/* leyenda */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-border/60 px-4 py-2">
+        <div className="flex flex-nowrap items-center gap-x-4 overflow-x-auto border-b border-border/60 px-2 py-2 md:flex-wrap md:gap-y-1.5 md:overflow-visible md:px-4">
           {LEGEND.map((l) => (
             <span
               key={l.key}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+              className="flex shrink-0 items-center gap-1.5 text-[11px] text-muted-foreground"
             >
               <span className={`plano-lg ${l.className}`} aria-hidden="true" />
               {t(l.key)}
@@ -294,15 +335,7 @@ export default function Plano() {
         )}
       </div>
 
-      {openId && (
-        <BookingPanel
-          bookingId={openId}
-          onClose={() => {
-            setOpenId(null);
-            openerRef.current?.focus();
-          }}
-        />
-      )}
+      {openId && <BookingPanel bookingId={openId} onClose={closeBooking} />}
       {!openId &&
         selectedUnit &&
         selectedState &&
@@ -315,7 +348,7 @@ export default function Plano() {
             date={date}
             state={selectedState}
             block={selectedState.kind === 'blocked' ? coveringBlock : null}
-            onClose={() => setUnit(undefined)}
+            onClose={closeUnit}
             onBlock={() => setBloqueoAbierto(true)}
             onOpenPlanning={openInPlanning}
           />

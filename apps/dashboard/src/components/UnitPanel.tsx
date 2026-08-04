@@ -17,15 +17,37 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { UnitDayState } from '@logic-camp/config';
 import { Ban, CalendarRange } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { apiDelete, type PlanningBlock, type PlanningUnit } from '../api';
 import { t, tDyn } from '../i18n';
 import { fecha } from '../lib/format';
+
+const MOBILE_PANEL_QUERY = '(max-width: 767px)';
+
+function useMobilePanel(): boolean {
+  const [mobile, setMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.matchMedia(MOBILE_PANEL_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_PANEL_QUERY);
+    const update = () => setMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  return mobile;
+}
 
 export default function UnitPanel({
   unit,
@@ -50,6 +72,7 @@ export default function UnitPanel({
 }) {
   const qc = useQueryClient();
   const panelRef = useRef<HTMLElement>(null);
+  const mobile = useMobilePanel();
   const blocked = state.kind === 'blocked';
   const inactive = state.kind === 'inactive';
 
@@ -60,12 +83,13 @@ export default function UnitPanel({
 
   // Esc cierra aunque el foco haya salido del panel
   useEffect(() => {
+    if (mobile) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [mobile, onClose]);
 
   const quitar = useMutation({
     mutationFn: (blockId: string) => apiDelete<{ ok: boolean }>(`/api/admin/blocks/${blockId}`),
@@ -76,29 +100,44 @@ export default function UnitPanel({
     onError: (e) => errorMutacion(e, t('bloqueo.quitarError')),
   });
 
-  return (
-    <aside
-      ref={panelRef}
-      role="dialog"
-      aria-label={t('plano.unidad.aria', { code: unit.code })}
-      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
-    >
+  const content = (
+    <>
       {/* cabecera: código + estado + cerrar */}
       <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         <span className="tnum text-[14px] font-semibold">{unit.code}</span>
-        <span className={`lc-chip ${inactive ? 'st-inactive' : blocked ? 'st-blocked' : 'st-free'}`}>
-          {inactive ? t('inv.inactiva') : blocked ? t('plano.estado.bloqueada') : t('plano.estado.libre')}
-        </span>
-        <Button
-          type="button"
-          variant="ghost"
-          size="iconSm"
-          onClick={onClose}
-          aria-label={t('plano.unidad.cerrar')}
-          className="ml-auto"
+        <span
+          className={`lc-chip ${inactive ? 'st-inactive' : blocked ? 'st-blocked' : 'st-free'}`}
         >
-          ✕
-        </Button>
+          {inactive
+            ? t('inv.inactiva')
+            : blocked
+              ? t('plano.estado.bloqueada')
+              : t('plano.estado.libre')}
+        </span>
+        {mobile ? (
+          <SheetClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="iconSm"
+              aria-label={t('plano.unidad.cerrar')}
+              className="ml-auto size-11"
+            >
+              ✕
+            </Button>
+          </SheetClose>
+        ) : (
+          <Button
+            type="button"
+            variant="ghost"
+            size="iconSm"
+            onClick={onClose}
+            aria-label={t('plano.unidad.cerrar')}
+            className="ml-auto"
+          >
+            ✕
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-col gap-3 px-4 py-3">
@@ -108,8 +147,8 @@ export default function UnitPanel({
             {inactive
               ? t('inv.nota')
               : blocked && block
-              ? `${tDyn(`bloqueo.${block.reason}`, block.reason)} · ${fecha(block.dateFrom)} → ${fecha(block.dateTo)}`
-              : t('plano.unidad.libreEl', { date: fecha(date) })}
+                ? `${tDyn(`bloqueo.${block.reason}`, block.reason)} · ${fecha(block.dateFrom)} → ${fecha(block.dateTo)}`
+                : t('plano.unidad.libreEl', { date: fecha(date) })}
           </p>
         </div>
 
@@ -154,6 +193,36 @@ export default function UnitPanel({
           </Button>
         </div>
       </div>
+    </>
+  );
+
+  if (mobile) {
+    return (
+      <Sheet open onOpenChange={(open) => !open && onClose()}>
+        <SheetContent
+          ref={(node) => {
+            panelRef.current = node;
+          }}
+          side="bottom"
+          showClose={false}
+          onCloseAutoFocus={(event) => event.preventDefault()}
+          className="max-h-[60dvh] w-full overflow-y-auto rounded-t-xl p-0 pb-[env(safe-area-inset-bottom)] [&_button]:min-h-11"
+        >
+          <SheetTitle className="sr-only">{t('plano.unidad.aria', { code: unit.code })}</SheetTitle>
+          {content}
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <aside
+      ref={panelRef}
+      role="dialog"
+      aria-label={t('plano.unidad.aria', { code: unit.code })}
+      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
+    >
+      {content}
     </aside>
   );
 }

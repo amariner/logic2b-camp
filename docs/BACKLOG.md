@@ -133,10 +133,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   en una línea con scroll local. Regresión real a 320/375/430 y control de
   escritorio, ejecutada junto a M1–M2: 5/5.
 - [M4] **Planning móvil como agenda**, no tape chart comprimido: día/semana, unidad y lista de movimientos; abrir ficha y cambiar fechas/unidad con controles explícitos. El tape chart completo queda disponible en landscape/tablet/escritorio.
-- [M5] **Plano táctil**: las unidades miden 10–17 × 7–12 px con el recinto
-  ajustado y zoom/ajuste 28×28. Targets efectivos ≥44, pan/zoom sin pelear con
-  el scroll, recentrar y ficha inferior. Probar VoiceOver/TalkBack en los
-  controles, no solo pointer events; conservar la navegación SVG por teclado.
+- ~~[M5] **Plano táctil**~~ → **hecho 2026-08-04 (sesión 75)**: bajo `md` entra
+  ampliado 8× y centrado, con unidades ≥44 px a 320/375/430; seleccionar
+  recentra y ajustar recupera el recinto. Controles/fecha ≥44 y input 16 px.
+  `pan-y` deja libre el scroll hasta activar «Mover plano»; unidades sin reserva
+  abren un `Sheet` inferior, las ocupadas conservan la ficha completa y ambas
+  devuelven el foco. Roles/nombres accesibles, Enter/Espacio/flechas/Escape y
+  escritorio fijados en Playwright. Corregida además la apertura de `inhouse`.
 - [M6] **Rendimiento móvil del dashboard**: dividir el bundle por rutas (medido:
   768,96 kB minificado / 230,42 kB gzip), cargar Planning/Plano bajo demanda y
   limitar fuentes a subsets necesarios. Objetivo inicial: JS de entrada <200 kB
