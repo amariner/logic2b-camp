@@ -4,6 +4,16 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (71, 2026-08-04)**: M0 cierra la primera auditoría
+  móvil del gestor con contrato en **ADR 0031** e informe reproducible en
+  `docs/AUDITORIA-MOVIL.md`. Bundle real + D1 del seed, roles demo/recepción/
+  gerencia y 320/375/430 px: cero desborde global en las cinco pantallas base,
+  pero seis P1 de interacción — búsqueda sin entrada táctil, ficha fija de 360
+  px (40 px de desborde a 320), check-in/out 36×28, unidades del plano 10–17 px,
+  tape chart sin agenda móvil y `/parte` ofrecido a roles que no pueden abrirlo.
+  Orden medido de ejecución: **M1 → M2 → M3 → M5 → M4 → M6**. Es una entrega
+  documental, sin deploy nuevo; producción sigue esperando las sesiones 67–70.
+  `pnpm check` **45/45 verde**.
 - **Última sesión autónoma (70, 2026-08-04)**: el despliegue de la demo ahora
   comprueba el **bundle compuesto** antes de migrar o publicar: recorre los
   enlaces navegables internos de landing, web `/demo/` y gestor `/admin/` y
@@ -64,6 +74,58 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 71 — 2026-08-04 · **M0: el gestor móvil se mide por tareas, no por capturas** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M0] Auditoría móvil del gestor por tarea y rol`, el
+candidato recomendado de SIGUIENTE-SESION y prioridad declarada por Andreu. No
+se corrige una pantalla todavía: se fija primero qué significa poder resolver
+una urgencia desde el teléfono, para que M1–M6 no sean una cadena de parches a
+375 px.
+
+**Contrato antes de medir**: ADR 0031 (`propuesto`, sesión autónoma de riesgo
+bajo) declara tres anchos —320 suelo, 375 objetivo, 430 control—, roles demo y
+recepción más gerencia como control, tareas completas, objetivo táctil de 44 px,
+inputs móviles de 16 px, foco recuperable y navegación honesta por permisos. La
+salida queda en `docs/AUDITORIA-MOVIL.md`, con severidad y fase dueña.
+
+**La evidencia no usa mocks**: D1 local migrada y sembrada con ancla
+`2026-08-04`, bundle de `site` + web `/demo/` + dashboard `/admin/` compuesto
+como el deploy, Worker real y Playwright sobre Chrome. Se recorrieron portada,
+llegadas/salidas, solicitudes, búsqueda global, ficha+cobro, planning y plano;
+después `/parte` como demo, recepción y gerencia. La sonda temporal midió
+`scrollWidth`, cajas interactivas, tamaños de input y foco, y se retiró al cerrar:
+cada M1–M6 conservará solo la regresión estable de lo que arregle.
+
+**Resultado**: cero P0 y cero desborde global en las cinco pantallas base a los
+tres anchos. Eso es solo el suelo. Los seis P1 son:
+
+1. la paleta devuelve seis resultados reales y enfoca bien, pero solo se abre
+   con `⌘/Ctrl+K`: en un teléfono no existe;
+2. `BookingPanel` mide 360 px: desborda **40 px a 320**, deja una tira inútil de
+   15 px a 375, cierre 28×28 y cobro a 13 px;
+3. el seed ofrece 5 check-in y 10 check-out hoy, con botón **36×28**;
+4. el plano ajustado reduce las unidades a **10–17 × 7–12 px**;
+5. el planning conserva barras de 24 px y asas de 8 px: se alcanza a mirar, no
+   a operar con el pulgar;
+6. `NAV_GROUPS` ofrece “Parte de viajeros” a demo/recepción y ambos terminan en
+   la negativa de gerencia; el backend protege bien, la navegación promete mal.
+
+**Hallazgos P2 que cambian el orden**: las tres listas del día están después de
+los trece módulos de portada; el menú enfoca el control de tema al abrir y no
+devuelve foco a la hamburguesa con Escape; fechas/filtros/cobro usan 13–14 px; y
+la entrada JS sigue en **768,96 kB min / 230,42 kB gzip**. Solicitudes es la
+mejor base: reduce de cinco columnas a tres sin desbordar y expande mensaje,
+contacto y acciones; solo le falta tamaño táctil (28–40 px).
+
+**Decisión de producto**: móvil no comprime el tape chart. El orden resultante
+es **M1 → M2 → M3 → M5 → M4 → M6**: cerrar cuenta y encontrar reserva; operación
+del día; plano; agenda móvil; carga. BACKLOG reescrito con medidas y criterios de
+aceptación. `pnpm check` **45/45 verde**; la auditoría exploratoria pasó 1/1 contra
+el bundle real.
+
+**Deploy**: no aplica — ADR, informe y continuidad. La producción sigue en
+`b65a5dfb`; 67–70 esperan el deploy manual ya documentado.
 
 ### Sesión 69 — 2026-08-03 · **Dos bajas de servicio que la demo deja ver** (autónoma, protocolo CONTINUA)
 
@@ -155,7 +217,6 @@ Las tres comparten un componente `Panel` (cabecera, esqueleto, vacío y error). 
 
 **Verificado en navegador**: las tres columnas alineadas en la misma fila a 1600px **y a 1366px** (el suelo declarado del proyecto), apiladas por debajo, móvil a 375px sin scroll horizontal, y los cuatro enlaces del wordmark (dos mitades × barra lateral y cabecera móvil) con su `href` y su `target` correctos. `pnpm check` **45/45**, E2E **9/9**.
 
-
 ### Sesión 65 — 2026-07-31 · **«Gestor de camping», y una portada en vez de aterrizar en el planning** (dos encargos de Andreu)
 
 **Encargo 1: el producto se llama «Gestor de camping», no «el mostrador».** El renombrado tenía trampa, porque en este proyecto «mostrador» significa **tres cosas** y solo una era el nombre del producto:
@@ -177,7 +238,6 @@ De paso cae una **clave muerta que había creado la sesión 63**: `nav.mostrador
 **La navegación, en UN sitio**: `NAV_GROUPS` sale de `main.tsx` a `src/lib/nav.ts` porque ahora tiene dos consumidores (barra lateral y rejilla). Dos copias de una lista de rutas se desincronizan el día que alguien añade una pantalla — la lección de las listas de las sesiones 55 y 59, aplicada antes de que cueste. El planning pasa a `/planning`, con sus cuatro referencias movidas: barra lateral, salto desde el plano, «volver al planning» del error de ruta y el mapa de ayuda contextual (la portada no tiene guía propia, así que no se pinta el `?` — `null`, no un enlace aproximado).
 
 **Verificado en navegador** contra el bundle compuesto: rejilla a 1440px en claro y oscuro, los KPI navegan (`#/planning`, `#/llegadas`, `#/informes`), las tarjetas de módulo también (`#/parte`), vuelta por «Inicio» y **móvil a 375px sin scroll horizontal**. Un defecto propio cazado midiendo: «15.848,35 €» a 26px **tocaba el borde** de su tarjeta en dos columnas a 375px → la cifra arranca a 21px y crece con el hueco (16px de aire ahora). `pnpm check` **45/45**, E2E **9/9** — el de `reduced-motion` entraba por la raíz esperando el tape chart y ahora comprueba la portada y llega al planning **con click real** en la barra lateral (navegar por hash deja dos activos, trampa de la 58).
-
 
 ### Sesión 64 — 2026-07-31 · **El mostrador dentro de la ficha de alojamiento** (autónoma, protocolo CONTINUA)
 

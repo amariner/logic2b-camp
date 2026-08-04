@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 71 (2026-08-04). **M0** convierte el Frente M
+> en un contrato medido: tareas reales, roles demo/recepción/gerencia y
+> 320/375/430 px sobre el bundle y la D1 del seed. Informe completo en
+> `docs/AUDITORIA-MOVIL.md`; seis P1 y orden M1 → M2 → M3 → M5 → M4 → M6. Es
+> una entrega documental: no suma deuda de deploy.
+
 > Reescrito al cerrar la sesión 70 (2026-08-04). La **70** cierra el hueco de
 > verificación que dejó vivir el 404 `/demo/admin/`: `deploy:demo` comprueba ya
 > el bundle compuesto después de ensamblar landing + demo + gestor y antes de
@@ -38,15 +44,14 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado: el
-guardia de enlaces entre las tres caras del producto (70): un build ya no puede
-publicar un CTA de landing, demo o gestor que no exista en el bundle compuesto.
-Antes, el recorrido del prospecto quedó cerrado por los dos extremos (63–64) y
-el gestor ganó portada y las tres listas del día (65–66).
+contrato móvil M0 (71): ya no se juzga por capturas, sino por tareas completas y
+medidas. Antes, el guardia de enlaces (70) impidió publicar CTAs rotos entre las
+tres caras del bundle compuesto.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–69 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -57,10 +62,15 @@ el gestor ganó portada y las tres listas del día (65–66).
 2. **ADR 0030 sigue en `propuesto`** y no queda nada que vigilar: sus dos
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
+3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
+   44 px, foco y roles). M1 puede implementarse porque es reversible y el
+   informe ya aporta evidencia; Andreu puede aceptar o discutir sus umbrales.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–70. Producción sigue en **`b65a5dfb`** (2026-08-01); las sesiones 67–70 quedan pendientes de deploy manual con credenciales locales.
+**Código al día en `main`**: 63–71. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 quedan pendientes de deploy manual con
+credenciales locales. La 71 solo cambia documentación.
 
 ## ▶ Prompt para pegar
 
@@ -70,18 +80,26 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M0] Auditoría móvil del gestor por tarea y rol (recomendado)**: nueva prioridad
-  comercial de Andreu. Recorrer a 320/375/430 px portada, llegadas, solicitudes,
-  búsqueda, ficha, cobro, check-in/out, planning y plano; registrar desbordes,
-  targets <44 px, teclado, foco y acciones inaccesibles. El resultado es el
-  contrato medible para M1–M6, no una colección de capturas.
-- **[dashboard] Navegación honesta por rol**: «Parte de viajeros» es un muro
-  aceptado para visitante demo y recepción; no debe aparecer como enlace
-  alcanzable ni en sidebar ni en los trece módulos de portada. Resolverlo desde
-  `NAV_GROUPS`, fuente común, sin abrir el permiso.
-- **[M1/C4] Ficha de reserva móvil**: `BookingPanel` conserva `w-[360px]` y a
-  375px deja 15 px de contexto. Convertirla en `Sheet` a pantalla completa bajo
-  `md`, preservando la pantalla origen al cerrar.
+- **[M1] Ficha de reserva móvil (recomendado)**: convertir `BookingPanel` en
+  `Sheet` a pantalla completa bajo `md`. M0 midió 40 px de desborde a 320, tira
+  de 15 px a 375, cierre 28×28 y cobro a 13 px. Cabecera/acciones al pulgar,
+  trampa y retorno de foco, Escape/atrás y una regresión a 320/375/430. En el
+  mismo bloque común, declarar rol mínimo en `NAV_GROUPS`: `/parte` no se ofrece
+  a demo/recepción, aunque el servidor conserva el 403.
+- **[M2] Portada y shell móvil**: KPIs → listas del día → módulos; botón táctil
+  de búsqueda global (hoy solo existe `⌘/Ctrl+K`) y foco correcto del menú móvil
+  —ahora abre en el tema y Escape no vuelve a la hamburguesa.
+- **[M3] Llegadas/salidas/solicitudes con una mano**: subir acciones primarias a
+  44 px sin perder la densidad que ya funciona. Check-in/out mide 36×28;
+  filtros/cambios de solicitud 28 y filas 40.
+- **[M5] Plano táctil**: unidades actuales de 10–17 px, controles 28×28. Área
+  efectiva ≥44, pan/zoom que conviva con el scroll, recentrar y ficha inferior,
+  conservando el teclado del SVG.
+- **[M4] Planning como agenda móvil**: no inflar el tape chart de barras 24 px y
+  asas 8 px. Dar día/semana, lista tocable y cambios explícitos; chart intacto
+  en tablet/escritorio.
+- **[M6] Carga inicial móvil**: 768,96 kB min / 230,42 kB gzip. Lazy por rutas,
+  Planning/Plano bajo demanda, entrada <200 kB gzip y revisión de subsets.
 - **[B1] Último campo de fecha crudo**: queda `Planning.tsx`, además sin nombre
   accesible.
 - **[seed] `created_at` de las ~3.500 reservas**: hoy coincide con el ancla;
@@ -102,8 +120,19 @@ continúa con el desarrollo de este proyecto
 - Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
 - Traducciones de guías: descartadas con motivo (ADR 0025 §3).
 
-## Trampas conocidas (heredadas + las nuevas de las sesiones 63–66)
+## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (71) — cero desborde no significa móvil operable.** Las cinco
+  pantallas base dan `scrollWidth === clientWidth` a 320/375/430, pero el plano
+  reduce unidades a 10 px y el planning conserva barras de 24 px: caben porque
+  son diminutos. La aceptación se mide por tarea y objetivo táctil, no por una
+  captura sin scrollbar (`docs/AUDITORIA-MOVIL.md`).
+- **NUEVA (71) — un atajo de teclado no es una entrada móvil.** `⌘/Ctrl+K`
+  abre una paleta correcta con resultados reales, pero sin botón no existe en un
+  teléfono. Cada acción global necesita disparador táctil además del atajo.
+- **NUEVA (71) — comprobar 375 no descubre el suelo.** La ficha fija de 360 px
+  parece encajar a 375 dejando una tira de 15; a 320 desborda 40. Toda regresión
+  móvil del Frente M barre 320, 375 y 430.
 - **NUEVA (66) — un estado que hoy vale lo mismo en TODAS las filas no informa,
   decora.** La columna de salidas marcaba con chip lo pendiente; con los datos
   reales de una mañana normal (10 salidas vivas, 0 con check-out) eso son diez
@@ -156,7 +185,7 @@ continúa con el desarrollo de este proyecto
   incluyendo `*.html` y las cadenas de servidor, no solo los JSON de i18n.
 - **NUEVA (62) — verificar un deploy por código de estado no verifica nada.**
   `camp.logic2b.com/` devolvía 200 con el **título anterior**: `cf-cache-status:
-  HIT` sobre una copia rancia. Cache-buster (`?v=…`), y para un asset que
+HIT` sobre una copia rancia. Cache-buster (`?v=…`), y para un asset que
   conserva la URL entre versiones (`og.png`), comparar **shasum**.
 - **NUEVA (62) — `pnpm check` falla de forma intermitente en `api#test`** si hay
   dev server y navegador abiertos: la suite de workerd compite por recursos. En
@@ -216,10 +245,10 @@ continúa con el desarrollo de este proyecto
 - **`pnpm check` reconstruye `apps/site/dist` y se lleva por delante `/demo` y
   `/admin`** — para verificar en navegador hay que recomponer:
   `pnpm --filter @logic-camp/site build && pnpm --filter @logic-camp/dashboard
-  build && rm -rf apps/site/dist/admin && cp -r apps/dashboard/dist
-  apps/site/dist/admin`. Para la web del tenant, además: `BASE_PATH=/demo pnpm
-  --filter @logic-camp/web build && rm -rf apps/site/dist/demo && cp -r
-  apps/web/dist apps/site/dist/demo`.
+build && rm -rf apps/site/dist/admin && cp -r apps/dashboard/dist
+apps/site/dist/admin`. Para la web del tenant, además: `BASE_PATH=/demo pnpm
+--filter @logic-camp/web build && rm -rf apps/site/dist/demo && cp -r
+apps/web/dist apps/site/dist/demo`.
 - **Iterar el dashboard con el preview levantado (55)**: rebuild + copiar +
   **recarga real**. `pnpm db:reset` mata el `wrangler dev`: parar antes.
 - En Playwright, ir de `/admin/` a `/admin/#/…` no recarga → `await p.reload()`.

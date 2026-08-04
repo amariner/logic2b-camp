@@ -104,10 +104,34 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 > el planning de 90 días entero en 375 px: móvil sirve para consultar y resolver
 > urgencias; escritorio sigue siendo la herramienta principal de recepción.
 
-- [M0] **Auditoría móvil por tarea y rol** a 320/375/430 px: portada, llegadas, solicitudes, búsqueda, ficha, cobro, check-in/out, planning y plano. Registrar desbordes, targets <44 px, teclado, foco y acciones inaccesibles. Criterio: recorrido E2E por tarea, no capturas aisladas.
-- [M1] **Ficha de reserva como `Sheet` a pantalla completa bajo `md`**. Hoy `BookingPanel` conserva 360 px y deja 15 px de contexto en 375 px. Cabecera fija, acciones principales al pulgar y cierre/atrás que preserve la pantalla de origen.
-- [M2] **Portada móvil orientada a hoy**: cifras y tres listas en una sola columna, prioridades primero, módulos secundarios después; sin rejillas que obliguen a barrer trece accesos antes de ver llegadas.
-- [M3] **Llegadas, salidas y solicitudes operables con una mano**: filas que colapsan a tarjetas, acción primaria visible, secundaria en menú y datos críticos sin scroll horizontal.
+- ~~[M0] **Auditoría móvil por tarea y rol** a 320/375/430 px~~ → **hecho
+  2026-08-04 (sesión 71)**: contrato en ADR 0031 e informe reproducible en
+  `docs/AUDITORIA-MOVIL.md`. Cero desborde global en las cinco pantallas base,
+  pero seis P1 de interacción: búsqueda sin entrada táctil, ficha de 360 px que
+  desborda 40 px a 320, check-in/out de 36×28, plano con unidades de 10–17 px,
+  tape chart sin alternativa táctil y “Parte de viajeros” ofrecida a roles que
+  no pueden usarla. Orden medido: M1 → M2 → M3 → M5 → M4 → M6.
+- [M1] **Ficha de reserva como `Sheet` a pantalla completa bajo `md`**. Medido:
+  `BookingPanel` desborda 40 px a 320, deja 15 px de contexto inútil a 375 y su
+  cierre mide 28×28; el campo de cobro usa 13 px. Cabecera fija, acciones
+  principales al pulgar, trampa de foco y cierre/atrás que preserve la pantalla
+  de origen. Incluir en el bloque común la navegación honesta por rol desde
+  `NAV_GROUPS` (demo/recepción no deben recibir la puerta a `/parte`).
+- [M2] **Portada y shell móvil orientados a hoy**: cifras → tres listas en una
+  columna → módulos secundarios; hoy hay que barrer trece accesos antes de ver
+  llegadas. Añadir entrada táctil de 44×44 a la búsqueda global (ahora solo
+  `⌘/Ctrl+K`) y arreglar el foco del menú: abre en el control de tema y Escape no
+  vuelve a la hamburguesa.
+- [M3] **Llegadas, salidas y solicitudes operables con una mano**: los datos ya
+  caben sin scroll horizontal; faltan objetivos táctiles. Check-in/out mide
+  36×28 a 320/375, filtros 28, filas de solicitud 40 y cambios de estado 28.
+  Acción primaria visible, secundaria en menú y datos críticos intactos.
 - [M4] **Planning móvil como agenda**, no tape chart comprimido: día/semana, unidad y lista de movimientos; abrir ficha y cambiar fechas/unidad con controles explícitos. El tape chart completo queda disponible en landscape/tablet/escritorio.
-- [M5] **Plano táctil**: targets mínimos, pan/zoom sin pelear con el scroll de página, botón de recentrar y ficha inferior. Probar VoiceOver/TalkBack en los controles, no solo pointer events.
-- [M6] **Rendimiento móvil del dashboard**: dividir el bundle por rutas (hoy ~769 kB minificado), cargar Planning/Plano bajo demanda y limitar fuentes a subsets necesarios. Objetivo inicial: JS de entrada <200 kB gzip y navegación posterior cacheada.
+- [M5] **Plano táctil**: las unidades miden 10–17 × 7–12 px con el recinto
+  ajustado y zoom/ajuste 28×28. Targets efectivos ≥44, pan/zoom sin pelear con
+  el scroll, recentrar y ficha inferior. Probar VoiceOver/TalkBack en los
+  controles, no solo pointer events; conservar la navegación SVG por teclado.
+- [M6] **Rendimiento móvil del dashboard**: dividir el bundle por rutas (medido:
+  768,96 kB minificado / 230,42 kB gzip), cargar Planning/Plano bajo demanda y
+  limitar fuentes a subsets necesarios. Objetivo inicial: JS de entrada <200 kB
+  gzip y navegación posterior cacheada.
