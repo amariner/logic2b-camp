@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 74 (2026-08-04). **M3** eleva a 44 px la
+> operación diaria de Llegadas, Salidas y Solicitudes, conserva los datos
+> críticos y la densidad de escritorio, y confirma check-out con retorno de
+> foco. Regresiones: `pnpm check` 46/46 y Playwright M1–M3 5/5 contra bundle
+> compuesto + D1. Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 73 (2026-08-04). **M2** pone la operación del
 > día antes que los módulos en móvil, añade búsqueda táctil y cierra el circuito
 > de foco del buscador y del menú; escritorio conserva su composición.
@@ -56,13 +62,13 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M2 (73)**, portada móvil orientada a hoy, búsqueda táctil y foco recuperable
-en el shell. M0 (71) sigue siendo el contrato de medida para M3–M6.
+**M3 (74)**, blancos táctiles y confirmación con foco recuperable en Llegadas,
+Salidas y Solicitudes. M0 (71) sigue siendo el contrato de medida para M4–M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–73 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–74 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -74,13 +80,13 @@ en el shell. M0 (71) sigue siendo el contrato de medida para M3–M6.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1 y M2 ya lo aplican con evidencia verde; Andreu puede
+   44 px, foco y roles). M1–M3 ya lo aplican con evidencia verde; Andreu puede
    aceptar o discutir sus umbrales antes de M4/M5, que cambian más interacción.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–73. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 y 72–73 quedan pendientes de deploy manual con
+**Código al día en `main`**: 63–74. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 y 72–74 quedan pendientes de deploy manual con
 credenciales locales. La 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
@@ -91,16 +97,14 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M3] Llegadas/salidas/solicitudes con una mano (recomendado)**: subir
-  acciones primarias a 44 px sin perder la densidad que ya funciona.
-  Check-in/out mide 36×28; filtros/cambios de solicitud 28 y filas 40.
-- **[M5] Plano táctil**: unidades actuales de 10–17 px, controles 28×28. Área
+- **[M5] Plano táctil (recomendado)**: unidades actuales de 10–17 px, controles
+  28×28. Área
   efectiva ≥44, pan/zoom que conviva con el scroll, recentrar y ficha inferior,
   conservando el teclado del SVG.
 - **[M4] Planning como agenda móvil**: no inflar el tape chart de barras 24 px y
   asas 8 px. Dar día/semana, lista tocable y cambios explícitos; chart intacto
   en tablet/escritorio.
-- **[M6] Carga inicial móvil**: 768,96 kB min / 230,42 kB gzip. Lazy por rutas,
+- **[M6] Carga inicial móvil**: 772,92 kB min / 231,62 kB gzip. Lazy por rutas,
   Planning/Plano bajo demanda, entrada <200 kB gzip y revisión de subsets.
 - **[B1] Último campo de fecha crudo**: queda `Planning.tsx`, además sin nombre
   accesible.
@@ -124,6 +128,15 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (74) — `asChild` necesita que el componente hijo exponga su ref.**
+  El AlertDialog de check-out cerraba correctamente, pero Radix no podía
+  devolver el foco al disparador porque `BotonRecepcion` escondía el nodo DOM.
+  Todo wrapper reutilizable que actúe como trigger debe usar `forwardRef`; la
+  regresión debe comprobar `activeElement` después del cierre.
+- **NUEVA (74) — una barra de filtros móvil puede desbordar localmente sin
+  romper la página.** Mantener los seis filtros en una línea conserva el mapa
+  muscular y los 44 px; el `overflow-x-auto` pertenece a la barra, mientras el
+  documento debe seguir con `scrollWidth === clientWidth`.
 - **NUEVA (73) — una matriz de anchos no necesita una sesión nueva por ancho.**
   El acceso demo está rate-limited: abrir siete contextos seguidos hizo fallar
   el último login aunque cada escenario fuese correcto. Reutilizar una sesión y

@@ -5,9 +5,19 @@
  */
 import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef, useState, type ReactNode } from 'react';
+import { forwardRef, useRef, useState, type ReactNode } from 'react';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   Button,
+  type ButtonProps,
   EmptyState,
   Input,
   Skeleton,
@@ -65,7 +75,7 @@ const fechaLarga = (iso: string) => {
  * tres columnas encogen igual en todas y siguen alineadas — pero nunca desbordan.
  */
 const REJILLA =
-  'grid grid-cols-[minmax(0,72px)_1fr_minmax(0,136px)] items-center gap-x-3 gap-y-0.5';
+  'grid grid-cols-[minmax(0,52px)_1fr_minmax(0,108px)] items-center gap-x-2 gap-y-0.5 md:grid-cols-[minmax(0,72px)_1fr_minmax(0,136px)] md:gap-x-3';
 
 /**
  * Hueco del botón de recepción, reservado para TODA la lista o para ninguna
@@ -74,12 +84,13 @@ const REJILLA =
  * se puede registrar— se estiraba 96px más que sus vecinas y sacaba su estado y
  * su saldo fuera de la columna. `w-28` entra «Check-out», el más largo.
  *
- * En un hueco de móvil el botón se queda en el icono. No es cosmética: con los
- * 112px del botón rotulado, la columna del saldo bajaba a 78px para un texto de
- * 117px («Pendiente: 229,25 €») y, al ir pegado a la derecha, se PINTABA ENCIMA
- * del nombre del titular. Seis datos y un botón rotulado no caben en 375px.
+ * En 320/375 px reserva 44px —el objetivo táctil mínimo— y el botón se queda en
+ * el icono; desde 384px recupera sus 112px y el rótulo. No es cosmética: seis
+ * datos y un botón rotulado no caben en 375px. La rejilla móvil compacta sus
+ * extremos y abre hueco al titular; el saldo conserva el importe y deja el
+ * rótulo completo a lector de pantalla.
  */
-const ACCION = 'flex w-9 shrink-0 justify-end @sm:w-28';
+const ACCION = 'flex w-11 shrink-0 justify-end @sm:w-28';
 
 /**
  * Llegadas y salidas, una al lado de la otra… mientras quepan. El corte iba por
@@ -108,36 +119,33 @@ const COLUMNAS =
 /**
  * El botón de recepción de una fila (check-in / check-out). En hueco de móvil se
  * queda en el icono, pero NUNCA se queda sin nombre: el rótulo sigue ahí como
- * `aria-label` y como `title`, así que el lector de pantalla lee lo mismo que se
- * lee con el ratón encima.
+ * `aria-label` y como `title`. Móvil gana 44px de alto; escritorio conserva los
+ * 28px de la hoja densa.
  */
-function BotonRecepcion({
-  icono: Icono,
-  rotulo,
-  disabled,
-  onClick,
-}: {
-  icono: typeof DoorOpen;
-  rotulo: string;
-  disabled: boolean;
-  onClick: () => void;
-}) {
+const BotonRecepcion = forwardRef<
+  HTMLButtonElement,
+  Omit<ButtonProps, 'children' | 'size' | 'variant'> & {
+    icono: typeof DoorOpen;
+    rotulo: string;
+  }
+>(function BotonRecepcion({ icono: Icono, rotulo, className, ...props }, ref) {
   return (
     <Button
+      {...props}
+      ref={ref}
       type="button"
       size="xs"
       variant="outline"
-      disabled={disabled}
-      onClick={onClick}
       title={rotulo}
       aria-label={rotulo}
-      className="w-full justify-center px-0 @sm:px-2.5"
+      className={cn('h-11 w-full justify-center px-0 md:h-7 @sm:px-2.5', className)}
     >
       <Icono className="size-3.5 shrink-0" />
       <span className="hidden @sm:inline">{rotulo}</span>
     </Button>
   );
-}
+});
+BotonRecepcion.displayName = 'BotonRecepcion';
 
 function Lista({
   titulo,
@@ -184,7 +192,7 @@ function Lista({
                 onClick={(e) => onOpen(b.id, e.currentTarget)}
                 className={cn(
                   REJILLA,
-                  'min-w-0 flex-1 rounded-md px-4 py-2 text-left text-[13px] hover:bg-accent/50',
+                  'min-h-11 min-w-0 flex-1 rounded-md px-2 py-2 text-left text-[13px] hover:bg-accent/50 md:px-4',
                   focusRing,
                 )}
               >
@@ -209,13 +217,25 @@ function Lista({
                   {t('dia.noches', { n: noches(b.dateFrom, b.dateTo) })}
                 </span>
                 <span
-                  className={`tnum col-start-3 justify-self-end text-[12px] font-medium whitespace-nowrap ${
+                  className={`tnum col-start-3 min-w-0 justify-self-end text-[12px] font-medium ${
                     pendiente > 0 ? 'text-destructive' : 'text-primary'
                   }`}
                 >
-                  {pendiente > 0
-                    ? t('dia.pendiente', { importe: eur(pendiente) })
-                    : t('dia.alCorriente')}
+                  {pendiente > 0 ? (
+                    <>
+                      <span className="sr-only md:hidden">
+                        {t('dia.pendiente', { importe: eur(pendiente) })}
+                      </span>
+                      <span aria-hidden className="block truncate md:hidden">
+                        {eur(pendiente)}
+                      </span>
+                      <span className="hidden whitespace-nowrap md:inline">
+                        {t('dia.pendiente', { importe: eur(pendiente) })}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="block truncate">{t('dia.alCorriente')}</span>
+                  )}
                 </span>
               </button>
               {hayAcciones && <div className={ACCION}>{acciones[i]}</div>}
@@ -283,17 +303,23 @@ export default function Llegadas() {
       {/* el contenedor de consulta: lo que mide aquí es el hueco que deja la
           ficha de reserva cuando está abierta, que es quien estrecha las listas */}
       <div className="@container flex min-w-0 flex-1 flex-col">
-        <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-2 py-2 md:gap-3 md:px-4 md:py-2.5">
           <div className="flex items-center gap-1">
             <Button
               variant="outline"
               size="iconSm"
               onClick={() => setDia(addDays(dia, -1))}
               aria-label={t('dia.anterior')}
+              className="size-11 md:size-7"
             >
               ←
             </Button>
-            <Button variant="outline" size="xs" onClick={() => setDia(hoyIso())}>
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={() => setDia(hoyIso())}
+              className="h-11 md:h-7"
+            >
               {t('dia.hoy')}
             </Button>
             <Button
@@ -301,6 +327,7 @@ export default function Llegadas() {
               size="iconSm"
               onClick={() => setDia(addDays(dia, 1))}
               aria-label={t('dia.siguiente')}
+              className="size-11 md:size-7"
             >
               →
             </Button>
@@ -314,24 +341,20 @@ export default function Llegadas() {
             value={dia}
             onChange={(e) => e.target.value && setDia(e.target.value)}
             aria-label={t('dia.elegir')}
-            className="tnum w-auto"
+            className="tnum h-11 w-auto text-base md:h-8 md:text-[13px]"
           />
           <p className="text-[13px] font-medium">{fechaLarga(dia)}</p>
           <p className="tnum ml-auto text-[12px] text-muted-foreground">
             {t('dia.nLlegadas', { n: llegadasHoy.length })} ·{' '}
             {t('dia.nSalidas', { n: salidasHoy.length })}
           </p>
-          <BotonAyuda />
+          <BotonAyuda className="size-11 md:size-7" />
         </div>
 
         {cargando && (
           /* Dos columnas de filas de 3 huecos: código · nombre · importe. La
              forma de la hoja real, no un rectángulo (ADR 0020, C3). */
-          <div
-            aria-busy="true"
-            aria-label={t('dia.cargando')}
-            className={cn(COLUMNAS, 'pb-4')}
-          >
+          <div aria-busy="true" aria-label={t('dia.cargando')} className={cn(COLUMNAS, 'pb-4')}>
             {[t('dia.llegadas'), t('dia.salidas')].map((titulo) => (
               <section key={titulo} className="min-w-0 flex-1">
                 <Skeleton className="mx-4 mt-3 mb-2 h-3 w-28" />
@@ -387,12 +410,38 @@ export default function Llegadas() {
               onOpen={openPanel}
               action={(b) =>
                 inHouse(b) ? (
-                  <BotonRecepcion
-                    icono={LogOut}
-                    rotulo={t('accion.check_out')}
-                    disabled={recepcion.isPending}
-                    onClick={() => recepcion.mutate({ id: b.id, action: 'check_out' })}
-                  />
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <BotonRecepcion
+                        icono={LogOut}
+                        rotulo={t('accion.check_out')}
+                        disabled={recepcion.isPending}
+                      />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>{t('confirmar.checkout.titulo')}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          {b.totalCents - b.paidCents > 0
+                            ? t('confirmar.checkout.descPendiente', {
+                                importe: eur(b.totalCents - b.paidCents),
+                              })
+                            : t('confirmar.checkout.desc')}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="min-h-11 md:min-h-8">
+                          {t('confirmar.cancelar')}
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          className="min-h-11 md:min-h-8"
+                          onClick={() => recepcion.mutate({ id: b.id, action: 'check_out' })}
+                        >
+                          {t('confirmar.checkout.ok')}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 ) : null
               }
               vacio={<EmptyState art="calendar" title={t('vacio.salidas.titulo')} />}

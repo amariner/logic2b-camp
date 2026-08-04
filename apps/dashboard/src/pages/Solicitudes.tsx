@@ -85,13 +85,14 @@ export default function Solicitudes() {
   return (
     <div className="flex h-full flex-col">
       {/* filtros por estado, con recuento — la bandeja se lee de un vistazo */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-2.5">
-        <div className="flex flex-wrap items-center gap-1">
+      <div className="flex items-center gap-2 border-b border-border/60 px-2 py-2 md:px-4 md:py-2.5">
+        <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1 overflow-x-auto md:flex-wrap md:overflow-visible">
           <Button
             variant={filtro === 'todas' ? 'primary' : 'outline'}
             size="xs"
             onClick={() => setFiltro('todas')}
             aria-pressed={filtro === 'todas'}
+            className="h-11 shrink-0 md:h-7"
           >
             {t('sol.todas')} · {items.length}
           </Button>
@@ -102,15 +103,16 @@ export default function Solicitudes() {
               size="xs"
               onClick={() => setFiltro(s)}
               aria-pressed={filtro === s}
+              className="h-11 shrink-0 md:h-7"
             >
               {t(`sol.${s}`)} · {porEstado.get(s) ?? 0}
             </Button>
           ))}
         </div>
-        <p className="tnum ml-auto text-[12px] text-muted-foreground">
+        <p className="tnum ml-auto hidden text-[12px] text-muted-foreground md:block">
           {t('sol.n', { n: visibles.length })}
         </p>
-        <BotonAyuda />
+        <BotonAyuda className="size-11 shrink-0 md:size-7" />
       </div>
 
       {isPending && (
@@ -172,7 +174,7 @@ export default function Solicitudes() {
                 aria-expanded={abiertaEsta}
                 className={cn(
                   REJILLA,
-                  'rounded-md py-2.5 text-left text-[13px] hover:bg-accent/50',
+                  'min-h-11 rounded-md py-2.5 text-left text-[13px] hover:bg-accent/50',
                   focusRing,
                 )}
               >
@@ -202,13 +204,19 @@ export default function Solicitudes() {
                       <h3 className="lc-panel-h">{t('sol.contacto')}</h3>
                       <p className="font-medium">{e.contact.name}</p>
                       <p>
-                        <a href={`mailto:${e.contact.email}`} className="text-link underline">
+                        <a
+                          href={`mailto:${e.contact.email}`}
+                          className="inline-flex min-h-11 items-center text-link underline md:min-h-0"
+                        >
                           {e.contact.email}
                         </a>
                       </p>
                       {e.contact.phone && (
                         <p>
-                          <a href={`tel:${e.contact.phone}`} className="tnum text-link underline">
+                          <a
+                            href={`tel:${e.contact.phone}`}
+                            className="tnum inline-flex min-h-11 items-center text-link underline md:min-h-0"
+                          >
                             {e.contact.phone}
                           </a>
                         </p>
@@ -226,6 +234,7 @@ export default function Solicitudes() {
                             variant={s === 'lost' ? 'destructiveOutline' : 'primary'}
                             disabled={cambiar.isPending}
                             onClick={() => cambiar.mutate({ id: e.id, status: s })}
+                            className="min-h-11 md:min-h-7"
                           >
                             {t(`accionSol.${s}`)}
                           </Button>

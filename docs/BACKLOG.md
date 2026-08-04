@@ -125,10 +125,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   `SheetTrigger`, abre enfocado en Inicio, vuelve a la hamburguesa con Escape y
   sus rutas/tema/salir/cierre alcanzan 44 px. Regresión real a 320/375/430 y
   control de escritorio.
-- [M3] **Llegadas, salidas y solicitudes operables con una mano**: los datos ya
-  caben sin scroll horizontal; faltan objetivos táctiles. Check-in/out mide
-  36×28 a 320/375, filtros 28, filas de solicitud 40 y cambios de estado 28.
-  Acción primaria visible, secundaria en menú y datos críticos intactos.
+- ~~[M3] **Llegadas, salidas y solicitudes operables con una mano**~~ → **hecho
+  2026-08-04 (sesión 74)**: fecha, navegación, filtros, filas, contactos y
+  acciones alcanzan 44 px bajo `md`; escritorio conserva 28–32 px. Check-in/out
+  mantiene huésped, estado y saldo visibles a 320 px. El check-out directo pide
+  confirmación, avisa del saldo y devuelve el foco; los seis filtros permanecen
+  en una línea con scroll local. Regresión real a 320/375/430 y control de
+  escritorio, ejecutada junto a M1–M2: 5/5.
 - [M4] **Planning móvil como agenda**, no tape chart comprimido: día/semana, unidad y lista de movimientos; abrir ficha y cambiar fechas/unidad con controles explícitos. El tape chart completo queda disponible en landscape/tablet/escritorio.
 - [M5] **Plano táctil**: las unidades miden 10–17 × 7–12 px con el recinto
   ajustado y zoom/ajuste 28×28. Targets efectivos ≥44, pan/zoom sin pelear con

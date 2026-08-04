@@ -4,6 +4,18 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (74, 2026-08-04)**: M3 hace operables con una mano
+  Llegadas, Salidas y Solicitudes sin rebajar la densidad de escritorio. La
+  fecha, navegación del día, filtros, filas, contactos y cambios de estado
+  alcanzan 44 px bajo `md`; check-in/out conserva a la vista huésped, estado y
+  saldo en una rejilla que cabe a 320 px. El check-out directo pide ahora la
+  misma confirmación que la ficha, avisa del saldo pendiente y devuelve el foco
+  al disparador; para que Radix pudiera hacerlo, `BotonRecepcion` pasó a exponer
+  su `ref`. Los filtros de Solicitudes permanecen en una línea con scroll local,
+  no de página. Playwright contra bundle compuesto + D1 recorre 320/375/430 y
+  escritorio: la regresión M3 y las de M1–M2 dan **5/5 verde**. `pnpm check`
+  **46/46 verde**. Sin deploy: producción suma la 74 a la deuda manual de 67–70
+  y 72–73.
 - **Última sesión autónoma (73, 2026-08-04)**: M2 ordena la portada móvil por
   urgencia —KPIs → entradas/salidas/solicitudes → módulos— y conserva en
   escritorio la composición anterior. El shell gana botón táctil de búsqueda
@@ -96,6 +108,51 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 74 — 2026-08-04 · **M3: la operación diaria ya cabe bajo el pulgar** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M3] Llegadas, salidas y solicitudes operables con una
+mano`, siguiente P1 del orden medido por M0 y recomendado por
+`SIGUIENTE-SESION`. Resuelve blancos de 28–40 px en las tareas que recepción
+repite durante el día, sin cambiar contratos API, permisos ni datos.
+
+**Llegadas y salidas**: navegación anterior/hoy/siguiente, selector de fecha,
+ayuda, filas y acciones de recepción alcanzan 44 px bajo `md`; desde `md`
+recuperan su altura compacta anterior. La rejilla móvil reserva 44 px exactos a
+la acción y comprime solo la presentación del saldo, no la información: nombre,
+estado y cantidad siguen visibles y la descripción accesible conserva el texto
+completo. Check-out directo suma una confirmación coherente con la ficha de
+reserva, incluido el aviso cuando queda saldo pendiente, sin duplicar mutaciones
+ni mensajes del servidor.
+
+**Solicitudes**: los seis filtros se mantienen en una sola línea desplazable
+dentro de su propia barra; miden 44 px junto con filas, correo, teléfono y
+cambios de estado. Las dos transiciones caben juntas incluso a 320 px, por lo
+que no se escondió una acción útil en un menú innecesario. A partir de `md` se
+preserva la barra envolvente y la densidad de 28 px existente.
+
+**Foco y prueba real**: el primer recorrido descubrió que el diálogo cerraba
+pero no devolvía el foco porque `BotonRecepcion`, usado bajo `asChild`, no
+reenviaba la referencia de Radix. Se corrigió con `forwardRef` y se mantuvo la
+aserción, en vez de relajarla. La nueva regresión atraviesa Llegadas y
+Solicitudes a 320/375/430 px en una sola sesión demo, comprueba cero desborde de
+página, targets, tipografía del campo de fecha, diálogo y retorno de foco; a
+1366 px fija la altura anterior.
+
+**Verificación**: dashboard **7/7** y `pnpm check` **46/46**. Playwright contra
+bundle compuesto, Worker y D1 sembrada ejecutado junto a M1 y M2: **5/5 verde**.
+La cancelación del diálogo evita mutar la base durante la regresión.
+
+**Pase EQUIPO**: Arquitectura mantiene una sola vista responsiva; Fullstack y
+Backend no reciben rutas, esquemas ni permisos; Frontend conserva consultas,
+mutaciones y mensajes existentes; Producto y UX dejan siempre visible la acción
+primaria y todos los datos críticos; UI fija 44 px y foco a tres anchos sin
+inflar escritorio; SEO no aplica a la SPA privada. No hace falta ADR nuevo: M3
+ejecuta el contrato reversible del ADR 0031. Sin deploy remoto.
+
+**Siguiente**: M5 — convertir el plano comprimido en una superficie táctil con
+targets efectivos de 44 px, pan/zoom compatible con el scroll y ficha inferior,
+sin perder la navegación por teclado del SVG.
 
 ### Sesión 73 — 2026-08-04 · **M2: lo urgente aparece primero y el shell recupera el foco** (autónoma, protocolo CONTINUA)
 
