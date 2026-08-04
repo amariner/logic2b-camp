@@ -15,8 +15,10 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
   px. Se cierra además B1: el último selector de fecha crudo pasa a `Input` con
   nombre accesible. Playwright móvil queda **7/7 verde en procesos limpios**
   (la ejecución única agota el rate limit demo después del quinto spec);
-  `pnpm check` **46/46 verde**. Sin deploy: producción suma la 76 a la deuda
-  manual de 67–70 y 72–75.
+  `pnpm check` **46/46 verde**. **Desplegada después por petición de Andreu**
+  junto con la deuda de 67–70 y 72–75; producción verificada con cache-buster
+  en portada, demo, gestor y `/api/health` (versión Cloudflare
+  `cfe8405b-810a-4a1f-9f27-aaef7852b88e`).
 - **Última sesión autónoma (75, 2026-08-04)**: M5 convierte el plano móvil en
   una superficie táctil sin alterar el escritorio. Bajo `md` entra ampliado 8×
   y centrado en una unidad: los rectángulos auditados en 10×7 px superan ahora
@@ -83,7 +85,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
   queda bloqueado solo por el fallo ambiental intermitente de workerd/Miniflare
   (`node:vm`/`EADDRNOTAVAIL`) al ejecutar API y tenant demo en paralelo; el test
   API aislado (237 + 3) y las builds del bundle compuesto quedaron verdes.
-- **Repriorización comercial de Andreu (2026-08-03, pendiente de desplegar)**:
+- **Repriorización comercial de Andreu (2026-08-03, desplegada 2026-08-04)**:
   al terminar el modo demo, manda el **portfolio de demos** para vender; el alta
   real y el registro exhaustivo de intervenciones pasan detrás. Nueva página
   `/precios/` es/en con altas 1.490/2.490/4.900 €, cuotas 69/119/249 €, packs y
@@ -174,7 +176,12 @@ cubre carga/error/vacío, filtros, teclado y foco; Producto/UX resuelven la
 urgencia móvil sin duplicar el mostrador; UI conserva tokens y mide móvil más
 1366 px; SEO no aplica a la SPA privada. No hace falta ADR nuevo: M4 ejecuta el
 ADR 0031 propuesto. Bundle actual: **785,80 kB min / 234,75 kB gzip**, que deja
-M6 como siguiente objetivo. Sin deploy remoto.
+M6 como siguiente objetivo. **Desplegada después por petición de Andreu** junto
+con las sesiones 67–70 y 72–75: `deploy:demo` validó 9.286 enlaces en 304 HTML,
+no encontró migraciones pendientes y publicó la versión Cloudflare
+`cfe8405b-810a-4a1f-9f27-aaef7852b88e`. Verificación pública con cache-buster:
+portada, `/demo/`, `/admin/` y `/api/health` responden 200; el gestor sirve el
+bundle `index-CqAFxEe9.js` con la agenda nueva.
 
 **Siguiente**: M6 — dividir el dashboard por rutas, cargar Planning/Plano bajo
 demanda y bajar el chunk de entrada por debajo de 200 kB gzip.

@@ -5,7 +5,8 @@
 > y unidad tocables, cambio explícito de fechas/unidad sobre la misma
 > recotización del servidor. Desde `md` solo existe el tape chart intacto. B1
 > cierra además su último selector de fecha crudo. Regresiones: `pnpm check`
-> 46/46 y Playwright móvil 7/7 en Workers limpios. Sin deploy remoto.
+> 46/46 y Playwright móvil 7/7 en Workers limpios. Desplegada después junto con
+> la deuda acumulada de 67–70 y 72–75; producción verificada con cache-buster.
 
 > Reescrito al cerrar la sesión 75 (2026-08-04). **M5** hace táctil el plano:
 > zoom móvil 8× con unidades ≥44 px, selección centrada, controles grandes,
@@ -81,9 +82,10 @@ para M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
-1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–76 esperan un
-   deploy manual con credenciales locales. Si la próxima sesión toca landing,
+1. **Nada bloquea en código ni queda deuda de deploy.** Las sesiones 63–70 y
+   72–76 están en producción; la 71 solo cambió documentación. Último deploy:
+   commit de producto `b017d7b`, versión Cloudflare
+   `cfe8405b-810a-4a1f-9f27-aaef7852b88e`. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
    (trampa de la 62, que **volvió a morder en la 65**: `Cache-Control: no-cache`
@@ -99,9 +101,9 @@ para M6.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–76. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 y 72–76 quedan pendientes de deploy manual con
-credenciales locales. La 71 solo cambió documentación.
+**Código al día en `main` y producción**: 63–76. El producto desplegado
+corresponde a `b017d7b` (2026-08-04), versión Cloudflare
+`cfe8405b-810a-4a1f-9f27-aaef7852b88e`; la 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
 
