@@ -43,13 +43,17 @@ export function useRol(): Role | null {
   return esRole(rol) ? rol : null;
 }
 
+/** Comparación pura para compartir la misma jerarquía con navegación y permisos visuales. */
+export function tieneRol(rol: Role | null, min: Role): boolean {
+  return rol !== null && NIVEL[rol] >= NIVEL[min];
+}
+
 /**
  * ¿Llega el rol de la sesión a `min`? Falla cerrado: un rol desconocido no ve
  * nada, igual que en el servidor.
  */
 export function useTieneRol(min: Role): boolean {
-  const rol = useRol();
-  return rol !== null && NIVEL[rol] >= NIVEL[min];
+  return tieneRol(useRol(), min);
 }
 
 /**

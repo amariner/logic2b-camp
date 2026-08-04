@@ -35,13 +35,13 @@ import { ChevronLeft, Home, LogOut, Menu } from 'lucide-react';
 import { StrictMode, useState } from 'react';
 import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
-import { useSession, useSignOut } from './auth';
+import { useRol, useSession, useSignOut } from './auth';
 import CommandPalette from './components/CommandPalette';
 import DemoBanner from './components/DemoBanner';
 import { RouteError, RouteNotFound } from './components/RouteError';
 import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
-import { NAV_GROUPS } from './lib/nav';
+import { navGroupsForRole } from './lib/nav';
 import Ajustes from './pages/Ajustes';
 import Clientes from './pages/Clientes';
 import Informes from './pages/Informes';
@@ -96,6 +96,8 @@ function SidebarInner({
   email: string;
   onSignOut: () => void;
 }) {
+  const navGroups = navGroupsForRole(useRol());
+
   return (
     <>
       <div className="flex h-14 items-center gap-2 px-3">
@@ -124,7 +126,7 @@ function SidebarInner({
           <Home className="size-4 shrink-0" strokeWidth={2} />
           {!collapsed && <span className="truncate">{t('nav.inicio')}</span>}
         </Link>
-        {NAV_GROUPS.map((group) => (
+        {navGroups.map((group) => (
           <div key={group.label}>
             {!collapsed && (
               <p className="px-2 pt-4 pb-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">

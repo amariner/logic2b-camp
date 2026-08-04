@@ -111,12 +111,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   desborda 40 px a 320, check-in/out de 36×28, plano con unidades de 10–17 px,
   tape chart sin alternativa táctil y “Parte de viajeros” ofrecida a roles que
   no pueden usarla. Orden medido: M1 → M2 → M3 → M5 → M4 → M6.
-- [M1] **Ficha de reserva como `Sheet` a pantalla completa bajo `md`**. Medido:
-  `BookingPanel` desborda 40 px a 320, deja 15 px de contexto inútil a 375 y su
-  cierre mide 28×28; el campo de cobro usa 13 px. Cabecera fija, acciones
-  principales al pulgar, trampa de foco y cierre/atrás que preserve la pantalla
-  de origen. Incluir en el bloque común la navegación honesta por rol desde
-  `NAV_GROUPS` (demo/recepción no deben recibir la puerta a `/parte`).
+- ~~[M1] **Ficha de reserva como `Sheet` a pantalla completa bajo `md`**~~ →
+  **hecho 2026-08-04 (sesión 72)**: bajo 768 px solo se monta una hoja Radix de
+  ancho completo; escritorio conserva el panel lateral no modal. Cabecera fija,
+  cierre y acciones ≥44 px, campos ≥16 px, safe area, trampa de foco, Escape y
+  retorno al elemento de origen. Regresión real con D1 a 320/375/430: 3/3, sin
+  desborde. `NAV_GROUPS` declara además `manager` para `/parte`; sidebar y
+  portada filtran la misma fuente, mientras el servidor conserva su 403.
 - [M2] **Portada y shell móvil orientados a hoy**: cifras → tres listas en una
   columna → módulos secundarios; hoy hay que barrer trece accesos antes de ver
   llegadas. Añadir entrada táctil de 44×44 a la búsqueda global (ahora solo

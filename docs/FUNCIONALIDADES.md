@@ -182,7 +182,10 @@ Si el planning responde _"¿cuándo?"_, el plano responde _"¿dónde?"_. Una **v
 
 ### 6.3 La ficha de reserva
 
-Un clic en cualquier reserva abre su ficha junto al planning, sin perderlo de vista:
+Un clic en cualquier reserva abre su ficha junto al planning, sin perderlo de
+vista. En móvil ocupa la pantalla completa para que la cuenta se pueda operar
+sin contenido cortado, mantiene la cabecera al alcance y al cerrar devuelve el
+foco a la reserva de origen:
 
 - Estancia, ocupación (con edades de los niños), unidad, canal de entrada y fecha de creación.
 - **Titular y acompañantes** con documento y contacto.
@@ -209,7 +212,11 @@ Cuatro perfiles jerárquicos:
 | **Gerencia**  | Además: tarifas, temporadas y ajustes del camping  |
 | **Dirección** | Además: gestionar usuarios                         |
 
-Las sesiones son revocables al instante (un empleado que se va deja de entrar HOY). No hay registro público: los usuarios los da de alta la dirección.
+Las sesiones son revocables al instante (un empleado que se va deja de entrar
+HOY). No hay registro público: los usuarios los da de alta la dirección. La
+navegación tampoco ofrece módulos que el perfil no puede abrir —por ejemplo,
+Parte de viajeros empieza en Gerencia— aunque la autorización real se vuelve a
+comprobar siempre en el servidor.
 
 ### 6.6 Todo queda registrado
 

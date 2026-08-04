@@ -1,5 +1,11 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 72 (2026-08-04). **M1** lleva la ficha de
+> reserva a un Sheet móvil real, sin desborde y con foco recuperable a
+> 320/375/430 px; escritorio conserva su panel lateral. La navegación común ya
+> oculta `/parte` bajo `manager`. Regresiones: `pnpm check` 46/46 y Playwright
+> 3/3 contra bundle compuesto + D1. Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 71 (2026-08-04). **M0** convierte el Frente M
 > en un contrato medido: tareas reales, roles demo/recepción/gerencia y
 > 320/375/430 px sobre el bundle y la D1 del seed. Informe completo en
@@ -43,15 +49,14 @@
 Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
-es una **demo fake** — nada de servicios externos reales. Lo último cerrado: el
-contrato móvil M0 (71): ya no se juzga por capturas, sino por tareas completas y
-medidas. Antes, el guardia de enlaces (70) impidió publicar CTAs rotos entre las
-tres caras del bundle compuesto.
+es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
+**M1 (72)**, ficha de reserva móvil a pantalla completa y navegación honesta por
+rol. M0 (71) sigue siendo el contrato de medida para M2–M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -63,14 +68,14 @@ tres caras del bundle compuesto.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1 puede implementarse porque es reversible y el
-   informe ya aporta evidencia; Andreu puede aceptar o discutir sus umbrales.
+   44 px, foco y roles). M1 ya lo aplica con evidencia verde; Andreu puede
+   aceptar o discutir sus umbrales antes de M4/M5, que cambian más interacción.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–71. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 quedan pendientes de deploy manual con
-credenciales locales. La 71 solo cambia documentación.
+**Código al día en `main`**: 63–72. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 y 72 quedan pendientes de deploy manual con
+credenciales locales. La 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
 
@@ -80,15 +85,9 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M1] Ficha de reserva móvil (recomendado)**: convertir `BookingPanel` en
-  `Sheet` a pantalla completa bajo `md`. M0 midió 40 px de desborde a 320, tira
-  de 15 px a 375, cierre 28×28 y cobro a 13 px. Cabecera/acciones al pulgar,
-  trampa y retorno de foco, Escape/atrás y una regresión a 320/375/430. En el
-  mismo bloque común, declarar rol mínimo en `NAV_GROUPS`: `/parte` no se ofrece
-  a demo/recepción, aunque el servidor conserva el 403.
-- **[M2] Portada y shell móvil**: KPIs → listas del día → módulos; botón táctil
-  de búsqueda global (hoy solo existe `⌘/Ctrl+K`) y foco correcto del menú móvil
-  —ahora abre en el tema y Escape no vuelve a la hamburguesa.
+- **[M2] Portada y shell móvil (recomendado)**: KPIs → listas del día → módulos;
+  botón táctil de búsqueda global (hoy solo existe `⌘/Ctrl+K`) y foco correcto
+  del menú móvil —ahora abre en el tema y Escape no vuelve a la hamburguesa.
 - **[M3] Llegadas/salidas/solicitudes con una mano**: subir acciones primarias a
   44 px sin perder la densidad que ya funciona. Check-in/out mide 36×28;
   filtros/cambios de solicitud 28 y filas 40.
@@ -122,6 +121,11 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (72) — el foco puede restaurarse y perderse un instante después.**
+  En un diálogo controlado, enfocar el origen dentro de `onOpenChange` no basta:
+  la limpieza de Radix todavía puede mandar el foco a `body`. Se previene su
+  autoenfoque de cierre y se restaura el nodo conectado en el frame posterior;
+  la regresión debe esperar al final y comprobar `activeElement`.
 - **NUEVA (71) — cero desborde no significa móvil operable.** Las cinco
   pantallas base dan `scrollWidth === clientWidth` a 320/375/430, pero el plano
   reduce unidades a 10 px y el planning conserva barras de 24 px: caben porque

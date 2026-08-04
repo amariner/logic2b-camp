@@ -19,10 +19,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import { apiGet, type BookingListItem, type EnquiryItem, type ReportsData } from '../api';
+import { useRol } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur } from '../lib/format';
-import { NAV_GROUPS } from '../lib/nav';
+import { navGroupsForRole } from '../lib/nav';
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 
@@ -192,6 +193,7 @@ function Panel<T extends { id: string }>({
 
 export default function Inicio() {
   const { hoy, mes } = rangos();
+  const navGroups = navGroupsForRole(useRol());
 
   const qHoy = useQuery({
     queryKey: ['reports', hoy.from, hoy.to],
@@ -301,7 +303,7 @@ export default function Inicio() {
             {t('ini.modulos')}
           </h2>
           <div className="mt-3 flex flex-col gap-5">
-            {NAV_GROUPS.map((grupo) => (
+            {navGroups.map((grupo) => (
               <div key={grupo.label}>
                 <h3 className="mb-2 text-[12px] font-medium text-muted-foreground">
                   {t(grupo.label)}

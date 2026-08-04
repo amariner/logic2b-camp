@@ -4,6 +4,17 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (72, 2026-08-04)**: M1 convierte la ficha de reserva
+  en un **Sheet móvil a pantalla completa** bajo 768 px sin alterar el panel
+  lateral de escritorio. A 320/375/430 px: ancho exacto, cero desborde, cabecera
+  pegajosa, cierre/acciones ≥44 px, campos ≥16 px, trampa de foco, Escape y
+  retorno a la fila origen. La prueba real detectó que la limpieza de Radix
+  pisaba el foco del padre; la ficha captura ahora el origen y lo restaura tras
+  el desmontaje. `NAV_GROUPS` gana rol mínimo: demo/readonly/recepción ya no ven
+  `/parte` ni en sidebar ni en portada; manager/owner sí, y el 403 del servidor
+  sigue intacto. `pnpm check` **46/46 verde**, UI **57/57**, dashboard **7/7** y
+  Playwright contra bundle compuesto + D1 **3/3**. Sin deploy: producción suma
+  la 72 a la deuda manual de 67–70.
 - **Última sesión autónoma (71, 2026-08-04)**: M0 cierra la primera auditoría
   móvil del gestor con contrato en **ADR 0031** e informe reproducible en
   `docs/AUDITORIA-MOVIL.md`. Bundle real + D1 del seed, roles demo/recepción/
@@ -74,6 +85,45 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 72 — 2026-08-04 · **M1: la ficha cabe en el móvil y vuelve a su origen** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M1] Ficha de reserva móvil`, el candidato recomendado
+por M0 y el primer P1 del orden medido. Se implementa bajo el ADR 0031 todavía
+`propuesto`: el cambio es reversible, no altera dominio ni contratos de API y
+mantiene intacta la variante de escritorio.
+
+**Implementación**: `BookingPanel` elige con `matchMedia` una sola variante —no
+duplica formularios, IDs ni peticiones—: `Sheet` modal a ancho/alto de viewport
+bajo `md`, y el `aside` no modal de 360 px en escritorio. La hoja integra su
+propio cierre de 44 px, cabecera pegajosa, overscroll contenido, safe area,
+botones táctiles ≥44 px y entradas/selector/notas/huéspedes a 16 px en móvil.
+Radix aporta overlay, Escape y trampa de foco. La ficha captura además el
+elemento activo al abrir y lo recupera en el frame posterior al desmontaje.
+
+**Navegación honesta**: el tuple común de `NAV_GROUPS` admite un rol mínimo y
+`/parte` declara `manager`. Sidebar y portada consumen `navGroupsForRole`; demo,
+consulta y recepción dejan de recibir una puerta imposible, manager y owner la
+conservan. Esto solo mejora la promesa de la UI: `requireRole('manager')` sigue
+siendo la barrera de seguridad y no se ha tocado ninguna ruta.
+
+**Verificación**: dashboard gana Vitest propio y 7 casos sobre los cinco roles
+más el fallo cerrado; UI queda **57/57** con el cierre integrado de `Sheet`.
+Playwright contra bundle compuesto, Worker real y D1 sembrada abre una reserva
+real a **320, 375 y 430 px** y fija ancho exacto, cero desborde, foco dentro,
+tipografía editable ≥16 px, cierre ≥44 px, cabecera visible tras scroll, Escape
+y retorno a la fila: **3/3 verde**. La inspección visual a 375 px confirmó la
+jerarquía completa hasta pagos. `pnpm check`: **46/46 verde**.
+
+**Pase EQUIPO**: Arquitectura preserva el contrato no modal de escritorio y
+monta una sola rama; Backend/Seguridad no cambian API ni autorización;
+Frontend/UI y Producto/UX ganan operabilidad táctil y navegación veraz;
+Accesibilidad fija foco, Escape y tamaños; QA deja regresiones puras y E2E;
+Rendimiento reutiliza Radix ya presente en el bundle; Observabilidad, SEO e
+infra no cambian. Sin ADR nuevo y sin deploy remoto.
+
+**Siguiente**: M2 — portada y shell orientados a hoy, entrada táctil de búsqueda
+y foco/retorno correctos del menú móvil.
 
 ### Sesión 71 — 2026-08-04 · **M0: el gestor móvil se mide por tareas, no por capturas** (autónoma, protocolo CONTINUA)
 

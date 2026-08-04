@@ -15,13 +15,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
   Skeleton,
   SkeletonText,
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { DoorOpen, LogOut, Printer, Undo2 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail, type TenantSettings } from '../api';
 import { t } from '../i18n';
 import { conceptLabel, eur, fecha, noches } from '../lib/format';
@@ -41,6 +45,25 @@ const ACTIONS_BY_STATUS: Record<BookingDetail['status'], BookingAction[]> = {
 };
 type BookingAction = 'confirm' | 'cancel' | 'no_show' | 'complete';
 
+const MOBILE_SHEET_QUERY = '(max-width: 767px)';
+
+/** Solo monta una variante: evita duplicar formularios, peticiones e IDs ocultos. */
+function useMobileSheet(): boolean {
+  const [mobile, setMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.matchMedia(MOBILE_SHEET_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_SHEET_QUERY);
+    const update = () => setMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  return mobile;
+}
+
 /** € (coma o punto) → céntimos enteros — mismo criterio que Tarifas.tsx. */
 const toCents = (euros: string) => Math.round(Number(euros.replace(',', '.')) * 100);
 
@@ -53,6 +76,24 @@ export default function BookingPanel({
 }) {
   const qc = useQueryClient();
   const panelRef = useRef<HTMLElement>(null);
+  const setPanelRef = useCallback((node: HTMLElement | null) => {
+    panelRef.current = node;
+  }, []);
+  const returnFocusRef = useRef<HTMLElement | null>(
+    typeof document !== 'undefined' && document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null,
+  );
+  const close = useCallback(() => {
+    const returnTo = returnFocusRef.current;
+    onClose();
+    // El desmontaje de Radix termina después del callback controlado. Esperar
+    // un frame evita que su limpieza vuelva a mandar el foco a `<body>`.
+    requestAnimationFrame(() => {
+      if (returnTo?.isConnected) returnTo.focus();
+    });
+  }, [onClose]);
+  const mobile = useMobileSheet();
   const [notes, setNotes] = useState<string | null>(null); // null = aún sin editar
   const [payAmount, setPayAmount] = useState('');
   const [payMethod, setPayMethod] = useState<'cash' | 'card'>('cash');
@@ -74,7 +115,7 @@ export default function BookingPanel({
   // al abrir: foco dentro; al cerrar: el llamante devuelve el foco a la barra
   useEffect(() => {
     panelRef.current?.querySelector<HTMLElement>('button')?.focus();
-  }, [bookingId]);
+  }, [bookingId, mobile]);
 
   // cambiar de reserva con el panel abierto: estado limpio
   useEffect(() => {
@@ -83,14 +124,16 @@ export default function BookingPanel({
     setRefundAmount('');
   }, [bookingId]);
 
-  // Esc cierra aunque el foco haya salido del panel (p.ej. tras deshabilitarse un botón)
+  // En móvil lo resuelve Radix (con trampa de foco); el aside de escritorio
+  // conserva el cierre global aunque el foco salga tras deshabilitar un botón.
   useEffect(() => {
+    if (mobile) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') close();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [close, mobile]);
 
   const transition = useMutation({
     mutationFn: (action: BookingAction) =>
@@ -185,13 +228,8 @@ export default function BookingPanel({
   );
   const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
 
-  return (
-    <aside
-      ref={panelRef}
-      role="dialog"
-      aria-label={data?.code ?? t('ficha.cargando')}
-      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
-    >
+  const content = (
+    <>
       {/* cabecera: código + estado + cerrar */}
       <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
         {data && (
@@ -204,16 +242,30 @@ export default function BookingPanel({
             )}
           </>
         )}
-        <Button
-          type="button"
-          variant="ghost"
-          size="iconSm"
-          onClick={onClose}
-          aria-label={t('ficha.cerrar')}
-          className="ml-auto"
-        >
-          ✕
-        </Button>
+        {mobile ? (
+          <SheetClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="iconSm"
+              aria-label={t('ficha.cerrar')}
+              className="ml-auto size-11"
+            >
+              ✕
+            </Button>
+          </SheetClose>
+        ) : (
+          <Button
+            type="button"
+            variant="ghost"
+            size="iconSm"
+            onClick={close}
+            aria-label={t('ficha.cerrar')}
+            className="ml-auto"
+          >
+            ✕
+          </Button>
+        )}
       </div>
 
       {/* esqueleto con la forma real de la ficha: cabecera, secciones de dato y pagos */}
@@ -241,7 +293,7 @@ export default function BookingPanel({
       {isError && <QueryError error={error} onRetry={() => void refetch()} className="p-4" />}
 
       {data && (
-        <div className="flex flex-col gap-4 p-4 text-[13px]">
+        <div className="flex flex-col gap-4 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-[14px] md:text-[13px]">
           {/* estancia */}
           <section>
             <h3 className="lc-panel-h">{t('ficha.estancia')}</h3>
@@ -430,7 +482,7 @@ export default function BookingPanel({
                     })}
                   </Button>
                 )}
-                <div className="flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
                   <input
                     type="text"
                     inputMode="decimal"
@@ -438,13 +490,13 @@ export default function BookingPanel({
                     onChange={(e) => setPayAmount(e.target.value)}
                     placeholder={t('ficha.importe')}
                     aria-label={t('ficha.registrarPago')}
-                    className="w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1"
+                    className="h-11 w-24 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-base md:h-auto md:w-20 md:text-[13px]"
                   />
                   <select
                     value={payMethod}
                     onChange={(e) => setPayMethod(e.target.value as 'cash' | 'card')}
                     aria-label={t('ficha.metodoPago')}
-                    className="rounded-(--lc-radius) border border-foreground/20 bg-background px-1.5 py-1"
+                    className="h-11 rounded-(--lc-radius) border border-foreground/20 bg-background px-1.5 py-1 text-base md:h-auto md:text-[13px]"
                   >
                     <option value="cash">{t('ficha.metodoEfectivo')}</option>
                     <option value="card">{t('ficha.metodoTarjeta')}</option>
@@ -471,7 +523,7 @@ export default function BookingPanel({
                   </p>
                 )}
                 {data.paidCents > 0 && (
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     <input
                       type="text"
                       inputMode="decimal"
@@ -479,7 +531,7 @@ export default function BookingPanel({
                       onChange={(e) => setRefundAmount(e.target.value)}
                       placeholder={t('ficha.importe')}
                       aria-label={t('ficha.reembolsar')}
-                      className="w-20 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1"
+                      className="h-11 w-24 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-base md:h-auto md:w-20 md:text-[13px]"
                     />
                     {/* dinero que sale: confirma siempre, con el importe delante */}
                     <AlertDialog>
@@ -537,7 +589,7 @@ export default function BookingPanel({
               value={notes ?? data.notes ?? ''}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('ficha.notasPlaceholder')}
-              className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5"
+              className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base md:text-[13px]"
             />
             <Button
               type="button"
@@ -613,6 +665,36 @@ export default function BookingPanel({
           <BookingReceipt data={data} establishment={settings?.name ?? null} />
         </div>
       )}
+    </>
+  );
+
+  if (mobile) {
+    return (
+      <Sheet open onOpenChange={(open) => !open && close()}>
+        <SheetContent
+          ref={setPanelRef}
+          side="right"
+          showClose={false}
+          // La ficha restaura el origen tras desmontarse; sin esto Radix puede
+          // mover después el foco a body y pisar esa restauración explícita.
+          onCloseAutoFocus={(event) => event.preventDefault()}
+          className="h-dvh w-screen max-w-none overflow-y-auto overscroll-contain border-0 p-0 [&_button]:min-h-11 [&_button]:min-w-11"
+        >
+          <SheetTitle className="sr-only">{data?.code ?? t('ficha.cargando')}</SheetTitle>
+          {content}
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <aside
+      ref={setPanelRef}
+      role="dialog"
+      aria-label={data?.code ?? t('ficha.cargando')}
+      className="flex w-[360px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
+    >
+      {content}
     </aside>
   );
 }

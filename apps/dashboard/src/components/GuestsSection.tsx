@@ -99,7 +99,8 @@ function GuestFields({
   set: (patch: Partial<GuestForm>) => void;
   idPrefix: string;
 }) {
-  const input = 'w-full text-[13px]';
+  // 16 px en móvil evita el zoom automático de Safari al editar la ficha.
+  const input = 'w-full text-base md:text-[13px]';
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-2 gap-2">

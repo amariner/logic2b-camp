@@ -38,6 +38,7 @@ import {
   LogoMark,
   Separator,
   Sheet,
+  SheetClose,
   SheetContent,
   SheetTitle,
   SheetTrigger,
@@ -261,6 +262,23 @@ describe('Sheet', () => {
     );
     await userEvent.click(screen.getByText('Ficha'));
     expect(await screen.findByRole('dialog')).toHaveTextContent('CS-2026-0006');
+  });
+
+  it('admite un cierre integrado sin duplicar el control', async () => {
+    render(
+      <Sheet defaultOpen>
+        <SheetContent showClose={false}>
+          <SheetTitle>CS-2026-0007</SheetTitle>
+          <SheetClose asChild>
+            <button>Cerrar ficha</button>
+          </SheetClose>
+        </SheetContent>
+      </Sheet>,
+    );
+
+    expect(screen.getAllByRole('button')).toHaveLength(1);
+    await userEvent.click(screen.getByRole('button', { name: 'Cerrar ficha' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });
 

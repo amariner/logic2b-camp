@@ -27,14 +27,16 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react';
+import { tieneRol, type Role } from '../auth';
 import { t } from '../i18n';
 
 type TKey = Parameters<typeof t>[0];
 
-/** [ruta, rótulo corto (barra lateral), icono, frase (portada)] */
-export type NavItem = [string, TKey, LucideIcon, TKey];
+/** [ruta, rótulo corto, icono, frase de portada, rol mínimo opcional] */
+export type NavItem = [string, TKey, LucideIcon, TKey, Role?];
+export type NavGroup = { label: TKey; items: NavItem[] };
 
-export const NAV_GROUPS: { label: TKey; items: NavItem[] }[] = [
+export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'nav.grupo.operacion',
     items: [
@@ -49,7 +51,7 @@ export const NAV_GROUPS: { label: TKey; items: NavItem[] }[] = [
     items: [
       ['/reservas', 'nav.reservas', BookMarked, 'mod.reservas'],
       ['/clientes', 'nav.clientes', Users, 'mod.clientes'],
-      ['/parte', 'nav.parte', ClipboardList, 'mod.parte'],
+      ['/parte', 'nav.parte', ClipboardList, 'mod.parte', 'manager'],
       ['/informes', 'nav.informes', BarChart3, 'mod.informes'],
       ['/inventario', 'nav.inventario', Tent, 'mod.inventario'],
       ['/tarifas', 'nav.tarifas', Tag, 'mod.tarifas'],
@@ -64,3 +66,14 @@ export const NAV_GROUPS: { label: TKey; items: NavItem[] }[] = [
     ],
   },
 ];
+
+/**
+ * Navegación honesta: no ofrece una ruta que el servidor va a rechazar.
+ * Es cortesía de interfaz; `requireRole` continúa siendo la barrera real.
+ */
+export function navGroupsForRole(role: Role | null): NavGroup[] {
+  return NAV_GROUPS.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => item[4] === undefined || tieneRol(role, item[4])),
+  })).filter((group) => group.items.length > 0);
+}
