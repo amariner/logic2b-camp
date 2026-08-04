@@ -59,6 +59,7 @@ import {
 import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel, { type NewBookingInitial } from '../components/NewBookingPanel';
+import PlanningAgenda, { type AgendaMode } from '../components/PlanningAgenda';
 import { QueryError } from '../components/QueryError';
 import { t, tDyn } from '../i18n';
 import { conceptLabel, eur, stayError } from '../lib/format';
@@ -77,6 +78,7 @@ const ZOOMS = [
 const LABEL_W = 148;
 const ROW_H = 32;
 const GROUP_H = 30;
+const MOBILE_PLANNING_QUERY = '(max-width: 767px)';
 
 type Row =
   { kind: 'group'; id: string; label: string } | { kind: 'unit'; id: string; unit: PlanningUnit };
@@ -178,15 +180,35 @@ function PlanningSkeleton() {
   );
 }
 
+/** M4 monta un solo modelo interactivo: agenda bajo `md`, tape chart desde `md`. */
+function useMobilePlanning(): boolean {
+  const [mobile, setMobile] = useState(() =>
+    typeof window === 'undefined' ? false : window.matchMedia(MOBILE_PLANNING_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_PLANNING_QUERY);
+    const update = () => setMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  return mobile;
+}
+
 export default function Planning() {
   // date+unit por la URL: el salto plano ↔ planning conserva ambas (ADR 0021 §4)
   const search = useSearch({ strict: false }) as { date?: string; unit?: string };
   const navigate = useNavigate();
+  const mobile = useMobilePlanning();
+  const [agendaMode, setAgendaMode] = useState<AgendaMode>('day');
   const [zoomId, setZoomId] = useState<(typeof ZOOMS)[number]['id']>('mes');
   const [anchor, setAnchor] = useState(() => search.date ?? isoDay(new Date()));
   const zoom = ZOOMS.find((z) => z.id === zoomId)!;
+  const periodDays = mobile ? (agendaMode === 'day' ? 1 : 7) : zoom.days;
   const from = anchor;
-  const to = addDaysIso(anchor, zoom.days);
+  const to = addDaysIso(anchor, periodDays);
   const today = isoDay(new Date());
 
   const { data, isPending, isError, error, refetch } = useQuery({
@@ -663,7 +685,9 @@ export default function Planning() {
     if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
     e.preventDefault();
     if (!data) return;
-    const sameType = data.units.filter((u) => u.unitTypeId === b.unitTypeId && u.status === 'active');
+    const sameType = data.units.filter(
+      (u) => u.unitTypeId === b.unitTypeId && u.status === 'active',
+    );
     const idx = sameType.findIndex((u) => u.id === sourceUnitId);
     const next = sameType[idx + (e.key === 'ArrowDown' ? 1 : -1)];
     if (next) reassign.mutate({ id: b.id, unitId: next.id, fromUnitId: sourceUnitId });
@@ -902,398 +926,445 @@ export default function Planning() {
 
   return (
     <div className="flex h-full">
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* barra de mando: fechas, zoom, datos a la vista */}
-        <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
-          <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="iconSm"
-              onClick={() => setAnchor(addDaysIso(anchor, -zoom.days))}
-              aria-label={t('planning.anterior')}
-            >
-              ←
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => setAnchor(isoDay(new Date()))}>
-              {t('planning.hoy')}
-            </Button>
-            <Button
-              variant="outline"
-              size="iconSm"
-              onClick={() => setAnchor(addDaysIso(anchor, zoom.days))}
-              aria-label={t('planning.siguiente')}
-            >
-              →
-            </Button>
-          </div>
-          <input
-            type="date"
-            value={anchor}
-            onChange={(e) => e.target.value && setAnchor(e.target.value)}
-            className="tnum rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1 text-[13px]"
-          />
-          {/* grupo de selección: un solo zoom activo, aspecto segmentado */}
-          <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-input">
-            {ZOOMS.map((z) => (
+      {mobile ? (
+        <PlanningAgenda
+          anchor={anchor}
+          mode={agendaMode}
+          data={data}
+          isPending={isPending}
+          isError={isError}
+          error={error}
+          typeFilter={tipoFiltro}
+          statusFilter={estadoFiltro}
+          search={buscar}
+          movePending={requote.isPending || mover.isPending}
+          onAnchorChange={setAnchor}
+          onModeChange={setAgendaMode}
+          onTypeFilterChange={setTipoFiltro}
+          onStatusFilterChange={setEstadoFiltro}
+          onSearchChange={setBuscar}
+          onRetry={() => void refetch()}
+          onOpenBooking={openPanel}
+          onOpenUnit={(unitId, date) => navigate({ to: '/plano', search: { date, unit: unitId } })}
+          onChangeStay={(booking, change) =>
+            startMove({
+              id: booking.id,
+              code: booking.code,
+              dateFrom: change.dateFrom,
+              dateTo: change.dateTo,
+              unitId: change.unitId,
+              prev: {
+                dateFrom: booking.dateFrom,
+                dateTo: booking.dateTo,
+                unitId: booking.unitId!,
+              },
+            })
+          }
+        />
+      ) : (
+        <div className="flex min-w-0 flex-1 flex-col">
+          {/* barra de mando: fechas, zoom, datos a la vista */}
+          <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
+            <div className="flex items-center gap-1">
               <Button
-                key={z.id}
-                variant={z.id === zoomId ? 'primary' : 'outline'}
-                size="sm"
-                onClick={() => setZoomId(z.id)}
-                className="rounded-none border-0 border-l border-input first:border-l-0"
-                aria-pressed={z.id === zoomId}
+                variant="outline"
+                size="iconSm"
+                onClick={() => setAnchor(addDaysIso(anchor, -zoom.days))}
+                aria-label={t('planning.anterior')}
               >
-                {t(`planning.${z.id}`)}
+                ←
               </Button>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate({ to: '/plano', search: { date: from, unit: search.unit } })}
-            title={t('planning.verEnPlano')}
-          >
-            <MapIcon className="size-4" />
-            {t('planning.verEnPlano')}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setBloqueoAbierto(true)}
-            title={t('bloqueo.crear')}
-          >
-            <Ban className="size-4" />
-            {t('bloqueo.crear')}
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setOpenId(null);
-              setAlta({});
-            }}
-          >
-            <Plus className="size-4" />
-            {t('planning.nuevaReserva')}
-          </Button>
-          {data && (
-            <p className="tnum ml-auto text-[12px] text-muted-foreground">
-              {t('planning.unidades', { n: data.units.length })} ·{' '}
-              {t('planning.reservas', { n: data.bookings.length })}
-            </p>
-          )}
-          <BotonAyuda />
-        </div>
-
-        {/* filtros dentro del planning (ADR 0023 §3) */}
-        {data && (
-          <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-1.5">
-            <SelectNative
-              aria-label={t('planning.filtro.tipo')}
-              value={tipoFiltro}
-              onChange={(e) => setTipoFiltro(e.target.value)}
-            >
-              <option value="">{t('planning.filtro.todos')}</option>
-              {data.unitTypes.map((ut) => (
-                <option key={ut.id} value={ut.id}>
-                  {ut.nameI18n.es ?? ut.id}
-                </option>
-              ))}
-            </SelectNative>
-            <SelectNative
-              aria-label={t('planning.filtro.estado')}
-              value={estadoFiltro}
-              onChange={(e) => setEstadoFiltro(e.target.value)}
-            >
-              <option value="">{t('planning.filtro.todas')}</option>
-              {(['confirmed', 'inhouse', 'pending', 'completed', 'no_show'] as const).map((s) => (
-                <option key={s} value={s}>
-                  {t(`estado.${s}`)}
-                </option>
-              ))}
-            </SelectNative>
-            <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="search"
-                value={buscar}
-                onChange={(e) => setBuscar(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') jumpToMatch();
-                }}
-                placeholder={t('planning.buscar')}
-                aria-label={t('planning.buscar')}
-                className="w-56 pl-7"
-              />
+              <Button variant="outline" size="sm" onClick={() => setAnchor(isoDay(new Date()))}>
+                {t('planning.hoy')}
+              </Button>
+              <Button
+                variant="outline"
+                size="iconSm"
+                onClick={() => setAnchor(addDaysIso(anchor, zoom.days))}
+                aria-label={t('planning.siguiente')}
+              >
+                →
+              </Button>
             </div>
+            <Input
+              type="date"
+              aria-label={t('planning.fecha')}
+              value={anchor}
+              onChange={(e) => e.target.value && setAnchor(e.target.value)}
+              className="tnum h-8 w-auto px-2 text-[13px]"
+            />
+            {/* grupo de selección: un solo zoom activo, aspecto segmentado */}
+            <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-input">
+              {ZOOMS.map((z) => (
+                <Button
+                  key={z.id}
+                  variant={z.id === zoomId ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => setZoomId(z.id)}
+                  className="rounded-none border-0 border-l border-input first:border-l-0"
+                  aria-pressed={z.id === zoomId}
+                >
+                  {t(`planning.${z.id}`)}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate({ to: '/plano', search: { date: from, unit: search.unit } })}
+              title={t('planning.verEnPlano')}
+            >
+              <MapIcon className="size-4" />
+              {t('planning.verEnPlano')}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setBloqueoAbierto(true)}
+              title={t('bloqueo.crear')}
+            >
+              <Ban className="size-4" />
+              {t('bloqueo.crear')}
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => {
+                setOpenId(null);
+                setAlta({});
+              }}
+            >
+              <Plus className="size-4" />
+              {t('planning.nuevaReserva')}
+            </Button>
+            {data && (
+              <p className="tnum ml-auto text-[12px] text-muted-foreground">
+                {t('planning.unidades', { n: data.units.length })} ·{' '}
+                {t('planning.reservas', { n: data.bookings.length })}
+              </p>
+            )}
+            <BotonAyuda />
           </div>
-        )}
 
-        {/* bandeja sin asignar: nada se pierde de vista — y se arrastra a una fila */}
-        {byUnit.unassigned.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-accent/50 px-4 py-2">
-            <span className="text-[12px] font-semibold tracking-wide text-muted-foreground uppercase">
-              {t('planning.sinAsignar')}
-            </span>
-            {byUnit.unassigned.map((b) => (
-              <Button
-                key={b.id}
-                variant="ghost"
-                size="xs"
-                title={`${b.code} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.arrastrarChip')}`}
-                className={`lc-chip lc-grab st-${b.status} h-6 px-1.5`}
-                onPointerDown={(e) => onChipPointerDown(e, b)}
-                onPointerMove={onChipPointerMove}
-                onPointerUp={onChipPointerUp}
-                onPointerCancel={onChipPointerUp}
-                onClick={(e) => {
-                  if (chipClickGuard.current) {
-                    chipClickGuard.current = false;
-                    return;
-                  }
-                  openPanel(b.id, e.currentTarget);
-                }}
+          {/* filtros dentro del planning (ADR 0023 §3) */}
+          {data && (
+            <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-1.5">
+              <SelectNative
+                aria-label={t('planning.filtro.tipo')}
+                value={tipoFiltro}
+                onChange={(e) => setTipoFiltro(e.target.value)}
               >
-                {b.code}
-              </Button>
-            ))}
-          </div>
-        )}
+                <option value="">{t('planning.filtro.todos')}</option>
+                {data.unitTypes.map((ut) => (
+                  <option key={ut.id} value={ut.id}>
+                    {ut.nameI18n.es ?? ut.id}
+                  </option>
+                ))}
+              </SelectNative>
+              <SelectNative
+                aria-label={t('planning.filtro.estado')}
+                value={estadoFiltro}
+                onChange={(e) => setEstadoFiltro(e.target.value)}
+              >
+                <option value="">{t('planning.filtro.todas')}</option>
+                {(['confirmed', 'inhouse', 'pending', 'completed', 'no_show'] as const).map((s) => (
+                  <option key={s} value={s}>
+                    {t(`estado.${s}`)}
+                  </option>
+                ))}
+              </SelectNative>
+              <div className="relative">
+                <Search className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="search"
+                  value={buscar}
+                  onChange={(e) => setBuscar(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') jumpToMatch();
+                  }}
+                  placeholder={t('planning.buscar')}
+                  aria-label={t('planning.buscar')}
+                  className="w-56 pl-7"
+                />
+              </div>
+            </div>
+          )}
 
-        {isPending && <PlanningSkeleton />}
-        {isError && <QueryError error={error} onRetry={() => void refetch()} />}
+          {/* bandeja sin asignar: nada se pierde de vista — y se arrastra a una fila */}
+          {byUnit.unassigned.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 border-b border-border/60 bg-accent/50 px-4 py-2">
+              <span className="text-[12px] font-semibold tracking-wide text-muted-foreground uppercase">
+                {t('planning.sinAsignar')}
+              </span>
+              {byUnit.unassigned.map((b) => (
+                <Button
+                  key={b.id}
+                  variant="ghost"
+                  size="xs"
+                  title={`${b.code} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.arrastrarChip')}`}
+                  className={`lc-chip lc-grab st-${b.status} h-6 px-1.5`}
+                  onPointerDown={(e) => onChipPointerDown(e, b)}
+                  onPointerMove={onChipPointerMove}
+                  onPointerUp={onChipPointerUp}
+                  onPointerCancel={onChipPointerUp}
+                  onClick={(e) => {
+                    if (chipClickGuard.current) {
+                      chipClickGuard.current = false;
+                      return;
+                    }
+                    openPanel(b.id, e.currentTarget);
+                  }}
+                >
+                  {b.code}
+                </Button>
+              ))}
+            </div>
+          )}
 
-        {data && rows.length === 0 && (
-          <EmptyState
-            art="calendar"
-            title={t('planning.vacio.titulo')}
-            description={t('planning.vacio.desc')}
-          />
-        )}
+          {isPending && <PlanningSkeleton />}
+          {isError && <QueryError error={error} onRetry={() => void refetch()} />}
 
-        {data && rows.length > 0 && (
-          <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto">
-            <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
-              {/* cabecera sticky: meses + días + franja de temporada */}
-              <div className="sticky top-0 z-30 bg-background" style={{ width: LABEL_W + gridW }}>
-                <div className="flex border-b border-border/60" style={{ paddingLeft: LABEL_W }}>
-                  {days.map((d, i) => {
-                    const first = i === 0 || d.endsWith('-01');
-                    return (
+          {data && rows.length === 0 && (
+            <EmptyState
+              art="calendar"
+              title={t('planning.vacio.titulo')}
+              description={t('planning.vacio.desc')}
+            />
+          )}
+
+          {data && rows.length > 0 && (
+            <div
+              ref={scrollRef}
+              role="region"
+              aria-label={t('planning.tape.aria')}
+              className="min-h-0 flex-1 overflow-auto"
+            >
+              <div style={{ width: LABEL_W + gridW, position: 'relative' }}>
+                {/* cabecera sticky: meses + días + franja de temporada */}
+                <div className="sticky top-0 z-30 bg-background" style={{ width: LABEL_W + gridW }}>
+                  <div className="flex border-b border-border/60" style={{ paddingLeft: LABEL_W }}>
+                    {days.map((d, i) => {
+                      const first = i === 0 || d.endsWith('-01');
+                      return (
+                        <div
+                          key={d}
+                          className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-muted-foreground uppercase"
+                          style={{ width: zoom.cellW, height: 16 }}
+                        >
+                          {first ? monthLabel(d) : ''}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="flex" style={{ paddingLeft: LABEL_W }}>
+                    {days.map((d) => (
                       <div
                         key={d}
-                        className="tnum shrink-0 overflow-visible text-[10px] font-semibold whitespace-nowrap text-muted-foreground uppercase"
-                        style={{ width: zoom.cellW, height: 16 }}
+                        className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-muted-foreground'}`}
+                        style={{
+                          width: zoom.cellW,
+                          ...(d === today ? { color: 'var(--lc-today)', fontWeight: 700 } : {}),
+                        }}
+                        title={d === today ? t('planning.hoy') : undefined}
                       >
-                        {first ? monthLabel(d) : ''}
+                        {dayLabel(d)}
+                      </div>
+                    ))}
+                  </div>
+                  {/* franja de temporada: contexto de negocio, nombre en tooltip */}
+                  <div
+                    className="relative border-b-2 border-foreground/20"
+                    style={{ marginLeft: LABEL_W, width: gridW, height: 7 }}
+                  >
+                    {bands.map((band) => (
+                      <div
+                        key={`${band.start}-${band.name}`}
+                        className="lc-season-band"
+                        style={{
+                          left: band.start * zoom.cellW,
+                          width: band.days * zoom.cellW - 1,
+                          background: `var(--lc-season-${band.tone})`,
+                        }}
+                        title={band.name}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* filas virtualizadas */}
+                <div
+                  ref={rowsRef}
+                  style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+                >
+                  {/* finde: UNA capa con gradiente para todo el lienzo (ADR 0023 §5) */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-y-0"
+                    style={{
+                      left: LABEL_W,
+                      width: gridW,
+                      backgroundImage: weekendBackground(
+                        from,
+                        zoom.cellW,
+                        'var(--lc-weekend-fill)',
+                      ),
+                    }}
+                  />
+                  {/* línea de HOY sobre toda la malla */}
+                  {todayX !== null && (
+                    <div
+                      aria-hidden
+                      className="lc-today-line"
+                      style={{ left: LABEL_W + todayX }}
+                      title={t('planning.hoy')}
+                    />
+                  )}
+                  {/* selección de "crear arrastrando" (un solo nodo, se mueve por JS) */}
+                  <div ref={createSelRef} className="lc-create-sel" style={{ display: 'none' }} />
+
+                  {virtualizer.getVirtualItems().map((vi) => {
+                    const row = rows[vi.index]!;
+                    const inactive = row.kind === 'unit' && row.unit.status === 'inactive';
+                    return (
+                      <div
+                        key={row.id}
+                        style={{
+                          position: 'absolute',
+                          top: vi.start,
+                          height: vi.size,
+                          width: LABEL_W + gridW,
+                        }}
+                      >
+                        {row.kind === 'group' ? (
+                          <div
+                            className="flex h-full items-end border-b border-border/60 bg-background pb-0.5"
+                            style={{ paddingLeft: 8 }}
+                          >
+                            <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+                              {row.label}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex h-full border-b border-border/40">
+                            <div
+                              className={`tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium ${row.unit.id === search.unit ? 'text-primary font-semibold' : ''}${inactive ? ' text-destructive line-through' : ''}`}
+                              style={{ width: LABEL_W }}
+                            >
+                              {row.unit.code}
+                            </div>
+                            <div
+                              className="relative"
+                              data-unit-row={row.unit.id}
+                              style={{ width: gridW }}
+                              onPointerDown={(e) => onRowPointerDown(e, row, vi.start)}
+                              onPointerMove={onRowPointerMove}
+                              onPointerUp={onRowPointerUp}
+                              onPointerCancel={onRowPointerUp}
+                            >
+                              {inactive && (
+                                <div
+                                  className="lc-inactive"
+                                  style={{ left: 0, width: gridW }}
+                                  title={t('inv.inactiva')}
+                                  aria-label={t('inv.inactiva')}
+                                >
+                                  {t('inv.inactiva')}
+                                </div>
+                              )}
+                              {/* bloqueos */}
+                              {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
+                                const g = barGeometry(
+                                  from,
+                                  zoom.days,
+                                  zoom.cellW,
+                                  blk.dateFrom,
+                                  blk.dateTo,
+                                );
+                                return g ? (
+                                  <div
+                                    key={blk.id}
+                                    role="button"
+                                    tabIndex={0}
+                                    className="lc-block"
+                                    style={{ left: g.left, width: g.width }}
+                                    title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo} · ${t('planning.bloqueo.pista')}`}
+                                    aria-label={t('planning.bloqueo.aria', {
+                                      motivo: t(`bloqueo.${blk.reason}`),
+                                      desde: blk.dateFrom,
+                                      hasta: blk.dateTo,
+                                      unidad: row.unit.code,
+                                    })}
+                                    onClick={(e) => askUnblock(blk, e.currentTarget)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        askUnblock(blk, e.currentTarget);
+                                      }
+                                    }}
+                                  >
+                                    {t(`bloqueo.${blk.reason}`)}
+                                  </div>
+                                ) : null;
+                              })}
+                              {/* reservas */}
+                              {(byUnit.bookings.get(row.unit.id) ?? []).map((b) => {
+                                const g = barGeometry(
+                                  from,
+                                  zoom.days,
+                                  zoom.cellW,
+                                  b.dateFrom,
+                                  b.dateTo,
+                                );
+                                if (!g) return null;
+                                const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
+                                const dim = barDimmed(b, row.unit.code);
+                                return (
+                                  <div
+                                    key={b.id}
+                                    tabIndex={0}
+                                    className={`lc-bar lc-grab st-${barStatusClass(b)}${g.clipStart ? ' lc-clip-l' : ''}${g.clipEnd ? ' lc-clip-r' : ''}${dim ? ' lc-dim' : ''}`}
+                                    style={{ left: g.left, width: g.width }}
+                                    title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
+                                    onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
+                                    onPointerMove={onBarPointerMove}
+                                    onPointerUp={onBarPointerUp}
+                                    onPointerCancel={onBarPointerUp}
+                                    onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
+                                  >
+                                    {/* asas de estirar (ADR 0023 §1); en un borde recortado no hay asa */}
+                                    {!g.clipStart && (
+                                      <div
+                                        aria-hidden
+                                        className="lc-handle lc-handle-l"
+                                        onPointerDown={(e) =>
+                                          onHandlePointerDown(e, b, row.unit.id, 'l')
+                                        }
+                                      />
+                                    )}
+                                    {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
+                                    {!g.clipEnd && (
+                                      <div
+                                        aria-hidden
+                                        className="lc-handle lc-handle-r"
+                                        onPointerDown={(e) =>
+                                          onHandlePointerDown(e, b, row.unit.id, 'r')
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
                 </div>
-                <div className="flex" style={{ paddingLeft: LABEL_W }}>
-                  {days.map((d) => (
-                    <div
-                      key={d}
-                      className={`tnum shrink-0 py-0.5 text-center text-[11px] ${isWeekend(d) ? 'lc-weekend font-semibold' : 'text-muted-foreground'}`}
-                      style={{
-                        width: zoom.cellW,
-                        ...(d === today ? { color: 'var(--lc-today)', fontWeight: 700 } : {}),
-                      }}
-                      title={d === today ? t('planning.hoy') : undefined}
-                    >
-                      {dayLabel(d)}
-                    </div>
-                  ))}
-                </div>
-                {/* franja de temporada: contexto de negocio, nombre en tooltip */}
-                <div
-                  className="relative border-b-2 border-foreground/20"
-                  style={{ marginLeft: LABEL_W, width: gridW, height: 7 }}
-                >
-                  {bands.map((band) => (
-                    <div
-                      key={`${band.start}-${band.name}`}
-                      className="lc-season-band"
-                      style={{
-                        left: band.start * zoom.cellW,
-                        width: band.days * zoom.cellW - 1,
-                        background: `var(--lc-season-${band.tone})`,
-                      }}
-                      title={band.name}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* filas virtualizadas */}
-              <div
-                ref={rowsRef}
-                style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
-              >
-                {/* finde: UNA capa con gradiente para todo el lienzo (ADR 0023 §5) */}
-                <div
-                  aria-hidden
-                  className="absolute inset-y-0"
-                  style={{
-                    left: LABEL_W,
-                    width: gridW,
-                    backgroundImage: weekendBackground(from, zoom.cellW, 'var(--lc-weekend-fill)'),
-                  }}
-                />
-                {/* línea de HOY sobre toda la malla */}
-                {todayX !== null && (
-                  <div
-                    aria-hidden
-                    className="lc-today-line"
-                    style={{ left: LABEL_W + todayX }}
-                    title={t('planning.hoy')}
-                  />
-                )}
-                {/* selección de "crear arrastrando" (un solo nodo, se mueve por JS) */}
-                <div ref={createSelRef} className="lc-create-sel" style={{ display: 'none' }} />
-
-                {virtualizer.getVirtualItems().map((vi) => {
-                  const row = rows[vi.index]!;
-                  const inactive = row.kind === 'unit' && row.unit.status === 'inactive';
-                  return (
-                    <div
-                      key={row.id}
-                      style={{
-                        position: 'absolute',
-                        top: vi.start,
-                        height: vi.size,
-                        width: LABEL_W + gridW,
-                      }}
-                    >
-                      {row.kind === 'group' ? (
-                        <div
-                          className="flex h-full items-end border-b border-border/60 bg-background pb-0.5"
-                          style={{ paddingLeft: 8 }}
-                        >
-                          <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
-                            {row.label}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex h-full border-b border-border/40">
-                          <div
-                            className={`tnum sticky left-0 z-20 flex shrink-0 items-center border-r border-border/60 bg-background px-2 text-[12px] font-medium ${row.unit.id === search.unit ? 'text-primary font-semibold' : ''}${inactive ? ' text-destructive line-through' : ''}`}
-                            style={{ width: LABEL_W }}
-                          >
-                            {row.unit.code}
-                          </div>
-                          <div
-                            className="relative"
-                            data-unit-row={row.unit.id}
-                            style={{ width: gridW }}
-                            onPointerDown={(e) => onRowPointerDown(e, row, vi.start)}
-                            onPointerMove={onRowPointerMove}
-                            onPointerUp={onRowPointerUp}
-                            onPointerCancel={onRowPointerUp}
-                          >
-                            {inactive && (
-                              <div
-                                className="lc-inactive"
-                                style={{ left: 0, width: gridW }}
-                                title={t('inv.inactiva')}
-                                aria-label={t('inv.inactiva')}
-                              >
-                                {t('inv.inactiva')}
-                              </div>
-                            )}
-                            {/* bloqueos */}
-                            {(byUnit.blocks.get(row.unit.id) ?? []).map((blk) => {
-                              const g = barGeometry(
-                                from,
-                                zoom.days,
-                                zoom.cellW,
-                                blk.dateFrom,
-                                blk.dateTo,
-                              );
-                              return g ? (
-                                <div
-                                  key={blk.id}
-                                  role="button"
-                                  tabIndex={0}
-                                  className="lc-block"
-                                  style={{ left: g.left, width: g.width }}
-                                  title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo} · ${t('planning.bloqueo.pista')}`}
-                                  aria-label={t('planning.bloqueo.aria', {
-                                    motivo: t(`bloqueo.${blk.reason}`),
-                                    desde: blk.dateFrom,
-                                    hasta: blk.dateTo,
-                                    unidad: row.unit.code,
-                                  })}
-                                  onClick={(e) => askUnblock(blk, e.currentTarget)}
-                                  onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                      e.preventDefault();
-                                      askUnblock(blk, e.currentTarget);
-                                    }
-                                  }}
-                                >
-                                  {t(`bloqueo.${blk.reason}`)}
-                                </div>
-                              ) : null;
-                            })}
-                            {/* reservas */}
-                            {(byUnit.bookings.get(row.unit.id) ?? []).map((b) => {
-                              const g = barGeometry(
-                                from,
-                                zoom.days,
-                                zoom.cellW,
-                                b.dateFrom,
-                                b.dateTo,
-                              );
-                              if (!g) return null;
-                              const pax = b.occupancy.adults + b.occupancy.childrenAges.length;
-                              const dim = barDimmed(b, row.unit.code);
-                              return (
-                                <div
-                                  key={b.id}
-                                  tabIndex={0}
-                                  className={`lc-bar lc-grab st-${barStatusClass(b)}${g.clipStart ? ' lc-clip-l' : ''}${g.clipEnd ? ' lc-clip-r' : ''}${dim ? ' lc-dim' : ''}`}
-                                  style={{ left: g.left, width: g.width }}
-                                  title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
-                                  onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
-                                  onPointerMove={onBarPointerMove}
-                                  onPointerUp={onBarPointerUp}
-                                  onPointerCancel={onBarPointerUp}
-                                  onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
-                                >
-                                  {/* asas de estirar (ADR 0023 §1); en un borde recortado no hay asa */}
-                                  {!g.clipStart && (
-                                    <div
-                                      aria-hidden
-                                      className="lc-handle lc-handle-l"
-                                      onPointerDown={(e) =>
-                                        onHandlePointerDown(e, b, row.unit.id, 'l')
-                                      }
-                                    />
-                                  )}
-                                  {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
-                                  {!g.clipEnd && (
-                                    <div
-                                      aria-hidden
-                                      className="lc-handle lc-handle-r"
-                                      onPointerDown={(e) =>
-                                        onHandlePointerDown(e, b, row.unit.id, 'r')
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {openId && data && <BookingPanel bookingId={openId} onClose={closePanel} />}
       {alta && (

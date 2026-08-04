@@ -1,5 +1,12 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
+> Reescrito al cerrar la sesión 76 (2026-08-04). **M4** convierte Planning en
+> agenda móvil de día/semana: filas y controles ≥44 px, campos de 16 px, ficha
+> y unidad tocables, cambio explícito de fechas/unidad sobre la misma
+> recotización del servidor. Desde `md` solo existe el tape chart intacto. B1
+> cierra además su último selector de fecha crudo. Regresiones: `pnpm check`
+> 46/46 y Playwright móvil 7/7 en Workers limpios. Sin deploy remoto.
+
 > Reescrito al cerrar la sesión 75 (2026-08-04). **M5** hace táctil el plano:
 > zoom móvil 8× con unidades ≥44 px, selección centrada, controles grandes,
 > scroll vertical libre salvo modo «Mover», ficha inferior y foco recuperable.
@@ -68,13 +75,14 @@ Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
 proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
 `main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
 es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M5 (75)**, plano móvil ampliado, desplazamiento explícito, ficha inferior y
-foco recuperable. M0 (71) sigue siendo el contrato de medida para M4 y M6.
+**M4 (76)**, Planning móvil como agenda de día/semana con cambios explícitos y
+tape chart de escritorio intacto. M0 (71) sigue siendo el contrato de medida
+para M6.
 
 ## ⚠ Lo primero de la próxima sesión
 
 1. **Nada bloquea en código; hay deuda de deploy.** De la 63 a la 66, todo en
-   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–75 esperan un
+   producción (última versión `b65a5dfb`); las sesiones 67–70 y 72–76 esperan un
    deploy manual con credenciales locales. Si la próxima sesión toca landing,
    web o marca, verificar **contra producción con
    cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
@@ -86,13 +94,13 @@ foco recuperable. M0 (71) sigue siendo el contrato de medida para M4 y M6.
    comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
    discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
 3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco y roles). M1–M3 y M5 ya lo aplican con evidencia verde; Andreu
-   puede aceptar o discutir sus umbrales antes de M4, que cambia más interacción.
+   44 px, foco y roles). M1–M5 ya lo aplican con evidencia verde; Andreu puede
+   aceptar o discutir sus umbrales antes de M6.
 
 ## Estado de la entrega
 
-**Código al día en `main`**: 63–75. Producción sigue en **`b65a5dfb`**
-(2026-08-01); las sesiones 67–70 y 72–75 quedan pendientes de deploy manual con
+**Código al día en `main`**: 63–76. Producción sigue en **`b65a5dfb`**
+(2026-08-01); las sesiones 67–70 y 72–76 quedan pendientes de deploy manual con
 credenciales locales. La 71 solo cambió documentación.
 
 ## ▶ Prompt para pegar
@@ -103,13 +111,9 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
-- **[M4] Planning como agenda móvil (recomendado)**: no inflar el tape chart de
-  barras 24 px y asas 8 px. Dar día/semana, lista tocable y cambios explícitos;
-  chart intacto en tablet/escritorio.
-- **[M6] Carga inicial móvil**: 775,78 kB min / 232,45 kB gzip. Lazy por rutas,
-  Planning/Plano bajo demanda, entrada <200 kB gzip y revisión de subsets.
-- **[B1] Último campo de fecha crudo**: queda `Planning.tsx`, además sin nombre
-  accesible.
+- **[M6] Carga inicial móvil (recomendado)**: 785,80 kB min / 234,75 kB gzip.
+  Lazy por rutas, Planning/Plano bajo demanda, entrada <200 kB gzip y revisión
+  de subsets.
 - **[seed] `created_at` de las ~3.500 reservas**: hoy coincide con el ancla;
   derivarlo del canal (mostrador = llegada, web = meses antes).
 
@@ -130,6 +134,16 @@ continúa con el desarrollo de este proyecto
 
 ## Trampas conocidas (heredadas + sesiones recientes)
 
+- **NUEVA (76) — una vista responsive compleja debe montar un solo modelo
+  interactivo.** Ocultar la agenda y el tape chart solo con CSS habría dejado
+  dos árboles, focos e IDs vivos, además de mantener el rango de 31 días en la
+  consulta móvil. `matchMedia` decide antes de pedir datos: 1/7 días bajo `md`,
+  zoom original desde `md`; paneles y mutaciones sí se comparten.
+- **NUEVA (76) — siete specs correctos pueden agotar juntos el acceso demo.**
+  La regresión combinada pasó cinco y los dos últimos fallaron antes del login;
+  ambos pasaron 1/1 al reiniciar el Worker. Mantener una sesión por spec y
+  dividir el barrido M1–M4 en procesos limpios: el rate limit no es la tarea que
+  estos E2E pretenden medir.
 - **NUEVA (75) — un estado derivado debe aparecer en cada apertura, no solo en
   el color.** `inhouse` se pintaba y etiquetaba correctamente en el plano, pero
   faltaba en la condición que abría `BookingPanel`; el click parecía responder

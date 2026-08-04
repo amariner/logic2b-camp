@@ -4,6 +4,19 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (76, 2026-08-04)**: M4 sustituye bajo `md` el tape
+  chart comprimido por una agenda móvil real de día/semana. Cada estancia y su
+  unidad son objetivos independientes de al menos 44 px; ficha y plano abren
+  desde la fila, con retorno de foco. Fechas y unidad se cambian mediante un
+  formulario explícito de 16 px que reutiliza `requote`/`move`: precio,
+  disponibilidad y solapes siguen bajo autoridad del servidor. Los filtros
+  conservan scroll local y el documento no desborda a 320/375/430. Desde `md`
+  solo se monta el tape chart original, incluidos sus gestos y controles de 28
+  px. Se cierra además B1: el último selector de fecha crudo pasa a `Input` con
+  nombre accesible. Playwright móvil queda **7/7 verde en procesos limpios**
+  (la ejecución única agota el rate limit demo después del quinto spec);
+  `pnpm check` **46/46 verde**. Sin deploy: producción suma la 76 a la deuda
+  manual de 67–70 y 72–75.
 - **Última sesión autónoma (75, 2026-08-04)**: M5 convierte el plano móvil en
   una superficie táctil sin alterar el escritorio. Bajo `md` entra ampliado 8×
   y centrado en una unidad: los rectángulos auditados en 10×7 px superan ahora
@@ -120,6 +133,51 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 76 — 2026-08-04 · **M4: el Planning móvil se convierte en agenda** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: `[M4] Planning móvil como agenda`, siguiente P1 y candidato
+recomendado tras M5. El chart de escritorio cabía bajo 375 px solo porque
+conservaba filas de 32 px, barras de 24 px, asas de 8 px y arrastres que compiten
+con el scroll. Inflarlo habría perdido contexto sin resolver el gesto; se aplica
+la alternativa reversible del ADR 0031.
+
+**Un modelo por ancho**: bajo `md`, la consulta pide un día o siete según el
+selector Día/Semana y pinta secciones por fecha. Cada estancia es una fila
+tocable con código, estado, fechas y ocupación; la unidad tiene su propia acción
+hacia el plano. Navegación, modos, fecha, filtros, búsqueda, filas y acciones
+alcanzan 44 px, los campos usan 16 px y el overflow de filtros es local. Desde
+`md` no coexiste una agenda oculta: se monta únicamente el tape chart original,
+con virtualización, barras, teclado, drag/resize y densidad intactos.
+
+**Cambios explícitos, servidor intacto**: una reserva viva y asignada despliega
+Entrada, Salida y Unidad compatibles en un formulario nativo. «Aplicar cambio»
+entra en el mismo `startMove` del gesto de escritorio: `POST /requote`, diálogo
+de desglose si cambia el total y `PATCH move` con `expectedTotalCents`. La UI no
+calcula precio ni disponibilidad. Cancelar devuelve el foco al disparador; la
+ficha móvil de M1 conserva Escape y retorno a la fila.
+
+**Remate B1**: el selector de fecha de escritorio era el último `<input>` crudo
+del dashboard y carecía de nombre accesible. Pasa a `Input` del DS, con altura
+compacta de 32 px en escritorio; la agenda usa la misma pieza a 44 px/16 px.
+
+**Verificación**: `pnpm check` **46/46**. La regresión M4 contra bundle compuesto,
+Worker y D1 recorre 320/375/430 y 1366 px: **1/1 verde**, con cero desborde,
+medidas, día/semana, siete secciones, ficha, editor, Escape y retorno de foco.
+Las seis regresiones M1–M5 también quedan verdes al separarlas en procesos
+limpios. Juntarlas todas agota el rate limit anónimo después del quinto spec y
+los dos restantes fallan antes del login; reiniciados, pasan 1/1 cada uno.
+
+**Pase EQUIPO**: Arquitectura/Fullstack mantienen una consulta y mutaciones
+compartidas; Backend conserva precio, fechas y solapes en servidor; Frontend
+cubre carga/error/vacío, filtros, teclado y foco; Producto/UX resuelven la
+urgencia móvil sin duplicar el mostrador; UI conserva tokens y mide móvil más
+1366 px; SEO no aplica a la SPA privada. No hace falta ADR nuevo: M4 ejecuta el
+ADR 0031 propuesto. Bundle actual: **785,80 kB min / 234,75 kB gzip**, que deja
+M6 como siguiente objetivo. Sin deploy remoto.
+
+**Siguiente**: M6 — dividir el dashboard por rutas, cargar Planning/Plano bajo
+demanda y bajar el chunk de entrada por debajo de 200 kB gzip.
 
 ### Sesión 75 — 2026-08-04 · **M5: el plano deja de ser una miniatura** (autónoma, protocolo CONTINUA)
 
