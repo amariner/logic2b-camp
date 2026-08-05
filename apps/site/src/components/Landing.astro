@@ -12,6 +12,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = getContent(locale);
+// El gestor comparte dominio en producción, pero tiene su propio servidor Vite
+// durante el desarrollo local.
+const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/admin/';
 
 const faqEstructurada = {
   '@context': 'https://schema.org',
@@ -48,8 +51,18 @@ const iconosProblema = [
             </a>
           </div>
           <div class="botanical-hero-links">
-            <a href="/demo/">{c.hero.ctaVer} ↗</a>
-            <a href="/admin/">{c.hero.ctaMostrador} ↗</a>
+            <a href="/demo/">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                <path d="M4 5h16v11H4V5Zm4 15h8M12 16v4" />
+              </svg>
+              <span>{c.hero.ctaVer}</span><span aria-hidden="true">↗</span>
+            </a>
+            <a href={managerHref}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm3 8h3m2 0h3M8 17h3" />
+              </svg>
+              <span>{c.hero.ctaMostrador}</span><span aria-hidden="true">↗</span>
+            </a>
           </div>
           <p class="botanical-note">{c.hero.nota}</p>
         </div>
@@ -149,7 +162,7 @@ const iconosProblema = [
         <ul class="botanical-planning-points">
           {c.planning.puntos.map((pt) => <li>{pt}</li>)}
         </ul>
-        <a href="/admin/" class="botanical-button">{c.planning.cta}<span aria-hidden="true">→</span></a>
+        <a href={managerHref} class="botanical-button">{c.planning.cta}<span aria-hidden="true">→</span></a>
       </div>
 
       <figure class="botanical-showcase lc-reveal">
@@ -298,7 +311,7 @@ const iconosProblema = [
           <p class="botanical-contact-links">
             {c.contacto.verDemoTexto}<br />
             <a href="/demo/">{c.nav.verDemo} →</a><br />
-            <a href="/admin/">{c.contacto.verMostrador} →</a>
+            <a href={managerHref}>{c.contacto.verMostrador} →</a>
           </p>
         </div>
 

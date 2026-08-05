@@ -11,17 +11,17 @@
     "docs": "Guías",
     "precios": "Precios",
     "demo": "Ver demo",
-    "mostrador": "Gestor en vivo",
-    "contacto": "Pedir demo",
+    "mostrador": "Probar el gestor de reservas",
+    "contacto": "Comenzar",
     "verDemo": "Ver la demo en vivo"
   },
   "hero": {
     "kicker": "De tu primera web al copiloto del camping",
     "titulo": "Web, reservas y gestión para campings, en un solo sistema.",
     "subtitulo": "Desde 49 €/mes. Primero consigues consultas, después controlas reservas y pagos, automatizas recepción y terminas tomando mejores decisiones con tus datos. Sin cambiar de plataforma por el camino.",
-    "ctaDemo": "Ver cómo puedes escalar",
+    "ctaDemo": "Ver planes",
     "ctaVer": "Ver la web de ejemplo",
-    "ctaMostrador": "Probar el gestor",
+    "ctaMostrador": "Probar el gestor de reservas",
     "nota": "Plan Inicio: alta 0 €, un idioma y compromiso de 12 meses. Sin comisión por reserva.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
@@ -421,6 +421,8 @@
     "kicker": "Sin compromiso",
     "titulo": "Pídenos una demo con los datos de tu camping",
     "texto": "Te la enseñamos con tu inventario y tus fechas, para que veas cómo quedaría lo tuyo —no un ejemplo genérico.",
+    "solicitudTitulo": "Cuéntanos tu proyecto",
+    "solicitudTexto": "Dinos cómo es tu camping y qué quieres poner en marcha. Te responderemos con un alcance claro para tu proyecto.",
     "campos": {
       "nombre": "Tu nombre",
       "camping": "Nombre del camping",
@@ -429,6 +431,7 @@
       "mensaje": "Cuéntanos qué necesitas (opcional)"
     },
     "enviar": "Pedir demo",
+    "solicitudEnviar": "Solicitar proyecto",
     "enviando": "Enviando…",
     "ok": "¡Recibido! Te escribimos en menos de 24 h.",
     "error": "No se pudo enviar. Escríbenos a hola@logic2b.com y lo resolvemos.",

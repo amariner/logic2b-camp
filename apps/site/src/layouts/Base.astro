@@ -1,5 +1,7 @@
 ---
 import Wordmark from '../components/Wordmark.astro';
+import HeaderIcon from '../components/HeaderIcon.astro';
+import ProjectRequestDialog from '../components/ProjectRequestDialog.astro';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
 /* Después de global.css a propósito: el remapeo de tokens y los estilos de
@@ -12,6 +14,16 @@ interface Props {
     seo: { title: string; description: string };
     nav: Record<string, string>;
     footer: Record<string, string>;
+    contacto: {
+      kicker: string;
+      solicitudTitulo: string;
+      solicitudTexto: string;
+      solicitudEnviar: string;
+      campos: { nombre: string; camping: string; email: string; telefono: string; mensaje: string };
+      enviando: string;
+      ok: string;
+      error: string;
+    };
   };
   /** Ruta SIN prefijo de idioma ('/' la landing, 'docs/…' las guías). Manda en canonical y hreflang. */
   ruta?: string;
@@ -64,22 +76,26 @@ const datosEstructurados = {
 // Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
+// En producción el Worker monta el gestor en /admin/. En desarrollo se sirve
+// como aplicación Vite independiente, para que los enlaces de la landing sean
+// comprobables sin montar todo el Worker local.
+const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/admin/';
 // MENÚ ÚNICO del sitio: header y footer pintan ESTA lista, en este orden
 // (secciones del home según aparecen al hacer scroll, luego páginas propias).
 // Si un destino entra o sale, se toca solo aquí y los dos menús siguen iguales.
 const nav = [
-  { href: `${inicio}#producto`, label: c.nav.producto },
-  { href: `${inicio}#planning`, label: c.nav.planning },
-  { href: `${inicio}#niveles`, label: c.nav.niveles },
-  { href: localePath(locale, 'temas/'), label: c.nav.temas },
-  { href: localePath(locale, 'precios/'), label: c.nav.precios },
-  { href: localePath(locale, 'docs/'), label: c.nav.docs },
-];
+  { href: `${inicio}#producto`, label: c.nav.producto, icon: 'product' },
+  { href: `${inicio}#planning`, label: c.nav.planning, icon: 'planning' },
+  { href: `${inicio}#niveles`, label: c.nav.niveles, icon: 'plans' },
+  { href: localePath(locale, 'temas/'), label: c.nav.temas, icon: 'themes' },
+  { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
+  { href: localePath(locale, 'docs/'), label: c.nav.docs, icon: 'guides' },
+] as const;
 // Acciones (también compartidas): demo pública, gestor demo y el CTA de contacto.
 const acciones = [
-  { href: '/demo/', label: c.nav.demo },
-  { href: '/admin/', label: c.nav.mostrador },
-];
+  { href: '/demo/', label: c.nav.demo, icon: 'demo' },
+  { href: managerHref, label: c.nav.mostrador, icon: 'manager' },
+] as const;
 ---
 
 <!doctype html>
@@ -138,29 +154,58 @@ const acciones = [
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
       {/* Raíles de logic2b.com: contenedor 1440px, gutter 24→32px, 50px de alto. */}
-      <div class="mx-auto flex h-[50px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
+      <div class="site-header-inner mx-auto flex h-[50px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
         {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}
         <Wordmark class="shrink-0 text-base sm:text-lg" href={localePath(locale)} />
-        <nav class="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+        <nav class="hidden items-center gap-6 text-sm text-muted-foreground xl:flex" aria-label="Navegación principal">
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
-        <div class="ml-auto flex items-center gap-4">
-          {/* Las mismas acciones que el footer; el gestor solo desde lg porque
-              en tabletas el menú completo + tres acciones ya no caben. */}
+        <div class="site-header-actions ml-auto flex items-center gap-4">
           <a
             href={acciones[0]!.href}
-            class="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+            class="site-header-demo inline-flex shrink-0 items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >{acciones[0]!.label}</a>
-          <a
-            href={acciones[1]!.href}
-            class="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
-          >{acciones[1]!.label}</a>
-          <a
-            href={`${inicio}#contacto`}
-            class="inline-flex shrink-0 items-center rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:px-3.5"
-          >{c.nav.contacto}</a>
+          <button
+            type="button"
+            class="site-header-start inline-flex shrink-0 items-center bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            data-project-request-open
+          >{c.nav.contacto}</button>
+          <button
+            type="button"
+            class="site-menu-toggle"
+            aria-label="Abrir menú"
+            aria-controls="site-menu"
+            aria-expanded="false"
+            data-site-menu-toggle
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <div id="site-menu" class="site-menu" hidden data-site-menu>
+          <nav class="site-menu__links" aria-label="Navegación">
+            {
+              nav.map((n) => (
+                <a href={n.href} class="site-menu__link" data-site-menu-link>
+                  <HeaderIcon name={n.icon} class="site-menu__icon" />
+                  <span>{n.label}</span>
+                </a>
+              ))
+            }
+          </nav>
+          <div class="site-menu__actions">
+            {
+              acciones.map((a) => (
+                <a href={a.href} class="site-menu__link" data-site-menu-link>
+                  <HeaderIcon name={a.icon} class="site-menu__icon" />
+                  <span>{a.label}</span>
+                </a>
+              ))
+            }
+          </div>
         </div>
       </div>
     </header>
@@ -212,6 +257,8 @@ const acciones = [
       </div>
     </footer>
 
+    <ProjectRequestDialog contacto={c.contacto} locale={locale} />
+
     {/* Reveal on scroll (ADR 0027), compartido por todas las páginas: cualquier
         .lc-reveal del slot funciona igual en home, temas, precios y guías. */}
     <script>
@@ -234,6 +281,32 @@ const acciones = [
         );
         elements.forEach((element) => observer.observe(element));
       }
+    </script>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');
+      const menu = document.querySelector<HTMLElement>('[data-site-menu]');
+      const closeMenu = () => {
+        if (!toggle || !menu) return;
+        menu.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+
+      toggle?.addEventListener('click', () => {
+        if (!menu) return;
+        const isOpen = menu.hidden;
+        menu.hidden = !isOpen;
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      document.querySelectorAll('[data-site-menu-link]').forEach((link) => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+      });
+      document.addEventListener('click', (event) => {
+        if (menu && toggle && !menu.hidden && !menu.contains(event.target as Node) && !toggle.contains(event.target as Node)) {
+          closeMenu();
+        }
+      });
     </script>
   </body>
 </html>

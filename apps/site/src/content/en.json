@@ -11,17 +11,17 @@
     "docs": "Guides",
     "precios": "Pricing",
     "demo": "See demo",
-    "mostrador": "Live manager",
-    "contacto": "Request a demo",
+    "mostrador": "Try the booking manager",
+    "contacto": "Get started",
     "verDemo": "See the live demo"
   },
   "hero": {
     "kicker": "From your first website to the campsite copilot",
     "titulo": "Website, bookings and campsite management in one system.",
     "subtitulo": "From €49/month. First win enquiries, then control bookings and payments, automate reception and make better decisions with your data. Without changing platform along the way.",
-    "ctaDemo": "See how you can scale",
+    "ctaDemo": "See plans",
     "ctaVer": "See the example website",
-    "ctaMostrador": "Enter the campsite manager",
+    "ctaMostrador": "Try the booking manager",
     "nota": "Start plan: €0 setup, one language and a 12-month commitment. No booking commission.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
   },
@@ -421,6 +421,8 @@
     "kicker": "No strings attached",
     "titulo": "Ask for a demo with your campsite's data",
     "texto": "We'll show it with your inventory and your dates, so you see how yours would look —not a generic example.",
+    "solicitudTitulo": "Tell us about your project",
+    "solicitudTexto": "Tell us about your campsite and what you want to launch. We will reply with a clear scope for your project.",
     "campos": {
       "nombre": "Your name",
       "camping": "Campsite name",
@@ -429,6 +431,7 @@
       "mensaje": "Tell us what you need (optional)"
     },
     "enviar": "Request demo",
+    "solicitudEnviar": "Request project",
     "enviando": "Sending…",
     "ok": "Got it! We'll write to you within 24 h.",
     "error": "Couldn't send. Email us at hola@logic2b.com and we'll sort it out.",

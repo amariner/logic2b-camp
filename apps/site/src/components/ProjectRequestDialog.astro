@@ -1,0 +1,113 @@
+---
+interface Props {
+  contacto: {
+    kicker: string;
+    solicitudTitulo: string;
+    solicitudTexto: string;
+    solicitudEnviar: string;
+    campos: {
+      nombre: string;
+      camping: string;
+      email: string;
+      telefono: string;
+      mensaje: string;
+    };
+    enviando: string;
+    ok: string;
+    error: string;
+  };
+  locale: string;
+}
+
+const { contacto, locale } = Astro.props;
+---
+
+<dialog id="project-request-dialog" class="project-request-dialog" aria-labelledby="project-request-title">
+  <div class="project-request-dialog__panel">
+    <button type="button" class="project-request-dialog__close" data-project-request-close aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </svg>
+    </button>
+    <p class="botanical-eyebrow">{contacto.kicker}</p>
+    <h2 id="project-request-title" class="botanical-heading-sm">{contacto.solicitudTitulo}</h2>
+    <p class="project-request-dialog__copy">{contacto.solicitudTexto}</p>
+    <form id="project-request-form" class="botanical-form project-request-dialog__form" novalidate>
+      <input type="hidden" name="lang" value={locale} />
+      <label>
+        <span>{contacto.campos.nombre}</span>
+        <input name="name" autocomplete="name" required />
+      </label>
+      <label>
+        <span>{contacto.campos.camping}</span>
+        <input name="campingName" autocomplete="organization" required />
+      </label>
+      <label>
+        <span>{contacto.campos.email}</span>
+        <input name="email" type="email" autocomplete="email" required />
+      </label>
+      <label>
+        <span>{contacto.campos.telefono}</span>
+        <input name="phone" type="tel" autocomplete="tel" />
+      </label>
+      <label class="span-two">
+        <span>{contacto.campos.mensaje}</span>
+        <textarea name="message" rows="4"></textarea>
+      </label>
+      <div class="botanical-form-actions span-two">
+        <button
+          type="submit"
+          class="botanical-button"
+          data-send={contacto.solicitudEnviar}
+          data-sending={contacto.enviando}
+        >{contacto.solicitudEnviar}<span aria-hidden="true">→</span></button>
+        <p id="project-request-msg" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script is:inline define:vars={{ ok: contacto.ok, err: contacto.error }}>
+  const dialog = document.getElementById('project-request-dialog');
+  const form = document.getElementById('project-request-form');
+  const message = document.getElementById('project-request-msg');
+  const submit = form?.querySelector('button[type=submit]');
+
+  document.querySelectorAll('[data-project-request-open]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('[data-project-request-close]').forEach((trigger) => {
+    trigger.addEventListener('click', () => dialog?.close());
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(form instanceof HTMLFormElement) || !form.reportValidity() || !(submit instanceof HTMLButtonElement)) return;
+    const data = Object.fromEntries(new FormData(form).entries());
+    submit.disabled = true;
+    submit.textContent = submit.dataset.sending ?? '';
+    if (message) message.textContent = '';
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('bad');
+      if (message) message.textContent = ok;
+      form.reset();
+    } catch {
+      if (message) message.textContent = err;
+    } finally {
+      submit.disabled = false;
+      submit.textContent = submit.dataset.send ?? '';
+    }
+  });
+</script>
