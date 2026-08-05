@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import ThemeMiniature from './ThemeMiniature.astro';
+import { getContent, localePath, type Locale } from '../lib/i18n';
+import '../styles/landing-botanical.css';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = getContent(locale);
+---
+
+<Base locale={locale} content={c} ruta="temas/" seo={c.temas.seo} theme="botanical">
+  <main class="theme-catalog-page">
+    <section class="theme-catalog-hero botanical-shell">
+      <div>
+        <p class="botanical-eyebrow">{c.temas.kicker}</p>
+        <h1 class="botanical-heading">{c.temas.titulo}</h1>
+      </div>
+      <div>
+        <p class="botanical-copy">{c.temas.texto}</p>
+        <a href={localePath(locale)}>{c.temas.volver} <span aria-hidden="true">←</span></a>
+      </div>
+    </section>
+
+    <section class="theme-catalog-grid botanical-shell" aria-label={c.temas.kicker}>
+      {
+        c.temas.items.map((theme, index) => (
+          <article class="theme-catalog-card">
+            <ThemeMiniature
+              name={theme.nombre}
+              style={theme.estilo}
+              image={theme.imagen}
+              variant={theme.variante}
+              eager={index < 2}
+            />
+            <div class="theme-catalog-meta">
+              <div>
+                <p>{String(index + 1).padStart(2, '0')} · {c.temas.estado}</p>
+                <h2>{theme.nombre}</h2>
+                <span>{theme.estilo}</span>
+              </div>
+              <i aria-hidden="true"></i>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="theme-catalog-note botanical-shell">
+      <p>{c.temas.nota}</p>
+      <a class="botanical-button" href={`${localePath(locale)}#contacto`}>
+        {c.nav.contacto}<span aria-hidden="true">→</span>
+      </a>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .theme-catalog-page { overflow:hidden; background:var(--botanical-paper); }
+  .theme-catalog-hero {
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:clamp(40px,8vw,120px);
+    align-items:end;
+    padding:clamp(70px,9vw,128px) 0 clamp(56px,7vw,92px);
+  }
+  .theme-catalog-hero h1 { max-width:840px; margin-top:18px; }
+  .theme-catalog-hero .botanical-copy { max-width:560px; }
+  .theme-catalog-hero a { display:inline-flex; margin-top:24px; color:var(--botanical-ink); font-size:13px; text-decoration:underline; text-underline-offset:4px; }
+  .theme-catalog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; padding-bottom:clamp(70px,10vw,140px); }
+  .theme-catalog-card { overflow:hidden; border-radius:14px; background:var(--botanical-keylime); }
+  .theme-catalog-card:nth-child(3n + 2) { background:var(--botanical-mint); }
+  .theme-catalog-card:nth-child(3n + 3) { background:var(--botanical-slate); }
+  .theme-catalog-card :global(.theme-miniature) { aspect-ratio:1.5; }
+  .theme-catalog-meta { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:28px 30px 32px; }
+  .theme-catalog-meta p { color:color-mix(in srgb,var(--botanical-ink) 58%,white); font-size:9px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+  .theme-catalog-meta h2 { margin-top:9px; font-size:34px; line-height:1; }
+  .theme-catalog-meta span { display:block; margin-top:8px; color:color-mix(in srgb,var(--botanical-ink) 66%,white); font-size:13px; }
+  .theme-catalog-meta i { width:42px; height:42px; flex:none; border-radius:50%; background:var(--botanical-ink); }
+  .theme-catalog-note { display:flex; align-items:center; justify-content:space-between; gap:30px; margin-bottom:clamp(28px,5vw,70px); border-radius:14px; background:var(--botanical-sage); padding:clamp(30px,5vw,58px); }
+  .theme-catalog-note p { max-width:760px; color:var(--botanical-ink); font-family:var(--botanical-serif); font-size:clamp(24px,3vw,40px); line-height:1.15; }
+  .theme-catalog-note .botanical-button { flex:none; }
+  @media(max-width:760px){
+    .theme-catalog-hero,.theme-catalog-grid{grid-template-columns:1fr}
+    .theme-catalog-hero{gap:28px}
+    .theme-catalog-note{align-items:flex-start;flex-direction:column}
+    .theme-catalog-card :global(.theme-miniature){aspect-ratio:1.28}
+  }
+</style>

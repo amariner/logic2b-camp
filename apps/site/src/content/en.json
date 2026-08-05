@@ -16,13 +16,34 @@
   },
   "hero": {
     "kicker": "From your first website to the campsite copilot",
-    "titulo": "Start with a website. Scale to running your campsite with AI.",
+    "titulo": "Website, bookings and campsite management in one system.",
     "subtitulo": "From €49/month. First win enquiries, then control bookings and payments, automate reception and make better decisions with your data. Without changing platform along the way.",
     "ctaDemo": "See how you can scale",
     "ctaVer": "See the example website",
     "ctaMostrador": "Enter the campsite manager",
     "nota": "Start plan: €0 setup, one language and a 12-month commitment. No booking commission.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
+  },
+  "temas": {
+    "seo": {
+      "title": "Website themes for campsites — Logic2B Campings",
+      "description": "Explore the visual directions planned for Logic2B campsite websites: styles for coastal, mountain, nature and family destinations."
+    },
+    "kicker": "Visual directions for campsites",
+    "titulo": "Your campsite should not look like everyone else's.",
+    "texto": "These thumbnails preview the theme catalogue planned in the roadmap. They are visual concepts, not complete themes or browsable demos yet.",
+    "verTodos": "See all themes",
+    "volver": "Back to the landing page",
+    "estado": "Visual concept",
+    "nota": "The complete themes will be developed later. The architecture already supports changing identity, colour and typography without duplicating the product.",
+    "items": [
+      { "nombre": "Pinewood", "estilo": "Calm Mediterranean", "imagen": "/hero-atmosfera.webp", "variante": "pine" },
+      { "nombre": "Coast", "estilo": "Bright and open", "imagen": "/propuestas/azahar/piscina.jpg", "variante": "coast" },
+      { "nombre": "Family", "estilo": "Warm and friendly", "imagen": "/propuestas/azahar/vida-camping.jpg", "variante": "family" },
+      { "nombre": "Natural", "estilo": "Quiet and ecological", "imagen": "/propuestas/azahar/via-verde.jpg", "variante": "natural" },
+      { "nombre": "Resort", "estilo": "Premium editorial", "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg", "variante": "resort" },
+      { "nombre": "Pitch", "estilo": "Direct and functional", "imagen": "/propuestas/azahar/parcela-2.jpg", "variante": "pitch" }
+    ]
   },
   "problema": {
     "titulo": "What's costing you money every August",
@@ -57,7 +78,8 @@
           "Direct booking with no portal commission",
           "6 languages, responsive, accessible"
         ],
-        "capturaAlt": "A campsite's public website home page with the date search"
+        "capturaAlt": "A campsite's public website home page with the date search",
+        "cta": "See website pricing"
       },
       {
         "titulo": "The front-desk manager",
@@ -67,7 +89,8 @@
           "Today's arrivals, departures and payments",
           "Each guest's file and history"
         ],
-        "capturaAlt": "The manager's planner with a month of bookings on screen"
+        "capturaAlt": "The manager's planner with a month of bookings on screen",
+        "cta": "See manager pricing"
       }
     ]
   },
@@ -80,6 +103,14 @@
     "cta": "See it working in the demo",
     "capturaAlt": "View of the planner with real bookings for a campsite in August",
     "planoAlt": "The interactive campsite map with the state of each unit",
+    "planoTitulo": "Live map",
+    "planoEstado": "Synced",
+    "planoOcupacion": "86% occupied",
+    "planoLeyenda": {
+      "libre": "Available",
+      "ocupada": "Occupied",
+      "bloqueada": "Blocked"
+    },
     "puntos": [
       "Drag to reassign — no cancelling, no charging again",
       "Colours by status and blocks in plain sight",
@@ -88,31 +119,30 @@
   },
   "escala": {
     "kicker": "Built to scale",
-    "titulo": "One engine. Every campsite its own.",
-    "subtitulo": "The same technology serves the small family site and the coastal resort: what changes is your brand, your configuration and your data. The product is one — and always up to date.",
-    "cifras": [
-      {
-        "n": "1",
-        "titulo": "codebase for every campsite",
-        "texto": "Every improvement reaches everyone at once. Nobody is left behind on an old version."
-      },
-      {
-        "n": "1",
-        "titulo": "database per campsite",
-        "texto": "Yours, isolated by design. Mixing two campsites’ data is not unlikely: it is impossible."
-      },
-      {
-        "n": "4",
-        "titulo": "levels of the same product",
-        "texto": "From your first website to the campsite copilot. Moving up extends the system instead of starting over."
-      },
-      {
-        "n": "1",
-        "titulo": "afternoon to go live",
-        "texto": "With your photos, your unit types and your rates, your instance is set up and running in an afternoon."
-      }
-    ],
-    "nota": "Always on your domain and with your brand. Start includes one language; Management and the higher levels can grow to six."
+    "titulo": "Planned integration ecosystem",
+    "subtitulo": "Complementary services for maps, payments, communication, automation and infrastructure.",
+    "ecosistema": {
+      "aria": "Complementary platform brands planned for integration",
+      "items": [
+        { "nombre": "Google Maps", "icono": "googlemaps" },
+        { "nombre": "Stripe", "icono": "stripe" },
+        { "nombre": "PayPal", "icono": "paypal" },
+        { "nombre": "WhatsApp", "icono": "whatsapp" },
+        { "nombre": "Mailchimp", "icono": "mailchimp" },
+        { "nombre": "Zapier", "icono": "zapier" },
+        { "nombre": "OpenStreetMap", "icono": "openstreetmap" },
+        { "nombre": "Cloudflare", "icono": "cloudflare" },
+        { "nombre": "Google Calendar", "icono": "googlecalendar" },
+        { "nombre": "Brevo", "icono": "brevo" },
+        { "nombre": "Dropbox", "icono": "dropbox" },
+        { "nombre": "QuickBooks", "icono": "quickbooks" },
+        { "nombre": "Xero", "icono": "xero" },
+        { "nombre": "Calendly", "icono": "calendly" },
+        { "nombre": "Telegram", "icono": "telegram" },
+        { "nombre": "Signal", "icono": "signal" }
+      ]
+    },
+    "nota": "Integrations planned on the roadmap; trademarks belong to their respective owners."
   },
   "niveles": {
     "kicker": "One platform that grows with you",

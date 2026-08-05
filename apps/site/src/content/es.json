@@ -16,13 +16,34 @@
   },
   "hero": {
     "kicker": "De tu primera web al copiloto del camping",
-    "titulo": "Empieza con una web. Escala hasta dirigir tu camping con IA.",
+    "titulo": "Web, reservas y gestión para campings, en un solo sistema.",
     "subtitulo": "Desde 49 €/mes. Primero consigues consultas, después controlas reservas y pagos, automatizas recepción y terminas tomando mejores decisiones con tus datos. Sin cambiar de plataforma por el camino.",
     "ctaDemo": "Ver cómo puedes escalar",
     "ctaVer": "Ver la web de ejemplo",
     "ctaMostrador": "Probar el gestor",
     "nota": "Plan Inicio: alta 0 €, un idioma y compromiso de 12 meses. Sin comisión por reserva.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
+  },
+  "temas": {
+    "seo": {
+      "title": "Temas web para campings — Logic2B Campings",
+      "description": "Explora las direcciones visuales previstas para las webs de campings de Logic2B: estilos adaptados a costa, montaña, naturaleza y turismo familiar."
+    },
+    "kicker": "Direcciones visuales para campings",
+    "titulo": "Tu camping no tiene que parecerse a ningún otro.",
+    "texto": "Estas miniaturas anticipan el catálogo de temas previsto en el roadmap. Son conceptos visuales, todavía no temas completos ni demos navegables.",
+    "verTodos": "Ver todos los temas",
+    "volver": "Volver a la landing",
+    "estado": "Concepto visual",
+    "nota": "Los temas completos se desarrollarán más adelante. La arquitectura ya permite cambiar identidad, color y tipografía sin duplicar el producto.",
+    "items": [
+      { "nombre": "Pinada", "estilo": "Mediterráneo sereno", "imagen": "/hero-atmosfera.webp", "variante": "pine" },
+      { "nombre": "Costa", "estilo": "Luminoso y abierto", "imagen": "/propuestas/azahar/piscina.jpg", "variante": "coast" },
+      { "nombre": "Familiar", "estilo": "Cálido y cercano", "imagen": "/propuestas/azahar/vida-camping.jpg", "variante": "family" },
+      { "nombre": "Natural", "estilo": "Eco y silencioso", "imagen": "/propuestas/azahar/via-verde.jpg", "variante": "natural" },
+      { "nombre": "Resort", "estilo": "Editorial premium", "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg", "variante": "resort" },
+      { "nombre": "Parcela", "estilo": "Directo y funcional", "imagen": "/propuestas/azahar/parcela-2.jpg", "variante": "pitch" }
+    ]
   },
   "problema": {
     "titulo": "Cuando cada canal funciona por separado, recepción acaba haciendo el trabajo dos veces",
@@ -57,7 +78,8 @@
           "Reserva directa sin comisiones de portal",
           "Seis idiomas y experiencia adaptada a móvil"
         ],
-        "capturaAlt": "Portada de la web pública de un camping con el buscador de fechas"
+        "capturaAlt": "Portada de la web pública de un camping con el buscador de fechas",
+        "cta": "Ver precios de la web"
       },
       {
         "titulo": "El gestor de recepción",
@@ -67,7 +89,8 @@
           "Llegadas, salidas y cobros del día",
           "Ficha e historial de cada cliente"
         ],
-        "capturaAlt": "El planning del gestor con las reservas de un mes en pantalla"
+        "capturaAlt": "El planning del gestor con las reservas de un mes en pantalla",
+        "cta": "Ver precios del gestor"
       }
     ]
   },
@@ -80,6 +103,14 @@
     "cta": "Verlo funcionando en la demo",
     "capturaAlt": "Vista del planning del gestor con reservas reales de un camping en agosto",
     "planoAlt": "El plano interactivo del camping con el estado de cada unidad",
+    "planoTitulo": "Plano en directo",
+    "planoEstado": "Sincronizado",
+    "planoOcupacion": "86% ocupado",
+    "planoLeyenda": {
+      "libre": "Libre",
+      "ocupada": "Ocupada",
+      "bloqueada": "Bloqueada"
+    },
     "puntos": [
       "Reasigna una unidad sin rehacer la reserva",
       "Colores por estado y bloqueos a la vista",
@@ -88,31 +119,30 @@
   },
   "escala": {
     "kicker": "Hecho para escalar",
-    "titulo": "Una base común, configurada para cada camping",
-    "subtitulo": "La plataforma se adapta a tu marca, inventario y forma de trabajar. Cada camping mantiene su propia configuración y sus datos en un entorno aislado.",
-    "cifras": [
-      {
-        "n": "1",
-        "titulo": "código para todos los campings",
-        "texto": "Cada mejora llega a todos a la vez. Nadie se queda atrás en una versión antigua."
-      },
-      {
-        "n": "1",
-        "titulo": "base de datos por camping",
-        "texto": "Cada camping trabaja en un entorno de datos independiente, con controles de acceso propios."
-      },
-      {
-        "n": "4",
-        "titulo": "niveles del mismo producto",
-        "texto": "De la primera web al copiloto del camping. Subir amplía el sistema: no obliga a empezar de nuevo."
-      },
-      {
-        "n": "1",
-        "titulo": "tarde para el alta",
-        "texto": "Preparamos la configuración inicial con tu inventario, tarifas, contenidos y material de marca."
-      }
-    ],
-    "nota": "Siempre con tu dominio y tu marca. Inicio incluye un idioma; Gestión y los niveles superiores pueden crecer hasta seis."
+    "titulo": "Ecosistema de integraciones previsto",
+    "subtitulo": "Servicios complementarios de mapas, pagos, comunicación, automatización e infraestructura.",
+    "ecosistema": {
+      "aria": "Marcas de plataformas complementarias previstas para integración",
+      "items": [
+        { "nombre": "Google Maps", "icono": "googlemaps" },
+        { "nombre": "Stripe", "icono": "stripe" },
+        { "nombre": "PayPal", "icono": "paypal" },
+        { "nombre": "WhatsApp", "icono": "whatsapp" },
+        { "nombre": "Mailchimp", "icono": "mailchimp" },
+        { "nombre": "Zapier", "icono": "zapier" },
+        { "nombre": "OpenStreetMap", "icono": "openstreetmap" },
+        { "nombre": "Cloudflare", "icono": "cloudflare" },
+        { "nombre": "Google Calendar", "icono": "googlecalendar" },
+        { "nombre": "Brevo", "icono": "brevo" },
+        { "nombre": "Dropbox", "icono": "dropbox" },
+        { "nombre": "QuickBooks", "icono": "quickbooks" },
+        { "nombre": "Xero", "icono": "xero" },
+        { "nombre": "Calendly", "icono": "calendly" },
+        { "nombre": "Telegram", "icono": "telegram" },
+        { "nombre": "Signal", "icono": "signal" }
+      ]
+    },
+    "nota": "Integraciones previstas en el roadmap; las marcas pertenecen a sus respectivos titulares."
   },
   "niveles": {
     "kicker": "Una plataforma que crece contigo",

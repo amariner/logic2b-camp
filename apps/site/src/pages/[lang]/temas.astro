@@ -1,0 +1,12 @@
+---
+import Temas from '../../components/Temas.astro';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../lib/i18n';
+
+export function getStaticPaths() {
+  return LOCALES.filter((locale) => locale !== DEFAULT_LOCALE).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+---
+
+<Temas locale={lang as Locale} />

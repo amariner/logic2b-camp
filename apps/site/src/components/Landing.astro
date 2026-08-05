@@ -1,17 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
+import EcosystemRail from './EcosystemRail.astro';
+import PlanningVisual from './PlanningVisual.astro';
+import ProductCardVisual from './ProductCardVisual.astro';
+import ThemeRail from './ThemeRail.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
+import '../styles/landing-botanical.css';
 
 interface Props {
   locale: Locale;
 }
+
 const { locale } = Astro.props;
 const c = getContent(locale);
 
-/* FAQPage de schema.org, construido desde las MISMAS preguntas que se pintan
- * abajo. Google exige que la respuesta esté visible en la página — lo está, en
- * los `<details>`; el día que alguien quite la sección, este marcado se va con
- * ella porque lee el mismo array. */
 const faqEstructurada = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -22,534 +24,344 @@ const faqEstructurada = {
   })),
 };
 
-/* Iconos lucide inline (sin dependencia de runtime): uno por punto de dolor. */
 const iconosProblema = [
-  // calendar-x — "tu web no reserva"
   'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2ZM10 14l4 4M14 14l-4 4',
-  // percent — la comisión
   'M19 5 5 19M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
-  // table — el cuaderno y el excel
   'M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5ZM3 9h18M9 21V9',
-  // languages — seis idiomas
   'm5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6',
 ];
+
 ---
 
-<Base locale={locale} content={c}>
-  {/* ---------- Héroe atmosférico (ADR 0027) ---------- */}
-  <section class="relative isolate overflow-hidden">
-    {/* Fotografía de fondo: atmósfera contenida, contrato de arte del ADR 0024. */}
-    <picture class="pointer-events-none absolute inset-0 -z-20">
-      <source media="(max-width: 640px)" srcset="/hero-atmosfera-movil.webp" />
-      <img
-        src="/hero-atmosfera.webp"
-        alt=""
-        role="presentation"
-        class="h-full w-full object-cover"
-        fetchpriority="high"
-        width="1376"
-        height="768"
-      />
-    </picture>
-    {/* Scrim: garantiza AA del texto claro sobre la foto, en claro y oscuro. */}
-    <div
-      class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(10,14,12,0.82)_0%,rgba(10,14,12,0.62)_38%,rgba(10,14,12,0.28)_62%,rgba(10,14,12,0.45)_100%),linear-gradient(to_top,rgba(10,14,12,0.55),transparent_40%)]"
-    >
-    </div>
-
-    <div class="mx-auto grid max-w-6xl items-end gap-9 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
-      <div class="min-w-0">
-        <p class="text-sm font-medium uppercase tracking-wide text-white/70">{c.hero.kicker}</p>
-        <h1
-          class="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.08] tracking-tighter text-white sm:text-5xl md:text-6xl"
-        >
-          {c.hero.titulo}
-        </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/85">{c.hero.subtitulo}</p>
-        <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
-          <a
-            href="#niveles"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
-          >{c.hero.ctaDemo}</a>
-          {/* Las DOS caras de la demo, con el mismo peso: quien llega aquí no
-              sabe que existe un mostrador detrás de la web, y ese es justo el
-              producto que se vende. Un solo enlace escondía la mitad. */}
-          <a
-            href="/demo/"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-          >{c.hero.ctaVer} →</a>
-          <a
-            href="/admin/"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/40 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-          >{c.hero.ctaMostrador} →</a>
+<Base locale={locale} content={c} theme="botanical">
+  <div class="botanical-landing">
+    <section class="botanical-shell botanical-hero" aria-labelledby="hero-title">
+      <div class="botanical-hero-copy">
+        <div>
+          <p class="botanical-eyebrow">{c.hero.kicker}</p>
+          <h1 id="hero-title" class="botanical-heading">{c.hero.titulo}</h1>
+          <p class="botanical-copy">{c.hero.subtitulo}</p>
         </div>
-        <p class="mt-6 text-sm text-white/70">{c.hero.nota}</p>
+        <div>
+          <div class="botanical-hero-actions">
+            <a href="#niveles" class="botanical-button">
+              <span>{c.hero.ctaDemo}</span><span class="botanical-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+          <div class="botanical-hero-links">
+            <a href="/demo/">{c.hero.ctaVer} ↗</a>
+            <a href="/admin/">{c.hero.ctaMostrador} ↗</a>
+          </div>
+          <p class="botanical-note">{c.hero.nota}</p>
+        </div>
       </div>
 
-      {/* El héroe enseña el producto de verdad: la web del tenant con su widget,
-          captura real del dev (patrón C5), no una maqueta. */}
-      <figure class="lc-reveal min-w-0 max-w-full">
-        <div class="overflow-hidden rounded-xl border border-white/20 bg-neutral-900/80 shadow-2xl backdrop-blur-sm">
-          <div class="flex items-center gap-1.5 border-b border-white/10 px-3 py-2">
-            <span class="size-2.5 rounded-full bg-white/25"></span>
-            <span class="size-2.5 rounded-full bg-white/25"></span>
-            <span class="size-2.5 rounded-full bg-white/25"></span>
-            <span class="ml-3 truncate rounded bg-white/10 px-2 py-0.5 text-[11px] text-white/60">
-              camping-calasereno.example
-            </span>
-          </div>
-          <div class="relative h-52 overflow-hidden sm:h-72 lg:h-auto">
-            <img
-              src="/captura-web.webp"
-              alt={c.hero.capturaWebAlt}
-              width="1280"
-              height="860"
-              loading="eager"
-              class="h-full w-full object-cover object-top lg:h-auto"
-            />
-          </div>
-        </div>
-      </figure>
-    </div>
-  </section>
+      <div class="botanical-hero-product lc-reveal">
+        <ThemeRail
+          items={c.temas.items}
+          status={c.temas.estado}
+          button={c.temas.verTodos}
+          href={localePath(locale, 'temas/')}
+        />
+      </div>
+    </section>
 
-  {/* ---------- Problema ---------- */}
-  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-    <h2 class="lc-reveal max-w-2xl font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.problema.titulo}</h2>
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {
-        c.problema.puntos.map((p, i) => (
-          <div class="lc-reveal rounded-xl border border-border bg-card p-5" style={`--lc-delay:${i * 60}ms`}>
-            <span class="inline-flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="size-5"
-                aria-hidden="true"
-              >
-                <path d={iconosProblema[i]} />
-              </svg>
-            </span>
-            <h3 class="mt-3 font-medium">{p.titulo}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{p.texto}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
+    <section id="escala" class="botanical-shell botanical-brand-band lc-reveal" aria-labelledby="ecosystem-title">
+      <p id="ecosystem-title" class="botanical-brand-band-label">{c.escala.titulo}</p>
+      <EcosystemRail items={c.escala.ecosistema.items} label={c.escala.ecosistema.aria} />
+    </section>
 
-  {/* ---------- Producto: un sistema, dos caras ---------- */}
-  <section id="producto" class="border-y border-border bg-muted/30 scroll-mt-16">
-    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-      <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.producto.titulo}</h2>
-      <p class="lc-reveal mt-3 max-w-2xl text-muted-foreground">{c.producto.subtitulo}</p>
-      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+    <section class="botanical-shell botanical-section botanical-problem-layout">
+      <div class="botanical-problem-title lc-reveal">
+        <p class="botanical-eyebrow">{c.problema.puntos[0].titulo}</p>
+        <h2 class="botanical-heading-sm">{c.problema.titulo}</h2>
+      </div>
+      <div class="botanical-problem-list">
         {
-          c.producto.bloques.map((b, i) => (
-            <div class="lc-reveal overflow-hidden rounded-xl border border-border bg-card" style={`--lc-delay:${i * 80}ms`}>
-              {/* Enseñar, no contar: captura real de cada cara del producto. */}
-              <div class="border-b border-border bg-muted/40 px-3 pt-3 sm:px-6 sm:pt-6">
-                <img
-                  src={i === 0 ? '/captura-web.webp' : '/captura-planning.webp'}
-                  alt={b.capturaAlt}
-                  width={i === 0 ? 1280 : 1376}
-                  height={i === 0 ? 860 : 859}
-                  loading="lazy"
-                  class:list={[
-                    'block rounded-t-lg border border-b-0 border-border shadow-sm',
-                    i === 0 ? 'w-full' : 'h-48 w-[680px] max-w-none object-cover object-top sm:h-auto sm:w-full',
-                  ]}
-                />
+          c.problema.puntos.map((p, i) => (
+            <article class="botanical-problem-card lc-reveal" style={`--lc-delay:${i * 60}ms`}>
+              <span class="botanical-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="22"
+                  height="22"
+                  aria-hidden="true"
+                >
+                  <path d={iconosProblema[i]} />
+                </svg>
+              </span>
+              <div>
+                <h3>{p.titulo}</h3>
+                <p>{p.texto}</p>
               </div>
-              <div class="p-5 sm:p-7">
-                <h3 class="font-display text-xl font-bold tracking-tight">{b.titulo}</h3>
-                <p class="mt-3 leading-relaxed text-muted-foreground">{b.texto}</p>
-                <ul class="mt-5 space-y-2 text-sm">
-                  {b.puntos.map((pt) => (
-                    <li class="flex items-start gap-2">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.4"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="mt-0.5 size-4 shrink-0 text-primary"
-                        aria-hidden="true"
-                      >
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="producto" class="botanical-product-section botanical-section">
+      <div class="botanical-shell">
+        <div class="botanical-centered-head lc-reveal">
+          <p class="botanical-eyebrow">{c.nav.producto}</p>
+          <h2 class="botanical-heading-sm">{c.producto.titulo}</h2>
+          <p class="botanical-copy">{c.producto.subtitulo}</p>
+        </div>
+
+        <div class="botanical-product-grid">
+          {
+            c.producto.bloques.map((b, i) => (
+              <article class="botanical-product-card lc-reveal" style={`--lc-delay:${i * 80}ms`}>
+                <ProductCardVisual variant={i === 0 ? 'website' : 'manager'} alt={b.capturaAlt} />
+                <div class="botanical-product-body">
+                  <h3>{b.titulo}</h3>
+                  <p>{b.texto}</p>
+                  <ul class="botanical-checks">
+                    {b.puntos.map((pt) => (
+                      <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a href={localePath(locale, 'precios/')} class="botanical-button-outline botanical-product-cta">
+                    {b.cta}<span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="planning" class="botanical-shell botanical-section botanical-planning-layout">
+      <div class="botanical-planning-copy lc-reveal">
+        <p class="botanical-eyebrow">{c.planning.kicker}</p>
+        <h2 class="botanical-heading-sm">{c.planning.titulo}</h2>
+        <p class="botanical-copy">{c.planning.texto}</p>
+        <ul class="botanical-planning-points">
+          {c.planning.puntos.map((pt) => <li>{pt}</li>)}
+        </ul>
+        <a href="/admin/" class="botanical-button">{c.planning.cta}<span aria-hidden="true">→</span></a>
+      </div>
+
+      <figure class="botanical-showcase lc-reveal">
+        <PlanningVisual
+          alt={c.planning.capturaAlt}
+          mapAlt={c.planning.planoAlt}
+          windowLabel={c.planning.ventana}
+          mapTitle={c.planning.planoTitulo}
+          mapStatus={c.planning.planoEstado}
+          mapMetric={c.planning.planoOcupacion}
+          mapLegend={c.planning.planoLeyenda}
+        />
+      </figure>
+    </section>
+
+    <section id="niveles" class="botanical-plans-wrap botanical-section">
+      <div class="botanical-shell">
+        <div class="lc-reveal">
+          <p class="botanical-eyebrow">{c.niveles.kicker}</p>
+          <h2 class="botanical-heading-sm">{c.niveles.titulo}</h2>
+          <p class="botanical-copy" style="max-width:760px;margin-top:20px">{c.niveles.subtitulo}</p>
+        </div>
+
+        <div class="botanical-plan-selector lc-reveal" role="group" aria-label={c.niveles.selector.pregunta}>
+          <p>{c.niveles.selector.pregunta}</p>
+          {
+            c.niveles.selector.opciones.map((opcion, i) => (
+              <button class="botanical-plan-chip" type="button" data-nivel-chip={i} aria-pressed="false">
+                {opcion}
+              </button>
+            ))
+          }
+        </div>
+        <p
+          id="nivel-sugerido"
+          class="botanical-plan-result"
+          data-plantilla={c.niveles.selector.resultado}
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
+        <div class="botanical-plans-grid">
+          {
+            c.niveles.items.map((n, i) => (
+              <article
+                class:list={['botanical-plan lc-reveal', n.destacado && 'is-featured']}
+                data-nivel-card={i}
+                data-nombre={n.nombre}
+                style={`--lc-delay:${i * 70}ms`}
+              >
+                <div class="botanical-plan-top">
+                  <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
+                  <span class="botanical-plan-status">{n.estado}</span>
+                </div>
+                <h3>{n.nombre}</h3>
+                <p class="botanical-plan-for">{n.para}</p>
+                <p class="botanical-plan-result-copy">{n.resultado}</p>
+                <p class="botanical-plan-description">{n.texto}</p>
+                <div class="botanical-price">
+                  <strong>{n.precio}</strong>
+                  <span>{n.alta}</span>
+                </div>
+                <ul class="botanical-checks">
+                  {n.incluye.map((item) => (
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M20 6 9 17l-5-5" />
                       </svg>
-                      <span>{pt}</span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  {/* ---------- Planning (pieza estrella) ---------- */}
-  <section id="planning" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 scroll-mt-16">
-    <div class="lc-reveal max-w-2xl">
-      <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.planning.kicker}</p>
-      <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.planning.titulo}</h2>
-      <p class="mt-4 leading-relaxed text-muted-foreground">{c.planning.texto}</p>
-    </div>
-
-    {/* La captura grande: el elemento firma merece el ancho completo. */}
-    <figure class="lc-reveal relative mt-8 sm:mt-10">
-      <div class="overflow-hidden rounded-xl border border-border bg-card shadow-md">
-        <div class="flex items-center justify-between border-b border-border bg-muted/50 px-3 py-2 sm:px-4">
-          <div class="flex items-center gap-1.5" aria-hidden="true">
-            <span class="size-2.5 rounded-full bg-foreground/15"></span>
-            <span class="size-2.5 rounded-full bg-foreground/15"></span>
-            <span class="size-2.5 rounded-full bg-foreground/15"></span>
-          </div>
-          <span class="text-[11px] font-medium text-muted-foreground">{c.planning.ventana}</span>
+                <a href={n.href} class={n.destacado || n.estadoTipo === 'disponible' ? 'botanical-button' : 'botanical-button-outline'}>
+                  {n.cta}<span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))
+          }
         </div>
-        <div class="relative h-72 overflow-hidden sm:h-auto">
-          <img
-            src="/captura-planning.webp"
-            alt={c.planning.capturaAlt}
-            class="h-auto w-[760px] max-w-none object-top sm:w-full"
-            loading="lazy"
-            width="1376"
-            height="859"
-          />
-          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background/75 to-transparent sm:hidden"></div>
-        </div>
-      </div>
-      {/* El plano, la otra vista firma, asomando como tarjeta. */}
-      <img
-        src="/captura-plano.webp"
-        alt={c.planning.planoAlt}
-        class="absolute -bottom-6 -right-2 hidden w-64 rotate-1 rounded-lg border border-border bg-card shadow-xl sm:block md:w-80"
-        loading="lazy"
-        width="1280"
-        height="800"
-      />
-    </figure>
-
-    <figcaption class="mt-3 text-sm leading-relaxed text-muted-foreground sm:hidden">{c.planning.pieMovil}</figcaption>
-    <div class="mt-8 grid gap-3 sm:mt-16 sm:flex sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3">
-      {
-        c.planning.puntos.map((pt) => (
-          <p class="lc-reveal flex items-center gap-2 text-sm text-muted-foreground">
-            <span class="size-1.5 rounded-full bg-primary" />
-            {pt}
-          </p>
-        ))
-      }
-      <a
-        href="/admin/"
-        class="lc-reveal inline-flex items-center rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent"
-      >{c.planning.cta} →</a>
-    </div>
-  </section>
-
-  {/* ---------- Escalabilidad: de la web al copiloto (ADR 0033) ---------- */}
-  <section id="escala" class="mx-auto max-w-6xl px-4 py-20 sm:px-6 scroll-mt-16">
-    <div class="lc-reveal max-w-2xl">
-      <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.escala.kicker}</p>
-      <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.escala.titulo}</h2>
-      <p class="mt-4 leading-relaxed text-muted-foreground">{c.escala.subtitulo}</p>
-    </div>
-    <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-      {
-        c.escala.cifras.map((cf, i) => (
-          <div class="lc-reveal border-t border-border pt-5" style={`--lc-delay:${i * 70}ms`}>
-            <p class="font-display text-5xl font-bold tracking-tighter">{cf.n}</p>
-            <h3 class="mt-3 font-medium">{cf.titulo}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{cf.texto}</p>
-          </div>
-        ))
-      }
-    </div>
-    <p class="lc-reveal mt-10 text-sm text-muted-foreground">{c.escala.nota}</p>
-  </section>
-
-  {/* ---------- Niveles / planes: la escalera ---------- */}
-  <section id="niveles" class="border-y border-border bg-muted/30 scroll-mt-16">
-    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <p class="lc-reveal text-sm font-medium uppercase tracking-wide text-primary">{c.niveles.kicker}</p>
-      <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.niveles.titulo}</h2>
-      <p class="lc-reveal mt-3 max-w-2xl text-muted-foreground">{c.niveles.subtitulo}</p>
-      {/* Orientación comercial sin datos ni backend: la necesidad actual señala
-          el siguiente escalón, no encierra al camping en un plan para siempre. */}
-      <div
-        class="lc-reveal mt-8 flex flex-wrap items-center gap-x-3 gap-y-2"
-        role="group"
-        aria-label={c.niveles.selector.pregunta}
-      >
-        <p class="mr-1 text-sm font-medium">{c.niveles.selector.pregunta}</p>
-        {
-          c.niveles.selector.opciones.map((o, i) => (
-            <button
-              type="button"
-              data-nivel-chip={i}
-              aria-pressed="false"
-              class="inline-flex min-h-11 items-center rounded-lg border border-border bg-background px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-accent aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground"
-            >
-              {o}
-            </button>
-          ))
-        }
-      </div>
-      <p
-        id="nivel-sugerido"
-        data-plantilla={c.niveles.selector.resultado}
-        class="mt-4 text-sm font-medium"
-        role="status"
-        aria-live="polite"
-        hidden
-      >
-      </p>
-      <div class="lc-niveles-grid mt-10 grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-4">
-        {
-          c.niveles.items.map((n, i) => (
-            <div
-              class:list={[
-                'lc-reveal lc-nivel flex flex-col rounded-xl border bg-card p-6',
-                n.destacado ? 'border-primary shadow-lg ring-1 ring-primary' : 'border-border',
-              ]}
-              data-nivel-card={i}
-              data-nombre={n.nombre}
-              style={`--lc-delay:${i * 70}ms`}
-            >
-              {/* El nivel 00 convierte el plan de entrada en el inicio explícito
-                  de una progresión, no en una versión recortada del gestor. */}
-              <div class="flex items-center justify-between gap-2">
-                <span
-                  class:list={[
-                    'font-display text-sm font-bold tabular-nums',
-                    n.destacado ? 'text-primary' : 'text-muted-foreground',
-                  ]}
-                >
-                  {String(i).padStart(2, '0')}
-                </span>
-                <span
-                  class:list={[
-                    'rounded-md border px-2 py-0.5 text-[11px] font-semibold',
-                    n.estadoTipo === 'disponible' && 'border-primary/20 bg-primary/10 text-primary',
-                    n.estadoTipo === 'desarrollo' && 'border-border bg-accent text-accent-foreground',
-                    n.estadoTipo === 'vision' && 'border-border text-muted-foreground',
-                  ]}
-                >
-                  {n.estado}
-                </span>
-              </div>
-              <h3 class="mt-2 font-display text-lg font-bold tracking-tight">{n.nombre}</h3>
-              <p class="mt-1 text-sm font-semibold text-primary">{n.para}</p>
-              <p class="mt-3 text-sm font-medium leading-relaxed">{n.resultado}</p>
-              <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{n.texto}</p>
-              <div class="mt-5 border-y border-border py-4">
-                <strong class="block font-display text-2xl tracking-tight">{n.precio}</strong>
-                <span class="mt-1 block text-xs text-muted-foreground">{n.alta}</span>
-              </div>
-              <ul class="mt-5 mb-6 space-y-2 text-sm">
-                {n.incluye.map((it) => (
-                  <li class="flex items-start gap-2">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.4"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="mt-0.5 size-4 shrink-0 text-primary"
-                      aria-hidden="true"
-                    >
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                    <span>{it}</span>
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={n.href}
-                class:list={[
-                  'mt-auto inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-                  n.destacado || n.estadoTipo === 'disponible'
-                    ? 'bg-primary text-primary-foreground hover:opacity-90'
-                    : 'border border-border hover:bg-accent',
-                ]}
-              >
-                {n.cta} →
-              </a>
-            </div>
-          ))
-        }
-      </div>
-      <p class="mt-8 text-sm text-muted-foreground">
-        {c.niveles.nota}
-        <a
-          href={localePath(locale, 'docs/dueno/')}
-          class="ml-1.5 font-medium text-primary underline underline-offset-4 hover:opacity-80"
-          >{c.docs.guias.dueno.nombre} &rarr;</a
-        >
-      </p>
-    </div>
-  </section>
-
-  {/* ---------- Guías (C6, ADR 0025) ---------- */}
-  <section class="mx-auto max-w-6xl px-4 pt-20 sm:px-6">
-    <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.docs.titulo}</h2>
-    <p class="lc-reveal mt-3 max-w-2xl text-muted-foreground">{c.docs.subtitulo}</p>
-    <div class="mt-8 grid gap-4 sm:grid-cols-3">
-      {
-        (['recepcion', 'dueno', 'tecnica'] as const).map((g, i) => (
-          <a
-            href={localePath(locale, `docs/${g}/`)}
-            class="lc-reveal rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/60 hover:bg-muted/40"
-            style={`--lc-delay:${i * 60}ms`}
-          >
-            <p class="text-xs font-medium tracking-wide text-primary uppercase">
-              {c.docs.guias[g].para}
-            </p>
-            <h3 class="mt-1.5 font-display text-base font-semibold tracking-tight">
-              {c.docs.guias[g].nombre}
-            </h3>
-            <p class="mt-2 text-sm text-muted-foreground">{c.docs.guias[g].texto}</p>
+        <p class="botanical-note-wide">
+          {c.niveles.nota}
+          <a href={localePath(locale, 'docs/dueno/')} style="color:var(--botanical-ink);text-decoration:underline;text-underline-offset:4px">
+            {c.docs.guias.dueno.nombre} →
           </a>
-        ))
-      }
-    </div>
-  </section>
-
-  {/* ---------- Alta en una tarde ---------- */}
-  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-    <div class="lc-reveal rounded-2xl border border-border bg-card p-8 sm:p-12">
-      <h2 class="max-w-xl font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.alta.titulo}</h2>
-      <p class="mt-4 max-w-2xl leading-relaxed text-muted-foreground">{c.alta.texto}</p>
-    </div>
-  </section>
-
-  {/* ---------- FAQ ---------- */}
-  <section class="border-t border-border bg-muted/30">
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(faqEstructurada).replace(/</g, '\\u003c')}
-    />
-    <div class="mx-auto max-w-3xl px-4 py-20 sm:px-6">
-      <h2 class="lc-reveal font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.faq.titulo}</h2>
-      <div class="mt-8 divide-y divide-border">
-        {
-          c.faq.items.map((f) => (
-            <details class="group py-4">
-              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium marker:content-['']">
-                {f.q}
-                <span class="text-muted-foreground transition-transform group-open:rotate-45">+</span>
-              </summary>
-              <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-            </details>
-          ))
-        }
+        </p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  {/* ---------- Contacto / pedir demo ---------- */}
-  <section id="contacto" class="mx-auto max-w-3xl px-4 py-20 sm:px-6 scroll-mt-16">
-    <p class="text-sm font-medium uppercase tracking-wide text-muted-foreground">{c.contacto.kicker}</p>
-    <h2 class="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl">{c.contacto.titulo}</h2>
-    <p class="mt-3 text-muted-foreground">{c.contacto.texto}</p>
+    <section class="botanical-shell botanical-section botanical-aftercare">
+      <article class="botanical-aftercare-card lc-reveal">
+        <p class="botanical-eyebrow">{c.alta.titulo}</p>
+        <h2 class="botanical-heading-sm">{c.alta.titulo}</h2>
+        <p class="botanical-copy">{c.alta.texto}</p>
+      </article>
 
-    <form id="lead-form" class="mt-8 grid gap-4 sm:grid-cols-2" novalidate>
-      <input type="hidden" name="lang" value={locale} />
-      <label class="grid gap-1.5 text-sm">
-        <span class="font-medium">{c.contacto.campos.nombre}</span>
-        <input
-          name="name"
-          required
-          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        />
-      </label>
-      <label class="grid gap-1.5 text-sm">
-        <span class="font-medium">{c.contacto.campos.camping}</span>
-        <input
-          name="campingName"
-          required
-          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        />
-      </label>
-      <label class="grid gap-1.5 text-sm">
-        <span class="font-medium">{c.contacto.campos.email}</span>
-        <input
-          name="email"
-          type="email"
-          required
-          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        />
-      </label>
-      <label class="grid gap-1.5 text-sm">
-        <span class="font-medium">{c.contacto.campos.telefono}</span>
-        <input
-          name="phone"
-          class="h-9 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        />
-      </label>
-      <label class="grid gap-1.5 text-sm sm:col-span-2">
-        <span class="font-medium">{c.contacto.campos.mensaje}</span>
-        <textarea
-          name="message"
-          rows="3"
-          class="rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        ></textarea>
-      </label>
-      <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
-        <button
-          type="submit"
-          class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
-          data-send={c.contacto.enviar}
-          data-sending={c.contacto.enviando}
-        >{c.contacto.enviar}</button>
-        <p id="lead-msg" class="text-sm" role="status" aria-live="polite"></p>
+      <article class="botanical-aftercare-card lc-reveal">
+        <p class="botanical-eyebrow">{c.nav.docs}</p>
+        <h2 class="botanical-heading-sm">{c.docs.titulo}</h2>
+        <p class="botanical-copy">{c.docs.subtitulo}</p>
+        <div class="botanical-guide-grid">
+          {
+            (['recepcion', 'dueno', 'tecnica'] as const).map((guia) => (
+              <a href={localePath(locale, `docs/${guia}/`)} class="botanical-guide">
+                <span>{c.docs.guias[guia].nombre}</span>
+                <span>{c.docs.guias[guia].para} →</span>
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </section>
+
+    <section class="botanical-faq botanical-section">
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(faqEstructurada).replace(/</g, '\\u003c')}
+      />
+      <div class="botanical-shell botanical-faq-grid">
+        <div class="lc-reveal">
+          <p class="botanical-eyebrow">FAQ</p>
+          <h2 class="botanical-heading-sm" style="margin-top:18px">{c.faq.titulo}</h2>
+        </div>
+        <div class="botanical-faq-list">
+          {
+            c.faq.items.map((f) => (
+              <details class="lc-reveal">
+                <summary>
+                  <span>{f.q}</span><span class="botanical-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
       </div>
-    </form>
+    </section>
 
-    <p class="mt-6 text-sm text-muted-foreground">
-      {c.contacto.verDemoTexto}
-      <a href="/demo/" class="font-medium text-foreground underline underline-offset-4">{c.nav.verDemo} →</a>
-      <span class="mx-1.5 text-border" aria-hidden="true">·</span>
-      <a href="/admin/" class="font-medium text-foreground underline underline-offset-4">{c.contacto.verMostrador} →</a>
-    </p>
-  </section>
+    <section id="contacto" class="botanical-shell botanical-contact scroll-mt-20">
+      <div class="botanical-contact-panel">
+        <div class="botanical-contact-copy lc-reveal">
+          <p class="botanical-eyebrow">{c.contacto.kicker}</p>
+          <h2 class="botanical-heading-sm">{c.contacto.titulo}</h2>
+          <p class="botanical-copy">{c.contacto.texto}</p>
+          <p class="botanical-contact-links">
+            {c.contacto.verDemoTexto}<br />
+            <a href="/demo/">{c.nav.verDemo} →</a><br />
+            <a href="/admin/">{c.contacto.verMostrador} →</a>
+          </p>
+        </div>
+
+        <form id="lead-form" class="botanical-form lc-reveal" novalidate>
+          <input type="hidden" name="lang" value={locale} />
+          <label>
+            <span>{c.contacto.campos.nombre}</span>
+            <input name="name" required />
+          </label>
+          <label>
+            <span>{c.contacto.campos.camping}</span>
+            <input name="campingName" required />
+          </label>
+          <label>
+            <span>{c.contacto.campos.email}</span>
+            <input name="email" type="email" required />
+          </label>
+          <label>
+            <span>{c.contacto.campos.telefono}</span>
+            <input name="phone" />
+          </label>
+          <label class="span-two">
+            <span>{c.contacto.campos.mensaje}</span>
+            <textarea name="message" rows="4"></textarea>
+          </label>
+          <div class="botanical-form-actions">
+            <button
+              type="submit"
+              class="botanical-button"
+              data-send={c.contacto.enviar}
+              data-sending={c.contacto.enviando}
+            >{c.contacto.enviar}<span aria-hidden="true">→</span></button>
+            <p id="lead-msg" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
 </Base>
 
-<script
-  define:vars={{ ok: getContent(locale).contacto.ok, err: getContent(locale).contacto.error }}
->
+<script is:inline define:vars={{ ok: getContent(locale).contacto.ok, err: getContent(locale).contacto.error }}>
   const form = document.getElementById('lead-form');
   const msg = document.getElementById('lead-msg');
   const btn = form?.querySelector('button[type=submit]');
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
     if (!form.reportValidity()) return;
     const data = Object.fromEntries(new FormData(form).entries());
     btn.disabled = true;
     btn.textContent = btn.dataset.sending;
     msg.textContent = '';
     try {
-      const res = await fetch('/api/leads', {
+      const response = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error('bad');
+      if (!response.ok) throw new Error('bad');
       msg.textContent = ok;
-      msg.className = 'text-sm text-foreground';
       form.reset();
     } catch {
       msg.textContent = err;
-      msg.className = 'text-sm text-destructive';
     } finally {
       btn.disabled = false;
       btn.textContent = btn.dataset.send;
@@ -558,66 +370,49 @@ const iconosProblema = [
 </script>
 
 <script>
-  // La escalera como recorrido: el chip señala el nivel (y se desmarca al
-  // repetir el clic). Mientras hay elección, el anillo es del visitante — la
-  // tarjeta destacada estática cede el protagonismo (CSS de abajo).
   const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-nivel-chip]')];
   const niveles = [...document.querySelectorAll<HTMLElement>('[data-nivel-card]')];
-  const grid = document.querySelector<HTMLElement>('.lc-niveles-grid');
+  const grid = document.querySelector<HTMLElement>('.botanical-plans-grid');
   const sugerido = document.getElementById('nivel-sugerido');
   const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
-      const idx = Number(chip.dataset.nivelChip);
+      const index = Number(chip.dataset.nivelChip);
       const repetido = chip.getAttribute('aria-pressed') === 'true';
-      chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch === chip && !repetido)));
-      niveles.forEach((card, i) => card.classList.toggle('lc-elegido', !repetido && i === idx));
+      chips.forEach((item) => item.setAttribute('aria-pressed', String(item === chip && !repetido)));
+      niveles.forEach((card, i) => card.classList.toggle('lc-elegido', !repetido && i === index));
       grid?.classList.toggle('lc-con-eleccion', !repetido);
       if (sugerido) {
         sugerido.hidden = repetido;
         if (!repetido) {
-          const nombre = niveles[idx]?.dataset.nombre ?? '';
+          const nombre = niveles[index]?.dataset.nombre ?? '';
           sugerido.textContent = (sugerido.dataset.plantilla ?? '').replace('{nivel}', nombre);
         }
       }
-      if (!repetido) niveles[idx]?.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'nearest' });
+      if (!repetido) niveles[index]?.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'nearest' });
     });
   });
 </script>
 
-<style>
-  /* El nivel elegido en el recorrido lleva el anillo; la tarjeta destacada
-     estática (ring-1 de Tailwind) lo suelta mientras la elección dure. */
-  .lc-nivel.lc-elegido {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary);
-  }
-  .lc-niveles-grid.lc-con-eleccion .lc-nivel:not(.lc-elegido) {
-    border-color: var(--border);
-    box-shadow: none;
-  }
-</style>
-
 <script>
-  // Reveal on scroll, sutil. prefers-reduced-motion ya anula la transición vía
-  // el bloque global de global.css; aquí además saltamos el observer entero.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const els = document.querySelectorAll('.lc-reveal');
+  const elements = document.querySelectorAll('.lc-reveal');
   document.documentElement.classList.add('lc-js');
   if (reduce || !('IntersectionObserver' in window)) {
-    els.forEach((el) => el.classList.add('lc-visible'));
+    elements.forEach((element) => element.classList.add('lc-visible'));
   } else {
-    const io = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add('lc-visible');
-            io.unobserve(e.target);
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('lc-visible');
+            observer.unobserve(entry.target);
           }
         }
       },
       { rootMargin: '0px 0px -8% 0px' },
     );
-    els.forEach((el) => io.observe(el));
+    elements.forEach((element) => observer.observe(element));
   }
 </script>

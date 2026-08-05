@@ -9,6 +9,7 @@ function rutas(): string[] {
   return [
     '/',
     'precios/',
+    'temas/',
     'docs/',
     ...GUIAS.map((g) => `docs/${g}/`),
     // Las guías son la superficie de búsqueda larga del producto ("cómo hacer

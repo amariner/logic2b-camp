@@ -1,0 +1,202 @@
+---
+interface Props {
+  name: string;
+  style: string;
+  image: string;
+  variant: string;
+  eager?: boolean;
+}
+
+const { name, style, image, variant, eager = false } = Astro.props;
+---
+
+<div class="theme-miniature" data-theme-variant={variant}>
+  <img src={image} alt="" width="720" height="520" loading={eager ? 'eager' : 'lazy'} />
+  <div class="theme-miniature-wash"></div>
+  <div class="theme-miniature-site">
+    <div class="theme-miniature-nav">
+      <strong>{name}</strong>
+      <span></span><span></span><span></span>
+      <i></i>
+    </div>
+    <div class="theme-miniature-copy">
+      <small>{style}</small>
+      <b>{name}</b>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="theme-miniature-booking">
+      <i></i><i></i><i></i><b>→</b>
+    </div>
+  </div>
+</div>
+
+<style>
+  .theme-miniature {
+    --mini-ink: #173d1c;
+    --mini-paper: #f8f3e9;
+    --mini-accent: #d7ebd0;
+    position: relative;
+    aspect-ratio: 1.28;
+    overflow: hidden;
+    background: var(--mini-paper);
+    color: var(--mini-ink);
+  }
+  .theme-miniature > img,
+  .theme-miniature-wash {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .theme-miniature > img {
+    object-fit: cover;
+    object-position: center;
+  }
+  .theme-miniature-wash {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--mini-paper) 94%, transparent) 0 48%, transparent 72%);
+  }
+  .theme-miniature-site {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 6%;
+  }
+  .theme-miniature-nav {
+    display: flex;
+    align-items: center;
+    gap: 4%;
+    font-size: clamp(5px, 0.72vw, 9px);
+  }
+  .theme-miniature-nav strong {
+    margin-right: auto;
+    font-family: Georgia, serif;
+    font-size: 1.5em;
+    font-weight: 500;
+  }
+  .theme-miniature-nav span {
+    width: 7%;
+    height: 2px;
+    border-radius: 99px;
+    background: currentColor;
+    opacity: 0.42;
+  }
+  .theme-miniature-nav i {
+    width: 12%;
+    height: 11px;
+    border-radius: 99px;
+    background: var(--mini-ink);
+  }
+  .theme-miniature-copy {
+    display: flex;
+    width: 48%;
+    flex-direction: column;
+    align-self: center;
+  }
+  .theme-miniature-copy small {
+    font-size: clamp(4px, 0.53vw, 7px);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .theme-miniature-copy b {
+    margin: 4% 0 5%;
+    font-family: Georgia, serif;
+    font-size: clamp(14px, 2.25vw, 30px);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+  }
+  .theme-miniature-copy span {
+    width: 86%;
+    height: 3px;
+    margin-top: 3%;
+    border-radius: 99px;
+    background: currentColor;
+    opacity: 0.27;
+  }
+  .theme-miniature-copy span:last-child { width: 62%; }
+  .theme-miniature-booking {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 3%;
+    align-items: center;
+    width: 72%;
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--mini-paper) 94%, transparent);
+    padding: 3%;
+  }
+  .theme-miniature-booking i {
+    height: 8px;
+    border-bottom: 1px solid color-mix(in srgb, var(--mini-ink) 28%, transparent);
+  }
+  .theme-miniature-booking b {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    place-items: center;
+    border-radius: 4px;
+    background: var(--mini-ink);
+    color: var(--mini-paper);
+    font-size: 8px;
+  }
+  .theme-miniature[data-theme-variant='coast'] {
+    --mini-ink: #163f4a;
+    --mini-paper: #eef7f4;
+    --mini-accent: #a9d8d9;
+  }
+  .theme-miniature[data-theme-variant='coast'] .theme-miniature-wash {
+    background: linear-gradient(0deg, rgba(238,247,244,.88) 0 31%, transparent 58%);
+  }
+  .theme-miniature[data-theme-variant='coast'] .theme-miniature-copy {
+    width: 68%;
+    align-self: end;
+  }
+  .theme-miniature[data-theme-variant='family'] {
+    --mini-ink: #5c2f18;
+    --mini-paper: #fff4df;
+    --mini-accent: #efb969;
+  }
+  .theme-miniature[data-theme-variant='family'] .theme-miniature-wash {
+    background: linear-gradient(90deg, rgba(255,244,223,.93) 0 43%, transparent 72%);
+  }
+  .theme-miniature[data-theme-variant='natural'] {
+    --mini-ink: #233d2b;
+    --mini-paper: #e6eadc;
+    --mini-accent: #92a98b;
+  }
+  .theme-miniature[data-theme-variant='natural'] .theme-miniature-site {
+    inset: 7%;
+    border: 1px solid color-mix(in srgb, var(--mini-paper) 62%, transparent);
+    padding: 5%;
+  }
+  .theme-miniature[data-theme-variant='natural'] .theme-miniature-wash {
+    background: rgba(18, 42, 27, 0.28);
+  }
+  .theme-miniature[data-theme-variant='natural'] .theme-miniature-site { color: #fffefc; }
+  .theme-miniature[data-theme-variant='natural'] .theme-miniature-nav i,
+  .theme-miniature[data-theme-variant='natural'] .theme-miniature-booking b { background: #fffefc; color: #233d2b; }
+  .theme-miniature[data-theme-variant='resort'] {
+    --mini-ink: #33291f;
+    --mini-paper: #f4eee6;
+    --mini-accent: #b99a72;
+  }
+  .theme-miniature[data-theme-variant='resort'] .theme-miniature-wash {
+    background: linear-gradient(90deg, rgba(36,28,22,.68), transparent 70%);
+  }
+  .theme-miniature[data-theme-variant='resort'] .theme-miniature-site { color: #fffaf2; }
+  .theme-miniature[data-theme-variant='resort'] .theme-miniature-nav i,
+  .theme-miniature[data-theme-variant='resort'] .theme-miniature-booking b { background: #fffaf2; color: #33291f; }
+  .theme-miniature[data-theme-variant='pitch'] {
+    --mini-ink: #262f2c;
+    --mini-paper: #f2f2ec;
+    --mini-accent: #d3d6c8;
+  }
+  .theme-miniature[data-theme-variant='pitch'] .theme-miniature-copy b {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.055em;
+  }
+</style>

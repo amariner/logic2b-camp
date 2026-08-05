@@ -14,8 +14,10 @@ interface Props {
   ruta?: string;
   /** SEO propio de la página; si no viene, el de la landing. */
   seo?: { title: string; description: string };
+  /** Variante visual aislada para pruebas de dirección de arte en la landing. */
+  theme?: 'default' | 'botanical';
 }
-const { locale, content, ruta = '/', seo } = Astro.props;
+const { locale, content, ruta = '/', seo, theme = 'default' } = Astro.props;
 const c = content;
 
 const site = 'https://camp.logic2b.com';
@@ -123,7 +125,12 @@ const nav = [
       set:html={JSON.stringify(datosEstructurados).replace(/</g, '\\u003c')}
     />
   </head>
-  <body class="min-h-screen bg-background text-foreground antialiased">
+  <body
+    class:list={[
+      'min-h-screen bg-background text-foreground antialiased',
+      theme === 'botanical' && 'theme-botanical',
+    ]}
+  >
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >

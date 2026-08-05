@@ -1,0 +1,217 @@
+---
+interface Props {
+  variant: 'website' | 'manager';
+  alt: string;
+}
+
+const { variant, alt } = Astro.props;
+const bookingBars = [
+  { x: 326, y: 226, w: 94, tone: 'ink' },
+  { x: 430, y: 226, w: 122, tone: 'sage' },
+  { x: 354, y: 246, w: 146, tone: 'ink' },
+  { x: 510, y: 246, w: 72, tone: 'mint' },
+  { x: 326, y: 266, w: 74, tone: 'mint' },
+  { x: 410, y: 266, w: 126, tone: 'ink' },
+  { x: 546, y: 266, w: 54, tone: 'sage' },
+];
+---
+
+<div class="product-card-art" data-product-art={variant}>
+  <svg viewBox="0 0 760 430" role="img" aria-label={alt}>
+    {variant === 'website' ? (
+      <>
+        <rect width="760" height="430" rx="18" fill="#b1dbb8" />
+        <path d="M610-35c-52 88-44 162 25 220s89 120 35 245M659-28c-49 82-38 144 27 196s91 121 44 246" class="contour" />
+
+        <rect x="46" y="38" width="650" height="328" rx="16" fill="#fffefc" />
+        <circle cx="66" cy="58" r="4" fill="#b1dbb8" />
+        <circle cx="79" cy="58" r="4" fill="#cfe7d3" />
+        <circle cx="92" cy="58" r="4" fill="#e1f4df" />
+        <text x="110" y="62" class="ui-label">Logic2B Campings</text>
+        <rect x="585" y="50" width="88" height="18" rx="9" fill="#0f3e17" />
+        <rect x="475" y="56" width="30" height="3" rx="1.5" fill="#0f3e17" opacity=".32" />
+        <rect x="515" y="56" width="42" height="3" rx="1.5" fill="#0f3e17" opacity=".32" />
+
+        <rect x="64" y="82" width="614" height="206" rx="12" fill="#e1f4df" />
+        <rect x="64" y="82" width="318" height="206" rx="12" fill="#e1f4df" />
+        <text x="88" y="113" class="eyebrow">RESERVA DIRECTA</text>
+        <text x="88" y="150" class="display">Dormir bajo</text>
+        <text x="88" y="181" class="display">los pinos.</text>
+        <rect x="88" y="200" width="170" height="5" rx="2.5" fill="#0f3e17" opacity=".24" />
+        <rect x="88" y="214" width="128" height="5" rx="2.5" fill="#0f3e17" opacity=".15" />
+
+        <rect x="382" y="82" width="296" height="206" rx="12" fill="#b6ced5" />
+        <circle cx="584" cy="128" r="30" fill="#fffefc" opacity=".74" />
+        <path d="M382 247c50-51 87-55 128-18 38-45 92-36 168 20v39H382Z" fill="#7fa58a" />
+        <path d="M382 265c58-39 109-34 154 6 35-24 82-21 142 9v8H382Z" fill="#0f3e17" opacity=".8" />
+        <path d="M459 254 500 190l43 64Z" fill="#fffefc" />
+        <path d="M500 190v64" stroke="#0f3e17" stroke-width="2" />
+        <path d="M420 252v-79M415 188c6-31 43-31 49 0-15-6-34-6-49 0Z" stroke="#0f3e17" stroke-width="5" stroke-linecap="round" fill="#b1dbb8" />
+        <path d="M615 260v-95M610 182c7-38 48-38 55 0-17-8-38-8-55 0Z" stroke="#0f3e17" stroke-width="5" stroke-linecap="round" fill="#b1dbb8" />
+
+      </>
+    ) : (
+      <>
+        <rect width="760" height="430" rx="18" fill="#b6ced5" />
+        <path d="M-40 360c90-65 152-70 228-14s153 49 235-12 181-66 362 12" class="contour" />
+        <path d="M-38 388c91-64 155-68 229-12s151 48 234-13 184-63 363 13" class="contour" />
+
+        <rect x="38" y="34" width="684" height="354" rx="16" fill="#fffefc" />
+        <rect x="38" y="34" width="116" height="354" rx="16" fill="#e1f4df" />
+        <rect x="58" y="55" width="52" height="8" rx="4" fill="#0f3e17" />
+        <circle cx="128" cy="59" r="8" fill="#b1dbb8" />
+        {[0, 1, 2, 3, 4].map((item) => (
+          <g transform={`translate(0 ${item * 38})`}>
+            <rect x="56" y="94" width="78" height="27" rx="7" fill={item === 1 ? '#0f3e17' : '#fffefc'} opacity={item === 1 ? '1' : '.76'} />
+            <circle cx="70" cy="107" r="4" fill={item === 1 ? '#fffefc' : '#0f3e17'} opacity=".72" />
+            <rect x="81" y="104" width="36" height="5" rx="2.5" fill={item === 1 ? '#fffefc' : '#0f3e17'} opacity=".5" />
+          </g>
+        ))}
+
+        <text x="181" y="67" class="eyebrow">OPERATIVA DE HOY</text>
+        <text x="181" y="98" class="manager-title">Recepción</text>
+        <rect x="628" y="54" width="67" height="26" rx="8" fill="#0f3e17" />
+        <text x="648" y="71" class="button-label">+ NUEVA</text>
+
+        <rect x="181" y="119" width="154" height="78" rx="10" fill="#e1f4df" />
+        <text x="197" y="140" class="tiny">LLEGADAS</text>
+        <text x="197" y="178" class="metric">12</text>
+        <path d="M275 168h40" stroke="#0f3e17" stroke-width="3" opacity=".28" />
+        <rect x="348" y="119" width="154" height="78" rx="10" fill="#cfe7d3" />
+        <text x="364" y="140" class="tiny">SALIDAS</text>
+        <text x="364" y="178" class="metric">08</text>
+        <path d="M442 168h40" stroke="#0f3e17" stroke-width="3" opacity=".28" />
+        <rect x="515" y="119" width="180" height="78" rx="10" fill="#b1dbb8" />
+        <text x="531" y="140" class="tiny">OCUPACIÓN</text>
+        <text x="531" y="178" class="metric">86%</text>
+        {[0, 1, 2, 3, 4].map((item) => <rect x={625 + item * 11} y={176 - item * 7} width="7" height={12 + item * 7} rx="2" fill={item === 4 ? '#0f3e17' : '#fffefc'} />)}
+
+        <rect x="181" y="214" width="514" height="144" rx="10" fill="#fffefc" stroke="#e8e9e4" />
+        <text x="198" y="236" class="tiny">PLANNING · AGOSTO</text>
+        {[0, 1, 2, 3, 4, 5].map((row) => (
+          <g transform={`translate(0 ${row * 19})`}>
+            <text x="198" y="260" class="row-label">A-{String(row + 1).padStart(2, '0')}</text>
+            <path d="M230 256H674" stroke="#e8e9e4" />
+          </g>
+        ))}
+        {bookingBars.map((bar) => (
+          <rect
+            x={bar.x}
+            y={bar.y}
+            width={bar.w}
+            height="12"
+            rx="4"
+            fill={bar.tone === 'ink' ? '#0f3e17' : bar.tone === 'sage' ? '#b1dbb8' : '#cfe7d3'}
+          />
+        ))}
+
+        <g class="guest-card">
+          <rect x="534" y="302" width="182" height="105" rx="12" fill="#0f3e17" />
+          <circle cx="558" cy="327" r="11" fill="#b1dbb8" />
+          <rect x="578" y="320" width="78" height="6" rx="3" fill="#fffefc" opacity=".9" />
+          <rect x="578" y="334" width="52" height="4" rx="2" fill="#fffefc" opacity=".4" />
+          <rect x="552" y="354" width="145" height="1" fill="#fffefc" opacity=".2" />
+          <rect x="552" y="369" width="56" height="16" rx="8" fill="#b1dbb8" />
+          <rect x="616" y="369" width="67" height="16" rx="8" fill="#fffefc" opacity=".12" />
+        </g>
+      </>
+    )}
+  </svg>
+  {variant === 'website' && (
+    <>
+      <div class="product-card-video-frame" aria-hidden="true">
+        <video
+          class="product-card-video"
+          src="/propuestas/azahar/hero-piscina.mp4"
+          poster="/propuestas/azahar/piscina.jpg"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+      </div>
+      <svg class="product-card-interface" viewBox="0 0 760 430" aria-hidden="true">
+        <rect x="88" y="262" width="534" height="70" rx="12" fill="#fffefc" stroke="#e8e9e4" />
+        <text x="108" y="282" class="tiny">LLEGADA</text>
+        <text x="108" y="305" class="date">05 AGO</text>
+        <path d="M226 278v37M350 278v37M478 278v37" stroke="#e8e9e4" />
+        <text x="246" y="282" class="tiny">SALIDA</text>
+        <text x="246" y="305" class="date">12 AGO</text>
+        <text x="370" y="282" class="tiny">HUÉSPEDES</text>
+        <text x="370" y="305" class="date">2 + 1</text>
+        <rect x="498" y="277" width="103" height="39" rx="9" fill="#0f3e17" />
+        <path d="m552 291 8 6-8 6" fill="none" stroke="#fffefc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+        <g class="confirm-card">
+          <rect x="548" y="305" width="148" height="86" rx="12" fill="#0f3e17" />
+          <circle cx="574" cy="330" r="12" fill="#b1dbb8" />
+          <path d="m569 330 4 4 7-9" fill="none" stroke="#0f3e17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <rect x="596" y="322" width="72" height="5" rx="2.5" fill="#fffefc" opacity=".9" />
+          <rect x="596" y="335" width="48" height="4" rx="2" fill="#fffefc" opacity=".42" />
+          <rect x="566" y="359" width="98" height="4" rx="2" fill="#fffefc" opacity=".28" />
+          <rect x="566" y="369" width="66" height="4" rx="2" fill="#fffefc" opacity=".18" />
+        </g>
+      </svg>
+    </>
+  )}
+</div>
+
+<style>
+  .product-card-art { position:relative; overflow:hidden; background:var(--botanical-sage); }
+  .product-card-art[data-product-art='manager'] { background:var(--botanical-slate); }
+  svg { position:relative; z-index:0; display:block; width:100%; height:auto; }
+  .product-card-video-frame {
+    position:absolute;
+    z-index:1;
+    top:19.07%;
+    left:50.263%;
+    width:38.947%;
+    height:47.907%;
+    overflow:hidden;
+    border-radius:0 12px 14px 0;
+    isolation:isolate;
+    pointer-events:none;
+  }
+  .product-card-video {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:48% center;
+  }
+  .product-card-interface {
+    position:absolute;
+    z-index:2;
+    inset:0;
+    pointer-events:none;
+  }
+  .contour { fill:none; stroke:#0f3e17; stroke-width:1.2; opacity:.14; }
+  .ui-label,.tiny,.row-label,.button-label,.eyebrow { font-family:Arial,sans-serif; fill:#0f3e17; }
+  .ui-label { font-size:8px; opacity:.6; }
+  .eyebrow { font-size:8px; font-weight:700; letter-spacing:1.1px; }
+  .display { font-family:Georgia,serif; font-size:31px; fill:#0f3e17; letter-spacing:-1.2px; }
+  .date { font-family:Arial,sans-serif; font-size:12px; font-weight:700; fill:#0f3e17; }
+  .tiny { font-size:7px; font-weight:700; letter-spacing:.8px; opacity:.62; }
+  .manager-title { font-family:Georgia,serif; font-size:25px; fill:#0f3e17; }
+  .button-label { fill:#fffefc; font-size:7px; font-weight:700; }
+  .metric { font-family:Georgia,serif; font-size:32px; fill:#0f3e17; }
+  .row-label { font-size:6px; opacity:.56; }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const videos = document.querySelectorAll<HTMLVideoElement>('.product-card-video');
+  const syncMotion = () => {
+    videos.forEach((video) => {
+      if (reduceMotion.matches) {
+        video.pause();
+        video.currentTime = 0;
+      } else {
+        void video.play().catch(() => undefined);
+      }
+    });
+  };
+  syncMotion();
+  reduceMotion.addEventListener('change', syncMotion);
+</script>

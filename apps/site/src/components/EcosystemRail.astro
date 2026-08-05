@@ -1,0 +1,102 @@
+---
+import {
+  siBrevo,
+  siCalendly,
+  siCloudflare,
+  siDropbox,
+  siGooglecalendar,
+  siGooglemaps,
+  siMailchimp,
+  siOpenstreetmap,
+  siPaypal,
+  siQuickbooks,
+  siSignal,
+  siStripe,
+  siTelegram,
+  siWhatsapp,
+  siXero,
+  siZapier,
+} from 'simple-icons';
+
+interface Item {
+  nombre: string;
+  icono: string;
+}
+
+interface Props {
+  items: Item[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+const icons: Record<string, { path: string }> = {
+  brevo: siBrevo,
+  calendly: siCalendly,
+  cloudflare: siCloudflare,
+  dropbox: siDropbox,
+  googlecalendar: siGooglecalendar,
+  googlemaps: siGooglemaps,
+  mailchimp: siMailchimp,
+  openstreetmap: siOpenstreetmap,
+  paypal: siPaypal,
+  quickbooks: siQuickbooks,
+  signal: siSignal,
+  stripe: siStripe,
+  telegram: siTelegram,
+  whatsapp: siWhatsapp,
+  xero: siXero,
+  zapier: siZapier,
+};
+---
+
+<div class="brand-rail" role="list" aria-label={label}>
+  {
+    items.map((item) => {
+      const icon = icons[item.icono];
+      return (
+        <span class="brand-mark" role="listitem">
+          <svg viewBox="0 0 24 24" role="img" aria-label={item.nombre}>
+            <path d={icon.path} />
+          </svg>
+        </span>
+      );
+    })
+  }
+</div>
+
+<style>
+  .brand-rail {
+    display:grid;
+    grid-template-columns:repeat(16,minmax(28px,1fr));
+    align-items:center;
+    gap:clamp(10px,1.25vw,20px);
+    width:100%;
+  }
+  .brand-mark {
+    display:grid;
+    min-width:0;
+    place-items:center;
+    color:#111;
+  }
+  .brand-mark svg {
+    display:block;
+    width:clamp(20px,2vw,30px);
+    height:clamp(20px,2vw,30px);
+    fill:currentColor;
+  }
+  @media (max-width:767px) {
+    .brand-rail {
+      grid-template-columns:repeat(16,24px);
+      justify-content:start;
+      gap:16px;
+      overflow-x:auto;
+      padding:2px 0 12px;
+      scroll-snap-type:x proximity;
+      scrollbar-color:color-mix(in srgb,currentColor 22%,transparent) transparent;
+      scrollbar-width:thin;
+    }
+    .brand-mark {
+      scroll-snap-align:start;
+    }
+  }
+</style>
