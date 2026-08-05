@@ -2,6 +2,9 @@
 import Wordmark from '../components/Wordmark.astro';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
+/* Después de global.css a propósito: el remapeo de tokens y los estilos de
+ * prosa botánicos deben ganar la cascada a los del DS neutro. */
+import '../styles/botanical.css';
 
 interface Props {
   locale: Locale;
@@ -14,10 +17,8 @@ interface Props {
   ruta?: string;
   /** SEO propio de la página; si no viene, el de la landing. */
   seo?: { title: string; description: string };
-  /** Variante visual aislada para pruebas de dirección de arte en la landing. */
-  theme?: 'default' | 'botanical';
 }
-const { locale, content, ruta = '/', seo, theme = 'default' } = Astro.props;
+const { locale, content, ruta = '/', seo } = Astro.props;
 const c = content;
 
 const site = 'https://camp.logic2b.com';
@@ -63,14 +64,21 @@ const datosEstructurados = {
 // Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
-// En el orden en que las secciones aparecen al hacer scroll.
+// MENÚ ÚNICO del sitio: header y footer pintan ESTA lista, en este orden
+// (secciones del home según aparecen al hacer scroll, luego páginas propias).
+// Si un destino entra o sale, se toca solo aquí y los dos menús siguen iguales.
 const nav = [
   { href: `${inicio}#producto`, label: c.nav.producto },
   { href: `${inicio}#planning`, label: c.nav.planning },
-  { href: `${inicio}#escala`, label: c.nav.escala },
   { href: `${inicio}#niveles`, label: c.nav.niveles },
+  { href: localePath(locale, 'temas/'), label: c.nav.temas },
   { href: localePath(locale, 'precios/'), label: c.nav.precios },
   { href: localePath(locale, 'docs/'), label: c.nav.docs },
+];
+// Acciones (también compartidas): demo pública, gestor demo y el CTA de contacto.
+const acciones = [
+  { href: '/demo/', label: c.nav.demo },
+  { href: '/admin/', label: c.nav.mostrador },
 ];
 ---
 
@@ -125,12 +133,7 @@ const nav = [
       set:html={JSON.stringify(datosEstructurados).replace(/</g, '\\u003c')}
     />
   </head>
-  <body
-    class:list={[
-      'min-h-screen bg-background text-foreground antialiased',
-      theme === 'botanical' && 'theme-botanical',
-    ]}
-  >
+  <body class="theme-botanical min-h-screen bg-background text-foreground antialiased">
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
@@ -144,10 +147,16 @@ const nav = [
           {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
         <div class="ml-auto flex items-center gap-4">
+          {/* Las mismas acciones que el footer; el gestor solo desde lg porque
+              en tabletas el menú completo + tres acciones ya no caben. */}
           <a
-            href="/demo/"
+            href={acciones[0]!.href}
             class="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
-          >{c.nav.demo}</a>
+          >{acciones[0]!.label}</a>
+          <a
+            href={acciones[1]!.href}
+            class="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
+          >{acciones[1]!.label}</a>
           <a
             href={`${inicio}#contacto`}
             class="inline-flex shrink-0 items-center rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:px-3.5"
@@ -170,14 +179,15 @@ const nav = [
             </div>
             <p class="mt-3 text-sm text-muted-foreground">{c.footer.tagline}</p>
           </div>
-          <nav class="flex gap-10 text-sm">
+          <nav class="flex flex-wrap gap-10 text-sm">
+            {/* El mismo array que el header, columna a columna: los dos menús
+                no pueden divergir porque son la misma lista. */}
             <div class="flex flex-col gap-2">
-              <a href={`${inicio}#producto`} class="text-muted-foreground hover:text-foreground">{c.footer.producto}</a>
-              <a href={`${inicio}#niveles`} class="text-muted-foreground hover:text-foreground">{c.footer.planes}</a>
-              <a href={localePath(locale, 'docs/')} class="text-muted-foreground hover:text-foreground">{c.footer.docs}</a>
-              <a href={`${inicio}#contacto`} class="text-muted-foreground hover:text-foreground">{c.footer.contacto}</a>
-              <a href="/demo/" class="text-muted-foreground hover:text-foreground">{c.footer.demo}</a>
-              <a href="/admin/" class="text-muted-foreground hover:text-foreground">{c.footer.mostrador}</a>
+              {nav.map((n) => <a href={n.href} class="text-muted-foreground hover:text-foreground">{n.label}</a>)}
+            </div>
+            <div class="flex flex-col gap-2">
+              {acciones.map((a) => <a href={a.href} class="text-muted-foreground hover:text-foreground">{a.label}</a>)}
+              <a href={`${inicio}#contacto`} class="text-muted-foreground hover:text-foreground">{c.nav.contacto}</a>
             </div>
             <div class="flex flex-col gap-2">
               {
@@ -201,5 +211,29 @@ const nav = [
         </p>
       </div>
     </footer>
+
+    {/* Reveal on scroll (ADR 0027), compartido por todas las páginas: cualquier
+        .lc-reveal del slot funciona igual en home, temas, precios y guías. */}
+    <script>
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const elements = document.querySelectorAll('.lc-reveal');
+      document.documentElement.classList.add('lc-js');
+      if (reduce || !('IntersectionObserver' in window)) {
+        elements.forEach((element) => element.classList.add('lc-visible'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('lc-visible');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        elements.forEach((element) => observer.observe(element));
+      }
+    </script>
   </body>
 </html>

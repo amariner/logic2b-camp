@@ -7,10 +7,11 @@
     "producto": "Product",
     "niveles": "Plans",
     "planning": "The planner",
-    "escala": "Scalability",
+    "temas": "Themes",
     "docs": "Guides",
     "precios": "Pricing",
     "demo": "See demo",
+    "mostrador": "Live manager",
     "contacto": "Request a demo",
     "verDemo": "See the live demo"
   },
@@ -436,13 +437,7 @@
   },
   "footer": {
     "tagline": "Software for campsites. Website + bookings + management, in one system.",
-    "powered": "A Logic2B product · Spain",
-    "demo": "Live demo",
-    "mostrador": "Live manager",
-    "producto": "Product",
-    "planes": "Plans",
-    "docs": "Guides",
-    "contacto": "Request a demo"
+    "powered": "A Logic2B product · Spain"
   },
   "docs": {
     "seo": {

@@ -7,10 +7,11 @@
     "producto": "Producto",
     "niveles": "Planes",
     "planning": "El planning",
-    "escala": "Escalabilidad",
+    "temas": "Temas",
     "docs": "Guías",
     "precios": "Precios",
     "demo": "Ver demo",
+    "mostrador": "Gestor en vivo",
     "contacto": "Pedir demo",
     "verDemo": "Ver la demo en vivo"
   },
@@ -436,13 +437,7 @@
   },
   "footer": {
     "tagline": "Software para campings. Web + reservas + gestión, en un solo sistema.",
-    "powered": "Un producto de Logic2B · Castellón",
-    "demo": "Demo en vivo",
-    "mostrador": "Gestor en vivo",
-    "producto": "Producto",
-    "planes": "Planes",
-    "docs": "Guías",
-    "contacto": "Pedir demo"
+    "powered": "Un producto de Logic2B · Castellón"
   },
   "docs": {
     "seo": {

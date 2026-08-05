@@ -5,7 +5,6 @@ import PlanningVisual from './PlanningVisual.astro';
 import ProductCardVisual from './ProductCardVisual.astro';
 import ThemeRail from './ThemeRail.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
-import '../styles/landing-botanical.css';
 
 interface Props {
   locale: Locale;
@@ -33,7 +32,7 @@ const iconosProblema = [
 
 ---
 
-<Base locale={locale} content={c} theme="botanical">
+<Base locale={locale} content={c}>
   <div class="botanical-landing">
     <section class="botanical-shell botanical-hero" aria-labelledby="hero-title">
       <div class="botanical-hero-copy">
@@ -393,26 +392,4 @@ const iconosProblema = [
       if (!repetido) niveles[index]?.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'nearest' });
     });
   });
-</script>
-
-<script>
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const elements = document.querySelectorAll('.lc-reveal');
-  document.documentElement.classList.add('lc-js');
-  if (reduce || !('IntersectionObserver' in window)) {
-    elements.forEach((element) => element.classList.add('lc-visible'));
-  } else {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('lc-visible');
-            observer.unobserve(entry.target);
-          }
-        }
-      },
-      { rootMargin: '0px 0px -8% 0px' },
-    );
-    elements.forEach((element) => observer.observe(element));
-  }
 </script>

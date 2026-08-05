@@ -23,16 +23,14 @@ const ruta = `docs/${guia}/`;
   seo={{ title: `${meta.nombre} — Logic2B Campings`, description: meta.texto }}
   ruta={ruta}
 >
-  <p class="text-xs font-medium tracking-wide text-primary uppercase">{meta.para}</p>
-  <h1 class="mt-1.5 font-display text-3xl font-bold tracking-tight">{meta.nombre}</h1>
-  <p class="mt-3 max-w-2xl text-lg text-muted-foreground">{meta.texto}</p>
+  <p class="botanical-eyebrow">{meta.para}</p>
+  {/* Sin font-display ni bold: el h1 hereda la serif tinta del tema botánico. */}
+  <h1 class="mt-3 text-3xl sm:text-4xl">{meta.nombre}</h1>
+  <p class="mt-4 max-w-2xl text-lg text-muted-foreground">{meta.texto}</p>
 
   {
     paginas.length > 0 && (
-      <a
-        href={localePath(locale, `${ruta}${paginas[0]!.slug}/`)}
-        class="mt-6 inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-      >
+      <a href={localePath(locale, `${ruta}${paginas[0]!.slug}/`)} class="botanical-button mt-7">
         {d.empezar}
         <span aria-hidden="true">&rarr;</span>
       </a>

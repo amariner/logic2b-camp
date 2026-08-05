@@ -2,15 +2,15 @@
 import Base from '../layouts/Base.astro';
 import ThemeMiniature from './ThemeMiniature.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
-import '../styles/landing-botanical.css';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = getContent(locale);
 ---
 
-<Base locale={locale} content={c} ruta="temas/" seo={c.temas.seo} theme="botanical">
-  <main class="theme-catalog-page">
+<Base locale={locale} content={c} ruta="temas/" seo={c.temas.seo}>
+  {/* div, no <main>: Base ya envuelve el slot en su propio <main>. */}
+  <div class="theme-catalog-page">
     <section class="theme-catalog-hero botanical-shell">
       <div>
         <p class="botanical-eyebrow">{c.temas.kicker}</p>
@@ -52,7 +52,7 @@ const c = getContent(locale);
         {c.nav.contacto}<span aria-hidden="true">→</span>
       </a>
     </section>
-  </main>
+  </div>
 </Base>
 
 <style>

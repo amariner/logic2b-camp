@@ -1,6 +1,8 @@
-/* Prueba de dirección de arte: “invernadero botánico sobre papel”.
- * Todos los selectores quedan bajo .theme-botanical para que precios y guías
- * conserven la identidad habitual de producto. */
+/* Identidad visual del sitio de producto: “invernadero botánico sobre papel”.
+ * Nació como prueba de dirección de arte en la landing (sesión 78) y desde la
+ * unificación es EL tema de todo el sitio: Base.astro lo importa y aplica
+ * .theme-botanical en todas las páginas (home, temas, precios y guías). Las
+ * propuestas privadas (/propuestas/…) y la demo de tenant no pasan por aquí. */
 .theme-botanical {
   --botanical-ink: #0f3e17;
   --botanical-shadow: #0c2f10;
@@ -12,6 +14,34 @@
   --botanical-charcoal: #222222;
   --botanical-border: #e8e9e4;
   --botanical-serif: 'Iowan Old Style', 'Baskerville', 'Times New Roman', serif;
+
+  /* Los tokens del DS (packages/ui/theme.css) se remapean a la paleta botánica:
+   * así las utilidades token-based que ya usan las páginas y el chasis
+   * (text-muted-foreground, border-border, bg-primary, focus ring…) pintan
+   * botánico sin reescribir cada clase. El lockup de marca queda FUERA a
+   * propósito: --font-wordmark (Poppins) y --logo-2b no se tocan, el logo
+   * Logic2B es idéntico en todas partes (docs/BRAND.md §2). El 72% de tinta
+   * de --muted-foreground no es capricho: es el mismo mix del nav y aguanta
+   * AA sobre papel a 14px. */
+  --background: var(--botanical-paper);
+  --foreground: var(--botanical-charcoal);
+  --card: var(--botanical-paper);
+  --card-foreground: var(--botanical-charcoal);
+  --popover: var(--botanical-paper);
+  --popover-foreground: var(--botanical-charcoal);
+  --primary: var(--botanical-ink);
+  --primary-foreground: var(--botanical-paper);
+  --secondary: var(--botanical-keylime);
+  --secondary-foreground: var(--botanical-ink);
+  --muted: var(--botanical-keylime);
+  --muted-foreground: color-mix(in srgb, var(--botanical-ink) 72%, white);
+  --accent: var(--botanical-mint);
+  --accent-foreground: var(--botanical-ink);
+  --border: var(--botanical-border);
+  --input: var(--botanical-border);
+  --ring: var(--botanical-ink);
+  --link: var(--botanical-ink);
+
   background: var(--botanical-paper);
   color: var(--botanical-charcoal);
 }
@@ -70,9 +100,21 @@
   color: color-mix(in srgb, var(--botanical-ink) 72%, white);
 }
 
-.botanical-landing {
+/* Envoltorio de página: recorta los reveals y asegura papel hasta el footer. */
+.botanical-landing,
+.botanical-page {
   overflow: hidden;
   background: var(--botanical-paper);
+}
+
+/* Aviso suave (guías: caja de ayuda, fallback de idioma). */
+.botanical-callout {
+  border-radius: 14px;
+  background: var(--botanical-keylime);
+  padding: 14px 18px;
+  color: color-mix(in srgb, var(--botanical-ink) 78%, white);
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 .botanical-shell {
