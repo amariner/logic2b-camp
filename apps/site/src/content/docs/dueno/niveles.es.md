@@ -5,59 +5,41 @@ lang: es
 orden: 1
 ---
 
-Logic2B Campings es **un solo producto con cuatro niveles**. No son cuatro programas distintos: es el mismo sistema con más o menos módulos encendidos.
+Logic2B Campings se ofrece como **una progresión de cuatro resultados**. Puedes empezar resolviendo solo la web y ampliar después sin cambiar de proveedor, dominio o marca.
 
-Eso tiene una consecuencia práctica que conviene entender antes de elegir: **subir de nivel no es cambiar de proveedor ni rehacer la web**. Es encender lo que estaba apagado.
+## La escalera
 
-## La tabla
+| Paso | Plan            | Resultado                              | Cuota     | Estado        |
+| ---: | --------------- | -------------------------------------- | --------- | ------------- |
+|   00 | **Inicio**      | Consigue consultas                     | 49 €/mes  | Lanzamiento   |
+|   01 | **Gestión**     | Controla la operativa del camping      | 149 €/mes | Disponible    |
+|   02 | **Automatiza**  | Reduce trabajo repetitivo con ayuda IA | 249 €/mes | En desarrollo |
+|   03 | **Inteligente** | Decide mejor con datos y previsiones   | 399 €/mes | Roadmap       |
 
-|                                            | **Camp Web** | **Camp Solicitudes** | **Camp Reservas** | **Camp Motor**   |
-| ------------------------------------------ | ------------ | -------------------- | ----------------- | ---------------- |
-| Web pública completa                       | ✅           | ✅                   | ✅                | — (usas la tuya) |
-| Formulario de solicitud → tu email         | ✅           | ✅                   | ✅                | —                |
-| Historial de solicitudes guardado          | ✅           | ✅                   | ✅                | ✅               |
-| Bandeja de solicitudes + panel básico      | —            | ✅                   | ✅                | ✅               |
-| Disponibilidad y precio en tiempo real     | —            | —                    | ✅                | ✅               |
-| Reserva online con confirmación al momento | —            | —                    | ✅                | ✅               |
-| Gestor completo (planning, plano, fichas)  | —            | —                    | ✅                | ✅               |
-| Cobro online (opcional)                    | —            | —                    | ✅                | ✅               |
+## Inicio — una web que empieza a trabajar
 
-## Camp Web — tu primera web que trabaja
+Web responsive con tu marca, alojamiento, HTTPS, SEO básico, un idioma y un formulario que envía cada consulta al correo de recepción.
 
-Web pública completa en seis idiomas, con tus fotos, tu marca y tu dominio. Páginas de alojamientos con ficha y galería, instalaciones, entorno, tarifas, contacto y blog. Rápida y bien posicionada.
+No tiene panel, base de datos, histórico, disponibilidad ni motor de reservas. Es la entrada sencilla para un camping que todavía gestiona bien por teléfono y correo. Su alta es de **0 €** con compromiso de 12 meses o pago anual de 490 €.
 
-El cliente que quiere reservar rellena un **formulario** que te llega por email, y tú contestas como hasta ahora.
+## Gestión — todo el camping bajo control
 
-**Para quién**: un camping que hoy tiene una web vieja, o ninguna, y que gestiona bien las reservas por teléfono y correo.
+Añade la plataforma operativa completa: web, disponibilidad, motor de reservas, planning, plano, clientes, tarifas, cobros, llegadas, salidas e informes.
 
-> **Lo que casi nadie mira y es lo más valioso**: aunque en este nivel no hay panel, **cada solicitud queda guardada** desde el primer día. Cuando dentro de dos años quieras el motor de reservas, tendrás dos años de histórico esperándote: qué fechas te piden, en qué idiomas, cuánta gente. Eso no lo tiene nadie más.
+Es el nivel para dejar atrás hojas de cálculo y herramientas separadas. Está disponible desde **149 €/mes**, con alta desde **2.900 €** según inventario, material y migración.
 
-## Camp Solicitudes — cuando ya no das abasto con el correo
+## Automatiza — menos tareas repetitivas
 
-Todo lo anterior, más el sitio donde ordenarlo: una **bandeja de solicitudes** por estados (nueva → contactada → presupuestada → convertida o perdida) y un **panel ligero** con las llegadas y salidas del día.
+Sobre Gestión incorpora comunicaciones automáticas, recordatorios, solicitud de reseñas y asistencia de IA para buscar, redactar, traducir, resumir y preparar respuestas o presupuestos.
 
-Sigue sin haber motor de reservas: los precios los cierras tú.
+La IA prepara y propone; recepción revisa. Este nivel está **en desarrollo** y su precio objetivo de lanzamiento es **249 €/mes**.
 
-**Para quién**: el camping al que le entran suficientes peticiones como para que se le pierda alguna en el buzón.
+## Inteligente — mejores decisiones con tus datos
 
-## Camp Reservas — el camping completo
+Añade rentabilidad, comparativas, previsión, alertas, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.
 
-El producto entero:
-
-- **Motor de reservas de verdad**: el cliente busca fechas, ve disponibilidad real y precio exacto, y **reserva con confirmación al momento**.
-- **Cobro online opcional**: sin cobro, señal o pago completo, con Stripe o Redsys.
-- **El gestor completo**: planning, plano del camping, fichas de reserva y de cliente, llegadas y salidas, check-in y check-out, tarifas, inventario, informes.
-
-**Para quién**: el camping que quiere dejar de pagar comisiones de portal y llevar su ocupación desde su propia casa.
-
-## Camp Motor — solo el cerebro
-
-El motor y el gestor conectados a la web que ya tienes, sin tocarla.
-
-**Para quién**: un camping con una web reciente de la que está contento, que solo necesita el sistema por debajo.
-
-> **A medida y bajo pedido.** Este nivel está diseñado pero no construido: se levanta cuando un camping concreto lo contrate, porque encajarlo con una web ajena depende de cómo sea esa web. Si es tu caso, hablémoslo.
+Precios, cobros, cancelaciones y campañas siempre requieren confirmación humana. Este nivel forma parte del **roadmap** y su precio objetivo es **399 €/mes**.
 
 ---
 
-Los precios se ajustan a cada camping —no es lo mismo uno de 40 parcelas que uno de 400—. Escríbenos a **hola@logic2b.com** y te pasamos una propuesta.
+Consulta las [condiciones y altas de cada plan](/precios/) o escríbenos a **hola@logic2b.com** para preparar una propuesta con los datos de tu camping.

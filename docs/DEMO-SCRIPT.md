@@ -88,7 +88,9 @@ Cerrar con la pregunta abierta: qué nivel encaja con lo que tienen hoy, y qué 
 
 ## Variantes según el interlocutor
 
-- **Camping pequeño, escéptico de pagar por software**: empezar por el minuto 0 (web) y el 11 (niveles), saltarse el planning entero — Camp Web es su venta, no Camp Reservas.
+- **Camping pequeño, escéptico de pagar por software**: empezar por el minuto 0
+  (web) y el 11 (niveles), saltarse el planning entero — Inicio es su puerta de
+  entrada; Gestión es la progresión, no la obligación inicial.
 - **Camping grande con Excel/corcho hoy**: empezar directamente en el minuto 5 (planning) — es lo que más les va a doler de ver que no tienen.
 - **Interlocutor técnico** (el "informático de confianza" de FUNCIONALIDADES.md §11): tener a mano la ficha técnica — Cloudflare Workers/D1, Astro, tests en cada entrega — y saltarse el discurso comercial.
 

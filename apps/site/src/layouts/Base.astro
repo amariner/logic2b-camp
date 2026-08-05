@@ -30,8 +30,9 @@ const OG_LOCALE: Record<Locale, string> = { es: 'es_ES', en: 'en_GB' };
 /* ---------- Datos estructurados (JSON-LD) ----------
  * Solo hechos verificables del producto: nada de `aggregateRating` ni reseñas
  * inventadas —además de ser mentira, Google las penaliza cuando no hay reseñas
- * reales que las respalden—. Sin `offers`: los precios son a medida y decirlo
- * en el marcado exigiría un número que no existe. */
+ * reales que las respalden—. Sin `offers` por ahora: la página mezcla planes
+ * disponibles, uno en desarrollo y otro de roadmap, con condiciones de alta
+ * que deben confirmarse antes de contratar. */
 const datosEstructurados = {
   '@context': 'https://schema.org',
   '@graph': [

@@ -92,7 +92,10 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[4.x/web] El mostrador dentro de la página de alojamiento~~ → **hecho 2026-07-31 (sesión 64)**: la ficha monta el mostrador precargado con SU tipo (prop `soloTipo` en `Mostrador.tsx`, misma isla, mismo `GET /api/availability` — sin endpoint nuevo) y el botón entra al funnel con tipo y fechas puestos. Lo que no estaba en el encargo y resultó ser la mitad del valor: **qué se dice cuando ese tipo NO entra** — como la respuesta ya trae el camping entero, se ofrece la salida al mostrador general **conservando fechas y grupo**, en vez de dejar la ficha en un callejón. A ancho completo FUERA de la rejilla: dentro de la columna de `1fr` su ancho mínimo intrínseco se comía el `1.5fr` de la galería. Dos E2E nuevos + etiquetas en los seis idiomas. Texto original abajo.
 - _(texto original de la línea de arriba)_ [4.x/web] **El mostrador dentro de la página de alojamiento** (observación de Andreu, 2026-07-28, verificada contra el código): en el detalle de un alojamiento NO se puede consultar la disponibilidad de ese alojamiento — el CTA de nivel 3 (`AlojamientoDetalle.astro:57`, `mode === 'instant'`) apunta a `${localePath(locale)}#mostrador`, o sea **de vuelta a la home**, y además **sin precargar el tipo** que el visitante estaba mirando; `Mostrador.tsx` no se monta nunca en el detalle. Es el punto exacto donde se pierden reservas: el visitante ya decidió QUÉ quiere y le mandamos a repetir la selección. Arreglo: montar el mostrador (o variante compacta) en el detalle precargado con ese `unit_type`, o como mínimo que el CTA arrastre el tipo en la URL (el funnel ya lee parámetros desde Fase 5). La degradación por nivel actual (1/2 → `/contacto`) está bien y se conserva. **Candidato cercano de sesión** — es deuda de la demo actual, no del Frente D — 2026-07-28
 - [D] **Frente D — Escaparate: portfolio de 12 demos de campings** (4 × nivel 1 micro + 4 × nivel 2 solicitudes + 4 × nivel 3 con pago — **solo campings**: la primera redacción incluía rural/hostal/hotel y Andreu la rectificó el mismo día; esos verticales serán un **clon del proyecto** cuando toque). Documentado súper detallado en `docs/FRENTE-D-ESCAPARATE.md` (nombres, temas, qué demuestra cada una, fases D0–D6). **NO empezar sin el ADR D0 con Andreu** y no antes de que el backend demo esté muy avanzado — 2026-07-28
-- [D-PRECIO] **Tarifas públicas de Logic2B Campings** — primera versión publicada en `/precios/` y contrato interno en `docs/TARIFAS-LOGIC2B.md`: alta 1.490/2.490/4.900 €, cuotas 69/119/249 €, mantenimiento incluido separado de evolutivos y bolsas 5/10/20 h. **Recalibrar tras medir tres demos**, anotando horas por bloque (marca/contenido · inventario/tarifas · configuración · QA/publicación), no cada intervención manual. El registro exhaustivo se deja para el final por decisión de Andreu; ahora manda vender — 2026-08-03
+- ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
+  2026-08-05 por E1**: `/precios/` publica la escalera 49/149/249/399 € y
+  `docs/TARIFAS-LOGIC2B.md` pasa a v2. Se mantiene la revisión de margen después
+  de los tres primeros clientes, midiendo horas por bloque.
 - [D5] **Landing de venta: sensación de escalabilidad** — galería del portfolio ("Un motor, doce marcas"), franja de cifras (1 código · N alojamientos · D1 aislada · alta en una tarde), recorrido "¿cuántas plazas tienes?" → nivel + demo parecida. La franja de cifras es verdad HOY y no depende del portfolio (versión temprana posible); la galería, solo cuando haya ≥3 demos clicables — nunca prometer lo que no se clica. Detalle en `FRENTE-D-ESCAPARATE.md` §3 — 2026-07-28
 - [D6] **Creatividades de campaña de muestra (Ads display Google/Meta + búsqueda)**: maquetas fake (assets estáticos en `apps/site`, sin cuentas reales ni píxeles) con la marca de las demos, formatos estándar (300×250, 728×90, 160×600, 320×100; 1080×1080, 1080×1920), UTM de mentira que clican al funnel de su demo — para recorrer anuncio → web → reserva en una presentación. Declaradas como muestra en la propia pieza (honestidad comercial). El argumento de fondo: cada reserva por campaña propia es una reserva sin comisión de OTA. Detalle en `FRENTE-D-ESCAPARATE.md` §4 — 2026-07-28
 - [marca] **`docs/brand/` sigue describiendo el isotipo como logo del producto** (resto del ítem cerrado en la 61): la OG image ya está, pero el directorio de marca no se ha revisado desde el cambio de logo — 2026-07-30
@@ -102,6 +105,32 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[web] **La regla dura de niveles está incumplida hoy: un build de nivel 1 SÍ arrastra el motor en el bundle**~~ → **hecho 2026-08-03 (sesión 67)**: aliases de build y `getStaticPaths()` aíslan el motor y sus rutas en niveles 1–2. Verificado con `TIER=1` (126 páginas, cero rutas/chunks del motor) y `TIER=3` (motor conservado).
 - [dashboard] **La portada del gestor no tiene página de guía** (65): `lib/ayuda.ts` la mapea a `null` a propósito —un `?` que lleva a un sitio que no responde la pregunta es peor que no tener `?` (ADR 0025 §5)—, pero es ahora la primera pantalla que ve cualquiera. Una página `recepcion/inicio` que explique las cuatro cifras y para qué sirve cada bloque cierra el hueco. Va en `apps/site/src/content/docs/recepcion/` — 2026-07-31
 - [dashboard] **La portada enseña los trece módulos a todo el mundo, también a quien no puede abrirlos** (65): es el hermano del enlace muerto de la barra lateral («Parte de viajeros» es un muro de permisos para el visitante de la demo y para cualquier recepcionista). Ahora el problema se duplica: el mismo módulo inalcanzable aparece dos veces en pantalla. Lo que se decida para la barra lateral —ocultar por rol o explicar «esto es de gerencia»— hay que aplicarlo a `NAV_GROUPS`, que desde esta sesión es la fuente de las dos — 2026-07-31
+
+## Frente E — Escalera comercial y producto IA
+
+> Aprobado por Andreu el 2026-08-05. Fuente de verdad:
+> `docs/FRENTE-E-ESCALERA-COMERCIAL.md`; ADR 0033 aceptado. E1/E2 cerrados.
+
+- ~~[E0] Validar las cinco preguntas del ADR 0033~~ → **hecho 2026-08-05**:
+  Logic Camp Inicio, 12 meses o 490 €/año, un idioma/un destinatario, endpoint
+  compartido sin persistencia y 149/249/399 como lanzamiento; ADR aceptado.
+- ~~[E1] Remodelar `/precios/` a cuatro niveles~~ → **hecho 2026-08-05**:
+  resultados, precio/alta, condiciones de Inicio, costes de terceros y estados
+  comerciales honestos en `es/en`; SEO, FAQ y guía del dueño alineados.
+- ~~[E2] Sustituir `#niveles` por Inicio → Gestión → Automatiza → Inteligente~~
+  → **hecho 2026-08-05**: selector por problema, escalera 00–03 y CTA propio;
+  héroe orientado a la progresión. Verificado a 1366/375 px, sin desborde.
+- [E3] Construir el tier 0 estático: cero D1/dashboard/motor, formulario con
+  entrega fiable sin persistencia, antispam, privacidad, E2E y onboarding
+  medido ≤1 h — 2026-08-05.
+- [E4] Demo microcamping y campaña “Tu web por 49 €/mes, sin alta”, mostrando
+  de forma visible permanencia o anualidad — 2026-08-05.
+- [E5] Automatiza: completar reseñas/plantillas y añadir IA supervisada para
+  redactar, traducir, resumir y consultar herramientas de solo lectura —
+  2026-08-05.
+- [E6] Inteligente: series y rentabilidad deterministas, previsión con error
+  medido, integraciones por demanda y copiloto sobre servicios tipados —
+  2026-08-05.
 
 ## Frente M — Dashboard móvil
 

@@ -4,6 +4,11 @@
 >
 > Última actualización: julio 2026.
 
+> Nota comercial: los nombres Camp Web/Solicitudes/Reservas/Motor de este
+> inventario describen los **tiers técnicos actuales**. La oferta pública
+> aprobada en el ADR 0033 es Inicio/Gestión/Automatiza/Inteligente; E3 resolverá
+> su mapeo técnico.
+
 ---
 
 ## 1. Qué es Logic Camp

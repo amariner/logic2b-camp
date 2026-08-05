@@ -6,8 +6,8 @@ que se aplican **a la vez**, no por turnos. Ninguna funcionalidad se cierra sin 
 pasado por todas las que le apliquen.
 
 Este documento **no sustituye** a CLAUDE.md (el contrato) ni a los ADR (las
-decisiones). Es la lente con la que se leen: CLAUDE.md dice *qué está prohibido*,
-los ADR *qué se decidió*, y este fichero *desde qué ocho ángulos se juzga* lo nuevo.
+decisiones). Es la lente con la que se leen: CLAUDE.md dice _qué está prohibido_,
+los ADR _qué se decidió_, y este fichero _desde qué ocho ángulos se juzga_ lo nuevo.
 
 > **Regla de oro sobre todas las lentes** (CLAUDE.md §0): ~6h/semana. Cualquier
 > decisión que multiplique el trabajo por número de clientes está prohibida. Alta de
@@ -71,7 +71,7 @@ los ADR *qué se decidió*, y este fichero *desde qué ocho ángulos se juzga* l
 ### 5. Product Designer (producto vendible a campings)
 
 - **Mandato**: que lo que se construye sea lo que un camping real paga y usa.
-- **Le importa**: los cuatro niveles (Camp Web → Solicitudes → Reservas → Motor) como
+- **Le importa**: la escalera comercial (Inicio → Gestión → Automatiza → Inteligente) como
   una escalera de config, no proyectos distintos; que el nivel 1 funcione con el motor
   apagado y sin arrastrarlo en el bundle; priorizar por "¿qué necesita un camping para
   operar en agosto?"; la demo (`camp.logic2b.com`) como herramienta de venta; no
@@ -139,6 +139,7 @@ Los roles chocan a propósito — ahí está el valor. El orden de desempate:
    parar a validar con Andreu. No se resuelve en silencio dentro del código.
 
 Ejemplos de tensión sana:
+
 - UI quiere una foto grande en el héroe; SEO teme el LCP. → Se mide (Lighthouse
   98/96, ADR/PROGRESS sesión 41): `<img fetchpriority="high">` no penaliza. Gana la
   medida, no la intuición.

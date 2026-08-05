@@ -1,7 +1,7 @@
 {
   "seo": {
-    "title": "Logic2B Campings — la web y la recepción de tu camping, resueltas",
-    "description": "Software para campings: web, reservas directas y operativa de recepción conectadas en un solo sistema. De Logic2B, Castellón."
+    "title": "Logic2B Campings — software para campings que crece contigo",
+    "description": "Empieza con una web desde 49 €/mes y escala a gestión, automatización e inteligencia de negocio sin cambiar de plataforma."
   },
   "nav": {
     "producto": "Producto",
@@ -15,13 +15,13 @@
     "verDemo": "Ver la demo en vivo"
   },
   "hero": {
-    "kicker": "Software para campings · de Logic2B",
-    "titulo": "Más reservas directas. Menos trabajo manual en recepción.",
-    "subtitulo": "Conecta la web, la disponibilidad y la operativa diaria de tu camping. El cliente reserva desde tu dominio y el equipo gestiona cada estancia desde una única herramienta.",
-    "ctaDemo": "Pedir una demo",
+    "kicker": "De tu primera web al copiloto del camping",
+    "titulo": "Empieza con una web. Escala hasta dirigir tu camping con IA.",
+    "subtitulo": "Desde 49 €/mes. Primero consigues consultas, después controlas reservas y pagos, automatizas recepción y terminas tomando mejores decisiones con tus datos. Sin cambiar de plataforma por el camino.",
+    "ctaDemo": "Ver cómo puedes escalar",
     "ctaVer": "Ver la web de ejemplo",
     "ctaMostrador": "Probar el gestor",
-    "nota": "Implantación guiada, datos aislados por camping y sin comisión por reserva directa.",
+    "nota": "Plan Inicio: alta 0 €, un idioma y compromiso de 12 meses. Sin comisión por reserva.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
   "problema": {
@@ -104,7 +104,7 @@
       {
         "n": "4",
         "titulo": "niveles del mismo producto",
-        "texto": "De la web con formulario al motor con pagos online. Subir es activar un ajuste, no migrar."
+        "texto": "De la primera web al copiloto del camping. Subir amplía el sistema: no obliga a empezar de nuevo."
       },
       {
         "n": "1",
@@ -112,89 +112,191 @@
         "texto": "Preparamos la configuración inicial con tu inventario, tarifas, contenidos y material de marca."
       }
     ],
-    "nota": "Y en todos los niveles: seis idiomas de serie, tu dominio y tu marca."
+    "nota": "Siempre con tu dominio y tu marca. Inicio incluye un idioma; Gestión y los niveles superiores pueden crecer hasta seis."
   },
   "niveles": {
-    "titulo": "Empieza por donde estás",
-    "subtitulo": "Un mismo sistema, cuatro niveles. Subes de nivel cambiando un ajuste, nunca cambiando de web ni de proveedor.",
+    "kicker": "Una plataforma que crece contigo",
+    "titulo": "Empieza consiguiendo consultas. Termina decidiendo mejor.",
+    "subtitulo": "Activa solo lo que necesitas hoy. Cuando el camping crece, conservas tu web, tu marca y tus datos: amplías capacidades sin cambiar de proveedor.",
     "items": [
       {
-        "nombre": "Camp Web",
-        "para": "Tu primera web que trabaja",
-        "texto": "Web pública moderna en varios idiomas con formulario de solicitud. Cada solicitud queda guardada: es el histórico que hace crecer.",
-        "incluye": [
-          "Web pública multi-idioma",
-          "Formulario de solicitud → tu email",
-          "Tus fotos, tu marca, tu dominio",
-          "SEO y velocidad cuidadas"
-        ]
-      },
-      {
-        "nombre": "Camp Solicitudes",
-        "para": "Cuando quieres orden",
-        "texto": "Todo lo anterior más una bandeja de solicitudes y un panel ligero para no perder ninguna petición.",
-        "incluye": [
-          "Bandeja de solicitudes con estados",
-          "Panel de recepción ligero",
-          "Llegadas y salidas del día"
-        ]
-      },
-      {
-        "nombre": "Camp Reservas",
+        "nombre": "Logic Camp Inicio",
+        "para": "Consigue consultas",
+        "resultado": "Una presencia profesional que convierte visitas en conversaciones con recepción.",
+        "texto": "Una web atractiva y rápida para empezar a vender directo, sin implantar todavía un programa de gestión.",
+        "precio": "49 €/mes",
+        "alta": "Alta 0 €",
+        "estado": "Plan de lanzamiento",
+        "estadoTipo": "disponible",
+        "cta": "Quiero mi web",
+        "href": "#contacto",
         "destacado": true,
-        "para": "El camping completo",
-        "texto": "Motor de reservas real, pagos online, y el gestor completo con el planning. Reserva directa de principio a fin.",
         "incluye": [
-          "Motor de reservas y disponibilidad",
-          "Pagos online (señal, completo o fianza)",
-          "Planning completo con arrastrar y soltar",
-          "Ficha de cliente, informes y tarifas"
+          "Web responsive con tu marca",
+          "Formulario → email de recepción",
+          "Alojamiento, HTTPS y SEO básico",
+          "1 idioma · compromiso de 12 meses"
         ]
       },
       {
-        "nombre": "Camp Motor",
-        "para": "Solo el gestor",
-        "texto": "El motor y el gestor conectados a tu web actual. A medida, cuando ya tienes web y solo te falta el cerebro.",
+        "nombre": "Logic Camp Gestión",
+        "para": "Pon orden en el camping",
+        "resultado": "Disponibilidad, llegadas, cobros y clientes bajo control desde un solo lugar.",
+        "texto": "La plataforma operativa completa para dejar atrás hojas de cálculo, agendas y herramientas separadas.",
+        "precio": "149 €/mes",
+        "alta": "Alta desde 2.900 €",
+        "estado": "Disponible",
+        "estadoTipo": "disponible",
+        "cta": "Ver el gestor",
+        "href": "/admin/",
         "incluye": [
-          "Motor + gestor sobre tu web",
-          "Integración a medida"
-        ],
-        "aMedida": true
+          "Web y motor de reservas",
+          "Planning y plano del camping",
+          "Clientes, tarifas y pagos",
+          "Check-in, check-out e informes"
+        ]
+      },
+      {
+        "nombre": "Logic Camp Automatiza",
+        "para": "Ahorra tiempo cada día",
+        "resultado": "Recepción responde antes y el sistema se ocupa de lo que hoy depende de acordarse.",
+        "texto": "Automatizaciones y asistencia de IA para reducir seguimiento manual sin ceder el control de las decisiones.",
+        "precio": "249 €/mes",
+        "alta": "Alta desde 3.900 €",
+        "estado": "En desarrollo",
+        "estadoTipo": "desarrollo",
+        "cta": "Quiero participar",
+        "href": "#contacto",
+        "incluye": [
+          "Correos, recordatorios y reseñas",
+          "Respuestas y traducción con IA",
+          "Búsqueda y resúmenes inteligentes",
+          "Presupuestos supervisados y WhatsApp"
+        ]
+      },
+      {
+        "nombre": "Logic Camp Inteligente",
+        "para": "Decide mejor con tus datos",
+        "resultado": "Detecta riesgos, entiende la rentabilidad y prepara la siguiente acción con contexto real.",
+        "texto": "Inteligencia de negocio, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.",
+        "precio": "399 €/mes",
+        "alta": "Alta desde 5.900 €",
+        "estado": "Roadmap",
+        "estadoTipo": "vision",
+        "cta": "Conocer la visión",
+        "href": "#contacto",
+        "incluye": [
+          "Rentabilidad y comparativas",
+          "Previsión de ocupación e ingresos",
+          "Precios, promociones e integraciones",
+          "Copiloto con confirmación humana"
+        ]
       }
     ],
-    "nota": "Alta desde 1.490 € y planes desde 69 €/mes. Sin comisión por reserva.",
-    "recomendado": "Recomendado",
+    "nota": "Desde 49 €/mes, sin comisión por reserva. Inicio: alta 0 €, un idioma y compromiso de 12 meses. Importes sin IVA.",
+    "recomendado": "Sin alta",
     "selector": {
-      "pregunta": "¿Cuántas parcelas tienes?",
+      "pregunta": "¿Qué quieres resolver ahora?",
       "opciones": [
-        "Menos de 25",
-        "Entre 25 y 100",
-        "Más de 100",
-        "Ya tengo web"
+        "Necesito una web",
+        "Quiero controlar las reservas",
+        "Quiero ahorrar tiempo",
+        "Quiero decidir con datos"
       ],
-      "resultado": "Tu punto de partida: {nivel}. Cuando crezcas, subes cambiando un ajuste."
+      "resultado": "Tu siguiente paso: {nivel}. Cuando lo necesites, amplías capacidades sin cambiar de sistema."
     }
   },
   "precios": {
     "seo": {
-      "title": "Precios de Logic2B Campings — planes, altas y desarrollo",
-      "description": "Precios transparentes para la web, las solicitudes y el motor de reservas de tu camping. Alta, cuota, mantenimiento y desarrollo a medida separados."
+      "title": "Precios de Logic2B Campings — de tu primera web al copiloto",
+      "description": "Cuatro niveles claros para campings: web desde 49 €/mes, gestión, automatización e inteligencia de negocio, sin comisión por reserva."
     },
     "kicker": "Precios claros · sin comisión por reserva",
-    "titulo": "Paga por el nivel que necesitas hoy.",
-    "intro": "Separamos la puesta en marcha, la cuota del producto y los desarrollos propios. Así sabes qué mantiene el sistema y qué corresponde a una mejora nueva.",
-    "iva": "Importes sin IVA. Los servicios de terceros, dominio y comisiones de pasarela se facturan aparte cuando apliquen.",
-    "planesTitulo": "Planes del producto",
+    "titulo": "Empieza pequeño. Escala sin volver a empezar.",
+    "intro": "Primero consigues consultas. Después controlas el camping, automatizas trabajo y utilizas tus datos para decidir mejor. La web, la marca y el sistema crecen contigo.",
+    "iva": "Importes sin IVA. Inicio exige 12 meses o 490 €/año. Dominio, servicios de terceros e integraciones específicas se facturan aparte cuando apliquen.",
+    "planesTitulo": "Cuatro pasos, una sola plataforma",
     "altaLabel": "Alta",
     "cuotaLabel": "Cuota",
     "planes": [
-      { "nombre": "Camp Web", "alta": "1.490 €", "cuota": "69 €/mes", "texto": "Web multi-idioma con tu marca, dominio, SEO técnico y solicitudes por email.", "para": "Para empezar a vender directo" },
-      { "nombre": "Camp Solicitudes", "alta": "2.490 €", "cuota": "119 €/mes", "texto": "Todo Camp Web más bandeja, histórico y gestor ligero para recepción.", "para": "Para ordenar lo que hoy llega por correo" },
-      { "nombre": "Camp Reservas", "alta": "4.900 €", "cuota": "249 €/mes", "texto": "Motor de reservas, planning, clientes, cobros e informes. Sin porcentaje sobre tus reservas.", "para": "Para operar el camping completo", "destacado": true }
+      {
+        "nombre": "Inicio",
+        "para": "Consigue consultas",
+        "resultado": "Una web atractiva que pone al camping en marcha online.",
+        "alta": "0 €",
+        "cuota": "49 €/mes",
+        "estado": "Plan de lanzamiento",
+        "estadoTipo": "disponible",
+        "texto": "Web responsive con tu marca y formulario directo al correo de recepción. Sin gestor, motor ni histórico.",
+        "incluye": [
+          "Web, alojamiento y HTTPS",
+          "Formulario → recepción",
+          "SEO básico y 1 idioma",
+          "Compromiso de 12 meses"
+        ],
+        "cta": "Quiero mi web",
+        "href": "/#contacto",
+        "destacado": true
+      },
+      {
+        "nombre": "Gestión",
+        "para": "Controla el camping",
+        "resultado": "Toda la operativa diaria en una sola plataforma.",
+        "alta": "desde 2.900 €",
+        "cuota": "149 €/mes",
+        "estado": "Disponible",
+        "estadoTipo": "disponible",
+        "texto": "Web, motor, planning, plano, reservas, clientes, tarifas, cobros e informes.",
+        "incluye": [
+          "Motor de reservas",
+          "Planning y plano",
+          "Clientes, pagos y tarifas",
+          "Check-in e informes"
+        ],
+        "cta": "Ver la demo",
+        "href": "/admin/"
+      },
+      {
+        "nombre": "Automatiza",
+        "para": "Ahorra tiempo",
+        "resultado": "El sistema se ocupa de tareas repetitivas y recepción responde antes.",
+        "alta": "desde 3.900 €",
+        "cuota": "249 €/mes",
+        "estado": "En desarrollo",
+        "estadoTipo": "desarrollo",
+        "texto": "Todo Gestión más comunicaciones, reseñas, estadísticas y asistencia de IA supervisada.",
+        "incluye": [
+          "Recordatorios y reseñas",
+          "Redacción y traducción IA",
+          "Búsqueda y resúmenes",
+          "Presupuestos y WhatsApp"
+        ],
+        "cta": "Hablar del piloto",
+        "href": "/#contacto"
+      },
+      {
+        "nombre": "Inteligente",
+        "para": "Decide mejor",
+        "resultado": "Rentabilidad, previsiones y recomendaciones apoyadas en tus datos.",
+        "alta": "desde 5.900 €",
+        "cuota": "399 €/mes",
+        "estado": "Roadmap",
+        "estadoTipo": "vision",
+        "texto": "Todo Automatiza más inteligencia de negocio, integraciones y copiloto en lenguaje natural.",
+        "incluye": [
+          "Rentabilidad y comparativas",
+          "Previsión y alertas",
+          "Precios e integraciones",
+          "Copiloto supervisado"
+        ],
+        "cta": "Conocer la visión",
+        "href": "/#contacto"
+      }
     ],
     "incluyeTitulo": "La cuota incluye mantenimiento de verdad",
     "incluye": [
-      "Alojamiento y operación de tu instancia aislada",
+      "Alojamiento, HTTPS y operación de tu web pública",
+      "En Gestión y superiores, instancia y base de datos aisladas",
       "Actualizaciones generales y parches de seguridad",
       "Monitorización, copias y resolución de incidencias del producto",
       "Soporte por email con respuesta objetivo de 2 días laborables"
@@ -203,17 +305,49 @@
     "desarrolloTitulo": "Desarrollo y mejoras",
     "desarrolloIntro": "Antes de empezar acordamos el alcance. Una incidencia del producto está incluida; una idea nueva se estima y se aprueba.",
     "bolsas": [
-      { "nombre": "Diagnóstico y propuesta", "precio": "290 €", "texto": "Auditoría, alcance y presupuesto cerrado. Se descuenta si ejecutamos el proyecto." },
-      { "nombre": "Bolsa de 5 horas", "precio": "350 €", "texto": "Para cambios pequeños y bien definidos." },
-      { "nombre": "Bolsa de 10 horas", "precio": "650 €", "texto": "Para agrupar varias mejoras con mejor tarifa." },
-      { "nombre": "Sprint de 20 horas", "precio": "1.200 €", "texto": "Una entrega acotada con implementación y revisión." }
+      {
+        "nombre": "Diagnóstico y propuesta",
+        "precio": "290 €",
+        "texto": "Auditoría, alcance y presupuesto cerrado. Se descuenta si ejecutamos el proyecto."
+      },
+      {
+        "nombre": "Bolsa de 5 horas",
+        "precio": "350 €",
+        "texto": "Para cambios pequeños y bien definidos."
+      },
+      {
+        "nombre": "Bolsa de 10 horas",
+        "precio": "650 €",
+        "texto": "Para agrupar varias mejoras con mejor tarifa."
+      },
+      {
+        "nombre": "Sprint de 20 horas",
+        "precio": "1.200 €",
+        "texto": "Una entrega acotada con implementación y revisión."
+      }
     ],
     "packsTitulo": "Servicios de lanzamiento",
     "packs": [
-      { "nombre": "Migración", "precio": "desde 600 €", "texto": "Importación desde una fuente estructurada, tras revisar una muestra." },
-      { "nombre": "Identidad y contenido", "precio": "desde 900 €", "texto": "Dirección visual, adaptación de marca y textos principales." },
-      { "nombre": "SEO local de salida", "precio": "490 €", "texto": "Metadatos, Search Console, ficha de negocio y medición inicial." },
-      { "nombre": "Campaña de lanzamiento", "precio": "desde 750 €", "texto": "Creatividades y configuración. Inversión publicitaria aparte." }
+      {
+        "nombre": "Migración",
+        "precio": "desde 600 €",
+        "texto": "Importación desde una fuente estructurada, tras revisar una muestra."
+      },
+      {
+        "nombre": "Identidad y contenido",
+        "precio": "desde 900 €",
+        "texto": "Dirección visual, adaptación de marca y textos principales."
+      },
+      {
+        "nombre": "SEO local de salida",
+        "precio": "490 €",
+        "texto": "Metadatos, Search Console, ficha de negocio y medición inicial."
+      },
+      {
+        "nombre": "Campaña de lanzamiento",
+        "precio": "desde 750 €",
+        "texto": "Creatividades y configuración. Inversión publicitaria aparte."
+      }
     ],
     "ctaTitulo": "Te enseñamos el nivel con tus datos",
     "ctaTexto": "Cuéntanos cuántas unidades tienes, cómo gestionas hoy las reservas y qué material ya está listo. Te devolvemos un alcance cerrado.",
@@ -226,6 +360,10 @@
   "faq": {
     "titulo": "Preguntas que nos hacen",
     "items": [
+      {
+        "q": "¿Qué incluye exactamente el plan Inicio de 49 €?",
+        "a": "Una web responsive con tu marca, alojamiento, HTTPS, SEO básico, un idioma y un formulario que envía cada consulta al correo de recepción. No incluye gestor, motor de reservas ni histórico; es el primer escalón y tiene un compromiso de 12 meses."
+      },
       {
         "q": "¿Tengo que cambiar mi dominio?",
         "a": "No. Tu web vive en tu propio dominio, con tu marca. Nosotros ponemos el motor por debajo."
@@ -244,7 +382,7 @@
       },
       {
         "q": "¿En cuánto tiempo lo tengo?",
-        "a": "Depende del plan, las integraciones y la calidad de los datos de partida. Antes de comenzar acordamos el alcance, los materiales necesarios y una fecha realista de publicación."
+        "a": "Depende del nivel, las integraciones y la calidad de los datos de partida. Antes de empezar cerramos alcance, materiales y fecha de salida; Inicio tiene un proceso acotado y Gestión requiere configurar inventario, tarifas y operativa."
       }
     ]
   },

@@ -122,6 +122,11 @@ continúa con el desarrollo de este proyecto
 
 ## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
 
+- **[E3] Producto mínimo de Logic Camp Inicio (recomendado con Andreu
+  presente):** diseñar el tier 0 estático sin motor/dashboard/D1 y cerrar el
+  endpoint compartido del formulario sin persistencia, antispam, privacidad y
+  onboarding acotado. E0–E2 ya están cerrados: no reabrir copy/precios salvo
+  hallazgo comercial concreto.
 - **[seed] `created_at` de las ~3.500 reservas (recomendado)**: hoy coincide con
   el ancla; derivarlo del canal (mostrador = llegada, web = meses antes) sin
   perder determinismo ni las propiedades temporales del seed.

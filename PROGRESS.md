@@ -4,6 +4,17 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión guiada (78, 2026-08-05): Frente E, E0–E2 cerrados.** ADR 0033
+  aceptado y landing comercial reescrita como Inicio → Gestión → Automatiza →
+  Inteligente, con cuotas **49/149/249/399 €**, altas, resultados y estado real.
+  El héroe vende la progresión; el selector pregunta qué necesita resolver el
+  camping; `/precios/`, FAQ y las tres guías del dueño ya no contradicen la
+  oferta. Inicio declara alta 0 €, un idioma, formulario directo a recepción y
+  12 meses/490 € anual; sin PMS, dashboard, D1 ni histórico. Automatiza figura
+  “En desarrollo” e Inteligente “Roadmap”. Verificado `site` typecheck/build,
+  navegador a 1366/375 px, cero desborde y cero errores de consola. **E3 queda
+  pendiente:** construir el tier 0 y su entrega de formulario antes de escalar
+  campañas. Sin deploy remoto.
 - **Última sesión autónoma (77, 2026-08-04)**: M6 cierra el Frente M reduciendo
   la entrada del gestor de **785,80/234,75 kB a 533,71/170,04 kB min/gzip**.
   Las 14 pantallas son chunks de ruta con `lazyRouteComponent`, fallback

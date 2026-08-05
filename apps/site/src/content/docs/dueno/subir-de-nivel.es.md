@@ -5,53 +5,42 @@ lang: es
 orden: 2
 ---
 
-Esta es la pregunta que de verdad importa antes de empezar por abajo: **¿me voy a arrepentir de empezar pequeño?**
+La pregunta importante antes de empezar por abajo es: **¿tendré que volver a empezar cuando necesite más?** No. La escalera está diseñada para conservar lo que ya funciona y añadir capacidades.
 
-La respuesta es no, y esta página explica por qué.
+## Lo que no cambia
 
-## Lo que NO cambia
+- **Tu dominio**: la web sigue en la misma dirección.
+- **Tu marca y contenido**: se conservan diseño, páginas, textos y fotos; pueden ampliarse.
+- **Tus URLs y posicionamiento**: se evita rehacer la estructura sin necesidad.
+- **Los datos ya almacenados en Gestión**: no se abandonan al activar niveles superiores.
 
-Al subir de nivel se queda **todo** tal cual:
+Inicio es la excepción: sus consultas llegan al correo y Logic2B no las guarda. Al pasar a Gestión, el histórico empieza en la nueva plataforma; los correos anteriores siguen en tu buzón.
 
-- **Tu dominio**. La web sigue en la misma dirección.
-- **Tu web**: las mismas páginas, las mismas fotos, el mismo diseño, los mismos idiomas.
-- **Tu posicionamiento en Google**. No hay direcciones nuevas ni redirecciones, así que no se pierde lo ganado.
-- **Tu histórico**: todas las solicitudes recibidas desde el primer día siguen ahí.
-- **Tus datos**. No hay migración, porque no se cambia de sitio nada.
+## Lo que aparece
 
-## Lo que sí cambia
-
-Aparece lo que estaba apagado:
-
-| Al pasar a           | Aparece                                                                                                                                 |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| **Camp Solicitudes** | La bandeja de solicitudes y el panel de llegadas/salidas                                                                                |
-| **Camp Reservas**    | El buscador de disponibilidad en la portada, la reserva online completa, y el gestor entero: planning, plano, fichas, tarifas, informes |
-
-En Camp Reservas, la portada gana el **buscador de fechas** como protagonista. Es el cambio más visible para tu cliente.
+| Al pasar a      | Aparece                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------- |
+| **Gestión**     | Disponibilidad, motor, planning, plano, clientes, pagos, tarifas e informes                       |
+| **Automatiza**  | Comunicaciones automáticas e IA supervisada para buscar, redactar, traducir y preparar respuestas |
+| **Inteligente** | Rentabilidad, previsiones, integraciones y copiloto con confirmación humana                       |
 
 ## Cuánto tarda
 
-**Una tarde.** No es una frase comercial: es la restricción con la que está construido el producto. Subir de nivel es un cambio de configuración, no un proyecto.
+Depende del salto. Activar una capacidad ya configurada puede ser rápido; pasar de Inicio a Gestión exige preparar inventario, tarifas, reglas y operativa. Antes de empezar cerramos alcance y fecha.
 
-Lo que sí lleva su trabajo —y lo hacemos juntos— es preparar los datos que el motor necesita y que antes no hacían falta:
+Para activar el motor necesitamos:
 
-- Tus **tipos de alojamiento** con su capacidad y sus características.
-- Tus **temporadas** y las **tarifas** de cada tipo en cada una.
-- Tus **reglas**: estancia mínima por temporada, días de entrada si los tienes, política de cancelación.
-- Tus **unidades físicas** (parcelas y alojamientos, uno a uno) para que funcione el planning.
+- Tipos de alojamiento, capacidades y características.
+- Temporadas y tarifas.
+- Reglas de estancia y política de cancelación.
+- Unidades físicas para el planning.
 
-Eso es información que ya tienes; se trata de pasarla una vez.
+## Cobro online
 
-## Y si quiero cobrar online
+Se activa cuando lo necesites mediante una pasarela acordada. Puedes empezar en Gestión sin cobro online y añadirlo después sin rehacer el resto de la plataforma.
 
-Es aparte y se puede activar cuando quieras, también sin tocar nada del sistema:
+## Qué se paga al subir
 
-- **Stripe** — cuenta propia, alta rápida.
-- **Redsys** — la pasarela de los bancos españoles; el contrato lo firmas con tu banco.
+No se cobra una segunda alta completa. Se presupuesta la diferencia de activación y el trabajo nuevo real: carga de inventario, migración, integraciones o contenido adicional. Así empezar pequeño no penaliza, pero tampoco oculta el trabajo que requiere el siguiente nivel.
 
-Puedes empezar en Camp Reservas **sin cobro online** (la reserva confirma igual y cobras en recepción, como siempre) y encender el cobro más adelante. Muchos campings lo hacen así el primer verano.
-
-## Bajar de nivel
-
-También se puede. Si un año decides que no quieres el motor, se apaga y la web sigue funcionando como Camp Web. **Tus datos no se borran**; se quedan esperando.
+Automatiza e Inteligente siguen marcados como **en desarrollo** y **roadmap** hasta cumplir sus criterios de producto. La página de [precios](/precios/) muestra siempre el estado comercial vigente.

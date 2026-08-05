@@ -1,8 +1,9 @@
-# TARIFAS LOGIC2B CAMPINGS — modelo comercial v1
+# TARIFAS LOGIC2B CAMPINGS — modelo comercial v2
 
-> Propuesta interna para publicar precios transparentes sin confundir producto,
-> puesta en marcha y trabajo a medida. Revisar cuando haya tres demos terminadas
-> y después del primer cliente. Importes sin IVA.
+> Modelo aceptado el 2026-08-05 para publicar precios transparentes sin
+> confundir producto, puesta en marcha y trabajo a medida. Revisar después de
+> los tres primeros clientes. Importes sin IVA. Contrato completo en el
+> ADR 0033 y ejecución en `docs/FRENTE-E-ESCALERA-COMERCIAL.md`.
 
 ## 1. Principios
 
@@ -15,27 +16,27 @@
 3. **El mantenimiento correctivo del producto está incluido.** Una avería o una
    actualización de seguridad no consume bolsa de horas. Cambios de contenido,
    nuevas integraciones y funcionalidades propias sí son desarrollo.
-4. **El precio de entrada debe permitir servicio real.** El propio contrato del
-   proyecto sitúa la conversación comercial alrededor de 60 €/mes para la web y
-   250 €/mes para el motor. El mercado español visible incluye ofertas de PMS
-   alrededor de 85 €/mes más coste por reserva; Logic2B compite con instancia,
-   web y marca propias, no solo con un calendario.
+4. **Inicio es un gancho acotado, no un proyecto web ilimitado.** Los 49 €/mes
+   funcionan con alta 0 €, un idioma, un único destinatario en recepción,
+   material entregado por el camping y compromiso de 12 meses o 490 €/año. No
+   incluye backend, motor de reservas ni histórico de consultas.
 5. **No vender horas de IA; vender alcance y responsabilidad.** Las horas sirven
    para estimar margen y capacidad, no para penalizar la eficiencia.
 
 ## 2. Planes de producto
 
-| Plan | Alta desde | Cuota | Alcance base |
-| --- | ---: | ---: | --- |
-| Camp Web | 1.490 € | 69 €/mes | Web, marca, dominio, varios idiomas, SEO técnico, solicitudes por email |
-| Camp Solicitudes | 2.490 € | 119 €/mes | Todo Web + bandeja, histórico y gestor ligero |
-| Camp Reservas | 4.900 € | 249 €/mes | Todo Solicitudes + motor, planning, clientes, cobros e informes |
-| Camp Motor | A medida | A medida | Integración con web ajena; no ofertar hasta validar alcance real |
+| Paso | Plan        | Alta desde |     Cuota | Estado        | Resultado principal                                                     |
+| ---: | ----------- | ---------: | --------: | ------------- | ----------------------------------------------------------------------- |
+|   00 | Inicio      |        0 € |  49 €/mes | Lanzamiento   | Web atractiva + formulario directo al email de recepción                |
+|   01 | Gestión     |    2.900 € | 149 €/mes | Disponible    | Reservas, clientes, planning, pagos, web y motor en una sola plataforma |
+|   02 | Automatiza  |    3.900 € | 249 €/mes | En desarrollo | Comunicaciones, tareas repetitivas e IA supervisada                     |
+|   03 | Inteligente |    5.900 € | 399 €/mes | Roadmap       | BI, previsiones, integraciones y copiloto con confirmación humana       |
 
-La cifra «desde» presupone material utilizable entregado por el camping, un
+Las cifras «desde» presuponen material utilizable entregado por el camping, un
 catálogo razonable y adaptación dentro de los puntos de configuración actuales.
 Migraciones complejas, fotografía, redacción extensa o integraciones heredadas
-se presupuestan aparte.
+se presupuestan aparte. Automatiza e Inteligente expresan la dirección y el
+precio objetivo; no se presentan como funcionalidad disponible hoy.
 
 ### Referencias usadas (consulta 2026-08-03)
 
@@ -47,11 +48,11 @@ se presupuestan aparte.
   infraestructura, correctivos y actualizaciones forman parte de la cuota. Véase
   [Plugcore](https://plugcore.com/es/blog-y-noticias/cuanto-cuesta-el-mantenimiento-web)
   y [Vibra Marketing](https://vibramarketing.es/noticias/mantenimiento-web-mensual-que-incluye-precios-2026).
-- El contrato fundador de este repositorio ya fijaba dos anclas comerciales:
-  empezar la conversación de Camp Web alrededor de 60 €/mes y la del motor en
-  250 €/mes (`LOGIC-CAMP-Super-Prompt.md` §2). Los 69/249 € publicados respetan
-  esa tesis; 119 € ocupa el escalón intermedio sin acercarlo artificialmente al
-  producto completo.
+- El contrato fundador de este repositorio fijaba dos anclas comerciales:
+  empezar la conversación de la web alrededor de 60 €/mes y la del motor en
+  250 €/mes (`LOGIC-CAMP-Super-Prompt.md` §2). Inicio baja a 49 €/mes porque
+  elimina alta, backend e histórico y exige compromiso; Automatiza conserva el
+  ancla de 249 €/mes para el escalón en el que entra la IA operativa.
 
 Estas referencias no calculan el margen de Logic2B. Ese cálculo lo darán las
 tres primeras demos mediante la fórmula de §6; si no deja margen, cambia el alta
@@ -59,7 +60,8 @@ o el alcance, no se finge que el trabajo cuesta menos.
 
 ## 3. Qué incluye la cuota
 
-- Alojamiento y operación de la instancia Logic2B en Cloudflare.
+- Alojamiento, HTTPS y operación de la web pública en Cloudflare.
+- En Gestión y superiores, operación de la instancia y base de datos aislada.
 - Actualizaciones funcionales generales y parches de seguridad.
 - Copias/exportación según el runbook del producto.
 - Monitorización técnica y resolución de incidencias del producto.
@@ -72,13 +74,13 @@ exclusivos del cliente.
 
 ## 4. Desarrollo y mantenimiento evolutivo
 
-| Modalidad | Precio | Uso |
-| --- | ---: | --- |
-| Diagnóstico y propuesta | 290 € | Auditoría, alcance, riesgos y presupuesto cerrado; descontable si se contrata el proyecto |
-| Bolsa 5 h | 350 € | Cambios concretos y pequeños, 70 €/h efectiva |
-| Bolsa 10 h | 650 € | Mejoras agrupadas, 65 €/h efectiva |
-| Sprint 20 h | 1.200 € | Entrega acotada con revisión, 60 €/h efectiva |
-| Urgencia | 90 €/h | Intervención prioritaria fuera del SLA ordinario, mínimo 2 h |
+| Modalidad               |  Precio | Uso                                                                                       |
+| ----------------------- | ------: | ----------------------------------------------------------------------------------------- |
+| Diagnóstico y propuesta |   290 € | Auditoría, alcance, riesgos y presupuesto cerrado; descontable si se contrata el proyecto |
+| Bolsa 5 h               |   350 € | Cambios concretos y pequeños, 70 €/h efectiva                                             |
+| Bolsa 10 h              |   650 € | Mejoras agrupadas, 65 €/h efectiva                                                        |
+| Sprint 20 h             | 1.200 € | Entrega acotada con revisión, 60 €/h efectiva                                             |
+| Urgencia                |  90 €/h | Intervención prioritaria fuera del SLA ordinario, mínimo 2 h                              |
 
 Las bolsas caducan a los seis meses y se consumen únicamente con trabajo
 aceptado. Antes de empezar se entrega una estimación; si cambia el alcance se

@@ -1,7 +1,7 @@
 {
   "seo": {
-    "title": "Logic2B Campings — your campsite's website and front desk, solved",
-    "description": "Software for campsites: a modern public website, a real booking engine and a front-desk manager in one system. Live in an afternoon. By Logic2B, Spain."
+    "title": "Logic2B Campings — campsite software that grows with you",
+    "description": "Start with a website from €49/month and scale to management, automation and business intelligence without changing platform."
   },
   "nav": {
     "producto": "Product",
@@ -15,13 +15,13 @@
     "verDemo": "See the live demo"
   },
   "hero": {
-    "kicker": "Software for campsites · by Logic2B",
-    "titulo": "Your campsite's website and front desk, in one system.",
-    "subtitulo": "A public website that sells on its own and a manager your front desk understands from day one. No spreadsheets, no double bookings, no portal keeping its commission.",
-    "ctaDemo": "Request a demo",
+    "kicker": "From your first website to the campsite copilot",
+    "titulo": "Start with a website. Scale to running your campsite with AI.",
+    "subtitulo": "From €49/month. First win enquiries, then control bookings and payments, automate reception and make better decisions with your data. Without changing platform along the way.",
+    "ctaDemo": "See how you can scale",
     "ctaVer": "See the example website",
     "ctaMostrador": "Enter the campsite manager",
-    "nota": "A new campsite goes live in an afternoon. No lock-in to start.",
+    "nota": "Start plan: €0 setup, one language and a 12-month commitment. No booking commission.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
   },
   "problema": {
@@ -104,7 +104,7 @@
       {
         "n": "4",
         "titulo": "levels of the same product",
-        "texto": "From a website with a form to an engine with online payments. Upgrading is switching a setting, not migrating."
+        "texto": "From your first website to the campsite copilot. Moving up extends the system instead of starting over."
       },
       {
         "n": "1",
@@ -112,100 +112,242 @@
         "texto": "With your photos, your unit types and your rates, your instance is set up and running in an afternoon."
       }
     ],
-    "nota": "And at every level: six languages built in, your own domain and your own brand."
+    "nota": "Always on your domain and with your brand. Start includes one language; Management and the higher levels can grow to six."
   },
   "niveles": {
-    "titulo": "Start where you are",
-    "subtitulo": "One system, four levels. You move up by changing a setting, never by changing website or provider.",
+    "kicker": "One platform that grows with you",
+    "titulo": "Start by winning enquiries. Grow into better decisions.",
+    "subtitulo": "Activate only what you need today. As the campsite grows, you keep your website, brand and data: you add capabilities without changing provider.",
     "items": [
       {
-        "nombre": "Camp Web",
-        "para": "Your first website that works",
-        "texto": "A modern multi-language public website with a request form. Every request is stored: it's the history that makes you grow.",
-        "incluye": [
-          "Multi-language public website",
-          "Request form → your inbox",
-          "Your photos, your brand, your domain",
-          "SEO and speed taken care of"
-        ]
-      },
-      {
-        "nombre": "Camp Requests",
-        "para": "When you want order",
-        "texto": "Everything above plus a requests inbox and a light panel so you never lose an enquiry.",
-        "incluye": [
-          "Requests inbox with statuses",
-          "Light front-desk panel",
-          "Today's arrivals and departures"
-        ]
-      },
-      {
-        "nombre": "Camp Bookings",
+        "nombre": "Logic Camp Start",
+        "para": "Win enquiries",
+        "resultado": "A professional presence that turns visits into conversations with reception.",
+        "texto": "An attractive, fast website to start selling direct without implementing management software yet.",
+        "precio": "€49/month",
+        "alta": "€0 setup",
+        "estado": "Launch plan",
+        "estadoTipo": "disponible",
+        "cta": "I want my website",
+        "href": "/en/#contacto",
         "destacado": true,
-        "para": "The complete campsite",
-        "texto": "A real booking engine, online payments, and the full manager with the planner. Direct booking end to end.",
         "incluye": [
-          "Booking and availability engine",
-          "Online payments (deposit, full or bond)",
-          "Full planner with drag and drop",
-          "Guest file, reports and rates"
+          "Responsive website with your brand",
+          "Form → reception email",
+          "Hosting, HTTPS and basic SEO",
+          "1 language · 12-month commitment"
         ]
       },
       {
-        "nombre": "Camp Engine",
-        "para": "Just the manager",
-        "texto": "The engine and manager wired into your current website. Custom, when you already have a site and only need the brain.",
+        "nombre": "Logic Camp Management",
+        "para": "Bring order to the campsite",
+        "resultado": "Availability, arrivals, payments and guests under control in one place.",
+        "texto": "The complete operating platform to leave spreadsheets, diaries and disconnected tools behind.",
+        "precio": "€149/month",
+        "alta": "Setup from €2,900",
+        "estado": "Available",
+        "estadoTipo": "disponible",
+        "cta": "See the manager",
+        "href": "/admin/",
         "incluye": [
-          "Engine + manager on your site",
-          "Custom integration"
-        ],
-        "aMedida": true
+          "Website and booking engine",
+          "Planner and campsite map",
+          "Guests, rates and payments",
+          "Check-in, check-out and reports"
+        ]
+      },
+      {
+        "nombre": "Logic Camp Automate",
+        "para": "Save time every day",
+        "resultado": "Reception responds sooner while the system handles what currently depends on someone remembering.",
+        "texto": "Automation and supervised AI assistance reduce manual follow-up while people keep control of every decision.",
+        "precio": "€249/month",
+        "alta": "Setup from €3,900",
+        "estado": "In development",
+        "estadoTipo": "desarrollo",
+        "cta": "Join the pilot",
+        "href": "/en/#contacto",
+        "incluye": [
+          "Emails, reminders and reviews",
+          "AI answers and translation",
+          "Smart search and summaries",
+          "Supervised quotes and WhatsApp"
+        ]
+      },
+      {
+        "nombre": "Logic Camp Intelligence",
+        "para": "Decide better with your data",
+        "resultado": "Spot risks, understand profitability and prepare the next action with real context.",
+        "texto": "Business intelligence, integrations and a copilot to query and prepare actions in natural language.",
+        "precio": "€399/month",
+        "alta": "Setup from €5,900",
+        "estado": "Roadmap",
+        "estadoTipo": "vision",
+        "cta": "Explore the vision",
+        "href": "/en/#contacto",
+        "incluye": [
+          "Profitability and comparisons",
+          "Occupancy and revenue forecasting",
+          "Pricing, promotions and integrations",
+          "Copilot with human confirmation"
+        ]
       }
     ],
-    "nota": "Setup from €1,490 and plans from €69/month. No booking commission.",
-    "recomendado": "Recommended",
+    "nota": "From €49/month, with no booking commission. Start: €0 setup, one language and a 12-month commitment. Prices exclude VAT.",
+    "recomendado": "No setup fee",
     "selector": {
-      "pregunta": "How many pitches do you have?",
+      "pregunta": "What do you need to solve now?",
       "opciones": [
-        "Fewer than 25",
-        "25 to 100",
-        "More than 100",
-        "I already have a website"
+        "I need a website",
+        "I want to control bookings",
+        "I want to save time",
+        "I want data-led decisions"
       ],
-      "resultado": "Your starting point: {nivel}. As you grow, you move up by changing a setting."
+      "resultado": "Your next step: {nivel}. When you need more, add capabilities without changing system."
     }
   },
   "precios": {
-    "seo": { "title": "Logic2B Campings pricing — plans, setup and development", "description": "Transparent pricing for your campsite website, enquiries and booking engine, separating setup, subscription, maintenance and custom development." },
+    "seo": {
+      "title": "Logic2B Campings pricing — from your first website to the copilot",
+      "description": "Four clear levels for campsites: website from €49/month, management, automation and business intelligence, with no booking commission."
+    },
     "kicker": "Clear pricing · no booking commission",
-    "titulo": "Pay for the level you need today.",
-    "intro": "Setup, product subscription and custom development are separate, so you always know what keeps the system running and what is a new improvement.",
-    "iva": "Prices exclude VAT. Third-party services, domain and payment fees are billed separately where applicable.",
-    "planesTitulo": "Product plans",
+    "titulo": "Start small. Scale without starting over.",
+    "intro": "First you win enquiries. Then you control operations, automate work and use your data to decide better. Your website, brand and system grow with you.",
+    "iva": "Prices exclude VAT. Start requires a 12-month commitment or €490/year. Domain, third-party services and specific integrations are billed separately where applicable.",
+    "planesTitulo": "Four steps, one platform",
     "altaLabel": "Setup",
     "cuotaLabel": "Subscription",
     "planes": [
-      { "nombre": "Camp Web", "alta": "€1,490", "cuota": "€69/month", "texto": "Multilingual website with your brand, domain, technical SEO and email enquiries.", "para": "Start selling direct" },
-      { "nombre": "Camp Enquiries", "alta": "€2,490", "cuota": "€119/month", "texto": "Everything in Camp Web plus an enquiry inbox, history and a light front-desk manager.", "para": "Organise what arrives by email" },
-      { "nombre": "Camp Bookings", "alta": "€4,900", "cuota": "€249/month", "texto": "Booking engine, planner, guests, payments and reports, with no percentage fee on bookings.", "para": "Run the complete campsite", "destacado": true }
+      {
+        "nombre": "Start",
+        "para": "Win enquiries",
+        "resultado": "An attractive website that gets the campsite moving online.",
+        "alta": "€0",
+        "cuota": "€49/month",
+        "estado": "Launch plan",
+        "estadoTipo": "disponible",
+        "texto": "Responsive website with your brand and a form sent directly to reception. No manager, booking engine or enquiry history.",
+        "incluye": [
+          "Website, hosting and HTTPS",
+          "Form → reception",
+          "Basic SEO and 1 language",
+          "12-month commitment"
+        ],
+        "cta": "I want my website",
+        "href": "/en/#contacto",
+        "destacado": true
+      },
+      {
+        "nombre": "Management",
+        "para": "Control the campsite",
+        "resultado": "All day-to-day operations in one platform.",
+        "alta": "from €2,900",
+        "cuota": "€149/month",
+        "estado": "Available",
+        "estadoTipo": "disponible",
+        "texto": "Website, booking engine, guests, visual planner, payments and reports. The operational foundation for reception and management.",
+        "incluye": [
+          "Everything in Start",
+          "Booking engine and availability",
+          "Planner, guests and payments",
+          "Reports and rates"
+        ],
+        "cta": "See the manager",
+        "href": "/admin/"
+      },
+      {
+        "nombre": "Automate",
+        "para": "Save time",
+        "resultado": "Less repetitive work and faster replies from reception.",
+        "alta": "from €3,900",
+        "cuota": "€249/month",
+        "estado": "In development",
+        "estadoTipo": "desarrollo",
+        "texto": "Adds automatic communication and supervised AI assistance without allowing the system to make sensitive decisions on its own.",
+        "incluye": [
+          "Everything in Management",
+          "Emails and reminders",
+          "AI answers and translation",
+          "Supervised quotes and WhatsApp"
+        ],
+        "cta": "Join the pilot",
+        "href": "/en/#contacto"
+      },
+      {
+        "nombre": "Intelligence",
+        "para": "Decide better",
+        "resultado": "Turn campsite data into forecasts and recommended actions.",
+        "alta": "from €5,900",
+        "cuota": "€399/month",
+        "estado": "Roadmap",
+        "estadoTipo": "vision",
+        "texto": "Adds profitability, forecasting, integrations and a natural-language copilot with human confirmation before acting.",
+        "incluye": [
+          "Everything in Automate",
+          "Profitability and comparisons",
+          "Forecasting and pricing",
+          "Integrations and copilot"
+        ],
+        "cta": "Explore the vision",
+        "href": "/en/#contacto"
+      }
     ],
     "incluyeTitulo": "The subscription includes real maintenance",
-    "incluye": ["Hosting and operation of your isolated instance", "General updates and security patches", "Monitoring, backups and product incident resolution", "Email support with a two-business-day response target"],
+    "incluye": [
+      "Hosting, HTTPS and operation of your public website",
+      "On Management and above, an isolated instance and database",
+      "General updates and security patches",
+      "Monitoring, backups and product incident resolution",
+      "Email support with a two-business-day response target"
+    ],
     "noIncluye": "Recurring content changes, custom integrations, campaigns and new features are quoted as development.",
     "desarrolloTitulo": "Development and improvements",
     "desarrolloIntro": "We agree the scope before starting. A product incident is included; a new idea is estimated and approved.",
     "bolsas": [
-      { "nombre": "Assessment and proposal", "precio": "€290", "texto": "Audit, scope and fixed quote, deducted if we deliver the project." },
-      { "nombre": "5-hour bundle", "precio": "€350", "texto": "For small, clearly defined changes." },
-      { "nombre": "10-hour bundle", "precio": "€650", "texto": "Group several improvements at a better rate." },
-      { "nombre": "20-hour sprint", "precio": "€1,200", "texto": "A scoped delivery with implementation and review." }
+      {
+        "nombre": "Assessment and proposal",
+        "precio": "€290",
+        "texto": "Audit, scope and fixed quote, deducted if we deliver the project."
+      },
+      {
+        "nombre": "5-hour bundle",
+        "precio": "€350",
+        "texto": "For small, clearly defined changes."
+      },
+      {
+        "nombre": "10-hour bundle",
+        "precio": "€650",
+        "texto": "Group several improvements at a better rate."
+      },
+      {
+        "nombre": "20-hour sprint",
+        "precio": "€1,200",
+        "texto": "A scoped delivery with implementation and review."
+      }
     ],
     "packsTitulo": "Launch services",
     "packs": [
-      { "nombre": "Migration", "precio": "from €600", "texto": "Import from structured data after reviewing a sample." },
-      { "nombre": "Identity and content", "precio": "from €900", "texto": "Visual direction, brand adaptation and core page copy." },
-      { "nombre": "Local SEO launch", "precio": "€490", "texto": "Metadata, Search Console, business profile and initial measurement." },
-      { "nombre": "Launch campaign", "precio": "from €750", "texto": "Creative and campaign setup; media spend excluded." }
+      {
+        "nombre": "Migration",
+        "precio": "from €600",
+        "texto": "Import from structured data after reviewing a sample."
+      },
+      {
+        "nombre": "Identity and content",
+        "precio": "from €900",
+        "texto": "Visual direction, brand adaptation and core page copy."
+      },
+      {
+        "nombre": "Local SEO launch",
+        "precio": "€490",
+        "texto": "Metadata, Search Console, business profile and initial measurement."
+      },
+      {
+        "nombre": "Launch campaign",
+        "precio": "from €750",
+        "texto": "Creative and campaign setup; media spend excluded."
+      }
     ],
     "ctaTitulo": "See the right level with your own data",
     "ctaTexto": "Tell us your number of units, how you manage bookings today and what material is ready. We will return a fixed scope.",
@@ -218,6 +360,10 @@
   "faq": {
     "titulo": "Questions we get",
     "items": [
+      {
+        "q": "What exactly is included in the €49 Start plan?",
+        "a": "A responsive website with your brand, hosting, HTTPS, basic SEO, one language and a form that sends each enquiry to reception's email. It does not include the manager, booking engine or enquiry history; it is the first step and requires a 12-month commitment."
+      },
       {
         "q": "Do I have to change my domain?",
         "a": "No. Your site lives on your own domain, with your brand. We put the engine underneath."
@@ -236,7 +382,7 @@
       },
       {
         "q": "How soon do I have it?",
-        "a": "A new campsite goes live in an afternoon from your material. No months of waiting."
+        "a": "It depends on the level and on having the material ready. Before starting we agree the scope, content and launch date; Start has a contained onboarding process, while Management requires inventory, rates and operations to be configured."
       }
     ]
   },

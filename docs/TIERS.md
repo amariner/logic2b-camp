@@ -1,5 +1,9 @@
 # TIERS — Los cuatro niveles de Logic Camp
 
+> Este documento conserva los **tiers técnicos de build** existentes. Desde el
+> ADR 0033 la oferta pública usa Inicio/Gestión/Automatiza/Inteligente; su
+> correspondencia técnica se cerrará en E3 sin renombrar código a ciegas.
+
 Un único código base. Subir de nivel = **cambiar config**, nunca un proyecto nuevo. Los niveles son la escalera comercial: el 1 es el caballo de Troya (barato de vender y mantener; cuando el camping crece, ya estás dentro y tienes su histórico).
 
 ## Matriz de niveles
