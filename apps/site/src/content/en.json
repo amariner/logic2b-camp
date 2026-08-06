@@ -38,12 +38,42 @@
     "estado": "Visual concept",
     "nota": "The complete themes will be developed later. The architecture already supports changing identity, colour and typography without duplicating the product.",
     "items": [
-      { "nombre": "Pinewood", "estilo": "Calm Mediterranean", "imagen": "/hero-atmosfera.webp", "variante": "pine" },
-      { "nombre": "Coast", "estilo": "Bright and open", "imagen": "/propuestas/azahar/piscina.jpg", "variante": "coast" },
-      { "nombre": "Family", "estilo": "Warm and friendly", "imagen": "/propuestas/azahar/vida-camping.jpg", "variante": "family" },
-      { "nombre": "Natural", "estilo": "Quiet and ecological", "imagen": "/propuestas/azahar/via-verde.jpg", "variante": "natural" },
-      { "nombre": "Resort", "estilo": "Premium editorial", "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg", "variante": "resort" },
-      { "nombre": "Pitch", "estilo": "Direct and functional", "imagen": "/propuestas/azahar/parcela-2.jpg", "variante": "pitch" }
+      {
+        "nombre": "Pinewood",
+        "estilo": "Calm Mediterranean",
+        "imagen": "/hero-atmosfera.webp",
+        "variante": "pine"
+      },
+      {
+        "nombre": "Coast",
+        "estilo": "Bright and open",
+        "imagen": "/propuestas/azahar/piscina.jpg",
+        "variante": "coast"
+      },
+      {
+        "nombre": "Family",
+        "estilo": "Warm and friendly",
+        "imagen": "/propuestas/azahar/vida-camping.jpg",
+        "variante": "family"
+      },
+      {
+        "nombre": "Natural",
+        "estilo": "Quiet and ecological",
+        "imagen": "/propuestas/azahar/via-verde.jpg",
+        "variante": "natural"
+      },
+      {
+        "nombre": "Resort",
+        "estilo": "Premium editorial",
+        "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg",
+        "variante": "resort"
+      },
+      {
+        "nombre": "Pitch",
+        "estilo": "Direct and functional",
+        "imagen": "/propuestas/azahar/parcela-2.jpg",
+        "variante": "pitch"
+      }
     ]
   },
   "problema": {
@@ -151,7 +181,7 @@
     "subtitulo": "Activate only what you need today. As the campsite grows, you keep your website, brand and data: you add capabilities without changing provider.",
     "items": [
       {
-        "nombre": "Logic Camp Start",
+        "nombre": "Start",
         "para": "Win enquiries",
         "resultado": "A professional presence that turns visits into conversations with reception.",
         "texto": "An attractive, fast website to start selling direct without implementing management software yet.",
@@ -159,7 +189,7 @@
         "alta": "€0 setup",
         "estado": "Launch plan",
         "estadoTipo": "disponible",
-        "cta": "I want my website",
+        "cta": "Start website",
         "href": "/en/#contacto",
         "destacado": true,
         "incluye": [
@@ -170,7 +200,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Management",
+        "nombre": "Management",
         "para": "Bring order to the campsite",
         "resultado": "Availability, arrivals, payments and guests under control in one place.",
         "texto": "The complete operating platform to leave spreadsheets, diaries and disconnected tools behind.",
@@ -178,7 +208,7 @@
         "alta": "Setup from €2,900",
         "estado": "Available",
         "estadoTipo": "disponible",
-        "cta": "See the manager",
+        "cta": "Request plan",
         "href": "/admin/",
         "incluye": [
           "Website and booking engine",
@@ -188,7 +218,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Automate",
+        "nombre": "Automate",
         "para": "Save time every day",
         "resultado": "Reception responds sooner while the system handles what currently depends on someone remembering.",
         "texto": "Automation and supervised AI assistance reduce manual follow-up while people keep control of every decision.",
@@ -196,7 +226,7 @@
         "alta": "Setup from €3,900",
         "estado": "In development",
         "estadoTipo": "desarrollo",
-        "cta": "Join the pilot",
+        "cta": "Request plan",
         "href": "/en/#contacto",
         "incluye": [
           "Emails, reminders and reviews",
@@ -206,7 +236,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Intelligence",
+        "nombre": "Intelligence",
         "para": "Decide better with your data",
         "resultado": "Spot risks, understand profitability and prepare the next action with real context.",
         "texto": "Business intelligence, integrations and a copilot to query and prepare actions in natural language.",
@@ -214,7 +244,7 @@
         "alta": "Setup from €5,900",
         "estado": "Roadmap",
         "estadoTipo": "vision",
-        "cta": "Explore the vision",
+        "cta": "Request plan",
         "href": "/en/#contacto",
         "incluye": [
           "Profitability and comparisons",
@@ -265,7 +295,7 @@
           "Basic SEO and 1 language",
           "12-month commitment"
         ],
-        "cta": "I want my website",
+        "cta": "Start website",
         "href": "/en/#contacto",
         "destacado": true
       },
@@ -284,7 +314,7 @@
           "Planner, guests and payments",
           "Reports and rates"
         ],
-        "cta": "See the manager",
+        "cta": "Request plan",
         "href": "/admin/"
       },
       {
@@ -302,7 +332,7 @@
           "AI answers and translation",
           "Supervised quotes and WhatsApp"
         ],
-        "cta": "Join the pilot",
+        "cta": "Request plan",
         "href": "/en/#contacto"
       },
       {
@@ -320,7 +350,7 @@
           "Forecasting and pricing",
           "Integrations and copilot"
         ],
-        "cta": "Explore the vision",
+        "cta": "Request plan",
         "href": "/en/#contacto"
       }
     ],
@@ -423,6 +453,10 @@
     "texto": "We'll show it with your inventory and your dates, so you see how yours would look —not a generic example.",
     "solicitudTitulo": "Tell us about your project",
     "solicitudTexto": "Tell us about your campsite and what you want to launch. We will reply with a clear scope for your project.",
+    "iniciarWeb": "Start website",
+    "solicitarPlan": "Request plan",
+    "planSeleccionado": "Selected plan:",
+    "cerrar": "Close",
     "campos": {
       "nombre": "Your name",
       "camping": "Campsite name",

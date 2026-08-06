@@ -5,6 +5,8 @@ interface Props {
     solicitudTitulo: string;
     solicitudTexto: string;
     solicitudEnviar: string;
+    planSeleccionado: string;
+    cerrar: string;
     campos: {
       nombre: string;
       camping: string;
@@ -24,7 +26,12 @@ const { contacto, locale } = Astro.props;
 
 <dialog id="project-request-dialog" class="project-request-dialog" aria-labelledby="project-request-title">
   <div class="project-request-dialog__panel">
-    <button type="button" class="project-request-dialog__close" data-project-request-close aria-label="Cerrar">
+    <button
+      type="button"
+      class="project-request-dialog__close"
+      data-project-request-close
+      aria-label={contacto.cerrar}
+    >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
         <path d="m6 6 12 12M18 6 6 18" />
       </svg>
@@ -32,8 +39,13 @@ const { contacto, locale } = Astro.props;
     <p class="botanical-eyebrow">{contacto.kicker}</p>
     <h2 id="project-request-title" class="botanical-heading-sm">{contacto.solicitudTitulo}</h2>
     <p class="project-request-dialog__copy">{contacto.solicitudTexto}</p>
+    <p class="project-request-dialog__selection" data-project-request-selection hidden>
+      <span>{contacto.planSeleccionado}</span>
+      <strong data-project-request-selection-name></strong>
+    </p>
     <form id="project-request-form" class="botanical-form project-request-dialog__form" novalidate>
       <input type="hidden" name="lang" value={locale} />
+      <input type="hidden" name="plan" data-project-request-plan-input />
       <label>
         <span>{contacto.campos.nombre}</span>
         <input name="name" autocomplete="name" required />
@@ -60,7 +72,7 @@ const { contacto, locale } = Astro.props;
           class="botanical-button"
           data-send={contacto.solicitudEnviar}
           data-sending={contacto.enviando}
-        >{contacto.solicitudEnviar}<span aria-hidden="true">→</span></button>
+        ><span data-project-request-submit-label>{contacto.solicitudEnviar}</span><span aria-hidden="true">→</span></button>
         <p id="project-request-msg" role="status" aria-live="polite"></p>
       </div>
     </form>
@@ -72,9 +84,18 @@ const { contacto, locale } = Astro.props;
   const form = document.getElementById('project-request-form');
   const message = document.getElementById('project-request-msg');
   const submit = form?.querySelector('button[type=submit]');
+  const submitLabel = submit?.querySelector('[data-project-request-submit-label]');
+  const planInput = form?.querySelector('[data-project-request-plan-input]');
+  const selection = dialog?.querySelector('[data-project-request-selection]');
+  const selectionName = dialog?.querySelector('[data-project-request-selection-name]');
 
   document.querySelectorAll('[data-project-request-open]').forEach((trigger) => {
     trigger.addEventListener('click', () => {
+      const plan = trigger.getAttribute('data-project-request-plan') ?? '';
+      if (planInput instanceof HTMLInputElement) planInput.value = plan;
+      if (selectionName) selectionName.textContent = plan;
+      if (selection instanceof HTMLElement) selection.hidden = !plan;
+      if (message) message.textContent = '';
       if (dialog instanceof HTMLDialogElement) dialog.showModal();
     });
   });
@@ -92,7 +113,7 @@ const { contacto, locale } = Astro.props;
     if (!(form instanceof HTMLFormElement) || !form.reportValidity() || !(submit instanceof HTMLButtonElement)) return;
     const data = Object.fromEntries(new FormData(form).entries());
     submit.disabled = true;
-    submit.textContent = submit.dataset.sending ?? '';
+    if (submitLabel) submitLabel.textContent = submit.dataset.sending ?? '';
     if (message) message.textContent = '';
     try {
       const response = await fetch('/api/leads', {
@@ -107,7 +128,7 @@ const { contacto, locale } = Astro.props;
       if (message) message.textContent = err;
     } finally {
       submit.disabled = false;
-      submit.textContent = submit.dataset.send ?? '';
+      if (submitLabel) submitLabel.textContent = submit.dataset.send ?? '';
     }
   });
 </script>

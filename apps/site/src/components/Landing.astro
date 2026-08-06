@@ -216,7 +216,6 @@ const iconosProblema = [
               >
                 <div class="botanical-plan-top">
                   <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
-                  <span class="botanical-plan-status">{n.estado}</span>
                 </div>
                 <h3>{n.nombre}</h3>
                 <p class="botanical-plan-for">{n.para}</p>
@@ -236,9 +235,14 @@ const iconosProblema = [
                     </li>
                   ))}
                 </ul>
-                <a href={n.href} class={n.destacado || n.estadoTipo === 'disponible' ? 'botanical-button' : 'botanical-button-outline'}>
-                  {n.cta}<span aria-hidden="true">→</span>
-                </a>
+                <button
+                  type="button"
+                  class="botanical-button"
+                  data-project-request-open
+                  data-project-request-plan={n.nombre}
+                >
+                  {i === 0 ? c.contacto.iniciarWeb : c.contacto.solicitarPlan}<span aria-hidden="true">→</span>
+                </button>
               </article>
             ))
           }
@@ -343,7 +347,7 @@ const iconosProblema = [
               class="botanical-button"
               data-send={c.contacto.enviar}
               data-sending={c.contacto.enviando}
-            >{c.contacto.enviar}<span aria-hidden="true">→</span></button>
+            ><span data-lead-submit-label>{c.contacto.enviar}</span><span aria-hidden="true">→</span></button>
             <p id="lead-msg" role="status" aria-live="polite"></p>
           </div>
         </form>
@@ -356,12 +360,13 @@ const iconosProblema = [
   const form = document.getElementById('lead-form');
   const msg = document.getElementById('lead-msg');
   const btn = form?.querySelector('button[type=submit]');
+  const btnLabel = btn?.querySelector('[data-lead-submit-label]');
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
     const data = Object.fromEntries(new FormData(form).entries());
     btn.disabled = true;
-    btn.textContent = btn.dataset.sending;
+    btnLabel.textContent = btn.dataset.sending;
     msg.textContent = '';
     try {
       const response = await fetch('/api/leads', {
@@ -376,7 +381,7 @@ const iconosProblema = [
       msg.textContent = err;
     } finally {
       btn.disabled = false;
-      btn.textContent = btn.dataset.send;
+      btnLabel.textContent = btn.dataset.send;
     }
   });
 </script>

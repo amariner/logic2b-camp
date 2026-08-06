@@ -16,6 +16,7 @@ const leadSchema = z.object({
   phone: z.string().trim().max(60).optional(),
   message: z.string().trim().max(2000).optional(),
   lang: z.string().trim().max(5).optional(),
+  plan: z.string().trim().max(100).optional(),
 });
 
 /** Buzón comercial de Logic2B. Remitente de plataforma (dominio verificado en Resend). */
@@ -32,12 +33,14 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     ['Nombre', d.name],
     ['Email', d.email],
     ['Teléfono', d.phone || '—'],
+    ['Plan', d.plan || '—'],
     ['Idioma', d.lang || '—'],
   ];
-  const text = `Nueva petición de demo — Logic2B Campings\n\n${rows
+  const requestTitle = d.plan ? `Nueva solicitud del plan ${d.plan}` : 'Nueva petición de demo';
+  const text = `${requestTitle} — Logic2B Campings\n\n${rows
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n')}\n\nMensaje:\n${d.message || '—'}`;
-  const html = `<h2>Nueva petición de demo — Logic2B Campings</h2><table>${rows
+  const html = `<h2>${escapeHtml(requestTitle)} — Logic2B Campings</h2><table>${rows
     .map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${escapeHtml(v)}</td></tr>`)
     .join('')}</table><p><strong>Mensaje:</strong><br>${escapeHtml(d.message || '—')}</p>`;
 
@@ -47,7 +50,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     from: LEADS_FROM,
     to: LEADS_TO,
     replyTo: d.email,
-    message: { subject: `Demo: ${d.campingName}`, html, text },
+    message: { subject: `${d.plan ? `Plan ${d.plan}` : 'Demo'}: ${d.campingName}`, html, text },
   });
   // El visitante siempre recibe ok si el input es válido; el fallo de envío se registra en servidor.
   if (!result.ok)

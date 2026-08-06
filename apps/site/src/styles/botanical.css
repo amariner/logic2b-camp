@@ -105,7 +105,9 @@
   border: 1px solid color-mix(in srgb, var(--botanical-ink) 17%, transparent);
   border-radius: 12px;
   color: var(--botanical-ink);
-  transition: background-color 160ms ease, border-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .site-menu-toggle:hover,
@@ -256,7 +258,10 @@
   padding: 13px 18px;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .botanical-button {
@@ -486,7 +491,11 @@
 
 /* Product and planning */
 .botanical-product-section {
-  background: linear-gradient(to bottom, var(--botanical-paper) 0 18%, var(--botanical-keylime) 18% 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--botanical-paper) 0 18%,
+    var(--botanical-keylime) 18% 100%
+  );
 }
 
 .botanical-centered-head {
@@ -946,10 +955,14 @@
 .project-request-dialog {
   width: min(720px, calc(100% - 32px));
   max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
   border: 0;
   border-radius: 18px;
   background: transparent;
   padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .project-request-dialog::backdrop {
@@ -983,6 +996,27 @@
   color: color-mix(in srgb, var(--botanical-ink) 74%, white);
   font-size: 15px;
   line-height: 1.55;
+}
+
+.project-request-dialog__selection {
+  display: flex;
+  width: fit-content;
+  gap: 8px;
+  margin-top: 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--botanical-paper) 72%, transparent);
+  padding: 8px 12px;
+  color: color-mix(in srgb, var(--botanical-ink) 72%, white);
+  font-size: 13px;
+}
+
+.project-request-dialog__selection[hidden] {
+  display: none;
+}
+
+.project-request-dialog__selection strong {
+  color: var(--botanical-ink);
+  font-weight: 600;
 }
 
 .project-request-dialog__form {

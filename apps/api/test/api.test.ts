@@ -154,6 +154,33 @@ describe('POST /api/enquiries', () => {
   });
 });
 
+describe('POST /api/leads', () => {
+  const lead = {
+    name: 'Ana Serra',
+    campingName: 'Camping del Pinar',
+    email: 'ana@example.com',
+    phone: '+34 600 000 000',
+    message: 'Queremos renovar la web.',
+    lang: 'es',
+  };
+
+  it('acepta una solicitud asociada a un plan comercial', async () => {
+    const res = await app.request('/api/leads', json({ ...lead, plan: 'Inicio' }), envA);
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ ok: true });
+  });
+
+  it('mantiene compatible la petición de demo sin plan', async () => {
+    const res = await app.request('/api/leads', json(lead), envA);
+    expect(res.status).toBe(200);
+  });
+
+  it('rechaza nombres de plan fuera del límite permitido', async () => {
+    const res = await app.request('/api/leads', json({ ...lead, plan: 'x'.repeat(101) }), envA);
+    expect(res.status).toBe(400);
+  });
+});
+
 describe('notificaciones de reserva (ADR 0010)', () => {
   it('crear por la web deja booking_confirmed en el log; cancelar deja booking_cancelled', async () => {
     const create = await app.request(

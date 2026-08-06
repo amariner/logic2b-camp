@@ -38,12 +38,42 @@
     "estado": "Concepto visual",
     "nota": "Los temas completos se desarrollarán más adelante. La arquitectura ya permite cambiar identidad, color y tipografía sin duplicar el producto.",
     "items": [
-      { "nombre": "Pinada", "estilo": "Mediterráneo sereno", "imagen": "/hero-atmosfera.webp", "variante": "pine" },
-      { "nombre": "Costa", "estilo": "Luminoso y abierto", "imagen": "/propuestas/azahar/piscina.jpg", "variante": "coast" },
-      { "nombre": "Familiar", "estilo": "Cálido y cercano", "imagen": "/propuestas/azahar/vida-camping.jpg", "variante": "family" },
-      { "nombre": "Natural", "estilo": "Eco y silencioso", "imagen": "/propuestas/azahar/via-verde.jpg", "variante": "natural" },
-      { "nombre": "Resort", "estilo": "Editorial premium", "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg", "variante": "resort" },
-      { "nombre": "Parcela", "estilo": "Directo y funcional", "imagen": "/propuestas/azahar/parcela-2.jpg", "variante": "pitch" }
+      {
+        "nombre": "Pinada",
+        "estilo": "Mediterráneo sereno",
+        "imagen": "/hero-atmosfera.webp",
+        "variante": "pine"
+      },
+      {
+        "nombre": "Costa",
+        "estilo": "Luminoso y abierto",
+        "imagen": "/propuestas/azahar/piscina.jpg",
+        "variante": "coast"
+      },
+      {
+        "nombre": "Familiar",
+        "estilo": "Cálido y cercano",
+        "imagen": "/propuestas/azahar/vida-camping.jpg",
+        "variante": "family"
+      },
+      {
+        "nombre": "Natural",
+        "estilo": "Eco y silencioso",
+        "imagen": "/propuestas/azahar/via-verde.jpg",
+        "variante": "natural"
+      },
+      {
+        "nombre": "Resort",
+        "estilo": "Editorial premium",
+        "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg",
+        "variante": "resort"
+      },
+      {
+        "nombre": "Parcela",
+        "estilo": "Directo y funcional",
+        "imagen": "/propuestas/azahar/parcela-2.jpg",
+        "variante": "pitch"
+      }
     ]
   },
   "problema": {
@@ -151,7 +181,7 @@
     "subtitulo": "Activa solo lo que necesitas hoy. Cuando el camping crece, conservas tu web, tu marca y tus datos: amplías capacidades sin cambiar de proveedor.",
     "items": [
       {
-        "nombre": "Logic Camp Inicio",
+        "nombre": "Inicio",
         "para": "Consigue consultas",
         "resultado": "Una presencia profesional que convierte visitas en conversaciones con recepción.",
         "texto": "Una web atractiva y rápida para empezar a vender directo, sin implantar todavía un programa de gestión.",
@@ -159,7 +189,7 @@
         "alta": "Alta 0 €",
         "estado": "Plan de lanzamiento",
         "estadoTipo": "disponible",
-        "cta": "Quiero mi web",
+        "cta": "Iniciar web",
         "href": "#contacto",
         "destacado": true,
         "incluye": [
@@ -170,7 +200,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Gestión",
+        "nombre": "Gestión",
         "para": "Pon orden en el camping",
         "resultado": "Disponibilidad, llegadas, cobros y clientes bajo control desde un solo lugar.",
         "texto": "La plataforma operativa completa para dejar atrás hojas de cálculo, agendas y herramientas separadas.",
@@ -178,7 +208,7 @@
         "alta": "Alta desde 2.900 €",
         "estado": "Disponible",
         "estadoTipo": "disponible",
-        "cta": "Ver el gestor",
+        "cta": "Solicitar plan",
         "href": "/admin/",
         "incluye": [
           "Web y motor de reservas",
@@ -188,7 +218,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Automatiza",
+        "nombre": "Automatiza",
         "para": "Ahorra tiempo cada día",
         "resultado": "Recepción responde antes y el sistema se ocupa de lo que hoy depende de acordarse.",
         "texto": "Automatizaciones y asistencia de IA para reducir seguimiento manual sin ceder el control de las decisiones.",
@@ -196,7 +226,7 @@
         "alta": "Alta desde 3.900 €",
         "estado": "En desarrollo",
         "estadoTipo": "desarrollo",
-        "cta": "Quiero participar",
+        "cta": "Solicitar plan",
         "href": "#contacto",
         "incluye": [
           "Correos, recordatorios y reseñas",
@@ -206,7 +236,7 @@
         ]
       },
       {
-        "nombre": "Logic Camp Inteligente",
+        "nombre": "Inteligente",
         "para": "Decide mejor con tus datos",
         "resultado": "Detecta riesgos, entiende la rentabilidad y prepara la siguiente acción con contexto real.",
         "texto": "Inteligencia de negocio, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.",
@@ -214,7 +244,7 @@
         "alta": "Alta desde 5.900 €",
         "estado": "Roadmap",
         "estadoTipo": "vision",
-        "cta": "Conocer la visión",
+        "cta": "Solicitar plan",
         "href": "#contacto",
         "incluye": [
           "Rentabilidad y comparativas",
@@ -265,7 +295,7 @@
           "SEO básico y 1 idioma",
           "Compromiso de 12 meses"
         ],
-        "cta": "Quiero mi web",
+        "cta": "Iniciar web",
         "href": "/#contacto",
         "destacado": true
       },
@@ -284,7 +314,7 @@
           "Clientes, pagos y tarifas",
           "Check-in e informes"
         ],
-        "cta": "Ver la demo",
+        "cta": "Solicitar plan",
         "href": "/admin/"
       },
       {
@@ -302,7 +332,7 @@
           "Búsqueda y resúmenes",
           "Presupuestos y WhatsApp"
         ],
-        "cta": "Hablar del piloto",
+        "cta": "Solicitar plan",
         "href": "/#contacto"
       },
       {
@@ -320,7 +350,7 @@
           "Precios e integraciones",
           "Copiloto supervisado"
         ],
-        "cta": "Conocer la visión",
+        "cta": "Solicitar plan",
         "href": "/#contacto"
       }
     ],
@@ -423,6 +453,10 @@
     "texto": "Te la enseñamos con tu inventario y tus fechas, para que veas cómo quedaría lo tuyo —no un ejemplo genérico.",
     "solicitudTitulo": "Cuéntanos tu proyecto",
     "solicitudTexto": "Dinos cómo es tu camping y qué quieres poner en marcha. Te responderemos con un alcance claro para tu proyecto.",
+    "iniciarWeb": "Iniciar web",
+    "solicitarPlan": "Solicitar plan",
+    "planSeleccionado": "Plan seleccionado:",
+    "cerrar": "Cerrar",
     "campos": {
       "nombre": "Tu nombre",
       "camping": "Nombre del camping",

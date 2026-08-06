@@ -44,7 +44,6 @@ const inicio = localePath(locale);
               >
                 <div class="botanical-plan-top">
                   <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
-                  <span class="botanical-plan-status">{plan.estado}</span>
                 </div>
                 <h3>{plan.nombre}</h3>
                 <p class="botanical-plan-for">{plan.para}</p>
@@ -70,12 +69,14 @@ const inicio = localePath(locale);
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={plan.href}
-                  class={plan.destacado || plan.estadoTipo === 'disponible' ? 'botanical-button' : 'botanical-button-outline'}
+                <button
+                  type="button"
+                  class="botanical-button"
+                  data-project-request-open
+                  data-project-request-plan={plan.nombre}
                 >
-                  {plan.cta}<span aria-hidden="true">→</span>
-                </a>
+                  {i === 0 ? c.contacto.iniciarWeb : c.contacto.solicitarPlan}<span aria-hidden="true">→</span>
+                </button>
               </article>
             ))
           }
