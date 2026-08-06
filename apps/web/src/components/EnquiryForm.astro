@@ -10,6 +10,8 @@ interface Props {
 }
 const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
 const transport = config.enquiryTransport ?? 'persisted';
+const isDemoTransport = transport === 'demo' || transport === 'demo-session';
+const managerPath = config.demoManagerPath;
 const nombres = getContent(locale).tipos.nombres;
 const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id] ?? tipo.id }));
 ---
@@ -25,7 +27,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
   data-summary-message={f.demoResumenMensaje}
   data-summary-open={f.demoSinConcretar}
 >
-  {transport === 'demo' && (
+  {isDemoTransport && (
     <p class="rounded-(--lc-radius) border border-pino/25 bg-pino/5 px-3.5 py-3 text-[13px] leading-relaxed text-tinta">
       <strong>{f.demoEtiqueta}</strong> {f.demoAviso}
     </p>
@@ -33,18 +35,31 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
   <div class="grid gap-4 sm:grid-cols-2">
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.nombre}</span>
-      <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      <input name="name" required autocomplete={transport === 'demo-session' ? 'off' : 'name'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
     </label>
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.email}</span>
-      <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      <input name="email" type="email" required autocomplete={transport === 'demo-session' ? 'off' : 'email'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
     </label>
   </div>
   <div class="grid gap-4 sm:grid-cols-2">
-    <label class="flex flex-col gap-1.5">
-      <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
-      <input name="dates" placeholder={f.fechasEjemplo ?? '12 → 19 ago'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
-    </label>
+    {transport === 'demo-session' ? (
+      <Fragment>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.entrada ?? 'Entrada'}</span>
+          <input name="dateFrom" type="date" required value="2026-08-18" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+        </label>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.salida ?? 'Salida'}</span>
+          <input name="dateTo" type="date" required value="2026-08-24" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+        </label>
+      </Fragment>
+    ) : (
+      <label class="flex flex-col gap-1.5">
+        <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
+        <input name="dates" placeholder={f.fechasEjemplo ?? '12 → 19 ago'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      </label>
+    )}
     {f.grupo && (
       <label class="flex flex-col gap-1.5">
         <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.grupo}</span>
@@ -74,7 +89,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
     {f.enviar}
   </button>
   <p data-status tabindex="-1" aria-live="polite" class="hidden text-[14px] font-medium" data-ok={f.ok} data-error={f.error} data-spam={f.demoSpam}></p>
-  {transport === 'demo' && (
+  {isDemoTransport && (
     <section data-confirmation tabindex="-1" class="hidden rounded-(--lc-radius-lg) border border-pino/30 bg-hueso p-5" aria-labelledby={`${uid}-confirmation-title`}>
       <p class="mb-2 text-[11px] font-semibold tracking-[0.14em] text-pino uppercase">{f.demoEtiqueta}</p>
       <h3 id={`${uid}-confirmation-title`} class="font-display text-[22px] font-semibold">{f.demoExitoTitulo}</h3>
@@ -83,6 +98,9 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
       <div class="mt-4 flex flex-wrap items-center gap-4">
         <button type="button" data-copy class="min-h-11 rounded-(--lc-radius) border border-pino px-4 py-2 text-[13px] font-semibold text-pino transition-colors hover:bg-pino hover:text-hueso" data-label={f.demoCopiar} data-copied={f.demoCopiado}>{f.demoCopiar}</button>
         <a href="https://camp.logic2b.com/#contacto" class="text-[13px] font-semibold text-pino underline underline-offset-4">{f.demoCta} →</a>
+        {transport === 'demo-session' && managerPath && (
+          <a href={`${managerPath}#/solicitudes`} class="min-h-11 rounded-(--lc-radius) bg-pino px-4 py-2.5 text-[13px] font-semibold text-hueso">{f.demoAbrirGestor ?? 'Ver en el gestor'} →</a>
+        )}
       </div>
     </section>
   )}
@@ -119,17 +137,44 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
     confirmation?.classList.add('hidden');
     try {
       const dates = data.get('dates');
-      if (transport === 'demo') {
+      if (transport === 'demo' || transport === 'demo-session') {
         const state = new URLSearchParams(window.location.search).get('demoState');
         if (state === 'error') throw new Error('demo-error');
         if (state === 'spam') throw new Error('demo-spam');
         const stay = form.querySelector('select[name=stay]')?.selectedOptions[0]?.textContent;
+        const dateFrom = data.get('dateFrom');
+        const dateTo = data.get('dateTo');
+        if (dateFrom && dateTo && String(dateFrom) >= String(dateTo)) throw new Error('demo-error');
+        const shownDates = dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dates;
         summary.textContent = [
           `${form.dataset.summaryStay}: ${stay || form.dataset.summaryOpen}`,
-          `${form.dataset.summaryDates}: ${dates || form.dataset.summaryOpen}`,
+          `${form.dataset.summaryDates}: ${shownDates || form.dataset.summaryOpen}`,
           `${form.dataset.summaryParty}: ${data.get('party') || form.dataset.summaryOpen}`,
           `${form.dataset.summaryMessage}: ${data.get('message')}`,
         ].join('\n');
+        if (transport === 'demo-session') {
+          const submitted = {
+            id: 'enq_pinada_web',
+            status: 'new',
+            dateFrom: dateFrom || '2026-08-18',
+            dateTo: dateTo || '2026-08-24',
+            occupancy: {
+              adults: Number(data.get('party') || 2),
+              childrenAges: [],
+              pets: 0,
+              vehicles: 1,
+            },
+            unitTypeId: data.get('stay') || 'ut_bungalow',
+            message: data.get('message'),
+            contact: { name: data.get('name'), email: data.get('email') },
+            locale,
+            source: 'web-demo',
+            convertedBookingId: null,
+            createdAt: '2026-08-06T12:00:00.000Z',
+          };
+          localStorage.setItem('logic2b-demo:pinadamar:submitted-enquiry:v1', JSON.stringify(submitted));
+          localStorage.removeItem('logic2b-demo:pinadamar:state:v1');
+        }
         confirmation.classList.remove('hidden');
         confirmation.focus();
         form.reset();
@@ -157,7 +202,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
       status.classList.remove('hidden');
       status.focus();
     } finally {
-      if (transport !== 'demo' || !confirmation || confirmation.classList.contains('hidden')) {
+      if ((transport !== 'demo' && transport !== 'demo-session') || !confirmation || confirmation.classList.contains('hidden')) {
         status.classList.remove('hidden');
       }
       btn.disabled = false;

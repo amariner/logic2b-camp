@@ -18,19 +18,21 @@ async function fixture(files) {
   return directory;
 }
 
-test('acepta rutas navegables de las tres superficies y la barra final automática', async (t) => {
+test('acepta rutas navegables de las superficies y escenarios del bundle', async (t) => {
   const dist = await fixture({
-    'index.html': '<a href="/demo/">Demo</a><a href="/admin/">Gestor</a><link href="/_astro/site.css">',
+    'index.html': '<a href="/demo/">Demo</a><a href="/admin/">Gestor</a><a href="/demos/pinadamar/">Pinada</a><link href="/_astro/site.css">',
     'demo/index.html': '<a href="/demo/reservar">Reservar</a>',
     'demo/reservar/index.html': '<a href="https://camp.logic2b.com/admin/">Gestor</a>',
     'admin/index.html': '<a href="https://logic2b.com/">Logic2B</a>',
+    'demos/pinadamar/index.html': '<a href="/demos/pinadamar/gestion/#/solicitudes">Abrir gestor Pinada</a>',
+    'demos/pinadamar/gestion/index.html': '<a href="/demos/pinadamar/">Volver a la web</a>',
     '_astro/site.css': '',
   });
   t.after(() => rm(dist, { force: true, recursive: true }));
 
   const result = await checkDemoLinks({ dist });
   assert.equal(result.broken.length, 0);
-  assert.equal(result.checked, 4);
+  assert.equal(result.checked, 7);
 });
 
 test('informa cada enlace interno que no existe y omite anclajes y enlaces externos', async (t) => {

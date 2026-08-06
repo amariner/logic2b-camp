@@ -1,9 +1,36 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint visual D2-V · 2026-08-06
+
+- La cola de imágenes de Pinada del Mar se detuvo por error de red del generador antes de completar el lote 1.
+- Procesadas: **0/10**. No se creó ni inspeccionó ningún archivo y no se reutilizó material de L'Olivar.
+- Pendientes, sin reenviar las anteriores: `hero-calle`, `hero-bungalows`, `parcela`, `bungalow-exterior`, `bungalow-interior`, `mobil-home`, `recepcion`, `calle-pinos`, `piscina-familiar`, `textura-lona`.
+- Al reanudar el trabajo visual: comenzar por un lote nuevo de máximo 2, resumirlo y esperar 5 segundos; no reintentar automáticamente el lote fallido.
+
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 83 (2026-08-06): D2-V queda funcionalmente preparado y
+  visualmente en checkpoint.** Se crea `tenants/pinadamar` con voz/paleta
+  costera propia, catálogo de **110 unidades** y web Gestión `tier: 2`. El nuevo
+  transporte tipado `demo-session` guarda una solicitud ficticia solo en
+  `localStorage` y enlaza con un segundo build del mismo dashboard bajo
+  `/demos/pinadamar/gestion/`; el build normal conserva sesión/API/D1 sin
+  cambios. El adaptador determinista contiene **42 solicitudes / 4 idiomas, 84
+  estancias de agosto, 1 unidad inactiva**, llegadas/salidas, error/carga/vacío,
+  rechazo de solape y plano propio con mar al este, acceso, dos calles, anillo
+  de bungalows y servicios. El recorrido headless completa portada → solicitud
+  → contactada → convertida → planning con fecha/unidad → ficha, con **0
+  peticiones `/api`**. Reset, PII ficticia y cero mensajes quedan visibles. El
+  bundle compuesto y su link-check conocen web+gestor Pinada; `pnpm check`
+  **50/50**. El generador de imágenes falló por red antes del primer resultado:
+  cola detenida en **0/10**, sin reintento ni material de L'Olivar. Por ello no
+  se construyó el bundle Pinada completo, no hubo QA visual/capturas y D2-V no
+  está cerrado. Medición automatizada no visual: identidad/contenido 0,10 h,
+  tenant/config 0,08 h, dataset/plano 0,18 h, unión web↔gestor 0,17 h, QA
+  funcional 0,10 h e integración 0,05 h (**~0,68 h**); fotografía y QA visual
+  quedan fuera. Sin deploy remoto.
 - **Última sesión autónoma (82, 2026-08-06): D1-V convierte L'Olivar en la
   primera demo vendible del portfolio.** `tenants/olivar` representa Inicio
   sobre el carril técnico `tier: 1`: español, 18 parcelas, 4 tiendas, identidad

@@ -1,60 +1,57 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar D1-V (sesión 82, 2026-08-06). L'Olivar ya prueba Inicio;
-> la siguiente sesión debe demostrar que la fábrica escala a Gestión.
+> Reescrito tras el checkpoint de D2-V (sesión 83, 2026-08-06). No rehacer el
+> adaptador, dataset, plano ni contenido: están implementados y verificados.
 
 ## Estado en una línea
 
-L'Olivar vive en el bundle compuesto como demo estática completa, con consulta
-sin red y tres capturas. El siguiente salto es Pinada del Mar: una historia
-continua desde la web hasta solicitud, planning, plano y ficha del gestor.
+Pinada del Mar ya recorre solicitud → gestor → planning → ficha sin API ni
+credenciales, pero la cola fotográfica falló antes del primer resultado y D2-V
+no puede cerrarse ni publicarse sin sus activos y QA visual.
 
-## Objetivo único de la próxima sesión: D2-V · Pinada del Mar
+## Objetivo único: reanudar y cerrar D2-V · Pinada del Mar
 
-Implementar de extremo a extremo la demo Gestión conforme a
-`docs/CONTRATO-VISUAL-OLA-1.md` §4 y §9:
+1. Leer el checkpoint visual al principio de `PROGRESS.md` y reanudar con un
+   **lote nuevo** de máximo dos imágenes; no reenviar el lote fallido.
+2. Completar, siempre 2×2 con resumen y pausa de 5 segundos, las diez piezas:
+   `hero-calle`, `hero-bungalows`, `parcela`, `bungalow-exterior`,
+   `bungalow-interior`, `mobil-home`, `recepcion`, `calle-pinos`,
+   `piscina-familiar`, `textura-lona`.
+3. Validar continuidad de geografía/luz y producir derivados WebP/JPG; conservar
+   originales sin modificarlos y usar thumbnails para inspección cuando existan.
+4. Enlazar las piezas a las claves ya declaradas en `tenants/pinadamar/data.ts`
+   y `content/es.json`; añadir los derivados de recepción/piscina/entorno que
+   necesiten las páginas, sin copiar fotos de Cala o L'Olivar.
+5. Construir `pnpm --filter @logic-camp/api bundle:demo` y recorrer desde
+   `/demos/pinadamar/` la solicitud `PM-WEB-001` hasta planning, plano y ficha.
+6. Verificar `?demoState=loading|error|empty`, solape, unidad inactiva, reset,
+   teclado/foco, reduced motion, contraste, enlaces y ausencia de red `/api`.
+7. QA a 375 y 1366 px y tres capturas firma: solicitud nueva, planning denso y
+   plano conservando fecha/unidad. Después ejecutar `pnpm check` y cerrar D2-V.
 
-1. Crear `tenants/pinadamar` con identidad propia —pinada litoral, no un reskin
-   de L'Olivar ni fotos de Cala—, unas 110 unidades y contenido base en español.
-2. Producir/validar el lote mínimo de diez fotos en cola y un plano propio: mar
-   al este, recepción/acceso, dos calles de parcelas, anillo de bungalows y
-   servicios.
-3. Crear un dataset determinista de Gestión con 35–50 solicitudes en cuatro
-   idiomas, agosto denso, llegadas/salidas y al menos una unidad fuera de
-   servicio. Todo dato personal es ficticio y el reset queda visible.
-4. Extender el transporte demo con persistencia **temporal y reversible** para
-   que una solicitud web recién creada aparezca en el gestor, sin mensajes,
-   pagos, credenciales ni infraestructura por marca.
-5. Completar el recorrido: nueva → contactada → convertida, estancia enfocada
-   en planning, salto al plano conservando fecha/unidad y retorno a ficha.
-6. Integrar `/demos/pinadamar/` y su entrada de gestor en el bundle compuesto,
-   siempre `noindex`, sin tocar el aislamiento productivo por D1.
-7. Verificar los estados obligatorios del contrato, 375/1366, teclado/foco,
-   reduced motion, contraste, enlaces, bundle y tres capturas firma.
-8. Medir por separado materia/contenido, tenant/config, dataset, unión web ↔
-   gestor, QA e integración para comparar con los ~0,42 h automatizados de D1-V
-   (la generación previa de fotos de L'Olivar no entró en esa cifra).
+## Ya terminado — no repetir
+
+- `tenants/pinadamar`: identidad, contenido, paleta, config y 110 unidades.
+- Adaptador tipado `apps/dashboard/src/demo/pinadamar.ts`: 42 solicitudes en
+  cuatro idiomas, 84 estancias, estados forzables, reset y plano propio.
+- `demo-session`: persistencia reversible web↔gestor en el mismo navegador.
+- Flujo nueva → contactada → convertida y salto a planning con fecha/unidad.
+- Segundo build del dashboard, `noindex`, bundle/link-check y tests de fixture.
+- `pnpm check` 50/50 y recorrido headless sin peticiones `/api`.
 
 ## Hecho cuando
 
-- El guion de 8 minutos se recorre desde un enlace y no necesita terminal,
-  login manual, credenciales ni explicación técnica.
-- La solicitud creada en la web aparece en la portada/bandeja y sus cambios son
-  reversibles y están etiquetados como demo.
-- Planning, plano y ficha comparten la misma estancia, fecha y unidad.
-- El escenario se reconoce como camping costero mediano bajo pinada, no Cala
-  Sereno ni L'Olivar.
-- El bundle y `pnpm check` están verdes y quedan tres capturas comerciales.
+- Las diez fotografías están validadas e integradas sin romper la cola visual.
+- El guion de ocho minutos funciona desde un enlace, también a 375 px.
+- Planning, plano y ficha conservan la estancia, fecha y unidad de la consulta.
+- El bundle compuesto y `pnpm check` están verdes y existen tres capturas firma.
+- `PROGRESS.md` declara D2-V cerrado y D3-V como siguiente trabajo, no antes.
 
 ## Regla de alcance
 
-- No abrir Mar de Fondo, Automatiza, Inteligente ni la galería D4-V.
-- No construir D1/Worker/usuarios por marca ni configurar email, pagos,
-  analytics o integraciones reales.
-- Reutilizar estructura, fuentes, transporte y pipeline de L'Olivar; no su copy,
-  paleta, fotografías o geografía.
-- Si el enlace web → gestor exige una decisión de aislamiento no resuelta,
-  escribir el ADR mínimo antes de implementar y mantener la demo reversible.
+- No abrir Mar de Fondo, Automatiza, Inteligente ni D4-V hasta cerrar D2-V.
+- No crear D1, Worker, usuarios, email, pagos ni infraestructura por marca.
+- No reexaminar imágenes de L'Olivar ni sustituir las diez fotos por placeholders.
 
 ## Prompt
 

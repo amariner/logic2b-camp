@@ -6,11 +6,13 @@
 import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
 import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
+import { isPinadaScenario } from '../demo/pinadamar';
 
 /** Siguientes pasos naturales por estado (el servidor admite cualquiera; la UI guía). */
 const NEXT: Record<EnquiryStatus, EnquiryStatus[]> = {
@@ -48,6 +50,7 @@ const CABECERA = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foregro
 
 export default function Solicitudes() {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [filtro, setFiltro] = useState<EnquiryStatus | 'todas'>('todas');
   const [abierta, setAbierta] = useState<string | null>(null);
 
@@ -64,10 +67,24 @@ export default function Solicitudes() {
 
   const cambiar = useMutation({
     mutationFn: (input: { id: string; status: EnquiryStatus }) =>
-      apiPatch(`/api/admin/enquiries/${input.id}`, { status: input.status }),
-    onSuccess: (_d, input) => {
-      toast.success(t('sol.cambiada', { estado: t(`sol.${input.status}`) }));
+      apiPatch<{
+        id: string;
+        status: EnquiryStatus;
+        convertedBookingId?: string | null;
+        booking?: { dateFrom: string; unitId: string | null } | null;
+      }>(`/api/admin/enquiries/${input.id}`, { status: input.status }),
+    onSuccess: (result, input) => {
+      toast.success(
+        `${t('sol.cambiada', { estado: t(`sol.${input.status}`) })}${isPinadaScenario ? ` ${t('demo.cambioLocal')}` : ''}`,
+      );
       void qc.invalidateQueries({ queryKey: ['enquiries'] });
+      void qc.invalidateQueries({ queryKey: ['planning'] });
+      if (isPinadaScenario && result.convertedBookingId && result.booking) {
+        void navigate({
+          to: '/planning',
+          search: { date: result.booking.dateFrom, unit: result.booking.unitId ?? undefined },
+        });
+      }
     },
     onError: (e) => errorMutacion(e, t('sol.cambioError')),
   });
@@ -227,7 +244,10 @@ export default function Solicitudes() {
                     </div>
                     {NEXT[e.status].length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {NEXT[e.status].map((s) => (
+                        {(isPinadaScenario && e.status === 'contacted'
+                          ? ['converted', 'lost'] as EnquiryStatus[]
+                          : NEXT[e.status]
+                        ).map((s) => (
                           <Button
                             key={s}
                             size="xs"

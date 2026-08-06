@@ -1,0 +1,148 @@
+{
+  "seo": {
+    "title": "Camping Pinada del Mar — vacaciones bajo los pinos, cerca del agua",
+    "description": "Camping costero familiar con 110 parcelas, bungalows y mobil-homes bajo una pinada mediterránea. Demostración ficticia de Logic2B."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos", "instalaciones": "El camping", "entorno": "Mar y alrededores",
+    "tarifas": "Tarifas", "blog": "Actualidad", "contacto": "Consultar estancia",
+    "menu": "Menú", "idioma": "Idioma", "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: la consulta se guarda solo en este navegador y no se envía.",
+    "nivel": "Gestión", "nivel1": "Inicio", "nivel3": "Gestión"
+  },
+  "hero3": { "titulo": "Todo el camping, en una sola jornada.", "prueba": "110 unidades · recepción coordinada" },
+  "hero1": { "titulo": "Pinos altos. Mar cerca. Todo listo para llegar.", "cta": "Consulta seis noches" },
+  "ticker": [
+    "84 parcelas con sombra", "26 bungalows y mobil-homes", "mar a 4 minutos a pie",
+    "piscina y juegos", "recepción de 8:00 a 22:00"
+  ],
+  "mostrador": { "buscar": "Consultar", "llegada": "Llegada", "salida": "Salida", "adultos": "Adultos", "ninos": "Niños" },
+  "tipos": {
+    "titulo": "Elige cómo quieres llegar",
+    "subtitulo": "Parcela amplia bajo los pinos o alojamiento preparado. Cuatro opciones claras para familias que quieren instalarse sin perder la tarde.",
+    "verTodo": "Ver los cuatro alojamientos",
+    "nombres": {
+      "ut_parcela_pino": "Parcela Pinar", "ut_parcela_mar": "Parcela Brisa",
+      "ut_bungalow": "Bungalow Familiar", "ut_mobil": "Mobil-home Salina"
+    },
+    "cards": [
+      { "id": "pinar", "nombre": "Parcela Pinar", "desc": "Ochenta metros cuadrados bajo sombra alta, electricidad de 10 A y calles tranquilas.", "foto": "parcela" },
+      { "id": "brisa", "nombre": "Parcela Brisa", "desc": "Algo más amplia, próxima al paseo hacia el mar y con luz abierta entre los pinos.", "foto": "calle-pinos" },
+      { "id": "bungalow", "nombre": "Bungalow Familiar", "desc": "Dos dormitorios, porche y cocina para resolver seis noches con espacio de verdad.", "foto": "bungalow-exterior" },
+      { "id": "mobil", "nombre": "Mobil-home Salina", "desc": "Interior compacto para cinco, aire acondicionado y terraza a la sombra.", "foto": "mobil-home" }
+    ]
+  },
+  "entorno": {
+    "titulo": "La pinada organiza el día.",
+    "texto": "Las calles siguen la sombra, la piscina queda en el centro y el camino de arena sale hacia una playa larga. Todo está cerca, pero cada zona conserva su ritmo."
+  },
+  "form": {
+    "titulo": "Consulta una estancia de seis noches",
+    "subtitulo": "Rellena esta solicitud ficticia y ábrela después en el gestor Logic2B. No se enviará ningún mensaje.",
+    "nombre": "Nombre ficticio", "email": "Email de prueba", "fechas": "Fechas", "entrada": "Entrada", "salida": "Salida",
+    "fechasEjemplo": "18 → 24 agosto", "grupo": "Personas", "estancia": "Cómo quieres quedarte",
+    "estanciaVacia": "Elige parcela o alojamiento", "mensaje": "¿Qué necesita la familia?",
+    "enviar": "Crear solicitud demo", "enviando": "Guardando en esta demo…", "ok": "Solicitud demo creada.",
+    "error": "La demostración no ha podido guardar la solicitud. Reintenta sin datos reales.",
+    "demoEtiqueta": "Demostración:", "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
+    "demoSpam": "Demostración de antispam: la solicitud se ha detenido antes de guardarse.",
+    "demoExitoTitulo": "Solicitud PM-WEB-001 creada",
+    "demoExitoTexto": "La solicitud existe solo en este navegador. Ábrela en el gestor, márcala contactada y conviértela en estancia.",
+    "demoCopiar": "Copiar resumen", "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una operativa así", "demoAbrirGestor": "Abrir en el gestor",
+    "demoResumenEstancia": "Estancia", "demoResumenFechas": "Fechas", "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta", "demoSinConcretar": "Por concretar"
+  },
+  "footer": {
+    "aviso": "Camping costero ficticio de 110 unidades · datos de demostración",
+    "legal": "Aviso legal", "privacidad": "Privacidad", "cookies": "Cookies", "poweredBy": "Web y gestión por Logic2B"
+  },
+  "alojamientos": {
+    "seo": { "title": "Parcelas y alojamientos | Pinada del Mar", "description": "Parcelas bajo pinos, bungalows familiares y mobil-homes en un camping costero ficticio." },
+    "titulo": "Alojamientos", "intro": "Cuatro categorías y 110 unidades organizadas por calles. La consulta no bloquea inventario ni cobra nada.",
+    "desdeNoche": "desde {precio}/noche", "verFicha": "Ver ficha", "consultar": "Consultar estas fechas", "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas", "alojados": "Bungalows y mobil-homes",
+    "fichas": {
+      "ut_parcela_pino": "Parcela sombreada de unos 80 m² para tienda, caravana o furgoneta. Electricidad de 10 A y agua próxima.",
+      "ut_parcela_mar": "Parcela de unos 95 m² en la calle más abierta, cerca del acceso peatonal al mar.",
+      "ut_bungalow": "Dos dormitorios, baño, cocina, aire acondicionado y porche para hasta seis personas.",
+      "ut_mobil": "Dos dormitorios, baño, cocina y terraza para hasta cinco personas. Compacto y bien resuelto."
+    },
+    "ficha": {
+      "capacidad": "Capacidad", "personas": "personas", "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie", "electricidad": "Electricidad", "sombra": "Sombra", "sombraParcial": "parcial", "sombraTotal": "total",
+      "camas": "Camas", "banos": "Baños privados", "aire": "Aire acondicionado", "mascotas": "Mascotas", "si": "sí", "no": "no",
+      "unidades": "{n} unidades de este tipo", "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches", "estanciaMin1": "sin estancia mínima", "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio ficticio con {n} personas. Recepción confirmaría disponibilidad y condiciones antes de reservar.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": { "title": "Servicios del camping | Pinada del Mar", "description": "Recepción, piscina familiar, juegos, supermercado y bloques de baños distribuidos por el recinto." },
+    "titulo": "Servicios que siguen el ritmo de agosto",
+    "intro": "Recepción activa, piscina central y servicios repartidos para que una familia no tenga que cruzar todo el recinto por cada cosa.",
+    "items": [
+      { "id": "recepcion", "nombre": "Recepción", "desc": "Abierta de 8:00 a 22:00 en temporada alta, con dos puestos y atención de llegadas tardías acordadas." },
+      { "id": "piscina", "nombre": "Piscina familiar", "desc": "Vaso principal y zona poco profunda, con sombra y control de acceso." },
+      { "id": "banos", "nombre": "Baños y lavandería", "desc": "Tres bloques con cabinas accesibles, agua caliente y limpieza reforzada en horas punta." },
+      { "id": "super", "nombre": "Supermercado", "desc": "Desayuno, fresco básico, hielo y material de camping sin convertirlo en un hipermercado." },
+      { "id": "juegos", "nombre": "Zona de juegos", "desc": "Espacio visible desde la terraza de piscina y alejado de las calles más tranquilas." }
+    ]
+  },
+  "entornoPagina": {
+    "seo": { "title": "Mar y alrededores | Pinada del Mar", "description": "Playa, vía verde y pueblos costeros desde un camping bajo pinos de la Costa Daurada." },
+    "titulo": "Del pino al agua en cuatro minutos",
+    "intro": "El camping no está sobre la arena: una senda corta atraviesa la última pinada y llega a una playa abierta, sin paseo marítimo pegado.",
+    "secciones": [
+      { "titulo": "La playa", "texto": "Arena fina, entrada progresiva y espacio suficiente para caminar incluso en agosto. No hay hamacas reservadas por el camping." },
+      { "titulo": "En bicicleta", "texto": "Una vía verde costera enlaza dos pueblos y varios tramos de pinar. Recepción presta bomba y herramientas básicas." },
+      { "titulo": "El mercado", "texto": "Los martes y sábados hay fruta, pescado y producto local a quince minutos en bici." },
+      { "titulo": "Cuando baja el sol", "texto": "La brisa entra desde el este y las calles quedan en calma a partir de las once. La circulación nocturna se limita a llegadas acordadas." }
+    ],
+    "distancias": {
+      "titulo": "Desde recepción",
+      "items": [
+        { "lugar": "Playa", "valor": "4 min a pie" }, { "lugar": "Vía verde", "valor": "2 min en bici" },
+        { "lugar": "Mercado", "valor": "15 min en bici" }, { "lugar": "Estación", "valor": "12 min en coche" },
+        { "lugar": "Parque natural", "valor": "28 min en coche" }, { "lugar": "Tarragona", "valor": "35 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": { "title": "Tarifas orientativas | Pinada del Mar", "description": "Precios ficticios por noche para parcelas, bungalows y mobil-homes." },
+    "titulo": "Tarifas de demostración", "intro": "Los importes enseñan cómo se presenta el catálogo. Esta web solo crea una solicitud y no cobra ni confirma una reserva.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": { "sea_media": "Primavera y otoño", "sea_alta": "Verano", "sea_suave": "Final de temporada" },
+    "suplementos": {
+      "titulo": "Suplementos orientativos", "personaExtra": "Persona a partir de la {n}ª", "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 10 A", "vehiculo": "Segundo vehículo", "mascota": "Mascota en parcela"
+    },
+    "extras": { "titulo": "Extras", "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" }, "nombres": { "ext_cuna": "Cuna", "ext_mascota": "Mascota en parcela" } },
+    "condiciones": {
+      "titulo": "Antes de consultar",
+      "items": [
+        "Los alojamientos piden cuatro noches en temporada alta; las parcelas, una.",
+        "Las mascotas se aceptan en parcelas señaladas, no en bungalows ni mobil-homes.",
+        "Llegadas de 16:00 a 22:00; las posteriores se acuerdan con recepción.",
+        "No se cobra nada desde esta demostración y el reset elimina el escenario."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": { "title": "Consultar estancia | Pinada del Mar", "description": "Crea una solicitud ficticia y sigue su recorrido en el gestor Logic2B." },
+    "titulo": "Consulta y sigue la historia",
+    "intro": "Usa datos inventados. La solicitud se guarda temporalmente en tu navegador y aparecerá en el gestor; no sale ningún email ni mensaje.",
+    "datos": { "titulo": "Datos ficticios", "direccion": "Dirección", "telefono": "Teléfono", "email": "Email" },
+    "horario": { "titulo": "Recepción", "texto": "Horario de muestra: 8:00–22:00 en temporada alta y 9:00–20:00 el resto." },
+    "llegar": { "titulo": "Cómo llegar", "texto": "La dirección y los canales son ficticios. Una activación real publicaría únicamente datos verificados por el camping." }
+  },
+  "blog": {
+    "seo": { "title": "Actualidad | Pinada del Mar", "description": "Información práctica de un camping costero ficticio." },
+    "titulo": "Actualidad del camping", "intro": "La demo no publica noticias. La sección queda preparada para avisos útiles y guías de estancia.",
+    "leerMas": "Leer", "volver": "Todas las noticias", "vacio": "No hay publicaciones en esta demostración."
+  },
+  "noEncontrada": { "titulo": "Esta calle no existe", "texto": "La dirección no corresponde a ninguna zona del camping.", "cta": "Volver al inicio" }
+}

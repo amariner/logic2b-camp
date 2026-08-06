@@ -25,6 +25,9 @@ const es = {
   'demo.titulo': 'Información de la demo',
   'demo.informacion': 'Ver información de la demo',
   'demo.soloLectura': 'En la demo esto es solo lectura. El planning sí se puede tocar.',
+  'demo.cambioLocal': 'Cambio guardado solo en esta demostración.',
+  'demo.pinadaBanner':
+    'Pinada del Mar es una demostración ficticia: todos los datos personales son inventados, no se envían mensajes y puedes restablecer el escenario.',
   'demo.verWeb': 'Ver la web del camping',
   'demo.restablecer': 'Restablecer datos',
   'demo.restableciendo': 'Restableciendo…',

@@ -1,5 +1,6 @@
 /** Sesión Better Auth por cookie (misma-origen). El servidor manda; la UI solo pregunta. */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isPinadaScenario, resetPinadaScenario } from './demo/pinadamar';
 
 /**
  * Los mismos roles de `apps/api/src/auth.ts`, con su misma jerarquía.
@@ -27,6 +28,15 @@ export function useSession() {
   return useQuery({
     queryKey: ['session'],
     queryFn: async (): Promise<Session> => {
+      if (isPinadaScenario)
+        return {
+          user: {
+            id: 'usr_demo_pinadamar',
+            email: 'recepcion@pinadamar.example',
+            name: 'Recepción demo',
+            role: 'demo',
+          },
+        };
       const res = await fetch('/api/auth/get-session', { credentials: 'same-origin' });
       if (!res.ok) return null;
       return ((await res.json()) as Session) ?? null;
@@ -67,6 +77,7 @@ export function useDemoDisponible(): boolean {
   const { data } = useQuery({
     queryKey: ['demo-disponible'],
     queryFn: async (): Promise<boolean> => {
+      if (isPinadaScenario) return true;
       const res = await fetch('/api/demo', { credentials: 'same-origin' });
       return res.ok;
     },
@@ -81,6 +92,7 @@ export function useEntrarDemo() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async () => {
+      if (isPinadaScenario) return { ok: true };
       const res = await fetch('/api/demo/sign-in', {
         method: 'POST',
         credentials: 'same-origin',
@@ -102,6 +114,10 @@ export function useResetDemo() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async () => {
+      if (isPinadaScenario) {
+        resetPinadaScenario();
+        return;
+      }
       const res = await fetch('/api/demo/reset', { method: 'POST', credentials: 'same-origin' });
       if (!res.ok) throw new Error('demo_reset_failed');
       const volver = await fetch('/api/demo/sign-in', {

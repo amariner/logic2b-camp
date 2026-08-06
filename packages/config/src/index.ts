@@ -8,7 +8,7 @@
 import type { TenantLegal } from './tenant-config';
 
 export type BookingMode = 'none' | 'enquiry' | 'instant';
-export type EnquiryTransport = 'persisted' | 'demo';
+export type EnquiryTransport = 'persisted' | 'demo' | 'demo-session';
 
 export type TenantWebConfig = {
   slug: string;
@@ -21,9 +21,12 @@ export type TenantWebConfig = {
   contact: { email: string; phone: string; address: string };
   /**
    * Destino del formulario público. Ausente equivale a `persisted` para no
-   * cambiar tenants existentes. `demo` nunca hace red ni conserva PII.
+   * cambiar tenants existentes. `demo` nunca hace red ni conserva datos;
+   * `demo-session` guarda ficción reversible solo en el navegador.
    */
   enquiryTransport?: EnquiryTransport;
+  /** Ruta del gestor de escenario; solo se usa con `demo-session`. */
+  demoManagerPath?: string;
   /** Foto de héroe del carril estático; por defecto conserva `hero-anochecer`. */
   staticHeroImage?: string;
   /**

@@ -1,7 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { getContent, images } from '../../lib/content';
+import { config, getContent, images } from '../../lib/content';
 import PageIntro from '../PageIntro.astro';
 
 interface Props {
@@ -10,7 +10,10 @@ interface Props {
 const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.entornoPagina;
-const fotoEntorno = images['entorno-piedra-seca'] ?? images['hero-dia'];
+const fotoEntorno =
+  images['entorno'] ??
+  images['entorno-piedra-seca'] ??
+  images[config.staticHeroImage ?? 'hero-dia'];
 ---
 
 <Base locale={locale} path="/entorno" title={p.seo.title} description={p.seo.description}>

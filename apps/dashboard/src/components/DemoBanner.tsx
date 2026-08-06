@@ -31,11 +31,13 @@ import {
 import { ExternalLink, Info } from 'lucide-react';
 import { useResetDemo, useRol } from '../auth';
 import { t } from '../i18n';
+import { isPinadaScenario } from '../demo/pinadamar';
 
 export default function DemoBanner() {
   const esDemo = useRol() === 'demo';
   const reset = useResetDemo();
   if (!esDemo) return null;
+  const webHref = isPinadaScenario ? '/demos/pinadamar/' : '/demo/';
 
   return (
     <>
@@ -58,11 +60,13 @@ export default function DemoBanner() {
         <SheetContent side="bottom" className="max-h-[85dvh] rounded-t-xl p-0 md:hidden">
           <SheetHeader>
             <SheetTitle>{t('demo.titulo')}</SheetTitle>
-            <SheetDescription className="pr-4 leading-relaxed">{t('demo.banner')}</SheetDescription>
+            <SheetDescription className="pr-4 leading-relaxed">
+              {t(isPinadaScenario ? 'demo.pinadaBanner' : 'demo.banner')}
+            </SheetDescription>
           </SheetHeader>
           <div className="grid gap-3 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <Button asChild type="button" variant="outline" className="min-h-11 justify-center">
-              <a href="/demo/">
+              <a href={webHref}>
                 <ExternalLink className="size-4" aria-hidden />
                 {t('demo.verWeb')}
               </a>
@@ -100,9 +104,11 @@ export default function DemoBanner() {
 
       <div className="hidden shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground md:flex">
         <Info className="size-3.5 shrink-0" aria-hidden />
-        <p className="min-w-0 flex-1">{t('demo.banner')}</p>
+        <p className="min-w-0 flex-1">
+          {t(isPinadaScenario ? 'demo.pinadaBanner' : 'demo.banner')}
+        </p>
         <Button asChild type="button" variant="ghost" size="sm">
-          <a href="/demo/">
+          <a href={webHref}>
             <ExternalLink className="size-3.5" aria-hidden />
             {t('demo.verWeb')}
           </a>

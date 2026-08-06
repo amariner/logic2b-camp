@@ -4,7 +4,7 @@
  * si el tenant añade una foto específica del tipo, se usa sola, sin tocar código.
  */
 import type { ImageMetadata } from 'astro';
-import { images } from './content';
+import { data, images } from './content';
 
 const principal: Record<string, string[]> = {
   ut_std: ['tipo-parcela'],
@@ -32,11 +32,17 @@ const resolve = (keys: string[] = []): ImageMetadata | undefined =>
   keys.map((k) => images[k]).find((i): i is ImageMetadata => Boolean(i));
 
 export const fotoTipo = (unitTypeId: string): ImageMetadata =>
-  resolve(principal[unitTypeId]) ?? images['tipo-parcela']!;
+  resolve(data.unitTypes.find((type) => type.id === unitTypeId)?.photos) ??
+  resolve(principal[unitTypeId]) ??
+  images['tipo-parcela']!;
 
 /** Galería del detalle: principal + interior/ambiente, sin duplicados. */
 export const galeriaTipo = (unitTypeId: string): ImageMetadata[] => {
-  const fotos = [fotoTipo(unitTypeId), resolve(detalle[unitTypeId])].filter(
+  const tenantPhotos = data.unitTypes
+    .find((type) => type.id === unitTypeId)
+    ?.photos.map((key) => images[key])
+    .filter((image): image is ImageMetadata => Boolean(image)) ?? [];
+  const fotos = [...tenantPhotos, fotoTipo(unitTypeId), resolve(detalle[unitTypeId])].filter(
     (i): i is ImageMetadata => Boolean(i),
   );
   return [...new Set(fotos)];
