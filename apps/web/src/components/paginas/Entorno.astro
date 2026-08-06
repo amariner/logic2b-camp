@@ -1,6 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import Materia from '../Materia.astro';
 import { config, getContent, images } from '../../lib/content';
 import PageIntro from '../PageIntro.astro';
 
@@ -20,16 +21,20 @@ const fotoEntorno =
   <PageIntro titulo={p.titulo} intro={p.intro} />
 
   <section class="mx-auto max-w-7xl px-5 pb-16 md:px-8">
-    <Picture
-      src={fotoEntorno!}
-      alt=""
-      widths={[828, 1280, 1920, 2560]}
-      sizes="100vw"
-      formats={['avif', 'webp']}
-            fallbackFormat="webp"
-      loading="eager"
-      class="aspect-21/9 w-full rounded-(--lc-radius-lg) object-cover"
-    />
+    {fotoEntorno ? (
+      <Picture
+        src={fotoEntorno}
+        alt=""
+        widths={[828, 1280, 1920, 2560]}
+        sizes="100vw"
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        loading="eager"
+        class="aspect-21/9 w-full rounded-(--lc-radius-lg) object-cover"
+      />
+    ) : (
+      <Materia class="aspect-21/9 w-full rounded-(--lc-radius-lg)" />
+    )}
   </section>
 
   <section class="mx-auto grid max-w-7xl gap-x-16 gap-y-12 px-5 pb-16 md:grid-cols-2 md:px-8">

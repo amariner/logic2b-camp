@@ -1,0 +1,82 @@
+{
+  "_": [
+    "Encargo de arte y manifiesto de descarga de Camping Pinada del Mar.",
+    "Cada clave es el NOMBRE DE FICHERO que la web ya espera en content/media/:",
+    "dejar el .webp con ese nombre basta, no hay código que tocar.",
+    "",
+    "Dirección de arte (ADR 0024 + CONTRATO-VISUAL-OLA-1 §4.1): camping costero",
+    "mediano bajo pinada litoral; pino carrasco (Aleppo pine), calles de arena",
+    "compactada, lona verde, bungalows sobrios, recepción activa. Práctico,",
+    "familiar y luminoso — menos contemplativo que L'Olivar. Fotografía",
+    "documental editorial, luz mediterránea de mañana o última hora, SIN gente",
+    "reconocible, SIN texto ni rótulos, SIN HDR ni saturación de folleto, grano",
+    "de película sutil. Prohibido reutilizar material de Cala Sereno o L'Olivar.",
+    "",
+    "Modelo usado en las dos ya generadas: nano_banana_pro (resuelto a",
+    "nano_banana_2 por el proveedor), 21:9, 2k, 3168x1344, 2 créditos/pieza.",
+    "",
+    "Cómo se cierra: generar las que no tengan `url`, pegar aquí su URL, y",
+    "correr `node apps/web/scripts/fetch-fotos.mjs pinadamar` desde una máquina",
+    "con salida a internet. El contenedor cloud NO la tiene: su proxy solo deja",
+    "pasar npm, GitHub, Anthropic y MCP, y contesta 403 a cualquier otro host."
+  ],
+  "piezas": {
+    "hero-calle": {
+      "prompt": "Editorial documentary photograph of the main street of a Mediterranean coastal campsite at mid-morning in August. A wide compacted sand-and-gravel avenue runs away from the camera under tall Aleppo pines with high open canopies. On both sides, numbered pitches with white touring caravans, green canvas awnings and simple wooden posts; dappled pine shade falls across the sand. At the far end the street opens onto a pale strip of sea and sky. Natural Mediterranean light, no HDR, no brochure saturation, muted greens and warm sand tones, subtle 35mm film grain, 35mm lens at f/5.6. No people, no text, no signage lettering, no logos, no watermarks.",
+      "aspecto": "21:9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260806_160506_5cda6d10-0203-4102-8907-179c2a504e16.png",
+      "nota": "héroe de la home (config.staticHeroImage)"
+    },
+    "hero-anochecer": {
+      "prompt": "Editorial documentary photograph of a curved row of sober single-storey bungalows in a Mediterranean coastal campsite at dusk. Plain pale render walls with dark wood trim, covered porches, small terraces with two simple chairs and a folded towel over a rail; warm porch lights just switched on. Tall Aleppo pines rise above, their trunks catching the last warm light. A compacted sand path curves through the foreground. Deep blue-green evening sky with a faint band of sea light low on the horizon. Natural light only, no HDR, no brochure saturation, muted palette, subtle 35mm film grain. No people, no text, no lettering, no logos, no watermarks.",
+      "aspecto": "21:9",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260806_160506_f0582007-e40e-483d-bcdc-44479bda7121.png",
+      "nota": "la pieza 'hero-bungalows' del encargo, archivada con el nombre del ROL que usa el core (héroe secundario / 404)"
+    },
+    "parcela": {
+      "prompt": "Editorial documentary photograph of a single empty camping pitch in a Mediterranean coastal campsite, late morning. An 80 m² rectangle of compacted sand bounded by low stones, deep shade from tall Aleppo pines overhead, a simple grey electricity post with a closed hatch at one corner, a wooden number marker. Neighbouring pitches blurred behind the trunks. Natural light, no HDR, no brochure saturation, muted greens and warm sand, subtle 35mm film grain. No people, no tents, no text, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "tarjeta y tipo ut_parcela_pino"
+    },
+    "calle-pinos": {
+      "prompt": "Editorial documentary photograph of a wide pitch lane in a Mediterranean coastal campsite in the early afternoon, more open to the light than the shaded interior lanes. Compacted sand track between widely spaced Aleppo pines, a low wooden fence, a sandy footpath branching off toward the sea, bright open sky between the canopies. Natural light, no HDR, no brochure saturation, warm sand and dry pine tones, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "tarjeta y tipo ut_parcela_mar"
+    },
+    "bungalow-exterior": {
+      "prompt": "Editorial documentary photograph of a single family bungalow in a Mediterranean coastal campsite, morning. Small single-storey unit with pale render walls, dark wood trim and a covered porch with a wooden deck; two simple chairs and a folded towel on the rail; a slatted shutter half open. Tall Aleppo pines cast dappled shade across the deck and the sand in front. Natural light, no HDR, no brochure saturation, muted palette, subtle 35mm film grain. No people, no text, no lettering, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "tarjeta y tipo ut_bungalow"
+    },
+    "bungalow-interior": {
+      "prompt": "Editorial documentary photograph of the interior of a compact family bungalow at a Mediterranean coastal campsite, morning. Light pine plywood walls and cabinetry, a made bed with plain white linen, a small table with two chairs, a narrow window with a slatted shutter throwing striped light across the floor, the shadow of a pine branch on the wall. Uncluttered and honest, not styled. Natural light, no HDR, no brochure saturation, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "segunda foto de la galería de ut_bungalow"
+    },
+    "mobil-home": {
+      "prompt": "Editorial documentary photograph of a mobile home unit at a Mediterranean coastal campsite, late afternoon. Long low unit with pale cladding and a dark skirt, a wooden terrace along one side under a green canvas awning, two chairs and a small table, an air-conditioning unit on the end wall. Compacted sand in front, Aleppo pines behind casting long shade. Natural light, no HDR, no brochure saturation, muted palette, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "tarjeta y tipo ut_mobil"
+    },
+    "instalacion-recepcion": {
+      "prompt": "Editorial documentary photograph of the reception building of a Mediterranean coastal campsite, morning. Small single-storey building with pale render and a deep shaded porch on wooden posts, a long counter visible through the open doorway, a rack of leaflets, a bicycle leaning outside, potted rosemary. Compacted sand forecourt with the shade of Aleppo pines across it, a barrier arm out of focus behind. Natural light, no HDR, no brochure saturation, subtle 35mm film grain. No people, no readable text, no lettering, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "pieza 'recepcion' del encargo · página de instalaciones (id recepcion)"
+    },
+    "instalacion-piscina": {
+      "prompt": "Editorial documentary photograph of a family swimming pool at a Mediterranean coastal campsite, late morning. Rectangular pool with a shallow children's section, plain concrete surround, empty loungers in a row, a low hedge and tall Aleppo pines casting long shadows across the stone. Still water, no inflatables. Natural light, no HDR, no brochure saturation, muted greens and warm stone, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "3:2",
+      "nota": "pieza 'piscina-familiar' del encargo · página de instalaciones (id piscina)"
+    },
+    "textura-lona": {
+      "prompt": "Editorial documentary close-up of stretched green canvas awning fabric in strong Mediterranean side light, with the sharp shadow of a pine branch falling across the weave. Visible warp and weft, a seam and a brass eyelet at one edge, slight sag. Filling the frame, shot flat on. Natural light, no HDR, no brochure saturation, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "21:9",
+      "nota": "franja de firma de la home"
+    },
+    "entorno": {
+      "prompt": "Editorial documentary photograph of a sandy footpath opening from a pine grove onto a long Mediterranean beach, early evening. Compacted sand path framed by Aleppo pine trunks and dry scrub in the foreground, dunes with marram grass, then a wide calm sea and a low horizon. Warm low light, long shadows. Natural light, no HDR, no brochure saturation, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
+      "aspecto": "21:9",
+      "nota": "cabecera de la página 'Mar y alrededores'"
+    }
+  }
+}

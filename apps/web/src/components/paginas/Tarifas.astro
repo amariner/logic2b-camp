@@ -14,10 +14,25 @@ const t = c.tarifas;
 const plan = (unitTypeId: string, seasonId: string) =>
   data.ratePlans.find((p) => p.unit_type_id === unitTypeId && p.season_id === seasonId);
 
-// suplementos de parcela: iguales para todos los tipos pitch dentro de cada temporada
-const suplementos = data.seasons.map((s) => plan('ut_std', s.id)!);
-const filasSuplemento: [string, (p: (typeof suplementos)[number]) => number][] = [
-  [fill(t.suplementos.personaExtra!, { n: data.unitTypes[0]!.included_persons + 1 }), (p) => p.extra_person_cents],
+// Suplementos de parcela: iguales para todos los tipos pitch dentro de cada
+// temporada, así que basta con leer UNA parcela — la primera del propio tenant.
+// Antes esto era `plan('ut_std', …)!`, el id de la demo escrito a mano en el
+// core: cualquier camping que llame a sus parcelas de otra forma (Pinada del
+// Mar: `ut_parcela_pino`) rompía la página entera de tarifas.
+// Cabecera y cuerpo salen de la MISMA lista de pares (temporada, plan): si una
+// temporada no tiene tarifa para ese tipo, no se pinta su columna en ninguno de
+// los dos, en vez de descuadrar la tabla una celda.
+const tipoSuplementos = data.unitTypes.find((u) => u.kind === 'pitch') ?? data.unitTypes[0];
+const suplementos = (tipoSuplementos ? data.seasons : [])
+  .map((s) => ({ season: s, p: plan(tipoSuplementos!.id, s.id) }))
+  .filter((c): c is { season: (typeof data.seasons)[number]; p: NonNullable<typeof c.p> } =>
+    Boolean(c.p),
+  );
+const filasSuplemento: [string, (p: (typeof suplementos)[number]['p']) => number][] = [
+  [
+    fill(t.suplementos.personaExtra!, { n: (tipoSuplementos?.included_persons ?? 2) + 1 }),
+    (p) => p.extra_person_cents,
+  ],
   [t.suplementos.nino!, (p) => p.child_cents],
   [t.suplementos.electricidad!, (p) => p.electricity_cents],
   [t.suplementos.vehiculo!, (p) => p.vehicle_cents],
@@ -71,14 +86,20 @@ const filasSuplemento: [string, (p: (typeof suplementos)[number]) => number][] =
   </section>
 
   <section class="mx-auto grid max-w-7xl gap-14 px-5 pb-16 md:grid-cols-2 md:px-8">
-    <div>
+    {/* `min-w-0`: un hijo de grid nace con `min-width:auto`, así que su ancho
+        mínimo intrínseco —aquí, las cabeceras `whitespace-nowrap` de la tabla—
+        estira la rejilla y saca el DOCUMENTO de la pantalla, por mucho
+        `overflow-x-auto` que lleve el envoltorio de dentro. Se veía solo en los
+        campings de nombres de temporada largos ("Final de temporada" desbordaba
+        108px a 375px en Pinada del Mar; "Alta"/"Media" de la demo cabían). */}
+    <div class="min-w-0">
       <h2 class="font-display mb-5 text-[17px] font-semibold">{t.suplementos.titulo}</h2>
       <div class="overflow-x-auto">
         <table class="w-full border-collapse text-[14px]">
           <thead>
             <tr class="border-b border-tinta/20 text-left">
               <th class="py-2 pr-4 font-medium"></th>
-              {data.seasons.map((s) => (
+              {suplementos.map(({ season: s }) => (
                 <th class="px-3 py-2 text-right font-medium whitespace-nowrap">{t.temporadas[s.id] ?? s.name}</th>
               ))}
             </tr>
@@ -87,7 +108,7 @@ const filasSuplemento: [string, (p: (typeof suplementos)[number]) => number][] =
             {filasSuplemento.map(([nombre, valor]) => (
               <tr class="border-b border-arena/50">
                 <td class="py-2.5 pr-4">{nombre}</td>
-                {suplementos.map((p) => (
+                {suplementos.map(({ p }) => (
                   <td class="tnum px-3 py-2.5 text-right whitespace-nowrap">{eur(valor(p), locale)}</td>
                 ))}
               </tr>
@@ -97,7 +118,7 @@ const filasSuplemento: [string, (p: (typeof suplementos)[number]) => number][] =
       </div>
     </div>
 
-    <div>
+    <div class="min-w-0">
       <h2 class="font-display mb-5 text-[17px] font-semibold">{t.extras.titulo}</h2>
       <ul class="flex flex-col divide-y divide-arena/50 border-y border-arena/50 text-[14px]">
         {data.extras.map((e) => (

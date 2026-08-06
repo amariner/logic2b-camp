@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import { data, eur, fill, getContent, localePath } from '../../lib/content';
 import { fotoTipo } from '../../lib/fotos';
+import Materia from '../Materia.astro';
 import PageIntro from '../PageIntro.astro';
 
 interface Props {
@@ -31,19 +32,23 @@ const grupos = [
         {grupo.titulo}
       </h2>
       <div class="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-        {grupo.tipos.map((t) => (
+        {grupo.tipos.map((t, i) => (
           <a href={localePath(locale, `/alojamientos/${t.id}`)} class="group flex flex-col gap-3.5">
             <div class="overflow-hidden rounded-(--lc-radius-lg)">
-              <Picture
-                src={fotoTipo(t.id)}
-                alt={c.tipos.nombres[t.id] ?? t.id}
-                widths={[400, 800]}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                formats={['avif', 'webp']}
-            fallbackFormat="webp"
-                loading="lazy"
-                class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
+              {fotoTipo(t.id) ? (
+                <Picture
+                  src={fotoTipo(t.id)!}
+                  alt={c.tipos.nombres[t.id] ?? t.id}
+                  widths={[400, 800]}
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  loading="lazy"
+                  class="aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              ) : (
+                <Materia class="aspect-4/3 w-full" giro={164 + i * 8} />
+              )}
             </div>
             <div class="flex flex-col gap-1">
               <h3 class="font-display text-[17px] leading-snug font-semibold">{c.tipos.nombres[t.id] ?? t.id}</h3>

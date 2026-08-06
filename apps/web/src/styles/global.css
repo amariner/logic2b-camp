@@ -185,6 +185,72 @@ html {
   }
 }
 
+/* ---------- materia: la caja de una foto que el camping todavía no tiene ----------
+ *
+ * Un camping recién dado de alta tiene config, contenido y tarifas mucho antes
+ * que fotografías, y hasta hoy eso no era "una web sin fotos": era una web que
+ * NO CONSTRUÍA (`images['hero-anochecer']!` sobre un tenant sin media). Esto es
+ * lo que ocupa esa caja mientras tanto.
+ *
+ * No imita una fotografía ni anuncia un fallo: campo de color de la paleta del
+ * propio tenant, de la copa de pino al suelo de arena, con unas bandas
+ * verticales al 5 % que dan textura sin dibujar nada. Las variables son las del
+ * `theme.css` del camping, así que cada uno degrada con SU color, no con un
+ * gris de sistema. */
+.lc-materia {
+  background-color: var(--lc-pino);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--lc-tinta) 5%, transparent) 0 2px,
+      transparent 2px 74px
+    ),
+    linear-gradient(
+      var(--lc-materia-giro, 176deg),
+      var(--lc-pino-oscuro) 0%,
+      var(--lc-pino) 38%,
+      color-mix(in srgb, var(--lc-mar) 62%, var(--lc-hueso)) 66%,
+      color-mix(in srgb, var(--lc-arena) 78%, var(--lc-hueso)) 100%
+    );
+}
+
+/* Las dos variantes existen por lo que va ENCIMA, no por gusto: el contraste no
+ * puede depender de dónde caiga la franja de arena.
+ *   · `--oscura` → texto `hueso` encima (héroe nivel 1, 404) — 7,2:1
+ *   · `--clara`  → texto `tinta` encima (héroe nivel 3, que lleva el mostrador
+ *                  y su titular en oscuro sobre el degradado de hueso) — 7,5:1
+ *   · sin variante → nada encima (tarjetas, galería, franja, entorno) */
+.lc-materia--clara {
+  background-color: var(--lc-arena-suave);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--lc-tinta) 4%, transparent) 0 2px,
+      transparent 2px 74px
+    ),
+    linear-gradient(
+      var(--lc-materia-giro, 176deg),
+      color-mix(in srgb, var(--lc-hueso) 88%, var(--lc-mar)) 0%,
+      var(--lc-arena-suave) 48%,
+      var(--lc-arena) 100%
+    );
+}
+
+.lc-materia--oscura {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--lc-hueso) 4%, transparent) 0 2px,
+      transparent 2px 74px
+    ),
+    linear-gradient(
+      var(--lc-materia-giro, 176deg),
+      var(--lc-pino-oscuro) 0%,
+      var(--lc-pino) 52%,
+      color-mix(in srgb, var(--lc-pino-oscuro) 82%, var(--lc-tinta)) 100%
+    );
+}
+
 /* skeleton del mostrador */
 @keyframes lc-pulse {
   50% {

@@ -10,6 +10,7 @@
 import {
   autoPlano,
   expandPlano,
+  ocupacionDeLaNoche,
   unitStateOn,
   type PlanoBlockRange,
   type PlanoBooking,
@@ -149,17 +150,8 @@ export default function Plano() {
     return m;
   }, [data, date, bookings, blocksByUnit]);
 
-  // resumen para la barra: ocupación de la noche
-  const summary = useMemo(() => {
-    let occ = 0;
-    let free = 0;
-    for (const s of stateByCode.values()) {
-      if (s.kind === 'occupied' || s.kind === 'arrival') occ++;
-      else if (s.kind === 'free' || s.kind === 'departure') free++;
-    }
-    const total = occ + free || 1;
-    return { occ, total: stateByCode.size, pct: Math.round((occ / total) * 100) };
-  }, [stateByCode]);
+  // resumen para la barra: ocupación de la noche (puro y con test en @logic-camp/config)
+  const summary = useMemo(() => ocupacionDeLaNoche(stateByCode.values()), [stateByCode]);
 
   const selectedCode = search.unit ? (codeById.get(search.unit) ?? null) : null;
   const [openId, setOpenId] = useState<string | null>(null);
@@ -285,7 +277,7 @@ export default function Plano() {
           </Button>
           {data && (
             <p className="tnum ml-auto shrink-0 text-[12px] text-muted-foreground">
-              {t('plano.ocupacion', { pct: summary.pct, occ: summary.occ, total: summary.total })}
+              {t('plano.ocupacion', { pct: summary.pct, occ: summary.ocupadas, total: summary.total })}
             </p>
           )}
           <BotonAyuda className="size-11 shrink-0 md:size-7" />

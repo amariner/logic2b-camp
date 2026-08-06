@@ -3,8 +3,10 @@ import {
   autoPlano,
   computeViewBox,
   expandPlano,
+  ocupacionDeLaNoche,
   PLANO_GRID,
   unitStateOn,
+  type UnitDayState,
   type PlanoBooking,
   type PlanoBlockRange,
   type PlanoDescriptor,
@@ -197,5 +199,47 @@ describe('unitStateOn', () => {
     };
     const s = unitStateOn('2026-08-12', 'u1', [b({})], [blk]);
     expect(s.kind).toBe('occupied');
+  });
+});
+
+describe('ocupacionDeLaNoche', () => {
+  const estado = (kind: UnitDayState['kind']): UnitDayState =>
+    kind === 'free' || kind === 'inactive'
+      ? ({ kind } as UnitDayState)
+      : kind === 'blocked'
+        ? { kind, reason: 'maintenance' }
+        : kind === 'departure'
+          ? { kind, bookingId: 'b', status: 'confirmed' }
+          : { kind, bookingId: 'b', status: 'confirmed', turnover: false };
+
+  it('cuenta "en casa" como ocupada — el defecto que enseñaba "1 de 110" con 20 unidades verdes', () => {
+    const estados = [
+      ...Array.from({ length: 20 }, () => estado('inhouse')),
+      estado('occupied'),
+      estado('free'),
+    ];
+    expect(ocupacionDeLaNoche(estados).ocupadas).toBe(21);
+  });
+
+  it('ocupada, entra hoy y en casa ocupan; libre, sale hoy, bloqueada y baja no', () => {
+    const ocupan: UnitDayState['kind'][] = ['occupied', 'arrival', 'inhouse'];
+    const noOcupan: UnitDayState['kind'][] = ['free', 'departure', 'blocked', 'inactive'];
+    for (const k of ocupan) expect(ocupacionDeLaNoche([estado(k)]).ocupadas).toBe(1);
+    for (const k of noOcupan) expect(ocupacionDeLaNoche([estado(k)]).ocupadas).toBe(0);
+  });
+
+  it('un solo denominador: el porcentaje sale del total de unidades, bloqueos incluidos', () => {
+    const estados = [
+      estado('inhouse'),
+      estado('occupied'),
+      estado('free'),
+      estado('blocked'),
+      estado('inactive'),
+    ];
+    expect(ocupacionDeLaNoche(estados)).toEqual({ ocupadas: 2, total: 5, pct: 40 });
+  });
+
+  it('un camping sin unidades no divide entre cero', () => {
+    expect(ocupacionDeLaNoche([])).toEqual({ ocupadas: 0, total: 0, pct: 0 });
   });
 });

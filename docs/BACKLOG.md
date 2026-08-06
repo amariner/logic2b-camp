@@ -112,8 +112,24 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   marca, contenido completo, transporte demo sin red/PII con éxito/error/spam,
   build `tier: 1` en `/demos/olivar/`, `noindex`, bundle compuesto y tres
   capturas. QA 375/1366, 10.302 enlaces y `pnpm check` 48/48.
-- [D2-V] **Demo Gestión**: web → solicitud → gestor/planning/plano con datos
-  sembrados creíbles.
+- [D2-V] **Demo Gestión** 🟨: web → solicitud → gestor/planning/plano con datos
+  sembrados creíbles. **Recorrido cerrado y verificado en la sesión 84** (0
+  peticiones `/api`, bundle verde, QA 375/1366). Queda **solo la piel**: las 9
+  fotos que faltan y los derivados de marca (favicon, apple-touch-icon, og,
+  miniatura) — prompts fijados en `tenants/pinadamar/fotos.json`, se aterrizan
+  con `node apps/web/scripts/fetch-fotos.mjs pinadamar` desde una máquina con
+  salida a internet.
+- [infra] **El contenedor cloud sale por lista blanca** (npm, GitHub, Anthropic,
+  MCP): cualquier otro host recibe **403 en el CONNECT**, `example.com` incluido.
+  Diagnóstico corregido en la sesión 84 — no es "cloudfront bloqueado", que es
+  como estaba anotado desde la sesión 8 y por eso se volvía a investigar cada
+  vez. Consecuencia práctica: **generar imágenes sí se puede** (entra por MCP),
+  **bajarlas no**. Se arregla pidiendo al administrador que añada el host a la
+  lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
+- [pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**:
+  hoy no existen, así que el navegador pide `/favicon.ico`, recibe 404 y lo
+  escribe en la consola de la demo (único error que queda). Van con la sesión de
+  fotos, no antes — 2026-08-06
 - [D3-V] **Demo Visión**: reserva/operación y automatización/IA representadas,
   siempre etiquetadas como demo o prototipo.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha

@@ -8,7 +8,8 @@
     "typecheck": "astro check",
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
     "build": "astro build",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "test": "node scripts/check-portfolio.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

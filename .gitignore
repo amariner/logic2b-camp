@@ -22,3 +22,6 @@ playwright-report/
 # nombres, documentos de identidad y contacto de huéspedes reales. No se
 # commitean jamás — se entregan al camping y se borran.
 exports/
+
+# Builds de verificación del escaparate (apps/web/scripts/check-portfolio.mjs)
+dist-portfolio/

@@ -31,12 +31,18 @@ const detalle: Record<string, string[]> = {
 const resolve = (keys: string[] = []): ImageMetadata | undefined =>
   keys.map((k) => images[k]).find((i): i is ImageMetadata => Boolean(i));
 
-export const fotoTipo = (unitTypeId: string): ImageMetadata =>
+/**
+ * `undefined` cuando el camping todavía no tiene ninguna foto que sirva para
+ * este tipo: quien la pinta enseña `<Materia>` en su lugar. Antes esto acababa
+ * en `images['tipo-parcela']!`, que en un tenant sin media era `undefined`
+ * disfrazado de `ImageMetadata` y reventaba el build en `getImage`.
+ */
+export const fotoTipo = (unitTypeId: string): ImageMetadata | undefined =>
   resolve(data.unitTypes.find((type) => type.id === unitTypeId)?.photos) ??
   resolve(principal[unitTypeId]) ??
-  images['tipo-parcela']!;
+  images['tipo-parcela'];
 
-/** Galería del detalle: principal + interior/ambiente, sin duplicados. */
+/** Galería del detalle: principal + interior/ambiente, sin duplicados. Vacía si no hay ninguna. */
 export const galeriaTipo = (unitTypeId: string): ImageMetadata[] => {
   const tenantPhotos = data.unitTypes
     .find((type) => type.id === unitTypeId)

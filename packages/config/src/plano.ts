@@ -307,3 +307,33 @@ export function unitStateOn(
 
   return { kind: 'free' };
 }
+
+/** Una unidad está ocupada esta noche si hay alguien dentro, entrando o ya instalado. */
+export const OCUPA_LA_NOCHE: readonly UnitDayState['kind'][] = ['occupied', 'arrival', 'inhouse'];
+
+/**
+ * Resumen de ocupación de la noche para la barra del plano.
+ *
+ * Existe aquí, puro y con test, porque escrito a mano en la pantalla estaba MAL:
+ * sumaba `occupied` y `arrival` pero **no `inhouse`**, que es justo el estado de
+ * quien ya ha hecho el check-in — o sea, el más ocupado de todos. El plano de
+ * Pinada del Mar decía "1 de 110 ocupadas · 1%" con veinte unidades verdes en
+ * pantalla. Además mezclaba dos denominadores en la misma frase: el "de N" salía
+ * del total de unidades y el "%" de `ocupadas + libres`.
+ *
+ * `departure` no ocupa: `date_to` es exclusive y el día de salida se libera. Un
+ * día de relevo ya se cuenta una vez, como `arrival` con `turnover`.
+ */
+export function ocupacionDeLaNoche(estados: Iterable<UnitDayState>): {
+  ocupadas: number;
+  total: number;
+  pct: number;
+} {
+  let ocupadas = 0;
+  let total = 0;
+  for (const s of estados) {
+    total++;
+    if (OCUPA_LA_NOCHE.includes(s.kind)) ocupadas++;
+  }
+  return { ocupadas, total, pct: total === 0 ? 0 : Math.round((ocupadas / total) * 100) };
+}

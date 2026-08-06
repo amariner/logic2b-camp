@@ -80,6 +80,8 @@ export {
   autoPlano,
   computeViewBox,
   expandPlano,
+  ocupacionDeLaNoche,
+  OCUPA_LA_NOCHE,
   PLANO_GRID,
   unitStateOn,
   type PlanoBlock,

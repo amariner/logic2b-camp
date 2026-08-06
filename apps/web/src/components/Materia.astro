@@ -1,0 +1,34 @@
+---
+/**
+ * Superficie de materia: lo que ocupa la caja de una fotografía cuando el
+ * camping todavía no la tiene.
+ *
+ * No es un placeholder de "imagen rota" ni una foto de relleno: es un campo de
+ * color derivado de la paleta del propio tenant (pino, mar, arena), con la
+ * misma caja y el mismo radio que la imagen a la que sustituye. Un camping
+ * recién dado de alta se puede enseñar el mismo día; cuando llega su sesión de
+ * fotos, basta con dejar el fichero en `content/media/` y esta superficie
+ * desaparece sola — no hay nada que desmontar.
+ *
+ * `oscura` mantiene el campo entero en la mitad oscura de la paleta: es la
+ * variante de los héroes y del 404, donde encima va texto `hueso` y el
+ * contraste no puede depender de dónde caiga la franja de arena.
+ */
+interface Props {
+  /** clases de caja de la imagen que sustituye (aspect, radio, alto) */
+  class?: string;
+  /** se elige por lo que va ENCIMA: texto claro → 'oscura', texto oscuro → 'clara' */
+  tono?: 'oscura' | 'clara';
+  /** grados del degradado: rompe la repetición en una rejilla de tarjetas */
+  giro?: number;
+}
+
+const { class: clase, tono, giro }: Props = Astro.props;
+---
+
+<div
+  class:list={['lc-materia', tono && `lc-materia--${tono}`, clase]}
+  style={giro === undefined ? undefined : `--lc-materia-giro:${giro}deg`}
+  role="presentation"
+>
+</div>

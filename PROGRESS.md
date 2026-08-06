@@ -1,16 +1,52 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D2-V · 2026-08-06
+## Checkpoint visual D2-V · 2026-08-06 (actualizado en la sesión 84)
 
-- La cola de imágenes de Pinada del Mar se detuvo por error de red del generador antes de completar el lote 1.
-- Procesadas: **0/10**. No se creó ni inspeccionó ningún archivo y no se reutilizó material de L'Olivar.
-- Pendientes, sin reenviar las anteriores: `hero-calle`, `hero-bungalows`, `parcela`, `bungalow-exterior`, `bungalow-interior`, `mobil-home`, `recepcion`, `calle-pinos`, `piscina-familiar`, `textura-lona`.
-- Al reanudar el trabajo visual: comenzar por un lote nuevo de máximo 2, resumirlo y esperar 5 segundos; no reintentar automáticamente el lote fallido.
+- **El muro es la política de egress del contenedor cloud, no el generador ni los
+  créditos.** El proxy de la sesión solo deja pasar npm, GitHub, Anthropic y los
+  servidores MCP; a cualquier otro host contesta **403 en el CONNECT** — también a
+  `example.com`. Por eso el mismo bloqueo reaparece desde la sesión 8: no se
+  arregla reintentando. Generar **sí** funciona (entra por MCP, no por el proxy).
+- **Generadas 2 de 11** (`hero-calle`, `hero-anochecer`), con prompt y URL
+  anotados. Las 9 restantes tienen su **prompt ya fijado**. Todo vive en
+  `tenants/pinadamar/fotos.json`; lo aterriza en un paso
+  `node apps/web/scripts/fetch-fotos.mjs pinadamar` desde una máquina con salida.
+- **No hacen falta las fotos para enseñar Pinada del Mar**: desde esta sesión un
+  camping sin fotografía construye y se recorre entero (`<Materia>`). Lo que
+  falta es la piel, no el recorrido.
+- No se generó a ciegas el resto: la herramienta devuelve URL, no imagen, así que
+  en cloud no se pueden inspeccionar — y ADR 0024 prohíbe quemar créditos sin ver
+  el resultado.
 
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 84 (2026-08-06): un camping sin fotos ya construye, y el
+  bundle compuesto vuelve a estar verde.** La cola fotográfica de D2-V no es
+  ejecutable en cloud (403 de política de egress, ver checkpoint), así que la
+  sesión atacó lo que la bloqueaba de verdad: **`bundle:demo` estaba ROTO en
+  `main`** desde la 83 y `pnpm check` no lo notaba. Dos aserciones del core sobre
+  claves que la demo tiene y otro camping no —`images['hero-anochecer']!` en el
+  404 y `plan('ut_std', …)!` en Tarifas, el id de Cala Sereno escrito a mano en
+  una página compartida— tumbaban el build entero de Pinada del Mar. Ahora cada
+  caja de foto ausente la ocupa **`<Materia>`**: un campo de color de la paleta
+  del propio tenant, con variante clara/oscura elegida por el texto que lleva
+  encima (7,2:1 y 7,5:1 medidos), nunca una foto de relleno. Además: **guardia
+  nueva en `pnpm check`** que construye todos los campings del escaparate y falla
+  nombrando al roto (verificada en rojo con la regresión exacta); **`/tarifas`
+  dejaba de caber a 375px** en cualquier camping de nombres de temporada largos
+  (`min-width:auto` de un hijo de grid, 108px de desborde, solo Pinada lo
+  enseñaba); y el **plano decía «1 de 110 ocupadas · 1%» con 18 unidades
+  ocupadas** — el resumen no contaba a quien está *en casa* y mezclaba dos
+  denominadores, defecto de Cala Sereno también. Ahora es `ocupacionDeLaNoche`,
+  pura y con 4 tests en `packages/config`. Recorrido real verificado contra el
+  bundle: solicitud `PM-WEB-001` → gestor → bandeja → planning (110 unidades, 82
+  reservas) → plano, con **0 peticiones `/api`**; 8 páginas × 2 anchos sin
+  desborde ni imágenes rotas. Bundle **10.670 enlaces / 333 HTML**. `pnpm check`
+  **49/51**: rojo ambiental conocido (`reset.test.ts` hace segfault de workerd,
+  CONTINUA §5) y el build de web **cancelado en cascada** por turbo — aislado
+  pasa, 235 páginas. Sin deploy remoto.
 - **Sesión autónoma 83 (2026-08-06): D2-V queda funcionalmente preparado y
   visualmente en checkpoint.** Se crea `tenants/pinadamar` con voz/paleta
   costera propia, catálogo de **110 unidades** y web Gestión `tier: 2`. El nuevo
@@ -248,6 +284,83 @@ check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 84 — 2026-08-06 · **Un camping sin fotos también se enseña** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido y por qué cambió.** El prompt de `SIGUIENTE-SESION` mandaba
+reanudar la cola fotográfica de D2-V. Se intentó: se generaron dos piezas y, al
+ir a bajarlas, el proxy contestó **403 al CONNECT** — y no solo contra la CDN del
+generador: también contra `example.com`. El contenedor sale por **lista blanca**
+(npm, GitHub, Anthropic, MCP). CONTINUA §3 dice que un objetivo que no es
+ejecutable sin Andreu se anota y se elige otro, así que la pregunta pasó a ser
+**qué impedía de verdad avanzar D2-V**. La respuesta salió de intentar construir:
+`bundle:demo` llevaba roto desde la sesión 83 y nadie lo veía.
+
+**Los dos defectos que tumbaban a Pinada del Mar.** Los dos son de la misma
+familia: el core afirmando con `!` una clave que solo la demo tiene.
+
+1. `404.astro` hacía `getImage({ src: images['hero-anochecer']! })`. `hero-anochecer`
+   es el nombre de un ROL (héroe secundario), no de una foto que todo camping
+   tenga. Un tenant sin ese fichero no construía **ninguna** de sus 15 páginas.
+2. `Tarifas.astro` leía los suplementos con `plan('ut_std', s.id)!` — el id de
+   parcela de Cala Sereno **escrito a mano en una página compartida**. Pinada
+   llama a las suyas `ut_parcela_pino`, así que la página entera reventaba.
+   Ahora sale del primer tipo `pitch` del propio camping, y cabecera y cuerpo de
+   la tabla se generan de la MISMA lista de pares (temporada, plan) para que una
+   temporada sin tarifa no descuadre la tabla una celda.
+
+**`<Materia>`, y por qué no es un placeholder.** Un camping trae config,
+contenido y tarifas semanas antes que su sesión de fotos; eso no puede significar
+"web rota". La caja de la foto ausente la ocupa un campo de color **de la paleta
+del propio tenant** (`--lc-pino` → `--lc-arena`, con bandas verticales al 4-5 %
+que dan textura sin dibujar nada). No imita una fotografía ni anuncia un fallo, y
+cuando el `.webp` aparece en `content/media/` desaparece sola — no hay nada que
+desmontar. Tres tonos, elegidos **por lo que va encima**, no por gusto:
+`--oscura` bajo texto hueso (héroe nivel 1, 404) y `--clara` bajo texto tinta
+(héroe nivel 3, que lleva el mostrador), medidos a 7,2:1 y 7,5:1; sin variante
+donde no va texto (tarjetas, galería, franja, entorno). El héroe de nivel 3 **no
+se cae** sin foto: ahí el héroe es el mostrador, y sigue montándose encima.
+
+**La guardia que faltaba.** `pnpm check` construía `apps/web` una sola vez, con
+el tenant por defecto. Los campings del escaparate solo se construyen dentro de
+`bundle:demo`, que nadie corre al cerrar sesión — por eso la 83 pudo cerrar
+**50/50 verde con el bundle roto**. `apps/web/scripts/check-portfolio.mjs`
+construye todos los campings de `tenants/` (menos `_template` y `demo`, ya
+cubierto) a un `dist-portfolio/` propio para no pisar la caché de turbo, y falla
+nombrando al roto. Comprobado en rojo reintroduciendo la regresión exacta del
+404. Cuesta 10s y cubre el portfolio según crezca a 6 y a 12.
+
+**Dos defectos más, encontrados mirando la pantalla.**
+
+- **`/tarifas` desbordaba 108px a 375**, y solo en Pinada: un hijo de grid nace
+  con `min-width:auto`, así que el ancho mínimo de las cabeceras `nowrap`
+  estiraba la rejilla y sacaba el DOCUMENTO de la pantalla — por mucho
+  `overflow-x-auto` que llevara el envoltorio de dentro. Con "Alta"/"Media" de la
+  demo cabía; con "Final de temporada" no. `min-w-0` en las dos columnas.
+- **El plano decía «1 de 110 ocupadas · 1%»** con 18 unidades ocupadas a la
+  vista. El resumen sumaba `occupied` y `arrival` pero **no `inhouse`**, que es
+  justo quien ya ha hecho el check-in; y mezclaba dos denominadores en la misma
+  frase (el "de N" del total de unidades, el "%" de ocupadas+libres). Afectaba
+  igual a Cala Sereno. Sale de la pantalla a `ocupacionDeLaNoche` en
+  `packages/config`, pura y con cuatro tests. Ahora: **18 de 110 · 16%**.
+
+**Verificación.** Recorrido real contra el bundle servido: `/demos/pinadamar/` →
+solicitud `PM-WEB-001` → "Abrir en el gestor" → portada con la solicitud → bandeja
+→ planning (110 unidades, 82 reservas a la vista) → plano (110 unidades, `B-12`
+fuera de servicio), **0 peticiones `/api`** en todo el recorrido. Ocho páginas ×
+1366/375: cero desborde, cero imágenes rotas, cero errores de consola salvo el
+`favicon.ico` implícito (Pinada aún no tiene favicon: va con la sesión de fotos).
+`bundle:demo` **10.670 enlaces / 333 HTML OK**. `packages/config` 49/49.
+`pnpm check` **49/51** — `@tenant/demo#test` rojo por el segfault de workerd sobre
+`reset.test.ts` (ambiental y documentado; `seed.test.ts` 48/48 y
+`remote-seed.test.ts` 6/6 pasan), y `@logic-camp/web#build` cancelado en cascada
+por turbo al caer aquel: aislado construye 235 páginas y sale 0.
+
+**Lo que NO se hizo y por qué.** Las 9 fotos que faltan no se generaron a ciegas:
+la herramienta devuelve URL, no imagen, así que en cloud no hay forma de
+inspeccionarlas, y ADR 0024 fijó que no se queman créditos sin ver el resultado.
+En su lugar quedan los 11 prompts fijados en `tenants/pinadamar/fotos.json` y un
+script que las aterriza en un paso. Sin deploy remoto.
 
 ### Sesión 81 — 2026-08-06 · **D0-V: tres demos dejan de ser nombres y pasan a producción** (autónoma, protocolo CONTINUA)
 

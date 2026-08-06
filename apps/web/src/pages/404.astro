@@ -1,23 +1,35 @@
 ---
 import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Materia from '../components/Materia.astro';
 import { config, getContent, images, localePath } from '../lib/content';
 
 const locale = config.defaultLocale;
 const c = getContent(locale);
-const foto = await getImage({ src: images['hero-anochecer']!, widths: [828, 1280, 1920], format: 'webp' });
+// `hero-anochecer` es el nombre del ROL (héroe secundario), no de una foto que
+// todo camping tenga: se cae al héroe estático del tenant y, si tampoco, a la
+// materia de su paleta. Esta línea con `!` era la que impedía construir
+// Pinada del Mar entera por una sola imagen ausente.
+const fotoBase = images['hero-anochecer'] ?? images[config.staticHeroImage ?? 'hero-dia'];
+const foto = fotoBase
+  ? await getImage({ src: fotoBase, widths: [828, 1280, 1920], format: 'webp' })
+  : null;
 ---
 
 <Base locale={locale} path="/404" title={`404 — ${config.name}`} description={c.noEncontrada.texto}>
   <section class="relative">
     <div class="relative h-[88svh] min-h-130 overflow-hidden">
-      <img
-        src={foto.src}
-        srcset={foto.srcSet.attribute}
-        sizes="100vw"
-        alt=""
-        class="absolute inset-0 h-full w-full object-cover"
-      />
+      {foto ? (
+        <img
+          src={foto.src}
+          srcset={foto.srcSet.attribute}
+          sizes="100vw"
+          alt=""
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <Materia class="absolute inset-0 h-full w-full" tono="oscura" />
+      )}
       <div class="absolute inset-0 bg-tinta/45"></div>
       <div class="relative mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-6 px-5 text-center md:px-8">
         <p class="tnum font-display text-[15px] font-semibold tracking-[0.3em] text-hueso/70">404</p>
