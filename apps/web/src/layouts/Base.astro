@@ -209,7 +209,7 @@ const tierMenuScript = `
           {/* selector de idioma: nativo, accesible, sin JS */}
           <details class="lc-menu relative">
             <summary
-              class="flex cursor-pointer items-center gap-1 text-[13px] font-medium text-tinta uppercase"
+              class="flex min-h-11 cursor-pointer items-center gap-1 text-[13px] font-medium text-tinta uppercase"
               aria-label={c.nav.idioma}
             >
               {locale}<span aria-hidden="true" class="text-[10px] text-tinta-suave">▾</span>
@@ -299,13 +299,13 @@ const tierMenuScript = `
 
           {/* menú móvil */}
           <details class="lc-menu relative lg:hidden">
-            <summary class="cursor-pointer text-[13px] font-medium text-tinta">{c.nav.menu}</summary>
+            <summary class="flex min-h-11 cursor-pointer items-center text-[13px] font-medium text-tinta">{c.nav.menu}</summary>
             <ul class="absolute right-0 top-full z-50 mt-2 min-w-48 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
               {navLinks.map(([href, label]) => (
                 <li>
                   <a
                     href={localePath(locale, href)}
-                    class="block px-4 py-2 text-[14px] text-tinta-suave transition-colors hover:bg-arena-suave hover:text-tinta"
+                    class="flex min-h-11 items-center px-4 py-2 text-[14px] text-tinta-suave transition-colors hover:bg-arena-suave hover:text-tinta"
                   >
                     {label}
                   </a>

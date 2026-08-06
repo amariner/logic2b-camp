@@ -309,7 +309,7 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 | Fase        | Nombre            | Objetivo                                                                                             | Hecho cuando                                                 |
 | ----------- | ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **D0-V ✅** | Contrato visual   | L'Olivar, Pinada del Mar y Mar de Fondo; relato, pantallas, arte, activos, honestidad y soporte demo | Cerrado en `CONTRATO-VISUAL-OLA-1.md`                        |
-| **D1-V**    | Demo Inicio       | Primera marca completa, web móvil, alojamientos y consulta de muestra                                | Se comparte y recorre sin terminal ni credenciales           |
+| **D1-V ✅** | Demo Inicio       | Primera marca completa, web móvil, alojamientos y consulta de muestra                                | L'Olivar lista en `/demos/olivar/`                           |
 | **D2-V**    | Demo Gestión      | Segunda marca, solicitud, gestor, planning y plano con datos creíbles                                | Web → operación completa en una presentación                 |
 | **D3-V**    | Demo Visión       | Reserva y operación más automatización/IA representadas                                              | El futuro se entiende sin confundir prototipo con producción |
 | **D4-V**    | Landing y campaña | Galería de tres, comparador, fichas, capturas/vídeo y Ads de muestra                                 | El pitch entero vive en el navegador                         |
@@ -322,8 +322,8 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 
 1. Usar **D0-V** como contrato de diseño y venta, no como ADR de
    infraestructura.
-2. Producir L'Olivar, la primera demo Inicio, y medir materia, contenido, QA y
-   claridad comercial.
+2. Usar L'Olivar como receta medida de Inicio, sin copiar su contenido ni su
+   identidad en las demos siguientes.
 3. Documentar en su ficha qué habría que activar para un cliente real; no
    implementarlo aún.
 4. Repetir con Gestión y Visión antes de ampliar a seis o doce.

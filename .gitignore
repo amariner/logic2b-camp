@@ -10,6 +10,10 @@ tenants/*/seed.sql
 .DS_Store
 coverage/
 
+# Másteres fotográficos de producción: se conservan localmente; Git publica
+# solo los derivados WebP/AVIF/JPG que consume el tenant.
+tenants/*/content/media/*-source.*
+
 # Playwright (E2E)
 test-results/
 playwright-report/

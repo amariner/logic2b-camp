@@ -389,7 +389,7 @@ no convierte toda la fila Visión en alcance contratado.
 
 ## 9. Backlog ejecutable
 
-### D1-V — producir L'Olivar
+### D1-V ✅ — producir L'Olivar
 
 1. Crear `tenants/olivar` a partir del contrato de `_template`, con nivel
    comercial 0 sobre el carril técnico `tier: 1`, idioma `es`, 22 unidades y
@@ -439,5 +439,7 @@ no convierte toda la fila Visión en alcance contratado.
 - **SEO:** las demos son `noindex`; la futura galería indexable enlazará casos
   solo cuando los tres recorridos existan.
 
-No queda una decisión técnica o visual pendiente para abrir D1-V. La siguiente
-sesión produce L'Olivar y valida la receta con un resultado compartible.
+D1-V quedó cerrado en la sesión 82: L'Olivar valida la receta con un resultado
+compartible, transporte demo común y bundle compuesto. La siguiente sesión abre
+D2-V con Pinada del Mar y mide qué parte de la fábrica sobrevive al salto de web
+estática a web → solicitud → gestor.

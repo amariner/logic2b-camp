@@ -14,14 +14,14 @@ const principal: Record<string, string[]> = {
   ut_bung4: ['tipo-bungalow'],
   ut_bung6: ['tipo-bungalow'],
   ut_mobil: ['tipo-bungalow'],
-  ut_glamp: ['tipo-glamping'],
+  ut_glamp: ['tipo-glamping', 'tipo-tienda'],
 };
 
 const detalle: Record<string, string[]> = {
   ut_bung4: ['detalle-bungalow-interior'],
   ut_bung6: ['detalle-bungalow-interior'],
   ut_mobil: ['detalle-bungalow-interior'],
-  ut_glamp: ['detalle-glamping-interior'],
+  ut_glamp: ['detalle-glamping-interior', 'detalle-tienda-interior'],
   ut_prem: ['hero-dia'],
   ut_std: ['textura-lona'],
   ut_conf: ['textura-lona'],

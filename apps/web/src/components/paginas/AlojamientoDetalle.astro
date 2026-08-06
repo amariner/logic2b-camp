@@ -144,7 +144,7 @@ const showTierSwitch = demoTierSwitch;
         {/* Nivel 1: sin motor no hay nada que consultar — se pregunta. */}
         {(!instant || showTierSwitch) && (
           <a
-            href={localePath(locale, '/contacto')}
+            href={`${localePath(locale, '/contacto')}?stay=${encodeURIComponent(tipo.id)}#consulta`}
             data-hero-nivel={showTierSwitch ? '1' : undefined}
             class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
           >

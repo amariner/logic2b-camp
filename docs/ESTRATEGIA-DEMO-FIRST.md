@@ -162,9 +162,9 @@ contratados y se convierte cada fila necesaria en plan de entrega.
    Fondo fijados en
    [`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md), con historia,
    pantallas, arte, activos y soporte demo mínimo.
-2. **D1-V — primera demo Inicio**: producirla de extremo a extremo y medir el
-   trabajo visual, sin CLI ni infraestructura propia.
-3. **D2-V — demo Gestión**: reutilizar la fábrica y mostrar web → solicitud →
+2. **D1-V ✅ — primera demo Inicio**: L'Olivar completa marca, web, consulta
+   sin red, bundle y capturas sin CLI ni infraestructura propia.
+3. **D2-V — demo Gestión (siguiente)**: reutilizar la fábrica y mostrar web → solicitud →
    gestor/planning.
 4. **D3-V — demo Visión**: representar automatización e inteligencia con
    escenarios honestos y explicables.

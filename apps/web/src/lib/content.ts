@@ -121,11 +121,14 @@ export function getContent(locale: string): Content {
 }
 
 /** URLs finales (hash de Vite) de las fotos del tenant, por nombre sin extensión. */
-const mediaModules = import.meta.glob<string>('@tenant/content/media/*.{webp,jpg,svg,png}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
+const mediaModules = import.meta.glob<string>(
+  ['@tenant/content/media/*.{webp,jpg,svg,png}', '!@tenant/content/media/*-source.*'],
+  {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  },
+);
 export const media: Record<string, string> = Object.fromEntries(
   Object.entries(mediaModules).map(([path, url]) => [
     path
@@ -138,7 +141,7 @@ export const media: Record<string, string> = Object.fromEntries(
 
 /** Las mismas fotos como ImageMetadata → astro:assets genera srcset AVIF/WebP. */
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  '@tenant/content/media/*.{webp,jpg}',
+  ['@tenant/content/media/*.{webp,jpg}', '!@tenant/content/media/*-source.*'],
   {
     eager: true,
   },

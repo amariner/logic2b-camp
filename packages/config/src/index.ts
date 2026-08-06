@@ -8,6 +8,7 @@
 import type { TenantLegal } from './tenant-config';
 
 export type BookingMode = 'none' | 'enquiry' | 'instant';
+export type EnquiryTransport = 'persisted' | 'demo';
 
 export type TenantWebConfig = {
   slug: string;
@@ -18,6 +19,13 @@ export type TenantWebConfig = {
   defaultLocale: string;
   domain: string;
   contact: { email: string; phone: string; address: string };
+  /**
+   * Destino del formulario público. Ausente equivale a `persisted` para no
+   * cambiar tenants existentes. `demo` nunca hace red ni conserva PII.
+   */
+  enquiryTransport?: EnquiryTransport;
+  /** Foto de héroe del carril estático; por defecto conserva `hero-anochecer`. */
+  staticHeroImage?: string;
   /**
    * Identidad legal del titular (ADR 0026 §2.5). Obligatorio: un camping español
    * no puede publicar sin aviso legal, y sin estos datos las páginas legales no

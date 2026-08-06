@@ -4,6 +4,27 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (82, 2026-08-06): D1-V convierte L'Olivar en la
+  primera demo vendible del portfolio.** `tenants/olivar` representa Inicio
+  sobre el carril técnico `tier: 1`: español, 18 parcelas, 4 tiendas, identidad
+  seca del Maestrat y contenido completo sin `__TODO__`. Los ocho originales
+  fotográficos se validaron en cola 2×2 y se conservaron localmente fuera de
+  Git; la web usa derivados
+  optimizados, favicon/monograma, apple touch icon, OG, miniatura y tres
+  capturas (`home-375`, `tienda-1366`, `confirmacion-375`). El contrato común
+  gana `enquiryTransport?: 'persisted' | 'demo'`: ausente sigue persistiendo
+  como antes; `demo` reproduce éxito/error/antispam, preserva el alojamiento
+  elegido, devuelve foco y resumen copiable y hace **cero peticiones de red**.
+  El bundle compuesto incorpora `/demos/olivar/`, corrige fuentes bajo
+  `BASE_PATH`, excluye `*-source.*`, publica `noindex`/robots cerrado y no
+  genera rutas de motor. QA real a 375/1366: cero desborde, imágenes rotas,
+  fallos de red o consola; reduced motion `none`, fuentes cargadas, contraste
+  mínimo de acción **5,79:1**. Bundle: **10.302 enlaces / 318 HTML**; `pnpm
+check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
+  0,12 h, configuración 0,08 h, interacción 0,07 h, QA 0,12 h e integración
+  0,03 h (**~0,42 h**); excluye la generación previa de los ocho PNG fuente y
+  no debe usarse aún como coste humano. **Siguiente objetivo: D2-V, Pinada del
+  Mar / Gestión.** Sin deploy remoto.
 - **Última sesión autónoma (81, 2026-08-06): D0-V convierte la primera ola en
   un encargo de producción.** L'Olivar representa Inicio, Pinada del Mar
   Gestión y Mar de Fondo Visión. `docs/CONTRATO-VISUAL-OLA-1.md` fija para las

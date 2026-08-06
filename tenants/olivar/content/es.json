@@ -1,0 +1,295 @@
+{
+  "seo": {
+    "title": "Camping L'Olivar — dormir entre bancales y olivos del Maestrat",
+    "description": "Un camping familiar de 22 unidades entre olivos, piedra seca y una masía encalada. Parcelas y cuatro tiendas premontadas, de marzo a noviembre."
+  },
+  "nav": {
+    "alojamientos": "Dónde dormir",
+    "instalaciones": "El camping",
+    "entorno": "El Maestrat",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno",
+    "contacto": "Consulta tus fechas",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: ninguna consulta se envía ni se guarda.",
+    "nivel": "Inicio",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
+  },
+  "hero3": {
+    "titulo": "Un bancal tranquilo para quedarse.",
+    "prueba": "22 unidades · atención directa"
+  },
+  "hero1": {
+    "titulo": "Sombra de olivo. Noches frescas. Veintidós maneras de estar a gusto.",
+    "cta": "Consulta tus fechas"
+  },
+  "ticker": [
+    "18 parcelas entre olivos",
+    "4 tiendas ya montadas",
+    "piedra seca y caminos a pie",
+    "pan y aceite de la cooperativa",
+    "abierto marzo – noviembre"
+  ],
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
+  "tipos": {
+    "titulo": "Dos formas de quedarse",
+    "subtitulo": "Trae tu casa o llega con la cama preparada. El resto es el mismo: suelo firme, sombra y silencio a partir de las once.",
+    "verTodo": "Ver parcelas y tiendas",
+    "nombres": {
+      "ut_std": "Parcela entre olivos",
+      "ut_glamp": "Tienda premontada"
+    },
+    "cards": [
+      {
+        "id": "parcelas",
+        "nombre": "Parcelas entre olivos",
+        "desc": "Dieciocho bancales de unos 80 m², suelo firme, sombra natural y electricidad sencilla.",
+        "foto": "tipo-parcela"
+      },
+      {
+        "id": "tiendas",
+        "nombre": "Tiendas premontadas",
+        "desc": "Cuatro tiendas de lona cruda con cama, lino y una mesa fuera. Baños a pocos pasos.",
+        "foto": "tipo-tienda"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Aquí el paisaje no está delante: duermes dentro.",
+    "texto": "Los caminos siguen los bancales, las paredes son de piedra colocada sin cemento y los olivos llevan aquí mucho más que nosotros. A pie se llega al horno, al obrador de aceite y a dos rutas cortas."
+  },
+  "form": {
+    "titulo": "Consulta tus fechas",
+    "subtitulo": "Cuéntanos cuándo vienes y cómo quieres quedarte. Esta demostración te enseñará la respuesta sin enviar tus datos.",
+    "nombre": "Nombre",
+    "email": "Email",
+    "fechas": "Fechas aproximadas",
+    "fechasEjemplo": "12 → 16 septiembre",
+    "grupo": "Personas",
+    "estancia": "Cómo quieres quedarte",
+    "estanciaVacia": "Elige parcela o tienda",
+    "mensaje": "¿Qué necesitas saber?",
+    "enviar": "Ver respuesta de muestra",
+    "enviando": "Preparando respuesta…",
+    "ok": "Consulta recibida.",
+    "error": "Demostración de error: la consulta no se ha enviado. En producción podrías reintentar o llamar al camping.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ni guardaremos tus datos.",
+    "demoSpam": "Demostración de antispam: la consulta se ha detenido antes de enviar o guardar datos.",
+    "demoExitoTitulo": "Tu consulta está preparada",
+    "demoExitoTexto": "En una web activa, el camping recibiría ahora estos datos y te respondería por el canal acordado. Aquí no se ha enviado ni guardado nada.",
+    "demoCopiar": "Copiar resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una web así para mi camping",
+    "demoResumenEstancia": "Estancia",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
+  },
+  "footer": {
+    "aviso": "Un camping pequeño entre olivos del Maestrat · demostración ficticia",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web de camping por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Parcelas y tiendas | Camping L'Olivar",
+      "description": "Dieciocho parcelas bajo olivos y cuatro tiendas premontadas con cama, sombra y baños cercanos."
+    },
+    "titulo": "Dónde dormir",
+    "intro": "Veintidós unidades y ninguna fila interminable: eliges parcela o tienda y nosotros te proponemos el bancal que mejor encaje.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Tiendas preparadas",
+    "fichas": {
+      "ut_std": "Suelo firme, unos 80 m² y la sombra cambiante de los olivos. Para tienda, caravana o furgoneta sin convertir el bancal en una avenida.",
+      "ut_glamp": "Lona cruda sobre tarima, cama doble, ropa de cama y sombra. El bloque de baños está a menos de un minuto andando."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorio",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio orientativo con {n} personas. El camping confirmaría importe y disponibilidad al responder.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "El camping — lo necesario, a escala humana | L'Olivar",
+      "description": "Balsa restaurada, baños, sombra, una cocina común pequeña y producto local en un camping de 22 unidades."
+    },
+    "titulo": "Lo necesario, bien cuidado",
+    "intro": "No hay animación, piscina de resort ni supermercado. Hay agua caliente, sombra, una balsa restaurada y alguien que sabe dónde comprar buen pan.",
+    "items": [
+      {
+        "id": "balsa",
+        "nombre": "La balsa del bancal",
+        "desc": "Una pequeña lámina de agua restaurada, cercada y mantenida como punto fresco del recinto. No es una piscina."
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños y duchas",
+        "desc": "Un bloque sencillo con agua caliente, cabina accesible y limpieza mañana y tarde."
+      },
+      {
+        "id": "cocina",
+        "nombre": "Cocina común",
+        "desc": "Dos fuegos, fregadero, nevera compartida y una mesa larga bajo cubierta."
+      },
+      {
+        "id": "producto",
+        "nombre": "Pan, aceite y lo de cerca",
+        "desc": "Encargos de pan por la mañana y una estantería corta con aceite, miel y almendras de productores vecinos."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción con nombre",
+        "desc": "De 8:30 a 12:00 y de 17:00 a 20:00. Fuera de ese horario, teléfono para llegadas acordadas."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "El Maestrat a pie | Camping L'Olivar",
+      "description": "Caminos de piedra seca, olivos centenarios, horno de pueblo y rutas cortas desde el camping."
+    },
+    "titulo": "El Maestrat, sin hacer lista",
+    "intro": "Se viene por los bancales y se vuelve por el silencio. Para el resto basta calzado cómodo y preguntar antes de salir.",
+    "secciones": [
+      {
+        "titulo": "Piedra seca",
+        "texto": "Un sendero sale desde la puerta y enlaza muros, casetas y antiguos pasos de ganado. La vuelta corta dura cuarenta minutos; la larga llega al collado en algo menos de dos horas."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "A doce minutos en coche hay horno, farmacia, bar y mercado los viernes. Para cenar conviene reservar: hay pocos sitios y cierran cuando terminan."
+      },
+      {
+        "titulo": "Aceite y almendra",
+        "texto": "El obrador vecino enseña la almazara con cita y prepara catas pequeñas. En septiembre empieza la almendra; en noviembre, la recogida de oliva."
+      },
+      {
+        "titulo": "La noche",
+        "texto": "A partir de las once apagamos la iluminación de paso que no hace falta. En verano refresca después de medianoche; una capa fina siempre encuentra uso."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde el bancal",
+      "items": [
+        { "lugar": "Ruta corta de piedra seca", "valor": "40 min a pie" },
+        { "lugar": "Horno y bar", "valor": "12 min en coche" },
+        { "lugar": "Farmacia", "valor": "12 min en coche" },
+        { "lugar": "Obrador de aceite", "valor": "8 min en coche" },
+        { "lugar": "Morella", "valor": "45 min en coche" },
+        { "lugar": "Costa del Azahar", "valor": "50 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas orientativas | Camping L'Olivar",
+      "description": "Precios orientativos por noche para parcela y tienda premontada, con temporadas y condiciones sencillas."
+    },
+    "titulo": "Tarifas claras, confirmadas al responder",
+    "intro": "Estos importes forman parte de la demostración y son orientativos. Una consulta real recibiría disponibilidad, precio final y condiciones antes de confirmar nada.",
+    "tabla": { "tipo": "Cómo te quedas", "noche": "€/noche" },
+    "temporadas": {
+      "sea_primavera": "Primavera",
+      "sea_verano": "Verano",
+      "sea_otono": "Otoño"
+    },
+    "suplementos": {
+      "titulo": "Suplementos de parcela (orientativos)",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 6 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota"
+    },
+    "extras": {
+      "titulo": "Extras opcionales",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": { "ext_desayuno": "Cesta de desayuno local", "ext_toallas": "Juego de toallas" }
+    },
+    "condiciones": {
+      "titulo": "Bueno saberlo",
+      "items": [
+        "Las tiendas piden tres noches en verano; las parcelas, una.",
+        "Las parcelas admiten perros tranquilos; las tiendas no admiten mascotas.",
+        "Llegadas de 17:00 a 20:00. Si vas a llegar más tarde, se acuerda antes.",
+        "No se cobra nada desde esta demostración y ninguna consulta genera una reserva."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Consulta tus fechas | Camping L'Olivar",
+      "description": "Prueba una consulta de estancia en la demostración de L'Olivar sin enviar ni guardar datos personales."
+    },
+    "titulo": "Hablemos de tus fechas",
+    "intro": "Esta pantalla reproduce el canal directo de un camping pequeño. Puedes probarla: los datos se quedan en tu navegador y desaparecen al salir.",
+    "datos": {
+      "titulo": "Dónde estamos",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: de 8:30 a 12:00 y de 17:00 a 20:00, de marzo a noviembre."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La ubicación y los datos de contacto de esta demo son ficticios. En una activación real se publicarían dirección, ruta y canales verificados por el camping."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Cuaderno | Camping L'Olivar",
+      "description": "Notas del bancal, la cosecha y los caminos del Maestrat."
+    },
+    "titulo": "Cuaderno del bancal",
+    "intro": "Este camping de muestra aún no publica notas. La sección queda preparada para historias útiles, no para rellenar palabras clave.",
+    "leerMas": "Leer",
+    "volver": "Todas las notas",
+    "vacio": "Aún no hay notas."
+  },
+  "noEncontrada": {
+    "titulo": "Este camino no llega a ningún bancal",
+    "texto": "La dirección no existe o ha cambiado. La portada y la consulta siguen a un paso.",
+    "cta": "Volver al inicio"
+  }
+}

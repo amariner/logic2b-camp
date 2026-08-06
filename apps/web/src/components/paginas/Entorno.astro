@@ -10,6 +10,7 @@ interface Props {
 const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.entornoPagina;
+const fotoEntorno = images['entorno-piedra-seca'] ?? images['hero-dia'];
 ---
 
 <Base locale={locale} path="/entorno" title={p.seo.title} description={p.seo.description}>
@@ -17,7 +18,7 @@ const p = c.entornoPagina;
 
   <section class="mx-auto max-w-7xl px-5 pb-16 md:px-8">
     <Picture
-      src={images['hero-dia']!}
+      src={fotoEntorno!}
       alt=""
       widths={[828, 1280, 1920, 2560]}
       sizes="100vw"

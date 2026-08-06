@@ -1,8 +1,7 @@
 ---
-/**
- * Formulario de solicitud → POST /api/enquiries.
- * Vanilla a propósito: funciona en TODOS los niveles sin motor (regla dura).
- */
+/** Formulario de solicitud sin motor: persistencia actual o transporte demo. */
+import { config, data, getContent } from '../lib/content';
+
 interface Props {
   locale: string;
   form: Record<string, string>;
@@ -10,26 +9,61 @@ interface Props {
   id?: string;
 }
 const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
+const transport = config.enquiryTransport ?? 'persisted';
+const nombres = getContent(locale).tipos.nombres;
+const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id] ?? tipo.id }));
 ---
 
-<form id={uid} class="flex flex-col gap-4" novalidate>
+<form
+  id={uid}
+  class="flex flex-col gap-4"
+  novalidate
+  data-transport={transport}
+  data-summary-stay={f.demoResumenEstancia}
+  data-summary-dates={f.demoResumenFechas}
+  data-summary-party={f.demoResumenGrupo}
+  data-summary-message={f.demoResumenMensaje}
+  data-summary-open={f.demoSinConcretar}
+>
+  {transport === 'demo' && (
+    <p class="rounded-(--lc-radius) border border-pino/25 bg-pino/5 px-3.5 py-3 text-[13px] leading-relaxed text-tinta">
+      <strong>{f.demoEtiqueta}</strong> {f.demoAviso}
+    </p>
+  )}
   <div class="grid gap-4 sm:grid-cols-2">
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.nombre}</span>
-      <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+      <input name="name" required autocomplete="name" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
     </label>
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.email}</span>
-      <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
+      <input name="email" type="email" required autocomplete="email" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
     </label>
   </div>
-  <label class="flex flex-col gap-1.5">
-    <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
-    <input name="dates" placeholder="12 → 19 ago" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]" />
-  </label>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class="flex flex-col gap-1.5">
+      <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
+      <input name="dates" placeholder={f.fechasEjemplo ?? '12 → 19 ago'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+    </label>
+    {f.grupo && (
+      <label class="flex flex-col gap-1.5">
+        <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.grupo}</span>
+        <input name="party" type="number" min="1" max="8" value="2" inputmode="numeric" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      </label>
+    )}
+  </div>
+  {f.estancia && (
+    <label class="flex flex-col gap-1.5">
+      <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.estancia}</span>
+      <select name="stay" required class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]">
+        <option value="">{f.estanciaVacia}</option>
+        {stays.map((stay) => <option value={stay.id}>{stay.name}</option>)}
+      </select>
+    </label>
+  )}
   <label class="flex flex-col gap-1.5">
     <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.mensaje}</span>
-    <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"></textarea>
+    <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]"></textarea>
   </label>
   <button
     type="submit"
@@ -39,13 +73,42 @@ const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
   >
     {f.enviar}
   </button>
-  <p data-status class="hidden text-[14px] font-medium" data-ok={f.ok} data-error={f.error}></p>
+  <p data-status tabindex="-1" aria-live="polite" class="hidden text-[14px] font-medium" data-ok={f.ok} data-error={f.error} data-spam={f.demoSpam}></p>
+  {transport === 'demo' && (
+    <section data-confirmation tabindex="-1" class="hidden rounded-(--lc-radius-lg) border border-pino/30 bg-hueso p-5" aria-labelledby={`${uid}-confirmation-title`}>
+      <p class="mb-2 text-[11px] font-semibold tracking-[0.14em] text-pino uppercase">{f.demoEtiqueta}</p>
+      <h3 id={`${uid}-confirmation-title`} class="font-display text-[22px] font-semibold">{f.demoExitoTitulo}</h3>
+      <p class="mt-2 text-[14px] leading-relaxed text-tinta-suave">{f.demoExitoTexto}</p>
+      <pre data-summary class="mt-4 overflow-x-auto rounded-(--lc-radius) bg-arena-suave/60 p-3 text-wrap text-[13px] leading-relaxed text-tinta"></pre>
+      <div class="mt-4 flex flex-wrap items-center gap-4">
+        <button type="button" data-copy class="min-h-11 rounded-(--lc-radius) border border-pino px-4 py-2 text-[13px] font-semibold text-pino transition-colors hover:bg-pino hover:text-hueso" data-label={f.demoCopiar} data-copied={f.demoCopiado}>{f.demoCopiar}</button>
+        <a href="https://camp.logic2b.com/#contacto" class="text-[13px] font-semibold text-pino underline underline-offset-4">{f.demoCta} →</a>
+      </div>
+    </section>
+  )}
 </form>
 
-<script define:vars={{ locale, uid }}>
+<script define:vars={{ locale, uid, transport }}>
   const form = document.getElementById(uid);
   const btn = form.querySelector('button[type=submit]');
   const status = form.querySelector('[data-status]');
+  const confirmation = form.querySelector('[data-confirmation]');
+  const summary = form.querySelector('[data-summary]');
+  const copy = form.querySelector('[data-copy]');
+  const selectedStay = new URLSearchParams(window.location.search).get('stay');
+  if (selectedStay) {
+    const select = form.querySelector('select[name=stay]');
+    if (select && [...select.options].some((option) => option.value === selectedStay)) select.value = selectedStay;
+  }
+  copy?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(summary?.textContent ?? '');
+      copy.textContent = copy.dataset.copied;
+      window.setTimeout(() => { copy.textContent = copy.dataset.label; }, 1800);
+    } catch {
+      summary?.focus();
+    }
+  });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
@@ -53,8 +116,25 @@ const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
     btn.disabled = true;
     btn.textContent = btn.dataset.sending;
     status.classList.add('hidden');
+    confirmation?.classList.add('hidden');
     try {
       const dates = data.get('dates');
+      if (transport === 'demo') {
+        const state = new URLSearchParams(window.location.search).get('demoState');
+        if (state === 'error') throw new Error('demo-error');
+        if (state === 'spam') throw new Error('demo-spam');
+        const stay = form.querySelector('select[name=stay]')?.selectedOptions[0]?.textContent;
+        summary.textContent = [
+          `${form.dataset.summaryStay}: ${stay || form.dataset.summaryOpen}`,
+          `${form.dataset.summaryDates}: ${dates || form.dataset.summaryOpen}`,
+          `${form.dataset.summaryParty}: ${data.get('party') || form.dataset.summaryOpen}`,
+          `${form.dataset.summaryMessage}: ${data.get('message')}`,
+        ].join('\n');
+        confirmation.classList.remove('hidden');
+        confirmation.focus();
+        form.reset();
+        return;
+      }
       const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -69,11 +149,17 @@ const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
       status.textContent = status.dataset.ok;
       status.style.color = 'var(--lc-pino)';
       form.reset();
-    } catch {
-      status.textContent = status.dataset.error;
+    } catch (error) {
+      status.textContent = error instanceof Error && error.message === 'demo-spam'
+        ? status.dataset.spam
+        : status.dataset.error;
       status.style.color = 'var(--lc-mar)';
-    } finally {
       status.classList.remove('hidden');
+      status.focus();
+    } finally {
+      if (transport !== 'demo' || !confirmation || confirmation.classList.contains('hidden')) {
+        status.classList.remove('hidden');
+      }
       btn.disabled = false;
       btn.textContent = btn.dataset.label;
     }

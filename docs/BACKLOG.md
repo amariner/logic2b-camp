@@ -107,11 +107,11 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   reutiliza estructura, fuentes y capturas del producto, pero veta cruzar fotos
   de Cala o activos de Azahar. Contrato ejecutable:
   `docs/CONTRATO-VISUAL-OLA-1.md`.
-- [D1-V] **Primera demo Inicio — L'Olivar**: nivel comercial 0 sobre el carril
-  técnico tier 1, en español, 22 unidades y dos tipos; lote de ocho imágenes,
-  marca, contenido, transporte demo sin red/PII, build `/demos/olivar/`,
-  `noindex`, QA 375/1366 y tres capturas. Orden y criterios en
-  `docs/CONTRATO-VISUAL-OLA-1.md` §9.
+- ~~[D1-V] **Primera demo Inicio — L'Olivar**~~ → **hecho 2026-08-06
+  (sesión 82)**: 22 unidades/dos tipos, ocho fotos coherentes y derivados de
+  marca, contenido completo, transporte demo sin red/PII con éxito/error/spam,
+  build `tier: 1` en `/demos/olivar/`, `noindex`, bundle compuesto y tres
+  capturas. QA 375/1366, 10.302 enlaces y `pnpm check` 48/48.
 - [D2-V] **Demo Gestión**: web → solicitud → gestor/planning/plano con datos
   sembrados creíbles.
 - [D3-V] **Demo Visión**: reserva/operación y automatización/IA representadas,

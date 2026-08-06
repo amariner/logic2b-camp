@@ -1,7 +1,7 @@
 ---
 import { getImage, Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { demoTierSwitch, getContent, images, localePath, mode } from '../lib/content';
+import { config, demoTierSwitch, getContent, images, localePath, mode } from '../lib/content';
 import HeroMostrador from '@booking/hero';
 import EnquiryForm from './EnquiryForm.astro';
 
@@ -22,7 +22,8 @@ async function buildHero(src: (typeof images)[string]) {
   return getImage({ src, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 60 });
 }
 const heroDia = instant || showTierSwitch ? await buildHero(images['hero-dia']!) : null;
-const heroAnochecer = !instant || showTierSwitch ? await buildHero(images['hero-anochecer']!) : null;
+const staticHeroKey = config.staticHeroImage ?? 'hero-anochecer';
+const heroAnochecer = !instant || showTierSwitch ? await buildHero(images[staticHeroKey]!) : null;
 // el que se ve por defecto (sin JS ni preferencia guardada) sigue siendo el del `instant` de build
 const heroPreload = instant ? heroDia! : heroAnochecer!;
 const lona = await getImage({
@@ -127,7 +128,7 @@ const lona = await getImage({
       <h2 class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight">{c.tipos.titulo}</h2>
       <p class="text-[15px] text-tinta-suave">{c.tipos.subtitulo}</p>
     </div>
-    <div class="grid gap-8 md:grid-cols-3">
+    <div class="grid gap-8 [grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))]">
       {c.tipos.cards.map((card) => (
         <a href={localePath(locale, '/alojamientos')} class="group flex flex-col gap-4">
           <div class="overflow-hidden rounded-(--lc-radius-lg)">
