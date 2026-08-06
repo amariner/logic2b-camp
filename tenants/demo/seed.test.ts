@@ -66,7 +66,10 @@ describe('seed demo Cala Sereno', () => {
       const inactivas = seed.units.filter((u) => u.status === 'inactive');
       expect(inactivas.map((u) => u.code).sort(), anchor).toEqual(['C-10', 'MH-04']);
       const ids = new Set(inactivas.map((u) => u.id));
-      expect(seed.bookings.some((b) => b.unit_id && ids.has(b.unit_id)), anchor).toBe(false);
+      expect(
+        seed.bookings.some((b) => b.unit_id && ids.has(b.unit_id)),
+        anchor,
+      ).toBe(false);
     }
   });
 
@@ -337,11 +340,94 @@ describe('seed demo Cala Sereno', () => {
           const delKind = futuras(bkgs, anchor).filter((b) => b.payment_kind === kind);
           if (delKind.length < 4) continue;
           const pagadas = delKind.filter((b) => b.paid_cents >= b.total_cents).length;
-          expect(pagadas, `${año}/${kind}: ${pagadas} de ${delKind.length} pagadas`).toBeGreaterThan(
-            0,
-          );
+          expect(
+            pagadas,
+            `${año}/${kind}: ${pagadas} de ${delKind.length} pagadas`,
+          ).toBeGreaterThan(0);
           expect(pagadas).toBeLessThan(delKind.length);
         }
+      }
+    });
+  });
+
+  /**
+   * ANTIGÜEDAD DE RESERVA. Hasta la sesión 78 todas las reservas nacían en
+   * `anchor`, incluso las estancias terminadas muchos meses antes. El dato era
+   * válido para SQLite pero imposible para un camping y dejaba cualquier
+   * lectura por fecha de alta sin historia.
+   */
+  describe('CREATED_AT: la fecha de alta cuenta una historia posible', () => {
+    type Bkg = {
+      id: string;
+      channel: string;
+      date_from: string;
+      created_at: string;
+      updated_at: string;
+    };
+
+    const diasEntre = (from: string, to: string) =>
+      Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000);
+
+    const mediana = (values: number[]) => {
+      const sorted = [...values].sort((a, b) => a - b);
+      return sorted[Math.floor(sorted.length / 2)]!;
+    };
+
+    it('ninguna reserva se crea después de la llegada ni en el futuro del seed', () => {
+      for (const { anchor, seed } of MUESTRA) {
+        for (const booking of seed.bookings as unknown as Bkg[]) {
+          const creada = booking.created_at.slice(0, 10);
+          expect(creada <= booking.date_from, `${anchor}/${booking.id}: alta tras llegada`).toBe(
+            true,
+          );
+          expect(creada <= anchor, `${anchor}/${booking.id}: alta futura`).toBe(true);
+          expect(
+            booking.updated_at >= booking.created_at,
+            `${anchor}/${booking.id}: actualizada antes de existir`,
+          ).toBe(true);
+        }
+      }
+    });
+
+    it('la web se reserva con más antelación que el teléfono', () => {
+      for (const { anchor, seed } of MUESTRA) {
+        const bookings = seed.bookings as unknown as Bkg[];
+        const anticipacion = (channel: string) =>
+          bookings
+            .filter((b) => b.channel === channel)
+            .map((b) => diasEntre(b.created_at.slice(0, 10), b.date_from));
+        const web = anticipacion('web');
+        const phone = anticipacion('phone');
+        expect(web.length, `${anchor}: sin muestra web`).toBeGreaterThan(20);
+        expect(phone.length, `${anchor}: sin muestra teléfono`).toBeGreaterThan(20);
+        expect(mediana(web), `${anchor}: web sin antelación reconocible`).toBeGreaterThanOrEqual(
+          30,
+        );
+        expect(mediana(web), `${anchor}: web no adelanta al teléfono`).toBeGreaterThan(
+          mediana(phone),
+        );
+      }
+    });
+
+    it('el mostrador queda pegado a la llegada, no meses antes', () => {
+      for (const { anchor, seed } of MUESTRA) {
+        const walkins = (seed.bookings as unknown as Bkg[]).filter((b) => b.channel === 'walkin');
+        expect(walkins.length, `${anchor}: sin muestra de mostrador`).toBeGreaterThan(20);
+        for (const booking of walkins) {
+          const creada = booking.created_at.slice(0, 10);
+          const anticipacion = diasEntre(creada, booking.date_from);
+          if (booking.date_from <= anchor) expect(anticipacion, `${anchor}/${booking.id}`).toBe(0);
+          else expect(diasEntre(creada, anchor), `${anchor}/${booking.id}`).toBeLessThanOrEqual(2);
+        }
+      }
+    });
+
+    it('el histórico no nace entero el día del reset', () => {
+      for (const { anchor, seed } of MUESTRA) {
+        const fechas = new Set(
+          (seed.bookings as unknown as Bkg[]).map((b) => b.created_at.slice(0, 10)),
+        );
+        expect(fechas.size, `${anchor}: solo ${fechas.size} fechas de alta`).toBeGreaterThan(180);
       }
     });
   });
@@ -626,10 +712,7 @@ describe('seed demo Cala Sereno', () => {
 
       const frecuencias = new Map<string, number>();
       for (const guest of seed.guests)
-        frecuencias.set(
-          String(guest.surname),
-          (frecuencias.get(String(guest.surname)) ?? 0) + 1,
-        );
+        frecuencias.set(String(guest.surname), (frecuencias.get(String(guest.surname)) ?? 0) + 1);
       expect(Math.max(...frecuencias.values()), anchor).toBeGreaterThanOrEqual(25);
       expect(Math.min(...frecuencias.values()), anchor).toBeLessThanOrEqual(4);
     }

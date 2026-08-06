@@ -526,6 +526,13 @@ export function generateSeed(anchor: string): SeedData {
    * protagonistas cada madrugada sin motivo.
    */
   const recepRand = rng(Y * 15485863 + 101);
+  /**
+   * PRNG propio para la antigüedad de la reserva. Consumir el general aquí
+   * movería fechas, huéspedes y ocupación; derivarla de `bkgN` la ataría al
+   * idioma, medio de pago y censo. Como los otros rasgos del seed, se consulta
+   * siempre el mismo número de veces por reserva.
+   */
+  const createdRand = rng(Y * 32452843 + 211);
 
   const firstNames = [
     'María',
@@ -1016,7 +1023,9 @@ export function generateSeed(anchor: string): SeedData {
     gstN++;
     const gid = `gst_${String(gstN).padStart(3, '0')}`;
     if (gstN > surnameSlots.length)
-      throw new Error(`El censo (${gstN}) supera las plazas únicas de apellidos (${surnameSlots.length})`);
+      throw new Error(
+        `El censo (${gstN}) supera las plazas únicas de apellidos (${surnameSlots.length})`,
+      );
     // Se recorre el conjunto de plazas de apellidos con un paso coprimo: no hay
     // una banda que se quede fuera cuando el censo no llena las 2 684 plazas.
     // Para cada apellido, los nombres avanzan sin repetir; por tanto la pareja
@@ -1139,6 +1148,45 @@ export function generateSeed(anchor: string): SeedData {
   const LLEGADA_H = 'T16:20:00.000Z';
   const SALIDA_H = 'T10:35:00.000Z';
 
+  /**
+   * Cuándo entró la reserva, según un comportamiento reconocible:
+   *
+   * - web: normalmente entre uno y seis meses antes;
+   * - teléfono: entre dos días y seis semanas antes;
+   * - mostrador: el día de llegada. Si se reserva presencialmente una estancia
+   *   futura, queda en los últimos tres días respecto del ancla.
+   *
+   * Para reservas futuras el plazo se amplía lo necesario para que el alta no
+   * caiga en el futuro del snapshot. El `min` no sirve: concentraría miles de
+   * altas exactamente en el reset y volvería a contar una historia falsa.
+   */
+  function bookingCreatedAt(dateFrom: string, channel: string): string {
+    const leadR = createdRand();
+    const ageR = createdRand();
+    const timeR = createdRand();
+    const daysUntilArrival = Math.max(0, nightsBetween(anchor, dateFrom));
+    let leadDays: number;
+
+    if (channel === 'walkin') {
+      leadDays = daysUntilArrival > 0 ? daysUntilArrival + Math.floor(ageR * 3) : 0;
+    } else if (channel === 'phone') {
+      leadDays = Math.max(2 + Math.floor(leadR * 40), daysUntilArrival + 1 + Math.floor(ageR * 14));
+    } else {
+      leadDays = Math.max(
+        30 + Math.floor(leadR * 151),
+        daysUntilArrival + 7 + Math.floor(ageR * 45),
+      );
+    }
+
+    const date = addDays(dateFrom, -leadDays);
+    // `updated_at` del snapshot es anchor 08:00. Un alta de hoy debe quedar
+    // antes, no parecer actualizada antes de existir.
+    const hour =
+      date === anchor ? 7 : channel === 'web' ? Math.floor(timeR * 24) : 9 + Math.floor(timeR * 11);
+    const minute = Math.floor(((timeR * 997) % 1) * 60);
+    return `${date}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00.000Z`;
+  }
+
   function addBooking(opts: {
     typeId: string;
     unitIdx?: number | null;
@@ -1252,6 +1300,7 @@ export function generateSeed(anchor: string): SeedData {
       // Llegadas enseñe también el estado "En casa".
       if (recepR < 0.25) checkedInAt = `${anchor}T11:20:00.000Z`;
     }
+    const createdAt = bookingCreatedAt(opts.from, opts.channel ?? 'web');
     bookings.push({
       id,
       tenant_id: T,
@@ -1278,7 +1327,7 @@ export function generateSeed(anchor: string): SeedData {
       payment_kind:
         bkgN % 6 === 3 ? null : (['card', 'cash', 'transfer', 'platform'] as const)[bkgN % 4],
       locale,
-      created_at: now,
+      created_at: createdAt,
       updated_at: now,
     });
     if (paid > 0) {

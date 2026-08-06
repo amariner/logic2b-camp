@@ -1,350 +1,67 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 77 (2026-08-04). **M6** cierra el Frente M: las
-> 14 pantallas pasan a chunks de ruta; la entrada baja de 234,75 a **170,04 kB
-> gzip**, Planning/Plano viajan bajo demanda y quedan cacheados. El build fija
-> presupuesto <200 kB y naturaleza dinámica; Fontsource publica solo cuatro
-> WOFF2 latinos. `pnpm check` 46/46, Playwright móvil previo 7/7 y nueva prueba
-> de red/caché 1/1. Sin deploy remoto.
-
-> Reescrito al cerrar la sesión 76 (2026-08-04). **M4** convierte Planning en
-> agenda móvil de día/semana: filas y controles ≥44 px, campos de 16 px, ficha
-> y unidad tocables, cambio explícito de fechas/unidad sobre la misma
-> recotización del servidor. Desde `md` solo existe el tape chart intacto. B1
-> cierra además su último selector de fecha crudo. Regresiones: `pnpm check`
-> 46/46 y Playwright móvil 7/7 en Workers limpios. Desplegada después junto con
-> la deuda acumulada de 67–70 y 72–75; producción verificada con cache-buster.
-
-> Reescrito al cerrar la sesión 75 (2026-08-04). **M5** hace táctil el plano:
-> zoom móvil 8× con unidades ≥44 px, selección centrada, controles grandes,
-> scroll vertical libre salvo modo «Mover», ficha inferior y foco recuperable.
-> Corrige además que «En casa» no abría ficha. Regresiones: `pnpm check` 46/46
-> y Playwright M1–M5 6/6 contra bundle compuesto + D1. Sin deploy remoto.
-
-> Reescrito al cerrar la sesión 74 (2026-08-04). **M3** eleva a 44 px la
-> operación diaria de Llegadas, Salidas y Solicitudes, conserva los datos
-> críticos y la densidad de escritorio, y confirma check-out con retorno de
-> foco. Regresiones: `pnpm check` 46/46 y Playwright M1–M3 5/5 contra bundle
-> compuesto + D1. Sin deploy remoto.
-
-> Reescrito al cerrar la sesión 73 (2026-08-04). **M2** pone la operación del
-> día antes que los módulos en móvil, añade búsqueda táctil y cierra el circuito
-> de foco del buscador y del menú; escritorio conserva su composición.
-> Regresiones: `pnpm check` 46/46 y Playwright 4/4 contra bundle compuesto + D1.
-> Sin deploy remoto.
-
-> Reescrito al cerrar la sesión 72 (2026-08-04). **M1** lleva la ficha de
-> reserva a un Sheet móvil real, sin desborde y con foco recuperable a
-> 320/375/430 px; escritorio conserva su panel lateral. La navegación común ya
-> oculta `/parte` bajo `manager`. Regresiones: `pnpm check` 46/46 y Playwright
-> 3/3 contra bundle compuesto + D1. Sin deploy remoto.
-
-> Reescrito al cerrar la sesión 71 (2026-08-04). **M0** convierte el Frente M
-> en un contrato medido: tareas reales, roles demo/recepción/gerencia y
-> 320/375/430 px sobre el bundle y la D1 del seed. Informe completo en
-> `docs/AUDITORIA-MOVIL.md`; seis P1 y orden M1 → M2 → M3 → M5 → M4 → M6. Es
-> una entrega documental: no suma deuda de deploy.
-
-> Reescrito al cerrar la sesión 70 (2026-08-04). La **70** cierra el hueco de
-> verificación que dejó vivir el 404 `/demo/admin/`: `deploy:demo` comprueba ya
-> el bundle compuesto después de ensamblar landing + demo + gestor y antes de
-> tocar la D1 o publicar. El primer barrido real: **9.286 enlaces internos en
-> 304 HTML, OK**. Código en `main`; sigue pendiente el deploy manual con
-> credenciales. Texto de la 66 abajo.
-
-> Reescrito al cerrar la sesión 66 (2026-08-01). La **66** (dos encargos de
-> Andreu): la portada gana **las tres listas del día** —entradas, salidas y
-> solicitudes en tres columnas— y el **wordmark del gestor enlaza** («Logic2B» a
-> la matriz, «Campings» al sitio del producto, como en la landing).
-> **Desplegada.** Texto de la 65 abajo.
->
-> Reescrito al cerrar la sesión 65 (2026-07-31). La **65** (dos encargos de
-> Andreu): el producto pasa a llamarse **«Gestor de camping»** donde era «el
-> mostrador» —respetando los otros dos sentidos de la palabra— y el gestor
-> estrena **portada**: cifras de hoy, rejilla de los trece módulos y las últimas
-> solicitudes, en vez de aterrizar en el planning. **Desplegada.** Antes, la
-> 63 y la 64. Texto de la 64 abajo.
->
-> Reescrito al cerrar la sesión 64 (2026-07-31). Dos sesiones seguidas: la **63**
-> (apunte prioritario de Andreu, **desplegada**) enlazó **las dos caras de la
-> demo** entre sí —web ↔ mostrador, desde la landing y desde cada una a la
-> otra— y destapó un **404 vivo desde ADR 0016** en el único enlace que la
-> landing tenía al mostrador. La **64** (autónoma) metió **el mostrador dentro
-> de la ficha de alojamiento**, precargado con su tipo, con salida conservando
-> fechas cuando ese tipo no entra. **Las dos están desplegadas.** Cuando la
-> próxima sesión termine, **reescribe este fichero** con el prompt de la
-> siguiente.
-
----
+> Reescrito al cerrar la sesión 79 (2026-08-06). El `created_at` de las 3.426
+> reservas ya cuenta una historia posible por canal. `pnpm check` 46/46,
+> tenant demo 62/62, bundle compuesto 9.994 enlaces y navegador 1/1. Sin deploy.
 
 ## Estado en una línea
 
-Las sesiones son **autónomas**: basta "continúa con el desarrollo de este
-proyecto" y se ejecuta `docs/CONTINUA.md` completo — **incluido el cierre en
-`main` también desde cloud** (permiso permanente de Andreu, 2026-07-25). El MVP
-es una **demo fake** — nada de servicios externos reales. Lo último cerrado:
-**M6 (77)**, carga inicial móvil en 170,04 kB gzip con rutas bajo demanda. El
-Frente M queda cerrado de M0 a M6; ADR 0031 sigue propuesto para validación de
-Andreu.
+`main` queda con E0–E2 cerrados y con la deuda visible del seed resuelta. E3 es
+el siguiente bloque estructural, pero conserva su gate técnico con Andreu. La
+producción sigue en la sesión 76; faltan por desplegar M6 (77), la nueva escalera
+comercial (78) y la cronología del seed (79).
 
-## ⚠ Lo primero de la próxima sesión
+## Lo primero de la próxima sesión
 
-1. **Nada bloquea en código. La sesión 77 queda pendiente de deploy manual.**
-   Las sesiones 63–70 y 72–76 están en producción; la 71 solo cambió
-   documentación. Último deploy:
-   commit de producto `b017d7b`, versión Cloudflare
-   `cfe8405b-810a-4a1f-9f27-aaef7852b88e`. Si la próxima sesión toca landing,
-   web o marca, verificar **contra producción con
-   cache-buster** (`?v=…` o `Cache-Control: no-cache`): un 200 no dice nada
-   (trampa de la 62, que **volvió a morder en la 65**: `Cache-Control: no-cache`
-   no bastó y `/demo/` devolvió la copia vieja con `cf-cache-status: HIT` — el
-   cache-buster `?v=` sí). Ojo también con las rutas de la web del tenant: **sin
-   la barra final devuelven 307**, no 404 — seguir la redirección.
-2. **ADR 0030 sigue en `propuesto`** y no queda nada que vigilar: sus dos
-   comprobaciones están hechas. Le toca a Andreu pasarlo a `aceptado` o
-   discutirlo (Cala Sereno abre todo el año; el seed crece a 3,4 MB).
-3. **ADR 0031 sigue en `propuesto`**: es el contrato de M0 (tareas, tres anchos,
-   44 px, foco, roles y carga). M1–M6 ya lo aplican con evidencia verde; Andreu
-   puede aceptarlo o discutir sus umbrales.
+1. Ejecutar `git fetch` y comparar `main` con `origin/main` antes de tocar nada.
+2. Si Andreu está presente, priorizar **E3** y cerrar su contrato técnico antes
+   de código: tier 0 estático, endpoint compartido sin persistencia, antispam,
+   privacidad, entrega fiable y onboarding ≤1 h.
+3. Si vuelve a ser autónoma, elegir una deuda visible y sin credenciales. El
+   candidato recomendado es la **guía de Inicio del dashboard**: crear
+   `recepcion/inicio`, explicar cifras y bloques reales, conectarla en
+   `apps/dashboard/src/lib/ayuda.ts`, verificar fallback/i18n y navegador.
+4. No hacer deploy remoto ni reseed remoto sin la autorización/credenciales
+   previstas por `docs/CONTINUA.md`.
 
-## Estado de la entrega
+## Candidato autónomo recomendado
 
-**Código al día en `main`; producción hasta la 76**. La sesión 77 espera el
-próximo deploy manual. El producto desplegado corresponde a `b017d7b`
-(2026-08-04), versión Cloudflare
-`cfe8405b-810a-4a1f-9f27-aaef7852b88e`; la 71 solo cambió documentación.
+**[dashboard] Guía contextual de la portada.** Es la primera pantalla del
+gestor y la única sin `?`: `lib/ayuda.ts` devuelve `null` porque enlazar a una
+página que no responde era peor que no enlazar. Crear una página
+`apps/site/src/content/docs/recepcion/inicio.es.md` contra la UI real (cuatro
+cifras, tres listas del día y rejilla de módulos), añadirla al orden de la guía
+y mapear `/` a esa URL. No inventar funciones ni traducir la prosa: el contrato
+actual mantiene prosa ES con fallback visible.
 
-## ▶ Prompt para pegar
+**Hecho cuando**: el `?` aparece en Inicio, abre la página correcta, la guía
+describe exactamente la pantalla actual, entra en sitemap/jerarquía y pasa
+build, enlaces compuestos y navegador a 1366/375 px.
 
-```
+## Bloqueado / esperar a Andreu
+
+- E3 si su gate técnico cambia alcance o tratamiento de datos.
+- Frente D completo y ADR D0; la galería espera ≥3 demos clicables.
+- `new:camping --apply`, reseed remoto `--apply`, SES.Hospedajes real, secrets,
+  Cloudflare Web Analytics, ensayo remoto de restauración y deploy de producción.
+- Favicon y cualquier cambio de identidad de marca.
+
+## Trampas vigentes
+
+- `pnpm check` reconstruye `apps/site/dist` y borra la composición. Para probar
+  navegador hay que volver a montar web en `/demo/` y dashboard en `/admin/`.
+- En esta máquina Playwright puede no tener Chromium descargado; usar
+  `CHROMIUM_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"`.
+- Usar un puerto libre con `E2E_PORT`; no matar un Worker ajeno en 8787.
+- La demo limita `/api/*` a 60 peticiones/minuto: una sesión por spec y evitar
+  barridos innecesarios.
+- Producción puede servir caché vieja con 200/HIT: verificar con `?v=`.
+- El seed debe seguir puro: un rasgo nuevo no consume `rand()` general ni cuelga
+  de un contador ya compartido. Toda propiedad temporal se prueba sobre varias
+  anclas, no solo 2026.
+
+## Prompt
+
+```text
 continúa con el desarrollo de este proyecto
 ```
-
-## Candidatos de objetivo para la próxima sesión (elegir UNO, criterio CONTINUA)
-
-- **[E3] Producto mínimo de Logic Camp Inicio (recomendado con Andreu
-  presente):** diseñar el tier 0 estático sin motor/dashboard/D1 y cerrar el
-  endpoint compartido del formulario sin persistencia, antispam, privacidad y
-  onboarding acotado. E0–E2 ya están cerrados: no reabrir copy/precios salvo
-  hallazgo comercial concreto.
-- **[seed] `created_at` de las ~3.500 reservas (recomendado)**: hoy coincide con
-  el ancla; derivarlo del canal (mostrador = llegada, web = meses antes) sin
-  perder determinismo ni las propiedades temporales del seed.
-
-## Bloqueado (NO tocar en sesión autónoma, esperar a Andreu + credenciales)
-
-- **El resto del Frente D (portfolio de 12 demos, galería de la landing,
-  maquetas Ads)** — `docs/FRENTE-D-ESCAPARATE.md` (mandato de Andreu,
-  rectificado el mismo día: **solo campings**; hoteles y casas rurales serán un
-  **clon del proyecto**, nunca una ampliación de este). Cuelga del **ADR D0 con
-  Andreu presente** y su momento es "backend demo muy avanzado". La 60 ya
-  adelantó lo adelantable (D5.2 temprana); la **galería** espera a tener **≥3
-  demos clicables**. El candidato `[4.x/web]` que sí era de ahora **queda
-  cerrado en la 64**.
-- **El favicon** (ver BACKLOG `[marca]`): decisión de marca.
-- Verificar SES.Hospedajes real / secrets (opción B histórica).
-- Fase 9 alta real (`new:camping --apply`), reseed remoto `--apply`.
-- Traducciones de guías: descartadas con motivo (ADR 0025 §3).
-
-## Trampas conocidas (heredadas + sesiones recientes)
-
-- **NUEVA (77) — code splitting sin presupuesto vuelve a degradarse en
-  silencio.** `dashboard build` lee el manifiesto de Vite, suma el grafo JS
-  estático comprimido y exige <200 kB; también exige que Planning y Plano sean
-  `isDynamicEntry`. Mantener la comprobación alineada con `index.html`, no con
-  el nombre hash de un fichero.
-- **NUEVA (77) — 8787 puede pertenecer a otro proyecto local.** No matar el
-  Worker ajeno: usar `E2E_PORT=8788` al lanzar Playwright cambia `baseURL`,
-  healthcheck y `wrangler dev` juntos. El default sigue siendo 8787.
-- **NUEVA (76) — una vista responsive compleja debe montar un solo modelo
-  interactivo.** Ocultar la agenda y el tape chart solo con CSS habría dejado
-  dos árboles, focos e IDs vivos, además de mantener el rango de 31 días en la
-  consulta móvil. `matchMedia` decide antes de pedir datos: 1/7 días bajo `md`,
-  zoom original desde `md`; paneles y mutaciones sí se comparten.
-- **NUEVA (76) — siete specs correctos pueden agotar juntos el acceso demo.**
-  La regresión combinada pasó cinco y los dos últimos fallaron antes del login;
-  ambos pasaron 1/1 al reiniciar el Worker. Mantener una sesión por spec y
-  dividir el barrido M1–M4 en procesos limpios: el rate limit no es la tarea que
-  estos E2E pretenden medir.
-- **NUEVA (75) — un estado derivado debe aparecer en cada apertura, no solo en
-  el color.** `inhouse` se pintaba y etiquetaba correctamente en el plano, pero
-  faltaba en la condición que abría `BookingPanel`; el click parecía responder
-  porque había halo, aunque la tarea terminaba en nada. Barrer exhaustivamente
-  la unión `UnitDayState` cuando se decide qué panel abre cada rama.
-- **NUEVA (75) — “visible” en Playwright no significa dentro del `viewBox`.**
-  Los grupos SVG existen y el motor los considera visibles aunque estén
-  recortados. Para probar un toque real, escoger un nodo cuyo centro geométrico
-  cae dentro del rectángulo del SVG y fuera de los controles superpuestos.
-- **NUEVA (75) — `touch-none` permanente convierte el mapa en una trampa de
-  scroll.** El patrón móvil deja `pan-y` por defecto y solo captura el gesto tras
-  una acción explícita «Mover plano»; acercar/alejar siguen disponibles como
-  botones y el teclado no depende de ese modo.
-- **NUEVA (74) — `asChild` necesita que el componente hijo exponga su ref.**
-  El AlertDialog de check-out cerraba correctamente, pero Radix no podía
-  devolver el foco al disparador porque `BotonRecepcion` escondía el nodo DOM.
-  Todo wrapper reutilizable que actúe como trigger debe usar `forwardRef`; la
-  regresión debe comprobar `activeElement` después del cierre.
-- **NUEVA (74) — una barra de filtros móvil puede desbordar localmente sin
-  romper la página.** Mantener los seis filtros en una línea conserva el mapa
-  muscular y los 44 px; el `overflow-x-auto` pertenece a la barra, mientras el
-  documento debe seguir con `scrollWidth === clientWidth`.
-- **NUEVA (73) — una matriz de anchos no necesita una sesión nueva por ancho.**
-  El acceso demo está rate-limited: abrir siete contextos seguidos hizo fallar
-  el último login aunque cada escenario fuese correcto. Reutilizar una sesión y
-  redimensionar la misma página conserva la cobertura 320/375/430 sin probar el
-  rate limit por accidente.
-- **NUEVA (73) — un diálogo con botón externo necesita recordar quién lo abrió.**
-  La paleta comparte estado entre botón y `⌘/Ctrl+K`; solo se fuerza el retorno
-  al botón cuando fue el origen. Si se restaura siempre, cerrar una búsqueda de
-  teclado roba el foco a la tarea que la invocó.
-- **NUEVA (72) — el foco puede restaurarse y perderse un instante después.**
-  En un diálogo controlado, enfocar el origen dentro de `onOpenChange` no basta:
-  la limpieza de Radix todavía puede mandar el foco a `body`. Se previene su
-  autoenfoque de cierre y se restaura el nodo conectado en el frame posterior;
-  la regresión debe esperar al final y comprobar `activeElement`.
-- **NUEVA (71) — cero desborde no significa móvil operable.** Las cinco
-  pantallas base dan `scrollWidth === clientWidth` a 320/375/430, pero el plano
-  reduce unidades a 10 px y el planning conserva barras de 24 px: caben porque
-  son diminutos. La aceptación se mide por tarea y objetivo táctil, no por una
-  captura sin scrollbar (`docs/AUDITORIA-MOVIL.md`).
-- **NUEVA (71) — un atajo de teclado no es una entrada móvil.** `⌘/Ctrl+K`
-  abre una paleta correcta con resultados reales, pero sin botón no existe en un
-  teléfono. Cada acción global necesita disparador táctil además del atajo.
-- **NUEVA (71) — comprobar 375 no descubre el suelo.** La ficha fija de 360 px
-  parece encajar a 375 dejando una tira de 15; a 320 desborda 40. Toda regresión
-  móvil del Frente M barre 320, 375 y 430.
-- **NUEVA (66) — un estado que hoy vale lo mismo en TODAS las filas no informa,
-  decora.** La columna de salidas marcaba con chip lo pendiente; con los datos
-  reales de una mañana normal (10 salidas vivas, 0 con check-out) eso son diez
-  chips negros idénticos. No se ve en la captura —parece deliberado—: se ve
-  **contando los datos** (`?departuresOn=` y mirar cuántos `checkedOutAt` hay).
-  Criterio que queda: el chip marca lo que ya pasó por recepción, el gris es el
-  defecto.
-
-- **NUEVA (70) — los enlaces entre superficies solo existen después de componer
-  los tres `dist/`.** El guardia correcto vive justo ahí y antes de migrar o
-  publicar: `check-demo-links.mjs` valida únicamente `<a href>` navegables (no
-  canonical/hreflang) y excluye `404.html`, que Astro sirve como fallback pero
-  no como ruta `/404/`. Su prueba usa Node nativo y no el runtime Workers; por
-  eso se llama `*.node.mjs`, fuera del patrón de Vitest.
-
-- **NUEVA (65) — «mostrador» significa TRES cosas en este repo y solo una es el
-  nombre del producto.** Antes de renombrar nada: (1) el **widget de
-  disponibilidad** de la web pública (`c.mostrador`, `#mostrador`,
-  `Mostrador.tsx`) es el elemento firma del nivel 3 (ADR 0006); (2) el **canal
-  `walkin`** y la prosa de las guías («el ordenador del mostrador») son el mueble
-  de recepción; (3) solo el **dashboard** era el nombre a cambiar. Un
-  `sed` global habría roto el vocabulario de dominio y el ADR 0006 de una vez.
-- **NUEVA (65) — en CSS grid, `1fr` es `minmax(auto, 1fr)`, y `auto` respeta el
-  ancho mínimo INTRÍNSECO del contenido.** Meter el mostrador (cuatro campos y
-  un botón) en la columna `1fr` de una rejilla `[1.5fr_1fr]` no lo comprimió:
-  **encogió la otra columna** hasta dejar la galería en una tira de ~300px. No
-  hay aviso de ningún tipo; se ve midiendo el `boundingBox` de la columna
-  vecina, no la del elemento que acabas de añadir.
-- **NUEVA (64) — "no arrastra el motor en el bundle" hay que MEDIRLO, y hoy sale
-  que sí lo arrastra.** El import dinámico de `HeroMostrador.astro` protege una
-  puerta mientras las páginas del funnel dejan la otra abierta. Para juzgarlo:
-  `TIER=1` **y** `demoTierSwitch: false` (con el conmutador puesto la demo
-  incluye el motor **a propósito**, ADR 0013), y mirar `dist/_astro/*.js`. Y
-  antes de anotarlo como regresión propia, **construir el commit anterior en las
-  mismas condiciones** — esta resultó ser preexistente.
-- **NUEVA (63) — un 404 puede sobrevivir sesiones enteras si nadie enlaza entre
-  superficies.** `/demo/admin/` llevaba roto desde ADR 0016 y era el único
-  enlace de la landing al mostrador. `apps/site` no tiene tests, y aunque los
-  tuviera, `/demo/` y `/admin/` **no existen dentro del site**: solo aparecen
-  cuando `deploy:demo` compone los tres `dist/`. Tras tocar enlaces entre
-  superficies, verificar contra el bundle compuesto (Worker local), no contra el
-  dev server de una sola app.
-- **NUEVA (63) — el panel del navegador se cuelga a mitad de sesión** (`computer`
-  devuelve "Browser pane is currently hidden" y agota los 30 s). Ya pasó en la
-  59 de otra forma. El camino fiable sigue siendo **Playwright contra el
-  Worker** (`pnpm exec playwright test` desde `apps/web`), que además sirve para
-  capturar: un spec de usar y tirar en `e2e/zz-*.spec.ts`, borrado al terminar.
-- **NUEVA (62) — un renombrado "de 34 apariciones" no cubre lo que no es i18n.**
-  Tras un rename, `grep -rn "<nombre viejo>" apps/ packages/ tenants/`
-  incluyendo `*.html` y las cadenas de servidor, no solo los JSON de i18n.
-- **NUEVA (62) — verificar un deploy por código de estado no verifica nada.**
-  `camp.logic2b.com/` devolvía 200 con el **título anterior**: `cf-cache-status:
-HIT` sobre una copia rancia. Cache-buster (`?v=…`), y para un asset que
-  conserva la URL entre versiones (`og.png`), comparar **shasum**.
-- **NUEVA (62) — `pnpm check` falla de forma intermitente en `api#test`** si hay
-  dev server y navegador abiertos: la suite de workerd compite por recursos. En
-  aislamiento da 237/237.
-- **NUEVA (61) — un asset de marca sin generador commiteado es deuda garantizada.**
-  Ahora `apps/site/scripts/og.mjs` (`pnpm --filter @logic-camp/site og`) y los
-  colores se **leen** del `:root` del DS, no se copian.
-- **NUEVA (61) — cortar un CSS por `indexOf('.dark')` corta en un comentario.**
-  Se corta por el selector: `/^\.dark\s*\{/m`.
-- `git fetch` y comparar con origin/main ANTES de trabajar. El `main` local del
-  contenedor suele venir viejo: `git reset --hard origin/main` antes del merge.
-- **NUEVA (60) — con `transition-colors`, `getComputedStyle` en el mismo tick
-  del click devuelve el color VIEJO** (t=0 de la transición). Esperar a que
-  acabe la transición, o medir un clon sin `transition-*`.
-- **NUEVA (59) — un `<form>` de más y el Intro guarda otra cosa.** La sumisión
-  implícita de un `<input>` va a **`input.form`**, no al botón más cercano. No
-  lo ve ningún test de markup. Al separarlos, **el toast también**.
-- **NUEVA (59) — `@fontsource/<fuente>/<peso>.css` arrastra TODOS los subsets.**
-  Se importa `latin-<peso>.css`. Mirar el listado de assets de la build.
-- **La lección de las sesiones 53–59, ya siete veces**: un dato o un markup puede
-  ser **válido y falso a la vez** y ningún test de invariantes lo ve. **Hay que
-  mirar la pantalla, y luego escribir el test.**
-- **NUEVA (58) — el atajo del reset local de la 56 HA MUERTO.**
-  `POST /api/demo/reset` contra el wrangler dev local **cuelga workerd** con el
-  seed de 3,4 MB. El camino: **parar el preview → `pnpm db:reset && pnpm db:seed`
-  → relevantar**. Contra la D1 real tarda 1,2 s.
-- **NUEVA (58) — navegar el dashboard cambiando el hash por URL o con
-  `.click()` sintético deja DOS enlaces activos en la sidebar.** Con click real,
-  perfecto.
-- **NUEVA (58) — si la API de Cloudflare da timeout desde la máquina de Andreu,
-  prueba `-4`/`-6` antes de culpar a wrangler** (parece caída y es DNS).
-- **Un sorteo dentro de un `if` no es un sorteo, es un desplazamiento** (57).
-- **La web pública imprime los rangos de temporada SIN AÑO** (57).
-- **Un umbral que la temporada alta cumple sola no comprueba nada** (57): lo
-  que la demo tiene que enseñar todos los días **se planta**.
-- **Un test verde puede describir mal lo que garantiza** (57): lo que NO
-  garantiza, escrito dentro del test.
-- **En una lista de filas-`<button>`, ninguna columna `auto`** (55/56/59).
-- **Cuando cabecera y fila comparten rejilla, la fila con borde arranca 1px
-  después** (59): la cabecera necesita `border border-transparent`.
-- **`@container` y su `@md:`/`@3xl:` no pueden ir en el MISMO elemento** (56).
-- **Una media query `lg:` mide la PANTALLA, y lo que estrecha una lista casi
-  nunca es la pantalla** (56).
-- **En una rejilla, dos fichas cortas y una alta no son tres celdas** (59).
-- **Un test sobre un solo año comprueba una tirada, no una propiedad** (55); la
-  muestra canónica está en `seed.test.ts` (`ANCLAS`).
-- **Al sortear un rasgo nuevo del seed, mirar de qué contador depende el rasgo
-  de al lado** (54). La solución es un PRNG propio.
-- **`getComputedStyle().boxShadow` miente sobre el anillo de foco**; y
-  `:focus-visible` no lo activa `.focus()`: Tab de verdad.
-- **El primitivo `Table` y el scroll (52)**: cabecera pegajosa =
-  `containerClassName="min-h-0 flex-1 overflow-auto"` (hay test).
-- **La densidad se rompe donde la lista se estrecha (52)**: verificar SIEMPRE
-  con el panel lateral abierto.
-- El **seed no trae notificaciones ni reembolsos**: `POST /api/enquiries` (201)
-  genera 2 filas de `notifications_log` por solicitud.
-- **`pnpm check` reconstruye `apps/site/dist` y se lleva por delante `/demo` y
-  `/admin`** — para verificar en navegador hay que recomponer:
-  `pnpm --filter @logic-camp/site build && pnpm --filter @logic-camp/dashboard
-build && rm -rf apps/site/dist/admin && cp -r apps/dashboard/dist
-apps/site/dist/admin`. Para la web del tenant, además: `BASE_PATH=/demo pnpm
---filter @logic-camp/web build && rm -rf apps/site/dist/demo && cp -r
-apps/web/dist apps/site/dist/demo`.
-- **Iterar el dashboard con el preview levantado (55)**: rebuild + copiar +
-  **recarga real**. `pnpm db:reset` mata el `wrangler dev`: parar antes.
-- En Playwright, ir de `/admin/` a `/admin/#/…` no recarga → `await p.reload()`.
-- **`/api/*` va con rate limit de 60 req/min por IP** (`createRateLimiter`) —
-  los helpers de `e2e/base.ts` barren de una petición en una por esto.
-- En el contenedor cloud, Playwright usa `/opt/pw-browsers/chromium` si existe.
-  Segfault de workerd sobre `reset.test.ts` = solo contenedor cloud.
-- Cambiar el esquema de color en caliente deja el dashboard a medio repintar:
-  **recargar antes de juzgar un contraste**.
-- El **reset nocturno de la demo SÍ existe** (`tenants/demo/worker.ts`, cron
-  `0 3 * * *`) y re-siembra con el ancla del día: un cambio del seed llega a la
-  demo con un deploy normal. **Confirmado en producción el 2026-07-29**.
-- `seed.sql` gitignored; si el plano sale "automático" o falta `modules.*`:
-  `pnpm db:reset && pnpm db:seed`.
-- Login del dashboard: para entrar como visitante, botón "Ver la demo" o
-  `POST /api/demo/sign-in` (el reset **cierra la sesión**). Con credenciales:
-  gerencia@calasereno.example / calasereno — hace falta ese rol para **Parte de
-  viajeros** e Informes elevados.
-- exports/ en .gitignore. Scripts de sesión nunca se commitean.

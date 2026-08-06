@@ -4,6 +4,17 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (79, 2026-08-06): el historial de reservas ya
+  tiene antigüedad real.** Las 3.426 reservas del seed dejan de nacer todas en
+  el ancla: web se crea entre uno y seis meses antes, teléfono entre dos días y
+  seis semanas, y mostrador el día de llegada o en los últimos tres días para
+  una estancia futura. Un PRNG propio conserva intactos ocupación, huéspedes y
+  cobros. Sobre 23 anclas se exige que ninguna alta sea futura/posterior a la
+  llegada, que web adelante a teléfono, que mostrador quede junto a la llegada
+  y que existan >180 fechas distintas. D1 local: web 2.794 reservas / 400 fechas
+  / 115 días medios; teléfono 455 / 167 / 47; cero fechas imposibles.
+  `pnpm check` **46/46**, tenant demo **62/62**, bundle compuesto **9.994
+  enlaces** y navegador sobre ficha histórica **1/1**. Sin deploy remoto.
 - **Última sesión guiada (78, 2026-08-05): Frente E, E0–E2 cerrados.** ADR 0033
   aceptado y landing comercial reescrita como Inicio → Gestión → Automatiza →
   Inteligente, con cuotas **49/149/249/399 €**, altas, resultados y estado real.
@@ -146,7 +157,13 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **HECHO en la sesión 59 (2026-07-29)**: **`[B1]` CERRADO — 11 de 11** (Parte y Ajustes, las dos que faltaban). En **Ajustes** el hallazgo no era de markup sino de comportamiento: el bloque de notificaciones vivía **dentro del `<form>` de datos del camping**, así que pulsar **Intro** en «Buzón interno de avisos» disparaba el submit de nombre/zona/moneda — y si esos tres no estaban sucios, **no pasaba nada en absoluto**: el correo escrito se perdía al navegar, en silencio. Dos `<form>` con su propio submit; verificado con Intro real (Playwright): **un solo PATCH**, y es el de `modules.notifications`. Además, tres `Card` en rejilla de dos columnas (la columna única de `max-w-xl` dejaba **dos tercios** del lienzo vacíos a 1366px), las dos fichas cortas apiladas en la misma celda para no dejar 200px muertos bajo «Datos», y la ficha de solo lectura «Nivel e idiomas» **fuera** de entre el último campo editable y el botón de guardar. En **Parte**, medido y no estimado: el `justify-between` a lo ancho dejaba el desplegable de forma de pago a **810px** de su código de reserva —más cerca de la fila de abajo que de la suya—; ahora es columna de ancho fijo con cabecera y **la rejilla vive en UNA constante** compartida por cabecera y filas (regla de la 55: ninguna columna `auto` en listas que no son `<table>`) → las 8 filas y la cabecera en **x=819 exacto**. El campo de fecha crudo pasa al `Input` del DS (29,5px contra 28px de sus vecinos y **sin anillo de foco**, comprobado con Tab de verdad) y los dos estados vacíos a `EmptyState`. **Y de paso, el cron de las 3:00 quedó comprobado**: las reservas de `camp.logic2b.com` vienen con `createdAt` del día → **ADR 0030 §2 despejado entero**. **Sin desplegar**: se acumula a la deuda de la 58.
 - **CAMBIO DE MARCA en la sesión 59 (2026-07-29, petición extraordinaria de Andreu)**: el logo del producto pasa a ser el wordmark **«Logic2B Campings»**, tipografía y estilo de `logic2b-norte`, **sin isotipo**. Poppins con dos caras reales — «Logic» en 600 a plena tinta, «2B» en 800 sobre `--logo-2b` (un punto por debajo de `--foreground`), «Campings» en 600 sobre `--muted-foreground` —, tracking `.015em`. De norte se replica la **relación** de color, no sus hex (allí el texto arranca más oscuro que en este DS). Tipografía y color en `packages/ui/theme.css`; el lockup en `Wordmark` (React) + `Wordmark.astro`, que **comparten clases** para que cabecera, pie y login no puedan divergir. Aplicado en dashboard (sidebar, cabecera móvil, login) y landing (cabecera y pie); **34 apariciones** de «Logic Camp» renombradas en los seis idiomas, títulos de docs y `app.nombre`. Tres decisiones anotadas: la **sidebar plegada son 56px** y ahí no cabe ni «Logic2B» → enseña **«2B»** (la parte distintiva del lockup, no un símbolo nuevo, con `aria-label` completo); el **favicon sigue siendo el isotipo** (un wordmark no funciona a 32px); y el **pie de la web del tenant conserva el isotipo** como firma «powered by Logic2B», que ahí es un crédito y no el logo del producto. La propia build delató un derroche: `@fontsource/poppins/600.css` arrastra todos los subsets y metía **180 kB de Poppins Devanagari** para dos palabras → `latin-600`/`latin-800`, **16 kB**; en la landing el 800 va subsetado a sus dos glifos (824 B). `docs/BRAND.md` §2 reescrito con la decisión.
 - **FRENTE D ABIERTO en la sesión 58 (2026-07-28, mandato directo de Andreu)**: **Escaparate — portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra**. La tesis: una demo no demuestra escalabilidad, doce sí — 4 micro de nivel 1 con formulario→email (olivar, río, surf, delta), 4 medianos de nivel 2 con solicitud sin cobro (costa, montaña, viñedo, naranjal), 4 grandes de nivel 3 con pago (resort premium, interior/eco, animación familiar, invernante todo-el-año). Objetivo comercial declarado: **sensación de escalabilidad y abarcar el máximo de clientes posibles dentro del vertical**. **El alcance NO cambia** — la primera redacción incluía casas rurales, hostal y hotel, y **Andreu la rectificó en la misma sesión**: campings y solo campings; **hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto), así que `CLAUDE.md` y §0 quedan intactos. Nada se construye sin el **ADR D0 con Andreu** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas), y el frente entero espera a que el backend demo esté muy avanzado. Documento fuente con todo el detalle: **`docs/FRENTE-D-ESCAPARATE.md`**; resumen y tabla en `ROADMAP.md`. De la misma conversación salió un defecto REAL de la demo actual, verificado contra el código y en BACKLOG como candidato cercano: **el detalle de alojamiento no deja consultar disponibilidad ahí dentro** (`AlojamientoDetalle.astro:57` manda de vuelta a la home sin precargar el tipo).
-- **Último `/check`**: **2026-07-29 (sesión 59) — LOCAL, 45/45 verde** (42 cacheadas; solo dashboard y dependientes reconstruidos — el cambio es de markup de dos pantallas, sin tests nuevos porque `Card` es presentacional puro y las pantallas no tienen batería propia). Referencia anterior: **2026-07-27 (sesión 57) — LOCAL, 45/45 verde** (42 cacheadas), `tenants/demo` **57/57** con la batería nueva del ancla móvil sobre una **muestra de 23 anclas** (los doce meses, 1 de enero, 31 de diciembre, 29 de febrero, y diez temporadas seguidas) y `reset.test.ts` verde contra D1 real con el seed grande. Referencia anterior: **2026-07-27 (sesión 56) — LOCAL, 45/45 verde** (39 cacheadas), `tenants/demo` **45/45** con los cinco tests nuevos del saldo (las dos palabras salen, lo ya empezado está liquidado, el canal manda, nunca se cobra de más, y el saldo no va atado al medio de pago), corriendo sobre las temporadas 2026–2035. Referencia anterior: **2026-07-25 (sesión 55) — LOCAL, 45/45 verde** (39 cacheadas), `tenants/demo` **40/40** con los siete tests nuevos de la bandeja de solicitudes (invariante estancia-futura, escalonado, orden por edad, desacoplamientos, horario del teléfono, capacidad del tipo pedido, idioma y prefijo), corriendo sobre las temporadas 2026–2035. Referencia anterior: **2026-07-25 (sesión 54) — LOCAL, 45/45 verde** (42 cacheadas), `tenants/demo` **32/32** con los seis tests nuevos del censo de habituales, la unicidad de nombre/correo y el sexo. Referencia anterior: **2026-07-25 (sesión 53) — LOCAL, 45/45 verde** (34 cacheadas), `@logic-camp/ui` **56/56** con el test nuevo de la cabecera sin realce y `tenants/demo` **26/26** con el de la variedad de nombres. Referencia anterior: **2026-07-25 (sesión 52) — LOCAL, 45/45 verde** (37 cacheadas), `@logic-camp/ui` **55/55** con el test nuevo del contenedor de `Table`. Referencia anterior: **2026-07-25 (sesión 51) — LOCAL, 45/45 verde** (45 tareas, 33 cacheadas), sin el segfault de workerd del contenedor cloud. Además `pnpm e2e` **7/7** contra el bundle compuesto real, dos vueltas seguidas. Referencia anterior: **2026-07-25 (sesión 48) — cloud, 43/45 con los dos rojos re-verificados en aislamiento y ajenos a lo tocado**: `@logic-camp/api` **182/182** verde por su cuenta (flaky sólo bajo carga paralela) y `tenants/demo` `seed.test`+`remote-seed.test` **18/18**; el único rojo real sigue siendo el segfault de workerd sobre `reset.test.ts` (`ECONNREFUSED`, sólo contenedor cloud, no tocado). Dashboard typecheck + lint + build verdes. Referencia anterior: **2026-07-24 (sesión 45) — cloud, todo verde salvo el segfault ambiental de `reset.test`**: typecheck+lint+build **36/36 tareas**, tests **8/8 tareas no-demo** (API **182/182**), demo `seed.test`+`remote-seed.test` **18/18** en aislamiento. El único rojo es `tenants/demo:test` por el segfault documentado de workerd sobre `reset.test.ts` en el contenedor cloud (`kj/table.c++:57` / `ECONNREFUSED`) — **no tocado esta sesión** (el único cambio en `reset.ts` fue exportar `DELETE_ORDER`, sin cambio de comportamiento); en local es 45/45. La referencia local previa: 2026-07-23 (sesión 43) — local 45/45 verde (API **182/182**, hospedajes **22/22**, demo 18/18 incl. `reset.test` sin segfault en local). La referencia cloud anterior, por si se vuelve allí: 2026-07-21 (sesión 38) — cloud **38/42**, todos los rojos **ambientales y ajenos a lo tocado**. Verificado en aislamiento lo que sí se tocó: `@logic-camp/api` typecheck + **172/172** + lint verdes; `@logic-camp/dashboard` typecheck + build + lint verdes; `@logic-camp/ui` typecheck + **54/54** (incl. `theme-contrast`) + lint verdes; `@logic-camp/web` typecheck **0 errores** (no tocado). Rojos del paralelo: `web:build` crash de esbuild ("callback is not a function", worker reiniciado a mitad de sesión), `tenants/demo:test` crash del pool de workerd (el segfault documentado sobre `reset.test.ts`), `api:test` flaky bajo carga paralela. "Si ves 40/42 en cloud, es eso" (sesiones 32–37).
+- **Último `/check`**: **2026-08-06 (sesión 79) — LOCAL, 46/46 verde**;
+  API **240/240** + enlaces **3/3**, tenant demo **62/62**, build del dashboard
+  dentro del presupuesto M6 (**170,34 kB gzip**) y el resto de typecheck, lint,
+  tests y builds verdes. La batería nueva de `created_at` corre sobre las 23
+  anclas de ADR 0030 y la ficha histórica pasa además **1/1** en navegador
+  contra Worker + D1 reales. Las referencias ambientales antiguas siguen en
+  las sesiones 38–48; en esta máquina `reset.test.ts` no presenta el segfault.
 - **HECHO en la sesión 63 (2026-07-31, apunte prioritario de Andreu) y DESPLEGADO**: **las dos caras de la demo se enlazan entre sí** (`camp.logic2b.com`, versión `c86d5793`). El héroe de la landing ofrece web y mostrador con el mismo peso, el pie lista ambas, el banner de demo de la web del tenant lleva al mostrador (en los seis idiomas) y el `DemoBanner` del dashboard vuelve a la web. Al verificar apareció un **404 vivo desde ADR 0016**: el CTA del planning apuntaba a `/demo/admin/` cuando el dashboard se sirve en `/admin/` — era el único enlace de la landing al mostrador. En BACKLOG queda que **nadie comprueba los enlaces entre las tres superficies del bundle compuesto**.
 - **HECHO en la sesión 64 (2026-07-31)**: **el mostrador dentro de la ficha de alojamiento** (candidato `[4.x/web]`, cerrado) — el CTA devolvía al visitante a la home sin precargar el tipo que miraba. Ahora la ficha contesta por **su** tipo con el mismo `GET /api/availability` (sin endpoint nuevo) y el botón entra al funnel con tipo y fechas puestos; y cuando ese tipo no entra pero el camping sí tiene algo libre, ofrece la **salida** al mostrador general **conservando fechas y grupo** en vez de ser un callejón. Dos tests E2E nuevos (`ficha-mostrador.spec.ts`), etiquetas en los seis idiomas. Un defecto propio cazado en navegador: el mostrador dentro de la columna lateral reventaba la rejilla (`1fr` es `minmax(auto,1fr)`) y dejaba la **galería** en una tira → va a ancho completo fuera de la rejilla, galería de vuelta a 705px. **DESPLEGADO** el mismo día (versión `bfc479ac`), verificado contra producción con `no-cache`: la ficha sirve el título de disponibilidad y monta la isla del mostrador, también en alemán.
 - **DEUDA TÉCNICA NUEVA anotada en la 64, preexistente y no tocada**: (1) **la regla dura de niveles está incumplida** — un build `TIER=1` sin conmutador emite igualmente `Mostrador.*.js`, porque las rutas del funnel se siguen generando en nivel 1 (comprobado contra el código de la 63, antes de tocar nada); (2) el **héroe de nivel 1 de la home queda invisible** en un build de nivel 1 real, porque `global.css` oculta `[data-hero-nivel='1']` salvo bajo el conmutador de demo y `Home.astro` emite el atributo siempre. Las dos son bombas para el primer Camp Web real, no para la demo.
@@ -158,6 +175,50 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 79 — 2026-08-06 · **Las reservas dejan de nacer el día del reset** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido**: cerrar el candidato `[seed] created_at` recomendado para
+una sesión sin credenciales. E3 queda reservado a su gate técnico con Andreu;
+este cambio no abre fase, es reversible y mejora la demo que ya se enseña.
+
+**El defecto**: las 3.426 reservas llevaban `created_at = anchor`, también una
+estancia terminada meses antes. `/reservas` ordena por ese campo y la ficha lo
+enseña, por lo que SQLite aceptaba una cronología que un camping reconoce como
+imposible. La prueba se escribió primero y reprodujo cuatro fallos: altas tras la
+llegada, cero antelación por canal, mostrador desligado de la llegada y una sola
+fecha de alta para todo el historial.
+
+**Implementación**: `bookingCreatedAt` deriva la antelación del canal: web 30–180
+días, teléfono 2–41 y mostrador el día de llegada; si la estancia aún es futura,
+amplía el plazo para que el alta exista ya y, en mostrador presencial, la deja
+en los últimos tres días. Hora y minuto también son deterministas y un alta del
+ancla queda antes de `updated_at` (08:00). Un PRNG independiente, consumido tres
+veces por reserva sin ramas, evita desplazar el generador general o atar el dato
+a idioma, medio de pago, saldo o recepción.
+
+**Contrato de regresión**: cuatro tests barren las 23 anclas de ADR 0030: ninguna
+alta posterior a llegada/ancla ni actualización anterior a creación; mediana web
+≥30 días y mayor que teléfono; cada reserva de mostrador histórica nace el día
+de llegada (las futuras, como máximo dos días antes del ancla); y >180 fechas de
+alta distintas en cada snapshot.
+
+**Evidencia real**: D1 regenerada desde cero con ancla 2026-08-06: web **2.794
+reservas / 400 fechas / 115 días medios**, teléfono **455 / 167 / 47** y
+mostrador **177 / 70**; cero altas futuras o posteriores a llegada. Bundle
+compuesto: **9.994 enlaces en 306 HTML**. Playwright con Chrome local abre
+`bkg_001` en el dashboard real, contrasta API/calendario y ve la fecha de alta
+histórica en la ficha: **1/1**.
+
+**Verificación**: `pnpm check` **46/46**; API **240/240** + enlaces **3/3**;
+tenant demo **62/62** (seed 48, reset D1 8, remoto 6); typecheck/lint y build
+verdes. Sin deploy remoto: producción sigue en la sesión 76.
+
+**Pase EQUIPO**: Arquitectura/Fullstack conservan el generador puro, una sola
+fuente y cero trabajo por tenant; Backend fija cronología y determinismo sin
+tocar esquema, dinero ni rutas; Frontend/UX reciben orden y fecha creíbles sin
+cambio de UI; Producto mejora una pantalla que ventas ya enseña; UI no cambia;
+SEO no aplica a datos privados `noindex`. No hay conflicto que exija ADR.
 
 ### Sesión 77 — 2026-08-04 · **M6: carga inicial por debajo de 200 kB gzip** (autónoma, protocolo CONTINUA)
 
