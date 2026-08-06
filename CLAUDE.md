@@ -17,6 +17,17 @@ BACKLOG, SIGUIENTE-SESION) → commit a `main` y **push a GitHub**. El MVP es un
 demo: nada de configurar servicios externos reales (Resend, Stripe, SES…); lo fake
 se resuelve en el seed.
 
+## Mandato demo-first (2026-08-06)
+
+Mientras no haya un cliente contratado, la fuente de verdad es
+`docs/ESTRATEGIA-DEMO-FIRST.md`: se construye primero lo que un prospecto puede
+ver, tocar y comprar. El frontend y el portfolio de demos son el producto
+inmediato; el backend solo sostiene sus recorridos con seed, fixtures tipados o
+adaptadores demo. CLI, aprovisionamiento industrial, integraciones externas y
+endurecimiento invisible se **documentan para activarlos con el primer cliente**,
+pero no desplazan trabajo visual. Toda simulación se etiqueta como demo,
+prototipo o roadmap; nunca se presenta como producción real.
+
 ## Restricción que lo gobierna todo
 
 El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el trabajo por número de clientes está prohibida.** Dar de alta un camping nuevo debe costar una tarde. Regla de desempate: _¿qué necesita un camping real para operar en agosto?_ Eso gana.
@@ -39,7 +50,12 @@ docs/       ROADMAP · TIERS · DOMAIN · BACKLOG · ONBOARDING · DEMO-SCRIPT �
 
 ## Niveles de producto (ver docs/TIERS.md)
 
-Un código, cuatro flags. Subir de nivel = cambiar config, nunca un proyecto nuevo.
+La oferta pública usa **Inicio (0) → Gestión (1) → Automatiza (2) →
+Inteligente (3)**. El código conserva los tiers técnicos 1–4 de `TIERS.md`: no
+se renombran a ciegas. Inicio reutiliza el carril de build estático del tier
+técnico 1, pero no su persistencia histórica: transporta la consulta por email
+sin D1; en demo usa un adaptador sin red. Subir de nivel = cambiar config,
+nunca un proyecto nuevo.
 
 1. **Camp Web** — web + formulario→email. Sin motor, sin dashboard. Las solicitudes **se guardan igual** (silenciosas): es el histórico que hace renovar.
 2. **Camp Solicitudes** — bandeja de solicitudes + dashboard lite.
@@ -50,21 +66,21 @@ Un código, cuatro flags. Subir de nivel = cambiar config, nunca un proyecto nue
 
 ## Stack cerrado (no proponer alternativas salvo bloqueo técnico real)
 
-|                                 |                                                                                 |
-| ------------------------------- | ------------------------------------------------------------------------------- |
-| Monorepo                        | pnpm workspaces + Turborepo                                                     |
-| Web pública                     | Astro 5 + islas React (SEO crítico)                                             |
-| Dashboard                       | React 19 + Vite + TanStack Router + TanStack Query                              |
-| API                             | Hono en Cloudflare Workers, RPC tipado (hono/client)                            |
-| DB                              | Cloudflare D1 + Drizzle ORM + drizzle-kit                                       |
-| Auth                            | Better Auth (adaptador D1)                                                      |
-| Validación                      | Zod, esquemas compartidos API↔clientes                                          |
-| UI                              | Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)                |
-| Email                           | Resend + React Email — una cuenta, N dominios verificados, `from` por tenant    |
-| Colas / Cron / Ficheros / Cache | Cloudflare Queues · Cron Triggers · R2 (prefijo por tenant) · KV                |
-| Pagos                           | capa propia `PaymentProvider`: stripe \| redsys \| none                         |
+|                                 |                                                                                                                                                                                                                                         |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Monorepo                        | pnpm workspaces + Turborepo                                                                                                                                                                                                             |
+| Web pública                     | Astro 5 + islas React (SEO crítico)                                                                                                                                                                                                     |
+| Dashboard                       | React 19 + Vite + TanStack Router + TanStack Query                                                                                                                                                                                      |
+| API                             | Hono en Cloudflare Workers, RPC tipado (hono/client)                                                                                                                                                                                    |
+| DB                              | Cloudflare D1 + Drizzle ORM + drizzle-kit                                                                                                                                                                                               |
+| Auth                            | Better Auth (adaptador D1)                                                                                                                                                                                                              |
+| Validación                      | Zod, esquemas compartidos API↔clientes                                                                                                                                                                                                  |
+| UI                              | Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)                                                                                                                                                                        |
+| Email                           | Resend + React Email — una cuenta, N dominios verificados, `from` por tenant                                                                                                                                                            |
+| Colas / Cron / Ficheros / Cache | Cloudflare Queues · Cron Triggers · R2 (prefijo por tenant) · KV                                                                                                                                                                        |
+| Pagos                           | capa propia `PaymentProvider`: stripe \| redsys \| none                                                                                                                                                                                 |
 | Deploy                          | Wrangler. **Demo: manual desde local** (`pnpm --filter @logic-camp/api deploy:demo`) — el workflow `deploy-demo.yml` invoca ese mismo script pero está apagado (`DEPLOY_DEMO_ENABLED` sin poner). Producción por tenant: manual siempre |
-| Tests                           | Vitest (unit + integración D1 local) + Playwright (E2E)                         |
+| Tests                           | Vitest (unit + integración D1 local) + Playwright (E2E)                                                                                                                                                                                 |
 
 ## Convenciones no negociables
 

@@ -14,6 +14,12 @@ los ADR _qué se decidió_, y este fichero _desde qué ocho ángulos se juzga_ l
 > un camping nuevo = una tarde. **Desempate entre roles**: _¿qué necesita un camping
 > real para operar en agosto?_ Eso gana.
 
+> **Mandato demo-first, 2026-08-06:** mientras no haya cliente contratado, la
+> pregunta previa es _¿qué necesita ver un prospecto para entender y comprar la
+> tecnología?_. Backend, cumplimiento e integraciones reales se representan con
+> honestidad y se documentan en el dossier de activación. El criterio de agosto
+> recupera toda su fuerza al convertir una venta en implantación real.
+
 ---
 
 ## Los ocho roles
@@ -55,6 +61,9 @@ los ADR _qué se decidió_, y este fichero _desde qué ocho ángulos se juzga_ l
   por el barrido, o un dato personal sin plazo de retención.
 - **Vive en**: `apps/api`, `packages/db`, `packages/core`, `packages/payments`,
   `packages/notifications`.
+- **En modo demo-first**: protege contratos, coherencia, escenarios y reset del
+  backend demo. No exige operar proveedores o infraestructura reales si la
+  pantalla está etiquetada y la activación productiva queda documentada.
 
 ### 4. Frontend
 
@@ -73,10 +82,10 @@ los ADR _qué se decidió_, y este fichero _desde qué ocho ángulos se juzga_ l
 - **Mandato**: que lo que se construye sea lo que un camping real paga y usa.
 - **Le importa**: la escalera comercial (Inicio → Gestión → Automatiza → Inteligente) como
   una escalera de config, no proyectos distintos; que el nivel 1 funcione con el motor
-  apagado y sin arrastrarlo en el bundle; priorizar por "¿qué necesita un camping para
-  operar en agosto?"; la demo (`camp.logic2b.com`) como herramienta de venta; no
-  construir Camp Motor hasta que alguien pague; el cumplimiento legal español real
-  (RD 933/2021, RGPD) porque sin él no se puede vender.
+  apagado y sin arrastrarlo en el bundle; que la demo (`camp.logic2b.com`) sea la
+  herramienta de venta; no construir Camp Motor hasta que alguien pague; y que
+  cumplimiento/operación real tengan una ruta interna de activación sin bloquear
+  ahora el escaparate.
 - **Veta si**: se construye algo que ningún camping ha pedido ni pagará, se rompe la
   escalera de niveles, o el nivel 1 empieza a depender del motor.
 - **Vive en**: docs/TIERS.md, docs/ROADMAP.md, docs/DOMAIN.md, docs/DEMO-SCRIPT.md.

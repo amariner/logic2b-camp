@@ -100,13 +100,33 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [10] **El nombre del huésped no guarda relación con su nacionalidad**: hay "María Bakker · NL" y "María Berg · DE" porque el nombre se sortea sobre el repertorio entero y la nacionalidad sale del `locale` de la reserva. En Europa pasa, y en un camping de costa más, así que no es falso — pero el patrón se nota al barrer el parte de viajeros. Agrupar repertorios por locale obligaría a rehacer el recorrido de parejas (hoy es una biyección sobre el espacio completo, que es justo lo que garantiza que no haya dos clientes iguales): no compensa hasta que alguien lo eche en falta — 2026-07-25
 - ~~[4.x/web] El mostrador dentro de la página de alojamiento~~ → **hecho 2026-07-31 (sesión 64)**: la ficha monta el mostrador precargado con SU tipo (prop `soloTipo` en `Mostrador.tsx`, misma isla, mismo `GET /api/availability` — sin endpoint nuevo) y el botón entra al funnel con tipo y fechas puestos. Lo que no estaba en el encargo y resultó ser la mitad del valor: **qué se dice cuando ese tipo NO entra** — como la respuesta ya trae el camping entero, se ofrece la salida al mostrador general **conservando fechas y grupo**, en vez de dejar la ficha en un callejón. A ancho completo FUERA de la rejilla: dentro de la columna de `1fr` su ancho mínimo intrínseco se comía el `1.5fr` de la galería. Dos E2E nuevos + etiquetas en los seis idiomas. Texto original abajo.
 - _(texto original de la línea de arriba)_ [4.x/web] **El mostrador dentro de la página de alojamiento** (observación de Andreu, 2026-07-28, verificada contra el código): en el detalle de un alojamiento NO se puede consultar la disponibilidad de ese alojamiento — el CTA de nivel 3 (`AlojamientoDetalle.astro:57`, `mode === 'instant'`) apunta a `${localePath(locale)}#mostrador`, o sea **de vuelta a la home**, y además **sin precargar el tipo** que el visitante estaba mirando; `Mostrador.tsx` no se monta nunca en el detalle. Es el punto exacto donde se pierden reservas: el visitante ya decidió QUÉ quiere y le mandamos a repetir la selección. Arreglo: montar el mostrador (o variante compacta) en el detalle precargado con ese `unit_type`, o como mínimo que el CTA arrastre el tipo en la URL (el funnel ya lee parámetros desde Fase 5). La degradación por nivel actual (1/2 → `/contacto`) está bien y se conserva. **Candidato cercano de sesión** — es deuda de la demo actual, no del Frente D — 2026-07-28
-- [D] **Frente D — Escaparate: portfolio de 12 demos de campings** (4 × nivel 1 micro + 4 × nivel 2 solicitudes + 4 × nivel 3 con pago — **solo campings**: la primera redacción incluía rural/hostal/hotel y Andreu la rectificó el mismo día; esos verticales serán un **clon del proyecto** cuando toque). Documentado súper detallado en `docs/FRENTE-D-ESCAPARATE.md` (nombres, temas, qué demuestra cada una, fases D0–D6). **NO empezar sin el ADR D0 con Andreu** y no antes de que el backend demo esté muy avanzado — 2026-07-28
+- ~~[D0-V] **Contrato visual de la primera ola**~~ → **hecho 2026-08-06
+  (sesión 81)**: L'Olivar / Inicio, Pinada del Mar / Gestión y Mar de Fondo /
+  Visión quedan fijados con ICP, promesa, guiones 5/8/12 min, pantallas,
+  dirección de arte, activos, soporte demo y fichas de activación. La auditoría
+  reutiliza estructura, fuentes y capturas del producto, pero veta cruzar fotos
+  de Cala o activos de Azahar. Contrato ejecutable:
+  `docs/CONTRATO-VISUAL-OLA-1.md`.
+- [D1-V] **Primera demo Inicio — L'Olivar**: nivel comercial 0 sobre el carril
+  técnico tier 1, en español, 22 unidades y dos tipos; lote de ocho imágenes,
+  marca, contenido, transporte demo sin red/PII, build `/demos/olivar/`,
+  `noindex`, QA 375/1366 y tres capturas. Orden y criterios en
+  `docs/CONTRATO-VISUAL-OLA-1.md` §9.
+- [D2-V] **Demo Gestión**: web → solicitud → gestor/planning/plano con datos
+  sembrados creíbles.
+- [D3-V] **Demo Visión**: reserva/operación y automatización/IA representadas,
+  siempre etiquetadas como demo o prototipo.
+- [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
+  comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
   2026-08-05 por E1**: `/precios/` publica la escalera 49/149/249/399 € y
   `docs/TARIFAS-LOGIC2B.md` pasa a v2. Se mantiene la revisión de margen después
   de los tres primeros clientes, midiendo horas por bloque.
-- [D5] **Landing de venta: sensación de escalabilidad** — galería del portfolio ("Un motor, doce marcas"), franja de cifras (1 código · N alojamientos · D1 aislada · alta en una tarde), recorrido "¿cuántas plazas tienes?" → nivel + demo parecida. La franja de cifras es verdad HOY y no depende del portfolio (versión temprana posible); la galería, solo cuando haya ≥3 demos clicables — nunca prometer lo que no se clica. Detalle en `FRENTE-D-ESCAPARATE.md` §3 — 2026-07-28
-- [D6] **Creatividades de campaña de muestra (Ads display Google/Meta + búsqueda)**: maquetas fake (assets estáticos en `apps/site`, sin cuentas reales ni píxeles) con la marca de las demos, formatos estándar (300×250, 728×90, 160×600, 320×100; 1080×1080, 1080×1920), UTM de mentira que clican al funnel de su demo — para recorrer anuncio → web → reserva en una presentación. Declaradas como muestra en la propia pieza (honestidad comercial). El argumento de fondo: cada reserva por campaña propia es una reserva sin comisión de OTA. Detalle en `FRENTE-D-ESCAPARATE.md` §4 — 2026-07-28
+- [D4-V/landing] **Sensación de escalabilidad**: galería y recorrido por tamaño
+  cuando haya tres demos clicables; la franja de cifras temprana ya existe.
+- [D4-V/campaña] **Creatividades de muestra Google/Meta/búsqueda**: assets
+  estáticos, sin cuentas ni píxeles, marcados «demo», que recorran anuncio → web
+  → consulta/reserva dentro del navegador.
 - [marca] **`docs/brand/` sigue describiendo el isotipo como logo del producto** (resto del ítem cerrado en la 61): la OG image ya está, pero el directorio de marca no se ha revisado desde el cambio de logo — 2026-07-30
 - [seo] **`BreadcrumbList` en las guías**: el sitemap declara las 25 páginas de documentación como "la superficie de búsqueda larga del producto" (cómo hacer el check-in en un camping…), y son las únicas con jerarquía real (guía → página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage` desde la 61; las guías no tienen ninguno. Barato: va en `Docs.astro`, que las sirve todas — 2026-07-30
 - ~~[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle compuesto~~ → **hecho 2026-08-04 (sesión 70)**: `apps/api/scripts/check-demo-links.mjs` recorre los `<a href>` internos del `dist` compuesto y comprueba que resuelven dentro de él (incluye `/demo/`, `/admin/`, rutas sin barra que Workers Assets redirige y URLs absolutas del mismo origen). Corre tras copiar los tres builds y **antes** de migrar o desplegar en `deploy:demo`; informa cada HTML origen y ruta rota. El `404.html` se excluye correctamente: es el documento fallback de Astro, no una ruta publicada. Tres tests nativos fijan el contrato; el primer barrido real dio **9.286 enlaces / 304 HTML, OK**.
@@ -129,17 +149,34 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[E2] Sustituir `#niveles` por Inicio → Gestión → Automatiza → Inteligente~~
   → **hecho 2026-08-05**: selector por problema, escalera 00–03 y CTA propio;
   héroe orientado a la progresión. Verificado a 1366/375 px, sin desborde.
-- [E3] Construir el tier 0 estático: cero D1/dashboard/motor, formulario con
-  entrega fiable sin persistencia, antispam, privacidad, E2E y onboarding
-  medido ≤1 h — 2026-08-05.
-- [E4] Demo microcamping y campaña “Tu web por 49 €/mes, sin alta”, mostrando
-  de forma visible permanencia o anualidad — 2026-08-05.
-- [E5] Automatiza: completar reseñas/plantillas y añadir IA supervisada para
-  redactar, traducir, resumir y consultar herramientas de solo lectura —
-  2026-08-05.
-- [E6] Inteligente: series y rentabilidad deterministas, previsión con error
-  medido, integraciones por demanda y copiloto sobre servicios tipados —
-  2026-08-05.
+- [E3-V/E4-V] **Inicio como demo y campaña**: queda absorbido por D1-V. El
+  formulario usa un adaptador demo y muestra éxito/error/antispam; receptor,
+  privacidad operativa y onboarding reales van al dossier de activación.
+- [E5-V] **Automatiza representado**: escenarios navegables de plantillas,
+  reseñas, redacción, traducción y resumen con resultados de muestra y revisión
+  humana visible.
+- [E6-V] **Inteligente representado**: rentabilidad, previsión, integraciones y
+  copiloto sobre datos demo, con origen/incertidumbre/confirmación visibles.
+
+## Producción diferida — activar con cliente contratado
+
+> Estos ítems se documentan y estiman; no compiten con D0-V–D4-V. Se convierten
+> en ejecución solo si entran en el alcance firmado de un cliente.
+
+- [CLIENTE-REAL] Receptor de formularios, antispam, consentimiento, entrega y
+  onboarding real del plan Inicio.
+- [CLIENTE-REAL] Aprovisionamiento de tenant/D1/dominio/secrets, CLI o runbook
+  equivalente y ensayo de alta/baja.
+- [CLIENTE-REAL] Resend/SMS/WhatsApp, Stripe/Redsys y webhooks operados con
+  credenciales del proveedor.
+- [CLIENTE-REAL] Facturación/VeriFactu, SES.Hospedajes/INE y pre-check-in
+  validados contra el entorno oficial aplicable.
+- [CLIENTE-REAL] Channel manager/OTA elegido por demanda real; idempotencia,
+  conflictos y reconciliación.
+- [CLIENTE-REAL] Migración, backups/restauración, observabilidad, soporte,
+  analytics/consentimiento y seguridad operativa.
+- [CLIENTE-REAL] IA/forecast/copiloto: proveedor, costes, permisos, evaluación,
+  límites, auditoría y supervisión humana.
 
 ## Frente M — Dashboard móvil
 

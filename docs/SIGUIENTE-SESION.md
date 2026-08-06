@@ -1,64 +1,61 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito al cerrar la sesión 79 (2026-08-06). El `created_at` de las 3.426
-> reservas ya cuenta una historia posible por canal. `pnpm check` 46/46,
-> tenant demo 62/62, bundle compuesto 9.994 enlaces y navegador 1/1. Sin deploy.
+> Reescrito al cerrar D0-V (sesión 81, 2026-08-06). La primera ola ya tiene
+> contrato; la siguiente sesión produce su primera prueba: L'Olivar.
 
 ## Estado en una línea
 
-`main` queda con E0–E2 cerrados y con la deuda visible del seed resuelta. E3 es
-el siguiente bloque estructural, pero conserva su gate técnico con Andreu. La
-producción sigue en la sesión 76; faltan por desplegar M6 (77), la nueva escalera
-comercial (78) y la cronología del seed (79).
+Inicio, Gestión y Visión ya son tres encargos concretos. El siguiente salto es
+convertir L'Olivar en una demo Inicio compartible que pruebe la receta visual
+sin motor, dashboard, D1 ni credenciales.
 
-## Lo primero de la próxima sesión
+## Objetivo único de la próxima sesión: D1-V · L'Olivar
 
-1. Ejecutar `git fetch` y comparar `main` con `origin/main` antes de tocar nada.
-2. Si Andreu está presente, priorizar **E3** y cerrar su contrato técnico antes
-   de código: tier 0 estático, endpoint compartido sin persistencia, antispam,
-   privacidad, entrega fiable y onboarding ≤1 h.
-3. Si vuelve a ser autónoma, elegir una deuda visible y sin credenciales. El
-   candidato recomendado es la **guía de Inicio del dashboard**: crear
-   `recepcion/inicio`, explicar cifras y bloques reales, conectarla en
-   `apps/dashboard/src/lib/ayuda.ts`, verificar fallback/i18n y navegador.
-4. No hacer deploy remoto ni reseed remoto sin la autorización/credenciales
-   previstas por `docs/CONTINUA.md`.
+Implementar de extremo a extremo la primera demo Inicio conforme a
+`docs/CONTRATO-VISUAL-OLA-1.md` §3 y §9:
 
-## Candidato autónomo recomendado
+1. Crear `tenants/olivar` desde `_template`: nivel comercial 0 sobre el carril
+   técnico `tier: 1`, español, 18 parcelas, 4 tiendas premontadas y solo los
+   datos necesarios para la web. No renombrar los tiers técnicos.
+2. Producir/seleccionar como conjunto los ocho activos fotográficos del contrato
+   y derivar wordmark tipográfico, favicon, OG y miniatura. No usar fotos de
+   Cala Sereno o Azahar.
+3. Completar tema y contenido: home, alojamientos, ficha de tienda,
+   instalaciones, entorno, tarifas, contacto y legales, sin `__TODO__`.
+4. Añadir al contrato web un transporte tipado de consultas: `persisted`
+   conserva el comportamiento actual y `demo` ofrece éxito normal y
+   error/antispam deterministas para QA, con cero red/persistencia de PII y
+   mensaje visible «Demostración: no enviaremos tus datos». El transporte
+   productivo `email` permanece diferido al primer cliente.
+5. Integrar un build `TENANT=olivar TIER=1 BASE_PATH=/demos/olivar`, con
+   `noindex`, sin rutas/chunks del motor y sin exigir D1/Worker propios.
+6. Verificar 375/1366 px, teclado, foco, reduced motion, contraste, estados,
+   imágenes/enlaces, bundle real de nivel 1 y tres momentos capturables.
+7. Medir horas en identidad/contenido, configuración, interacción, QA y
+   publicación; actualizar el contrato si la implementación desmiente la receta.
 
-**[dashboard] Guía contextual de la portada.** Es la primera pantalla del
-gestor y la única sin `?`: `lib/ayuda.ts` devuelve `null` porque enlazar a una
-página que no responde era peor que no enlazar. Crear una página
-`apps/site/src/content/docs/recepcion/inicio.es.md` contra la UI real (cuatro
-cifras, tres listas del día y rejilla de módulos), añadirla al orden de la guía
-y mapear `/` a esa URL. No inventar funciones ni traducir la prosa: el contrato
-actual mantiene prosa ES con fallback visible.
+## Hecho cuando
 
-**Hecho cuando**: el `?` aparece en Inicio, abre la página correcta, la guía
-describe exactamente la pantalla actual, entra en sitemap/jerarquía y pasa
-build, enlaces compuestos y navegador a 1366/375 px.
+- El recorrido de 5 minutos funciona desde un enlace y no necesita explicación
+  técnica, terminal, login ni credenciales.
+- La demo se reconoce como interior seco/olivar en una captura sin contexto.
+- El formulario demuestra éxito/error sin enviar ni guardar datos personales.
+- El bundle técnico tier 1 no incluye motor, reserva, pago ni dashboard y la
+  interfaz lo presenta como Inicio/nivel comercial 0.
+- Todo lo ficticio se declara como demostración y la ruta está en `noindex`.
+- Quedan OG, miniatura y capturas 375/1366 listas para la futura galería.
+- `pnpm check` está verde y D2-V recibe una receta medida, no supuesta.
 
-## Bloqueado / esperar a Andreu
+## Regla de alcance
 
-- E3 si su gate técnico cambia alcance o tratamiento de datos.
-- Frente D completo y ADR D0; la galería espera ≥3 demos clicables.
-- `new:camping --apply`, reseed remoto `--apply`, SES.Hospedajes real, secrets,
-  Cloudflare Web Analytics, ensayo remoto de restauración y deploy de producción.
-- Favicon y cualquier cambio de identidad de marca.
-
-## Trampas vigentes
-
-- `pnpm check` reconstruye `apps/site/dist` y borra la composición. Para probar
-  navegador hay que volver a montar web en `/demo/` y dashboard en `/admin/`.
-- En esta máquina Playwright puede no tener Chromium descargado; usar
-  `CHROMIUM_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"`.
-- Usar un puerto libre con `E2E_PORT`; no matar un Worker ajeno en 8787.
-- La demo limita `/api/*` a 60 peticiones/minuto: una sesión por spec y evitar
-  barridos innecesarios.
-- Producción puede servir caché vieja con 200/HIT: verificar con `?v=`.
-- El seed debe seguir puro: un rasgo nuevo no consume `rand()` general ni cuelga
-  de un contador ya compartido. Toda propiedad temporal se prueba sobre varias
-  anclas, no solo 2026.
+- No abrir Pinada del Mar, Mar de Fondo ni la galería en esta sesión.
+- No construir receptor real, Resend, antispam productivo, analytics, CLI,
+  aprovisionamiento ni infraestructura por demo.
+- No introducir una fuente nueva ni un segundo sistema visual; reutilizar
+  Clash/Inter y la estructura de `apps/web`.
+- Si la producción de fotos depende de una herramienta externa no disponible,
+  cerrar primero estructura, contenido, tema y briefs exactos, documentar el
+  bloqueo y no sustituirlos por assets incoherentes.
 
 ## Prompt
 

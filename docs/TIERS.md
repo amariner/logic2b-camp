@@ -1,8 +1,24 @@
 # TIERS — Los cuatro niveles de Logic Camp
 
 > Este documento conserva los **tiers técnicos de build** existentes. Desde el
-> ADR 0033 la oferta pública usa Inicio/Gestión/Automatiza/Inteligente; su
-> correspondencia técnica se cerrará en E3 sin renombrar código a ciegas.
+> ADR 0033 la oferta pública usa Inicio/Gestión/Automatiza/Inteligente. D0-V
+> cerró la correspondencia mínima para producir la primera demo sin renombrar
+> el código a ciegas.
+
+## Correspondencia con la oferta pública
+
+| Oferta                    | Carril técnico            | Diferencia de capacidad                                                              |
+| ------------------------- | ------------------------- | ------------------------------------------------------------------------------------ |
+| **Inicio · nivel 0**      | Build estático del tier 1 | Sin D1 ni histórico: transporte `demo` en escaparate y `email` al activar un cliente |
+| **Gestión · nivel 1**     | Base de tier 3            | Web, motor, planning, plano, reservas, pagos y usuarios según alcance                |
+| **Automatiza · nivel 2**  | Tier 3 + capacidades      | Plantillas, comunicaciones, estadísticas e IA supervisada                            |
+| **Inteligente · nivel 3** | Tier 3 + capacidades      | Rentabilidad, previsión, integraciones y copiloto supervisado                        |
+
+El tier técnico 2 se conserva para instalaciones antiguas de Solicitudes/lite,
+pero no es un escalón público de la oferta de 2026. El tier 4 sigue reservado a
+Camp Motor y no se construye. En D1-V `enquiryTransport: 'demo' | 'persisted'`
+separa la demo Inicio del comportamiento heredado; el transporte productivo
+`email` se activa únicamente con cliente.
 
 Un único código base. Subir de nivel = **cambiar config**, nunca un proyecto nuevo. Los niveles son la escalera comercial: el 1 es el caballo de Troya (barato de vender y mantener; cuando el camping crece, ya estás dentro y tienes su histórico).
 

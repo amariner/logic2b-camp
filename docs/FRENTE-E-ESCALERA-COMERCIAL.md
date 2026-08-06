@@ -4,7 +4,12 @@
 > comercial, el alcance y el orden de trabajo para sustituir la oferta pública
 > actual por una escalera de cuatro niveles. **E1 y E2 están implementadas en
 > la landing local**: el ADR 0033 acepta nombres, precios y condiciones; la
-> viabilidad operativa del nivel 0 se verifica en E3 antes de venderlo a escala.
+> representación comercial del nivel 0 se construye en E3-V. D0-V ya fijó su
+> correspondencia mínima: oferta Inicio sobre el carril estático del tier
+> técnico 1, con transporte de consulta separado de la persistencia heredada.
+> Desde el mandato
+> demo-first del 2026-08-06, la operación real se documenta y se activa cuando
+> exista un cliente; no bloquea el escaparate.
 
 ## 1. Texto breve para compartir con el socio
 
@@ -222,55 +227,60 @@ de negocio y escalera 00–03 con resultado, cuota, alta, estado y CTA propio.
 Revisado en 1366 y 375 px, sin desborde ni errores de consola; typecheck y build
 del sitio verdes.
 
-### E3 · Producto mínimo del nivel 0
+### E3-V · Representación vendible del nivel 0
 
-- Añadir un tier estático que no genere rutas ni chunks de motor/dashboard.
-- Resolver el formulario mediante el mecanismo aceptado en el ADR.
-- Protección antispam, consentimiento, privacidad, estados de éxito/error y
-  prueba extremo a extremo.
-- Onboarding por formulario estructurado, con límites que impidan trabajo a
-  medida accidental.
-- Medir tiempo real de alta; objetivo máximo: una hora de operación humana.
+- Construir la web Inicio como primera demo ancla, con una identidad completa.
+- Representar el formulario mediante un adaptador demo con estados tipados de
+  éxito, error y antispam, sin configurar un proveedor real.
+- Mostrar el alcance, consentimiento y condiciones comerciales en la propia
+  experiencia.
+- Crear su ficha interna: entrega real, privacidad, antispam, dominio,
+  cancelación y onboarding a activar con el cliente.
 
-**Hecho cuando:** una web Inicio nace, recibe una consulta en recepción y puede
-cancelarse sin dejar infraestructura o datos huérfanos.
+**Hecho cuando:** el recorrido anuncio → web → consulta se puede enseñar en
+móvil y escritorio, está claramente marcado como demo y no requiere terminal,
+credenciales ni infraestructura propia.
 
-### E4 · Demo y gancho de campaña
+### E4-V · Gancho de campaña
 
 - Crear una demo clicable de un microcamping con nivel 0.
 - Preparar una landing de campaña “Tu web por 49 €/mes, sin alta”.
 - Explicar de forma visible la permanencia/contratación anual y el alcance.
-- Medir visita → formulario → contacto comercial sin instalar seguimiento sin
-  consentimiento.
+- Representar visita → formulario → contacto comercial; analytics real queda
+  documentado para activación con consentimiento.
 
-**Hecho cuando:** el anuncio puede recorrerse hasta una consulta real y ventas
+**Hecho cuando:** el anuncio puede recorrerse hasta una consulta de demo y ventas
 puede enseñar exactamente qué recibe el cliente.
 
-### E5 · Automatización e IA de recepción
+### E5-V · Automatización e IA representadas
 
-- Completar reseñas y plantillas deterministas antes de llamarlas IA.
-- Añadir redacción, traducción y resumen como borradores supervisados.
-- Construir después el asistente de consulta con herramientas de solo lectura.
-- Registrar coste, latencia, aceptación de borradores y errores por caso de uso.
+- Diseñar escenarios navegables de reseñas, plantillas, redacción, traducción,
+  resumen y preparación del día.
+- Usar resultados de muestra coherentes y siempre presentarlos como borradores
+  supervisados.
+- Documentar modelo/proveedor, permisos, coste, evaluación y observabilidad que
+  habrá que activar con un cliente.
 
-**Hecho cuando:** Automatiza ahorra tiempo medible y ninguna operación sensible
-depende de una respuesta generativa sin confirmar.
+**Hecho cuando:** un prospecto entiende qué tiempo ahorraría y ninguna pantalla
+presenta una respuesta precalculada como IA operativa real.
 
-### E6 · Inteligencia y copiloto
+### E6-V · Inteligencia y copiloto representados
 
-- Series temporales y rentabilidad calculadas de forma determinista.
-- Previsión solo para campings con datos suficientes y con error medido.
-- Recomendaciones con explicación, límites y aprobación humana.
-- Integraciones escogidas por demanda real del primer cliente.
-- Copiloto de lenguaje natural sobre servicios tipados del PMS, nunca SQL o D1
-  directo.
+- Representar series, rentabilidad, previsión, recomendaciones e integraciones
+  sobre un dataset demo coherente.
+- Hacer explicable cada recomendación: datos de origen, motivo, incertidumbre y
+  acción propuesta.
+- Simular el copiloto sobre un catálogo cerrado de acciones y confirmaciones.
+- Documentar servicios tipados, permisos, evaluación e integraciones reales;
+  no construirlos hasta conocer el alcance del primer cliente.
 
-**Hecho cuando:** una recomendación puede explicar sus datos de origen, su
-incertidumbre y la acción que propone.
+**Hecho cuando:** la demo explica el valor y sus límites sin prometer que el
+copiloto o las integraciones están ya conectados.
 
 ## 7. Orden recomendado
 
-`E0 ✅ → E1 ✅ → E2 ✅ → E3 → E4 → E5 → E6`
+`E0 ✅ → E1 ✅ → E2 ✅ → D0-V → E3-V/E4-V → E5-V/E6-V`
 
-E5 y E6 aparecen con estado explícito, pero sus precios siguen siendo objetivos
-de lanzamiento hasta medir coste y uso real.
+E5-V y E6-V aparecen con estado explícito. Sus precios siguen siendo objetivos
+de lanzamiento y su versión productiva no se contrata hasta estimarla contra un
+caso real.

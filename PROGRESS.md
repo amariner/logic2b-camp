@@ -4,6 +4,27 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Última sesión autónoma (81, 2026-08-06): D0-V convierte la primera ola en
+  un encargo de producción.** L'Olivar representa Inicio, Pinada del Mar
+  Gestión y Mar de Fondo Visión. `docs/CONTRATO-VISUAL-OLA-1.md` fija para las
+  tres ICP, problema, promesa, CTA, historias de 5/8/12 minutos, pantallas,
+  dirección de arte, activos y momentos capturables. Cada interacción queda
+  asignada a SSG/config, fixture/seed, adaptador demo o dataset compartido, con
+  rótulo exacto y ficha de activación productiva. La auditoría conserva
+  estructura, fuentes y capturas Logic2B; prohíbe reciclar fotos de Cala o
+  activos de Azahar. Siguiente objetivo: **D1-V, producir L'Olivar** como build
+  comercial 0 sobre el carril técnico tier 1 en `/demos/olivar/`, sin motor,
+  D1 ni credenciales. Cambio documental; sin deploy.
+- **Mandato demo-first (sesión 80, 2026-08-06): el escaparate pasa a ser el
+  producto inmediato.** Frontend, demos y backend de demostración tienen
+  prioridad sobre CLI, aprovisionamiento, integraciones o endurecimiento que un
+  prospecto no puede ver. El portfolio se construirá en olas **3 → 6 → 12**:
+  Inicio, Gestión y Visión primero; cada una con recorrido vendible y soporte
+  mínimo mediante seed, fixture, adaptador o D1 compartida. Producción queda en
+  un dossier de activación por capacidad y solo se ejecuta con cliente. Fuentes
+  alineadas: estrategia, research competitivo, dossier de producción,
+  `CLAUDE.md`, `docs/EQUIPO.md`, CONTINUA, ROADMAP, Frente D/E, BACKLOG y
+  SIGUIENTE-SESION. D0-V queda cerrado en la sesión 81.
 - **Última sesión autónoma (79, 2026-08-06): el historial de reservas ya
   tiene antigüedad real.** Las 3.426 reservas del seed dejan de nacer todas en
   el ancla: web se crea entre uno y seis meses antes, teléfono entre dos días y
@@ -156,7 +177,11 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **HECHO en la sesión 58 (2026-07-28, con Andreu)**: **Informes e Inventario al DS** (BACKLOG `[B1]`, **9 de 11**) — quedan Parte y Ajustes. En **Informes** el `Tile` a mano pasa a `Card`/`CardHeader`/`CardDescription`/`CardTitle` y el defecto anotado —el titular «Ingresos (por llegada)» a dos líneas hundía su cifra respecto de las otras cuatro tarjetas— se arregla **estructuralmente**: todas las tarjetas reservan la altura de **dos líneas de rótulo** (`min-h-[2lh]`), así que las cinco cifras comparten línea base a cualquier ancho — verificado forzando el caso a 1100px (titular partido, cifras alineadas) — y con cualquier idioma (el alemán partirá titulares que el español no parte; acortar el copy habría sido esconder el defecto). En **Inventario** el encargo decía «tiles → Card» pero **mirar la pantalla antes que el markup** (sexta vez que la regla paga) enseñó otra cosa: los chips **ya eran** `Button` del DS con su `AlertDialog`; lo crudo era la **estructura** — ocho secciones planas en una columna con medio lienzo vacío → fichas `Card` por tipo en **rejilla de 2 columnas**, el parque entero a la vista sin scroll. Esqueletos de ambas actualizados a la misma forma (ADR 0020). Verificado contra el Worker real en claro y oscuro: cifras alineadas, diálogo de baja vivo dentro del `Card` («¿Dar de baja A-01?»), sidebar con un solo activo tras click real, 0 errores de consola. **Tres hallazgos anotados en BACKLOG**: ninguna de las 83 unidades está fuera de servicio en el seed (el estado que la pantalla explica no se ve nunca — «válido pero falso» otra vez); la sidebar duplica el activo solo con navegación programática por hash (click real perfecto); y **el atajo del reset local de la 56 ha muerto** — `POST /api/demo/reset` cuelga el workerd local con el seed de 3,4 MB (180 s y el proceso deja de contestar; remoto: 1,2 s), el camino es parar el server + `pnpm db:reset && pnpm db:seed` + relevantar. **Sin desplegar** (el deploy de esta sesión fue anterior al trabajo): sale en el próximo `deploy:demo`.
 - **HECHO en la sesión 59 (2026-07-29)**: **`[B1]` CERRADO — 11 de 11** (Parte y Ajustes, las dos que faltaban). En **Ajustes** el hallazgo no era de markup sino de comportamiento: el bloque de notificaciones vivía **dentro del `<form>` de datos del camping**, así que pulsar **Intro** en «Buzón interno de avisos» disparaba el submit de nombre/zona/moneda — y si esos tres no estaban sucios, **no pasaba nada en absoluto**: el correo escrito se perdía al navegar, en silencio. Dos `<form>` con su propio submit; verificado con Intro real (Playwright): **un solo PATCH**, y es el de `modules.notifications`. Además, tres `Card` en rejilla de dos columnas (la columna única de `max-w-xl` dejaba **dos tercios** del lienzo vacíos a 1366px), las dos fichas cortas apiladas en la misma celda para no dejar 200px muertos bajo «Datos», y la ficha de solo lectura «Nivel e idiomas» **fuera** de entre el último campo editable y el botón de guardar. En **Parte**, medido y no estimado: el `justify-between` a lo ancho dejaba el desplegable de forma de pago a **810px** de su código de reserva —más cerca de la fila de abajo que de la suya—; ahora es columna de ancho fijo con cabecera y **la rejilla vive en UNA constante** compartida por cabecera y filas (regla de la 55: ninguna columna `auto` en listas que no son `<table>`) → las 8 filas y la cabecera en **x=819 exacto**. El campo de fecha crudo pasa al `Input` del DS (29,5px contra 28px de sus vecinos y **sin anillo de foco**, comprobado con Tab de verdad) y los dos estados vacíos a `EmptyState`. **Y de paso, el cron de las 3:00 quedó comprobado**: las reservas de `camp.logic2b.com` vienen con `createdAt` del día → **ADR 0030 §2 despejado entero**. **Sin desplegar**: se acumula a la deuda de la 58.
 - **CAMBIO DE MARCA en la sesión 59 (2026-07-29, petición extraordinaria de Andreu)**: el logo del producto pasa a ser el wordmark **«Logic2B Campings»**, tipografía y estilo de `logic2b-norte`, **sin isotipo**. Poppins con dos caras reales — «Logic» en 600 a plena tinta, «2B» en 800 sobre `--logo-2b` (un punto por debajo de `--foreground`), «Campings» en 600 sobre `--muted-foreground` —, tracking `.015em`. De norte se replica la **relación** de color, no sus hex (allí el texto arranca más oscuro que en este DS). Tipografía y color en `packages/ui/theme.css`; el lockup en `Wordmark` (React) + `Wordmark.astro`, que **comparten clases** para que cabecera, pie y login no puedan divergir. Aplicado en dashboard (sidebar, cabecera móvil, login) y landing (cabecera y pie); **34 apariciones** de «Logic Camp» renombradas en los seis idiomas, títulos de docs y `app.nombre`. Tres decisiones anotadas: la **sidebar plegada son 56px** y ahí no cabe ni «Logic2B» → enseña **«2B»** (la parte distintiva del lockup, no un símbolo nuevo, con `aria-label` completo); el **favicon sigue siendo el isotipo** (un wordmark no funciona a 32px); y el **pie de la web del tenant conserva el isotipo** como firma «powered by Logic2B», que ahí es un crédito y no el logo del producto. La propia build delató un derroche: `@fontsource/poppins/600.css` arrastra todos los subsets y metía **180 kB de Poppins Devanagari** para dos palabras → `latin-600`/`latin-800`, **16 kB**; en la landing el 800 va subsetado a sus dos glifos (824 B). `docs/BRAND.md` §2 reescrito con la decisión.
-- **FRENTE D ABIERTO en la sesión 58 (2026-07-28, mandato directo de Andreu)**: **Escaparate — portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra**. La tesis: una demo no demuestra escalabilidad, doce sí — 4 micro de nivel 1 con formulario→email (olivar, río, surf, delta), 4 medianos de nivel 2 con solicitud sin cobro (costa, montaña, viñedo, naranjal), 4 grandes de nivel 3 con pago (resort premium, interior/eco, animación familiar, invernante todo-el-año). Objetivo comercial declarado: **sensación de escalabilidad y abarcar el máximo de clientes posibles dentro del vertical**. **El alcance NO cambia** — la primera redacción incluía casas rurales, hostal y hotel, y **Andreu la rectificó en la misma sesión**: campings y solo campings; **hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto), así que `CLAUDE.md` y §0 quedan intactos. Nada se construye sin el **ADR D0 con Andreu** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas), y el frente entero espera a que el backend demo esté muy avanzado. Documento fuente con todo el detalle: **`docs/FRENTE-D-ESCAPARATE.md`**; resumen y tabla en `ROADMAP.md`. De la misma conversación salió un defecto REAL de la demo actual, verificado contra el código y en BACKLOG como candidato cercano: **el detalle de alojamiento no deja consultar disponibilidad ahí dentro** (`AlojamientoDetalle.astro:57` manda de vuelta a la home sin precargar el tipo).
+- **FRENTE D ABIERTO en la sesión 58 (2026-07-28, mandato directo de Andreu;
+  gate original sustituido en la sesión 80)**: portfolio de 12 demos de
+  campings, landing y creatividades de muestra. Se mantiene «campings y solo
+  campings», pero ya no espera a backend avanzado, ADR de infra ×12 ni CLI: se
+  ejecuta como fábrica visual en olas 3 → 6 → 12 según el mandato demo-first.
 - **Último `/check`**: **2026-08-06 (sesión 79) — LOCAL, 46/46 verde**;
   API **240/240** + enlaces **3/3**, tenant demo **62/62**, build del dashboard
   dentro del presupuesto M6 (**170,34 kB gzip**) y el resto de typecheck, lint,
@@ -175,6 +200,54 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 81 — 2026-08-06 · **D0-V: tres demos dejan de ser nombres y pasan a producción** (autónoma, protocolo CONTINUA)
+
+**Objetivo elegido:** cerrar el contrato visual y comercial de Inicio, Gestión
+y Visión. Es el siguiente bloque de `SIGUIENTE-SESION`, es visible, no necesita
+credenciales y evita abrir tres identidades con decisiones pendientes.
+
+**Decisión:** L'Olivar (`olivar`, 22 unidades) abre Inicio; Pinada del Mar
+(`pinadamar`, ~110) conecta web y operación en Gestión; Mar de Fondo
+(`mardefondo`, ~300) enseña reserva, escala y prototipos supervisados en Visión.
+Comparten código y pueden compartir runtime/dataset ficticio, pero no fotografía,
+territorio ni relato. Cala Sereno sigue como baseline funcional, no como cuarta
+identidad reciclada.
+
+**Contrato:** `docs/CONTRATO-VISUAL-OLA-1.md` contiene ICP, problema, promesa,
+CTA, guiones 5/8/12 minutos, mapa de pantallas, paletas, tipografía, briefs de
+foto, activos, estados, soporte técnico, rótulos de honestidad y criterios de
+aceptación. Incluye la ficha de activación a producción de formularios,
+inventario, usuarios, pagos, automatización, IA, canales y cumplimiento.
+
+**Auditoría y ocho lentes:** se reutilizan `apps/web`, `_template`, Clash/Inter,
+el pipeline de imagen y capturas Logic2B. Se descartan como activos finales las
+fotos de Cala, la propuesta Azahar y un plano recoloreado. El runtime compartido
+es solo portfolio con datos ficticios; un cliente real vuelve a D1 aislada por
+binding. D1-V puede empezar por frontend puro: `tenants/olivar`, español, nivel
+1 como carril estático, ocho fotos y transporte demo sin red ni persistencia.
+
+**Verificación:** documentación formateada, `git diff --check` limpio y
+`pnpm check` **46/46 verde** (typecheck, lint, tests y builds de los 17 paquetes;
+cache íntegra al ser una sesión documental). Sin código de producto, servicios
+externos ni deploy.
+
+### Sesión 80 — 2026-08-06 · **Replanteo demo-first: vender primero lo visible**
+
+**Objetivo:** impedir que el proyecto siga invirtiendo su capacidad limitada en
+backend, CLI e integraciones invisibles antes de tener un escaparate capaz de
+vender la tecnología.
+
+**Decisión:** el frontend es el producto comercial inmediato. El backend de
+demo solo sostiene recorridos creíbles; la producción real se especifica en un
+dossier de activación y se implementa cuando un cliente la contrata. Las doce
+demos siguen siendo la visión, pero se validan en olas 3 → 6 → 12.
+
+**Documentación:** nueva fuente de verdad `docs/ESTRATEGIA-DEMO-FIRST.md`,
+research oficial de plataformas, dossier interno de activación y alineación de
+CLAUDE/EQUIPO/CONTINUA/ROADMAP/Frente D/Frente E/BACKLOG. La próxima sesión pasa
+de E3 técnico a **D0-V**, contrato visual de Inicio, Gestión y Visión. No se ha
+modificado producto ni desplegado nada.
 
 ### Sesión 79 — 2026-08-06 · **Las reservas dejan de nacer el día del reset** (autónoma, protocolo CONTINUA)
 

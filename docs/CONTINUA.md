@@ -7,16 +7,21 @@ escritas con su motivo. Andreu revisa a posteriori leyendo PROGRESS.md.
 
 ## Contexto que gobierna las decisiones (mientras no haya cliente real)
 
-- **El MVP es una DEMO/muestra.** Todo lo "fake" se resuelve en el **seed**, nunca
-  con mocks en el cliente (regla del Frente C).
+- **El MVP es un ESCAPARATE DE DEMOS.** Manda
+  `docs/ESTRATEGIA-DEMO-FIRST.md`: primero lo visible, navegable y vendible.
+  Todo lo simulado sale del **seed**, fixtures tipados o un adaptador demo común,
+  nunca de mocks aleatorios repartidos por el cliente.
 - **No configurar ni verificar servicios externos reales**: Resend, Stripe, Redsys,
   SES.Hospedajes, Web Analytics… El código de integración puede existir (patrón
   `sesTransport`/Stripe: escrito, testeado, sin verificar), pero cualquier objetivo
   que **requiera credenciales o a Andreu presente queda descartado para la sesión
   autónoma** — se anota en BACKLOG/SIGUIENTE-SESION y se elige otro.
-- Prioridad de elección: **terminar y ampliar las demos vendibles del Frente D**
-  (web pública, dashboard, planning/plano y propuesta comercial) > deuda visible
-  en demo > deuda técnica barata > limpieza. Decisión de Andreu, 2026-08-03.
+- **No elegir CLI, aprovisionamiento, integraciones ni backend de producción
+  invisible** si puede documentarse en el dossier de activación y no bloquea la
+  demo. Prioridad: demos vendibles del Frente D (web pública, dashboard,
+  planning/plano, automatización/IA representadas y propuesta comercial) >
+  calidad visible > backend mínimo de demo > documentación de activación >
+  deuda técnica. Decisión de Andreu, actualizada 2026-08-06.
 
 ## Los 8 pasos de cada sesión
 

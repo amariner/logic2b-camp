@@ -158,69 +158,35 @@ Regla: una sesión = una fase = un objetivo. No se pasa de fase sin `/check` en 
 
 ## Frente D — Escaparate: portfolio de demos y marketing de captación
 
-> **Abierto 2026-07-28 por mandato directo de Andreu** (sesión 58, presente).
-> **Detalle completo — la visión, las 12 demos con nombre y tema, las piezas de
-> marketing y las decisiones abiertas — en [`docs/FRENTE-D-ESCAPARATE.md`](FRENTE-D-ESCAPARATE.md).**
-> Aquí solo la tesis y el estado.
->
-> **La tesis**: una demo no demuestra escalabilidad — doce sí. Un **portfolio
-> de 12 demos de campings** en tres escalones de nivel (4 × nivel 1 micro con
-> formulario→email · 4 × nivel 2 medianos con solicitud sin cobro · 4 × nivel 3
-> grandes con motor y pago), con el objetivo comercial declarado de dar
-> **sensación de escalabilidad y abarcar el máximo de clientes posibles dentro
-> del vertical**. Completan el frente: la **landing de venta v2** (galería del
-> portfolio, franja de cifras, recorrido por tamaño) y las **creatividades de
-> campaña de muestra** (display Google/Meta + búsqueda, maquetas fake con UTM
-> que clican al funnel de su demo — el argumento anti-OTA cerrado: canal propio
->
-> - motor propio + campaña propia).
->
-> **Alcance, cerrado el mismo día**: **solo campings** — el "para campings, y
-> solo campings" de CLAUDE.md queda intacto. Hoteles y casas rurales **serán un
-> CLON del proyecto cuando llegue el momento** (un vertical, un producto — el
-> mismo patrón que separa ecom de camp), no una ampliación de este. El frente
-> cuelga del **ADR D0 con Andreu presente** (nombres/temas, infra ×12,
-> presupuesto de fotos, honestidad de las maquetas). **Nada de D1–D6 se empieza
-> sin D0.**
->
-> **Cuándo**: cuando el backend de la demo esté **muy avanzado** (palabras de
-> Andreu) — después de cerrar B1 (11/11), validar ADR 0030 y dejar Cala Sereno
-> sin deuda visual. Mientras tanto, las sesiones **no construyen nada en
-> contra** (el vocabulario del glosario, unidad/tipo, se mantiene limpio) y el
-> documento sirve para **enseñar la visión ya**.
+> **Replanteado 2026-08-06 por mandato directo de Andreu.** La fuente de verdad
+> transversal es [`ESTRATEGIA-DEMO-FIRST.md`](ESTRATEGIA-DEMO-FIRST.md) y el
+> detalle del portfolio vive en
+> [`FRENTE-D-ESCAPARATE.md`](FRENTE-D-ESCAPARATE.md).
 
-| Fase   | Nombre                    | Objetivo                                                                                                          | Hecho cuando                                                                      |
-| ------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **D0** | Decisiones de fondo (ADR) | Nombres/temas del portfolio, esquema de hosts e infra ×12, presupuesto fotos, honestidad Ads                      | ADR `aceptado`                                                                    |
-| **D1** | La fábrica de demos       | `generateSeed` parametrizable (tamaño/mezcla de tipos/estacionalidad) + plantillas de contenido por tema          | Una demo nueva nace en una tarde medida, sin tocar `apps/` ni `packages/`         |
-| **D2** | Grupo A (4 × nivel 1)     | Landings de micro-campings (olivar, río, surf, delta), formulario→email, histórico silencioso                     | Las 4 vivas con su marca, reset y `noindex`; Lighthouse ≥95                       |
-| **D3** | Grupo B (4 × nivel 2)     | Campings medianos con solicitud sin cobro (costa, montaña, viñedo, naranjal)                                      | Una solicitud desde cada web cae en su bandeja y se gestiona                      |
-| **D4** | Grupo C (4 × nivel 3)     | Campings grandes con motor y pago fake (resort premium, interior/eco, animación familiar, invernante todo-el-año) | Una reserva completa en cada una llega a su planning; 300 uds fluido en el resort |
-| **D5** | Landing de venta v2       | Galería del portfolio, franja de cifras, recorrido por tamaño                                                     | El rango del producto se entiende sin leer un párrafo; lo prometido se clica      |
-| **D6** | Campañas de muestra (Ads) | Creatividades display Google/Meta + búsqueda, UTM fake → funnel de su demo; sección "Campañas que reservan"       | Anuncio → web → reserva recorrido en una presentación sin salir del navegador     |
+El escaparate deja de esperar a un backend avanzado: **es el trabajo
+principal**. El destino continúa siendo doce campings, pero se valida como una
+fábrica visual en olas **3 → 6 → 12**. La primera ola representa Inicio,
+Gestión y Visión; cada demo usa el soporte más barato que haga creíble el
+recorrido (seed, fixture tipado, adaptador o D1 demo compartida). CLI, hosts y
+bases por marca, integraciones y producción real no son dependencias.
 
-**Estado del Frente D** (2026-07-30): **documentado; D5.2 hecha en versión
-temprana** (sesión 60, con Andreu presente pidiendo priorizar marketing): la
-landing gana la sección `#escala` (franja de cifras — solo cifras que ya son
-verdad hoy) y la **escalera como recorrido** en `#niveles`. La landing queda
-en **dos idiomas (es/en)** — 2ª parte de la 60: le vende al dueño, no al
-campista; los seis idiomas siguen en la web de tenant, que es donde son
-argumento. La **galería del portfolio no se abre** (criterio: nunca prometer lo
-que no se puede clicar) y el resto del frente (portfolio, Ads) sigue esperando
-su momento (backend demo muy avanzado) y el ADR D0. La primera redacción del
-mismo día incluía casas rurales, hostal y hotel; **Andreu lo rectificó en la
-misma sesión**: solo campings, y los otros verticales serán un clon del
-proyecto cuando toque. Deuda relacionada de la demo ACTUAL que no espera al
-frente: **el mostrador dentro de la página de alojamiento** (hoy el CTA del
-detalle devuelve a la home sin precargar el tipo —
-`AlojamientoDetalle.astro:57`; en BACKLOG, candidato cercano).
+| Fase        | Nombre               | Objetivo                                                                                 | Hecho cuando                                              |
+| ----------- | -------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| **D0-V ✅** | Contrato visual      | L'Olivar, Pinada del Mar y Mar de Fondo: historia, pantallas, arte, activos y honestidad | Cerrado en `CONTRATO-VISUAL-OLA-1.md`                     |
+| **D1-V**    | Demo Inicio          | Microcamping: marca, web, alojamientos y consulta de muestra                             | Recorrido móvil compartible, sin terminal ni credenciales |
+| **D2-V**    | Demo Gestión         | Camping mediano: web → solicitud → gestor/planning/plano                                 | La historia completa se recorre con datos demo creíbles   |
+| **D3-V**    | Demo Visión          | Resort: reserva + operación + automatización/IA representadas                            | El futuro se entiende y cada simulación está etiquetada   |
+| **D4-V**    | Escaparate comercial | Galería, comparador, capturas/vídeo, fichas y campaña de muestra                         | Tres demos clicables sostienen el pitch                   |
+| **D5-V**    | Ola 2                | Extender la fábrica a seis demos                                                         | La variedad no crea código ni backend por marca           |
+| **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto               |
 
-**Repriorización 2026-08-03 (Andreu)**: terminado el modo demo, **las demos son
-la prioridad comercial** por delante del ensayo de alta real y del registro
-exhaustivo de intervenciones. D0 sigue siendo necesario, pero como contrato
-rápido para que las doce muestras nazcan de una fábrica común. Las tres primeras
-demos medirán horas por bloque y fundamentarán la nueva página `/precios/`
-(`docs/TARIFAS-LOGIC2B.md`); registrar cada intervención queda para el final.
+**Estado (2026-08-06): D0-V cerrado; D1-V es el siguiente objetivo.** El
+contrato de la primera ola vive en
+[`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md). D5.2 ya existe como
+franja de cifras y escalera; la galería espera tres demos clicables. Se mantiene
+el alcance «campings, y solo campings» y se prohíbe una rama de código por demo.
+La producción necesaria para un cliente se captura en el dossier de activación,
+no se implementa de forma preventiva.
 
 ## Frente E — Escalera comercial: de Inicio al copiloto
 
@@ -228,40 +194,48 @@ demos medirán horas por bloque y fundamentarán la nueva página `/precios/`
 > y criterios de aceptación en
 > [`docs/FRENTE-E-ESCALERA-COMERCIAL.md`](FRENTE-E-ESCALERA-COMERCIAL.md).
 > El ADR [`0033`](adr/0033-escalera-comercial-y-plan-inicio.md) queda
-> **aceptado** y autoriza E1/E2; E3 conserva su propio gate técnico.
+> **aceptado** y autoriza E1/E2. Desde 2026-08-06, E3–E6 se construyen primero
+> como representación comercial; su activación real queda en el dossier interno.
 
 La oferta se explica como una progresión de resultados, no como una lista
 técnica: **Inicio 49 €** (consigue consultas) → **Gestión 149 €** (controla el
 camping) → **Automatiza 249 €** (ahorra tiempo) → **Inteligente 399 €** (decide
-mejor). El nivel 0 no es el Camp Web actual rebajado: sería una web estática sin
-PMS, dashboard, D1 ni histórico, con un receptor de formulario mínimo y
-gestionado. Alta 0 € exige plantilla cerrada, contenido aportado y 12 meses o
-pago anual equivalente.
+mejor). El nivel 0 no es el Camp Web actual rebajado: la demo enseña una web
+estática y su consulta con estados creíbles. El receptor real, antispam y la
+operación de producción se activarán al contratarse; hasta entonces quedan
+especificados. Alta 0 € exige plantilla cerrada, contenido aportado y 12 meses
+o pago anual equivalente.
 
-| Fase      | Objetivo                                                            | Hecho cuando                                            |
-| --------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
-| **E0** ✅ | Aceptar alcance, precios, permanencia y transporte del formulario   | ADR 0033 aceptado                                       |
-| **E1** ✅ | Cuatro niveles en `/precios/`, con estado y condiciones honestas    | Un gerente elige sin traducción técnica                 |
-| **E2** ✅ | Recorrido Inicio → Gestión → Automatiza → Inteligente en la landing | Se entiende la progresión en menos de un minuto         |
-| **E3**    | Tier 0 estático y formulario sin persistencia                       | Consulta entregada; cero motor/dashboard/D1 en el build |
-| **E4**    | Demo Inicio y landing de campaña de 49 €                            | Anuncio → web → consulta recorrible                     |
-| **E5**    | Automatización e IA de recepción supervisada                        | Ahorro medido sin acciones sensibles autónomas          |
-| **E6**    | Inteligencia, integraciones y copiloto                              | Recomendaciones explicables y acciones confirmadas      |
+| Fase      | Objetivo                                                            | Hecho cuando                                      |
+| --------- | ------------------------------------------------------------------- | ------------------------------------------------- |
+| **E0** ✅ | Aceptar alcance, precios, permanencia y transporte del formulario   | ADR 0033 aceptado                                 |
+| **E1** ✅ | Cuatro niveles en `/precios/`, con estado y condiciones honestas    | Un gerente elige sin traducción técnica           |
+| **E2** ✅ | Recorrido Inicio → Gestión → Automatiza → Inteligente en la landing | Se entiende la progresión en menos de un minuto   |
+| **E3-V**  | Representar Inicio con consulta de demo                             | Anuncio → web → estado de consulta recorrible     |
+| **E4-V**  | Integrar Inicio en la primera ola y su campaña                      | Ventas enseña exactamente qué recibe el cliente   |
+| **E5-V**  | Automatización/IA supervisada como prototipo navegable              | Se entiende el ahorro y se etiqueta la simulación |
+| **E6-V**  | Inteligencia, integraciones y copiloto representados                | Recomendaciones explicables con datos de muestra  |
 
-**Orden:** E0 ✅ → E1 ✅ → E2 ✅ → E3 → E4 → E5 → E6. La oferta futura se
-enseña solo como “en desarrollo” o “roadmap”; no tendrá CTA de contratación
-hasta que su criterio de producto esté cerrado.
+**Orden visual:** E0 ✅ → E1 ✅ → E2 ✅ → D0-V → E3-V/E4-V → E5-V/E6-V. La
+oferta futura se enseña solo como «demo», «en desarrollo» o «roadmap». El
+producto real se activa módulo a módulo cuando exista un cliente.
 
 ## Decisiones tomadas
 
+- 2026-08-06: **mandato demo-first** — esta decisión sustituye los gates de
+  backend/infra del Frente D y el orden técnico de E3–E6. Se construyen primero
+  tres experiencias visibles (Inicio/Gestión/Visión), luego seis y doce si el
+  aprendizaje comercial lo justifica. CLI, integraciones y producción real se
+  documentan en el dossier de activación hasta que exista cliente.
 - 2026-08-05: **Frente E aprobado; E1/E2 implementados** — cuatro niveles
   comerciales (Inicio/Gestión/Automatiza/Inteligente) con cuotas de lanzamiento
   49/149/249/399 €. Inicio se presenta sin alta, gestor, motor, D1 ni histórico,
   con 12 meses/pago anual. ADR 0033 aceptado; landing, `/precios/`, FAQ y guía
-  del dueño ya usan la nueva escalera. E3 construirá el producto Inicio real.
+  del dueño ya usan la nueva escalera. _La previsión original de construir E3
+  real queda sustituida el 2026-08-06 por E3-V demo-first._
 - 2026-08-03: **prioridad a las demos y a vender**. El portfolio del Frente D empieza al cerrar el modo demo; medir horas durante las tres primeras sirve para recalibrar tarifas, pero el registro detallado de intervenciones se pospone. Se publica una primera estructura de precios que separa alta, cuota, mantenimiento incluido y desarrollo evolutivo.
-- 2026-07-30: **La landing empieza a vender escalabilidad (D5.2 temprana)**, por mandato de Andreu en sesión presencial (60): franja de cifras + escalera como recorrido, **solo con cifras que ya son verdad hoy**; la galería del portfolio no se abre hasta tener ≥3 demos clicables. Además, el header y el footer de la landing pasan a los **raíles visuales de `logic2b-norte`** (contenedor 1440px, gutter 24→32px, 50px de alto, botones a 10px = el `--radius` que el DS ya tenía). El gate del ADR D0 para D1–D4/D6 queda **intacto**.
-- 2026-07-28: **Frente D abierto** (portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. Documentado en `docs/FRENTE-D-ESCAPARATE.md`; **no se construye** hasta que el backend demo esté muy avanzado, y **nada empieza sin el ADR D0** (nombres/temas, infra ×12, presupuesto de fotos, honestidad de las maquetas).
+- 2026-07-30: **La landing empieza a vender escalabilidad (D5.2 temprana)**, por mandato de Andreu en sesión presencial (60): franja de cifras + escalera como recorrido, **solo con cifras que ya son verdad hoy**; la galería del portfolio no se abre hasta tener ≥3 demos clicables. El gate técnico que entonces quedaba intacto fue sustituido por D0-V el 2026-08-06.
+- 2026-07-28: **Frente D abierto** (portfolio de 12 demos de campings + landing de escalabilidad + creatividades Ads de muestra), por mandato directo de Andreu en sesión presencial. _Gate histórico de backend/ADR D0, sustituido por D0-V y el mandato demo-first del 2026-08-06._
 - 2026-07-28: **El alcance NO cambia: campings, y solo campings.** La primera redacción del Frente D incluía casas rurales, un hostal y un hotel; Andreu la rectificó en la misma sesión. **Hoteles y casas rurales serán un CLON del proyecto cuando llegue el momento** (un vertical, un producto — el mismo patrón que separa ecom de camp), nunca una ampliación de este. `CLAUDE.md` y el Super Prompt §0 quedan intactos.
 - 2026-07-20: **Frente C abierto** (acabado visual + workflow + documentación), en paralelo a A y B. Prioridad visual en modo fake, con la regla dura de que "fake" se resuelve en el **seed**, nunca con mocks en el cliente. **B4 (documentación) se absorbe en C6.** Detalle en `docs/FRENTE-C-ACABADO.md`.
 - 2026-07-25: **`deploy-demo.yml` deja de duplicar el deploy y llama al script**. El workflow construía `apps/web` sin `BASE_PATH`, copiaba el dashboard a `apps/web/dist/admin` y desplegaba — pero desde el ADR 0016 el Worker sirve `apps/site/dist` (landing en la raíz + web en `/demo/` + dashboard en `/admin/`), que el workflow nunca construía: de haberse encendido habría desplegado un directorio inexistente o viejo. Ahora ejecuta `pnpm --filter @logic-camp/api deploy:demo`, el mismo comando del deploy manual, así que el bundle y las migraciones no pueden volver a desincronizarse. El guard `DEPLOY_DEMO_ENABLED` pasa a nivel de job (antes hacía `pnpm install` para nada en cada push) y se añade `workflow_dispatch`. **Verificado**: los 52 runs previos en `main` terminaron en verde con los tres pasos de deploy en `skipped` — el "deploy automático main→demo" **nunca ha desplegado nada**; el verde solo decía que el skip funcionaba.
@@ -329,6 +303,11 @@ hasta que su criterio de producto esté cerrado.
 
 ## Orden de ataque (~6h/semana)
 
-- **Semanas 1–6** → Fases 0–3 + Fase 4 parcial (héroe + widget + un tipo de alojamiento) = **demo que vende**. ← estamos aquí (adelantados: Fases 0–3 completas y home nivel 3 funcionando)
-- **Semanas 7–10** → Fase 4 completa + Fase 9 en nivel 1 = **primer camping real en producción**.
-- **Semanas 11+** → Fases 5–8, cuando el primer camping pida el motor.
+- **Ahora** → D0-V + tres demos ancla + escaparate comercial = **tecnología que
+  se puede ver, tocar y vender**.
+- **Después** → ampliar 3 → 6 → 12 según conversaciones y objeciones reales.
+- **Con el primer cliente** → convertir las filas contratadas del dossier de
+  activación en trabajo de producción: entrega, integraciones, seguridad,
+  onboarding y operación.
+- **Diferido** → CLI industrial, infra ×N, integraciones no contratadas y
+  backend complejo que no mejore un recorrido visible.
