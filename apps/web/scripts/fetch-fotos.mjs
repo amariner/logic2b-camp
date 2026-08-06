@@ -23,7 +23,7 @@
  * Perfil de salida: mismo que el resto de tenants — WebP, lado mayor ~2000px,
  * calidad 78. Los másteres no se commitean (`.gitignore`: `*-source.*`).
  */
-import { mkdir, writeFile } from 'node:fs/promises';
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -45,19 +45,39 @@ const outDir = join(tenantDir, 'content', 'media');
 /** @type {{ piezas: Record<string, { prompt: string, url?: string, nota?: string }> }} */
 const manifiesto = JSON.parse(readFileSync(join(tenantDir, 'fotos.json'), 'utf8'));
 const piezas = Object.entries(manifiesto.piezas);
-const conUrl = piezas.filter(([, p]) => p.url);
-const sinUrl = piezas.filter(([, p]) => !p.url);
 
-console.log(`${slug}: ${piezas.length} piezas · ${conUrl.length} con URL · ${sinUrl.length} por generar`);
-if (sinUrl.length > 0) {
+const existe = async (path) => {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const resueltas = [];
+const remotas = [];
+const pendientes = [];
+for (const [nombre, pieza] of piezas) {
+  const path = join(outDir, `${nombre}.webp`);
+  if (await existe(path)) resueltas.push([nombre, pieza]);
+  else if (pieza.url) remotas.push([nombre, pieza]);
+  else pendientes.push([nombre, pieza]);
+}
+
+console.log(
+  `${slug}: ${piezas.length} piezas · ${resueltas.length} locales · ` +
+    `${remotas.length} por descargar · ${pendientes.length} por generar`,
+);
+if (pendientes.length > 0) {
   console.log('\nPendientes de generar (el prompt ya está fijado en fotos.json):');
-  for (const [nombre] of sinUrl) console.log(`  · ${nombre}`);
+  for (const [nombre] of pendientes) console.log(`  · ${nombre}`);
   console.log('');
 }
 
 await mkdir(outDir, { recursive: true });
-let ok = 0;
-for (const [nombre, pieza] of conUrl) {
+let descargadas = 0;
+for (const [nombre, pieza] of remotas) {
   const res = await fetch(pieza.url);
   if (!res.ok) {
     console.error(`✗ ${nombre}: HTTP ${res.status}`);
@@ -72,11 +92,11 @@ for (const [nombre, pieza] of conUrl) {
   const webp = await ajustada.webp({ quality: QUALITY }).toBuffer();
   await writeFile(join(outDir, `${nombre}.webp`), webp);
   console.log(`✓ ${nombre}.webp (${(webp.length / 1024).toFixed(0)} KB)`);
-  ok++;
+  descargadas++;
 }
 
 console.log(
-  `\n${ok}/${conUrl.length} aterrizadas en tenants/${slug}/content/media/.` +
+  `\n${resueltas.length + descargadas}/${piezas.length} disponibles en tenants/${slug}/content/media/.` +
     ` Verificar con: TENANT=${slug} BASE_PATH=/demos/${slug} pnpm --filter @logic-camp/web build`,
 );
-if (sinUrl.length > 0) process.exitCode = 1;
+if (pendientes.length > 0 || descargadas < remotas.length) process.exitCode = 1;

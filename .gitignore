@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 .turbo/
+.pnpm-store/
 .wrangler/
 .wrangler-demo/
 tenants/*/seed.sql

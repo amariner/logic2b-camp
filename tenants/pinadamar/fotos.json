@@ -12,25 +12,21 @@
     "reconocible, SIN texto ni rótulos, SIN HDR ni saturación de folleto, grano",
     "de película sutil. Prohibido reutilizar material de Cala Sereno o L'Olivar.",
     "",
-    "Modelo usado en las dos ya generadas: nano_banana_pro (resuelto a",
-    "nano_banana_2 por el proveedor), 21:9, 2k, 3168x1344, 2 créditos/pieza.",
+    "Sesión completa generada el 2026-08-06 con el modelo integrado de imagen",
+    "de Codex; los 11 másteres se inspeccionaron antes de optimizarlos a WebP.",
     "",
-    "Cómo se cierra: generar las que no tengan `url`, pegar aquí su URL, y",
-    "correr `node apps/web/scripts/fetch-fotos.mjs pinadamar` desde una máquina",
-    "con salida a internet. El contenedor cloud NO la tiene: su proxy solo deja",
-    "pasar npm, GitHub, Anthropic y MCP, y contesta 403 a cualquier otro host."
+    "Los archivos finales viven en content/media/ con el nombre de cada clave.",
+    "No dependen de URLs externas ni del proveedor usado en sesiones anteriores."
   ],
   "piezas": {
     "hero-calle": {
       "prompt": "Editorial documentary photograph of the main street of a Mediterranean coastal campsite at mid-morning in August. A wide compacted sand-and-gravel avenue runs away from the camera under tall Aleppo pines with high open canopies. On both sides, numbered pitches with white touring caravans, green canvas awnings and simple wooden posts; dappled pine shade falls across the sand. At the far end the street opens onto a pale strip of sea and sky. Natural Mediterranean light, no HDR, no brochure saturation, muted greens and warm sand tones, subtle 35mm film grain, 35mm lens at f/5.6. No people, no text, no signage lettering, no logos, no watermarks.",
       "aspecto": "21:9",
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260806_160506_5cda6d10-0203-4102-8907-179c2a504e16.png",
       "nota": "héroe de la home (config.staticHeroImage)"
     },
     "hero-anochecer": {
       "prompt": "Editorial documentary photograph of a curved row of sober single-storey bungalows in a Mediterranean coastal campsite at dusk. Plain pale render walls with dark wood trim, covered porches, small terraces with two simple chairs and a folded towel over a rail; warm porch lights just switched on. Tall Aleppo pines rise above, their trunks catching the last warm light. A compacted sand path curves through the foreground. Deep blue-green evening sky with a faint band of sea light low on the horizon. Natural light only, no HDR, no brochure saturation, muted palette, subtle 35mm film grain. No people, no text, no lettering, no logos, no watermarks.",
       "aspecto": "21:9",
-      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EwueYuQyj9CIIhuP4eF24jbxo5/hf_20260806_160506_f0582007-e40e-483d-bcdc-44479bda7121.png",
       "nota": "la pieza 'hero-bungalows' del encargo, archivada con el nombre del ROL que usa el core (héroe secundario / 404)"
     },
     "parcela": {

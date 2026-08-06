@@ -285,6 +285,20 @@ check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
 
 ## Sesiones
 
+### Sesión 85 — 2026-08-06 · **Pinada del Mar ya tiene piel propia**
+
+**D2-V cerrado.** Se descartaron también las dos URLs antiguas de Higgsfield:
+las **11 fotografías** de Pinada del Mar se generaron de nuevo con el modelo
+integrado de imagen de Codex, se inspeccionaron por lotes y se optimizaron a
+WebP. La serie comparte pinada litoral, arena, lona verde, arquitectura sobria
+y tratamiento documental; no reutiliza activos de Cala Sereno ni L'Olivar.
+
+Se añadieron `favicon.svg`, `apple-touch-icon.png`, `og.jpg` y
+`miniatura.webp`. `fetch-fotos.mjs` ya no confunde «sin URL» con «pendiente»:
+reconoce los finales locales y Pinada informa **11/11 disponibles** sin depender
+de una CDN. Build aislado verde: 15 páginas y 79 variantes responsive. El
+siguiente objetivo contractual pasa a ser **D3-V, Mar de Fondo**.
+
 ### Sesión 84 — 2026-08-06 · **Un camping sin fotos también se enseña** (autónoma, protocolo CONTINUA)
 
 **Objetivo elegido y por qué cambió.** El prompt de `SIGUIENTE-SESION` mandaba

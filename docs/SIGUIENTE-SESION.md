@@ -1,53 +1,28 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 84 (2026-08-06). El recorrido de Pinada del Mar está
-> cerrado y verificado; lo que falta de D2-V es **la piel**, y la piel necesita
-> salida a internet. No rehacer adaptador, dataset, plano, contenido ni el
-> degradado sin foto: están implementados y verificados.
+> Reescrito tras la sesión 85 (2026-08-06). **D2-V está cerrado**: Pinada del
+> Mar tiene recorrido, 11 fotografías propias, derivados de marca y build verde.
 
 ## Estado en una línea
 
-Pinada del Mar ya recorre solicitud → gestor → planning → plano sin API ni
-credenciales y con el bundle compuesto verde; le faltan 9 fotografías y sus
-derivados de marca, que **no se pueden bajar desde el contenedor cloud**.
+La primera ola tiene Inicio (L'Olivar) y Gestión (Pinada del Mar) terminadas. El
+siguiente objetivo contractual es **D3-V, Mar de Fondo / Visión**.
 
-## Antes de elegir objetivo: leer esto
+## Objetivo
 
-La cola fotográfica **no es ejecutable en una sesión cloud**. El proxy sale por
-lista blanca (npm, GitHub, Anthropic, MCP) y contesta **403 al CONNECT** a
-cualquier otro host, `example.com` incluido. Generar sí funciona (entra por MCP);
-bajar, no. No volver a diagnosticarlo: está en `docs/BACKLOG.md` y en la cabecera
-de `apps/web/scripts/fetch-fotos.mjs`.
+Construir primero el recorrido convincente **reserva → operación** de Mar de
+Fondo con identidad, catálogo, inventario y fixtures propios (~300 unidades),
+reutilizando el runtime compartido sin copiar fotografía ni contenido de los
+otros tenants. Solo después abrir Automatiza e Inteligente con fixtures
+explicables y los rótulos exactos del contrato visual.
 
-## Objetivo A — si esta sesión corre en la máquina de Andreu
+Orden recomendado:
 
-Cerrar D2-V del todo, en este orden:
-
-1. Generar las **9 piezas pendientes** de `tenants/pinadamar/fotos.json` — el
-   prompt de cada una ya está fijado y validado contra la dirección de arte. En
-   lotes de 2, inspeccionando cada una antes de seguir; no reenviar un lote que
-   falle.
-2. Pegar la URL de cada pieza en su entrada del JSON y correr
-   `node apps/web/scripts/fetch-fotos.mjs pinadamar` (sale 0 cuando las 11 están).
-3. Añadir los derivados de marca que hoy no existen: `favicon.svg`,
-   `apple-touch-icon.png`, `og.jpg`, `miniatura.webp` (mismo juego que L'Olivar).
-   Eso apaga el único error de consola que queda en la demo.
-4. `pnpm --filter @logic-camp/api bundle:demo` y QA a 375/1366: ninguna caja debe
-   seguir enseñando `.lc-materia` en Pinada.
-5. Tres capturas firma con foto: home, solicitud nueva y planning denso.
-6. `pnpm check` y declarar D2-V cerrado en `PROGRESS.md`. Solo entonces, D3-V.
-
-## Objetivo B — si esta sesión corre en cloud (lo normal)
-
-**No** intentar la cola fotográfica. Elegir del BACKLOG con el criterio
-demo-first, y el candidato con más valor visible es **D4-V, el escaparate**:
-hoy las tres demos existen pero **no hay ninguna puerta que lleve a ellas** desde
-la landing. Una galería en `apps/site` con las tres tarjetas (Inicio / Gestión /
-Visión), qué enseña cada una y cuánto dura su recorrido, es visible, vendible y
-no necesita ni credenciales ni fotos nuevas: L'Olivar ya tiene las suyas y Pinada
-degrada con dignidad. Alternativa más pequeña: los remates de `docs/BACKLOG.md`
-marcados `[dashboard]` sobre módulos que la barra lateral ofrece y el rol no
-puede abrir.
+1. `tenants/mardefondo`: config, tema, contenido, catálogo y dataset propios.
+2. Reserva y pago demo con recibo inequívocamente simulado.
+3. Planning/plano a escala y recorrido operativo.
+4. Automatiza e Inteligente como prototipos supervisados, nunca como IA real.
+5. Activos visuales, QA 375/1366, bundle compuesto y capturas firma.
 
 ## Ya terminado — no repetir
 
