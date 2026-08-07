@@ -60,6 +60,7 @@ const Notificaciones = lazyRouteComponent(() => import('./pages/Notificaciones')
 const Pagos = lazyRouteComponent(() => import('./pages/Pagos'));
 const Ajustes = lazyRouteComponent(() => import('./pages/Ajustes'));
 const Automatiza = lazyRouteComponent(() => import('./pages/Automatiza'));
+const Inteligente = lazyRouteComponent(() => import('./pages/Inteligente'));
 
 function RoutePending() {
   return (
@@ -452,6 +453,11 @@ const routes = [
     getParentRoute: () => rootRoute,
     path: '/automatiza',
     component: Automatiza,
+  }),
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/inteligente',
+    component: Inteligente,
   }),
 ] as const;
 

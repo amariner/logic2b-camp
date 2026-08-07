@@ -126,18 +126,21 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 89)**: Mar de Fondo une ya el hilo
+- [D3-V] **Demo Visión — en curso (sesión 90)**: Mar de Fondo une ya el hilo
   disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
   300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
   escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
   marca. Automatiza ya permite revisar, editar, descartar y preparar una
   respuesta a reseña con fuentes y límites visibles; nunca la publica ni envía.
+  Inteligente deriva una recomendación de ocupación del escenario y enseña
+  fuentes, periodo, rango, confianza y límites; solo la descarta o deja el
+  cambio preparado, sin tocar tarifa, cupo ni reserva.
   La fotografía cuenta con pipeline resiliente y aprobación explícita (ADR
   0035): los dos fallos de Codex abren Higgsfield para el manifiesto, se excluyen
   descartes y el cambio de modelo queda trazado. Primera tanda aprobada **2/14**;
   siguiente `parcela-atlantica` + `bungalow-laguna`. Pendiente: resumen de
-  incidencias, Inteligente explicable, 12 fotos restantes, derivados, QA visual
-  y capturas firma. Toda simulación conserva los rótulos exactos de contrato.
+  incidencias, 12 fotos restantes, derivados, QA visual y capturas firma. Toda
+  simulación conserva los rótulos exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
@@ -179,8 +182,9 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   aprobación humana y reset; aprobar solo deja el borrador preparado. Faltan el
   resumen de incidencias y las variantes de plantilla/traducción que aporten al
   guion, sin multiplicar pantallas de relleno.
-- [E6-V] **Inteligente representado**: rentabilidad, previsión, integraciones y
-  copiloto sobre datos demo, con origen/incertidumbre/confirmación visibles.
+- ~~[E6-V] **Inteligente representado**~~ → **hecho 2026-08-07 (sesión 90)**:
+  recomendación de ocupación sobre datos demo con fuentes, periodo, rango,
+  confianza y límites visibles; la confirmación solo prepara, nunca ejecuta.
 
 ## Producción diferida — activar con cliente contratado
 

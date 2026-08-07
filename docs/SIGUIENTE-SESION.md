@@ -1,24 +1,28 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 89 (2026-08-07). **D3-V está en curso**: web,
-> reserva, operación y el primer prototipo Automatiza ya forman un recorrido
-> local completo de Mar de Fondo.
+> Reescrito tras la sesión 90 (2026-08-07). **D3-V está en curso**: web,
+> reserva, operación, Automatiza e Inteligente ya forman un recorrido local
+> completo y honesto de Mar de Fondo.
 
 ## Estado en una línea
 
-La primera ola tiene Inicio y Gestión terminadas; Visión ya demuestra escala y
-revisión humana. El siguiente corte visible es **Inteligente explicable**: una
-recomendación de ocupación con fuentes, incertidumbre y cambio solo preparado.
+La primera ola tiene Inicio y Gestión terminadas; Visión ya demuestra escala,
+revisión humana y recomendación explicable. El siguiente corte visible es el
+**resumen de incidencias**, segundo fixture Automatiza comprometido en el
+contrato visual.
 
 ## Objetivo prioritario
 
-1. Añadir a Mar de Fondo una ruta/pantalla Inteligente visible solo en su build.
-2. Usar un fixture tipado de recomendación de ocupación/rentabilidad derivado
-   del escenario: fuentes identificables, periodo, rango de confianza y límites.
-3. Ofrecer «Descartar / Preparar cambio»; nunca cambiar tarifas, cupo o reservas.
-   Rótulo exacto: **«Prototipo · no ejecuta cambios»**.
-4. Hacer el estado local, reversible y cubierto por el reset común, igual que
-   Automatiza. No crear endpoint, modelo, proveedor, D1 ni integración.
+1. Añadir a Automatiza un resumen operativo de incidencias derivado del
+   escenario Mar de Fondo, visible solo en su build y sin crear una pantalla de
+   relleno si cabe con claridad en la ruta existente.
+2. Usar un fixture tipado con periodo, agrupación, severidad, fuentes y límites;
+   toda incidencia y persona deben ser ficticias y coherentes con el escenario.
+3. Permitir revisar y preparar el resumen para entrega interna, pero nunca
+   enviarlo, publicarlo ni abrir tickets externos. Mantener revisión humana y
+   estados locales reversibles.
+4. Integrarlo con el reset común y fijar con tests la derivación, los estados
+   imposibles, el parseo fail-safe y la ausencia de red/proveedor.
 5. Verificar 375/1366, teclado/foco, persistencia/reset, cero desborde y bundle
    compuesto. Mantener `pnpm check` verde.
 
@@ -28,12 +32,12 @@ recomendación de ocupación con fuentes, incertidumbre y cambio solo preparado.
   tarifas/extras y reserva local `MF-DEMO-001`.
 - Gestor: 240 reservas, planning, ficha, búsquedas, llegada/cobro/devolución,
   plano propio y reset, todo local y sin `/api`.
-- Automatiza: trigger de reseña → borrador editable → fuentes/límites →
-  descartar o aprobar para dejar preparada. Nunca publica ni envía; estado
-  persistente y reseteable; 5 tests de contrato.
-- QA Automatiza 375/1366: cero desborde, objetivos móviles 44 px, foco devuelto,
-  persistencia y reset en vivo. Bundle: 11.307 enlaces / 358 HTML;
-  `pnpm check` 53/53.
+- Automatiza/reseña: borrador editable con fuentes y límites; descartar o
+  aprobar solo lo deja preparado. Nunca publica ni envía.
+- Inteligente: recomendación derivada de ocupación, periodo, fuentes, rango,
+  confianza y límites; descartar o preparar nunca modifica tarifa, cupo o
+  reserva. Seis tests y QA 375/1366.
+- Bundle: 11.307 enlaces / 358 HTML; dashboard 29/29; `pnpm check` 53/53.
 - Pipeline fotográfico resiliente (ADR 0035), ocho pruebas y primera pareja de
   Mar de Fondo aprobada. Codex integrado abrió circuito tras dos fallos y el
   resto del manifiesto usa Higgsfield con trazabilidad y revisión en staging.
@@ -41,8 +45,8 @@ recomendación de ocupación con fuentes, incertidumbre y cambio solo preparado.
 ## Cola visual
 
 El manifiesto conserva 14 piezas en 7 tandas y **2/14 resultados aprobados**:
-`hero-laguna` + `hero-horizonte`. El circuito de Codex está abierto y la siguiente
-pareja (`parcela-atlantica` + `bungalow-laguna`) está lista para
+`hero-laguna` + `hero-horizonte`. El circuito de Codex está abierto y la
+siguiente pareja (`parcela-atlantica` + `bungalow-laguna`) está lista para
 `pnpm fotos -- run mardefondo`. Inspeccionar `.staging` y ejecutar `approve` o
 `reject` antes de cualquier tanda posterior; nunca generar más de dos a ciegas.
 

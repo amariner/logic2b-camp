@@ -12,6 +12,7 @@ import type {
   TenantSettings,
 } from '../api';
 import { resetAutomatizaScenario } from './automatiza';
+import { resetInteligenteScenario } from './inteligente';
 
 export const isMardefondoScenario = import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo';
 export const MARDEFONDO_STATE_KEY = 'logic2b-demo:mardefondo:manager-state:v1';
@@ -275,6 +276,7 @@ export function resetMardefondoScenario(): void {
   localStorage.removeItem(MARDEFONDO_STATE_KEY);
   localStorage.removeItem(MARDEFONDO_PUBLIC_BOOKINGS_KEY);
   resetAutomatizaScenario();
+  resetInteligenteScenario();
 }
 
 export const mardefondoPlano: PlanoDescriptor = {
@@ -360,6 +362,44 @@ export const mardefondoPlano: PlanoDescriptor = {
 
 const overlaps = (booking: DemoBooking, from: string, to: string) =>
   booking.dateFrom < to && booking.dateTo > from && booking.status !== 'cancelled';
+
+/** Señales auditables que alimentan el fixture Inteligente, sin API ni modelo. */
+export function mardefondoRecommendationAudit() {
+  const from = '2026-08-18';
+  const to = '2026-09-01';
+  const state = initialState();
+  const relevant = state.bookings.filter(
+    (booking) => booking.unitTypeId === 'ut_bungalow_laguna' && overlaps(booking, from, to),
+  );
+  const sellableUnits = units.filter(
+    (unit) => unit.unitTypeId === 'ut_bungalow_laguna' && unit.status === 'active',
+  ).length;
+  const periodNights = Math.round(
+    (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / DAY_MS,
+  );
+  const occupiedNights = relevant.reduce((sum, booking) => {
+    const overlapFrom = Math.max(
+      Date.parse(`${booking.dateFrom}T00:00:00Z`),
+      Date.parse(`${from}T00:00:00Z`),
+    );
+    const overlapTo = Math.min(
+      Date.parse(`${booking.dateTo}T00:00:00Z`),
+      Date.parse(`${to}T00:00:00Z`),
+    );
+    return sum + Math.max(0, Math.round((overlapTo - overlapFrom) / DAY_MS));
+  }, 0);
+  const capacityNights = sellableUnits * periodNights;
+  const directWebBookings = relevant.filter((booking) => booking.channel === 'web').length;
+  return {
+    sellableUnits,
+    occupiedNights,
+    capacityNights,
+    occupancyPct: Math.round((occupiedNights / capacityNights) * 100),
+    overlappingBookings: relevant.length,
+    directWebBookings,
+    directWebSharePct: Math.round((directWebBookings / relevant.length) * 100),
+  };
+}
 
 function bookingDetail(booking: DemoBooking): BookingDetail {
   const nights = Math.max(

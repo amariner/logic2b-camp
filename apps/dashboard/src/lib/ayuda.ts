@@ -35,6 +35,7 @@ const MAPA: Record<string, string | null> = {
   '/ajustes': 'gestion/ajustes',
   // Prototipo de portfolio: todavía no forma parte de la guía operativa.
   '/automatiza': null,
+  '/inteligente': null,
 };
 
 /**

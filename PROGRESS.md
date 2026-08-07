@@ -19,6 +19,21 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 90 (2026-08-07): Inteligente explica antes de recomendar.**
+  Mar de Fondo gana `/inteligente`, una pantalla exclusiva de su build que
+  deriva del escenario una recomendación de ocupación para Bungalow Laguna:
+  **152/826 noches, 18% de ocupación, 32 reservas y 25 web directas**. Expone
+  periodo, tres fuentes, confianza media (64/100), limitaciones y un rango
+  explícito de resultado (**22–28%**, impacto bruto estimado entre **−900 € y
+  +1.600 €**). «Descartar recomendación» y «Preparar cambio» solo mutan estado
+  local reversible; no existe transición de aplicar/ejecutar, llamada `/api` ni
+  cambio de tarifa, cupo o reserva. El reset común la devuelve en vivo a
+  revisión y el rótulo exacto advierte «Prototipo · no ejecuta cambios». Seis
+  tests nuevos fijan derivación, céntimos/puntos básicos enteros, no ejecución,
+  persistencia, reversibilidad y reset; dashboard **29/29**. QA real a 375/1366:
+  cero desborde, controles de 44 px, teclado, persistencia, reset y cero red.
+  Bundle compuesto **11.307 enlaces / 358 HTML**; `pnpm check` **53/53**. Sin
+  deploy.
 - **Sesión autónoma 89 (2026-08-07): la fotografía deja de depender de reintentos
   manuales.** Los dos fallos previos del backend integrado de Codex abren un
   circuit breaker explícito para el manifiesto de Mar de Fondo. El nuevo

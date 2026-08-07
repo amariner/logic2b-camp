@@ -21,12 +21,15 @@ describe('navGroupsForRole', () => {
     expect(routesFor('reception')).toEqual(allExceptParte);
   });
 
-  it('ofrece Automatiza únicamente en el build Mar de Fondo', () => {
+  it('ofrece la asistencia supervisada únicamente en el build Mar de Fondo', () => {
     const routes = (scenario?: string) =>
       navGroupsForRole('demo', scenario).flatMap((group) => group.items.map(([route]) => route));
 
     expect(routes()).not.toContain('/automatiza');
+    expect(routes()).not.toContain('/inteligente');
     expect(routes('pinadamar')).not.toContain('/automatiza');
+    expect(routes('pinadamar')).not.toContain('/inteligente');
     expect(routes('mardefondo')).toContain('/automatiza');
+    expect(routes('mardefondo')).toContain('/inteligente');
   });
 });

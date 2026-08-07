@@ -14,6 +14,7 @@
 import {
   BarChart3,
   Bell,
+  BrainCircuit,
   BookMarked,
   CalendarRange,
   ClipboardList,
@@ -60,7 +61,10 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: 'nav.grupo.asistencia',
-    items: [['/automatiza', 'nav.automatiza', Sparkles, 'mod.automatiza', undefined, 'mardefondo']],
+    items: [
+      ['/automatiza', 'nav.automatiza', Sparkles, 'mod.automatiza', undefined, 'mardefondo'],
+      ['/inteligente', 'nav.inteligente', BrainCircuit, 'mod.inteligente', undefined, 'mardefondo'],
+    ],
   },
   {
     label: 'nav.grupo.config',
