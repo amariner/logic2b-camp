@@ -18,6 +18,7 @@
     "db:seed": "pnpm --filter @tenant/demo seed:sql && wrangler d1 execute logic-camp-demo --local --persist-to .wrangler-demo --config tenants/demo/wrangler.jsonc --file tenants/demo/seed.sql -y",
     "db:seed:remote": "pnpm --filter @tenant/demo seed:remote",
     "e2e": "pnpm --filter @logic-camp/web e2e",
+    "fotos": "node apps/web/scripts/foto-pipeline.mjs",
     "new:camping": "pnpm --filter @logic-camp/cli run new:camping --",
     "export:tenant": "pnpm --filter @logic-camp/cli run export:tenant"
   },

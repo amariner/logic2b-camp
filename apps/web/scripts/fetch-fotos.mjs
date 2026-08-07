@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Baja y optimiza la sesión de fotos de UN camping.
+ * Descargador legado de manifiestos que ya contienen URL. Para nuevas sesiones
+ * se usa `foto-pipeline.mjs`, que añade reanudación, fallback y revisión previa.
  *
  *   node apps/web/scripts/fetch-fotos.mjs pinadamar
  *
@@ -10,15 +11,8 @@
  * nombres que la web ya espera. No hay nada que tocar en código después: si el
  * fichero existe, la foto se usa; si no, la caja la ocupa `<Materia>`.
  *
- * POR QUÉ ES UN SCRIPT Y NO SE HACE EN LA SESIÓN. El contenedor cloud sale a
- * internet por un proxy con **lista blanca**: npm, GitHub, Anthropic y los
- * servidores MCP pasan; todo lo demás recibe **403 en el CONNECT**. No es la CDN
- * del generador en concreto —`example.com` también da 403—, y no es un fallo de
- * certificado ni de créditos. Por eso el mismo muro reaparece cada pocas
- * sesiones (8, 40, C5, 83): no se arregla reintentando, se arregla en la lista
- * blanca del entorno o corriendo esto fuera. Generar SÍ funciona (la API del
- * generador entra por MCP, no por el proxy), así que el reparto es: la sesión
- * cloud fija prompts y anota URLs aquí; una máquina con salida las aterriza.
+ * Se conserva para tenants históricos. No implementa la política resiliente ni
+ * debe usarse para iniciar nuevas generaciones.
  *
  * Perfil de salida: mismo que el resto de tenants — WebP, lado mayor ~2000px,
  * calidad 78. Los másteres no se commitean (`.gitignore`: `*-source.*`).

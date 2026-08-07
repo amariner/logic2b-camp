@@ -117,16 +117,21 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ### Política de generación de imágenes en Codex
 
-- Cuando una sesión se ejecute en **Codex**, los activos raster nuevos se generan
-  con el **modelo de imagen integrado de mayor calidad disponible en Codex**. No
-  se cambia a otro proveedor por inercia ni se reutiliza fotografía de otro
-  tenant.
+- Cuando una sesión se ejecute en **Codex**, los activos raster nuevos se intentan
+  primero con el **modelo de imagen integrado de mayor calidad disponible en
+  Codex**. Tras dos fallos técnicos registrados antes de obtener bytes, el
+  circuito del manifiesto queda abierto y el orquestador puede usar el fallback
+  explícito de Higgsfield en los lotes restantes. El cambio nunca es silencioso:
+  proveedor, modelo, intento y huella del prompt quedan en
+  `tenants/{slug}/fotos.estado.json`. No se reutiliza fotografía de otro tenant.
 - La generación se ejecuta en **tandas máximas de 2 imágenes**. Cada pareja se
   inspecciona como conjunto antes de lanzar la siguiente para proteger la
   coherencia visual, evitar saturar el servidor y no consumir créditos a ciegas.
 - Todo encargo fija antes el papel, proporción, prompt y nombre final en
-  `tenants/{slug}/fotos.json`. Los másteres se revisan antes de optimizarlos; el
-  producto solo referencia derivados locales WebP/AVIF, nunca URLs temporales.
+  `tenants/{slug}/fotos.json`. `pnpm fotos -- run {slug}` genera o reanuda solo
+  el lote activo y lo deja en `.staging`; `approve` es la única operación que lo
+  mueve al contenido consumido por la web. El producto solo referencia derivados
+  locales WebP/AVIF aprobados, nunca URLs temporales.
 - Se mantienen las reglas del contrato visual: una geografía y luz coherentes,
   sin rostros reconocibles, texto generado, marcas, matrículas legibles, HDR ni
   arquitectura imposible. Las imágenes de una demo se declaran ficción

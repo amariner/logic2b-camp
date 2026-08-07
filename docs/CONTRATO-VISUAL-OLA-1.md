@@ -95,13 +95,17 @@ Fotografía editorial documental, creíble como un mismo establecimiento:
 Las imágenes generadas o de muestra son material de una ficción comercial, no
 prueba de que exista el establecimiento. La ficha de la demo lo declara.
 
-**Flujo Codex (decisión de Andreu, 2026-08-07):** cuando el trabajo se realice
-en Codex, se usa el modelo de imagen integrado de mayor calidad disponible y se
-generan como máximo **2 piezas por tanda**. Cada pareja se inspecciona antes de
-continuar; una pieza fallida se corrige dentro de su tanda y no se lanza el resto
-del manifiesto a ciegas. Prompt, proporción, papel y nombre final viven en
+**Flujo Codex (decisión de Andreu, 2026-08-07):** el modelo integrado de mayor
+calidad disponible es el proveedor principal. Si el manifiesto acumula dos
+fallos técnicos registrados antes de producir bytes, `foto-pipeline.mjs` abre su
+circuito y usa el fallback controlado de Higgsfield en los lotes restantes; no
+hay cambio silencioso ni reintentos de generación a ciegas. Se generan como
+máximo **2 piezas por tanda** y se registra proveedor, modelo, trabajo y huella
+del prompt en `fotos.estado.json`. Cada pareja queda en `.staging` y solo
+`approve`, después de inspeccionarla, la incorpora al contenido. Prompt,
+proporción, papel y nombre final viven en
 `tenants/{slug}/fotos.json`; al repositorio entran únicamente activos finales
-locales y optimizados.
+locales, aprobados y optimizados. Véase ADR 0035.
 
 ## 3. Ancla Inicio — Camping L'Olivar
 

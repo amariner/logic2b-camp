@@ -14,6 +14,8 @@ coverage/
 # Másteres fotográficos de producción: se conservan localmente; Git publica
 # solo los derivados WebP/AVIF/JPG que consume el tenant.
 tenants/*/content/media/*-source.*
+tenants/*/content/media/.staging/
+tenants/*/content/media/.rejected/
 
 # Playwright (E2E)
 test-results/

@@ -1,6 +1,6 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 88 (2026-08-07). **D3-V está en curso**: web,
+> Reescrito tras la sesión 89 (2026-08-07). **D3-V está en curso**: web,
 > reserva, operación y el primer prototipo Automatiza ya forman un recorrido
 > local completo de Mar de Fondo.
 
@@ -34,15 +34,17 @@ recomendación de ocupación con fuentes, incertidumbre y cambio solo preparado.
 - QA Automatiza 375/1366: cero desborde, objetivos móviles 44 px, foco devuelto,
   persistencia y reset en vivo. Bundle: 11.307 enlaces / 358 HTML;
   `pnpm check` 53/53.
+- Pipeline fotográfico resiliente (ADR 0035), ocho pruebas y primera pareja de
+  Mar de Fondo aprobada. Codex integrado abrió circuito tras dos fallos y el
+  resto del manifiesto usa Higgsfield con trazabilidad y revisión en staging.
 
 ## Cola visual
 
-El manifiesto conserva 14 piezas en 7 tandas y **0/14 resultados**. En las
-sesiones 86 y 88 el backend integrado de `imagegen` falló antes de producir
-bytes al empezar `hero-laguna`; no se usó CLI/API ni otro proveedor. No repetir
-el mismo intento en cada sesión: reanudar la pareja `hero-laguna` +
-`hero-horizonte` cuando el backend integrado vuelva a estar disponible o exista
-una instrucción explícita nueva, siempre máximo 2 e inspección antes del lote 2.
+El manifiesto conserva 14 piezas en 7 tandas y **2/14 resultados aprobados**:
+`hero-laguna` + `hero-horizonte`. El circuito de Codex está abierto y la siguiente
+pareja (`parcela-atlantica` + `bungalow-laguna`) está lista para
+`pnpm fotos -- run mardefondo`. Inspeccionar `.staging` y ejecutar `approve` o
+`reject` antes de cualquier tanda posterior; nunca generar más de dos a ciegas.
 
 ## Regla de alcance
 

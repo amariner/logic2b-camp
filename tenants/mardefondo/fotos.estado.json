@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-laguna": [
+      {
+        "at": "2026-08-07T08:00:00.000Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_86"
+      },
+      {
+        "at": "2026-08-07T10:00:00.000Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_88"
+      },
+      {
+        "at": "2026-08-07T10:44:20.157Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "a0c74786-3d21-492f-ad80-8d4c6e3f3500",
+        "reusedJob": false,
+        "promptSha256": "1288c34b8536ef71009fc3e489cb9802bb126ad680154f4420d70f9344154fa0",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-horizonte": [
+      {
+        "at": "2026-08-07T10:44:45.575Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "11d2ff41-ecf2-4205-a6ad-692b2c73d64b",
+        "reusedJob": false,
+        "promptSha256": "1777abcfec77ec818367d7e205e19ab7e9a524c87aa977b06fd5c286122ddb7e",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-07T10:46:46.604Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "c67c7b01-93aa-4092-8ae6-be9c6a8ba9b7",
+        "reusedJob": false,
+        "promptSha256": "1777abcfec77ec818367d7e205e19ab7e9a524c87aa977b06fd5c286122ddb7e",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-07T10:51:47.481Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "ff0a0d48-e820-4d5c-be8e-495d8dc4488e",
+        "reusedJob": false,
+        "promptSha256": "1777abcfec77ec818367d7e205e19ab7e9a524c87aa977b06fd5c286122ddb7e",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-laguna": {
+      "at": "2026-08-07T10:45:46.284Z",
+      "gate": "visual-inspection"
+    },
+    "hero-horizonte": {
+      "at": "2026-08-07T10:52:18.911Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "hero-horizonte": [
+      {
+        "at": "2026-08-07T10:45:46.506Z",
+        "reason": "personas_y_elementos_tecnicos_en_primer_plano",
+        "jobId": "11d2ff41-ecf2-4205-a6ad-692b2c73d64b"
+      },
+      {
+        "at": "2026-08-07T10:48:03.301Z",
+        "reason": "sin_eje_peatonal_y_monticulo_inverosimil_en_primer_plano",
+        "jobId": "c67c7b01-93aa-4092-8ae6-be9c6a8ba9b7"
+      }
+    ]
+  }
+}

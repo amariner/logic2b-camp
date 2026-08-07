@@ -1,25 +1,38 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D3-V · 2026-08-07 (sesión 86)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 89)
 
-- La política queda fijada: en Codex se usa el modelo de imagen integrado de
-  mayor calidad disponible y se generan **como máximo 2 piezas por tanda**,
-  inspeccionando cada pareja antes de continuar. Vive en `CLAUDE.md`, contrato
-  visual, ADR 0034 y cada manifiesto de tenant.
+- La política resiliente queda fijada en ADR 0035: Codex integrado es principal;
+  dos fallos técnicos sin bytes abren el circuito del manifiesto y habilitan
+  Higgsfield. Dos rechazos visuales de una pieza cambian de `soul_location` a
+  GPT Image 2 dentro de Higgsfield. Todo queda trazado en `fotos.estado.json`.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
-  `tenants/mardefondo/fotos.json`. La primera tanda (`hero-laguna`,
-  `hero-horizonte`) se lanzó con `imagegen` en las sesiones 86 y 88; ambos
-  intentos fallaron antes de producir bytes por error de red del backend
-  integrado de Codex. Estado real: **0/14**; no se cambió de proveedor ni se
-  usó fallback CLI/API. No se reintentará en bucle hasta que cambie el backend.
-- La fotografía no bloquea el recorrido: `<Materia>` mantiene la web completa y
-  construible, pero no sustituye el lote final. El siguiente intento empieza por
-  la misma primera tanda, nunca por 14 llamadas a ciegas.
+  `tenants/mardefondo/fotos.json`. La primera tanda queda aprobada: `hero-laguna`
+  con Higgsfield `soul_location` y `hero-horizonte` con GPT Image 2 servido por
+  la misma cuenta de Higgsfield después de descartar dos variantes. Estado real:
+  **2/14**. La siguiente es `parcela-atlantica` + `bungalow-laguna`.
+- `pnpm fotos -- run mardefondo` procesa solo el lote activo, reutiliza trabajos
+  idénticos no rechazados y escribe en `.staging`; `approve` es la única puerta
+  hacia la web. Los descartes se conservan localmente y no entran en Git.
 
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 89 (2026-08-07): la fotografía deja de depender de reintentos
+  manuales.** Los dos fallos previos del backend integrado de Codex abren un
+  circuit breaker explícito para el manifiesto de Mar de Fondo. El nuevo
+  `foto-pipeline.mjs` limita la cola a una pareja, consulta la cuenta, reanuda o
+  reutiliza trabajos idénticos, descarga con reintento acotado, valida proporción
+  y tamaño, optimiza a WebP y registra proveedor/modelo/trabajo/SHA del prompt
+  sin guardar secretos ni URLs temporales. Ningún resultado entra en la web:
+  `.staging` exige `approve`; `reject` conserva el descarte y excluye su trabajo
+  de futuras reutilizaciones. Dos rechazos de `hero-horizonte` con
+  `soul_location` activaron GPT Image 2 dentro de Higgsfield; la tercera variante
+  pasó revisión junto a `hero-laguna`. Estado **2/14**, primera pareja aprobada,
+  siguiente pareja preparada pero no lanzada. Ocho pruebas cubren lote,
+  circuito, modelos, descarte, argumentos, validación y redacción. `pnpm check`
+  **53/53** y portfolio 3/3. ADR 0035 aceptado; sin deploy.
 - **Sesión autónoma 88 (2026-08-07): Automatiza ya enseña supervisión, no
   magia.** El reintento obligatorio de `hero-laguna` volvió a fallar antes de
   producir bytes; la skill integrada impide degradar silenciosamente a CLI/API,

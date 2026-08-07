@@ -9,7 +9,7 @@
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
     "build": "astro build",
     "e2e": "playwright test",
-    "test": "node scripts/check-portfolio.mjs"
+    "test": "node --test scripts/foto-pipeline.test.mjs && node scripts/check-portfolio.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
