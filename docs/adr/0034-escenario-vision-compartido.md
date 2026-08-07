@@ -2,7 +2,7 @@
 
 - **Fecha**: 2026-08-07
 - **Fase**: Frente D · D3-V
-- **Estado**: **propuesto e implementado en su base reversible**
+- **Estado**: **aceptado e implementado hasta operación reversible**
 
 ## Contexto
 
@@ -64,3 +64,12 @@ inspeccionarlas sin saturar el servicio ni quemar créditos a ciegas.
 
 Validar a posteriori que el orden reserva → operación → Automatiza → Inteligente
 y la regla de lotes de dos representan el nivel de ambición comercial deseado.
+
+## Evidencia de implementación
+
+La sesión 87 generaliza el selector y materializa la segunda variante del mismo
+dashboard: 300 unidades, 240 reservas sin solapes, plano propio, ficha, llegada,
+cobro y reset local. El bundle compuesto publica web y gestor bajo el mismo
+origen y la QA cruza `MF-DEMO-001` entre ambos sin ninguna petición `/api`.
+Automatiza, Inteligente y el lote fotográfico siguen siendo cortes posteriores
+de D3-V; no alteran esta decisión arquitectónica.

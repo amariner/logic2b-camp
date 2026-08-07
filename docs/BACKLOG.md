@@ -126,13 +126,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 86)**: base de Mar de Fondo terminada
-  con 300 unidades y recorrido disponibilidad → extras → titular → reserva →
-  recibo inequívocamente simulado, sin red. Pendiente: escenario de gestor con
-  planning/plano a escala, llegada/cobro; Automatiza/Inteligente explicables;
-  14 fotos en tandas de 2 (primera tanda bloqueada por red de `imagegen`),
-  derivados, QA visual y capturas firma. Toda simulación conserva los rótulos
-  exactos de contrato.
+- [D3-V] **Demo Visión — en curso (sesión 87)**: Mar de Fondo une ya el hilo
+  disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
+  300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
+  escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
+  marca. Pendiente: Automatiza/Inteligente explicables; 14 fotos en tandas de 2
+  (primera tanda bloqueada por red de `imagegen`), derivados, QA visual y
+  capturas firma. Toda simulación conserva los rótulos exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida

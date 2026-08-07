@@ -28,6 +28,8 @@ const es = {
   'demo.cambioLocal': 'Cambio guardado solo en esta demostración.',
   'demo.pinadaBanner':
     'Pinada del Mar es una demostración ficticia: todos los datos personales son inventados, no se envían mensajes y puedes restablecer el escenario.',
+  'demo.mardefondoBanner':
+    'Mar de Fondo es una demostración ficticia de 300 unidades: la reserva, el cobro y la operación son locales, no contactan con proveedores y puedes restablecerlo todo.',
   'demo.verWeb': 'Ver la web del camping',
   'demo.restablecer': 'Restablecer datos',
   'demo.restableciendo': 'Restableciendo…',

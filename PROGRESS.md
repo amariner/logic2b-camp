@@ -19,6 +19,24 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 87 (2026-08-07): Mar de Fondo ya une reserva y operación
+  en el mismo escenario reversible.** El selector del dashboard deja de conocer
+  solo Pinada y centraliza identidad, vuelta a la web, banner, transporte y
+  reset por `VITE_DEMO_SCENARIO`. El nuevo escenario Mar de Fondo contiene
+  **300 unidades exactas**, 240 reservas de agosto sin solapes, una unidad
+  inactiva y `MF-DEMO-001` en `BL-008`; si la reserva se acaba de crear en la
+  web, el gestor importa sus fechas e importe desde el mismo `localStorage`.
+  Planning, ficha, búsquedas, llegada, check-in/check-out, cobro, devolución y
+  log de pagos son mutaciones locales persistentes, sin API, D1 ni proveedor.
+  El plano propio materializa las 300 celdas alrededor de laguna, playa,
+  recepción y servicios; su build vive en `/demos/mardefondo/gestion/`. El
+  banner público enlaza directamente al gestor y el reset borra ambos lados.
+  Cinco pruebas fijan escala, firma, mapa, cobro y ausencia de solapes. QA del
+  bundle a 1366/375: traspaso con importe propio, ficha, check-in, planning,
+  **308 textos SVG**, cero errores y cero desborde. Bundle **11.307 enlaces /
+  358 HTML**; `pnpm check` **53/53**, dashboard **17/17**. D3-V sigue abierto
+  únicamente por fotografía, derivados/capturas y los prototipos explicables
+  Automatiza/Inteligente. Sin deploy remoto.
 - **Sesión autónoma 86 (2026-08-07): D3-V abre con una web Visión ya recorrible
   hasta el recibo.** Se crea `tenants/mardefondo`: identidad atlántica propia,
   contenido completo, cuatro familias y **300 unidades exactas** (150 parcelas,

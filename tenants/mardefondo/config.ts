@@ -15,6 +15,7 @@ export const config: TenantWebConfig = {
   },
   staticHeroImage: 'hero-laguna',
   bookingTransport: 'demo-session',
+  demoManagerPath: '/demos/mardefondo/gestion/',
   isDemo: true,
   legal: {
     razonSocial: 'Camping Resort Mar de Fondo — demostración ficticia de Logic2B',

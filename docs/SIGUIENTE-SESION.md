@@ -1,55 +1,52 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 86 (2026-08-07). **D3-V está en curso**: Mar de
-> Fondo ya llega desde disponibilidad hasta recibo DEMO, pero todavía no conecta
-> esa reserva con la operación del gestor.
+> Reescrito tras la sesión 87 (2026-08-07). **D3-V está en curso**: web,
+> reserva y operación de Mar de Fondo ya forman un recorrido local completo.
 
 ## Estado en una línea
 
-La primera ola tiene Inicio y Gestión terminadas; Visión ya tiene web, catálogo
-de 300 unidades y reserva local reversible. El siguiente corte es **operación a
-escala: planning + plano + ficha + llegada/cobro**.
+La primera ola tiene Inicio y Gestión terminadas; Visión ya demuestra reserva,
+300 unidades, planning, plano, ficha, llegada y cobro. El siguiente corte es
+**materia visual propia y, si el generador sigue bloqueado, Automatiza
+supervisado**.
 
 ## Objetivo prioritario
 
-Crear el escenario `mardefondo` del mismo dashboard Logic2B, sin copiar un
-segundo producto ni tocar una D1:
-
-1. generalizar el selector de escenarios que hoy está acoplado a Pinada;
-2. dataset determinista de ~300 unidades y agosto denso, con al menos una unidad
-   inactiva y una reserva firma coherente con `MF-DEMO-001`;
-3. plano propio: laguna central, cuatro zonas, recepción/acceso y playa;
-4. recorrido recibo → gestor → planning → ficha → plano → llegada/cobro, con
-   reset visible y cero peticiones de red;
-5. estados carga/error/vacío/solape, QA 375/1366 y bundle compuesto.
-
-Solo después abrir los prototipos Automatiza e Inteligente.
+1. Reintentar con `imagegen` únicamente la pareja `hero-laguna` +
+   `hero-horizonte`, usando el mejor modelo integrado de Codex.
+2. Inspeccionar las dos piezas antes de lanzar nada más; si se aprueban,
+   continuar siempre en tandas máximas de 2 siguiendo `fotos.json`.
+3. Incorporar solo resultados aprobados al tenant, generar derivados de marca y
+   comprobar que ningún activo procede de Cala, L'Olivar o Pinada.
+4. Si `imagegen` vuelve a fallar antes de producir bytes, registrar el bloqueo
+   una sola vez y avanzar con el primer prototipo **Automatiza · supervisado**:
+   recomendación explicable, revisión humana y ninguna ejecución automática.
+5. Mantener QA 375/1366, bundle compuesto y cero `/api` en Mar de Fondo.
 
 ## Ya terminado — no repetir
 
-- `tenants/mardefondo`: config, tema, contenido, favicon, catálogo, 300 unidades,
-  tarifas/extras y build `tier: 3` en `/demos/mardefondo/`.
-- `bookingTransport: 'demo-session'`: disponibilidad, quote, hold, reserva,
-  recibo, cambio y cancelación locales, derivados del catálogo y sin D1/API.
-- Recorrido real a 375 px: 18–24 agosto → Bungalow Laguna → titular ficticio →
-  `MF-DEMO-001`; sin desborde y con rótulo de pago simulado.
-- `/temas` enlaza L'Olivar, Pinada y Mar de Fondo con estados honestos.
-- Bundle compuesto: 11.283 enlaces / 357 HTML; portfolio 3/3.
-- Política visual: mejor modelo integrado de Codex y tandas máximas de 2.
-  Manifiesto Mar de Fondo: 14 piezas en 7 tandas.
+- `tenants/mardefondo`: identidad, contenido, cuatro familias, 300 unidades,
+  tarifas/extras y reserva local `MF-DEMO-001`.
+- Gestor bajo `/demos/mardefondo/gestion/`: selector común, 240 reservas sin
+  solapes, una unidad inactiva, planning, ficha, búsquedas, llegada/cobro,
+  devolución, log de pagos, plano propio y reset.
+- Handoff web→gestor por estado local compartido; no hay D1, API, proveedor,
+  credenciales ni mensajes.
+- QA real 375/1366: 308 textos SVG, cero desborde y cero errores. Bundle:
+  11.307 enlaces / 358 HTML; `pnpm check` 53/53.
+- Política visual: mejor modelo integrado de Codex, máximo dos imágenes por
+  tanda e inspección de cada pareja.
 
 ## Cola visual
 
-La primera tanda (`hero-laguna`, `hero-horizonte`) falló antes de generar por un
-error de red del backend integrado de Codex. Estado: **0/14**. Reintentar esa
-misma pareja cuando `imagegen` esté disponible, inspeccionarla y no lanzar la
-siguiente hasta aprobar ambas. No usar CLI/API ni otro proveedor sin nueva
-decisión explícita.
+El manifiesto contiene 14 piezas en 7 tandas. La primera pareja
+(`hero-laguna`, `hero-horizonte`) falló antes de generar por error de red del
+backend integrado. Estado real: **0/14**. No usar CLI/API ni otro proveedor sin
+nueva decisión explícita.
 
 ## Regla de alcance
 
 - No crear D1, Worker, usuarios, email, pagos ni infraestructura por marca.
-- No reutilizar fotos, contenido ni plano de Cala Sereno, L'Olivar o Pinada.
 - Pago: «Pago simulado · no se ha realizado ningún cargo».
 - Automatiza: «Prototipo supervisado».
 - Inteligente: «Prototipo · no ejecuta cambios».

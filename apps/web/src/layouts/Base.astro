@@ -366,7 +366,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
              camping a propósito: es atrezzo comercial, y un camping real
              (sin `isDemo`) no genera ni el nodo. */}
           {c.demo.mostrador && (
-            <a href="/admin/" class="font-semibold underline underline-offset-2 hover:no-underline">
+            <a href={config.demoManagerPath ?? '/admin/'} class="font-semibold underline underline-offset-2 hover:no-underline">
               {c.demo.mostrador} →
             </a>
           )}

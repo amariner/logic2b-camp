@@ -16,6 +16,7 @@
   },
   "demo": {
     "banner": "Demostración ficticia de Logic2B: datos, reserva y pago son simulados y se restablecen.",
+    "mostrador": "Abrir la reserva en el gestor",
     "nivel": "Visión",
     "nivel1": "Inicio",
     "nivel3": "Visión"

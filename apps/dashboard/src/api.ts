@@ -1,5 +1,5 @@
 /** Cliente fino de /api/admin: misma-origen, cookie de sesión, errores tipados. */
-import { demoScenarioRequest, isPinadaScenario } from './demo/pinadamar';
+import { isPortfolioScenario, portfolioScenarioRequest } from './demo/scenario';
 
 export class ApiError extends Error {
   constructor(
@@ -11,8 +11,8 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  if (isPinadaScenario) {
-    const result = await demoScenarioRequest(path, init);
+  if (isPortfolioScenario) {
+    const result = await portfolioScenarioRequest(path, init);
     if (result.status >= 400) throw new ApiError(result.status, result.body);
     return result.body as T;
   }
