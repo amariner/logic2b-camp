@@ -244,6 +244,70 @@
         "status": "failed",
         "error": "network_before_bytes",
         "detail": "sesion_96_intento_2_espaciado_por_instruccion_usuario"
+      },
+      {
+        "at": "2026-08-07T20:50:51.483Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "765f234798efabebcdb627e6e19fff3eb92db6e6b1a5ddb010d6f3bb7b833eef",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "instalacion-laguna": [
+      {
+        "at": "2026-08-07T20:52:09.558Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "224788683bb4c7c0c7d422a8f5532b0f35a2ea5610ab4e77ecf3621a85164514",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "instalacion-restaurante": [
+      {
+        "at": "2026-08-07T20:53:41.390Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "ad7df4e5abbaf1ca318033d82b1691ebd983c3e811e7a31f971ec10259e25d7e",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-07T20:55:05.113Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "4adf551bf964e4c3b99ad60973ece2efe71042c2756540df21e5868184dc811c",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-07T20:57:12.159Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "971e109c82a585cf376084286da7588a0a8e6a5cd42fe9df99a5d040de473c62",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
+      }
+    ],
+    "textura-agua": [
+      {
+        "at": "2026-08-07T20:58:44.893Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "d168be06ebaa4b5994d6362b46c4f9ffbc40791afeb877b3bd397717c77024c3",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
       }
     ]
   },
@@ -278,6 +342,30 @@
     },
     "glamping-duna": {
       "at": "2026-08-07T14:37:47.967Z",
+      "gate": "visual-inspection"
+    },
+    "glamping-duna-interior": {
+      "at": "2026-08-07T20:51:01.014Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-laguna": {
+      "at": "2026-08-07T20:52:20.971Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-restaurante": {
+      "at": "2026-08-07T20:53:50.196Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-07T20:55:13.036Z",
+      "gate": "visual-inspection"
+    },
+    "entorno": {
+      "at": "2026-08-07T20:57:22.759Z",
+      "gate": "visual-inspection"
+    },
+    "textura-agua": {
+      "at": "2026-08-07T20:59:01.527Z",
       "gate": "visual-inspection"
     }
   },

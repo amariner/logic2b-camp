@@ -126,41 +126,16 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 96)**: Mar de Fondo une ya el hilo
-  disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
-  300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
-  escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
-  marca. Automatiza ya permite revisar, editar, descartar y preparar una
-  respuesta a reseña con fuentes y límites visibles; nunca la publica ni envía.
-  La misma ruta agrupa un parte interno de tres incidencias por área y severidad,
-  derivado de planning, cobros e inventario; se revisa y queda preparado, sin
-  entrega ni tickets.
-  Inteligente deriva una recomendación de ocupación del escenario y enseña
-  fuentes, periodo, rango, confianza y límites; solo la descarta o deja el
-  cambio preparado, sin tocar tarifa, cupo ni reserva.
-  La fotografía cuenta con pipeline resiliente y aprobación explícita (ADR
-  0035): los dos fallos de Codex abren Higgsfield para el manifiesto, se excluyen
-  descartes y el cambio de modelo queda trazado. Cuatro tandas aprobadas
-  **8/14**; `parcela-atlantica` pasó a GPT Image 2 tras dos rechazos por texto
-  legible y
-  `bungalow-laguna-interior` hizo lo mismo tras descartar una persona reconocible
-  y un espacio oscuro e impropio de seis plazas. `mobil-horizonte-interior`
-  también cambió tras descartar una distribución vacía y una arquitectura de
-  villa incompatible; `glamping-duna` pasó a la primera. Dos intentos
-  espaciados del generador integrado para `glamping-duna-interior` fallaron por
-  red sin bytes en la sesión 95; la última instrucción de Andreu impide cambiar
-  de proveedor silenciosamente. Mientras tanto, el héroe Visión ya consume
-  `hero-laguna` en vez de degradar a Materia y quedan tres capturas firma reales
-  y ligeras (portada 62 kB, planning 40 kB, Inteligente 69 kB), regenerables con
-  `pnpm --filter @logic-camp/site capturas:mardefondo`. Miniatura 16:10, OG
-  1200×630 y apple-touch icon se derivan de una foto aprobada con `pnpm fotos --
-derive mardefondo` y pesan 62/58/2 kB. Cuatro intentos integrados acumulados
-  sobre el siguiente interior han fallado antes de producir bytes; los dos
-  últimos se espaciaron 15 segundos en la sesión 96 y tampoco provocaron cambio
-  de proveedor. Siguiente pareja:
-  `glamping-duna-interior` + `instalacion-laguna`. Pendiente: 6 fotos restantes
-  y QA visual de esas tandas. Toda simulación conserva los
-  rótulos exactos de contrato.
+- ~~[D3-V] **Demo Visión — Mar de Fondo**~~ → **cerrado 2026-08-07 (sesión
+  98)**: recorrido completo disponibilidad → recibo → gestor → planning/ficha/
+  plano → llegada/cobro, con 300 unidades, 240 reservas, `MF-DEMO-001`, reset y
+  cero red. Automatiza e Inteligente son prototipos supervisados, explicables y
+  no ejecutan acciones externas. El manifiesto fotográfico queda **14/14**:
+  siete tandas aprobadas, staging vacío, historial de proveedores/rechazos y
+  huellas de prompt conservado. Las seis últimas piezas se generaron con el
+  integrado de OpenAI de una en una, con inspección y pausas de 20 segundos,
+  sin fallback ni CLI/API con clave. Capturas firma y derivados sociales siguen
+  siendo reproducibles; build específico **25 páginas / 112 derivados**.
 - [D4-V] **Escaparate de las tres — PARCIAL (sesión 97)**: galería y comparador
   bilingües ya viven en la landing con las tres miniaturas aprobadas, escala,
   recorrido y enlaces al momento firma. Quedan capturas/vídeo, ficha comercial

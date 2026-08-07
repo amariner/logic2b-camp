@@ -1,5 +1,27 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint visual D3-V · 2026-08-07 (sesión 98)
+
+- La generación integrada de OpenAI vuelve a producir bytes. Las seis piezas
+  pendientes de Mar de Fondo se generaron **de una en una**, con inspección,
+  aprobación y pausas de 20 segundos entre llamadas: interior de glamping,
+  piscina laguna, restaurante, recepción, entorno dunar y textura de agua.
+- Las siete tandas del manifiesto quedan completas: **14/14 fotografías
+  aprobadas** y `.staging` vacío. Los seis nuevos másteres locales pesan entre
+  **76 y 157 kB**; las dos cabeceras 21:9 terminan en 2000×857. El integrado
+  entregó ambas a 1915×821 y se normalizaron localmente a 2100×900 antes del
+  ingest para superar el mínimo de 900 px sin pedir otra generación.
+- Cada activo conserva proveedor/modelo y huella del prompt en
+  `fotos.estado.json`. No se ejecutó el fallback de Higgsfield, no se usó
+  CLI/API con clave y no hubo llamadas concurrentes.
+- Build específico de Mar de Fondo verde: **25 páginas / 112 derivados**.
+  Pipeline **9/9** y dashboard **34/34**. La primera pasada global completó
+  46/53 tareas por timeout de resolución en API; la segunda llegó a 51/53, con
+  API **240/240**, y solo registró seis timeouts de 5 s en `seed/reset` del
+  tenant demo bajo concurrencia. Las reejecuciones aisladas pasaron completas:
+  API **240/240** + enlaces demo **3/3** y tenant demo **62/62**, sin fallos de
+  aserción.
+
 ## Checkpoint comercial D4-V · 2026-08-07 (sesión 97)
 
 - La landing ya abre el escaparate de la primera ola: L'Olivar, Pinada del Mar
@@ -48,6 +70,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 98 (2026-08-07): D3-V cierra su fotografía con el
+  generador integrado y sin saturar el servidor.** Se generaron y aprobaron,
+  en orden y una por una, `glamping-duna-interior`, `instalacion-laguna`,
+  `instalacion-restaurante`, `instalacion-recepcion`, `entorno` y
+  `textura-agua`; cada llamada quedó separada por ingest, revisión visual y una
+  pausa explícita antes de la siguiente. El interior comunica cuatro plazas y
+  baño compacto; la piscina, restaurante y recepción comparten arquitectura y
+  operación plausibles; el entorno y la firma material cierran las cabeceras
+  21:9. Estado **14/14**, sin staging, fallback ni proveedor externo. Build
+  Mar de Fondo **25 páginas / 112 derivados**; pipeline **9/9** y dashboard
+  **34/34**. Dos pasadas globales alcanzaron 46/53 y 51/53 tareas por timeouts
+  bajo concurrencia, sin fallos de aserción; las reejecuciones aisladas pasaron
+  API **240/240** + enlaces demo **3/3** y tenant demo **62/62**.
+  D3-V queda cerrado; D4-V continúa por la ficha comercial/campaña. Sin deploy.
 - **Sesión 97 (2026-08-07): el portfolio deja de ser una promesa y se puede
   elegir desde la landing.** ADR 0036 propuesto: D4-V se abre solo por su parte
   independiente de la fotografía pendiente. `PortfolioGallery` presenta las
