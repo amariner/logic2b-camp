@@ -1,11 +1,12 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D3-V · 2026-08-07 (sesión 94)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 95)
 
-- La política resiliente queda fijada en ADR 0035: Codex integrado es principal;
-  dos fallos técnicos sin bytes abren el circuito del manifiesto y habilitan
-  Higgsfield. Dos rechazos visuales de una pieza cambian de `soul_location` a
-  GPT Image 2 dentro de Higgsfield. Todo queda trazado en `fotos.estado.json`.
+- La instrucción más reciente de Andreu pide usar el generador integrado de
+  OpenAI, una imagen cada vez y con pausa para no saturar. Sus dos intentos
+  espaciados sobre `glamping-duna-interior` fallaron por red antes de producir
+  bytes y quedan trazados en `fotos.estado.json`; no se lanzó la piscina ni se
+  cambió silenciosamente a Higgsfield o a una API con clave.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
   `tenants/mardefondo/fotos.json`. Las cuatro primeras tandas quedan aprobadas:
   `hero-laguna`, `hero-horizonte`, `parcela-atlantica`, `bungalow-laguna`,
@@ -13,15 +14,33 @@
   `glamping-duna`. El nuevo interior necesitó dos descartes (distribución vacía;
   arquitectura de villa incompatible con un mobil-home); el cambio automático
   a GPT Image 2 produjo la variante válida. Estado real: **8/14**. La siguiente
-  es `glamping-duna-interior` + `instalacion-laguna`.
-- `pnpm fotos -- run mardefondo` procesa solo el lote activo, reutiliza trabajos
-  idénticos no rechazados y escribe en `.staging`; `approve` es la única puerta
-  hacia la web. Los descartes se conservan localmente y no entran en Git.
+  sigue siendo `glamping-duna-interior` + `instalacion-laguna`.
+- D3-V ya conserva tres capturas firma reproducibles y optimizadas:
+  `portada-reserva-1366` (62 kB), `planning-1366` (40 kB) e
+  `inteligente-1366` (69 kB). Al producirlas se detectó que el héroe Visión
+  ignoraba `hero-laguna`; ahora usa la clave configurada si falta `hero-dia`.
 
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 95 (2026-08-07): Mar de Fondo ya tiene material comercial
+  real y recupera su fotografía de héroe.** Siguiendo la instrucción de Andreu,
+  el modelo integrado de OpenAI se invocó solo para
+  `glamping-duna-interior`, de una en una y con 15 segundos entre intentos. Los
+  dos fallaron por red antes de producir bytes; se registraron y no se lanzó
+  `instalacion-laguna`, Higgsfield ni una API de pago. El relevo dentro de D3-V
+  creó un capturador reproducible contra el bundle compuesto real, a 1366 px,
+  con reduced motion, fuentes cargadas, guardia de imágenes rotas y límite de
+  450 kB. La inspección rechazó un primer encuadre de catálogo 3+1 y eligió tres
+  piezas vendibles: portada con disponibilidad (**62 kB**), planning de **300
+  unidades / 222 reservas a la vista** (**40 kB**) e Inteligente con fuentes,
+  rango y decisión (**69 kB**), todas WebP. La captura descubrió un defecto real:
+  el héroe instantáneo solo buscaba `hero-dia` y enseñaba Materia aunque
+  `hero-laguna` estaba aprobado y configurado; el fallback compatible lo
+  corrige sin cambiar Cala Sereno. QA visual en Chrome real, capturador **3/3**,
+  pipeline **8/8**, portfolio **3/3**, bundle **11.307 enlaces / 358 HTML** y
+  `pnpm check` **53/53**. Fotografía **8/14**; sin deploy.
 - **Sesión autónoma 94 (2026-08-07): Mar de Fondo completa su cuarta pareja
   con un interior que sí cabe en un mobil-home.** `glamping-duna` pasa a la
   primera con `soul_location`: lona arena, plataforma baja, pino mediterráneo y

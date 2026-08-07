@@ -8,7 +8,8 @@
     "typecheck": "astro check",
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
     "build": "astro build",
-    "og": "node scripts/og.mjs"
+    "og": "node scripts/og.mjs",
+    "capturas:mardefondo": "node scripts/capturas-mardefondo.mjs"
   },
   "dependencies": {
     "@logic-camp/ui": "workspace:*",

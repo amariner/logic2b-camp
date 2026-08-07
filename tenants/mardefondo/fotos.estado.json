@@ -215,6 +215,22 @@
         "sourceExtension": ".png",
         "dimensions": "2016x1344"
       }
+    ],
+    "glamping-duna-interior": [
+      {
+        "at": "2026-08-07T15:01:45.000Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_95_intento_1_por_instruccion_usuario"
+      },
+      {
+        "at": "2026-08-07T15:02:12.000Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_95_intento_2_espaciado_por_instruccion_usuario"
+      }
     ]
   },
   "approvals": {

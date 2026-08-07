@@ -126,7 +126,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 94)**: Mar de Fondo une ya el hilo
+- [D3-V] **Demo Visión — en curso (sesión 95)**: Mar de Fondo une ya el hilo
   disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
   300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
   escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
@@ -146,10 +146,16 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   `bungalow-laguna-interior` hizo lo mismo tras descartar una persona reconocible
   y un espacio oscuro e impropio de seis plazas. `mobil-horizonte-interior`
   también cambió tras descartar una distribución vacía y una arquitectura de
-  villa incompatible; `glamping-duna` pasó a la primera. Siguiente
+  villa incompatible; `glamping-duna` pasó a la primera. Dos intentos
+  espaciados del generador integrado para `glamping-duna-interior` fallaron por
+  red sin bytes en la sesión 95; la última instrucción de Andreu impide cambiar
+  de proveedor silenciosamente. Mientras tanto, el héroe Visión ya consume
+  `hero-laguna` en vez de degradar a Materia y quedan tres capturas firma reales
+  y ligeras (portada 62 kB, planning 40 kB, Inteligente 69 kB), regenerables con
+  `pnpm --filter @logic-camp/site capturas:mardefondo`. Siguiente pareja:
   `glamping-duna-interior` + `instalacion-laguna`. Pendiente: 6 fotos restantes,
-  derivados finales, QA visual y capturas firma. Toda
-  simulación conserva los rótulos exactos de contrato.
+  derivados finales y QA visual de esas tandas. Toda simulación conserva los
+  rótulos exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida

@@ -26,7 +26,11 @@ const showTierSwitch = demoTierSwitch;
 async function buildHero(src: ImageMetadata | undefined) {
   return src ? getImage({ src, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 60 }) : null;
 }
-const fotoDia = images['hero-dia'];
+// Los tenants históricos llaman `hero-dia` al héroe del motor. Las demos de la
+// fábrica visual pueden declarar una clave propia en `staticHeroImage`; si no
+// existe `hero-dia`, esa foto también debe vestir el héroe de nivel 3 en vez de
+// degradar a Materia pese a tener un activo aprobado y configurado.
+const fotoDia = images['hero-dia'] ?? images[config.staticHeroImage ?? ''];
 const staticHeroKey = config.staticHeroImage ?? 'hero-anochecer';
 const fotoStatic = images[staticHeroKey];
 const heroDia = instant || showTierSwitch ? await buildHero(fotoDia) : null;

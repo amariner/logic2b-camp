@@ -1,32 +1,37 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 94 (2026-08-07). **D3-V está en curso**: el recorrido
-> funcional de Mar de Fondo ya cubre web, reserva, operación, Automatiza e
-> Inteligente. La fotografía propia avanza por tandas revisadas.
+> Reescrito tras la sesión 95 (2026-08-07). **D3-V está en curso**: el recorrido
+> funcional y sus tres capturas firma están listos; la fotografía permanece en
+> ocho de catorce piezas por dos fallos de red del generador integrado.
 
 ## Estado en una línea
 
-La primera ola tiene Inicio y Gestión terminadas; Visión ya demuestra escala,
-supervisión y recomendación explicable. Hay ocho de catorce piezas aprobadas;
-faltan seis y el QA final que convierta el recorrido en material de venta.
+Mar de Fondo ya vende web, reserva, escala operativa e IA supervisada en
+capturas reales de 40–69 kB; faltan seis fotografías y su QA final.
 
 ## Objetivo prioritario
 
-1. Consultar `pnpm fotos -- status mardefondo` y reanudar **solo** la siguiente
-   pareja activa: `glamping-duna-interior` + `instalacion-laguna`.
-2. Mantener el circuito abierto registrado: Codex integrado ya agotó sus dos
-   intentos técnicos para este manifiesto; el pipeline debe usar el fallback
-   explícito de Higgsfield sin reescribir ni ocultar el historial.
-3. Inspeccionar ambas piezas juntas en `.staging`: misma geografía y luz que las
-   ocho aprobadas, interior glamping práctico para cuatro con baño compacto real
-   y piscina laguna creíble, sin fantasía de lujo, texto, marcas, inflables,
+1. Consultar `pnpm fotos -- status mardefondo`. La pareja activa sigue siendo
+   `glamping-duna-interior` + `instalacion-laguna`.
+2. Respetar la última instrucción de Andreu: usar el generador integrado de
+   OpenAI **de una imagen en una**, con pausa entre llamadas y sin ejecutar
+   `pnpm fotos -- run mardefondo`, porque ese comando seleccionaría el fallback
+   histórico de Higgsfield. No usar CLI/API con clave ni otro proveedor sin una
+   autorización nueva.
+3. Generar primero y solo `glamping-duna-interior`. Debe ser un interior de lona
+   práctico para cuatro, con dos zonas de descanso y baño compacto plausible,
+   misma luz/geografía que `glamping-duna`, sin lujo ficticio, texto, marcas,
    rostros o arquitectura imposible.
-4. Aprobar solo las piezas válidas. Si una falla, rechazarla con motivo concreto
-   y reintentar únicamente esa pieza; nunca avanzar a otra tanda con la pareja
-   pendiente ni generar más de dos a ciegas. Dos rechazos de una misma pieza
-   deben activar GPT Image 2 conforme al estado, no mediante un cambio manual.
-5. Verificar estado, derivados y build de Mar de Fondo; mantener `pnpm check`
-   verde. Actualizar PROGRESS/BACKLOG/SIGUIENTE y el registro del manifiesto.
+4. Copiar el resultado integrado al workspace e incorporarlo mediante
+   `pnpm fotos -- ingest mardefondo glamping-duna-interior RUTA codex-integrated integrated`.
+   Inspeccionar `.staging` y aprobar o rechazar antes de pedir la piscina. Solo
+   si el interior queda aprobado, repetir el ciclo con `instalacion-laguna`.
+5. Si el integrado vuelve a fallar dos veces antes de producir bytes, detener
+   la generación de esa sesión sin saturar ni degradar proveedor. Mantener el
+   historial y avanzar dentro de D3-V con miniatura/OG derivados de activos ya
+   aprobados; nunca saltar a la siguiente tanda con la pareja incompleta.
+6. Verificar estado, peso, derivados y build de Mar de Fondo; regenerar las tres
+   capturas solo si cambia su superficie y mantener `pnpm check` verde.
 
 ## Ya terminado — no repetir
 
@@ -34,24 +39,22 @@ faltan seis y el QA final que convierta el recorrido en material de venta.
   tarifas/extras y reserva local `MF-DEMO-001`.
 - Gestor: 240 reservas, planning, ficha, búsquedas, llegada/cobro/devolución,
   plano propio y reset, todo local y sin `/api`.
-- Automatiza: respuesta a reseña y parte de tres incidencias con fuentes,
-  límites, revisión, descarte y preparación local. Nunca publica, entrega ni
-  abre tickets.
-- Inteligente: recomendación derivada de ocupación con periodo, fuentes, rango,
-  confianza y límites. Nunca modifica tarifa, cupo ni reserva.
-- Pipeline fotográfico resiliente (ADR 0035), ocho pruebas y cuatro parejas de
-  Mar de Fondo aprobadas. QA a 375/1366 confirma los derivados de la cuarta
-  tanda.
+- Automatiza: respuesta a reseña y parte de incidencias supervisados; nunca
+  publica, entrega ni abre tickets.
+- Inteligente: recomendación con periodo, fuentes, rango, confianza y límites;
+  nunca modifica tarifa, cupo ni reserva.
+- El héroe Visión ya usa `hero-laguna` cuando el tenant no tiene `hero-dia`.
+- Capturas firma reproducibles: portada-reserva, planning e Inteligente a 1366
+  px, WebP de 62/40/69 kB, con carga real y guardias visuales.
+- Pipeline fotográfico (ADR 0035), ocho pruebas y cuatro parejas aprobadas.
 
 ## Cola visual
 
 El manifiesto conserva 14 piezas en 7 tandas y **8/14 resultados aprobados**:
 `hero-laguna`, `hero-horizonte`, `parcela-atlantica`, `bungalow-laguna`,
 `bungalow-laguna-interior`, `mobil-horizonte`, `mobil-horizonte-interior` y
-`glamping-duna`. El circuito de Codex está abierto y la siguiente pareja
-(`glamping-duna-interior` + `instalacion-laguna`) está lista para
-`pnpm fotos -- run mardefondo`. Inspeccionar `.staging` y ejecutar `approve` o
-`reject` antes de cualquier tanda posterior.
+`glamping-duna`. Los dos fallos integrados de la sesión 95 están registrados en
+`glamping-duna-interior`; no hay nada pendiente en `.staging`.
 
 ## Regla de alcance
 
