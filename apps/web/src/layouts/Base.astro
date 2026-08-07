@@ -1,5 +1,5 @@
 ---
-import { config, demoTierSwitch, getContent, localePath, media } from '../lib/content';
+import { config, data, demoTierSwitch, getContent, localePath, media } from '../lib/content';
 import { getLegalUi } from '../lib/legal';
 import LogoMark from '../components/LogoMark.astro';
 import '../styles/global.css';
@@ -132,6 +132,185 @@ const tierMenuScript = `
   marcar(document.documentElement.dataset.nivel || '3');
 })();
 `;
+
+// D3-V: el portfolio de nivel 3 debe recorrer reserva y recibo sin hablar con
+// la D1 de Cala Sereno ni con un proveedor. Se instala antes de hidratar las
+// islas y solo intercepta las rutas públicas del funnel. Todo lo demás conserva
+// `window.fetch` nativo. El fixture nace del catálogo tipado del tenant: no hay
+// precios ni tipos duplicados dentro de componentes.
+const demoBookingCatalog = config.bookingTransport === 'demo-session'
+  ? {
+      slug: config.slug,
+      unitTypes: data.unitTypes.map((type) => ({
+        id: type.id,
+        kind: type.kind,
+        capacityMax: type.capacity_max,
+        includedPersons: type.included_persons,
+        unitCount: type.unitCount,
+      })),
+      seasons: data.seasons.map((season) => ({
+        id: season.id,
+        from: season.date_from,
+        to: season.date_to,
+        open: season.is_open,
+      })),
+      ratePlans: data.ratePlans.map((plan) => ({
+        unitTypeId: plan.unit_type_id,
+        seasonId: plan.season_id,
+        baseCents: plan.base_cents,
+        extraPersonCents: plan.extra_person_cents,
+        childCents: plan.child_cents,
+        petCents: plan.pet_cents,
+        vehicleCents: plan.vehicle_cents,
+        minStay: plan.min_stay,
+      })),
+      extras: data.extras.map((extra) => ({
+        id: extra.id,
+        priceCents: extra.price_cents,
+        per: extra.per,
+      })),
+    }
+  : null;
+
+const demoBookingBootScript = demoBookingCatalog ? `
+(function () {
+  var catalog = ${JSON.stringify(demoBookingCatalog)};
+  var nativeFetch = window.fetch.bind(window);
+  var stateKey = 'logic2b-demo:' + catalog.slug + ':public-bookings:v1';
+  var hold = 0;
+  function response(body, status) {
+    return Promise.resolve(new Response(body === null ? null : JSON.stringify(body), {
+      status: status || 200,
+      headers: body === null ? undefined : { 'content-type': 'application/json' }
+    }));
+  }
+  function bodyOf(init) {
+    try { return init && typeof init.body === 'string' ? JSON.parse(init.body) : {}; }
+    catch (e) { return {}; }
+  }
+  function nights(from, to) {
+    return Math.max(1, Math.round((Date.parse(to + 'T00:00:00Z') - Date.parse(from + 'T00:00:00Z')) / 86400000));
+  }
+  function seasonFor(date) {
+    return catalog.seasons.find(function (season) { return season.open && date >= season.from && date < season.to; });
+  }
+  function quote(input) {
+    var type = catalog.unitTypes.find(function (item) { return item.id === input.unitTypeId; });
+    var season = seasonFor(input.dateFrom);
+    var count = nights(input.dateFrom, input.dateTo);
+    var plan = season && catalog.ratePlans.find(function (item) {
+      return item.unitTypeId === input.unitTypeId && item.seasonId === season.id;
+    });
+    if (!type || !plan || count < plan.minStay) return null;
+    var occupancy = input.occupancy || { adults: 2, childrenAges: [], pets: 0, vehicles: 1 };
+    var adults = Number(occupancy.adults || 0);
+    var children = Array.isArray(occupancy.childrenAges) ? occupancy.childrenAges.length : 0;
+    var pets = Number(occupancy.pets || 0);
+    var vehicles = Number(occupancy.vehicles || 1);
+    var extraAdults = Math.max(0, adults - type.includedPersons);
+    var lines = [{ concept: 'price.base', detail: { nights: count }, amountCents: plan.baseCents * count }];
+    if (extraAdults) lines.push({ concept: 'price.extra_person', detail: { people: extraAdults, nights: count }, amountCents: extraAdults * plan.extraPersonCents * count });
+    if (children) lines.push({ concept: 'price.child', detail: { people: children, nights: count }, amountCents: children * plan.childCents * count });
+    if (pets) lines.push({ concept: 'price.pet', detail: { pets: pets, nights: count }, amountCents: pets * plan.petCents * count });
+    if (vehicles > 1) lines.push({ concept: 'price.vehicle', detail: { vehicles: vehicles - 1, nights: count }, amountCents: (vehicles - 1) * plan.vehicleCents * count });
+    (input.extraIds || []).forEach(function (id) {
+      var extra = catalog.extras.find(function (item) { return item.id === id; });
+      if (!extra) return;
+      var multiplier = extra.per === 'night' ? count : extra.per === 'person' ? Math.max(1, adults + children) : 1;
+      lines.push({ concept: 'extra.' + id, detail: { quantity: multiplier }, amountCents: extra.priceCents * multiplier });
+    });
+    var total = lines.reduce(function (sum, line) { return sum + line.amountCents; }, 0);
+    return {
+      nights: count,
+      breakdown: { lines: lines, totalCents: total, touristTaxCents: (adults + children) * count * 70, currency: 'EUR' }
+    };
+  }
+  function readBookings() {
+    try { return JSON.parse(localStorage.getItem(stateKey) || '[]'); }
+    catch (e) { return []; }
+  }
+  function saveBookings(items) { localStorage.setItem(stateKey, JSON.stringify(items)); }
+  window.fetch = function (input, init) {
+    var raw = typeof input === 'string' ? input : input.url;
+    var url = new URL(raw, window.location.origin);
+    var method = (init && init.method) || (typeof input === 'string' ? 'GET' : input.method) || 'GET';
+    if (url.origin !== window.location.origin || !url.pathname.startsWith('/api/')) return nativeFetch(input, init);
+    if (method === 'GET' && url.pathname === '/api/availability') {
+      var from = url.searchParams.get('from');
+      var to = url.searchParams.get('to');
+      var adults = Number(url.searchParams.get('adults') || 2);
+      var children = Number(url.searchParams.get('children') || 0);
+      var season = from && seasonFor(from);
+      var results = catalog.unitTypes.map(function (type, index) {
+        var result = from && to && quote({
+          unitTypeId: type.id, dateFrom: from, dateTo: to,
+          occupancy: { adults: adults, childrenAges: Array(children).fill(8), pets: 0, vehicles: 1 }, extraIds: []
+        });
+        var fits = adults + children <= type.capacityMax;
+        return {
+          unitTypeId: type.id, kind: type.kind,
+          status: !season ? 'closed' : result && fits ? 'available' : 'unavailable',
+          availableUnits: result && fits ? Math.max(2, type.unitCount - 18 - index * 7) : 0,
+          capacityMax: type.capacityMax,
+          totalPriceCents: result && fits ? result.breakdown.totalCents : null,
+          currency: 'EUR'
+        };
+      });
+      var next = catalog.seasons.filter(function (item) { return item.open && from && item.from > from; }).map(function (item) { return item.from; }).sort()[0] || null;
+      return response({ from: from, to: to, opensOn: season ? null : next, results: results });
+    }
+    if (method === 'POST' && url.pathname === '/api/quote') {
+      var quoteBody = bodyOf(init);
+      var quoted = quote(quoteBody);
+      return quoted ? response(quoted) : response({ error: 'invalid_stay', issues: [{ code: 'stay.min_stay', params: { minStay: 2 } }] }, 422);
+    }
+    if (method === 'POST' && url.pathname === '/api/holds') {
+      hold += 1;
+      return response({ holdId: 'hld_mf_demo_' + hold, expiresAt: new Date(Date.now() + 15 * 60000).toISOString() }, 201);
+    }
+    if (method === 'DELETE' && /^\\/api\\/holds\\//.test(url.pathname)) return response(null, 204);
+    if (method === 'POST' && url.pathname === '/api/bookings') {
+      var bookingBody = bodyOf(init);
+      var bookingQuote = quote(bookingBody);
+      if (!bookingQuote) return response({ error: 'invalid_stay' }, 409);
+      var items = readBookings();
+      var code = 'MF-DEMO-' + String(items.length + 1).padStart(3, '0');
+      var booking = {
+        code: code, email: bookingBody.holder && bookingBody.holder.email,
+        status: 'confirmed', dateFrom: bookingBody.dateFrom, dateTo: bookingBody.dateTo,
+        unitTypeId: bookingBody.unitTypeId, occupancy: bookingBody.occupancy,
+        extras: bookingBody.extraIds || [], totalCents: bookingQuote.breakdown.totalCents,
+        paidCents: bookingQuote.breakdown.totalCents, touristTaxCents: bookingQuote.breakdown.touristTaxCents,
+        breakdown: bookingQuote.breakdown
+      };
+      items.unshift(booking); saveBookings(items);
+      return response({ code: code, status: 'confirmed', payment: { method: 'immediate' } }, 201);
+    }
+    var match = url.pathname.match(/^\\/api\\/bookings\\/([^/]+)(?:\\/(cancel|modify))?$/);
+    if (match) {
+      var codeValue = decodeURIComponent(match[1]);
+      var itemsNow = readBookings();
+      var found = itemsNow.find(function (item) { return item.code === codeValue; });
+      var actionBody = bodyOf(init);
+      var emailValue = method === 'GET' ? url.searchParams.get('email') : actionBody.email;
+      if (!found || found.email !== emailValue) return response({ error: 'not_found' }, 404);
+      if (method === 'GET') return response(Object.assign({}, found, { cancellation: found.status === 'confirmed' ? { refundCents: found.paidCents, daysBefore: 30, appliedRefundPct: 100 } : null }));
+      if (method === 'POST' && match[2] === 'cancel') {
+        found.status = 'cancelled'; saveBookings(itemsNow); return response({ code: found.code, status: found.status, refundCents: found.paidCents });
+      }
+      if (method === 'POST' && match[2] === 'modify') {
+        var changed = quote(Object.assign({}, found, { dateFrom: actionBody.dateFrom, dateTo: actionBody.dateTo, extraIds: found.extras }));
+        if (!changed) return response({ error: 'no_availability' }, 409);
+        found.dateFrom = actionBody.dateFrom; found.dateTo = actionBody.dateTo;
+        found.totalCents = changed.breakdown.totalCents; found.paidCents = changed.breakdown.totalCents;
+        found.touristTaxCents = changed.breakdown.touristTaxCents; found.breakdown = changed.breakdown;
+        saveBookings(itemsNow); return response({ code: found.code, totalCents: found.totalCents });
+      }
+    }
+    return response({ error: 'demo_route_not_implemented' }, 404);
+  };
+})();
+` : '';
 ---
 
 <html lang={locale}>
@@ -167,6 +346,7 @@ const tierMenuScript = `
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {demoThemes.length > 0 && <script is:inline set:html={themeBootScript} />}
     {showTierSwitch && <script is:inline set:html={tierBootScript} />}
+    {demoBookingBootScript && <script is:inline set:html={demoBookingBootScript} />}
     <slot name="head" />
   </head>
   <body class="min-h-screen bg-hueso text-tinta antialiased" data-demo-banner={config.isDemo && c.demo ? '' : undefined}>

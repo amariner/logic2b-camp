@@ -1,0 +1,93 @@
+{
+  "_": [
+    "Encargo visual de Camping Resort Mar de Fondo · D3-V.",
+    "Generar exclusivamente con el modelo de imagen integrado de mayor calidad disponible en Codex.",
+    "Tandas máximas de 2 piezas; inspeccionar cada pareja antes de continuar.",
+    "Una sola geografía y luz: resort mediterráneo de Costa Blanca, última hora limpia, agua profunda, arquitectura clara.",
+    "Premium por orden y servicio, nunca por dorados. Fotografía editorial documental, color natural, grano 35 mm sutil.",
+    "Sin rostros reconocibles, texto, logos, matrículas, HDR, saturación de folleto ni arquitectura imposible.",
+    "Prohibido reutilizar fotografía de Cala Sereno, L'Olivar o Pinada del Mar.",
+    "Los nombres son las claves que la web espera en content/media/."
+  ],
+  "lotes": [
+    ["hero-laguna", "hero-horizonte"],
+    ["parcela-atlantica", "bungalow-laguna"],
+    ["bungalow-laguna-interior", "mobil-horizonte"],
+    ["mobil-horizonte-interior", "glamping-duna"],
+    ["glamping-duna-interior", "instalacion-laguna"],
+    ["instalacion-restaurante", "instalacion-recepcion"],
+    ["entorno", "textura-agua"]
+  ],
+  "piezas": {
+    "hero-laguna": {
+      "aspecto": "21:9",
+      "papel": "héroe principal con espacio negativo a la izquierda",
+      "prompt": "Wide editorial documentary photograph of a large Mediterranean campsite resort at clean golden hour. A geometric lagoon pool fills the right two thirds, pale stone terraces and restrained palms, low white accommodation buildings beyond, a narrow glimpse of sea at the horizon. The left third is calm pale architecture and soft shadow with clear negative space for headline. Premium through order and scale, not luxury clichés. Natural muted Atlantic ink, salt white, sand and deep teal palette, subtle 35mm grain. No people, text, logos, HDR or impossible architecture."
+    },
+    "hero-horizonte": {
+      "aspecto": "21:9",
+      "papel": "héroe secundario y 404",
+      "prompt": "Wide editorial documentary photograph looking down a precise pedestrian axis of a Mediterranean campsite resort at late golden hour. Low pale buildings, restrained palms, native grasses and long shadows lead toward an open blue sea horizon. Broad clean composition, calm scale, natural materials, subtle 35mm grain. No people, text, signage, logos, HDR or resort brochure saturation."
+    },
+    "parcela-atlantica": {
+      "aspecto": "3:2",
+      "papel": "tarjeta y ficha de parcela",
+      "prompt": "Editorial documentary photograph of a generous 100 square metre touring pitch in a large Mediterranean resort at late afternoon. Level compacted pale gravel, 16 amp utility bollard, low native hedge, one restrained shade tree and broad vehicle access; neighbouring pitches repeat geometrically in soft focus. Honest and operational, natural light and subtle film grain. Empty, no text, logos, people or HDR."
+    },
+    "bungalow-laguna": {
+      "aspecto": "3:2",
+      "papel": "exterior de bungalow",
+      "prompt": "Editorial documentary photograph of a modern but plausible family bungalow beside a lagoon pool in a Mediterranean campsite resort. Single storey salt-white render, timber shade screen, deep covered terrace with plain table and chairs, water glimpsed beyond native planting. Clean late-afternoon light, real scale and materials, no luxury styling, subtle film grain. No people, text, logos or HDR."
+    },
+    "bungalow-laguna-interior": {
+      "aspecto": "3:2",
+      "papel": "interior de bungalow",
+      "prompt": "Editorial documentary interior of a practical six-person campsite bungalow. Pale timber cabinetry, compact open kitchen, plain linen, sliding door to a shaded terrace with lagoon light reflected onto the ceiling. Ordered and lived-in but uncluttered, natural late-afternoon light, honest wide lens, subtle film grain. No people, text, logos or impossible space."
+    },
+    "mobil-horizonte": {
+      "aspecto": "3:2",
+      "papel": "exterior de mobil-home",
+      "prompt": "Editorial documentary photograph of a long low mobile home in a quiet zone of a Mediterranean campsite resort. Pale horizontal cladding, full-length timber terrace, restrained teal canvas shade, native grasses and a clean path opening toward a distant sea horizon. Late golden hour, real campsite proportions, subtle film grain. No people, text, logos or HDR."
+    },
+    "mobil-horizonte-interior": {
+      "aspecto": "3:2",
+      "papel": "interior de mobil-home",
+      "prompt": "Editorial documentary interior of a well-planned five-person mobile home. Compact pale kitchen and dining area, salt-white walls, durable timber surfaces, sliding glass door to a long shaded terrace, low warm sun reaching the floor. Precise and honest rather than styled, subtle film grain. No people, text, logos or spatial impossibilities."
+    },
+    "glamping-duna": {
+      "aspecto": "3:2",
+      "papel": "exterior de glamping",
+      "prompt": "Editorial documentary photograph of a restrained glamping lodge near protected Mediterranean dunes. Architectural sand-coloured canvas over a low timber platform, private shaded deck, native grasses and one sculptural pine, lagoon-blue sky at late golden hour. Credible campsite construction, not fantasy luxury, subtle film grain. No people, text, logos or HDR."
+    },
+    "glamping-duna-interior": {
+      "aspecto": "3:2",
+      "papel": "interior de glamping",
+      "prompt": "Editorial documentary interior of a practical four-person canvas glamping lodge with a real compact bathroom. Sand canvas, pale timber frame, two simple sleeping zones, plain salt-white linen and warm late light filtered through the fabric. Honest dimensions, tactile material, subtle film grain. No people, text, logos or impossible architecture."
+    },
+    "instalacion-laguna": {
+      "aspecto": "3:2",
+      "papel": "piscina laguna",
+      "prompt": "Editorial documentary photograph across a large but credible lagoon pool in a Mediterranean campsite resort at late afternoon. Gently shelving water, pale stone edge, a quiet row of simple shaded loungers, restrained palms and salt-white low buildings. Deep teal water, natural scale and colour, subtle film grain. No people, text, logos, inflatables or HDR."
+    },
+    "instalacion-restaurante": {
+      "aspecto": "3:2",
+      "papel": "restaurante",
+      "prompt": "Editorial documentary photograph of an open-sided campsite resort restaurant facing a lagoon at golden hour. Pale masonry, timber ceiling, simple well-spaced tables, a visible service pass and reflections of deep teal water. Premium by calm organisation, not chandeliers or gold, subtle film grain. Empty, no readable text, brands, people or HDR."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "recepción",
+      "prompt": "Editorial documentary photograph of the reception hall of a large Mediterranean campsite resort. Four clear check-in positions, pale stone floor, salt-white walls, warm timber counter, broad glass opening to the arrival court and a discreet seating area. Operational and ordered, late natural light, subtle film grain. No people, readable text, logos or hotel clichés."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "cabecera de entorno",
+      "prompt": "Wide editorial documentary photograph of a timber boardwalk crossing restrained Mediterranean dunes from a campsite resort toward an open beach at clean late golden hour. Native grasses, low warm light, calm sea and broad horizon, negative space in the sky. Natural colour and subtle film grain. No people, text, logos, HDR or dramatic travel-poster saturation."
+    },
+    "textura-agua": {
+      "aspecto": "21:9",
+      "papel": "firma material transversal",
+      "prompt": "Editorial documentary close-up of deep teal lagoon water casting moving reflected light onto pale salt-white lime plaster and a narrow sand-coloured stone edge. Abstract but photographic, fine surface texture, clean late-afternoon light, subtle film grain. No people, objects, text, logos or HDR."
+    }
+  }
+}

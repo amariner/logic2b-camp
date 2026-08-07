@@ -1,0 +1,439 @@
+{
+  "seo": {
+    "title": "Camping Resort Mar de Fondo — vacaciones abiertas al Mediterráneo",
+    "description": "Resort mediterráneo ficticio de 300 unidades con parcelas, bungalows, mobil-homes y glamping. Demostración Visión de Logic2B."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El resort",
+    "entorno": "Mar y entorno",
+    "tarifas": "Tarifas",
+    "blog": "Actualidad",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: datos, reserva y pago son simulados y se restablecen.",
+    "nivel": "Visión",
+    "nivel1": "Inicio",
+    "nivel3": "Visión"
+  },
+  "hero3": {
+    "titulo": "Un horizonte amplio. Cada detalle bajo control.",
+    "prueba": "300 unidades · cuatro formas de alojarse · reserva directa de demostración"
+  },
+  "hero1": {
+    "titulo": "La laguna, el mar y espacio para elegir.",
+    "cta": "Explorar estancias"
+  },
+  "ticker": [
+    "300 unidades organizadas por zonas",
+    "piscina laguna y acceso a playa",
+    "cuatro familias de alojamiento",
+    "reserva y pago de demostración",
+    "recepción abierta 24 h en verano"
+  ],
+  "mostrador": {
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "huespedes": "Huéspedes",
+    "adultos": "adultos",
+    "ninos": "niños",
+    "adulto": "adulto",
+    "nino": "niño",
+    "buscar": "Ver disponibilidad",
+    "buscando": "Buscando…",
+    "desde": "desde",
+    "porEstancia": "por estancia",
+    "unidadesLibres": "libres",
+    "quedanPocas": "quedan pocas",
+    "agotado": "Sin disponibilidad para esas fechas",
+    "agotadoTipo": "Este alojamiento no queda libre en esas fechas.",
+    "verOtros": "Comparar otras opciones",
+    "cerrado": "Cerrado en esas fechas",
+    "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
+    "noEntra": "No disponible para ese grupo",
+    "error": "La demostración no ha podido calcular disponibilidad. Prueba de nuevo.",
+    "fechasInvalidas": "La salida debe ser posterior a la llegada.",
+    "reservar": "Reservar en la demo"
+  },
+  "tipos": {
+    "titulo": "Cuatro maneras de abrir las vacaciones",
+    "subtitulo": "Desde una parcela amplia hasta un glamping junto a la laguna. Compara capacidad, servicios y precio antes de decidir.",
+    "verTodo": "Comparar los cuatro alojamientos",
+    "nombres": {
+      "ut_parcela_atlantica": "Parcela Atlántica",
+      "ut_bungalow_laguna": "Bungalow Laguna",
+      "ut_mobil_horizonte": "Mobil-home Horizonte",
+      "ut_glamping_duna": "Glamping Duna"
+    },
+    "cards": [
+      {
+        "id": "atlantica",
+        "nombre": "Parcela Atlántica",
+        "desc": "Cien metros cuadrados, 16 A y calles anchas entre sombra y luz.",
+        "foto": "parcela-atlantica"
+      },
+      {
+        "id": "laguna",
+        "nombre": "Bungalow Laguna",
+        "desc": "Dos baños, porche amplio y la piscina laguna a pocos pasos.",
+        "foto": "bungalow-laguna"
+      },
+      {
+        "id": "horizonte",
+        "nombre": "Mobil-home Horizonte",
+        "desc": "Interior claro, terraza longitudinal y zonas tranquilas para cinco.",
+        "foto": "mobil-horizonte"
+      },
+      {
+        "id": "duna",
+        "nombre": "Glamping Duna",
+        "desc": "Lona, madera y baño propio en el borde más sereno del resort.",
+        "foto": "glamping-duna"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "El agua organiza el resort.",
+    "texto": "La laguna ocupa el centro, las calles se abren hacia el mar y cada zona mantiene su ritmo. Escala de resort sin perder recorridos claros ni sombra."
+  },
+  "form": {
+    "titulo": "Diseñemos el alcance de tu resort",
+    "subtitulo": "Esta demostración no envía datos. El recorrido comercial termina en una conversación de discovery.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "mensaje": "¿Qué operación quieres conectar?",
+    "enviar": "Preparar conversación",
+    "enviando": "Preparando…",
+    "ok": "Escenario preparado. No se ha enviado ningún dato.",
+    "error": "No se ha podido preparar la demostración. Reintenta con datos ficticios."
+  },
+  "footer": {
+    "aviso": "Resort mediterráneo ficticio de 300 unidades · demostración Logic2B",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Reserva y gestión por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Alojamientos | Camping Resort Mar de Fondo",
+      "description": "Compara parcela, bungalow, mobil-home y glamping en un resort mediterráneo ficticio de 300 unidades."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro familias, 300 unidades y una comparación clara. La unidad física se asigna después de reservar el tipo.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Ver disponibilidad",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Bungalows, mobil-homes y glamping",
+    "fichas": {
+      "ut_parcela_atlantica": "Parcela de unos 100 m² con electricidad de 16 A, agua próxima y acceso cómodo para caravanas grandes.",
+      "ut_bungalow_laguna": "Tres dormitorios, dos baños, cocina completa y porche para seis junto al eje central del resort.",
+      "ut_mobil_horizonte": "Tres dormitorios compactos, dos baños, aire acondicionado y terraza longitudinal para cinco.",
+      "ut_glamping_duna": "Dos dormitorios, baño propio, climatización y terraza bajo lona para cuatro."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorios",
+      "banos": "Baños",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio ficticio con {n} personas. La demo recalcula el total al elegir fechas y extras.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Servicios del resort | Mar de Fondo",
+      "description": "Piscina laguna, restaurante, club infantil, recepción y acceso a playa en un resort ficticio."
+    },
+    "titulo": "Servicios con escala y recorridos claros",
+    "intro": "El resort concentra actividad alrededor de la laguna y protege zonas tranquilas hacia el pinar y la duna.",
+    "items": [
+      {
+        "id": "laguna",
+        "nombre": "Piscina laguna",
+        "desc": "Lámina central con entrada progresiva, zona infantil y sombra perimetral."
+      },
+      {
+        "id": "restaurante",
+        "nombre": "Restaurante Sal",
+        "desc": "Cocina mediterránea, terraza al agua y servicio organizado por turnos en agosto."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción 24 h",
+        "desc": "Cuatro puestos, llegada digital y acompañamiento presencial para incidencias."
+      },
+      {
+        "id": "club",
+        "nombre": "Club infantil",
+        "desc": "Programa por edades, recogida autorizada y actividades de mañana y tarde."
+      },
+      {
+        "id": "playa",
+        "nombre": "Acceso a playa",
+        "desc": "Pasarela peatonal a través de la duna, sin cruces de tráfico interno."
+      },
+      {
+        "id": "deporte",
+        "nombre": "Deporte y bienestar",
+        "desc": "Pistas, gimnasio abierto, yoga temprano y alquiler de bicicletas."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Mar y entorno | Mar de Fondo",
+      "description": "Playa, parque natural, puerto y rutas desde un resort ficticio de la Costa Blanca."
+    },
+    "titulo": "Del agua tranquila al Mediterráneo abierto",
+    "intro": "La playa empieza detrás de la duna y el parque natural se alcanza en bicicleta. El resort está conectado sin quedar pegado al ruido urbano.",
+    "secciones": [
+      {
+        "titulo": "La playa",
+        "texto": "Una pasarela propia cruza la duna hasta una playa amplia y accesible, con socorrismo en temporada."
+      },
+      {
+        "titulo": "El parque natural",
+        "texto": "Rutas llanas entre marjal, observatorios y caminos de grava desde la puerta del resort."
+      },
+      {
+        "titulo": "El puerto",
+        "texto": "Restaurantes, mercado y salidas en barco a quince minutos, con traslado de muestra desde recepción."
+      },
+      {
+        "titulo": "La ciudad",
+        "texto": "Museos, comercio y estación a media hora para combinar días lentos con una salida urbana."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde recepción",
+      "items": [
+        { "lugar": "Piscina laguna", "valor": "2 min a pie" },
+        { "lugar": "Playa", "valor": "6 min a pie" },
+        { "lugar": "Parque natural", "valor": "12 min en bici" },
+        { "lugar": "Puerto", "valor": "15 min en coche" },
+        { "lugar": "Estación", "valor": "28 min en coche" },
+        { "lugar": "Aeropuerto", "valor": "55 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas de demostración | Mar de Fondo",
+      "description": "Precios ficticios por temporada para parcelas, bungalows, mobil-homes y glamping."
+    },
+    "titulo": "Tarifas de demostración",
+    "intro": "Importes ficticios con IVA. El total se recalcula al elegir fechas, grupo y extras; ningún pago de esta demo realiza un cargo.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_apertura": "Apertura",
+      "sea_verano": "Verano",
+      "sea_calma": "Calma mediterránea"
+    },
+    "suplementos": {
+      "titulo": "Suplementos por noche",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 16 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_desayuno": "Desayuno mediterráneo",
+        "ext_cabana": "Cabaña de piscina",
+        "ext_late": "Salida tardía",
+        "ext_mascota": "Mascota en parcela"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de reservar en la demo",
+      "items": [
+        "Los alojamientos piden cinco noches en verano; las parcelas, dos.",
+        "Las mascotas se aceptan únicamente en parcelas señaladas.",
+        "Llegadas desde las 16:00 en alojamiento y desde las 13:00 en parcela.",
+        "Pago y recibo serán simulados: no se realiza ningún cargo ni se envían datos."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacto | Camping Resort Mar de Fondo",
+      "description": "Datos ficticios y CTA de discovery de la demostración Visión de Logic2B."
+    },
+    "titulo": "Diseñemos el alcance de tu resort",
+    "intro": "Mar de Fondo es una demostración. La activación real empieza definiendo una capacidad, tus datos y los proveedores implicados.",
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 24 h en verano y 8:00–22:00 el resto de apertura."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "Dirección, teléfono y email son ficticios y solo sostienen el recorrido comercial."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Actualidad | Mar de Fondo",
+      "description": "Información de muestra de un resort mediterráneo ficticio."
+    },
+    "titulo": "Actualidad",
+    "intro": "La demo no publica noticias. Esta superficie queda preparada para información operativa y contenido de destino.",
+    "leerMas": "Leer",
+    "volver": "Todas las noticias",
+    "vacio": "No hay publicaciones en esta demostración."
+  },
+  "noEncontrada": {
+    "titulo": "Este camino no llega al mar",
+    "texto": "La dirección no corresponde a ninguna zona de la demostración.",
+    "cta": "Volver al inicio"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Reserva de demostración | Mar de Fondo",
+      "description": "Compara alojamientos, extras y un pago totalmente simulado en la demo Visión de Logic2B."
+    },
+    "titulo": "Reserva de demostración",
+    "intro": "Elige fechas y grupo. Verás un precio y un recibo ficticios; no se realiza ningún cargo.",
+    "elegir": "Elegir",
+    "noches": "{n} noches",
+    "detalle": {
+      "estancia": "Tu estancia demo",
+      "extras": "Añadir extras",
+      "incluido": "incluido",
+      "electricidad": "Electricidad",
+      "desglose": "Desglose del precio simulado",
+      "tasaNota": "Tasa turística de muestra: {importe}, se liquidaría en recepción.",
+      "total": "Total simulado",
+      "continuar": "Continuar en la demo",
+      "volver": "Volver a los resultados",
+      "error": "No se ha podido calcular el precio de muestra. Prueba de nuevo."
+    },
+    "titular": {
+      "titulo": "Datos ficticios del titular",
+      "hold": "Unidad demo guardada durante {min}",
+      "holdCaducado": "El bloqueo de muestra ha caducado; se comprobará otra vez al confirmar.",
+      "nombre": "Nombre ficticio",
+      "email": "Email de prueba",
+      "telefono": "Teléfono ficticio (opcional)",
+      "notas": "Nota de muestra (opcional)",
+      "condiciones": "Entiendo que es una demostración y que no se realizará ningún cargo.",
+      "confirmar": "Confirmar reserva demo",
+      "confirmando": "Confirmando la demo…",
+      "agotado": "La última unidad de muestra se acaba de ocupar. No se ha cobrado nada.",
+      "error": "No se ha podido confirmar la reserva demo. Prueba de nuevo."
+    },
+    "conceptos": {
+      "price.base": "Estancia",
+      "price.extra_person": "Personas adicionales",
+      "price.child": "Niños",
+      "price.pet": "Mascotas",
+      "price.electricity": "Electricidad",
+      "price.vehicle": "Vehículo adicional",
+      "discount.early_booking": "Descuento anticipado",
+      "discount.long_stay": "Descuento por estancia larga",
+      "discount.acsi": "Descuento asociado"
+    },
+    "errores": {
+      "stay.closed": "Cerrado en esas fechas.",
+      "stay.min_stay": "Estancia mínima de {minStay} noches.",
+      "stay.max_stay": "Estancia máxima de {maxStay} noches.",
+      "stay.arrival_day": "Llegada no permitida ese día.",
+      "stay.departure_day": "Salida no permitida ese día.",
+      "stay.capacity": "Ese alojamiento admite {capacityMax} personas como máximo.",
+      "stay.capacity_min": "Ocupación mínima de {capacityMin} personas.",
+      "stay.no_adults": "Hace falta al menos un adulto.",
+      "stay.no_pets": "Ese alojamiento no admite mascotas.",
+      "stay.no_electricity": "Esa parcela no tiene conexión eléctrica.",
+      "stay.no_rate": "No hay tarifa publicada para parte de la estancia.",
+      "stay.invalid_dates": "Revisa las fechas."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Recibo DEMO | Mar de Fondo",
+      "description": "Consulta un recibo de reserva ficticio. No se ha realizado ningún cargo."
+    },
+    "titulo": "Tu reserva de demostración",
+    "nueva": "Reserva demo confirmada. Pago simulado · no se ha realizado ningún cargo.",
+    "buscar": {
+      "intro": "Introduce el código y email ficticios del escenario.",
+      "codigo": "Código demo",
+      "email": "Email de prueba",
+      "ver": "Ver recibo DEMO",
+      "buscando": "Buscando…",
+      "noEncontrada": "No existe una reserva demo con esos datos."
+    },
+    "estado": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada · DEMO",
+      "cancelled": "Cancelada",
+      "no_show": "No presentada",
+      "completed": "Completada"
+    },
+    "campos": {
+      "llegada": "Llegada",
+      "salida": "Salida",
+      "alojamiento": "Alojamiento",
+      "huespedes": "Huéspedes ficticios",
+      "noches": "Noches",
+      "total": "Total simulado",
+      "pagado": "Pago simulado",
+      "tasa": "Tasa turística de muestra"
+    },
+    "imprimir": "Imprimir recibo DEMO",
+    "cancelar": {
+      "boton": "Cancelar reserva demo",
+      "aviso": "La devolución simulada sería del {pct} %: {importe}.",
+      "confirmar": "Sí, cancelar en la demo",
+      "volver": "Mantener la reserva",
+      "hecha": "Reserva demo cancelada.",
+      "error": "No se ha podido cancelar el escenario."
+    },
+    "modificar": {
+      "boton": "Cambiar fechas",
+      "titulo": "Nuevas fechas",
+      "nota": "El precio de muestra se recalcula con las tarifas del escenario.",
+      "aplicar": "Preparar cambio",
+      "aplicando": "Preparando…",
+      "hecho": "Fechas actualizadas. Nuevo total simulado: {importe}.",
+      "noDisponible": "No hay disponibilidad de muestra para esas fechas.",
+      "error": "No se ha podido preparar el cambio."
+    },
+    "pago": {
+      "esperando": "Confirmando el pago simulado… no se realizará ningún cargo.",
+      "cancelado": "Pago demo cancelado. No se ha realizado ningún cargo.",
+      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo."
+    }
+  }
+}

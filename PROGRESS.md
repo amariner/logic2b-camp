@@ -1,27 +1,44 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D2-V · 2026-08-06 (actualizado en la sesión 84)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 86)
 
-- **El muro es la política de egress del contenedor cloud, no el generador ni los
-  créditos.** El proxy de la sesión solo deja pasar npm, GitHub, Anthropic y los
-  servidores MCP; a cualquier otro host contesta **403 en el CONNECT** — también a
-  `example.com`. Por eso el mismo bloqueo reaparece desde la sesión 8: no se
-  arregla reintentando. Generar **sí** funciona (entra por MCP, no por el proxy).
-- **Generadas 2 de 11** (`hero-calle`, `hero-anochecer`), con prompt y URL
-  anotados. Las 9 restantes tienen su **prompt ya fijado**. Todo vive en
-  `tenants/pinadamar/fotos.json`; lo aterriza en un paso
-  `node apps/web/scripts/fetch-fotos.mjs pinadamar` desde una máquina con salida.
-- **No hacen falta las fotos para enseñar Pinada del Mar**: desde esta sesión un
-  camping sin fotografía construye y se recorre entero (`<Materia>`). Lo que
-  falta es la piel, no el recorrido.
-- No se generó a ciegas el resto: la herramienta devuelve URL, no imagen, así que
-  en cloud no se pueden inspeccionar — y ADR 0024 prohíbe quemar créditos sin ver
-  el resultado.
+- La política queda fijada: en Codex se usa el modelo de imagen integrado de
+  mayor calidad disponible y se generan **como máximo 2 piezas por tanda**,
+  inspeccionando cada pareja antes de continuar. Vive en `CLAUDE.md`, contrato
+  visual, ADR 0034 y cada manifiesto de tenant.
+- Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
+  `tenants/mardefondo/fotos.json`. La primera tanda (`hero-laguna`,
+  `hero-horizonte`) se lanzó con `imagegen` y falló antes de producir bytes por
+  error de red del backend integrado de Codex. Estado real: **0/14**; no se
+  cambió de proveedor ni se usó fallback CLI/API.
+- La fotografía no bloquea el recorrido: `<Materia>` mantiene la web completa y
+  construible, pero no sustituye el lote final. El siguiente intento empieza por
+  la misma primera tanda, nunca por 14 llamadas a ciegas.
 
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 86 (2026-08-07): D3-V abre con una web Visión ya recorrible
+  hasta el recibo.** Se crea `tenants/mardefondo`: identidad atlántica propia,
+  contenido completo, cuatro familias y **300 unidades exactas** (150 parcelas,
+  60 bungalows, 60 mobil-homes, 30 glamping), tres temporadas, 12 planes y cuatro
+  extras en céntimos. `bookingTransport: 'demo-session'` instala antes de hidratar
+  React un adaptador común derivado del catálogo del tenant: disponibilidad,
+  cotización, extras, hold, titular, reserva, consulta, cambio y cancelación viven
+  solo en `localStorage`; no llaman a Cala Sereno, D1 ni proveedor. Recorrido real
+  a 375 px: 18–24 agosto → Bungalow Laguna → titular ficticio → `MF-DEMO-001` →
+  recibo «Pago simulado · no se ha realizado ningún cargo», sin desborde ni
+  respuestas `/api` de red. `/temas` deja de llamar concepto futuro a todo:
+  L'Olivar y Pinada enlazan como demos y Mar de Fondo figura «En producción».
+  La misma QA corrige la cabecera móvil del sitio: sus dos CTA de escritorio ya
+  no duplican las acciones del menú ni provocan 34 px de desborde a 375 px.
+  El bundle incorpora `/demos/mardefondo/` y comprueba **11.283 enlaces / 357
+  HTML**. Guardia portfolio: 3/3 campings construyen; `pnpm check` **53/53**.
+  Política de imágenes fijada y manifiesto de 14 piezas en 7 parejas; primera
+  pareja bloqueada por error de red de `imagegen`, 0/14. ADR 0034 propuesto;
+  planning/plano, operación, Automatiza/Inteligente y fotografía siguen
+  pendientes. Sin deploy remoto.
 - **Sesión autónoma 84 (2026-08-06): un camping sin fotos ya construye, y el
   bundle compuesto vuelve a estar verde.** La cola fotográfica de D2-V no es
   ejecutable en cloud (403 de política de egress, ver checkpoint), así que la
@@ -38,7 +55,7 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
   dejaba de caber a 375px** en cualquier camping de nombres de temporada largos
   (`min-width:auto` de un hijo de grid, 108px de desborde, solo Pinada lo
   enseñaba); y el **plano decía «1 de 110 ocupadas · 1%» con 18 unidades
-  ocupadas** — el resumen no contaba a quien está *en casa* y mezclaba dos
+  ocupadas** — el resumen no contaba a quien está _en casa_ y mezclaba dos
   denominadores, defecto de Cala Sereno también. Ahora es `ocupacionDeLaNoche`,
   pura y con 4 tests en `packages/config`. Recorrido real verificado contra el
   bundle: solicitud `PM-WEB-001` → gestor → bandeja → planning (110 unidades, 82
@@ -341,8 +358,7 @@ el tenant por defecto. Los campings del escaparate solo se construyen dentro de
 **50/50 verde con el bundle roto**. `apps/web/scripts/check-portfolio.mjs`
 construye todos los campings de `tenants/` (menos `_template` y `demo`, ya
 cubierto) a un `dist-portfolio/` propio para no pisar la caché de turbo, y falla
-nombrando al roto. Comprobado en rojo reintroduciendo la regresión exacta del
-404. Cuesta 10s y cubre el portfolio según crezca a 6 y a 12.
+nombrando al roto. Comprobado en rojo reintroduciendo la regresión exacta del 404. Cuesta 10s y cubre el portfolio según crezca a 6 y a 12.
 
 **Dos defectos más, encontrados mirando la pantalla.**
 

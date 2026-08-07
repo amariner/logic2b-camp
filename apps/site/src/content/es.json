@@ -32,47 +32,59 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Estas miniaturas anticipan el catálogo de temas previsto en el roadmap. Son conceptos visuales, todavía no temas completos ni demos navegables.",
+    "texto": "El portfolio ya convierte tres direcciones visuales en campings distintos sobre el mismo producto. Inicio y Gestión son recorridos completos; Visión está en producción.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
-    "estado": "Concepto visual",
-    "nota": "Los temas completos se desarrollarán más adelante. La arquitectura ya permite cambiar identidad, color y tipografía sin duplicar el producto.",
+    "estado": "Portfolio visual",
+    "nota": "Una base técnica, identidades propias. Cada demo cambia luz, voz, inventario y ritmo sin duplicar el producto.",
     "items": [
       {
-        "nombre": "Pinada",
-        "estilo": "Mediterráneo sereno",
+        "nombre": "L'Olivar",
+        "estilo": "Inicio · seco y próximo",
         "imagen": "/hero-atmosfera.webp",
-        "variante": "pine"
+        "variante": "natural",
+        "estado": "Demo navegable",
+        "href": "/demos/olivar/"
       },
       {
-        "nombre": "Costa",
-        "estilo": "Luminoso y abierto",
+        "nombre": "Pinada del Mar",
+        "estilo": "Gestión · costero y operativo",
         "imagen": "/propuestas/azahar/piscina.jpg",
-        "variante": "coast"
+        "variante": "pine",
+        "estado": "Demo navegable",
+        "href": "/demos/pinadamar/"
+      },
+      {
+        "nombre": "Mar de Fondo",
+        "estilo": "Visión · resort editorial",
+        "imagen": "/propuestas/azahar/vida-camping.jpg",
+        "variante": "resort",
+        "estado": "En producción",
+        "href": "/demos/mardefondo/"
+      },
+      {
+        "nombre": "Montaña",
+        "estilo": "Refugio y temporada larga",
+        "imagen": "/propuestas/azahar/via-verde.jpg",
+        "variante": "natural",
+        "estado": "Concepto visual",
+        "href": ""
       },
       {
         "nombre": "Familiar",
         "estilo": "Cálido y cercano",
-        "imagen": "/propuestas/azahar/vida-camping.jpg",
-        "variante": "family"
-      },
-      {
-        "nombre": "Natural",
-        "estilo": "Eco y silencioso",
-        "imagen": "/propuestas/azahar/via-verde.jpg",
-        "variante": "natural"
-      },
-      {
-        "nombre": "Resort",
-        "estilo": "Editorial premium",
         "imagen": "/propuestas/azahar/mobile-home-clean-2.jpg",
-        "variante": "resort"
+        "variante": "family",
+        "estado": "Concepto visual",
+        "href": ""
       },
       {
         "nombre": "Parcela",
         "estilo": "Directo y funcional",
         "imagen": "/propuestas/azahar/parcela-2.jpg",
-        "variante": "pitch"
+        "variante": "pitch",
+        "estado": "Concepto visual",
+        "href": ""
       }
     ]
   },

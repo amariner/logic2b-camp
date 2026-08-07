@@ -1141,6 +1141,14 @@
 }
 
 @media (max-width: 560px) {
+  /* Las dos acciones ya viven dentro del menú móvil. Mantenerlas también en la
+     barra dejaba wordmark + 2 CTA + hamburguesa en 351 px útiles: 34 px de
+     desborde horizontal a 375. */
+  .site-header-demo,
+  .site-header-start {
+    display: none;
+  }
+
   .botanical-heading {
     font-size: 43px;
   }

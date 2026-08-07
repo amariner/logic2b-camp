@@ -1,0 +1,19 @@
+:root {
+  --lc-tinta: #172a2d;
+  --lc-hueso: #f6f4ee;
+  --lc-pino: #176b73;
+  --lc-arena: #d8c7a5;
+  --lc-mar: #d0644b;
+
+  --lc-pino-oscuro: #10535a;
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 30%, var(--lc-hueso));
+
+  --lc-font-display: 'Clash Display', system-ui, sans-serif;
+  --lc-font-text: 'Inter', system-ui, sans-serif;
+
+  --lc-radius: 2px;
+  --lc-radius-sm: 2px;
+  --lc-radius-md: 4px;
+  --lc-radius-lg: 8px;
+}

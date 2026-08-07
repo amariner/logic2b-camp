@@ -26,20 +26,20 @@ const c = getContent(locale);
       {
         c.temas.items.map((theme, index) => (
           <article class="theme-catalog-card">
-            <ThemeMiniature
-              name={theme.nombre}
-              style={theme.estilo}
-              image={theme.imagen}
-              variant={theme.variante}
-              eager={index < 2}
-            />
+            {theme.href ? (
+              <a href={theme.href} aria-label={`${theme.nombre} · ${theme.estado}`}>
+                <ThemeMiniature name={theme.nombre} style={theme.estilo} image={theme.imagen} variant={theme.variante} eager={index < 2} />
+              </a>
+            ) : (
+              <ThemeMiniature name={theme.nombre} style={theme.estilo} image={theme.imagen} variant={theme.variante} eager={index < 2} />
+            )}
             <div class="theme-catalog-meta">
               <div>
-                <p>{String(index + 1).padStart(2, '0')} · {c.temas.estado}</p>
+                <p>{String(index + 1).padStart(2, '0')} · {theme.estado}</p>
                 <h2>{theme.nombre}</h2>
                 <span>{theme.estilo}</span>
               </div>
-              <i aria-hidden="true"></i>
+              {theme.href ? <a class="theme-catalog-open" href={theme.href} aria-label={`${theme.nombre} →`}>↗</a> : <i aria-hidden="true"></i>}
             </div>
           </article>
         ))
@@ -77,6 +77,7 @@ const c = getContent(locale);
   .theme-catalog-meta h2 { margin-top:9px; font-size:34px; line-height:1; }
   .theme-catalog-meta span { display:block; margin-top:8px; color:color-mix(in srgb,var(--botanical-ink) 66%,white); font-size:13px; }
   .theme-catalog-meta i { width:42px; height:42px; flex:none; border-radius:50%; background:var(--botanical-ink); }
+  .theme-catalog-open { display:grid; width:42px; height:42px; flex:none; place-items:center; border-radius:50%; background:var(--botanical-ink); color:white; font-size:18px; text-decoration:none; }
   .theme-catalog-note { display:flex; align-items:center; justify-content:space-between; gap:30px; margin-bottom:clamp(28px,5vw,70px); border-radius:14px; background:var(--botanical-sage); padding:clamp(30px,5vw,58px); }
   .theme-catalog-note p { max-width:760px; color:var(--botanical-ink); font-family:var(--botanical-serif); font-size:clamp(24px,3vw,40px); line-height:1.15; }
   .theme-catalog-note .botanical-button { flex:none; }

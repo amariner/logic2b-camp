@@ -95,6 +95,14 @@ Fotografía editorial documental, creíble como un mismo establecimiento:
 Las imágenes generadas o de muestra son material de una ficción comercial, no
 prueba de que exista el establecimiento. La ficha de la demo lo declara.
 
+**Flujo Codex (decisión de Andreu, 2026-08-07):** cuando el trabajo se realice
+en Codex, se usa el modelo de imagen integrado de mayor calidad disponible y se
+generan como máximo **2 piezas por tanda**. Cada pareja se inspecciona antes de
+continuar; una pieza fallida se corrige dentro de su tanda y no se lanza el resto
+del manifiesto a ciegas. Prompt, proporción, papel y nombre final viven en
+`tenants/{slug}/fotos.json`; al repositorio entran únicamente activos finales
+locales y optimizados.
+
 ## 3. Ancla Inicio — Camping L'Olivar
 
 ### 3.1. Marca y dirección de arte

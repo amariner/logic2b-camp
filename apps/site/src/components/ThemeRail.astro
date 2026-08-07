@@ -6,6 +6,8 @@ interface ThemeItem {
   estilo: string;
   imagen: string;
   variante: string;
+  estado: string;
+  href: string;
 }
 
 interface Props {
@@ -34,7 +36,7 @@ const right = items.filter((_, index) => index % 2 === 1);
           />
           <div class="camp-theme-meta">
             <span><i></i>{theme.nombre}</span>
-            <small>{status}</small>
+            <small>{theme.estado || status}</small>
           </div>
         </article>
       ))}
@@ -53,7 +55,7 @@ const right = items.filter((_, index) => index % 2 === 1);
           />
           <div class="camp-theme-meta">
             <span><i></i>{theme.nombre}</span>
-            <small>{status}</small>
+            <small>{theme.estado || status}</small>
           </div>
         </article>
       ))}

@@ -115,6 +115,23 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 - Dashboard: densidad sin ruido. **El planning (tape chart) es el elemento firma** — ahí va la ambición. Rápido antes que bonito.
 - Suelo: responsive, foco de teclado visible, `prefers-reduced-motion`, contraste AA, usable a 1366px. La usuaria real es la recepcionista de 55 años.
 
+### Política de generación de imágenes en Codex
+
+- Cuando una sesión se ejecute en **Codex**, los activos raster nuevos se generan
+  con el **modelo de imagen integrado de mayor calidad disponible en Codex**. No
+  se cambia a otro proveedor por inercia ni se reutiliza fotografía de otro
+  tenant.
+- La generación se ejecuta en **tandas máximas de 2 imágenes**. Cada pareja se
+  inspecciona como conjunto antes de lanzar la siguiente para proteger la
+  coherencia visual, evitar saturar el servidor y no consumir créditos a ciegas.
+- Todo encargo fija antes el papel, proporción, prompt y nombre final en
+  `tenants/{slug}/fotos.json`. Los másteres se revisan antes de optimizarlos; el
+  producto solo referencia derivados locales WebP/AVIF, nunca URLs temporales.
+- Se mantienen las reglas del contrato visual: una geografía y luz coherentes,
+  sin rostros reconocibles, texto generado, marcas, matrículas legibles, HDR ni
+  arquitectura imposible. Las imágenes de una demo se declaran ficción
+  comercial, no prueba de un establecimiento real.
+
 ## Entornos
 
 - `camp.logic2b.com` → demo comercial (Camping Cala Sereno, ficticio, reset nocturno). ES la herramienta de ventas: prioridad visual máxima.

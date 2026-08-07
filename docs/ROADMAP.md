@@ -180,7 +180,10 @@ bases por marca, integraciones y producción real no son dependencias.
 | **D5-V**    | Ola 2                | Extender la fábrica a seis demos                                                         | La variedad no crea código ni backend por marca         |
 | **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto             |
 
-**Estado (2026-08-06): D0-V, D1-V y D2-V cerrados; D3-V es el siguiente objetivo.** El
+**Estado (2026-08-07): D0-V, D1-V y D2-V cerrados; D3-V está en curso.** Mar de
+Fondo ya tiene identidad, catálogo de 300 unidades y reserva pública completa
+hasta un recibo de pago simulado sin red. Faltan operación a escala,
+Automatiza/Inteligente, fotografía y QA final. El
 contrato de la primera ola vive en
 [`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md). D5.2 ya existe como
 franja de cifras y escalera; la galería espera tres demos clicables. Se mantiene

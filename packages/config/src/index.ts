@@ -9,6 +9,7 @@ import type { TenantLegal } from './tenant-config';
 
 export type BookingMode = 'none' | 'enquiry' | 'instant';
 export type EnquiryTransport = 'persisted' | 'demo' | 'demo-session';
+export type BookingTransport = 'persisted' | 'demo-session';
 
 export type TenantWebConfig = {
   slug: string;
@@ -25,6 +26,12 @@ export type TenantWebConfig = {
    * `demo-session` guarda ficción reversible solo en el navegador.
    */
   enquiryTransport?: EnquiryTransport;
+  /**
+   * Transporte del motor público. Ausente equivale a `persisted`.
+   * `demo-session` intercepta solo `/api/*` del funnel en el navegador,
+   * conserva ficción reversible y nunca toca un proveedor ni una D1.
+   */
+  bookingTransport?: BookingTransport;
   /** Ruta del gestor de escenario; solo se usa con `demo-session`. */
   demoManagerPath?: string;
   /** Foto de héroe del carril estático; por defecto conserva `hero-anochecer`. */
