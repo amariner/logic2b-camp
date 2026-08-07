@@ -126,7 +126,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 92)**: Mar de Fondo une ya el hilo
+- [D3-V] **Demo Visión — en curso (sesión 93)**: Mar de Fondo une ya el hilo
   disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
   300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
   escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
@@ -140,10 +140,12 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   cambio preparado, sin tocar tarifa, cupo ni reserva.
   La fotografía cuenta con pipeline resiliente y aprobación explícita (ADR
   0035): los dos fallos de Codex abren Higgsfield para el manifiesto, se excluyen
-  descartes y el cambio de modelo queda trazado. Dos tandas aprobadas **4/14**;
-  `parcela-atlantica` pasó a GPT Image 2 tras dos rechazos por texto legible.
-  Siguiente `bungalow-laguna-interior` + `mobil-horizonte`. Pendiente: 10 fotos
-  restantes, derivados, QA visual y capturas firma. Toda
+  descartes y el cambio de modelo queda trazado. Tres tandas aprobadas **6/14**;
+  `parcela-atlantica` pasó a GPT Image 2 tras dos rechazos por texto legible y
+  `bungalow-laguna-interior` hizo lo mismo tras descartar una persona reconocible
+  y un espacio oscuro e impropio de seis plazas. Siguiente
+  `mobil-horizonte-interior` + `glamping-duna`. Pendiente: 8 fotos restantes,
+  derivados finales, QA visual y capturas firma. Toda
   simulación conserva los rótulos exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.

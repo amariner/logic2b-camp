@@ -1,17 +1,18 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D3-V · 2026-08-07 (sesión 92)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 93)
 
 - La política resiliente queda fijada en ADR 0035: Codex integrado es principal;
   dos fallos técnicos sin bytes abren el circuito del manifiesto y habilitan
   Higgsfield. Dos rechazos visuales de una pieza cambian de `soul_location` a
   GPT Image 2 dentro de Higgsfield. Todo queda trazado en `fotos.estado.json`.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
-  `tenants/mardefondo/fotos.json`. Las dos primeras tandas quedan aprobadas:
-  `hero-laguna`, `hero-horizonte`, `parcela-atlantica` y `bungalow-laguna`.
-  `parcela-atlantica` necesitó dos descartes por rotulación legible; el cambio
-  automático a GPT Image 2 produjo la variante válida. Estado real: **4/14**.
-  La siguiente es `bungalow-laguna-interior` + `mobil-horizonte`.
+  `tenants/mardefondo/fotos.json`. Las tres primeras tandas quedan aprobadas:
+  `hero-laguna`, `hero-horizonte`, `parcela-atlantica`, `bungalow-laguna`,
+  `bungalow-laguna-interior` y `mobil-horizonte`. El interior necesitó dos
+  descartes (persona reconocible; espacio oscuro e impropio de seis plazas); el
+  cambio automático a GPT Image 2 produjo la variante válida. Estado real:
+  **6/14**. La siguiente es `mobil-horizonte-interior` + `glamping-duna`.
 - `pnpm fotos -- run mardefondo` procesa solo el lote activo, reutiliza trabajos
   idénticos no rechazados y escribe en `.staging`; `approve` es la única puerta
   hacia la web. Los descartes se conservan localmente y no entran en Git.
@@ -20,6 +21,21 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 93 (2026-08-07): la tercera pareja fotográfica ya vende
+  dos alojamientos completos.** `mobil-horizonte` pasa a la primera con
+  `soul_location`: mobil-home reconocible, terraza longitudinal, toldo verde
+  azulado y horizonte marítimo. El primer `bungalow-laguna-interior` se rechaza
+  por una persona reconocible en primer plano y el segundo por subexposición y
+  escala impropia de un bungalow para seis; al segundo rechazo el pipeline
+  cambia solo y de forma trazable a GPT Image 2. Su tercera variante aporta
+  cocina compacta, varias zonas de descanso, terraza sombreada y luz de laguna
+  sin texto, marcas ni geometría imposible. Estado **6/14**; los descartes se
+  conservan solo para auditoría local. El build genera **58 derivados
+  WebP/AVIF**. QA en Chrome real sobre las fichas a 1366/375: ambos AVIF cargan,
+  `scrollWidth === clientWidth`, sin imágenes rotas. Pipeline **8/8** y
+  portfolio **3/3**. Siguiente pareja sin lanzar:
+  `mobil-horizonte-interior` + `glamping-duna`. `pnpm check` **53/53**. Sin
+  deploy.
 - **Sesión autónoma 92 (2026-08-07): la segunda tanda fotográfica de Mar de
   Fondo entra en la demo con revisión real.** El circuito abierto reutiliza el
   fallback Higgsfield registrado sin borrar los dos fallos previos de Codex.
@@ -395,6 +411,22 @@ check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 93 — 2026-08-07 · **Un interior creíble completa la tercera pareja de Mar de Fondo** (autónoma, protocolo CONTINUA)
+
+- Se procesa exclusivamente `bungalow-laguna-interior` + `mobil-horizonte` con
+  el circuito de Higgsfield ya abierto; no se reintenta Codex ni se borra su
+  historial.
+- `mobil-horizonte` queda aprobado a la primera. El interior acumula dos
+  rechazos concretos y el pipeline activa GPT Image 2 sin editar la política a
+  mano; la tercera variante queda aprobada.
+- La ficha real del bungalow usa el interior como segunda imagen a 1366 px y la
+  del mobil-home carga su exterior a 375 px. Ambas sirven AVIF, no desbordan y
+  conservan el aviso de demo, tarifa y mostrador.
+- Estado fotográfico **6/14**; siguiente lote
+  `mobil-horizonte-interior` + `glamping-duna`, todavía sin generar.
+- Verificación aislada: pipeline **8/8**, portfolio **3/3**, build Mar de Fondo
+  **25 páginas / 58 derivados**; `pnpm check` **53/53**. Sin deploy remoto.
 
 ### Sesión 88 — 2026-08-07 · **Automatiza se detiene antes de ejecutar**
 

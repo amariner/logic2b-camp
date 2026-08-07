@@ -119,6 +119,54 @@
         "sourceExtension": ".png",
         "dimensions": "2016x1344"
       }
+    ],
+    "bungalow-laguna-interior": [
+      {
+        "at": "2026-08-07T14:22:37.804Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f44a9c05-9361-4db5-b7bd-ad9de24e6d57",
+        "reusedJob": false,
+        "promptSha256": "c0e8f8a21f54c1eab6828ca9947738522969769795f4f9f08e6a623d5996ef9e",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-07T14:23:56.182Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "dcfe6eba-2fb5-487a-be97-0ebcfd97ba0b",
+        "reusedJob": false,
+        "promptSha256": "c0e8f8a21f54c1eab6828ca9947738522969769795f4f9f08e6a623d5996ef9e",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-07T14:26:30.623Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "ad01f209-7c3c-4374-88a9-bccc45432a21",
+        "reusedJob": false,
+        "promptSha256": "c0e8f8a21f54c1eab6828ca9947738522969769795f4f9f08e6a623d5996ef9e",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "mobil-horizonte": [
+      {
+        "at": "2026-08-07T14:23:03.262Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "cfd8c7b1-df08-491a-af5a-5754e8585f88",
+        "reusedJob": false,
+        "promptSha256": "52ae8d3278c4b78fa9f55bb8b87b83659481e65917c473691496dfc324f3dbab",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
     ]
   },
   "approvals": {
@@ -136,6 +184,14 @@
     },
     "parcela-atlantica": {
       "at": "2026-08-07T14:10:41.311Z",
+      "gate": "visual-inspection"
+    },
+    "mobil-horizonte": {
+      "at": "2026-08-07T14:23:23.707Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-laguna-interior": {
+      "at": "2026-08-07T14:26:48.069Z",
       "gate": "visual-inspection"
     }
   },
@@ -162,6 +218,18 @@
         "at": "2026-08-07T14:08:03.450Z",
         "reason": "texto_y_numero_16_legibles_en_bolardo",
         "jobId": "9188d291-33d5-4681-868f-c5fa917b2f3c"
+      }
+    ],
+    "bungalow-laguna-interior": [
+      {
+        "at": "2026-08-07T14:23:23.925Z",
+        "reason": "persona_reconocible_en_primer_plano",
+        "jobId": "f44a9c05-9361-4db5-b7bd-ad9de24e6d57"
+      },
+      {
+        "at": "2026-08-07T14:24:16.674Z",
+        "reason": "interior_oscuro_y_estrecho_no_comunica_bungalow_para_seis",
+        "jobId": "dcfe6eba-2fb5-487a-be97-0ebcfd97ba0b"
       }
     ]
   }
