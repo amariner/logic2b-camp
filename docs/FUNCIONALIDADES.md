@@ -6,8 +6,9 @@
 
 > Nota comercial: los nombres Camp Web/Solicitudes/Reservas/Motor de este
 > inventario describen los **tiers técnicos actuales**. La oferta pública
-> aprobada en el ADR 0033 es Inicio/Gestión/Automatiza/Inteligente; E3 resolverá
-> su mapeo técnico.
+> aprobada en el ADR 0033 es Inicio/Gestión/Automatiza/Inteligente. Inicio,
+> Gestión y la primera interacción supervisada de Automatiza ya tienen una demo
+> propia; los carriles técnicos se conservan para no renombrar el motor a ciegas.
 
 ---
 
@@ -314,11 +315,13 @@ _Nota: el envío real por camping se activa al verificar su dominio de correo (p
 
 Con fecha en el plan de trabajo, no humo:
 
-| Módulo                    | Qué añade                                                                                                                                                            |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso |
-| **Gestión ampliada**      | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados                                                                       |
-| **Alta exprés**           | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real                                                                              |
+| Módulo                    | Qué añade                                                                                                                                                             |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso  |
+| **Gestión ampliada**      | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados                                                                        |
+| **Automatiza**            | Prototipo supervisado en Mar de Fondo: explica las fuentes de una respuesta propuesta y exige revisión humana; aprobar solo la deja preparada, no la publica ni envía |
+| **Inteligente**           | Próximo prototipo: recomendación de ocupación con origen, incertidumbre y cambio preparado; no ejecutará cambios                                                      |
+| **Alta exprés**           | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real                                                                               |
 
 ---
 

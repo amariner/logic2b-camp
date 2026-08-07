@@ -8,9 +8,10 @@
   visual, ADR 0034 y cada manifiesto de tenant.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
   `tenants/mardefondo/fotos.json`. La primera tanda (`hero-laguna`,
-  `hero-horizonte`) se lanzó con `imagegen` y falló antes de producir bytes por
-  error de red del backend integrado de Codex. Estado real: **0/14**; no se
-  cambió de proveedor ni se usó fallback CLI/API.
+  `hero-horizonte`) se lanzó con `imagegen` en las sesiones 86 y 88; ambos
+  intentos fallaron antes de producir bytes por error de red del backend
+  integrado de Codex. Estado real: **0/14**; no se cambió de proveedor ni se
+  usó fallback CLI/API. No se reintentará en bucle hasta que cambie el backend.
 - La fotografía no bloquea el recorrido: `<Materia>` mantiene la web completa y
   construible, pero no sustituye el lote final. El siguiente intento empieza por
   la misma primera tanda, nunca por 14 llamadas a ciegas.
@@ -19,6 +20,23 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 88 (2026-08-07): Automatiza ya enseña supervisión, no
+  magia.** El reintento obligatorio de `hero-laguna` volvió a fallar antes de
+  producir bytes; la skill integrada impide degradar silenciosamente a CLI/API,
+  así que la sesión avanzó al relevo pactado. Mar de Fondo gana
+  `/automatiza`: una reseña ficticia activa un borrador editable y muestra las
+  tres fuentes y los tres límites que explican la propuesta. La persona puede
+  descartarla o **«Aprobar y dejar preparada»**; el estado final dice de forma
+  persistente que no se publicó ni envió y el modelo de estados ni siquiera
+  contiene una transición `sent`. El fixture vive fuera del componente, el
+  estado es local/persistente y el reset común lo devuelve en vivo a revisión.
+  La ruta y su módulo de portada/sidebar solo son alcanzables en el build Mar
+  de Fondo; un dashboard normal o Pinada no los ofrece. **5 tests nuevos** fijan fuentes,
+  límites, no-ejecución, reversibilidad, reset y parseo fail-safe. QA sobre el
+  build real a 375/1366: cero desborde, CTA móvil 44 px, foco devuelto por el
+  menú, aprobación persistente y reset sin recarga; cero errores de página.
+  `pnpm check` **53/53** y bundle compuesto **11.307 enlaces / 358 HTML**.
+  D3-V sigue por Inteligente, dos fixtures, fotografía y capturas. Sin deploy.
 - **Sesión autónoma 87 (2026-08-07): Mar de Fondo ya une reserva y operación
   en el mismo escenario reversible.** El selector del dashboard deja de conocer
   solo Pinada y centraliza identidad, vuelta a la web, banner, transporte y
@@ -301,12 +319,11 @@ check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
   campings, landing y creatividades de muestra. Se mantiene «campings y solo
   campings», pero ya no espera a backend avanzado, ADR de infra ×12 ni CLI: se
   ejecuta como fábrica visual en olas 3 → 6 → 12 según el mandato demo-first.
-- **Último `/check`**: **2026-08-06 (sesión 79) — LOCAL, 46/46 verde**;
-  API **240/240** + enlaces **3/3**, tenant demo **62/62**, build del dashboard
-  dentro del presupuesto M6 (**170,34 kB gzip**) y el resto de typecheck, lint,
-  tests y builds verdes. La batería nueva de `created_at` corre sobre las 23
-  anclas de ADR 0030 y la ficha histórica pasa además **1/1** en navegador
-  contra Worker + D1 reales. Las referencias ambientales antiguas siguen en
+- **Último `/check`**: **2026-08-07 (sesión 88) — LOCAL, 53/53 verde**;
+  dashboard **23/23**, portfolio **3/3**, bundle compuesto **11.307 enlaces /
+  358 HTML** y entrada del build Mar de Fondo **178,16 kB gzip**, dentro del
+  presupuesto M6. Automatiza pasa además QA real a 375/1366 con persistencia,
+  reset, foco y cero desborde. Las referencias ambientales antiguas siguen en
   las sesiones 38–48; en esta máquina `reset.test.ts` no presenta el segfault.
 - **HECHO en la sesión 63 (2026-07-31, apunte prioritario de Andreu) y DESPLEGADO**: **las dos caras de la demo se enlazan entre sí** (`camp.logic2b.com`, versión `c86d5793`). El héroe de la landing ofrece web y mostrador con el mismo peso, el pie lista ambas, el banner de demo de la web del tenant lleva al mostrador (en los seis idiomas) y el `DemoBanner` del dashboard vuelve a la web. Al verificar apareció un **404 vivo desde ADR 0016**: el CTA del planning apuntaba a `/demo/admin/` cuando el dashboard se sirve en `/admin/` — era el único enlace de la landing al mostrador. En BACKLOG queda que **nadie comprueba los enlaces entre las tres superficies del bundle compuesto**.
 - **HECHO en la sesión 64 (2026-07-31)**: **el mostrador dentro de la ficha de alojamiento** (candidato `[4.x/web]`, cerrado) — el CTA devolvía al visitante a la home sin precargar el tipo que miraba. Ahora la ficha contesta por **su** tipo con el mismo `GET /api/availability` (sin endpoint nuevo) y el botón entra al funnel con tipo y fechas puestos; y cuando ese tipo no entra pero el camping sí tiene algo libre, ofrece la **salida** al mostrador general **conservando fechas y grupo** en vez de ser un callejón. Dos tests E2E nuevos (`ficha-mostrador.spec.ts`), etiquetas en los seis idiomas. Un defecto propio cazado en navegador: el mostrador dentro de la columna lateral reventaba la rejilla (`1fr` es `minmax(auto,1fr)`) y dejaba la **galería** en una tira → va a ancho completo fuera de la rejilla, galería de vuelta a 705px. **DESPLEGADO** el mismo día (versión `bfc479ac`), verificado contra producción con `no-cache`: la ficha sirve el título de disponibilidad y monta la isla del mostrador, también en alemán.
@@ -319,6 +336,28 @@ check` **48/48**. Medición de esta ejecución automatizada: identidad/contenido
 - **Deploy de la demo = MANUAL desde local**, hoy y hasta nuevo aviso: `pnpm --filter @logic-camp/api deploy:demo` (compone el bundle site+`/demo/`+`/admin/`, migra la D1 remota y despliega). El workflow `deploy-demo.yml` **existe pero no despliega**: sin la var de repo `DEPLOY_DEMO_ENABLED=true` el job se salta entero — comprobado en los 52 runs de `main`, todos verdes con los pasos de deploy en `skipped`. Desde la sesión 49 el workflow ya no duplica los pasos: llama a ese mismo script, así que encenderlo es solo poner los secrets `CLOUDFLARE_*` + la variable. **Un check verde en `main` no significa que la demo se haya actualizado.**
 
 ## Sesiones
+
+### Sesión 88 — 2026-08-07 · **Automatiza se detiene antes de ejecutar**
+
+El objetivo visual empezó por la pareja contractual de Mar de Fondo. La primera
+llamada (`hero-laguna`) volvió a fallar en tres segundos por red del backend
+integrado, antes de producir bytes. Se respetó el límite de dos, no se lanzó la
+segunda llamada a ciegas y no se cambió a CLI/API u otro proveedor. El relevo de
+`SIGUIENTE-SESION` era el primer prototipo Automatiza supervisado.
+
+La nueva ruta `/automatiza` solo entra en el build `mardefondo`. Un fixture
+tipado separa reseña, estancia ficticia, incidencias de recepción, resumen,
+fuentes, límites y respuesta propuesta. La pantalla recorre detectar → proponer
+→ revisar → preparar; permite editar, descartar y reabrir. Aprobar produce
+`prepared`, nunca `sent`, y lo explica dos veces: en el encabezado («No publica,
+no envía y no cobra») y en el resultado persistente. El reset común borra el
+estado y avisa a la pantalla abierta para que vuelva al fixture sin recargar.
+
+El pase por las ocho lentes mantiene un runtime y el DS común, i18n para todo el
+cromo, navegación/portada exclusivas por escenario, estado determinista y cero
+infraestructura. Verificación: dashboard 23/23; `pnpm check` 53/53; QA de
+navegador a 375/1366 con aprobación, recarga, reapertura, menú/foco y reset;
+bundle compuesto 11.307 enlaces / 358 HTML. No hubo deploy remoto.
 
 ### Sesión 85 — 2026-08-06 · **Pinada del Mar ya tiene piel propia**
 

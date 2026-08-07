@@ -33,6 +33,8 @@ const MAPA: Record<string, string | null> = {
   '/informes': 'gestion/informes',
   '/tarifas': 'gestion/tarifas',
   '/ajustes': 'gestion/ajustes',
+  // Prototipo de portfolio: todavía no forma parte de la guía operativa.
+  '/automatiza': null,
 };
 
 /**

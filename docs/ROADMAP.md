@@ -181,9 +181,10 @@ bases por marca, integraciones y producción real no son dependencias.
 | **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto             |
 
 **Estado (2026-08-07): D0-V, D1-V y D2-V cerrados; D3-V está en curso.** Mar de
-Fondo ya tiene identidad, catálogo de 300 unidades y reserva pública completa
-hasta un recibo de pago simulado sin red. Faltan operación a escala,
-Automatiza/Inteligente, fotografía y QA final. El
+Fondo ya tiene identidad, catálogo de 300 unidades, reserva pública hasta el
+recibo, operación reversible a escala y el primer prototipo Automatiza con
+revisión humana. Faltan Inteligente, los otros fixtures del contrato,
+fotografía y QA/capturas finales. El
 contrato de la primera ola vive en
 [`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md). D5.2 ya existe como
 franja de cifras y escalera; la galería espera tres demos clicables. Se mantiene

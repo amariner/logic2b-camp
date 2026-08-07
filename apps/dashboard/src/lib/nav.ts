@@ -22,6 +22,7 @@ import {
   Inbox,
   Map,
   Settings,
+  Sparkles,
   Tag,
   Tent,
   Users,
@@ -32,8 +33,8 @@ import { t } from '../i18n';
 
 type TKey = Parameters<typeof t>[0];
 
-/** [ruta, rótulo corto, icono, frase de portada, rol mínimo opcional] */
-export type NavItem = [string, TKey, LucideIcon, TKey, Role?];
+/** [ruta, rótulo, icono, frase, rol mínimo?, escenario exclusivo?] */
+export type NavItem = [string, TKey, LucideIcon, TKey, Role?, 'mardefondo'?];
 export type NavGroup = { label: TKey; items: NavItem[] };
 
 export const NAV_GROUPS: NavGroup[] = [
@@ -58,6 +59,10 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: 'nav.grupo.asistencia',
+    items: [['/automatiza', 'nav.automatiza', Sparkles, 'mod.automatiza', undefined, 'mardefondo']],
+  },
+  {
     label: 'nav.grupo.config',
     items: [
       ['/notificaciones', 'nav.notificaciones', Bell, 'mod.notificaciones'],
@@ -71,9 +76,16 @@ export const NAV_GROUPS: NavGroup[] = [
  * Navegación honesta: no ofrece una ruta que el servidor va a rechazar.
  * Es cortesía de interfaz; `requireRole` continúa siendo la barrera real.
  */
-export function navGroupsForRole(role: Role | null): NavGroup[] {
+export function navGroupsForRole(
+  role: Role | null,
+  scenario: string | undefined = import.meta.env.VITE_DEMO_SCENARIO,
+): NavGroup[] {
   return NAV_GROUPS.map((group) => ({
     ...group,
-    items: group.items.filter((item) => item[4] === undefined || tieneRol(role, item[4])),
+    items: group.items.filter(
+      (item) =>
+        (item[4] === undefined || tieneRol(role, item[4])) &&
+        (item[5] === undefined || item[5] === scenario),
+    ),
   })).filter((group) => group.items.length > 0);
 }

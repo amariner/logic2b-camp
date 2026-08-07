@@ -7,8 +7,11 @@ Demo comercial ficticia de **Logic Camp Visión** sobre el carril técnico
 - Español y motor compartido; no tiene Worker, D1, usuarios ni proveedores
   propios.
 - Ruta prevista: `/demos/mardefondo/`, siempre `noindex`.
-- Pago, Automatiza e Inteligente se representarán con fixtures reversibles y
-  los rótulos honestos del contrato visual.
+- Pago y Automatiza ya se representan con fixtures reversibles y los rótulos
+  honestos del contrato visual. Inteligente sigue pendiente.
+- `/demos/mardefondo/gestion/#/automatiza` revisa una respuesta propuesta,
+  explica sus fuentes y límites y se detiene en «preparada»: nunca publica ni
+  envía nada.
 
 ## Construir
 

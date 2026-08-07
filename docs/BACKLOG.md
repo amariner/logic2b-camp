@@ -126,13 +126,16 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 87)**: Mar de Fondo une ya el hilo
+- [D3-V] **Demo Visión — en curso (sesión 88)**: Mar de Fondo une ya el hilo
   disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
   300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
   escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
-  marca. Pendiente: Automatiza/Inteligente explicables; 14 fotos en tandas de 2
-  (primera tanda bloqueada por red de `imagegen`), derivados, QA visual y
-  capturas firma. Toda simulación conserva los rótulos exactos de contrato.
+  marca. Automatiza ya permite revisar, editar, descartar y preparar una
+  respuesta a reseña con fuentes y límites visibles; nunca la publica ni envía.
+  Pendiente: resumen de incidencias, Inteligente explicable, 14 fotos en tandas
+  de 2 (dos intentos de la primera pieza bloqueados antes de producir bytes),
+  derivados, QA visual y capturas firma. Toda simulación conserva los rótulos
+  exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
@@ -169,9 +172,11 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [E3-V/E4-V] **Inicio como demo y campaña**: queda absorbido por D1-V. El
   formulario usa un adaptador demo y muestra éxito/error/antispam; receptor,
   privacidad operativa y onboarding reales van al dossier de activación.
-- [E5-V] **Automatiza representado**: escenarios navegables de plantillas,
-  reseñas, redacción, traducción y resumen con resultados de muestra y revisión
-  humana visible.
+- [E5-V] **Automatiza representado — en curso**: la reseña y su respuesta ya
+  forman un escenario navegable con fuentes, límites, edición, descarte,
+  aprobación humana y reset; aprobar solo deja el borrador preparado. Faltan el
+  resumen de incidencias y las variantes de plantilla/traducción que aporten al
+  guion, sin multiplicar pantallas de relleno.
 - [E6-V] **Inteligente representado**: rentabilidad, previsión, integraciones y
   copiloto sobre datos demo, con origen/incertidumbre/confirmación visibles.
 

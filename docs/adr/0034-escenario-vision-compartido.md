@@ -71,5 +71,7 @@ La sesión 87 generaliza el selector y materializa la segunda variante del mismo
 dashboard: 300 unidades, 240 reservas sin solapes, plano propio, ficha, llegada,
 cobro y reset local. El bundle compuesto publica web y gestor bajo el mismo
 origen y la QA cruza `MF-DEMO-001` entre ambos sin ninguna petición `/api`.
-Automatiza, Inteligente y el lote fotográfico siguen siendo cortes posteriores
-de D3-V; no alteran esta decisión arquitectónica.
+La sesión 88 añade el primer corte Automatiza al mismo build: fixture tipado,
+revisión editable, aprobación local y reset, sin endpoint ni ejecución posible.
+Inteligente, los fixtures restantes y el lote fotográfico siguen siendo cortes
+posteriores de D3-V; no alteran esta decisión arquitectónica.

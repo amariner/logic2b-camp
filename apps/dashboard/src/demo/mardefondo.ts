@@ -11,6 +11,7 @@ import type {
   ReportsData,
   TenantSettings,
 } from '../api';
+import { resetAutomatizaScenario } from './automatiza';
 
 export const isMardefondoScenario = import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo';
 export const MARDEFONDO_STATE_KEY = 'logic2b-demo:mardefondo:manager-state:v1';
@@ -273,6 +274,7 @@ export function resetMardefondoScenario(): void {
   if (typeof localStorage === 'undefined') return;
   localStorage.removeItem(MARDEFONDO_STATE_KEY);
   localStorage.removeItem(MARDEFONDO_PUBLIC_BOOKINGS_KEY);
+  resetAutomatizaScenario();
 }
 
 export const mardefondoPlano: PlanoDescriptor = {
