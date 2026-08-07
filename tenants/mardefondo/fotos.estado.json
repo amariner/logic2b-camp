@@ -167,6 +167,54 @@
         "sourceExtension": ".png",
         "dimensions": "2016x1344"
       }
+    ],
+    "mobil-horizonte-interior": [
+      {
+        "at": "2026-08-07T14:33:48.626Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "97cee7e7-54f0-48bd-9e42-eb1792ee8937",
+        "reusedJob": false,
+        "promptSha256": "e6c9e0f061a9e3929d82cc03b4cfd7dc9417fe0dd4cc86ac951b900627bc098e",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-07T14:35:22.087Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "7d25b37f-cff2-4148-a4be-28032abbe4cb",
+        "reusedJob": false,
+        "promptSha256": "e6c9e0f061a9e3929d82cc03b4cfd7dc9417fe0dd4cc86ac951b900627bc098e",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-07T14:37:32.309Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "6d75ed93-a41c-4362-a8ed-0b407957ea0c",
+        "reusedJob": false,
+        "promptSha256": "e6c9e0f061a9e3929d82cc03b4cfd7dc9417fe0dd4cc86ac951b900627bc098e",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "glamping-duna": [
+      {
+        "at": "2026-08-07T14:34:17.023Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d9cb7674-9720-4c86-b34a-4976779c58cc",
+        "reusedJob": false,
+        "promptSha256": "02ed8778fb3f5c40eed7b1930da077b3f368f6db5ba228e1e83bd48340ca4597",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
     ]
   },
   "approvals": {
@@ -192,6 +240,14 @@
     },
     "bungalow-laguna-interior": {
       "at": "2026-08-07T14:26:48.069Z",
+      "gate": "visual-inspection"
+    },
+    "mobil-horizonte-interior": {
+      "at": "2026-08-07T14:37:47.967Z",
+      "gate": "visual-inspection"
+    },
+    "glamping-duna": {
+      "at": "2026-08-07T14:37:47.967Z",
       "gate": "visual-inspection"
     }
   },
@@ -230,6 +286,18 @@
         "at": "2026-08-07T14:24:16.674Z",
         "reason": "interior_oscuro_y_estrecho_no_comunica_bungalow_para_seis",
         "jobId": "dcfe6eba-2fb5-487a-be97-0ebcfd97ba0b"
+      }
+    ],
+    "mobil-horizonte-interior": [
+      {
+        "at": "2026-08-07T14:34:56.060Z",
+        "reason": "distribucion_vacia_y_pared_dominante_no_comunican_cinco_plazas",
+        "jobId": "97cee7e7-54f0-48bd-9e42-eb1792ee8937"
+      },
+      {
+        "at": "2026-08-07T14:35:33.224Z",
+        "reason": "arquitectura_de_villa_abierta_incompatible_con_mobil_home",
+        "jobId": "7d25b37f-cff2-4148-a4be-28032abbe4cb"
       }
     ]
   }
