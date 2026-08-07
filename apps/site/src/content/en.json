@@ -99,6 +99,32 @@
     "demo": "Explore the demo",
     "momento": "Go to the key moment",
     "nota": "All three campsites, their names, data and photography are fictional demonstrations. Automation and intelligence are shown as supervised prototypes; they take no action and do not represent contracted integrations.",
+    "ficha": {
+      "kicker": "Commercial overview · PDF",
+      "titulo": "Take the first wave with you.",
+      "texto": "Three journeys, an outcome-based comparison and direct links to every demo in a short overview made to share or print.",
+      "cta": "Download commercial overview",
+      "meta": "PDF · 3 pages · EN",
+      "href": "/logic2b-campings-first-wave.pdf",
+      "documento": {
+        "portadaKicker": "Demo portfolio · First wave",
+        "portadaTitulo": "Three campsites. One product that grows with operations.",
+        "portadaTexto": "Start, Management and Vision turn three campsite sizes into browsable journeys: win enquiries, organise daily work and prepare better decisions without changing platform.",
+        "portadaEtiqueta": "Browsable demos · Fictional data",
+        "eleccionKicker": "Choose by the job you need to solve",
+        "eleccionTitulo": "Scale changes. The foundation and your brand remain.",
+        "recorrido": "Demo journey",
+        "comparacionKicker": "Compare by outcome",
+        "comparacionTitulo": "More capability when operations need it.",
+        "enlace": "Open demo",
+        "cierreKicker": "Your campsite can be next",
+        "cierreTitulo": "Start with the outcome you need today.",
+        "cierreTexto": "A website that wins enquiries, a manager that organises reception or a complete platform. The same foundation lets you add capability without rebuilding your digital presence.",
+        "cierreCta": "Tell us how your campsite works",
+        "avisoTitulo": "Scope of this overview",
+        "pie": "Logic2B Campings · camp.logic2b.com"
+      }
+    },
     "comparador": {
       "kicker": "Compare by outcome",
       "titulo": "The same foundation, with more capability when operations need it.",

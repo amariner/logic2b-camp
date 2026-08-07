@@ -29,6 +29,15 @@ interface Props {
     demo: string;
     momento: string;
     nota: string;
+    ficha: {
+      kicker: string;
+      titulo: string;
+      texto: string;
+      cta: string;
+      meta: string;
+      href: string;
+      documento: Record<string, string>;
+    };
     comparador: {
       kicker: string;
       titulo: string;
@@ -120,6 +129,18 @@ const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] 
       </div>
       <p class="portfolio-note">{c.nota}</p>
     </div>
+
+    <aside id="ficha-comercial" class="portfolio-download lc-reveal" aria-labelledby="portfolio-download-title">
+      <div>
+        <p class="botanical-eyebrow">{c.ficha.kicker}</p>
+        <h3 id="portfolio-download-title">{c.ficha.titulo}</h3>
+        <p>{c.ficha.texto}</p>
+      </div>
+      <a class="portfolio-download-action" href={c.ficha.href} download>
+        <span>{c.ficha.cta}<small>{c.ficha.meta}</small></span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </aside>
   </div>
 </section>
 
@@ -327,6 +348,64 @@ const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] 
     font-size: 11px;
     line-height: 1.55;
   }
+  .portfolio-download {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(28px, 6vw, 84px);
+    align-items: end;
+    margin-top: 14px;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 16%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--botanical-paper) 72%, transparent);
+    padding: clamp(28px, 5vw, 54px);
+  }
+  .portfolio-download h3 {
+    max-width: 720px;
+    margin-top: 12px;
+    color: var(--botanical-ink);
+    font-size: clamp(27px, 3vw, 42px);
+    line-height: 1.08;
+  }
+  .portfolio-download p:not(.botanical-eyebrow) {
+    max-width: 720px;
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-ink) 72%, white);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .portfolio-download-action {
+    display: flex;
+    min-width: 250px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    border-radius: 999px;
+    background: var(--botanical-ink);
+    padding: 15px 18px 15px 22px;
+    color: var(--botanical-paper);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .portfolio-download-action small {
+    display: block;
+    margin-top: 4px;
+    color: color-mix(in srgb, var(--botanical-paper) 58%, transparent);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .portfolio-download-action > span:last-child {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--botanical-paper) 12%, transparent);
+    font-size: 18px;
+  }
   @media (prefers-reduced-motion: reduce) {
     .portfolio-image img { transition: none; }
     .portfolio-image:hover img { transform: none; }
@@ -338,6 +417,7 @@ const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] 
   }
   @media (max-width: 767px) {
     .portfolio-heading,
+    .portfolio-download,
     .portfolio-compare-heading,
     .portfolio-compare-grid {
       grid-template-columns: 1fr;
@@ -347,5 +427,6 @@ const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] 
     .portfolio-compare-grid { gap: 34px; background: transparent; }
     .portfolio-compare-grid article { padding: 0; }
     .portfolio-compare dl div { min-height: 0; }
+    .portfolio-download-action { width: 100%; min-width: 0; }
   }
 </style>

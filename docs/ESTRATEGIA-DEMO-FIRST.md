@@ -164,12 +164,12 @@ contratados y se convierte cada fila necesaria en plan de entrega.
    pantallas, arte, activos y soporte demo mínimo.
 2. **D1-V ✅ — primera demo Inicio**: L'Olivar completa marca, web, consulta
    sin red, bundle y capturas sin CLI ni infraestructura propia.
-3. **D2-V — demo Gestión (siguiente)**: reutilizar la fábrica y mostrar web → solicitud →
+3. **D2-V ✅ — demo Gestión**: reutilizar la fábrica y mostrar web → solicitud →
    gestor/planning.
-4. **D3-V — demo Visión**: representar automatización e inteligencia con
+4. **D3-V ✅ — demo Visión**: representar automatización e inteligencia con
    escenarios honestos y explicables.
-5. **D4-V 🟨 — escaparate de venta**: galería y comparador listos; pendientes
-   guion/capturas/vídeo, ficha comercial y campaña de muestra.
+5. **D4-V 🟨 — escaparate de venta**: galería, comparador y ficha comercial
+   bilingüe listos; pendientes guion/capturas/vídeo y campaña de muestra.
 6. Ampliar a seis y doce solo con aprendizaje comercial de las tres primeras.
 
 Los frentes de producción quedan **diferidos, no cancelados**. Se reactivan

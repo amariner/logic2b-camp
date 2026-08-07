@@ -8,6 +8,7 @@
     "typecheck": "astro check",
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
     "build": "astro build",
+    "ficha:ola1": "${LOGIC_CAMP_PDF_PYTHON:-python3} scripts/ficha-ola-1.py",
     "og": "node scripts/og.mjs",
     "capturas:mardefondo": "node scripts/capturas-mardefondo.mjs"
   },

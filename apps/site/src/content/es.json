@@ -99,6 +99,32 @@
     "demo": "Explorar la demo",
     "momento": "Ir al momento clave",
     "nota": "Los tres campings, sus nombres, datos y fotografías son demostraciones ficticias. Automatización e inteligencia se presentan como prototipos supervisados; no ejecutan acciones ni representan integraciones contratadas.",
+    "ficha": {
+      "kicker": "Ficha comercial · PDF",
+      "titulo": "Lleva la primera ola contigo.",
+      "texto": "Tres recorridos, una comparación por resultados y enlaces directos a cada demo en una ficha breve para compartir o imprimir.",
+      "cta": "Descargar ficha comercial",
+      "meta": "PDF · 3 páginas · ES",
+      "href": "/logic2b-campings-primera-ola.pdf",
+      "documento": {
+        "portadaKicker": "Portfolio de demostraciones · Primera ola",
+        "portadaTitulo": "Tres campings. Un producto que crece con la operación.",
+        "portadaTexto": "Inicio, Gestión y Visión convierten tres tamaños de camping en recorridos navegables: captar consultas, ordenar el día a día y preparar mejores decisiones sin cambiar de plataforma.",
+        "portadaEtiqueta": "Demos navegables · Datos ficticios",
+        "eleccionKicker": "Elige por el trabajo que quieres resolver",
+        "eleccionTitulo": "La escala cambia. La base y tu marca permanecen.",
+        "recorrido": "Recorrido de demostración",
+        "comparacionKicker": "Comparación por resultado",
+        "comparacionTitulo": "Más capacidad cuando la operación la necesita.",
+        "enlace": "Abrir demo",
+        "cierreKicker": "El siguiente camping puede ser el tuyo",
+        "cierreTitulo": "Empezamos por el resultado que necesitas hoy.",
+        "cierreTexto": "Una web que consigue consultas, un gestor que ordena recepción o una plataforma completa. La misma base permite ampliar capacidades sin reconstruir tu presencia digital.",
+        "cierreCta": "Cuéntanos cómo trabaja tu camping",
+        "avisoTitulo": "Alcance de esta ficha",
+        "pie": "Logic2B Campings · camp.logic2b.com"
+      }
+    },
     "comparador": {
       "kicker": "Compara por resultado",
       "titulo": "La misma base, más capacidad cuando la operación la necesita.",

@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint comercial D4-V · 2026-08-08 (sesión 99)
+
+- La primera ola ya tiene una ficha comercial que se puede enviar: dos PDF A4
+  de tres páginas, ES/EN, construidos desde el mismo `portfolio` bilingüe de la
+  landing. Inicio, Gestión y Visión se explican por tamaño, resultado y recorrido;
+  no aparece una segunda lista técnica que pueda divergir del sitio.
+- El generador reproducible usa las tres miniaturas y tres capturas aprobadas,
+  valida el orden `olivar`/`pinadamar`/`mardefondo` y publica copias idénticas en
+  `output/pdf/` y `apps/site/public/`. Cada archivo pesa **307 kB**, contiene tres
+  enlaces a momentos firma y un QR de contacto; pypdf confirma **3 páginas / enlaces
+  [0,3,1]** y extracción de texto completa.
+- La landing incorpora una descarga localizada y estática, sin isla, API ni
+  proveedor externo. El alcance ficticio permanece visible tanto en la página
+  como dentro del PDF; pago, automatización e inteligencia no se presentan como
+  integraciones operativas. ADR 0037 queda propuesto para validación posterior.
+- QA real en navegador a **1366/375** sobre ES/EN: CTA visible, ancho móvil de
+  293 px, `download` y destino correctos, cero desborde, imágenes rotas o avisos
+  de consola. Las seis páginas se renderizaron e inspeccionaron tras corregir el
+  solape inicial de un enlace sobre el tercer paso; MIME del bundle
+  `application/pdf`.
+- Dos pasadas de `pnpm check` alcanzaron **49/53** tareas antes de que el runtime
+  del tenant demo volviera a salir sin aserción bajo concurrencia y Turbo
+  cancelara tres tareas en curso. Reejecuciones aisladas verdes: tenant demo **62/62**, pipeline
+  fotográfico **9/9** + portfolio **3/3**, sitio **71 páginas** y typecheck
+  **0 errores**. Sin deploy.
+
 ## Checkpoint visual D3-V · 2026-08-07 (sesión 98)
 
 - La generación integrada de OpenAI vuelve a producir bytes. Las seis piezas
@@ -70,6 +96,17 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 99 (2026-08-08): D4-V ya dispone de una ficha comercial
+  descargable y bilingüe.** ADR 0037 propuesto: un solo generador editorial lee
+  el contenido que ya alimenta la landing y compone dos PDF de tres páginas con
+  las miniaturas/capturas aprobadas, enlaces a cada recorrido, QR de contacto y
+  alcance de demostración explícito. Las copias publicadas y de QA son idénticas,
+  pesan **307 kB** por idioma y se sirven como `application/pdf`. La landing gana
+  un CTA localizado sin JavaScript; QA 1366/375 en ES/EN confirma cero desborde,
+  imágenes rotas o consola. Dos pases globales llegaron a **49/53** por la salida
+  sin aserción del tenant demo bajo concurrencia; aislado pasó **62/62**, junto al
+  pipeline **9/9**, portfolio **3/3**, sitio **71 páginas** y typecheck limpio.
+  D4-V continúa por la campaña de muestra y el vídeo. Sin deploy.
 - **Sesión autónoma 98 (2026-08-07): D3-V cierra su fotografía con el
   generador integrado y sin saturar el servidor.** Se generaron y aprobaron,
   en orden y una por una, `glamping-duna-interior`, `instalacion-laguna`,

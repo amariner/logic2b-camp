@@ -136,10 +136,17 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   integrado de OpenAI de una en una, con inspección y pausas de 20 segundos,
   sin fallback ni CLI/API con clave. Capturas firma y derivados sociales siguen
   siendo reproducibles; build específico **25 páginas / 112 derivados**.
-- [D4-V] **Escaparate de las tres — PARCIAL (sesión 97)**: galería y comparador
-  bilingües ya viven en la landing con las tres miniaturas aprobadas, escala,
-  recorrido y enlaces al momento firma. Quedan capturas/vídeo, ficha comercial
-  descargable y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
+- [D4-V] **Escaparate de las tres — PARCIAL (sesiones 97/99)**: galería y
+  comparador bilingües ya viven en la landing con las tres miniaturas aprobadas,
+  escala, recorrido y enlaces al momento firma. La ficha comercial ES/EN se
+  genera desde la misma fuente, pesa 307 kB y se descarga desde la sección.
+  Quedan capturas/vídeo y campaña de muestra. Después, ampliar a 6 y 12 solo con
+  aprendizaje.
+- ~~[D4-V/ficha] **Ficha comercial descargable de la primera ola**~~ → **hecho
+  2026-08-08 (sesión 99)**: dos PDF A4 de tres páginas generados desde el
+  portfolio i18n, con las tres miniaturas, capturas aprobadas, comparación por
+  resultados, enlaces y QR. Reproducible con ReportLab, 307 kB por idioma y
+  enlazado sin JavaScript desde la landing.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
   2026-08-05 por E1**: `/precios/` publica la escalera 49/149/249/399 € y
   `docs/TARIFAS-LOGIC2B.md` pasa a v2. Se mantiene la revisión de margen después

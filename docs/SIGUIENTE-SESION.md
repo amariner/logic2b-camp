@@ -1,44 +1,47 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 98 (2026-08-07). **D3-V está cerrado** con 14/14
-> fotografías aprobadas. D4-V continúa tras publicar la galería y el comparador
-> de las tres demos.
+> Reescrito tras la sesión 99 (2026-08-08). D3-V está cerrado y D4-V ya tiene
+> galería, comparador y ficha comercial bilingüe descargable.
 
 ## Estado en una línea
 
-La primera ola ya tiene tres demos navegables y completas; falta convertir el
-escaparate en una pieza comercial que Andreu pueda enviar o usar en campaña.
+La primera ola ya se puede navegar y enviar en PDF; falta demostrar cómo una
+campaña propia desemboca en reserva directa sin fingir cuentas publicitarias.
 
 ## Objetivo prioritario
 
-1. Confirmar `pnpm fotos -- status mardefondo`: debe indicar 14/14 y cola
-   completa. No regenerar fotografía ni derivados si sus fuentes no cambian.
-2. Continuar D4-V con **una ficha comercial descargable de la primera ola**,
-   reutilizando la galería, el comparador, las tres miniaturas y las capturas ya
-   aprobadas. Debe explicar Inicio / Gestión / Visión por resultado, recorrido y
-   tamaño, no como inventario técnico.
-3. Mantener el documento honesto: demos y datos ficticios rotulados; Automatiza
-   e Inteligente como prototipos supervisados; nada de logos de clientes reales,
-   métricas inventadas, cuentas publicitarias, píxeles o proveedores externos.
-4. Preferir una salida reproducible desde el repositorio y enlazable desde la
-   landing. Si el formato abre una fase o una dependencia nueva, escribir el ADR
-   propuesto antes del código y mantener el cambio reversible.
-5. Verificar a 1366/375, enlaces internos, peso de recursos y descarga; ejecutar
-   `pnpm check`. Si reaparece el timeout de API bajo concurrencia, reejecutar la
-   suite aislada y documentar ambos resultados.
+1. Confirmar que los dos PDF de `output/pdf/` y `apps/site/public/` siguen
+   presentes y que la landing los enlaza. No regenerarlos ni tocar fotografía si
+   el contenido del portfolio no cambia.
+2. Continuar D4-V con **una campaña de muestra acotada para Mar de Fondo**:
+   anuncio de búsqueda, pieza display 300×250 y pieza de feed 1080×1080, todos
+   derivados de fotografía aprobada y reunidos en una sección responsive de la
+   landing.
+3. El recorrido debe ser clicable y conservar una sola historia: creatividad de
+   ejemplo → `/demos/mardefondo/` con UTM ficticias → disponibilidad/reserva demo.
+   Rotular «creatividad de ejemplo» y «pago simulado» donde corresponda.
+4. No usar logos ni cromo copiado de Google/Meta, abrir cuentas, instalar píxeles,
+   inventar conversiones/ROAS o llamar a un proveedor. Son assets estáticos del
+   repositorio; el argumento es canal propio y reserva directa, no una promesa de
+   rendimiento.
+5. Mantener ES/EN, teclado, foco, `prefers-reduced-motion`, cero desborde a
+   1366/375 y enlaces verificables. Ejecutar `pnpm check`; si el tenant demo sale
+   bajo concurrencia sin aserción, reejecutarlo aislado y documentar ambos
+   resultados.
 
 ## Ya terminado — no repetir
 
 - D1-V L'Olivar, D2-V Pinada del Mar y D3-V Mar de Fondo están cerrados.
-- Mar de Fondo: 14/14 fotos aprobadas, `.staging` vacío, tres capturas firma,
-  miniatura/OG/icono reproducibles y build específico verde.
-- La landing ya incluye galería y comparador bilingüe con enlaces a cada web y
-  momento firma (ADR 0036, D4-V parcial).
+- Mar de Fondo tiene 14/14 fotos, capturas firma y derivados aprobados.
+- La landing incluye galería, comparador y descarga ES/EN de la ficha comercial.
+- Los PDF son reproducibles desde el portfolio i18n, pesan 307 kB y contienen
+  enlaces/QR; no crear otra fuente editorial ni otro formato en esta sesión.
 - No desplegar un tenant ni crear D1, usuarios, email, pagos o infraestructura
   por marca.
 
 ## Regla de alcance
 
+- Campaña: «Creatividad de ejemplo · sin cuenta publicitaria ni medición real».
 - Pago: «Pago simulado · no se ha realizado ningún cargo».
 - Automatiza: «Prototipo supervisado».
 - Inteligente: «Prototipo · no ejecuta cambios».
