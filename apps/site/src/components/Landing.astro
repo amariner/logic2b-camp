@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import EcosystemRail from './EcosystemRail.astro';
 import PlanningVisual from './PlanningVisual.astro';
+import PortfolioGallery from './PortfolioGallery.astro';
 import ProductCardVisual from './ProductCardVisual.astro';
 import ThemeRail from './ThemeRail.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
@@ -82,6 +83,8 @@ const iconosProblema = [
       <p id="ecosystem-title" class="botanical-brand-band-label">{c.escala.titulo}</p>
       <EcosystemRail items={c.escala.ecosistema.items} label={c.escala.ecosistema.aria} />
     </section>
+
+    <PortfolioGallery content={c.portfolio} />
 
     <section class="botanical-shell botanical-section botanical-problem-layout">
       <div class="botanical-problem-title lc-reveal">

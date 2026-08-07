@@ -1,0 +1,351 @@
+---
+import { requiredPortfolioImage } from '../lib/portfolio';
+
+interface PortfolioItem {
+  slug: string;
+  nombre: string;
+  nivel: string;
+  escala: string;
+  perfil: string;
+  promesa: string;
+  imagenAlt: string;
+  href: string;
+  momento: string;
+  momentoHref: string;
+  recorrido: string[];
+  comparacion: {
+    captacion: string;
+    operacion: string;
+    automatizacion: string;
+    decision: string;
+  };
+}
+
+interface Props {
+  content: {
+    kicker: string;
+    titulo: string;
+    texto: string;
+    demo: string;
+    momento: string;
+    nota: string;
+    comparador: {
+      kicker: string;
+      titulo: string;
+      filas: {
+        captacion: string;
+        operacion: string;
+        automatizacion: string;
+        decision: string;
+      };
+    };
+    items: PortfolioItem[];
+  };
+}
+
+const { content: c } = Astro.props;
+const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] as const;
+---
+
+<section id="demos" class="portfolio-section botanical-section" aria-labelledby="portfolio-title">
+  <div class="botanical-shell">
+    <header class="portfolio-heading lc-reveal">
+      <div>
+        <p class="botanical-eyebrow">{c.kicker}</p>
+        <h2 id="portfolio-title" class="botanical-heading-sm">{c.titulo}</h2>
+      </div>
+      <p class="botanical-copy">{c.texto}</p>
+    </header>
+
+    <div class="portfolio-grid">
+      {
+        c.items.map((item, index) => (
+          <article class="portfolio-card lc-reveal" style={`--lc-delay:${index * 70}ms`}>
+            <a class="portfolio-image" href={item.href} aria-label={`${c.demo}: ${item.nombre}`}>
+              <img
+                src={requiredPortfolioImage(item.slug)}
+                alt={item.imagenAlt}
+                width="1600"
+                height="1000"
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+              <span>{item.nivel}</span>
+            </a>
+            <div class="portfolio-card-body">
+              <div class="portfolio-card-meta">
+                <p>{item.escala}</p>
+                <span>{item.perfil}</span>
+              </div>
+              <h3>{item.nombre}</h3>
+              <p class="portfolio-promise">{item.promesa}</p>
+              <ol class="portfolio-journey" aria-label={item.promesa}>
+                {item.recorrido.map((step, stepIndex) => (
+                  <li><i>{String(stepIndex + 1).padStart(2, '0')}</i><span>{step}</span></li>
+                ))}
+              </ol>
+              <div class="portfolio-actions">
+                <a class="botanical-button" href={item.href}>{c.demo}<span aria-hidden="true">↗</span></a>
+                <a class="portfolio-moment" href={item.momentoHref}>{c.momento}: {item.momento}<span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="portfolio-compare lc-reveal">
+      <div class="portfolio-compare-heading">
+        <p class="botanical-eyebrow">{c.comparador.kicker}</p>
+        <h3>{c.comparador.titulo}</h3>
+      </div>
+      <div class="portfolio-compare-grid">
+        {
+          c.items.map((item) => (
+            <article>
+              <div class="portfolio-compare-card-head">
+                <span>{item.nivel}</span>
+                <h4>{item.nombre}</h4>
+              </div>
+              <dl>
+                {comparisonKeys.map((key) => (
+                  <div>
+                    <dt>{c.comparador.filas[key]}</dt>
+                    <dd>{item.comparacion[key]}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          ))
+        }
+      </div>
+      <p class="portfolio-note">{c.nota}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portfolio-section {
+    background: var(--botanical-keylime);
+  }
+  .portfolio-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .72fr);
+    gap: clamp(36px, 8vw, 120px);
+    align-items: end;
+  }
+  .portfolio-heading h2 {
+    margin-top: 18px;
+  }
+  .portfolio-heading .botanical-copy {
+    max-width: 610px;
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: clamp(42px, 6vw, 72px);
+  }
+  .portfolio-card {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--botanical-paper);
+  }
+  .portfolio-image {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--botanical-slate);
+  }
+  .portfolio-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 420ms ease;
+  }
+  .portfolio-image:hover img {
+    transform: scale(1.025);
+  }
+  .portfolio-image span {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--botanical-paper) 92%, transparent);
+    padding: 8px 11px;
+    color: var(--botanical-ink);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+  .portfolio-card-body {
+    padding: clamp(22px, 2.5vw, 32px);
+  }
+  .portfolio-card-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    color: color-mix(in srgb, var(--botanical-ink) 64%, white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .portfolio-card-meta span {
+    text-align: right;
+  }
+  .portfolio-card h3 {
+    margin-top: 14px;
+    font-size: clamp(28px, 2.4vw, 38px);
+    line-height: 1;
+  }
+  .portfolio-promise {
+    min-height: 66px;
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-ink) 72%, white);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .portfolio-journey {
+    display: grid;
+    margin-top: 24px;
+    border-top: 1px solid var(--botanical-border);
+  }
+  .portfolio-journey li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--botanical-border);
+    color: var(--botanical-ink);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .portfolio-journey i {
+    color: color-mix(in srgb, var(--botanical-ink) 45%, white);
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .portfolio-actions {
+    display: grid;
+    gap: 13px;
+    margin-top: 24px;
+  }
+  .portfolio-actions .botanical-button {
+    justify-content: space-between;
+  }
+  .portfolio-moment {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--botanical-ink);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .portfolio-compare {
+    margin-top: 14px;
+    border-radius: 14px;
+    background: var(--botanical-ink);
+    padding: clamp(28px, 5vw, 58px);
+    color: var(--botanical-paper);
+  }
+  .portfolio-compare-heading {
+    display: grid;
+    grid-template-columns: .45fr 1fr;
+    gap: 30px;
+    align-items: end;
+  }
+  .portfolio-compare .botanical-eyebrow {
+    color: var(--botanical-sage);
+  }
+  .portfolio-compare h3,
+  .portfolio-compare h4 {
+    color: var(--botanical-paper);
+  }
+  .portfolio-compare h3 {
+    max-width: 720px;
+    font-size: clamp(28px, 3.5vw, 46px);
+    line-height: 1.08;
+  }
+  .portfolio-compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 42px;
+    background: color-mix(in srgb, var(--botanical-paper) 18%, transparent);
+  }
+  .portfolio-compare-grid article {
+    min-width: 0;
+    background: var(--botanical-ink);
+    padding: 0 clamp(16px, 2vw, 28px);
+  }
+  .portfolio-compare-card-head span {
+    color: var(--botanical-sage);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .portfolio-compare-card-head h4 {
+    margin-top: 8px;
+    font-size: 25px;
+  }
+  .portfolio-compare dl {
+    margin-top: 22px;
+  }
+  .portfolio-compare dl div {
+    min-height: 92px;
+    border-top: 1px solid color-mix(in srgb, var(--botanical-paper) 18%, transparent);
+    padding: 15px 0;
+  }
+  .portfolio-compare dt {
+    color: var(--botanical-sage);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .portfolio-compare dd {
+    margin-top: 7px;
+    color: color-mix(in srgb, var(--botanical-paper) 82%, transparent);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .portfolio-note {
+    max-width: 920px;
+    margin-top: 36px;
+    color: color-mix(in srgb, var(--botanical-paper) 64%, transparent);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portfolio-image img { transition: none; }
+    .portfolio-image:hover img { transform: none; }
+  }
+  @media (max-width: 1023px) {
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .portfolio-card { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+    .portfolio-promise { min-height: 0; }
+  }
+  @media (max-width: 767px) {
+    .portfolio-heading,
+    .portfolio-compare-heading,
+    .portfolio-compare-grid {
+      grid-template-columns: 1fr;
+    }
+    .portfolio-heading { gap: 22px; }
+    .portfolio-card { display: block; }
+    .portfolio-compare-grid { gap: 34px; background: transparent; }
+    .portfolio-compare-grid article { padding: 0; }
+    .portfolio-compare dl div { min-height: 0; }
+  }
+</style>

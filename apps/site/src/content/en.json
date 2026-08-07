@@ -5,6 +5,7 @@
   },
   "nav": {
     "producto": "Product",
+    "portfolio": "Demos",
     "niveles": "Plans",
     "planning": "The planner",
     "temas": "Themes",
@@ -32,13 +33,14 @@
     },
     "kicker": "Visual directions for campsites",
     "titulo": "Your campsite should not look like everyone else's.",
-    "texto": "The portfolio now turns three visual directions into distinct campsites on one product. Start and Management are complete journeys; Vision is in production.",
+    "texto": "Three fictional campsites turn Start, Management and Vision into browsable journeys on the same product.",
     "verTodos": "See all themes",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
     "nota": "One technical base, distinct identities. Each demo changes light, voice, inventory and rhythm without duplicating the product.",
     "items": [
       {
+        "slug": "olivar",
         "nombre": "L'Olivar",
         "estilo": "Start · dry and intimate",
         "imagen": "/hero-atmosfera.webp",
@@ -47,6 +49,7 @@
         "href": "/demos/olivar/"
       },
       {
+        "slug": "pinadamar",
         "nombre": "Pinada del Mar",
         "estilo": "Management · coastal operations",
         "imagen": "/propuestas/azahar/piscina.jpg",
@@ -55,11 +58,12 @@
         "href": "/demos/pinadamar/"
       },
       {
+        "slug": "mardefondo",
         "nombre": "Mar de Fondo",
         "estilo": "Vision · editorial resort",
         "imagen": "/propuestas/azahar/vida-camping.jpg",
         "variante": "resort",
-        "estado": "In production",
+        "estado": "Browsable demo",
         "href": "/demos/mardefondo/"
       },
       {
@@ -85,6 +89,95 @@
         "variante": "pitch",
         "estado": "Visual concept",
         "href": ""
+      }
+    ]
+  },
+  "portfolio": {
+    "kicker": "Three campsites, one product",
+    "titulo": "Find the demo that feels most like your campsite.",
+    "texto": "This is not one template in three colours. Each journey changes scale, voice, inventory and the job it solves, while keeping a shared foundation that can grow with you.",
+    "demo": "Explore the demo",
+    "momento": "Go to the key moment",
+    "nota": "All three campsites, their names, data and photography are fictional demonstrations. Automation and intelligence are shown as supervised prototypes; they take no action and do not represent contracted integrations.",
+    "comparador": {
+      "kicker": "Compare by outcome",
+      "titulo": "The same foundation, with more capability when operations need it.",
+      "filas": {
+        "captacion": "Direct acquisition",
+        "operacion": "Daily operations",
+        "automatizacion": "Automation",
+        "decision": "Decisions"
+      }
+    },
+    "items": [
+      {
+        "slug": "olivar",
+        "nombre": "Camping L'Olivar",
+        "nivel": "Start",
+        "escala": "22 units",
+        "perfil": "Small inland campsite",
+        "promesa": "A distinctive website that turns visits into clear enquiries for reception.",
+        "imagenAlt": "Home page of the Camping L'Olivar demo among olive trees and dry-stone walls",
+        "href": "/demos/olivar/",
+        "momento": "enquiry without a booking engine",
+        "momentoHref": "/demos/olivar/contacto/#consulta",
+        "recorrido": [
+          "Discover the campsite",
+          "Compare two ways to stay",
+          "Send a demonstration enquiry"
+        ],
+        "comparacion": {
+          "captacion": "Website, accommodation and guided enquiry",
+          "operacion": "Reception replies through its usual channel",
+          "automatizacion": "Not included",
+          "decision": "Basic web metrics when production is activated"
+        }
+      },
+      {
+        "slug": "pinadamar",
+        "nombre": "Pinada del Mar",
+        "nivel": "Management",
+        "escala": "110 units",
+        "perfil": "Mid-size coastal campsite",
+        "promesa": "Every enquiry enters a manager where reception controls availability, planner and map.",
+        "imagenAlt": "Home page of the Pinada del Mar demo beneath a coastal pine grove",
+        "href": "/demos/pinadamar/",
+        "momento": "operational planner",
+        "momentoHref": "/demos/pinadamar/gestion/#/planning",
+        "recorrido": [
+          "Enquire about a stay",
+          "Open the request in the manager",
+          "Locate bookings on planner and map"
+        ],
+        "comparacion": {
+          "captacion": "Website and enquiries connected to the demo manager",
+          "operacion": "Planner, map, arrivals, payments and guests",
+          "automatizacion": "Traceable manual workflows",
+          "decision": "Operational campsite reporting"
+        }
+      },
+      {
+        "slug": "mardefondo",
+        "nombre": "Mar de Fondo Resort",
+        "nivel": "Vision",
+        "escala": "300 units",
+        "perfil": "Mediterranean resort",
+        "promesa": "Direct bookings, large-scale operations and supervised prototypes to save time and make better decisions.",
+        "imagenAlt": "Editorial home page of the Mar de Fondo Resort demo beside a lagoon pool",
+        "href": "/demos/mardefondo/",
+        "momento": "explainable recommendation",
+        "momentoHref": "/demos/mardefondo/gestion/#/inteligente",
+        "recorrido": [
+          "Book and receive a demo receipt",
+          "Operate 300 units",
+          "Review automation and intelligence"
+        ],
+        "comparacion": {
+          "captacion": "Direct booking with clearly simulated payment",
+          "operacion": "Full manager with a large-scale scenario",
+          "automatizacion": "Supervised proposals, never published alone",
+          "decision": "Recommendations with sources, range and confidence"
+        }
       }
     ]
   },

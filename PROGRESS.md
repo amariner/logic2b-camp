@@ -1,5 +1,21 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint comercial D4-V · 2026-08-07 (sesión 97)
+
+- La landing ya abre el escaparate de la primera ola: L'Olivar, Pinada del Mar
+  y Mar de Fondo se comparan por tamaño, resultado, recorrido y capacidad, con
+  entrada a la web pública y al momento firma de cada demo.
+- Las tarjetas consumen directamente las tres `miniatura.webp` aprobadas de
+  los tenants. No se generó ninguna imagen, no se tocó la cola 8/14 de Mar de
+  Fondo y desaparecen de las tres demos navegables las fotos prestadas de la
+  propuesta Azahar.
+- La comparación es HTML estático, bilingüe y honesta: Inicio, Gestión y Visión
+  se describen por captación, operación, automatización y decisión; los
+  prototipos y datos ficticios quedan rotulados en la propia sección.
+- QA real a 1366/375: tres tarjetas y tres fichas comparativas, nueve enlaces,
+  cero imágenes rotas, desborde, errores de consola o respuestas fallidas.
+  Bundle compuesto: **11.523 enlaces / 358 HTML**. `pnpm check` **53/53**.
+
 ## Checkpoint visual D3-V · 2026-08-07 (sesión 96)
 
 - La instrucción más reciente de Andreu pide usar el generador integrado de
@@ -20,7 +36,7 @@
   `inteligente-1366` (69 kB). Al producirlas se detectó que el héroe Visión
   ignoraba `hero-laguna`; ahora usa la clave configurada si falta `hero-dia`.
 - Los derivados de marca ya no dependen de trabajo manual: `pnpm fotos --
-  derive mardefondo` exige una fuente aprobada y genera miniatura 16:10 (62
+derive mardefondo` exige una fuente aprobada y genera miniatura 16:10 (62
   kB), OG 1200×630 (58 kB) y apple-touch icon (2 kB), con límites de peso que
   hacen fallar el comando antes de publicar un activo excesivo.
 
@@ -28,6 +44,19 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión 97 (2026-08-07): el portfolio deja de ser una promesa y se puede
+  elegir desde la landing.** ADR 0036 propuesto: D4-V se abre solo por su parte
+  independiente de la fotografía pendiente. `PortfolioGallery` presenta las
+  tres anclas con su escala (22/110/300 unidades), un recorrido de tres pasos y
+  dos destinos reales; el comparador explica qué cambia en captación,
+  operación, automatización y decisión sin convertirlo en una tabla técnica.
+  Las miniaturas se importan desde cada tenant y Vite las versiona: un activo
+  ausente rompe el build antes de publicar. La cinta de temas y su catálogo
+  también dejan de enseñar Azahar como si fuera L'Olivar, Pinada o Mar de Fondo.
+  Navegación y copy bilingüe actualizados. QA visual y funcional 1366/375
+  verde; bundle **11.523 enlaces / 358 HTML**, portfolio **3/3** y `pnpm check`
+  **53/53**. D4-V queda parcial: campaña, ficha descargable y vídeo siguen
+  pendientes; D3-V conserva sus seis fotos. Despliegue solicitado por Andreu.
 - **Sesión autónoma 96 (2026-08-07): Mar de Fondo ya tiene derivados sociales
   ligeros aunque la red siga bloqueando su quinta pareja.** Se hicieron dos
   llamadas al generador integrado de OpenAI para `glamping-duna-interior`, de

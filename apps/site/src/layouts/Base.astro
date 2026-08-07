@@ -86,6 +86,7 @@ const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/adm
 // (secciones del home según aparecen al hacer scroll, luego páginas propias).
 // Si un destino entra o sale, se toca solo aquí y los dos menús siguen iguales.
 const nav = [
+  { href: `${inicio}#demos`, label: c.nav.portfolio, icon: 'themes' },
   { href: `${inicio}#producto`, label: c.nav.producto, icon: 'product' },
   { href: `${inicio}#planning`, label: c.nav.planning, icon: 'planning' },
   { href: `${inicio}#niveles`, label: c.nav.niveles, icon: 'plans' },

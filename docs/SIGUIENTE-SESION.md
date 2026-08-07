@@ -1,13 +1,13 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 96 (2026-08-07). **D3-V está en curso**: recorrido,
-> capturas y derivados sociales están listos; la fotografía permanece en ocho
-> de catorce piezas porque el generador integrado sigue fallando por red.
+> Reescrito tras la sesión 97 (2026-08-07). **D3-V y D4-V están en curso**:
+> mientras el generador fallaba, la landing abrió la galería y el comparador de
+> las tres demos sin alterar la cola fotográfica 8/14.
 
 ## Estado en una línea
 
-Mar de Fondo ya vende web, reserva, escala operativa e IA supervisada con
-capturas y derivados de 2–69 kB; faltan seis fotografías y su QA final.
+Las tres demos ya se eligen y comparan desde la landing; Mar de Fondo conserva
+seis fotografías pendientes y su QA final.
 
 ## Objetivo prioritario
 
@@ -35,6 +35,8 @@ capturas y derivados de 2–69 kB; faltan seis fotografías y su QA final.
 
 ## Ya terminado — no repetir
 
+- La landing ya tiene galería/comparador bilingüe con las tres miniaturas
+  aprobadas y enlaces a cada web y momento firma (ADR 0036, D4-V parcial).
 - `tenants/mardefondo`: identidad, contenido, cuatro familias, 300 unidades,
   tarifas/extras y reserva local `MF-DEMO-001`.
 - Gestor: 240 reservas, planning, ficha, búsquedas, llegada/cobro/devolución,

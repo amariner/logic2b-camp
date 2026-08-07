@@ -5,6 +5,7 @@
   },
   "nav": {
     "producto": "Producto",
+    "portfolio": "Demos",
     "niveles": "Planes",
     "planning": "El planning",
     "temas": "Temas",
@@ -32,13 +33,14 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "El portfolio ya convierte tres direcciones visuales en campings distintos sobre el mismo producto. Inicio y Gestión son recorridos completos; Visión está en producción.",
+    "texto": "Tres campings ficticios convierten Inicio, Gestión y Visión en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
     "nota": "Una base técnica, identidades propias. Cada demo cambia luz, voz, inventario y ritmo sin duplicar el producto.",
     "items": [
       {
+        "slug": "olivar",
         "nombre": "L'Olivar",
         "estilo": "Inicio · seco y próximo",
         "imagen": "/hero-atmosfera.webp",
@@ -47,6 +49,7 @@
         "href": "/demos/olivar/"
       },
       {
+        "slug": "pinadamar",
         "nombre": "Pinada del Mar",
         "estilo": "Gestión · costero y operativo",
         "imagen": "/propuestas/azahar/piscina.jpg",
@@ -55,11 +58,12 @@
         "href": "/demos/pinadamar/"
       },
       {
+        "slug": "mardefondo",
         "nombre": "Mar de Fondo",
         "estilo": "Visión · resort editorial",
         "imagen": "/propuestas/azahar/vida-camping.jpg",
         "variante": "resort",
-        "estado": "En producción",
+        "estado": "Demo navegable",
         "href": "/demos/mardefondo/"
       },
       {
@@ -85,6 +89,95 @@
         "variante": "pitch",
         "estado": "Concepto visual",
         "href": ""
+      }
+    ]
+  },
+  "portfolio": {
+    "kicker": "Tres campings, un solo producto",
+    "titulo": "Encuentra la demo que más se parece a tu camping.",
+    "texto": "No enseñamos una plantilla con tres colores. Cada recorrido cambia el tamaño, la voz, el inventario y el trabajo que resuelve, manteniendo una base común que puede crecer contigo.",
+    "demo": "Explorar la demo",
+    "momento": "Ir al momento clave",
+    "nota": "Los tres campings, sus nombres, datos y fotografías son demostraciones ficticias. Automatización e inteligencia se presentan como prototipos supervisados; no ejecutan acciones ni representan integraciones contratadas.",
+    "comparador": {
+      "kicker": "Compara por resultado",
+      "titulo": "La misma base, más capacidad cuando la operación la necesita.",
+      "filas": {
+        "captacion": "Captación directa",
+        "operacion": "Operación diaria",
+        "automatizacion": "Automatización",
+        "decision": "Decisiones"
+      }
+    },
+    "items": [
+      {
+        "slug": "olivar",
+        "nombre": "Camping L'Olivar",
+        "nivel": "Inicio",
+        "escala": "22 unidades",
+        "perfil": "Microcamping de interior",
+        "promesa": "Una web con identidad propia que convierte visitas en consultas claras para recepción.",
+        "imagenAlt": "Portada de la demo Camping L'Olivar entre olivos y piedra seca",
+        "href": "/demos/olivar/",
+        "momento": "consulta sin motor",
+        "momentoHref": "/demos/olivar/contacto/#consulta",
+        "recorrido": [
+          "Descubrir el camping",
+          "Comparar dos formas de estancia",
+          "Enviar una consulta de demostración"
+        ],
+        "comparacion": {
+          "captacion": "Web, alojamientos y consulta guiada",
+          "operacion": "La recepción responde por su canal habitual",
+          "automatizacion": "No incluida",
+          "decision": "Métricas web básicas al activar producción"
+        }
+      },
+      {
+        "slug": "pinadamar",
+        "nombre": "Pinada del Mar",
+        "nivel": "Gestión",
+        "escala": "110 unidades",
+        "perfil": "Camping costero mediano",
+        "promesa": "Cada solicitud entra en un gestor donde recepción controla disponibilidad, planning y plano.",
+        "imagenAlt": "Portada de la demo Pinada del Mar bajo un pinar costero",
+        "href": "/demos/pinadamar/",
+        "momento": "planning operativo",
+        "momentoHref": "/demos/pinadamar/gestion/#/planning",
+        "recorrido": [
+          "Consultar una estancia",
+          "Abrir la solicitud en el gestor",
+          "Ubicar reservas en planning y plano"
+        ],
+        "comparacion": {
+          "captacion": "Web y solicitudes conectadas al gestor demo",
+          "operacion": "Planning, plano, llegadas, cobros y clientes",
+          "automatizacion": "Flujos manuales trazables",
+          "decision": "Informes operativos del camping"
+        }
+      },
+      {
+        "slug": "mardefondo",
+        "nombre": "Resort Mar de Fondo",
+        "nivel": "Visión",
+        "escala": "300 unidades",
+        "perfil": "Resort mediterráneo",
+        "promesa": "Reserva directa, operación a escala y prototipos supervisados para ahorrar tiempo y decidir mejor.",
+        "imagenAlt": "Portada editorial de la demo Resort Mar de Fondo junto a una piscina laguna",
+        "href": "/demos/mardefondo/",
+        "momento": "recomendación explicable",
+        "momentoHref": "/demos/mardefondo/gestion/#/inteligente",
+        "recorrido": [
+          "Reservar y obtener un recibo demo",
+          "Operar 300 unidades",
+          "Revisar automatización e inteligencia"
+        ],
+        "comparacion": {
+          "captacion": "Reserva directa con pago claramente simulado",
+          "operacion": "Gestor completo con escenario de gran escala",
+          "automatizacion": "Propuestas supervisadas, nunca publicadas solas",
+          "decision": "Recomendaciones con fuentes, rango y confianza"
+        }
       }
     ]
   },

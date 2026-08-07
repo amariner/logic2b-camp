@@ -154,21 +154,24 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   y ligeras (portada 62 kB, planning 40 kB, Inteligente 69 kB), regenerables con
   `pnpm --filter @logic-camp/site capturas:mardefondo`. Miniatura 16:10, OG
   1200×630 y apple-touch icon se derivan de una foto aprobada con `pnpm fotos --
-  derive mardefondo` y pesan 62/58/2 kB. Cuatro intentos integrados acumulados
+derive mardefondo` y pesan 62/58/2 kB. Cuatro intentos integrados acumulados
   sobre el siguiente interior han fallado antes de producir bytes; los dos
   últimos se espaciaron 15 segundos en la sesión 96 y tampoco provocaron cambio
   de proveedor. Siguiente pareja:
   `glamping-duna-interior` + `instalacion-laguna`. Pendiente: 6 fotos restantes
   y QA visual de esas tandas. Toda simulación conserva los
   rótulos exactos de contrato.
-- [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
-  comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
+- [D4-V] **Escaparate de las tres — PARCIAL (sesión 97)**: galería y comparador
+  bilingües ya viven en la landing con las tres miniaturas aprobadas, escala,
+  recorrido y enlaces al momento firma. Quedan capturas/vídeo, ficha comercial
+  descargable y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D-PRECIO] Primera tarifa pública 69/119/249 €~~ → **sustituida
   2026-08-05 por E1**: `/precios/` publica la escalera 49/149/249/399 € y
   `docs/TARIFAS-LOGIC2B.md` pasa a v2. Se mantiene la revisión de margen después
   de los tres primeros clientes, midiendo horas por bloque.
-- [D4-V/landing] **Sensación de escalabilidad**: galería y recorrido por tamaño
-  cuando haya tres demos clicables; la franja de cifras temprana ya existe.
+- ~~[D4-V/landing] **Sensación de escalabilidad**~~ → **hecho 2026-08-07
+  (sesión 97)**: galería de tres y comparador por resultados, con entrada a cada
+  web y a su momento firma; la franja de cifras temprana ya existía.
 - [D4-V/campaña] **Creatividades de muestra Google/Meta/búsqueda**: assets
   estáticos, sin cuentas ni píxeles, marcados «demo», que recorran anuncio → web
   → consulta/reserva dentro del navegador.

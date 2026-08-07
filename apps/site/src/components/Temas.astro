@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ThemeMiniature from './ThemeMiniature.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
+import { portfolioImage } from '../lib/portfolio';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -28,10 +29,10 @@ const c = getContent(locale);
           <article class="theme-catalog-card">
             {theme.href ? (
               <a href={theme.href} aria-label={`${theme.nombre} · ${theme.estado}`}>
-                <ThemeMiniature name={theme.nombre} style={theme.estilo} image={theme.imagen} variant={theme.variante} eager={index < 2} />
+                <ThemeMiniature name={theme.nombre} style={theme.estilo} image={portfolioImage(theme.slug, theme.imagen)} variant={theme.variante} eager={index < 2} />
               </a>
             ) : (
-              <ThemeMiniature name={theme.nombre} style={theme.estilo} image={theme.imagen} variant={theme.variante} eager={index < 2} />
+              <ThemeMiniature name={theme.nombre} style={theme.estilo} image={portfolioImage(theme.slug, theme.imagen)} variant={theme.variante} eager={index < 2} />
             )}
             <div class="theme-catalog-meta">
               <div>
