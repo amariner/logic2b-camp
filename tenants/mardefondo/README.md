@@ -9,9 +9,9 @@ Demo comercial ficticia de **Logic Camp Visión** sobre el carril técnico
 - Ruta prevista: `/demos/mardefondo/`, siempre `noindex`.
 - Pago, Automatiza e Inteligente se representan con fixtures reversibles y los
   rótulos honestos del contrato visual.
-- `/demos/mardefondo/gestion/#/automatiza` revisa una respuesta propuesta,
-  explica sus fuentes y límites y se detiene en «preparada»: nunca publica ni
-  envía nada.
+- `/demos/mardefondo/gestion/#/automatiza` revisa una respuesta propuesta y un
+  parte interno de incidencias con periodo, áreas, severidad, fuentes y límites.
+  Ambos se detienen en «preparado»: nunca publican, entregan ni abren tickets.
 - `/demos/mardefondo/gestion/#/inteligente` explica una recomendación de
   ocupación derivada del propio escenario, con periodo, fuentes, rango y
   limitaciones. Solo permite descartarla o dejar el cambio preparado: nunca

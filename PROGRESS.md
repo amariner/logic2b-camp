@@ -19,6 +19,22 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 91 (2026-08-07): Automatiza convierte incidencias en un
+  relevo revisable, no en tickets automáticos.** La ruta existente gana dos
+  tareas accesibles por pestañas: conserva la respuesta a reseña y añade un
+  parte interno derivado del escenario canónico de Mar de Fondo. El fixture
+  agrupa por área y explica periodo, severidad, cuatro fuentes y tres límites;
+  sus tres incidencias cruzan **8 llegadas / 7 check-ins**, **27 min** de espera
+  ficticia, **4 reservas sin señal / 2.748 € pendientes** y la unidad `BL-042`
+  fuera de servicio. El borrador se puede editar, descartar, reabrir o dejar
+  preparado para el relevo, pero no existe estado de enviado/publicado/ticket,
+  llamada `/api` ni proveedor. Persistencia fail-safe y reset común cubren las
+  dos tareas de Automatiza. La QA en Chrome real a 375/1366 confirma pestañas y
+  foco de teclado, controles móviles de 44 px, cero desborde, persistencia,
+  reset y cero respuestas fallidas; además detectó y corrigió una divergencia
+  inicial entre el importe escrito y el calculado. **5 tests nuevos**;
+  dashboard **34/34**, `pnpm check` **53/53** y bundle compuesto **11.307
+  enlaces / 358 HTML**. Sin deploy.
 - **Sesión autónoma 90 (2026-08-07): Inteligente explica antes de recomendar.**
   Mar de Fondo gana `/inteligente`, una pantalla exclusiva de su build que
   deriva del escenario una recomendación de ocupación para Bungalow Laguna:

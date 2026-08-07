@@ -182,9 +182,10 @@ bases por marca, integraciones y producción real no son dependencias.
 
 **Estado (2026-08-07): D0-V, D1-V y D2-V cerrados; D3-V está en curso.** Mar de
 Fondo ya tiene identidad, catálogo de 300 unidades, reserva pública hasta el
-recibo, operación reversible a escala y el primer prototipo Automatiza con
-revisión humana. Faltan Inteligente, los otros fixtures del contrato,
-fotografía y QA/capturas finales. El
+recibo y operación reversible a escala. Los tres fixtures del contrato están
+navegables: respuesta a reseña, parte de incidencias y recomendación de
+ocupación, todos con fuentes, límites y revisión humana. Faltan doce piezas de
+fotografía y el QA/capturas finales. El
 contrato de la primera ola vive en
 [`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md). D5.2 ya existe como
 franja de cifras y escalera; la galería espera tres demos clicables. Se mantiene

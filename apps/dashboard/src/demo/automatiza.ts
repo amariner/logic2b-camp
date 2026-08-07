@@ -6,6 +6,7 @@
  * puede alcanzar la demo.
  */
 export const AUTOMATIZA_STATE_KEY = 'logic2b-demo:mardefondo:automatiza-state:v1';
+export const AUTOMATIZA_INCIDENT_STATE_KEY = 'logic2b-demo:mardefondo:automatiza-incident-state:v1';
 export const AUTOMATIZA_RESET_EVENT = 'logic2b-demo:automatiza-reset';
 
 export const automatizaReviewFixture = {
@@ -102,9 +103,76 @@ export function parseAutomatizaReviewState(raw: string | null): AutomatizaReview
   return initialAutomatizaReviewState();
 }
 
+export const automatizaIncidentDraft =
+  'Turno del 7 de agosto: se agrupan tres incidencias para el relevo. Recepción registró una espera media de 27 minutos durante el pico de llegadas. 4 reservas llegaron sin señal, con 2.748,00 € pendientes en conjunto, y requieren seguimiento manual. La unidad BL-042 continúa fuera de servicio por mantenimiento; no afecta a ninguna estancia asignada.';
+
+export type AutomatizaIncidentStatus = 'review' | 'prepared' | 'discarded';
+
+export type AutomatizaIncidentState = {
+  draft: string;
+  status: AutomatizaIncidentStatus;
+  revision: number;
+};
+
+export type AutomatizaIncidentAction =
+  | { type: 'edit'; draft: string }
+  | { type: 'prepare' }
+  | { type: 'discard' }
+  | { type: 'reopen' }
+  | { type: 'reset' };
+
+export function initialAutomatizaIncidentState(): AutomatizaIncidentState {
+  return { draft: automatizaIncidentDraft, status: 'review', revision: 0 };
+}
+
+/** No existe una transición de envío, publicación ni creación de ticket. */
+export function reduceAutomatizaIncident(
+  state: AutomatizaIncidentState,
+  action: AutomatizaIncidentAction,
+): AutomatizaIncidentState {
+  if (action.type === 'reset') return initialAutomatizaIncidentState();
+  if (action.type === 'edit') {
+    return { ...state, draft: action.draft, status: 'review', revision: state.revision + 1 };
+  }
+  if (action.type === 'prepare') {
+    if (state.draft.trim().length < 80) return state;
+    return { ...state, status: 'prepared', revision: state.revision + 1 };
+  }
+  if (action.type === 'discard') {
+    return { ...state, status: 'discarded', revision: state.revision + 1 };
+  }
+  return { ...state, status: 'review', revision: state.revision + 1 };
+}
+
+export function parseAutomatizaIncidentState(raw: string | null): AutomatizaIncidentState {
+  if (!raw) return initialAutomatizaIncidentState();
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (
+      typeof value === 'object' &&
+      value !== null &&
+      'draft' in value &&
+      typeof value.draft === 'string' &&
+      value.draft.length <= 4_000 &&
+      'status' in value &&
+      (value.status === 'review' || value.status === 'prepared' || value.status === 'discarded') &&
+      'revision' in value &&
+      typeof value.revision === 'number' &&
+      Number.isInteger(value.revision) &&
+      value.revision >= 0
+    ) {
+      return { draft: value.draft, status: value.status, revision: value.revision };
+    }
+  } catch {
+    // Estado local corrupto o antiguo: vuelve al resumen ficticio conocido.
+  }
+  return initialAutomatizaIncidentState();
+}
+
 export function resetAutomatizaScenario(): void {
   try {
     localStorage.removeItem(AUTOMATIZA_STATE_KEY);
+    localStorage.removeItem(AUTOMATIZA_INCIDENT_STATE_KEY);
   } catch {
     // Modo privado: la demo funciona durante la sesión aunque no persista.
   }

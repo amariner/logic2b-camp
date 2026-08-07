@@ -11,7 +11,7 @@ import type {
   ReportsData,
   TenantSettings,
 } from '../api';
-import { resetAutomatizaScenario } from './automatiza';
+import { automatizaIncidentDraft, resetAutomatizaScenario } from './automatiza';
 import { resetInteligenteScenario } from './inteligente';
 
 export const isMardefondoScenario = import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo';
@@ -400,6 +400,141 @@ export function mardefondoRecommendationAudit() {
     directWebSharePct: Math.round((directWebBookings / relevant.length) * 100),
   };
 }
+
+export type MardefondoIncidentSeverity = 'high' | 'medium' | 'low';
+
+export type MardefondoIncidentFixture = {
+  id: string;
+  kind: 'incident_summary';
+  period: { from: string; to: string; timezone: 'Europe/Madrid' };
+  groupBy: 'operational_area';
+  recipient: string;
+  evidence: ReturnType<typeof mardefondoIncidentAudit>;
+  incidents: {
+    id: string;
+    area: 'reception' | 'payments' | 'maintenance';
+    severity: MardefondoIncidentSeverity;
+    title: string;
+    detail: string;
+    occurredAt: string;
+    owner: string;
+    metric: string;
+    amountCents?: number;
+    sourceIds: string[];
+  }[];
+  sources: { id: string; label: string; value: string; detail: string }[];
+  limitations: string[];
+  proposedSummary: string;
+  delivery: 'internal_draft';
+  execution: 'none';
+};
+
+/** Datos que justifican el parte ficticio, calculados desde el mismo escenario local. */
+export function mardefondoIncidentAudit() {
+  const from = '2026-08-07';
+  const to = '2026-08-08';
+  const arrivals = initialState().bookings.filter(
+    (booking) =>
+      booking.dateFrom >= from && booking.dateFrom < to && booking.status !== 'cancelled',
+  );
+  const unsecuredArrivals = arrivals.filter((booking) => booking.paidCents === 0);
+  const inactiveUnit = units.find((unit) => unit.status === 'inactive');
+  return {
+    arrivals: arrivals.length,
+    checkedInArrivals: arrivals.filter((booking) => booking.checkedInAt !== null).length,
+    averageWaitMinutes: 27,
+    unsecuredArrivals: unsecuredArrivals.length,
+    unsecuredOutstandingCents: unsecuredArrivals.reduce(
+      (sum, booking) => sum + booking.totalCents - booking.paidCents,
+      0,
+    ),
+    unsecuredBookingCodes: unsecuredArrivals.map((booking) => booking.code),
+    inactiveUnits: units.filter((unit) => unit.status === 'inactive').length,
+    inactiveUnitCode: inactiveUnit?.code ?? null,
+  };
+}
+
+const incidentEvidence = mardefondoIncidentAudit();
+
+export const mardefondoIncidentFixture: MardefondoIncidentFixture = {
+  id: 'auto_mf_incidents_001',
+  kind: 'incident_summary',
+  period: { from: '2026-08-07', to: '2026-08-08', timezone: 'Europe/Madrid' },
+  groupBy: 'operational_area',
+  recipient: 'Coordinación de operaciones · relevo del turno',
+  evidence: incidentEvidence,
+  incidents: [
+    {
+      id: 'incident_reception_peak',
+      area: 'reception',
+      severity: 'high',
+      title: 'Espera elevada durante el pico de llegadas',
+      detail:
+        'El registro ficticio de recepción marca 27 minutos de espera media entre las 16:00 y las 17:00.',
+      occurredAt: '2026-08-07T17:00:00+02:00',
+      owner: 'Marta Roca · coordinación ficticia',
+      metric: `${incidentEvidence.arrivals} llegadas · ${incidentEvidence.checkedInArrivals} registradas`,
+      sourceIds: ['planning', 'frontdesk_log'],
+    },
+    {
+      id: 'incident_unsecured_arrival',
+      area: 'payments',
+      severity: 'medium',
+      title: 'Llegadas sin señal registradas',
+      detail: `${incidentEvidence.unsecuredBookingCodes[0]} y otras ${incidentEvidence.unsecuredArrivals - 1} reservas ficticias. El equipo debe revisar los cobros en el relevo.`,
+      occurredAt: '2026-08-07T18:10:00+02:00',
+      owner: 'Equipo de recepción · muestra',
+      metric: 'Pendiente simulado',
+      amountCents: incidentEvidence.unsecuredOutstandingCents,
+      sourceIds: ['planning', 'payment_log'],
+    },
+    {
+      id: 'incident_maintenance_block',
+      area: 'maintenance',
+      severity: 'medium',
+      title: 'Unidad bloqueada por mantenimiento',
+      detail: `${incidentEvidence.inactiveUnitCode} continúa fuera de servicio. El bloqueo evita nuevas asignaciones y no solapa ninguna estancia.`,
+      occurredAt: '2026-08-07T09:00:00+02:00',
+      owner: 'Mantenimiento · equipo ficticio',
+      metric: `${incidentEvidence.inactiveUnits} unidad fuera de servicio`,
+      sourceIds: ['inventory'],
+    },
+  ],
+  sources: [
+    {
+      id: 'planning',
+      label: 'Planning local · 7 ago',
+      value: `${incidentEvidence.arrivals} llegadas previstas`,
+      detail: `${incidentEvidence.checkedInArrivals} check-ins registrados en el fixture`,
+    },
+    {
+      id: 'frontdesk_log',
+      label: 'Registro ficticio de recepción',
+      value: `${incidentEvidence.averageWaitMinutes} min de espera media`,
+      detail: 'Pico simulado de 16:00 a 17:00',
+    },
+    {
+      id: 'payment_log',
+      label: 'Cobros simulados',
+      value: `${incidentEvidence.unsecuredArrivals} llegadas sin señal`,
+      detail: `${incidentEvidence.unsecuredBookingCodes.join(' · ')} · ningún cargo real`,
+    },
+    {
+      id: 'inventory',
+      label: 'Inventario y plano',
+      value: `${incidentEvidence.inactiveUnitCode} fuera de servicio`,
+      detail: 'Bloqueo local de mantenimiento',
+    },
+  ],
+  limitations: [
+    'No consulta sensores, mensajería, reseñas ni sistemas externos',
+    'La espera y las identidades pertenecen a un escenario completamente ficticio',
+    'Preparar el parte no lo entrega ni abre tickets: el relevo sigue siendo humano',
+  ],
+  proposedSummary: automatizaIncidentDraft,
+  delivery: 'internal_draft',
+  execution: 'none',
+};
 
 function bookingDetail(booking: DemoBooking): BookingDetail {
   const nights = Math.max(
