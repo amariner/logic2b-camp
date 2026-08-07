@@ -126,7 +126,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- [D3-V] **Demo Visión — en curso (sesión 95)**: Mar de Fondo une ya el hilo
+- [D3-V] **Demo Visión — en curso (sesión 96)**: Mar de Fondo une ya el hilo
   disponibilidad → recibo → gestor → planning/ficha/plano → llegada/cobro, con
   300 unidades, 240 reservas sin solapes, `MF-DEMO-001`, reset y cero red. El
   escenario comparte dashboard y selector con Pinada, sin D1 ni proveedor por
@@ -152,9 +152,14 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   de proveedor silenciosamente. Mientras tanto, el héroe Visión ya consume
   `hero-laguna` en vez de degradar a Materia y quedan tres capturas firma reales
   y ligeras (portada 62 kB, planning 40 kB, Inteligente 69 kB), regenerables con
-  `pnpm --filter @logic-camp/site capturas:mardefondo`. Siguiente pareja:
-  `glamping-duna-interior` + `instalacion-laguna`. Pendiente: 6 fotos restantes,
-  derivados finales y QA visual de esas tandas. Toda simulación conserva los
+  `pnpm --filter @logic-camp/site capturas:mardefondo`. Miniatura 16:10, OG
+  1200×630 y apple-touch icon se derivan de una foto aprobada con `pnpm fotos --
+  derive mardefondo` y pesan 62/58/2 kB. Cuatro intentos integrados acumulados
+  sobre el siguiente interior han fallado antes de producir bytes; los dos
+  últimos se espaciaron 15 segundos en la sesión 96 y tampoco provocaron cambio
+  de proveedor. Siguiente pareja:
+  `glamping-duna-interior` + `instalacion-laguna`. Pendiente: 6 fotos restantes
+  y QA visual de esas tandas. Toda simulación conserva los
   rótulos exactos de contrato.
 - [D4-V] **Escaparate de las tres**: galería, comparador, capturas/vídeo, ficha
   comercial y campaña de muestra. Después, ampliar a 6 y 12 solo con aprendizaje.

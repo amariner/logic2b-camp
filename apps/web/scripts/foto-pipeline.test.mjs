@@ -4,6 +4,7 @@ import {
   activeBatch,
   assertSafeToken,
   chooseProvider,
+  derivativeConfig,
   higgsfieldArgs,
   higgsfieldModelFor,
   nextBatch,
@@ -156,5 +157,29 @@ describe('foto-pipeline', () => {
     assert.doesNotMatch(failure, /also-secret/);
     assert.match(failure, /Authorization: \[redacted\]/);
     assert.match(failure, /api_key=\[redacted\]/);
+  });
+
+  it('valida la receta de derivados sin permitir fuentes ajenas al manifiesto', () => {
+    assert.deepEqual(
+      derivativeConfig({
+        ...manifest,
+        derivados: {
+          fuente: 'hero-a',
+          titulo: 'Mar de Fondo',
+          subtitulo: '300 unidades · Costa Blanca',
+        },
+      }),
+      {
+        source: 'hero-a',
+        title: 'Mar de Fondo',
+        subtitle: '300 unidades · Costa Blanca',
+      },
+    );
+    assert.throws(() =>
+      derivativeConfig({
+        ...manifest,
+        derivados: { fuente: 'otro-tenant', titulo: 'Demo', subtitulo: 'Costa' },
+      }),
+    );
   });
 });

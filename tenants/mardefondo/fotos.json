@@ -18,6 +18,11 @@
     ["instalacion-restaurante", "instalacion-recepcion"],
     ["entorno", "textura-agua"]
   ],
+  "derivados": {
+    "fuente": "hero-laguna",
+    "titulo": "Mar de Fondo",
+    "subtitulo": "300 unidades · Costa Blanca"
+  },
   "piezas": {
     "hero-laguna": {
       "aspecto": "21:9",

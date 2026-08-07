@@ -1,13 +1,13 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 95 (2026-08-07). **D3-V está en curso**: el recorrido
-> funcional y sus tres capturas firma están listos; la fotografía permanece en
-> ocho de catorce piezas por dos fallos de red del generador integrado.
+> Reescrito tras la sesión 96 (2026-08-07). **D3-V está en curso**: recorrido,
+> capturas y derivados sociales están listos; la fotografía permanece en ocho
+> de catorce piezas porque el generador integrado sigue fallando por red.
 
 ## Estado en una línea
 
-Mar de Fondo ya vende web, reserva, escala operativa e IA supervisada en
-capturas reales de 40–69 kB; faltan seis fotografías y su QA final.
+Mar de Fondo ya vende web, reserva, escala operativa e IA supervisada con
+capturas y derivados de 2–69 kB; faltan seis fotografías y su QA final.
 
 ## Objetivo prioritario
 
@@ -28,10 +28,10 @@ capturas reales de 40–69 kB; faltan seis fotografías y su QA final.
    si el interior queda aprobado, repetir el ciclo con `instalacion-laguna`.
 5. Si el integrado vuelve a fallar dos veces antes de producir bytes, detener
    la generación de esa sesión sin saturar ni degradar proveedor. Mantener el
-   historial y avanzar dentro de D3-V con miniatura/OG derivados de activos ya
-   aprobados; nunca saltar a la siguiente tanda con la pareja incompleta.
+   historial; nunca saltar a la siguiente tanda con la pareja incompleta.
 6. Verificar estado, peso, derivados y build de Mar de Fondo; regenerar las tres
-   capturas solo si cambia su superficie y mantener `pnpm check` verde.
+   capturas o `pnpm fotos -- derive mardefondo` solo si cambia su fuente y
+   mantener `pnpm check` verde.
 
 ## Ya terminado — no repetir
 
@@ -46,15 +46,19 @@ capturas reales de 40–69 kB; faltan seis fotografías y su QA final.
 - El héroe Visión ya usa `hero-laguna` cuando el tenant no tiene `hero-dia`.
 - Capturas firma reproducibles: portada-reserva, planning e Inteligente a 1366
   px, WebP de 62/40/69 kB, con carga real y guardias visuales.
-- Pipeline fotográfico (ADR 0035), ocho pruebas y cuatro parejas aprobadas.
+- Derivados reproducibles: miniatura 16:10 de 62 kB, OG 1200×630 de 58 kB y
+  apple-touch icon de 2 kB, todos desde `hero-laguna` aprobado y con límites de
+  peso en el pipeline.
+- Pipeline fotográfico (ADR 0035), nueve pruebas y cuatro parejas aprobadas.
 
 ## Cola visual
 
 El manifiesto conserva 14 piezas en 7 tandas y **8/14 resultados aprobados**:
 `hero-laguna`, `hero-horizonte`, `parcela-atlantica`, `bungalow-laguna`,
 `bungalow-laguna-interior`, `mobil-horizonte`, `mobil-horizonte-interior` y
-`glamping-duna`. Los dos fallos integrados de la sesión 95 están registrados en
-`glamping-duna-interior`; no hay nada pendiente en `.staging`.
+`glamping-duna`. Los dos fallos integrados de la sesión 95 y los dos nuevos de
+la 96 están registrados en `glamping-duna-interior`; no hay nada pendiente en
+`.staging`.
 
 ## Regla de alcance
 

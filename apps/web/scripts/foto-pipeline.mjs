@@ -11,7 +11,7 @@
  */
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { access, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -24,6 +24,11 @@ const MAX_SIDE = 2000;
 const WEBP_QUALITY = 78;
 const MIN_IMAGE_SIDE = 900;
 const ASPECT_TOLERANCE = 0.12;
+const DERIVATIVE_LIMITS = {
+  'miniatura.webp': 320 * 1024,
+  'og.jpg': 180 * 1024,
+  'apple-touch-icon.png': 40 * 1024,
+};
 
 const DEFAULT_POLICY = {
   primary: 'codex-integrated',
@@ -131,6 +136,29 @@ export function sanitizeFailure(value) {
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 300);
+}
+
+export function derivativeConfig(manifest) {
+  const value = manifest.derivados;
+  if (!value || typeof value !== 'object') throw new Error('derivatives_missing');
+  const source = assertSafeToken(value.fuente, 'fuente');
+  if (!manifest.piezas[source]) throw new Error(`derivative_source_unknown:${source}`);
+  if (typeof value.titulo !== 'string' || value.titulo.trim().length < 2) {
+    throw new Error('derivative_title_invalid');
+  }
+  if (typeof value.subtitulo !== 'string' || value.subtitulo.trim().length < 2) {
+    throw new Error('derivative_subtitle_invalid');
+  }
+  return { source, title: value.titulo.trim(), subtitle: value.subtitulo.trim() };
+}
+
+function escapeSvg(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
 }
 
 const exists = async (path) => {
@@ -442,6 +470,74 @@ async function reject(slug, name, reason = 'visual_quality_rejected') {
   console.log(`↺ Rechazada y conservada para auditoría: ${name}`);
 }
 
+async function writeDerivative(path, pipeline, limit) {
+  const temporary = `${path}.partial-${process.pid}`;
+  try {
+    await pipeline.toFile(temporary);
+    const bytes = (await stat(temporary)).size;
+    if (bytes > limit) throw new Error(`derivative_too_heavy:${basename(path)}:${bytes}`);
+    await rename(temporary, path);
+    return bytes;
+  } catch (error) {
+    await rm(temporary, { force: true });
+    throw error;
+  }
+}
+
+async function derive(slug) {
+  const context = await loadContext(slug);
+  const { source, title, subtitle } = derivativeConfig(context.manifest);
+  if (!context.state.approvals[source]) throw new Error(`derivative_source_not_approved:${source}`);
+  const sourcePath = join(context.paths.mediaDir, `${source}.webp`);
+  const faviconPath = join(context.paths.mediaDir, 'favicon.svg');
+  if (!(await exists(sourcePath))) throw new Error(`derivative_source_missing:${source}`);
+  if (!(await exists(faviconPath))) throw new Error('favicon_missing');
+
+  const miniaturaPath = join(context.paths.mediaDir, 'miniatura.webp');
+  const ogPath = join(context.paths.mediaDir, 'og.jpg');
+  const applePath = join(context.paths.mediaDir, 'apple-touch-icon.png');
+  const overlay = Buffer.from(`
+    <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="scrim" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0b1c1f" stop-opacity="0.86"/>
+          <stop offset="0.62" stop-color="#0b1c1f" stop-opacity="0.28"/>
+          <stop offset="1" stop-color="#0b1c1f" stop-opacity="0.08"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="630" fill="url(#scrim)"/>
+      <text x="76" y="480" fill="#f6f4ee" font-family="Arial, sans-serif" font-size="64" font-weight="700">${escapeSvg(title)}</text>
+      <text x="78" y="545" fill="#f6f4ee" font-family="Arial, sans-serif" font-size="27" font-weight="400" letter-spacing="4">${escapeSvg(subtitle.toUpperCase())}</text>
+    </svg>
+  `);
+
+  const miniaturaBytes = await writeDerivative(
+    miniaturaPath,
+    sharp(sourcePath).resize(1600, 1000, { fit: 'cover', position: 'centre' }).webp({
+      quality: 74,
+      effort: 5,
+    }),
+    DERIVATIVE_LIMITS['miniatura.webp'],
+  );
+  const ogBytes = await writeDerivative(
+    ogPath,
+    sharp(sourcePath)
+      .resize(1200, 630, { fit: 'cover', position: 'centre' })
+      .composite([{ input: overlay }])
+      .jpeg({ quality: 78, progressive: true, mozjpeg: true }),
+    DERIVATIVE_LIMITS['og.jpg'],
+  );
+  const appleBytes = await writeDerivative(
+    applePath,
+    sharp(faviconPath).resize(180, 180).png({ compressionLevel: 9, palette: true }),
+    DERIVATIVE_LIMITS['apple-touch-icon.png'],
+  );
+  console.log(
+    `Derivados listos: miniatura ${(miniaturaBytes / 1024).toFixed(0)} KB · ` +
+      `OG ${(ogBytes / 1024).toFixed(0)} KB · icono ${(appleBytes / 1024).toFixed(0)} KB`,
+  );
+}
+
 async function run(slug) {
   const context = await loadContext(slug);
   const local = await localNames(context);
@@ -545,7 +641,7 @@ async function main() {
   const [command, slug, ...args] = argv;
   if (!command || !slug) {
     console.error(
-      'Uso: foto-pipeline.mjs <status|run|record-failure|ingest|approve|reject> <slug> [argumentos]',
+      'Uso: foto-pipeline.mjs <status|run|record-failure|ingest|approve|reject|derive> <slug> [argumentos]',
     );
     process.exit(1);
   }
@@ -562,6 +658,7 @@ async function main() {
     return ingest(slug, name, source, provider, model);
   }
   if (command === 'approve') return approve(slug, args);
+  if (command === 'derive') return derive(slug);
   if (command === 'reject') {
     const [name, reason] = args;
     if (!name) throw new Error('reject_args_missing');

@@ -1,12 +1,12 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D3-V · 2026-08-07 (sesión 95)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 96)
 
 - La instrucción más reciente de Andreu pide usar el generador integrado de
-  OpenAI, una imagen cada vez y con pausa para no saturar. Sus dos intentos
-  espaciados sobre `glamping-duna-interior` fallaron por red antes de producir
-  bytes y quedan trazados en `fotos.estado.json`; no se lanzó la piscina ni se
-  cambió silenciosamente a Higgsfield o a una API con clave.
+  OpenAI, una imagen cada vez y con pausa para no saturar. Dos nuevos intentos
+  espaciados 15 segundos sobre `glamping-duna-interior` fallaron por red antes
+  de producir bytes y quedan trazados en `fotos.estado.json`; no se lanzó la
+  piscina ni se cambió silenciosamente a Higgsfield o a una API con clave.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
   `tenants/mardefondo/fotos.json`. Las cuatro primeras tandas quedan aprobadas:
   `hero-laguna`, `hero-horizonte`, `parcela-atlantica`, `bungalow-laguna`,
@@ -19,11 +19,29 @@
   `portada-reserva-1366` (62 kB), `planning-1366` (40 kB) e
   `inteligente-1366` (69 kB). Al producirlas se detectó que el héroe Visión
   ignoraba `hero-laguna`; ahora usa la clave configurada si falta `hero-dia`.
+- Los derivados de marca ya no dependen de trabajo manual: `pnpm fotos --
+  derive mardefondo` exige una fuente aprobada y genera miniatura 16:10 (62
+  kB), OG 1200×630 (58 kB) y apple-touch icon (2 kB), con límites de peso que
+  hacen fallar el comando antes de publicar un activo excesivo.
 
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
 
+- **Sesión autónoma 96 (2026-08-07): Mar de Fondo ya tiene derivados sociales
+  ligeros aunque la red siga bloqueando su quinta pareja.** Se hicieron dos
+  llamadas al generador integrado de OpenAI para `glamping-duna-interior`, de
+  una en una y separadas por 15 segundos. Ambas fallaron antes de producir
+  bytes; los fallos quedan registrados y no se pidió `instalacion-laguna`, no
+  se ejecutó el fallback habilitado de Higgsfield ni se usó una API con clave.
+  El relevo dentro de D3-V generaliza el pipeline con `derive`: valida que la
+  foto fuente pertenezca al manifiesto y esté aprobada, compone un OG con scrim
+  legible, genera la miniatura y rasteriza el favicon, todo de forma atómica y
+  con techos de **320/180/40 kB**. Sobre `hero-laguna` produjo una miniatura de
+  **62 kB**, un OG de **58 kB** y un icono de **2 kB**; inspección visual
+  aprobada y build específico confirma dimensiones, hash y metadatos OG. Un
+  test nuevo fija la receta y rechaza fuentes ajenas. Fotografía **8/14**,
+  pipeline **9/9**, portfolio **3/3** y `pnpm check` **53/53**. Sin deploy.
 - **Sesión autónoma 95 (2026-08-07): Mar de Fondo ya tiene material comercial
   real y recupera su fotografía de héroe.** Siguiendo la instrucción de Andreu,
   el modelo integrado de OpenAI se invocó solo para

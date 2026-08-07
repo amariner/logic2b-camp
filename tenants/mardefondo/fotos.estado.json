@@ -230,6 +230,20 @@
         "status": "failed",
         "error": "network_before_bytes",
         "detail": "sesion_95_intento_2_espaciado_por_instruccion_usuario"
+      },
+      {
+        "at": "2026-08-07T15:35:29.596Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_96_intento_1_espaciado_por_instruccion_usuario"
+      },
+      {
+        "at": "2026-08-07T15:35:29.819Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "sesion_96_intento_2_espaciado_por_instruccion_usuario"
       }
     ]
   },
