@@ -2,7 +2,8 @@
 
 > Reescrito tras la sesión 97 (2026-08-07). **D3-V y D4-V están en curso**:
 > mientras el generador fallaba, la landing abrió la galería y el comparador de
-> las tres demos sin alterar la cola fotográfica 8/14.
+> las tres demos sin alterar la cola fotográfica 8/14. Está desplegado en
+> producción (`790dabd4-a300-4a08-8ef6-10e4425f6ffd`).
 
 ## Estado en una línea
 

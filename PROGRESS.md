@@ -15,6 +15,10 @@
 - QA real a 1366/375: tres tarjetas y tres fichas comparativas, nueve enlaces,
   cero imágenes rotas, desborde, errores de consola o respuestas fallidas.
   Bundle compuesto: **11.523 enlaces / 358 HTML**. `pnpm check` **53/53**.
+- **Desplegado en producción** por petición de Andreu: Worker
+  `790dabd4-a300-4a08-8ef6-10e4425f6ffd`, sin migraciones D1 pendientes. Raíz,
+  inglés, las tres webs y los dos gestores devuelven 200; QA en vivo 1366/375
+  conserva 3/3 tarjetas, 3/3 comparativas, cero imágenes rotas y cero desborde.
 
 ## Checkpoint visual D3-V · 2026-08-07 (sesión 96)
 
@@ -56,7 +60,9 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
   Navegación y copy bilingüe actualizados. QA visual y funcional 1366/375
   verde; bundle **11.523 enlaces / 358 HTML**, portfolio **3/3** y `pnpm check`
   **53/53**. D4-V queda parcial: campaña, ficha descargable y vídeo siguen
-  pendientes; D3-V conserva sus seis fotos. Despliegue solicitado por Andreu.
+  pendientes; D3-V conserva sus seis fotos. **Subido a `main` y desplegado** en
+  producción como versión `790dabd4-a300-4a08-8ef6-10e4425f6ffd`; no había
+  migraciones D1 pendientes.
 - **Sesión autónoma 96 (2026-08-07): Mar de Fondo ya tiene derivados sociales
   ligeros aunque la red siga bloqueando su quinta pareja.** Se hicieron dos
   llamadas al generador integrado de OpenAI para `glamping-duna-interior`, de
