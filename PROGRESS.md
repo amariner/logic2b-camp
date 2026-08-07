@@ -1,16 +1,17 @@
 # PROGRESS — Logic Camp
 
-## Checkpoint visual D3-V · 2026-08-07 (sesión 89)
+## Checkpoint visual D3-V · 2026-08-07 (sesión 92)
 
 - La política resiliente queda fijada en ADR 0035: Codex integrado es principal;
   dos fallos técnicos sin bytes abren el circuito del manifiesto y habilitan
   Higgsfield. Dos rechazos visuales de una pieza cambian de `soul_location` a
   GPT Image 2 dentro de Higgsfield. Todo queda trazado en `fotos.estado.json`.
 - Mar de Fondo tiene **14 piezas / 7 tandas** definidas en
-  `tenants/mardefondo/fotos.json`. La primera tanda queda aprobada: `hero-laguna`
-  con Higgsfield `soul_location` y `hero-horizonte` con GPT Image 2 servido por
-  la misma cuenta de Higgsfield después de descartar dos variantes. Estado real:
-  **2/14**. La siguiente es `parcela-atlantica` + `bungalow-laguna`.
+  `tenants/mardefondo/fotos.json`. Las dos primeras tandas quedan aprobadas:
+  `hero-laguna`, `hero-horizonte`, `parcela-atlantica` y `bungalow-laguna`.
+  `parcela-atlantica` necesitó dos descartes por rotulación legible; el cambio
+  automático a GPT Image 2 produjo la variante válida. Estado real: **4/14**.
+  La siguiente es `bungalow-laguna-interior` + `mobil-horizonte`.
 - `pnpm fotos -- run mardefondo` procesa solo el lote activo, reutiliza trabajos
   idénticos no rechazados y escribe en `.staging`; `approve` es la única puerta
   hacia la web. Los descartes se conservan localmente y no entran en Git.
@@ -19,6 +20,20 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 92 (2026-08-07): la segunda tanda fotográfica de Mar de
+  Fondo entra en la demo con revisión real.** El circuito abierto reutiliza el
+  fallback Higgsfield registrado sin borrar los dos fallos previos de Codex.
+  `bungalow-laguna` pasa a la primera con `soul_location`; las dos primeras
+  variantes de `parcela-atlantica` se rechazan por los números «5» y «16» y
+  otra rotulación legible en los bolardos. Al segundo rechazo el pipeline cambia
+  de forma trazable a GPT Image 2, cuya parcela amplia, operativa y sin texto
+  legible queda aprobada. Estado **4/14**; descartes conservados solo para
+  auditoría local y siguiente pareja sin lanzar. El build específico genera
+  **36 derivados WebP/AVIF** de las fotos ya disponibles. QA en Chrome real a
+  375/1366 sobre el bundle compuesto: ambas tarjetas cargan sus AVIF, cero
+  desborde, errores de consola o peticiones fallidas. Pipeline **8/8**,
+  portfolio **3/3**, `pnpm check` **53/53** y bundle **11.307 enlaces / 358
+  HTML**. Sin deploy.
 - **Sesión autónoma 91 (2026-08-07): Automatiza convierte incidencias en un
   relevo revisable, no en tickets automáticos.** La ruta existente gana dos
   tareas accesibles por pestañas: conserva la respuesta a reseña y añade un
