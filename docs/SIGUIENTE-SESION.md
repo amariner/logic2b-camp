@@ -1,32 +1,33 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 102 (2026-08-08). La primera ola D0-V–D4-V está
-> cerrada localmente y el catálogo de temas ya no toma imágenes de Azahar;
-> D5-V requiere aprendizaje comercial real antes de crear una cuarta demo.
+> Reescrito tras la sesión 103 (2026-08-08). La primera ola D0-V–D4-V y las
+> imágenes propias del catálogo están publicadas en producción; D5-V requiere
+> aprendizaje comercial real antes de crear una cuarta demo.
 
 ## Estado en una línea
 
-La primera ola ya se puede navegar, enviar y explicar sin una demo en directo;
-además, Montaña, Familiar y Parcela cuentan con fotografía conceptual propia,
-trazada y verificada en ES/EN.
+La primera ola ya se puede navegar, enviar y explicar desde producción; el
+siguiente hueco visible es enseñar en movimiento los tres gestos firma del
+planning dentro de la guía de recepción.
 
 ## Objetivo prioritario
 
-1. Si el entorno local tiene credenciales de Cloudflare, publicar **el bundle
-   demo existente** con `pnpm --filter @logic-camp/api deploy:demo` y verificar
-   en producción landing ES/EN, vídeo, subtítulos y los tres saltos a demo a
-   1366/375. No crear infraestructura ni un tenant nuevo.
-2. Si no hay credenciales, no consumir la sesión reintentando el candado. Tomar
-   el siguiente objetivo visible y local del backlog: **[C6] explicar los gestos
-   del planning en la guía de recepción** mediante una pieza corta y accesible.
-   Reutilizar el patrón de captura de ADR 0039 y el bundle/stub ya existente;
-   mantener mover, estirar y crear como una sola historia acotada.
-3. Para C6, escribir el contrato antes de grabar: recorrido determinista,
-   duración y peso máximos, póster, controles, `playsinline`, sin autoplay,
-   subtítulos o alternativa textual y verificación 1366/375 con teclado/foco.
-4. Ejecutar `pnpm check`; si Workers vuelve a salir bajo concurrencia, revalidar
-   únicamente los paquetes cancelados de forma aislada y registrar ambos
-   resultados.
+1. Cerrar el pendiente **[C6] vídeo de gestos del planning** con una sola pieza
+   corta y accesible que muestre mover, estirar y crear arrastrando. Reutilizar
+   el patrón acotado de ADR 0039 y el bundle/stub de C1/C5; no construir un
+   editor ni un pipeline general.
+2. Escribir el contrato antes de grabar: recorrido y datos deterministas,
+   resolución **1280×720**, duración objetivo **20–35 s**, H.264 sin audio y peso
+   máximo **2 MB**. La captura debe terminar antes de confirmar una mutación si
+   el rol demo no la autoriza; no fingir permisos ni resultados.
+3. Integrar el mismo metraje en la guía `/docs/recepcion/mover/`, con póster,
+   controles, `playsinline`, sin autoplay, carga bajo demanda y alternativa
+   textual. Enlazar desde `nueva-reserva` si aporta contexto, sin duplicar el
+   archivo ni convertir toda la documentación en vídeo.
+4. Verificar la guía a 1366/375 con teclado, foco, movimiento reducido, peso,
+   vídeo e imágenes cargados y cero desborde. Ejecutar `pnpm check`; si Workers
+   vuelve a salir bajo concurrencia, revalidar solo los paquetes cancelados y
+   registrar ambos resultados.
 
 ## Gate de expansión
 
@@ -42,6 +43,8 @@ trazada y verificada en ES/EN.
 
 ## Ya terminado — no repetir
 
+- El bundle completo está publicado como Worker
+  `87d60d0a-b4bc-4f4a-8bf5-5d2b85b221e7`; no repetir un deploy sin cambios.
 - D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
   cerrados.
 - Mar de Fondo tiene 14/14 fotos, tres capturas firma, derivados, campaña y

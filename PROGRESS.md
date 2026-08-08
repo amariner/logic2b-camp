@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Publicación de la primera ola · 2026-08-08 (sesión 103)
+
+- El bundle de demostración completo queda publicado en Cloudflare como versión
+  **`87d60d0a-b4bc-4f4a-8bf5-5d2b85b221e7`**. La sesión OAuth local era válida;
+  `deploy:demo` recompuso landing, demo base, las tres marcas y sus gestores antes
+  de subir, sin crear infraestructura ni tenants nuevos.
+- D1 no tenía migraciones pendientes. El verificador del bundle recorrió
+  **11.533 enlaces internos / 358 HTML**; Cloudflare leyó 1.361 activos y subió
+  192 nuevos o modificados. El Worker arrancó en **78 ms** y conserva sus dos
+  cron existentes.
+- QA real en `camp.logic2b.com` a **1366/375**: landing ES/EN sin desborde ni
+  errores, vídeo H.264 de **38,87 s** con controles, `playsinline`, sin autoplay,
+  póster y las dos pistas VTT; cada idioma marca como predeterminada la suya.
+  Las tres creatividades mantienen UTM distintas y los tres momentos clave abren
+  L'Olivar/consulta, Pinada/planning y Mar de Fondo/inteligente sin imágenes
+  rotas.
+- `/temas/` y `/en/temas/` sirven Montaña, Familiar y Parcela desde los WebP
+  propios de **1440×960**, también a 375 px, con cero desborde. La publicación
+  cierra la deuda de despliegue de las sesiones 98–102; D5-V sigue bloqueada por
+  aprendizaje comercial y no se abre una cuarta demo.
+- `pnpm check` completó **42/53** tareas antes del fallo ambiental conocido al
+  arrancar Workers bajo concurrencia; no falló ninguna aserción. El sitio se
+  revalidó aislado: lint verde, Astro **47 archivos / 0 diagnósticos** y build de
+  **71 páginas**. El despliegue había recompuesto además todos los bundles y su
+  verificador de enlaces antes de publicar.
+
 ## Checkpoint visual de temas · 2026-08-08 (sesión 102)
 
 - El catálogo `/temas/` deja de reutilizar tres fotografías de la propuesta
