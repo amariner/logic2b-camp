@@ -257,6 +257,35 @@
       "aria": "Abrir la creatividad de feed 1080 por 1080 de ejemplo y consultar disponibilidad en Mar de Fondo"
     }
   },
+  "video": {
+    "kicker": "Captura guiada · menos de un minuto",
+    "titulo": "De una campaña propia a una decisión explicable.",
+    "texto": "Una sola pieza recorre la parte que ya se puede enseñar sin preparar una demo en directo: disponibilidad, reserva y recibo ficticios, operación a escala y una recomendación que muestra de dónde sale.",
+    "aria": "Captura guiada de la primera ola de demos Logic2B",
+    "alcance": "Demostración ficticia grabada sobre datos y recorridos locales. El pago es simulado, no existe cuenta publicitaria ni medición real y el prototipo inteligente no ejecuta cambios.",
+    "transcriptTitle": "Qué muestra la captura",
+    "fallback": "Descargar la captura guiada en MP4",
+    "trackEs": "Español",
+    "trackEn": "English",
+    "items": [
+      {
+        "titulo": "Creatividad y web propia",
+        "texto": "Una pieza marcada como ejemplo desemboca en el mostrador de Mar de Fondo."
+      },
+      {
+        "titulo": "Disponibilidad y precio",
+        "texto": "La estancia y un extra se reflejan en un desglose visible antes de continuar."
+      },
+      {
+        "titulo": "Reserva y recibo demo",
+        "texto": "El formulario usa datos ficticios y termina con pago simulado, sin cargo."
+      },
+      {
+        "titulo": "Operación y decisión",
+        "texto": "El planning enseña la escala y la recomendación declara fuentes, rango y confianza."
+      }
+    ]
+  },
   "problema": {
     "titulo": "Cuando cada canal funciona por separado, recepción acaba haciendo el trabajo dos veces",
     "puntos": [

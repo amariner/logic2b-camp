@@ -257,6 +257,35 @@
       "aria": "Open the example 1080 by 1080 feed creative and check availability at Mar de Fondo"
     }
   },
+  "video": {
+    "kicker": "Guided capture · under one minute",
+    "titulo": "From an owned campaign to an explainable decision.",
+    "texto": "One short piece covers what can already be shown without preparing a live demo: fictional availability, booking and receipt, large-scale operations and a recommendation that reveals where it came from.",
+    "aria": "Guided capture of the first wave of Logic2B demos",
+    "alcance": "Fictional demonstration recorded with local data and journeys. Payment is simulated, there is no advertising account or real measurement, and the intelligent prototype makes no changes.",
+    "transcriptTitle": "What the capture shows",
+    "fallback": "Download the guided capture as MP4",
+    "trackEs": "Español",
+    "trackEn": "English",
+    "items": [
+      {
+        "titulo": "Creative and owned website",
+        "texto": "A piece labelled as an example leads into the Mar de Fondo booking panel."
+      },
+      {
+        "titulo": "Availability and price",
+        "texto": "The stay and an extra appear in a visible breakdown before continuing."
+      },
+      {
+        "titulo": "Demo booking and receipt",
+        "texto": "The form uses fictional details and ends with simulated payment and no charge."
+      },
+      {
+        "titulo": "Operations and decision",
+        "texto": "The planner shows scale and the recommendation declares sources, range and confidence."
+      }
+    ]
+  },
   "problema": {
     "titulo": "What's costing you money every August",
     "puntos": [

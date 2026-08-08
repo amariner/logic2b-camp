@@ -1,46 +1,51 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 100 (2026-08-08). D4-V ya tiene galería, comparador,
-> ficha comercial y campaña de muestra clicable; solo falta el vídeo.
+> Reescrito tras la sesión 101 (2026-08-08). La primera ola D0-V–D4-V está
+> cerrada localmente y pendiente de publicación; D5-V requiere aprendizaje
+> comercial real antes de crear una cuarta demo.
 
 ## Estado en una línea
 
-La primera ola ya se puede navegar, enviar y recorrer desde una creatividad; el
-último hueco del escaparate es una captura guiada corta que lo explique sin una
-demo en directo.
+La primera ola ya se puede navegar, enviar y explicar sin una demo en directo:
+galería, comparador, ficha, campaña y captura guiada ES/EN están verificadas.
 
 ## Objetivo prioritario
 
-1. Cerrar D4-V con **un vídeo/captura guiada reproducible y acotada** de la
-   primera ola. Antes de elegir formato, comprobar localmente qué entrega estable
-   ofrece Playwright/Chromium y dejar la decisión en ADR 0039 propuesto.
-2. Contar una sola historia de 35–60 segundos: creatividad de ejemplo de Mar de
-   Fondo → web/disponibilidad → reserva o recibo demo → planning o recomendación
-   explicable. Reutilizar los recorridos y datos existentes; no grabar servicios,
-   cuentas o acciones externas que no existen.
-3. Publicar una pieza ligera con póster aprobado, controles nativos, `playsinline`,
-   sin autoplay y con alternativa textual/subtítulos. La landing ES/EN debe
-   compartir el mismo metraje y localizar únicamente cromo/copy.
-4. No construir un editor, una plataforma de vídeo ni un pipeline general antes
-   de probar una captura. Si MP4/WebM reproducible no es fiable en el entorno,
-   elegir la alternativa más honesta y accesible (secuencia guiada de capturas)
-   y documentar el descarte.
-5. Verificar 1366/375, teclado, foco, movimiento reducido, peso, carga bajo
-   demanda, cero desborde/imágenes o vídeo roto y enlaces del bundle compuesto.
-   Ejecutar `pnpm check`; si el tenant demo vuelve a agotar `resolveId` bajo
-   concurrencia, reejecutarlo aislado y documentar ambos resultados.
+1. Si el entorno local tiene credenciales de Cloudflare, publicar **el bundle
+   demo existente** con `pnpm --filter @logic-camp/api deploy:demo` y verificar
+   en producción landing ES/EN, vídeo, subtítulos y los tres saltos a demo a
+   1366/375. No crear infraestructura ni un tenant nuevo.
+2. Si no hay credenciales, no consumir la sesión reintentando el candado. Tomar
+   el siguiente objetivo visible y local del backlog: **[C6] explicar los gestos
+   del planning en la guía de recepción** mediante una pieza corta y accesible.
+   Reutilizar el patrón de captura de ADR 0039 y el bundle/stub ya existente;
+   mantener mover, estirar y crear como una sola historia acotada.
+3. Para C6, escribir el contrato antes de grabar: recorrido determinista,
+   duración y peso máximos, póster, controles, `playsinline`, sin autoplay,
+   subtítulos o alternativa textual y verificación 1366/375 con teclado/foco.
+4. Ejecutar `pnpm check`; si Workers vuelve a salir bajo concurrencia, revalidar
+   únicamente los paquetes cancelados de forma aislada y registrar ambos
+   resultados.
+
+## Gate de expansión
+
+- No abrir D5-V ni inventar otras tres marcas porque D4-V esté cerrado.
+- Registrar antes una conversación, objeción o ICP real que las demos actuales
+  no cubran. Cada nueva demo debe responder a esa evidencia y seguir sin rama ni
+  backend propio.
+- No crear D1, usuarios, email, pagos, cuentas publicitarias o integraciones por
+  marca; la activación productiva sigue en el dossier interno.
 
 ## Ya terminado — no repetir
 
-- D1-V L'Olivar, D2-V Pinada del Mar y D3-V Mar de Fondo están cerrados.
-- Mar de Fondo tiene 14/14 fotos, tres capturas firma y derivados aprobados.
-- La landing incluye galería, comparador, ficha PDF ES/EN y campaña bilingüe con
-  búsqueda, display 300×250 y feed 1080×1080.
-- Las tres creatividades ya reutilizan una foto aprobada, llevan UTM ficticias y
-  declaran que no existe cuenta, medición ni pago real. No crear más formatos sin
-  evidencia comercial.
-- No desplegar un tenant ni crear D1, usuarios, email, pagos o infraestructura
-  por marca.
+- D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
+  cerrados.
+- Mar de Fondo tiene 14/14 fotos, tres capturas firma, derivados, campaña y
+  vídeo guiado aprobado.
+- El vídeo de 38,9 s comparte metraje en ES/EN y ya incluye controles, póster,
+  subtítulos y transcripción; no crear más formatos sin una necesidad concreta.
+- La landing incluye galería, comparador y ficha PDF ES/EN desde la misma fuente
+  de portfolio.
 
 ## Regla de alcance
 

@@ -4,6 +4,8 @@
 > demo-first en un encargo de producción para las tres anclas de la primera
 > ola. No decide un host, una D1 ni un despliegue por camping. Sí fija qué se
 > ve, qué historia se cuenta, qué activos hacen falta y dónde termina la demo.
+> **D1-V–D4-V cerradas el 2026-08-08:** las tres demos y su escaparate cumplen
+> este contrato; ampliar la ola requiere aprendizaje comercial nuevo.
 >
 > Fuentes: [`ESTRATEGIA-DEMO-FIRST.md`](ESTRATEGIA-DEMO-FIRST.md),
 > [`FRENTE-D-ESCAPARATE.md`](FRENTE-D-ESCAPARATE.md),
@@ -292,7 +294,9 @@ neutral de Logic2B con un único acento del tenant.
 
 **Momentos capturables:** comparador de alojamientos con piscina laguna;
 planning a 90 días y escala completa; tarjeta de recomendación con «por qué»,
-rango de confianza y botones «Descartar / Preparar cambio».
+rango de confianza y botones «Descartar / Preparar cambio». La captura guiada
+publicada enlaza campaña → disponibilidad → reserva/recibo → planning →
+recomendación en 38,9 segundos, con subtítulos y transcripción ES/EN.
 
 ### 5.4. Activos
 
@@ -307,6 +311,8 @@ rango de confianza y botones «Descartar / Preparar cambio».
   condición de cierre de D4-V.
 - Tres fixtures de prototipo: respuesta a reseña, resumen de incidencias y
   recomendación de ocupación. Cada uno declara fuentes y revisión humana.
+- Una captura guiada 1280×720 en H.264, sin audio, con controles, póster,
+  subtítulos y alternativa textual; se regenera con el contrato de ADR 0039.
 
 ## 6. Mapa técnico visible
 

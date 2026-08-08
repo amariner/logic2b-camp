@@ -1,0 +1,200 @@
+---
+import { existsSync } from 'node:fs';
+import poster from '../../../../tenants/mardefondo/content/media/capturas/portada-reserva-1366.webp?url';
+import type { Locale } from '../lib/i18n';
+
+interface GuidedStep {
+  titulo: string;
+  texto: string;
+}
+
+interface GuidedTourContent {
+  kicker: string;
+  titulo: string;
+  texto: string;
+  aria: string;
+  alcance: string;
+  transcriptTitle: string;
+  fallback: string;
+  trackEs: string;
+  trackEn: string;
+  items: GuidedStep[];
+}
+
+interface Props {
+  content: GuidedTourContent;
+  locale: Locale;
+}
+
+const { content: c, locale } = Astro.props;
+const videoPath = '/media/logic2b-primera-ola.mp4';
+const trackPaths = {
+  es: '/media/logic2b-primera-ola.es.vtt',
+  en: '/media/logic2b-primera-ola.en.vtt',
+};
+
+for (const file of [
+  '../../public/media/logic2b-primera-ola.mp4',
+  '../../public/media/logic2b-primera-ola.es.vtt',
+  '../../public/media/logic2b-primera-ola.en.vtt',
+]) {
+  if (!existsSync(new URL(file, import.meta.url))) throw new Error(`Falta el activo guiado ${file}`);
+}
+---
+
+<section id="video-ola-1" class="guided-section botanical-section" aria-labelledby="guided-title">
+  <div class="botanical-shell">
+    <header class="guided-heading lc-reveal">
+      <p class="botanical-eyebrow">{c.kicker}</p>
+      <h2 id="guided-title" class="botanical-heading-sm">{c.titulo}</h2>
+      <p class="botanical-copy">{c.texto}</p>
+    </header>
+
+    <div class="guided-layout">
+      <figure class="guided-player lc-reveal">
+        <div class="guided-frame">
+          <video
+            controls
+            playsinline
+            tabindex="0"
+            preload="metadata"
+            poster={poster}
+            aria-label={c.aria}
+            aria-describedby="guided-scope"
+          >
+            <source src={videoPath} type="video/mp4" />
+            <track
+              kind="subtitles"
+              src={trackPaths.es}
+              srclang="es"
+              label={c.trackEs}
+              default={locale === 'es'}
+            />
+            <track
+              kind="subtitles"
+              src={trackPaths.en}
+              srclang="en"
+              label={c.trackEn}
+              default={locale === 'en'}
+            />
+            <a href={videoPath}>{c.fallback}</a>
+          </video>
+        </div>
+        <figcaption id="guided-scope">{c.alcance}</figcaption>
+      </figure>
+
+      <aside class="guided-transcript lc-reveal" aria-labelledby="guided-transcript-title">
+        <h3 id="guided-transcript-title">{c.transcriptTitle}</h3>
+        <ol>
+          {
+            c.items.map((item, index) => (
+              <li>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <strong>{item.titulo}</strong>
+                  <p>{item.texto}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .guided-section {
+    background: var(--botanical-paper);
+    border-top: 1px solid var(--botanical-border);
+    scroll-margin-top: 88px;
+  }
+  .guided-heading {
+    max-width: 800px;
+  }
+  .guided-heading h2 {
+    margin-top: 18px;
+  }
+  .guided-heading .botanical-copy {
+    margin-top: 20px;
+  }
+  .guided-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, .7fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+    margin-top: clamp(34px, 5vw, 64px);
+  }
+  .guided-player {
+    min-width: 0;
+  }
+  .guided-frame {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 18%, transparent);
+    border-radius: 18px;
+    background: #111b1d;
+    box-shadow: 0 28px 80px color-mix(in srgb, var(--botanical-ink) 18%, transparent);
+  }
+  .guided-frame video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #111b1d;
+  }
+  .guided-frame video:focus,
+  .guided-frame video:focus-visible {
+    outline: 3px solid var(--botanical-keylime);
+    outline-offset: -5px;
+  }
+  .guided-player figcaption {
+    max-width: 760px;
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-ink) 66%, white);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .guided-transcript {
+    border-top: 1px solid var(--botanical-border);
+  }
+  .guided-transcript h3 {
+    padding: 16px 0 12px;
+    color: var(--botanical-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .guided-transcript li {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    padding: 15px 0;
+    border-top: 1px solid var(--botanical-border);
+  }
+  .guided-transcript li > span {
+    padding-top: 2px;
+    color: color-mix(in srgb, var(--botanical-ink) 45%, white);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .06em;
+  }
+  .guided-transcript strong {
+    color: var(--botanical-ink);
+    font-size: 12px;
+  }
+  .guided-transcript p {
+    margin-top: 4px;
+    color: color-mix(in srgb, var(--botanical-ink) 68%, white);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  @media (max-width: 860px) {
+    .guided-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .guided-frame video {
+      scroll-behavior: auto;
+    }
+  }
+</style>

@@ -82,7 +82,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [C1] Gestos del planning en táctil (375px): mover/estirar/crear usan pointer events y funcionan con ratón; en móvil el pan del scroll compite con el arrastre (las barras llevan `touch-action:none`, las celdas no). Decidir el gesto táctil (long-press?) cuando el dashboard móvil sea objetivo — hoy la usuaria real está en el mostrador a 1366px — 2026-07-21
 - [C1] Al confirmar un movimiento con cambio de precio y `paidCents > total` nuevo, la ficha enseña el pendiente negativo (reembolso manual, como el `modify` público) — considerar un aviso inline en el propio diálogo de precio — 2026-07-21
 - ~~[C6] Guías de las pantallas de **gestión** (`/informes`, `/tarifas`, `/ajustes`)~~ → hecho 2026-07-22 (sesión 41): **cuarta guía "gestión"** en `camp.logic2b.com/docs/` (decisión de IA con Andreu: guía propia, no dentro de "dueño", para no mezclar páginas estratégicas con operativas). Tres páginas de prosa `es` (`content/docs/gestion/{informes,tarifas,ajustes}.es.md`) escritas contra el código real de cada pantalla (Informes: 5 tiles + ocupación por tipo; Tarifas: tabla por temporada con invariante 3 a la vista; Ajustes: datos + nivel/idiomas de solo-lectura + notificaciones). `GUIAS` pasa a `['recepcion','gestion','dueno','tecnica']` (escalera), cromo en los 6 idiomas (subtítulo "Cuatro guías…", seo y `docs.guias.gestion`), y `ayuda.ts` deja de devolver `null` → el `?` se pinta ya en las tres pantallas (el componente ya estaba puesto). Verificado: build 180 páginas, `pnpm check` 42/42, navegador (índice con 4 tarjetas, prosa renderizada, fallback visible en en). Diferido con motivo: NO se desplegó a producción esta sesión (ver SIGUIENTE-SESION)
-- [C6] Vídeo/GIF de los gestos del planning (mover, estirar, crear arrastrando) para la guía de recepción: un arrastre se explica mucho mejor en movimiento que en foto. Exige el patrón de captura con Playwright + stub de C1/C5 y un pipeline de vídeo que hoy no existe — 2026-07-21
+- [C6] Vídeo/GIF de los gestos del planning (mover, estirar, crear arrastrando) para la guía de recepción: un arrastre se explica mucho mejor en movimiento que en foto. El bloqueo técnico ya no existe: reutilizar el patrón acotado de ADR 0039 y el bundle/stub de C1/C5, sin convertirlo en un pipeline general — actualizado 2026-08-08
 - [C6] Traducir la prosa de las guías a en/ca (hoy solo `es`, con aviso de fallback visible en pantalla). La estructura por idioma ya está montada (`{slug}.{lang}.md` + fallback **por página**): es soltar ficheros, sin tocar código. Decisión consciente del ADR 0025 §3 — 21 páginas ×3 triplica el mantenimiento de por vida con cero clientes en producción; hacerlo cuando lo pida un cliente real — 2026-07-21
 - [11] **Parte de viajeros** (SES.Hospedajes / Guardia Civil): el modelo ya captura documento, nacimiento y nacionalidad (ADR 0022) y la retención ya respeta su plazo legal de 3 años (ADR 0026 §2.2). Falta el fichero con el formato oficial y su envío — es integración con la Administración, fase propia, no un bloque de endurecimiento — 2026-07-21
 - [11] **Sentry / Logpush**: el `logEvent` de `apps/api/src/errors.ts` deja el enganche señalado en UN solo punto — el día que haya credenciales es una llamada. Cierra además el punto ciego circular que ADR 0026 §3 deja escrito: hoy el aviso de fallo viaja por correo, así que **si lo que falla es el correo no se entera nadie**. La observabilidad de verdad necesita un canal que no dependa del sistema que vigila — 2026-07-21
@@ -135,13 +135,15 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   integrado de OpenAI de una en una, con inspección y pausas de 20 segundos,
   sin fallback ni CLI/API con clave. Capturas firma y derivados sociales siguen
   siendo reproducibles; build específico **25 páginas / 112 derivados**.
-- [D4-V] **Escaparate de las tres — PARCIAL (sesiones 97/99/100)**: galería y
+- ~~[D4-V] **Escaparate de las tres**~~ → **cerrado 2026-08-08 (sesiones
+  97/99/100/101)**: galería y
   comparador bilingües ya viven en la landing con las tres miniaturas aprobadas,
   escala, recorrido y enlaces al momento firma. La ficha comercial ES/EN se
   genera desde la misma fuente, pesa 307 kB y se descarga desde la sección. La
   campaña de Mar de Fondo añade búsqueda, display y feed clicables con UTM
-  ficticias y alcance demo explícito. Queda solo el vídeo/captura guiada. Después,
-  ampliar a 6 y 12 solo con aprendizaje.
+  ficticias y alcance demo explícito. Una captura guiada reproducible de 38,9 s
+  cierra campaña → disponibilidad → operación, con controles, subtítulos y
+  transcripción ES/EN. Ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D4-V/ficha] **Ficha comercial descargable de la primera ola**~~ → **hecho
   2026-08-08 (sesión 99)**: dos PDF A4 de tres páginas generados desde el
   portfolio i18n, con las tres miniaturas, capturas aprobadas, comparación por
@@ -159,11 +161,11 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   HTML/CSS estático, sin logos de plataforma, cuentas, píxeles o métricas
   inventadas. Reutilizan fotografía aprobada, se rotulan como ejemplo y enlazan
   al mostrador de Mar de Fondo con UTM ficticias distintas.
-- [D4-V/vídeo] **Captura guiada del recorrido de la primera ola**: pieza corta,
-  reproducible y con controles que conecte campaña → disponibilidad → operación
-  sin autoplay ni una segunda narración comercial. Debe reutilizar recorridos y
-  capturas aprobados, tener póster ligero y mantener subtítulos/alternativa
-  textual; es el único cierre pendiente de D4-V — 2026-08-08.
+- ~~[D4-V/vídeo] **Captura guiada del recorrido de la primera ola**~~ → **hecho
+  2026-08-08 (sesión 101)**: MP4 H.264 de 38,9 s, 1280×720 y 1,0 MB, generado
+  con Playwright/Chromium sobre el bundle compuesto y normalizado con ffmpeg.
+  Comparte metraje en ES/EN, con póster aprobado, controles, carga bajo demanda,
+  subtítulos y transcripción. `qa:video` verifica ambos idiomas a 1366/375.
 - [marca] **`docs/brand/` sigue describiendo el isotipo como logo del producto** (resto del ítem cerrado en la 61): la OG image ya está, pero el directorio de marca no se ha revisado desde el cambio de logo — 2026-07-30
 - [seo] **`BreadcrumbList` en las guías**: el sitemap declara las 25 páginas de documentación como "la superficie de búsqueda larga del producto" (cómo hacer el check-in en un camping…), y son las únicas con jerarquía real (guía → página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage` desde la 61; las guías no tienen ninguno. Barato: va en `Docs.astro`, que las sirve todas — 2026-07-30
 - ~~[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle compuesto~~ → **hecho 2026-08-04 (sesión 70)**: `apps/api/scripts/check-demo-links.mjs` recorre los `<a href>` internos del `dist` compuesto y comprueba que resuelven dentro de él (incluye `/demo/`, `/admin/`, rutas sin barra que Workers Assets redirige y URLs absolutas del mismo origen). Corre tras copiar los tres builds y **antes** de migrar o desplegar en `deploy:demo`; informa cada HTML origen y ruta rota. El `404.html` se excluye correctamente: es el documento fallback de Astro, no una ruta publicada. Tres tests nativos fijan el contrato; el primer barrido real dio **9.286 enlaces / 304 HTML, OK**.

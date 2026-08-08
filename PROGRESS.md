@@ -1,5 +1,30 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint comercial D4-V · 2026-08-08 (sesión 101)
+
+- D4-V queda cerrado con una captura guiada reproducible de **38,9 s**,
+  **1280×720**, H.264, sin audio y de **1,0 MB**. El recorrido conecta la
+  creatividad de Mar de Fondo con disponibilidad, alojamiento, extra, titular,
+  recibo, planning y recomendación explicable; usa una fecha fija y los datos
+  demo existentes, sin servicios ni acciones externas.
+- `video:ola1` graba el bundle compuesto con Playwright/Chromium y normaliza el
+  resultado con ffmpeg. Valida códec, resolución, duración y peso antes de
+  publicar el MP4. ADR 0039 propuesto deja acotado este patrón a capturas
+  comerciales reproducibles, no a una plataforma general de vídeo.
+- La landing ES/EN comparte el metraje y añade póster aprobado, controles
+  nativos, `playsinline`, carga bajo demanda, subtítulos localizados y una
+  transcripción indexable de cuatro pasos. No hay autoplay ni una narración
+  comercial distinta entre idiomas.
+- `qa:video` queda verde en ES/EN a **1366/375**: duración, resolución, pistas,
+  foco de 2 px, cuatro pasos y cero desborde. Las capturas y una hoja de contacto
+  del vídeo se inspeccionaron manualmente. Sitio: **71 páginas**, typecheck
+  **0 errores**; bundle compuesto: **11.533 enlaces / 358 HTML**.
+- `pnpm check` completó **42/53** antes de que el runtime de Workers saliera
+  bajo concurrencia y Wrangler intentara escribir su log fuera del sandbox.
+  Todo lo cancelado se revalidó aislado: API **240/240** + enlaces **3/3**,
+  tenant demo **62/62**, pipeline web **9/9** + portfolio **3/3** y build seco
+  del Worker correcto con el log redirigido. Sin deploy.
+
 ## Checkpoint comercial D4-V · 2026-08-08 (sesión 100)
 
 - La landing ya demuestra el origen de una reserva directa: una nueva sección

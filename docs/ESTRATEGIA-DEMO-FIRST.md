@@ -168,8 +168,8 @@ contratados y se convierte cada fila necesaria en plan de entrega.
    gestor/planning.
 4. **D3-V ✅ — demo Visión**: representar automatización e inteligencia con
    escenarios honestos y explicables.
-5. **D4-V 🟨 — escaparate de venta**: galería, comparador, ficha comercial
-   bilingüe y campaña de muestra listos; pendiente el vídeo/captura guiada.
+5. **D4-V ✅ — escaparate de venta**: galería, comparador, ficha comercial
+   bilingüe, campaña de muestra y captura guiada accesible y reproducible.
 6. Ampliar a seis y doce solo con aprendizaje comercial de las tres primeras.
 
 Los frentes de producción quedan **diferidos, no cancelados**. Se reactivan

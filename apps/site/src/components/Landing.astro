@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import CampaignShowcase from './CampaignShowcase.astro';
 import EcosystemRail from './EcosystemRail.astro';
+import GuidedTour from './GuidedTour.astro';
 import PlanningVisual from './PlanningVisual.astro';
 import PortfolioGallery from './PortfolioGallery.astro';
 import ProductCardVisual from './ProductCardVisual.astro';
@@ -88,6 +89,8 @@ const iconosProblema = [
     <PortfolioGallery content={c.portfolio} />
 
     <CampaignShowcase content={c.campana} />
+
+    <GuidedTour content={c.video} locale={locale} />
 
     <section class="botanical-shell botanical-section botanical-problem-layout">
       <div class="botanical-problem-title lc-reveal">
