@@ -17,7 +17,19 @@
 
 ## Minuto 0–1 · La web: el mostrador de verdad
 
-Abrir `camp.logic2b.com`. Dejar que la portada respire un segundo (foto real, no un stock de playa genérica) y decir la frase que ancla todo lo que sigue:
+Si el interlocutor pregunta por captación propia, empezar 30 segundos antes en
+`camp.logic2b.com/#campanas`: abrir búsqueda, display o feed, señalar el rótulo
+«Creatividad de ejemplo» y clicar. En Mar de Fondo, enseñar en la barra de
+direcciones las UTM de muestra y el salto directo a `#mostrador` antes de seguir.
+Frase de encuadre:
+
+> "Aquí no fingimos una cuenta publicitaria ni resultados: enseñamos el recorrido
+> completo que sí controlamos, desde una campaña propia hasta la disponibilidad y
+> una reserva directa. El pago de esta demo es simulado y no hace ningún cargo."
+
+Sin esa entrada alternativa, abrir `camp.logic2b.com`; si se ha usado la campaña,
+quedarse en Mar de Fondo. Dejar que la portada respire un segundo (foto real, no
+un stock de playa genérica) y decir la frase que ancla todo lo que sigue:
 
 > "Esto no es una web con un formulario de contacto disfrazado de motor de reservas. El buscador de aquí arriba consulta la disponibilidad real, ahora mismo."
 

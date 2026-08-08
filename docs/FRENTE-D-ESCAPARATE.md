@@ -312,7 +312,7 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 | **D1-V ✅** | Demo Inicio       | Primera marca completa, web móvil, alojamientos y consulta de muestra                                | L'Olivar lista en `/demos/olivar/`                           |
 | **D2-V ✅** | Demo Gestión      | Segunda marca, solicitud, gestor, planning y plano con datos creíbles                                | Web → operación completa en una presentación                 |
 | **D3-V ✅** | Demo Visión       | Reserva y operación más automatización/IA representadas                                              | El futuro se entiende sin confundir prototipo con producción |
-| **D4-V 🟨** | Landing y campaña | Galería de tres, comparador, fichas, capturas/vídeo y Ads de muestra                                 | Galería/comparador/ficha listos; faltan campaña y vídeo      |
+| **D4-V 🟨** | Landing y campaña | Galería de tres, comparador, fichas, capturas/vídeo y Ads de muestra                                 | Galería/comparador/ficha/campaña listos; falta el vídeo      |
 | **D5-V**    | Ola de seis       | Tres variantes adicionales nacidas de la fábrica visual                                              | Ninguna exige rama o backend propio                          |
 | **D6-V**    | Ola de doce       | Completar el portfolio según aprendizaje comercial                                                   | Cada demo cubre una objeción o ICP distinto                  |
 

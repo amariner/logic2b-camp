@@ -1,41 +1,44 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 99 (2026-08-08). D3-V está cerrado y D4-V ya tiene
-> galería, comparador y ficha comercial bilingüe descargable.
+> Reescrito tras la sesión 100 (2026-08-08). D4-V ya tiene galería, comparador,
+> ficha comercial y campaña de muestra clicable; solo falta el vídeo.
 
 ## Estado en una línea
 
-La primera ola ya se puede navegar y enviar en PDF; falta demostrar cómo una
-campaña propia desemboca en reserva directa sin fingir cuentas publicitarias.
+La primera ola ya se puede navegar, enviar y recorrer desde una creatividad; el
+último hueco del escaparate es una captura guiada corta que lo explique sin una
+demo en directo.
 
 ## Objetivo prioritario
 
-1. Confirmar que los dos PDF de `output/pdf/` y `apps/site/public/` siguen
-   presentes y que la landing los enlaza. No regenerarlos ni tocar fotografía si
-   el contenido del portfolio no cambia.
-2. Continuar D4-V con **una campaña de muestra acotada para Mar de Fondo**:
-   anuncio de búsqueda, pieza display 300×250 y pieza de feed 1080×1080, todos
-   derivados de fotografía aprobada y reunidos en una sección responsive de la
-   landing.
-3. El recorrido debe ser clicable y conservar una sola historia: creatividad de
-   ejemplo → `/demos/mardefondo/` con UTM ficticias → disponibilidad/reserva demo.
-   Rotular «creatividad de ejemplo» y «pago simulado» donde corresponda.
-4. No usar logos ni cromo copiado de Google/Meta, abrir cuentas, instalar píxeles,
-   inventar conversiones/ROAS o llamar a un proveedor. Son assets estáticos del
-   repositorio; el argumento es canal propio y reserva directa, no una promesa de
-   rendimiento.
-5. Mantener ES/EN, teclado, foco, `prefers-reduced-motion`, cero desborde a
-   1366/375 y enlaces verificables. Ejecutar `pnpm check`; si el tenant demo sale
-   bajo concurrencia sin aserción, reejecutarlo aislado y documentar ambos
-   resultados.
+1. Cerrar D4-V con **un vídeo/captura guiada reproducible y acotada** de la
+   primera ola. Antes de elegir formato, comprobar localmente qué entrega estable
+   ofrece Playwright/Chromium y dejar la decisión en ADR 0039 propuesto.
+2. Contar una sola historia de 35–60 segundos: creatividad de ejemplo de Mar de
+   Fondo → web/disponibilidad → reserva o recibo demo → planning o recomendación
+   explicable. Reutilizar los recorridos y datos existentes; no grabar servicios,
+   cuentas o acciones externas que no existen.
+3. Publicar una pieza ligera con póster aprobado, controles nativos, `playsinline`,
+   sin autoplay y con alternativa textual/subtítulos. La landing ES/EN debe
+   compartir el mismo metraje y localizar únicamente cromo/copy.
+4. No construir un editor, una plataforma de vídeo ni un pipeline general antes
+   de probar una captura. Si MP4/WebM reproducible no es fiable en el entorno,
+   elegir la alternativa más honesta y accesible (secuencia guiada de capturas)
+   y documentar el descarte.
+5. Verificar 1366/375, teclado, foco, movimiento reducido, peso, carga bajo
+   demanda, cero desborde/imágenes o vídeo roto y enlaces del bundle compuesto.
+   Ejecutar `pnpm check`; si el tenant demo vuelve a agotar `resolveId` bajo
+   concurrencia, reejecutarlo aislado y documentar ambos resultados.
 
 ## Ya terminado — no repetir
 
 - D1-V L'Olivar, D2-V Pinada del Mar y D3-V Mar de Fondo están cerrados.
-- Mar de Fondo tiene 14/14 fotos, capturas firma y derivados aprobados.
-- La landing incluye galería, comparador y descarga ES/EN de la ficha comercial.
-- Los PDF son reproducibles desde el portfolio i18n, pesan 307 kB y contienen
-  enlaces/QR; no crear otra fuente editorial ni otro formato en esta sesión.
+- Mar de Fondo tiene 14/14 fotos, tres capturas firma y derivados aprobados.
+- La landing incluye galería, comparador, ficha PDF ES/EN y campaña bilingüe con
+  búsqueda, display 300×250 y feed 1080×1080.
+- Las tres creatividades ya reutilizan una foto aprobada, llevan UTM ficticias y
+  declaran que no existe cuenta, medición ni pago real. No crear más formatos sin
+  evidencia comercial.
 - No desplegar un tenant ni crear D1, usuarios, email, pagos o infraestructura
   por marca.
 

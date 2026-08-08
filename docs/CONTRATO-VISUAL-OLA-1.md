@@ -301,8 +301,10 @@ rango de confianza y botones «Descartar / Preparar cambio».
   acceso playa y dos texturas.
 - Plano propio y dataset de ~300 unidades; la captura actual del planning se
   reutiliza como referencia de composición, no como prueba de esa escala.
-- Una creatividad 1080×1080, una 1080×1920, una 300×250 y un anuncio de
-  búsqueda; todos marcados como muestra.
+- Una creatividad 1080×1080, una 300×250 y un anuncio de búsqueda; todos
+  marcados como muestra. El formato vertical 1080×1920 se producirá solo si una
+  conversación comercial demuestra que aporta algo distinto al feed; no es
+  condición de cierre de D4-V.
 - Tres fixtures de prototipo: respuesta a reseña, resumen de incidencias y
   recomendación de ocupación. Cada uno declara fuentes y revisión humana.
 

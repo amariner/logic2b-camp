@@ -207,6 +207,56 @@
       }
     ]
   },
+  "campana": {
+    "kicker": "Campaña propia · muestra estática",
+    "titulo": "Del anuncio a una reserva directa, sin salir de tu canal.",
+    "texto": "Tres formatos ficticios cuentan la misma estancia y desembocan en la web de Mar de Fondo con UTM de muestra. El argumento no es una métrica inventada: es poder enseñar el recorrido completo, de la creatividad a la disponibilidad.",
+    "ejemplo": "Creatividad de ejemplo",
+    "alcance": "Creatividad de ejemplo · sin cuenta publicitaria ni medición real. El recorrido termina en una reserva de demostración con pago simulado; no se realiza ningún cargo.",
+    "recorrido": {
+      "aria": "Recorrido de la campaña de muestra",
+      "items": [
+        {
+          "titulo": "Creatividad",
+          "texto": "Búsqueda, display o feed con una historia común."
+        },
+        {
+          "titulo": "Web y disponibilidad",
+          "texto": "Cada formato abre el mostrador de Mar de Fondo."
+        },
+        {
+          "titulo": "Reserva demo",
+          "texto": "Confirmación y pago simulado, sin ningún cargo."
+        }
+      ]
+    },
+    "search": {
+      "formato": "Búsqueda · muestra",
+      "url": "camp.logic2b.com › demos › mardefondo",
+      "titulo": "Resort Mar de Fondo | Reserva directa",
+      "texto": "Compara parcelas y alojamientos junto al Mediterráneo. Consulta disponibilidad y completa una reserva de demostración.",
+      "cta": "Ver disponibilidad",
+      "aria": "Abrir la creatividad de búsqueda de ejemplo y consultar disponibilidad en Mar de Fondo"
+    },
+    "display": {
+      "formato": "Display · 300 × 250",
+      "marca": "MAR DE FONDO",
+      "titulo": "Agosto junto al mar.",
+      "texto": "Tu parcela, reservada directamente.",
+      "cta": "Ver fechas",
+      "alt": "Piscina laguna del resort ficticio Mar de Fondo al atardecer",
+      "aria": "Abrir la creatividad display 300 por 250 de ejemplo y consultar fechas en Mar de Fondo"
+    },
+    "feed": {
+      "formato": "Feed · 1080 × 1080",
+      "marca": "MAR DE FONDO · MEDITERRÁNEO",
+      "titulo": "Un horizonte amplio. Tu agosto, reservado.",
+      "texto": "Reserva directa en nuestra web.",
+      "cta": "Consultar",
+      "alt": "Piscina laguna del resort ficticio Mar de Fondo al atardecer",
+      "aria": "Abrir la creatividad de feed 1080 por 1080 de ejemplo y consultar disponibilidad en Mar de Fondo"
+    }
+  },
   "problema": {
     "titulo": "Cuando cada canal funciona por separado, recepción acaba haciendo el trabajo dos veces",
     "puntos": [

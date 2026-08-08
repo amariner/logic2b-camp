@@ -207,6 +207,56 @@
       }
     ]
   },
+  "campana": {
+    "kicker": "Owned campaign · static example",
+    "titulo": "From an advert to a direct booking, all within your own channel.",
+    "texto": "Three fictional formats tell the same stay story and lead to the Mar de Fondo website with sample UTM parameters. The argument is not a made-up metric: it is the ability to show the full journey, from creative to availability.",
+    "ejemplo": "Example creative",
+    "alcance": "Example creative · no advertising account or real measurement. The journey ends in a demonstration booking with simulated payment; no charge is made.",
+    "recorrido": {
+      "aria": "Sample campaign journey",
+      "items": [
+        {
+          "titulo": "Creative",
+          "texto": "Search, display or feed with one shared story."
+        },
+        {
+          "titulo": "Website and availability",
+          "texto": "Every format opens the Mar de Fondo booking panel."
+        },
+        {
+          "titulo": "Demo booking",
+          "texto": "Confirmation and simulated payment, with no charge."
+        }
+      ]
+    },
+    "search": {
+      "formato": "Search · example",
+      "url": "camp.logic2b.com › demos › mardefondo",
+      "titulo": "Mar de Fondo Resort | Book direct",
+      "texto": "Compare pitches and accommodation beside the Mediterranean. Check availability and complete a demonstration booking.",
+      "cta": "Check availability",
+      "aria": "Open the example search creative and check availability at Mar de Fondo"
+    },
+    "display": {
+      "formato": "Display · 300 × 250",
+      "marca": "MAR DE FONDO",
+      "titulo": "August by the sea.",
+      "texto": "Your pitch, booked direct.",
+      "cta": "View dates",
+      "alt": "Lagoon pool at the fictional Mar de Fondo resort at sunset",
+      "aria": "Open the example 300 by 250 display creative and view dates at Mar de Fondo"
+    },
+    "feed": {
+      "formato": "Feed · 1080 × 1080",
+      "marca": "MAR DE FONDO · MEDITERRANEAN",
+      "titulo": "A broad horizon. Your August, booked.",
+      "texto": "Book direct on our website.",
+      "cta": "Check dates",
+      "alt": "Lagoon pool at the fictional Mar de Fondo resort at sunset",
+      "aria": "Open the example 1080 by 1080 feed creative and check availability at Mar de Fondo"
+    }
+  },
   "problema": {
     "titulo": "What's costing you money every August",
     "puntos": [

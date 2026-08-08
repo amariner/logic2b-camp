@@ -1,5 +1,32 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint comercial D4-V · 2026-08-08 (sesión 100)
+
+- La landing ya demuestra el origen de una reserva directa: una nueva sección
+  bilingüe reúne anuncio de búsqueda, display 300×250 y feed 1080×1080 de Mar de
+  Fondo. Los tres formatos son HTML/CSS estático y reutilizan por import la
+  fotografía aprobada `instalacion-laguna.webp`; no hay copias, generación ni
+  JavaScript nuevo.
+- Cada creatividad abre `/demos/mardefondo/` en `#mostrador` con la campaña
+  ficticia `mar_de_fondo_agosto` y un `utm_content` propio. El rótulo
+  «Creatividad de ejemplo» aparece dentro de las tres piezas; la sección declara
+  además que no existe cuenta ni medición real y que el pago es simulado, sin
+  cargo. No se copiaron logos o cromo de plataformas ni se inventaron ROAS o
+  conversiones.
+- ADR 0038 propuesto: campaña propia → web propia → reserva directa es un
+  recorrido comercial estático, no una integración publicitaria. El guion de
+  venta incorpora la entrada desde `#campanas` y la comprobación visible de las
+  UTM antes de continuar hacia disponibilidad.
+- `qa:campana` valida ES/EN a **1366/375**, tres enlaces, UTM completas y
+  distintas, imagen cargada, foco de 2 px, movimiento reducido, cero desborde,
+  errores de consola o peticiones fallidas. Las cuatro capturas se inspeccionaron
+  manualmente y la jerarquía se mantiene en ambos idiomas.
+- El bundle compuesto quedó verde con **11.531 enlaces internos / 358 HTML**.
+  `pnpm check` llegó a **43/53** antes del timeout `resolveId` conocido del tenant
+  demo bajo concurrencia; aislado pasó **62/62**. Sitio específico: **71 páginas**,
+  typecheck sin errores. D4-V queda pendiente solo del vídeo/captura guiada. Sin
+  deploy.
+
 ## Checkpoint comercial D4-V · 2026-08-08 (sesión 99)
 
 - La primera ola ya tiene una ficha comercial que se puede enviar: dos PDF A4
@@ -96,6 +123,16 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 100 (2026-08-08): la campaña de muestra ya desemboca en
+  una reserva directa navegable.** ADR 0038 propuesto: búsqueda, display 300×250
+  y feed 1080×1080 viven como HTML/CSS estático bilingüe, consumen la fotografía
+  aprobada de Mar de Fondo y abren su mostrador con UTM ficticias diferenciadas.
+  Cada pieza se rotula como ejemplo y el alcance común explica que no hay cuenta,
+  medición ni cargo real. `qa:campana` pasa ES/EN a 1366/375 con teclado,
+  movimiento reducido, imágenes y consola limpios. Bundle compuesto **11.531
+  enlaces / 358 HTML**; el check global alcanzó **43/53** por timeout ambiental
+  del tenant demo y su reejecución aislada pasó **62/62**. D4-V queda pendiente
+  solo del vídeo/captura guiada. Sin deploy.
 - **Sesión autónoma 99 (2026-08-08): D4-V ya dispone de una ficha comercial
   descargable y bilingüe.** ADR 0037 propuesto: un solo generador editorial lee
   el contenido que ya alimenta la landing y compone dos PDF de tres páginas con

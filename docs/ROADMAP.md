@@ -170,23 +170,24 @@ Gestión y Visión; cada demo usa el soporte más barato que haga creíble el
 recorrido (seed, fixture tipado, adaptador o D1 demo compartida). CLI, hosts y
 bases por marca, integraciones y producción real no son dependencias.
 
-| Fase        | Nombre               | Objetivo                                                                                 | Hecho cuando                                             |
-| ----------- | -------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **D0-V ✅** | Contrato visual      | L'Olivar, Pinada del Mar y Mar de Fondo: historia, pantallas, arte, activos y honestidad | Cerrado en `CONTRATO-VISUAL-OLA-1.md`                    |
-| **D1-V ✅** | Demo Inicio          | Microcamping: marca, web, alojamientos y consulta de muestra                             | L'Olivar lista en `/demos/olivar/`                       |
-| **D2-V ✅** | Demo Gestión         | Camping mediano: web → solicitud → gestor/planning/plano                                 | La historia completa se recorre con datos demo creíbles  |
-| **D3-V ✅** | Demo Visión          | Resort: reserva + operación + automatización/IA representadas                            | El futuro se entiende y cada simulación está etiquetada  |
-| **D4-V 🟨** | Escaparate comercial | Galería, comparador, capturas/vídeo, fichas y campaña de muestra                         | Galería/comparador/ficha listos; faltan campaña y vídeo  |
-| **D5-V**    | Ola 2                | Extender la fábrica a seis demos                                                         | La variedad no crea código ni backend por marca          |
-| **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto              |
+| Fase        | Nombre               | Objetivo                                                                                 | Hecho cuando                                            |
+| ----------- | -------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **D0-V ✅** | Contrato visual      | L'Olivar, Pinada del Mar y Mar de Fondo: historia, pantallas, arte, activos y honestidad | Cerrado en `CONTRATO-VISUAL-OLA-1.md`                   |
+| **D1-V ✅** | Demo Inicio          | Microcamping: marca, web, alojamientos y consulta de muestra                             | L'Olivar lista en `/demos/olivar/`                      |
+| **D2-V ✅** | Demo Gestión         | Camping mediano: web → solicitud → gestor/planning/plano                                 | La historia completa se recorre con datos demo creíbles |
+| **D3-V ✅** | Demo Visión          | Resort: reserva + operación + automatización/IA representadas                            | El futuro se entiende y cada simulación está etiquetada |
+| **D4-V 🟨** | Escaparate comercial | Galería, comparador, capturas/vídeo, fichas y campaña de muestra                         | Galería/comparador/ficha/campaña listos; falta el vídeo |
+| **D5-V**    | Ola 2                | Extender la fábrica a seis demos                                                         | La variedad no crea código ni backend por marca         |
+| **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto             |
 
 **Estado (2026-08-08): D0-V, D1-V, D2-V y D3-V cerrados; D4-V está en curso.** Mar de
 Fondo tiene identidad, catálogo de 300 unidades, reserva pública hasta el
 recibo, operación reversible a escala y fotografía **14/14**. Los tres fixtures
 del contrato están navegables: respuesta a reseña, parte de incidencias y
 recomendación de ocupación, todos con fuentes, límites y revisión humana. La
-landing publica la galería, el comparador y una ficha comercial bilingüe de tres
-páginas; quedan la campaña de muestra y el vídeo para cerrar D4-V. El
+landing publica la galería, el comparador, una ficha comercial bilingüe de tres
+páginas y una campaña de muestra clicable hasta el mostrador; queda solo el vídeo
+para cerrar D4-V. El
 contrato de la primera ola vive en
 [`CONTRATO-VISUAL-OLA-1.md`](CONTRATO-VISUAL-OLA-1.md). D5.2 ya existe como
 franja de cifras y escalera. Se mantiene

@@ -126,8 +126,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   lista, o corriendo el script de descarga fuera del contenedor — 2026-08-06
 - ~~[pinadamar] **Favicon, apple-touch-icon, OG y miniatura de Pinada del Mar**~~
   → **hecho 2026-08-06 (sesión 85)** junto a la sesión fotográfica completa.
-- ~~[D3-V] **Demo Visión — Mar de Fondo**~~ → **cerrado 2026-08-07 (sesión
-  98)**: recorrido completo disponibilidad → recibo → gestor → planning/ficha/
+- ~~[D3-V] **Demo Visión — Mar de Fondo**~~ → **cerrado 2026-08-07 (sesión 98)**: recorrido completo disponibilidad → recibo → gestor → planning/ficha/
   plano → llegada/cobro, con 300 unidades, 240 reservas, `MF-DEMO-001`, reset y
   cero red. Automatiza e Inteligente son prototipos supervisados, explicables y
   no ejecutan acciones externas. El manifiesto fotográfico queda **14/14**:
@@ -136,12 +135,13 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   integrado de OpenAI de una en una, con inspección y pausas de 20 segundos,
   sin fallback ni CLI/API con clave. Capturas firma y derivados sociales siguen
   siendo reproducibles; build específico **25 páginas / 112 derivados**.
-- [D4-V] **Escaparate de las tres — PARCIAL (sesiones 97/99)**: galería y
+- [D4-V] **Escaparate de las tres — PARCIAL (sesiones 97/99/100)**: galería y
   comparador bilingües ya viven en la landing con las tres miniaturas aprobadas,
   escala, recorrido y enlaces al momento firma. La ficha comercial ES/EN se
-  genera desde la misma fuente, pesa 307 kB y se descarga desde la sección.
-  Quedan capturas/vídeo y campaña de muestra. Después, ampliar a 6 y 12 solo con
-  aprendizaje.
+  genera desde la misma fuente, pesa 307 kB y se descarga desde la sección. La
+  campaña de Mar de Fondo añade búsqueda, display y feed clicables con UTM
+  ficticias y alcance demo explícito. Queda solo el vídeo/captura guiada. Después,
+  ampliar a 6 y 12 solo con aprendizaje.
 - ~~[D4-V/ficha] **Ficha comercial descargable de la primera ola**~~ → **hecho
   2026-08-08 (sesión 99)**: dos PDF A4 de tres páginas generados desde el
   portfolio i18n, con las tres miniaturas, capturas aprobadas, comparación por
@@ -154,9 +154,16 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[D4-V/landing] **Sensación de escalabilidad**~~ → **hecho 2026-08-07
   (sesión 97)**: galería de tres y comparador por resultados, con entrada a cada
   web y a su momento firma; la franja de cifras temprana ya existía.
-- [D4-V/campaña] **Creatividades de muestra Google/Meta/búsqueda**: assets
-  estáticos, sin cuentas ni píxeles, marcados «demo», que recorran anuncio → web
-  → consulta/reserva dentro del navegador.
+- ~~[D4-V/campaña] **Creatividades de muestra Google/Meta/búsqueda**~~ → **hecho
+  2026-08-08 (sesión 100)**: búsqueda, display 300×250 y feed 1080×1080 en
+  HTML/CSS estático, sin logos de plataforma, cuentas, píxeles o métricas
+  inventadas. Reutilizan fotografía aprobada, se rotulan como ejemplo y enlazan
+  al mostrador de Mar de Fondo con UTM ficticias distintas.
+- [D4-V/vídeo] **Captura guiada del recorrido de la primera ola**: pieza corta,
+  reproducible y con controles que conecte campaña → disponibilidad → operación
+  sin autoplay ni una segunda narración comercial. Debe reutilizar recorridos y
+  capturas aprobados, tener póster ligero y mantener subtítulos/alternativa
+  textual; es el único cierre pendiente de D4-V — 2026-08-08.
 - [marca] **`docs/brand/` sigue describiendo el isotipo como logo del producto** (resto del ítem cerrado en la 61): la OG image ya está, pero el directorio de marca no se ha revisado desde el cambio de logo — 2026-07-30
 - [seo] **`BreadcrumbList` en las guías**: el sitemap declara las 25 páginas de documentación como "la superficie de búsqueda larga del producto" (cómo hacer el check-in en un camping…), y son las únicas con jerarquía real (guía → página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage` desde la 61; las guías no tienen ninguno. Barato: va en `Docs.astro`, que las sirve todas — 2026-07-30
 - ~~[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle compuesto~~ → **hecho 2026-08-04 (sesión 70)**: `apps/api/scripts/check-demo-links.mjs` recorre los `<a href>` internos del `dist` compuesto y comprueba que resuelven dentro de él (incluye `/demo/`, `/admin/`, rutas sin barra que Workers Assets redirige y URLs absolutas del mismo origen). Corre tras copiar los tres builds y **antes** de migrar o desplegar en `deploy:demo`; informa cada HTML origen y ruta rota. El `404.html` se excluye correctamente: es el documento fallback de Astro, no una ruta publicada. Tres tests nativos fijan el contrato; el primer barrido real dio **9.286 enlaces / 304 HTML, OK**.
