@@ -1,5 +1,29 @@
 # PROGRESS — Logic Camp
 
+## Checkpoint visual de temas · 2026-08-08 (sesión 102)
+
+- El catálogo `/temas/` deja de reutilizar tres fotografías de la propuesta
+  Azahar para sus conceptos. Montaña, Familiar y Parcela tienen ahora piezas
+  originales que responden a su dirección de arte: refugio de temporada larga,
+  camping familiar vivido y parcela de touring operativa.
+- Las tres se generaron con el modelo integrado de Codex en dos tandas máximas
+  de 2, con revisión visual entre ambas y sin CLI, API con clave ni fallback.
+  Cada llamada produjo una variante válida; manifiesto, prompt exacto, proveedor,
+  huella SHA-256, dimensiones y destino quedan en `apps/site/fotos-temas*.json`.
+- Los finales locales son WebP sRGB de **1440×960**: Familiar **268 kB**,
+  Montaña **336 kB** y Parcela **320 kB**. ES/EN apuntan a `/temas/`; no se crea
+  una cuarta demo, marca, D1 o backend, y los conceptos siguen rotulados como
+  tales.
+- QA real del bundle a **1366/375**: seis tarjetas, 3/3 imágenes nuevas cargadas,
+  recortes e interfaz superpuesta legibles, cero desborde horizontal y cero
+  avisos/errores de consola en ES/EN. Sitio: **71 páginas**, build y typecheck
+  verdes.
+- `pnpm check` alcanzó **42/53** antes de que Workers agotara el arranque de la
+  API bajo concurrencia. En aislado pasaron **190/240** pruebas API y las **50**
+  restantes no empezaron por timeout/crash ambiental del runtime; enlaces API
+  **3/3**. Tenant demo pasó **60/62** y las dos restantes agotaron 5 s sin fallo
+  de aserción antes de que el runtime dejara de arrancar. Sin deploy.
+
 ## Checkpoint comercial D4-V · 2026-08-08 (sesión 101)
 
 - D4-V queda cerrado con una captura guiada reproducible de **38,9 s**,
@@ -148,6 +172,16 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
+- **Sesión autónoma 102 (2026-08-08): los conceptos del catálogo ya tienen
+  fotografía propia.** Montaña, Familiar y Parcela sustituyen los tres préstamos
+  de Azahar por WebP originales de 1440×960 generados con el integrado de Codex,
+  en tandas 2+1 y con revisión antes de continuar. El manifiesto conserva los
+  prompts exactos y el estado conserva proveedor, huella y salida. ES/EN sirven
+  las tres rutas locales; QA 1366/375 confirma carga, recorte, legibilidad, cero
+  desborde y consola limpia. No se abre D5-V ni una cuarta demo. Sitio 71 páginas,
+  build/typecheck verdes; el check global volvió a quedar condicionado por el
+  runtime de Workers bajo concurrencia y sus paquetes se revalidaron hasta el
+  límite ambiental descrito en el checkpoint. Sin deploy.
 - **Sesión autónoma 100 (2026-08-08): la campaña de muestra ya desemboca en
   una reserva directa navegable.** ADR 0038 propuesto: búsqueda, display 300×250
   y feed 1080×1080 viven como HTML/CSS estático bilingüe, consumen la fotografía

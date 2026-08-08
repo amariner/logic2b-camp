@@ -1,13 +1,14 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 101 (2026-08-08). La primera ola D0-V–D4-V está
-> cerrada localmente y pendiente de publicación; D5-V requiere aprendizaje
-> comercial real antes de crear una cuarta demo.
+> Reescrito tras la sesión 102 (2026-08-08). La primera ola D0-V–D4-V está
+> cerrada localmente y el catálogo de temas ya no toma imágenes de Azahar;
+> D5-V requiere aprendizaje comercial real antes de crear una cuarta demo.
 
 ## Estado en una línea
 
-La primera ola ya se puede navegar, enviar y explicar sin una demo en directo:
-galería, comparador, ficha, campaña y captura guiada ES/EN están verificadas.
+La primera ola ya se puede navegar, enviar y explicar sin una demo en directo;
+además, Montaña, Familiar y Parcela cuentan con fotografía conceptual propia,
+trazada y verificada en ES/EN.
 
 ## Objetivo prioritario
 
@@ -30,6 +31,9 @@ galería, comparador, ficha, campaña y captura guiada ES/EN están verificadas.
 ## Gate de expansión
 
 - No abrir D5-V ni inventar otras tres marcas porque D4-V esté cerrado.
+- No convertir Montaña, Familiar o Parcela en páginas/demos por el mero hecho de
+  que ya tengan imagen: siguen siendo direcciones visuales rotuladas como
+  concepto.
 - Registrar antes una conversación, objeción o ICP real que las demos actuales
   no cubran. Cada nueva demo debe responder a esa evidencia y seguir sin rama ni
   backend propio.
@@ -42,6 +46,8 @@ galería, comparador, ficha, campaña y captura guiada ES/EN están verificadas.
   cerrados.
 - Mar de Fondo tiene 14/14 fotos, tres capturas firma, derivados, campaña y
   vídeo guiado aprobado.
+- El catálogo de temas tiene imágenes locales propias para Montaña, Familiar y
+  Parcela; no volver a generar ni reutilizar Azahar para esas tres tarjetas.
 - El vídeo de 38,9 s comparte metraje en ES/EN y ya incluye controles, póster,
   subtítulos y transcripción; no crear más formatos sin una necesidad concreta.
 - La landing incluye galería, comparador y ficha PDF ES/EN desde la misma fuente

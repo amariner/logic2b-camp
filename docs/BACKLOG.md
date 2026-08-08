@@ -144,6 +144,12 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   ficticias y alcance demo explícito. Una captura guiada reproducible de 38,9 s
   cierra campaña → disponibilidad → operación, con controles, subtítulos y
   transcripción ES/EN. Ampliar a 6 y 12 solo con aprendizaje.
+- ~~[D4-V/temas] **Fotografía propia para los conceptos Montaña, Familiar y
+  Parcela**~~ → **hecho 2026-08-08 (sesión 102)**: tres piezas originales del
+  integrado de Codex, en tandas 2+1, sustituyen los préstamos de la propuesta
+  Azahar. WebP 1440×960 locales, prompts/proveedor/huellas trazados y QA ES/EN
+  1366/375 verde. Son conceptos visuales, no nuevas demos ni marcas; D5-V sigue
+  detrás de aprendizaje comercial.
 - ~~[D4-V/ficha] **Ficha comercial descargable de la primera ola**~~ → **hecho
   2026-08-08 (sesión 99)**: dos PDF A4 de tres páginas generados desde el
   portfolio i18n, con las tres miniaturas, capturas aprobadas, comparación por

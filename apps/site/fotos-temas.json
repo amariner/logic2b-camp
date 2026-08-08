@@ -1,0 +1,34 @@
+{
+  "_": [
+    "Encargo visual del catálogo de temas de la landing Logic2B Campings.",
+    "Son direcciones de arte, no nuevas demos ni establecimientos reales.",
+    "Modelo integrado de imagen de Codex; tandas máximas de 2 y revisión antes de continuar.",
+    "Fotografía documental natural de campings españoles plausibles, sin aspecto de banco de imágenes.",
+    "Sin rostros reconocibles, texto, marcas, matrículas legibles, HDR, saturación de folleto ni arquitectura imposible.",
+    "Los derivados finales se publican en apps/site/public/temas/ y solo se usan como fondo de miniaturas con interfaz superpuesta."
+  ],
+  "lotes": [
+    ["montana", "familiar"],
+    ["parcela"]
+  ],
+  "piezas": {
+    "montana": {
+      "aspecto": "3:2",
+      "papel": "concepto Montaña · refugio y temporada larga",
+      "destino": "apps/site/public/temas/montana.webp",
+      "prompt": "Use case: photorealistic-natural\nAsset type: website theme-catalog card background\nPrimary request: Photorealistic editorial documentary landscape photograph of an honest mountain campsite in inland Spain at a crisp early-autumn morning.\nScene/backdrop: A modest timber-and-stone service lodge and two well-spaced camping pitches among Scots pines and broadleaf trees, with a low forested ridge behind and a trace of cool mist between the trunks.\nSubject: Durable gravel paths, practical rain protection and lived-in natural materials that suggest a long season.\nStyle/medium: Natural editorial documentary photography, tactile real-world texture, subtle 35mm grain.\nComposition/framing: Wide 3:2 landscape composition with layered depth; designed to remain legible beneath a restrained website-interface overlay.\nLighting/mood: Crisp cool morning light, quiet and sheltered.\nColor palette: Restrained moss, slate, bark and muted ochre.\nConstraints: Plausible Spanish mountain campsite; no dramatic alpine peaks; no snow; no luxury glamping; no people; no text; no signage; no logos; no readable number plates; no HDR; no watermark; no impossible architecture."
+    },
+    "familiar": {
+      "aspecto": "3:2",
+      "papel": "concepto Familiar · cálido y cercano",
+      "destino": "apps/site/public/temas/familiar.webp",
+      "prompt": "Use case: photorealistic-natural\nAsset type: website theme-catalog card background\nPrimary request: Photorealistic editorial documentary landscape photograph of a warm, believable family campsite in Mediterranean Spain in late-afternoon summer light.\nScene/backdrop: Two modest shaded bungalows around a small safe play lawn, with mature shade trees, compacted earth and practical timber details.\nSubject: A few bicycles and a picnic table; a family only as small back-turned figures in the middle distance, with no recognizable faces.\nStyle/medium: Natural editorial documentary photography with real imperfections and subtle 35mm grain; friendly and lived-in, never staged or luxurious.\nComposition/framing: Wide 3:2 landscape. Place the main scene and people in the right half; keep the left third calmer and softly lit for a website-interface overlay.\nLighting/mood: Warm late-afternoon summer light, welcoming and relaxed.\nColor palette: Warm honey, muted green, pale timber and compacted-earth tones.\nConstraints: Plausible Spanish campsite; no recognizable faces; no text; no signs; no logos; no branded objects; no readable number plates; no oversized waterpark; no HDR; no watermark; no impossible architecture."
+    },
+    "parcela": {
+      "aspecto": "3:2",
+      "papel": "concepto Parcela · directo y funcional",
+      "destino": "apps/site/public/temas/parcela.webp",
+      "prompt": "Use case: photorealistic-natural\nAsset type: website theme-catalog card background\nPrimary request: Photorealistic editorial documentary landscape photograph of a practical touring pitch at a well-run Spanish campsite in clear morning light.\nScene/backdrop: Level compacted gravel with clearly defined plot edges under mature shade trees.\nSubject: Put the operational detail in the right half: a clean but ordinary white caravan under a simple neutral awning, a discreet electricity hookup and water point, wheel chocks and a small outdoor table.\nStyle/medium: Direct, functional and credible editorial documentary photography with real material wear and subtle 35mm grain, not aspirational lifestyle imagery.\nComposition/framing: Wide 3:2 landscape; keep the left third visually calm for a website-interface overlay.\nLighting/mood: Clear natural morning light, orderly and practical.\nColor palette: Restrained stone, graphite, canvas and natural green.\nConstraints: Plausible Spanish campsite; no people; no text; no signs; no logos; no branded caravan details; no readable number plates; no luxury styling; no HDR; no watermark; no impossible geometry."
+    }
+  }
+}

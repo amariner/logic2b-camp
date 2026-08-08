@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "provider": "codex-integrated",
+  "model": "built-in-imagegen (model name not exposed)",
+  "generatedAt": "2026-08-08T13:44:54Z",
+  "status": "approved",
+  "attempts": {
+    "montana": {
+      "status": "approved",
+      "promptSha256": "c59b4e92c61afc3ed07f8b2997266de569eedde71bde633d283b4747c4606fb4",
+      "output": "apps/site/public/temas/montana.webp",
+      "width": 1440,
+      "height": 960
+    },
+    "familiar": {
+      "status": "approved",
+      "promptSha256": "246f4d886b4cef0e0d6b8726593bce5800ecc0cde8674f810e00562345807eaa",
+      "output": "apps/site/public/temas/familiar.webp",
+      "width": 1440,
+      "height": 960
+    },
+    "parcela": {
+      "status": "approved",
+      "promptSha256": "5c7b33c3ee0d16ae8ff9a41fa0e4bcab77695c544c9bcee08512699a51323704",
+      "output": "apps/site/public/temas/parcela.webp",
+      "width": 1440,
+      "height": 960
+    }
+  }
+}
