@@ -1,5 +1,27 @@
 # PROGRESS — Logic Camp
 
+## Vídeo de gestos del planning · 2026-08-09 (sesión 104)
+
+- Cierra el pendiente C6 con ADR 0040: una captura reproducible muestra mover
+  `MF-DEMO-001`, estirar su salida con revisión del precio y crear arrastrando
+  hasta abrir el alta con tipo, unidad y fechas precargados. La pieza termina
+  sin pulsar «Crear la reserva» y no atribuye permisos ni resultados ficticios.
+- `video:planning` sirve el bundle compuesto en un puerto efímero, fija el reloj
+  del escenario de Mar de Fondo, graba con Playwright y normaliza con `ffmpeg`.
+  Solo reemplaza los assets tras validar H.264, 1280×720, ausencia de audio,
+  duración de 20–35 s y presupuestos de vídeo/póster.
+- Resultado aprobado: MP4 de **22,1 s / 590 kB**, póster WebP de **42 kB** y
+  pista descriptiva de tres capítulos. La guía `/docs/recepcion/mover/` añade
+  controles nativos, `playsinline`, carga de metadatos, foco visible y una
+  alternativa textual que declara que el alta no se confirma.
+- QA real a **1366/375**: metadatos y póster cargados, vídeo inicialmente en
+  pausa, tres pasos, pista, foco y cero desborde, errores o recursos fallidos.
+  La hoja de contacto y el fotograma final se inspeccionaron manualmente.
+- Sitio: lint verde, Astro **50 archivos / 0 diagnósticos** y build de **71
+  páginas**. `pnpm check` completó **53/53** tareas: API **240/240**, tenant demo
+  **62/62** y todos los builds verdes. Sin deploy; el siguiente despliegue no
+  necesita migración ni reseed. D5-V continúa cerrado por el gate comercial.
+
 ## Publicación de la primera ola · 2026-08-08 (sesión 103)
 
 - El bundle de demostración completo queda publicado en Cloudflare como versión

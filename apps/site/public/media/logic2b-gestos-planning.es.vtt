@@ -1,0 +1,10 @@
+WEBVTT
+
+00:00.000 --> 00:09.500
+Mover una estancia: la barra avanza un día y aparece la confirmación con opción de deshacer.
+
+00:09.500 --> 00:20.000
+Estirar la salida: el borde derecho añade una noche y el precio nuevo se revisa antes de guardar.
+
+00:20.000 --> 00:35.000
+Crear arrastrando: una selección libre abre el alta con unidad, tipo y fechas precargados; no se confirma la reserva.

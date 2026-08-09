@@ -1,33 +1,27 @@
 # Prompt para la siguiente sesión — protocolo CONTINUA activo
 
-> Reescrito tras la sesión 103 (2026-08-08). La primera ola D0-V–D4-V y las
-> imágenes propias del catálogo están publicadas en producción; D5-V requiere
-> aprendizaje comercial real antes de crear una cuarta demo.
+> Reescrito tras la sesión 104 (2026-08-09). El vídeo de gestos del planning
+> está cerrado y verificado en local; producción sigue en la versión de la
+> sesión 103. D5-V requiere aprendizaje comercial real antes de una cuarta demo.
 
 ## Estado en una línea
 
-La primera ola ya se puede navegar, enviar y explicar desde producción; el
-siguiente hueco visible es enseñar en movimiento los tres gestos firma del
-planning dentro de la guía de recepción.
+La guía de recepción ya enseña mover, estirar y crear arrastrando en una captura
+accesible; el único paso pendiente de esta entrega es publicarla y verificarla
+en producción.
 
 ## Objetivo prioritario
 
-1. Cerrar el pendiente **[C6] vídeo de gestos del planning** con una sola pieza
-   corta y accesible que muestre mover, estirar y crear arrastrando. Reutilizar
-   el patrón acotado de ADR 0039 y el bundle/stub de C1/C5; no construir un
-   editor ni un pipeline general.
-2. Escribir el contrato antes de grabar: recorrido y datos deterministas,
-   resolución **1280×720**, duración objetivo **20–35 s**, H.264 sin audio y peso
-   máximo **2 MB**. La captura debe terminar antes de confirmar una mutación si
-   el rol demo no la autoriza; no fingir permisos ni resultados.
-3. Integrar el mismo metraje en la guía `/docs/recepcion/mover/`, con póster,
-   controles, `playsinline`, sin autoplay, carga bajo demanda y alternativa
-   textual. Enlazar desde `nueva-reserva` si aporta contexto, sin duplicar el
-   archivo ni convertir toda la documentación en vídeo.
-4. Verificar la guía a 1366/375 con teclado, foco, movimiento reducido, peso,
-   vídeo e imágenes cargados y cero desborde. Ejecutar `pnpm check`; si Workers
-   vuelve a salir bajo concurrencia, revalidar solo los paquetes cancelados y
-   registrar ambos resultados.
+1. Con autorización explícita para tocar producción, publicar con
+   `pnpm --filter @logic-camp/api deploy:demo`. No hay migración ni reseed; el
+   comando recompone el bundle completo y ejecuta su verificador de enlaces.
+2. Verificar `https://camp.logic2b.com/docs/recepcion/mover/` a 1366/375:
+   controles, póster, 22,1 s, pista, foco, alternativa textual, cero desborde,
+   consola o recursos fallidos. Confirmar además MIME de MP4/WebP/VTT.
+3. Anotar versión de Worker, recuento del bundle y QA en `PROGRESS.md`. No
+   repetir la grabación: los assets aprobados son 590 kB y 42 kB.
+4. Tras publicar, no abrir otra fase por inercia. D5-V espera una objeción o ICP
+   real; el alta productiva de Fase 9 espera credenciales y presencia de Andreu.
 
 ## Gate de expansión
 
@@ -53,6 +47,8 @@ planning dentro de la guía de recepción.
   Parcela; no volver a generar ni reutilizar Azahar para esas tres tarjetas.
 - El vídeo de 38,9 s comparte metraje en ES/EN y ya incluye controles, póster,
   subtítulos y transcripción; no crear más formatos sin una necesidad concreta.
+- El vídeo del planning ya existe: 22,1 s, H.264, 590 kB, póster de 42 kB y
+  componente accesible en `recepcion/mover`; no regrabarlo sin un defecto real.
 - La landing incluye galería, comparador y ficha PDF ES/EN desde la misma fuente
   de portfolio.
 

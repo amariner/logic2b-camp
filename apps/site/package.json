@@ -10,10 +10,12 @@
     "build": "astro build",
     "qa:campana": "node scripts/qa-campaign.mjs",
     "qa:video": "node scripts/qa-video.mjs",
+    "qa:video:planning": "node scripts/qa-video-gestos-planning.mjs",
     "ficha:ola1": "${LOGIC_CAMP_PDF_PYTHON:-python3} scripts/ficha-ola-1.py",
     "og": "node scripts/og.mjs",
     "capturas:mardefondo": "node scripts/capturas-mardefondo.mjs",
-    "video:ola1": "node scripts/video-ola-1.mjs"
+    "video:ola1": "node scripts/video-ola-1.mjs",
+    "video:planning": "node scripts/video-gestos-planning.mjs"
   },
   "dependencies": {
     "@logic-camp/ui": "workspace:*",
