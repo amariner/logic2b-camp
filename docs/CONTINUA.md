@@ -5,6 +5,13 @@ proyecto"** (o equivalente), se ejecuta este protocolo completo, de principio a
 fin, **sin esperar respuestas de Andreu**. La IA toma las decisiones y las deja
 escritas con su motivo. Andreu revisa a posteriori leyendo PROGRESS.md.
 
+> **Modo `/goal`:** si el encargo es
+> `/goal sigue desarrollando este proyecto todo lo que puedas`, leer y ejecutar
+> `docs/RUTA-DESARROLLO-CONTINUO.md`. Durante el objetivo, esa ruta sustituye el
+> límite de una sola sesión: se encadenan objetivos pequeños, cada uno verificado,
+> hasta cumplir su condición de cierre. Temas, nuevas demos, integraciones y
+> activaciones forman parte del recorrido en sus checkpoints y con sus gates.
+
 ## Contexto que gobierna las decisiones (mientras no haya cliente real)
 
 - **El MVP es un ESCAPARATE DE DEMOS.** Manda

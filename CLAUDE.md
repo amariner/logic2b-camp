@@ -17,6 +17,16 @@ BACKLOG, SIGUIENTE-SESION) → commit a `main` y **push a GitHub**. El MVP es un
 demo: nada de configurar servicios externos reales (Resend, Stripe, SES…); lo fake
 se resuelve en el seed.
 
+## Objetivo duradero de desarrollo
+
+Si Andreu usa **`/goal sigue desarrollando este proyecto todo lo que puedas`**,
+manda `docs/RUTA-DESARROLLO-CONTINUO.md`. Codex recorre sus checkpoints desde el
+primero incompleto hasta agotar el trabajo verificable. La ruta incluye la
+fábrica de temas, nuevas demos D5-V/D6-V, proveedores, publicación, alta real y
+expansiones; cada frente se abre únicamente en su checkpoint y al cumplir su
+gate. Pertenecer a la ruta no sustituye la autorización explícita necesaria para
+credenciales, infraestructura remota, deploys o datos de un cliente real.
+
 ## Mandato demo-first (2026-08-06)
 
 Mientras no haya un cliente contratado, la fuente de verdad es
