@@ -7,9 +7,8 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R5 coherencia idioma↔nombre y
-  solicitud↔reserva; R6 afordancias por
-  rol, nombres semánticos de clases, i18n huérfana y `aria-current`; R7
+- **Local ahora, por checkpoint:** R6 afordancias por rol, nombres semánticos de
+  clases, i18n huérfana y `aria-current`; R7
   `BreadcrumbList` y guía de portada; R11 reset local y riesgos corregibles.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
@@ -105,8 +104,19 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[seed] **Ninguna de las 83 unidades está fuera de servicio**~~ → **hecho 2026-08-03 (sesión 69)**: `C-10` (avería eléctrica) y `MH-04` (reforma) quedan `inactive` en las 23 anclas, sin reservas asignadas. Inventario, Planning y Plano enseñan el estado; Planning impide crear, mover o reasignar hacia una baja y el Plano la distingue de un bloqueo temporal. El relleno y la banda diaria excluyen ambas, sin romper capacidad ni invariantes.
 - [B1] La sidebar deja **dos enlaces marcados como activos** al navegar cambiando el hash programáticamente (URL directa `/admin/#/x` o `.click()` sintético): el contenido cambia pero el `aria-current` del enlace anterior no se limpia. Con click real de puntero funciona perfecto (verificado: un solo `aria-current=page`), así que ningún usuario lo ve — pero un E2E o un enlace externo al dashboard sí. Menor — 2026-07-28
 - [infra] **`POST /api/demo/reset` cuelga el workerd LOCAL con el seed grande de ADR 0030** (3,4 MB / 84 sentencias): 180 s sin respuesta y el proceso deja de contestar del todo (ni `GET /`) — hay que matar el server, `pnpm db:reset && pnpm db:seed` (rápido, el camino CLI no pasa por el batch en-worker) y volver a levantarlo. **El atajo de la sesión 56 («reset sin parar nada») ha muerto en local.** Contra la D1 real desplegada el mismo endpoint tarda **1,2 s** (verificado en la sesión 58), así que es un límite del miniflare-D1 local, no del producto; aún así molesta para iterar y para enseñar la demo en local — 2026-07-28
-- [seed] Los nombres de las solicitudes y de los huéspedes **no concuerdan con su idioma**: "Bon dia, tenim caravana" firmado David Lund, "Guten Tag" firmado Matteo Ricci. Viene del generador de fichas, que recorre el espacio de parejas nombre×apellido **independientemente del `locale`** — y ese recorrido es justo lo que garantiza que no haya dos clientes iguales (sesión 54), así que atarlo al idioma no es un retoque: hay que decidir cómo se cruzan las dos propiedades. Se notó al poner los mensajes en el idioma de cada solicitud (sesión 55), que hace la discordancia más visible que antes. Afecta sobre todo a las ~1 500 fichas de `/clientes`, no a las 15 solicitudes — 2026-07-25
-- [seed] `enquiries.converted_booking_id` apunta a `bkg_0NN` por número de orden: la reserva enlazada no tiene nada que ver con la solicitud (ni titular, ni fechas, ni tipo). Hoy **no se enseña en ninguna pantalla**, por eso no urge; el día que la ficha de solicitud enseñe "convertida en la reserva CS-2026-0011", esto se ve — 2026-07-25
+- ~~[seed] Los nombres de las solicitudes no concordaban con su idioma~~ →
+  **hecho 2026-08-10 (sesión 107/R5)**: las 15 firmas salen de repertorios
+  locales independientes por idioma, con email único y sin tocar el recorrido
+  combinatorio de las ~1.500 fichas de huéspedes. Una prueba sobre diez
+  temporadas exige nombre↔idioma, unicidad y determinismo; mensaje y prefijo ya
+  tenían su propia garantía desde la sesión 55. La relación nombre↔nacionalidad
+  de huéspedes continúa diferida por la razón explícita de su entrada propia.
+- [seed] `enquiries.converted_booking_id` apunta a `bkg_0NN` por número de orden:
+  la reserva enlazada no tiene nada que ver con la solicitud (ni titular, ni
+  fechas, ni tipo). R5 confirmó que el gestor no pinta ni enlaza este campo; se
+  conserva hasta que exista un recorrido de conversión real, porque corregir un
+  dato invisible violaría el alcance del checkpoint — 2026-07-25, revalidado
+  2026-08-10
 - ~~[C7→C1.2] Crear reserva arrastrando sobre una celda LIBRE del plano~~ → cerrado con C1.2 (ADR 0023, 2026-07-21): arrastrar sobre celdas libres del planning abre el alta con tipo+fechas+unidad precargadas (`preferredUnitId`), y el plano ya salta al planning conservando unidad+fecha — esa fila es ahora un lienzo donde crear. (Si algún día se quiere el gesto DENTRO del `<svg>` del plano, es pulido aparte.)
 - ~~[C7→C4.4] Crear bloqueos (avería, larga estancia) desde el plano~~ → **hecho 2026-07-24 (sesión 47)**: panel contextual de unidad en el plano (`UnitPanel.tsx`) — click en unidad libre → "Bloquear esta unidad" (diálogo precargado con unidad+fecha, "hasta" = una noche); click en bloqueada → motivo/rango + "Levantar el bloqueo" con confirmación (`DELETE /blocks/:id`, que existía testeado pero SIN UI que lo llamara). De paso, fix real: `BlockDialog` captaba `defaultUnitId`/`defaultDate` solo en el primer render (siempre montado) y perdía la selección en silencio — ahora resincroniza al abrir. Verificado con Playwright contra el Worker real, ciclo completo, claro y oscuro — 2026-07-21, cerrado 2026-07-24
 - ~~[C1] Levantar un bloqueo desde el PLANNING (click en la barra rayada → confirmar)~~ → **hecho 2026-07-25 (sesión 48)**: la barra `lc-block` es ahora un `role="button"` con `tabIndex=0`, `aria-label` con motivo+rango+unidad y afordancia visible (cursor, realce al pasar por encima, anillo de foco del DS). Click o Enter → `AlertDialog` con el detalle del bloqueo (y el aviso de "cubre todas las unidades del tipo" si es un bloqueo de tipo) → `DELETE /blocks/:id` + toast + invalidación. El foco vuelve a la barra al cancelar (`onCloseAutoFocus`), y no vuelve si el bloqueo ha desaparecido. No hay arrastre: un bloqueo no se mueve, se levanta y se vuelve a crear. Verificado con Playwright contra el Worker real, claro y oscuro — 2026-07-24, cerrado 2026-07-25

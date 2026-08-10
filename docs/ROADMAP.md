@@ -315,8 +315,9 @@ producto real se activa módulo a módulo cuando exista un cliente.
 - [x] `DEMO-SCRIPT.md`: guion de 12 minutos con el recorrido exacto de venta — hecho 2026-07-19 (sesión 22, sin esperar al resto de Fase 10: es puramente documental, no depende de código pendiente).
 - [ ] Cloudflare Web Analytics en la demo: saber qué páginas mira un prospecto tras el email comercial — bloqueado por credenciales reales, ver ADR 0013.
 - [x] Datos con historia: seed determinista con habituales, solicitudes
-      multilingües, casos límite, grupo/no-show y cronología de altas. Los
-      refinamientos no visibles permanecen condicionados a evidencia.
+      multilingües con firma coherente, casos límite, grupo/no-show y cronología
+      de altas. R5 revalidó motor, saldos, fechas y volumen diario sobre 23
+      anclas; los refinamientos no visibles permanecen condicionados a evidencia.
 
 **Invariantes transversales (no son fases pendientes):**
 

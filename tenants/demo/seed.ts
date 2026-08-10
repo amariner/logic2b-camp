@@ -1731,6 +1731,47 @@ export function generateSeed(anchor: string): SeedData {
   };
 
   /**
+   * Identidades breves y reconocibles para la bandeja. No regionalizamos el
+   * censo completo de huéspedes: aquí sí se ven juntos nombre, idioma, prefijo
+   * y mensaje, y una firma que contradice a los otros tres datos rompe la
+   * credibilidad del caso en la propia pantalla.
+   */
+  const ENQ_IDENTIDADES: Record<string, { name: string; surname: string }[]> = {
+    es: [
+      { name: 'Marta', surname: 'Ferrer' },
+      { name: 'Álvaro', surname: 'Navarro' },
+      { name: 'Lucía', surname: 'Romero' },
+      { name: 'Diego', surname: 'García' },
+      { name: 'Elena', surname: 'Sánchez' },
+    ],
+    ca: [
+      { name: 'Laia', surname: 'Solé' },
+      { name: 'Pau', surname: 'Roca' },
+      { name: 'Jordi', surname: 'Puig' },
+    ],
+    fr: [
+      { name: 'Sophie', surname: 'Laurent' },
+      { name: 'Antoine', surname: 'Moreau' },
+      { name: 'Manon', surname: 'Dubois' },
+    ],
+    de: [
+      { name: 'Lena', surname: 'Schmidt' },
+      { name: 'Thomas', surname: 'Weber' },
+      { name: 'Greta', surname: 'Müller' },
+    ],
+    nl: [
+      { name: 'Bram', surname: 'de Vries' },
+      { name: 'Klara', surname: 'Jansen' },
+      { name: 'Eva', surname: 'Bakker' },
+    ],
+    en: [
+      { name: 'Emma', surname: 'Palmer' },
+      { name: 'David', surname: 'Smith' },
+      { name: 'Julia', surname: 'Bennett' },
+    ],
+  };
+
+  /**
    * Los quince casos, declarados uno a uno. En el formulario público las fechas
    * son OPCIONALES (`EnquiryForm.astro`, y `dateFrom` es `.optional()` en el
    * esquema), y por teléfono las apunta recepción: lo normal es web sin fechas y
@@ -1765,15 +1806,15 @@ export function generateSeed(anchor: string): SeedData {
   ];
 
   const enquiries: Row[] = [];
+  const identidadesUsadas = new Map<string, number>();
   ENQ_CASOS.forEach((caso, i) => {
     const { status, source, fechas: hasDates, tipo: pideTipo } = caso;
     const n = i + 1;
-    // Aquí los multiplicadores SÍ valen: son ~una docena de solicitudes, y con
-    // n pequeño cada una cae en una pareja distinta. El truco de dividir que usa
-    // el generador de huéspedes daría el mismo apellido a las doce.
-    const fn = firstNames[(n * 7) % firstNames.length]!;
-    const ln = lastNames[(n * 11) % lastNames.length]!;
     const locale = locales[n % locales.length]!;
+    const identidades = ENQ_IDENTIDADES[locale] ?? ENQ_IDENTIDADES.es!;
+    const indiceIdentidad = identidadesUsadas.get(locale) ?? 0;
+    const identidad = identidades[indiceIdentidad % identidades.length]!;
+    identidadesUsadas.set(locale, indiceIdentidad + 1);
 
     // Recepción: dentro de la banda de su estado, hacia atrás desde el ancla.
     const [edadMin, edadMax] = ENQ_EDAD[status]!;
@@ -1800,9 +1841,13 @@ export function generateSeed(anchor: string): SeedData {
     const from = hasDates ? addDays(recibida, antelacion) : null;
 
     const mensajes = ENQ_MENSAJES[locale] ?? ENQ_MENSAJES.es!;
+    const emailName = identidad.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
     const contact: ContactInfo = {
-      name: `${fn} ${ln}`,
-      email: `${fn.toLowerCase()}${n}@example.com`,
+      name: `${identidad.name} ${identidad.surname}`,
+      email: `${emailName}${n}@example.com`,
       // El prefijo va con el idioma: un +33 en una solicitud en neerlandés es la
       // misma clase de mentira que el mensaje en castellano firmado por Klara.
       phone: n % 2 ? `${ENQ_PREFIJO[locale] ?? '+34'} 6${10000000 + n * 731}` : undefined,

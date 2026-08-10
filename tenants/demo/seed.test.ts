@@ -463,7 +463,7 @@ describe('seed demo Cala Sereno', () => {
       locale: string;
       message: string;
       unit_type_id: string | null;
-      contact: { phone?: string };
+      contact: { name: string; email: string; phone?: string };
       occupancy: { adults: number; childrenAges: number[] } | null;
     };
     const porAño = new Map(
@@ -613,6 +613,37 @@ describe('seed demo Cala Sereno', () => {
             `${año}/${e.id}: ${e.locale} con ${e.contact.phone}`,
           ).toBe(true);
         }
+      });
+    });
+
+    it('el nombre del contacto es coherente con el idioma de la solicitud', () => {
+      const identidades: Record<string, Set<string>> = {
+        es: new Set([
+          'Marta Ferrer',
+          'Álvaro Navarro',
+          'Lucía Romero',
+          'Diego García',
+          'Elena Sánchez',
+        ]),
+        ca: new Set(['Laia Solé', 'Pau Roca', 'Jordi Puig']),
+        fr: new Set(['Sophie Laurent', 'Antoine Moreau', 'Manon Dubois']),
+        de: new Set(['Lena Schmidt', 'Thomas Weber', 'Greta Müller']),
+        nl: new Set(['Bram de Vries', 'Klara Jansen', 'Eva Bakker']),
+        en: new Set(['Emma Palmer', 'David Smith', 'Julia Bennett']),
+      };
+      cadaAño((enqs, _s, año) => {
+        for (const e of enqs) {
+          expect(
+            identidades[e.locale]?.has(e.contact.name),
+            `${año}/${e.id}: ${e.contact.name} no corresponde a ${e.locale}`,
+          ).toBe(true);
+        }
+        expect(new Set(enqs.map((e) => e.contact.name)).size, `${año}: nombres repetidos`).toBe(
+          enqs.length,
+        );
+        expect(new Set(enqs.map((e) => e.contact.email)).size, `${año}: emails repetidos`).toBe(
+          enqs.length,
+        );
       });
     });
   });

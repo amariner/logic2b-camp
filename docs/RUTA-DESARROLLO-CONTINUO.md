@@ -264,14 +264,14 @@ ordenada de R12.
 
 ### R5 · Motor, seed y datos creíbles
 
-- [ ] Ejecutar y revisar motor, disponibilidad, pricing, asignación, cancelación
+- [x] Ejecutar y revisar motor, disponibilidad, pricing, asignación, cancelación
       y tasa turística.
-- [ ] Comprobar que datos históricos, fechas, pagos, estados y solicitudes no se
+- [x] Comprobar que datos históricos, fechas, pagos, estados y solicitudes no se
       contradicen.
-- [ ] Atacar solo defectos del seed que se vean en recorridos actuales.
-- [ ] Mantener determinismo entre reset, tests, capturas y demo.
-- [ ] Verificar volumen firma: planning/plano y operación del día.
-- [ ] No perfeccionar nacionalidades, nombres o casos que nadie ve sin evidencia
+- [x] Atacar solo defectos del seed que se vean en recorridos actuales.
+- [x] Mantener determinismo entre reset, tests, capturas y demo.
+- [x] Verificar volumen firma: planning/plano y operación del día.
+- [x] No perfeccionar nacionalidades, nombres o casos que nadie ve sin evidencia
       nueva.
 
 **Cierra cuando:** los datos cuentan una historia coherente en web, API y gestor

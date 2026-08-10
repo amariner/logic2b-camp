@@ -1,27 +1,28 @@
-# Prompt para la siguiente sesión — objetivo duradero en R5
+# Prompt para la siguiente sesión — objetivo duradero en R6
 
-> Reescrito tras la sesión 106 (2026-08-10). R0–R4 están cerrados; producción
+> Reescrito tras la sesión 107 (2026-08-10). R0–R5 están cerrados; producción
 > sigue requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Los contratos actuales de API ya fallan cerrados; el siguiente trabajo seguro
-es revisar motor, seed y coherencia de datos visibles sin perfeccionar casos que
-la demo no enseña.
+Motor, contratos y datos actuales ya están coherentes; el siguiente trabajo
+seguro es auditar el gestor por roles, estados y lenguaje visual sin migrar
+markup por simetría.
 
 ## Objetivo prioritario
 
-Cerrar **R5 · Motor, seed y datos creíbles** de
+Cerrar **R6 · Gestor y Logic2B UI** de
 `docs/RUTA-DESARROLLO-CONTINUO.md`:
 
-1. Revalidar disponibilidad, pricing, asignación, cancelación y tasa turística
-   contra los cinco invariantes ya protegidos.
-2. Buscar contradicciones observables en reservas, solicitudes, pagos, estados y
-   fechas del seed actual.
-3. Corregir solo defectos que afecten a un recorrido presente; mantener reset,
-   fixtures, capturas y demo deterministas.
-4. Verificar el volumen firma de planning/plano y operación del día antes de
-   cerrar el checkpoint.
+1. Auditar shell, portada y navegación por rol, empezando por afordancias que
+   conducen a un 403 o prometen acciones que el rol no puede completar.
+2. Revisar loading/empty/error/success y acciones destructivas en los recorridos
+   firma, incluida la ayuda contextual de la portada si aún falta.
+3. Resolver por evidencia los nombres camping que puentean tokens Logic2B, la
+   i18n realmente huérfana y el doble `aria-current`; no hacer renames masivos ni
+   borrar claves por detector automático.
+4. Confirmar planning, plano, ficha, llegadas, solicitudes y búsqueda a 1366 y
+   375 px, manteniendo los presupuestos de bundle fijados en R2/R3.
 
 ## Publicación preparada, no autorizada
 
@@ -40,6 +41,10 @@ Cerrar **R5 · Motor, seed y datos creíbles** de
   de configuración/demo cerradas.
 - R4: ADR 0042, 47 contratos de ruta, API 265/265, enlaces demo 3/3, auth y pagos
   fail-closed, redacción/anonimización ampliadas y proveedores remitidos a R12.
+- R5: core 68/68, seed/reset 63/63 sobre 23 anclas, firmas de solicitudes
+  coherentes por idioma y volumen diario/plano verificado. La relación de una
+  solicitud convertida con su reserva sigue diferida porque ninguna pantalla la
+  muestra.
 - D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
   cerrados; D5-V continúa detrás de aprendizaje comercial.
 - La entrega visual de la sesión 104 sigue incluida en el candidato, pero ya no

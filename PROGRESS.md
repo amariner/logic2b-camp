@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Motor, seed y datos creíbles R5 · 2026-08-10 (sesión 107)
+
+- R5 queda cerrado tras reejecutar el motor puro y los recorridos API que lo
+  materializan. Core mantiene **68/68** casos de fechas, temporadas, pricing,
+  disponibilidad, holds, asignación, tasa turística, cancelación y casos límite;
+  API de disponibilidad/reservas/gestión/pagos pasó **96/96** de forma dirigida.
+- El único defecto nuevo observable estaba en `/solicitudes`: mensaje, idioma y
+  prefijo concordaban, pero firmas como «Tom Ferrer» o «Matteo Ricci» no. Las 15
+  solicitudes usan ahora identidades locales por idioma, emails únicos y una
+  prueba determinista sobre diez temporadas. El generador combinatorio de las
+  fichas de huéspedes no cambia: nombre↔nacionalidad sigue siendo plausible y
+  no se perfecciona sin evidencia, tal como exige R5.
+- Las **23 anclas** conservan cronología, pagos, estados, estancias históricas,
+  no-solape, desglose y tasa. Reset y seed pasan **63/63**. En el ancla real
+  2026-08-10 hay **3.426 reservas**, 83 unidades, 55 estancias en casa, 11
+  llegadas y 14 salidas; el plano coloca 83/83 unidades y la operación diaria
+  mantiene al menos dos gestos de entrada y salida durante todo el año.
+- `converted_booking_id` se revalidó y se deja sin tocar: el endpoint lo devuelve
+  pero la pantalla no lo pinta ni enlaza, de modo que no existe hoy una
+  contradicción visible que justifique inventar una conversión histórica.
+- Verificación final: `pnpm check` completó **53/53** tareas en **16,86 s**, con
+  API **265/265**, core **68/68**, tenant demo **63/63**, enlaces **3/3**, lint,
+  typecheck, builds y Worker seco verdes. No hubo deploy, reseed remoto ni
+  escritura de producción. El siguiente checkpoint es **R6**, gestor y Logic2B
+  UI.
+
 ## Backend mínimo y contratos de API R4 · 2026-08-10 (sesión 106)
 
 - R4 queda cerrado con ADR 0042 y un inventario ejecutable de **47 rutas**. Cada
