@@ -10,6 +10,14 @@ const locales = [
   { code: 'en', prefix: 'en/' },
 ];
 const guides = ['recepcion', 'gestion', 'dueno', 'tecnica'];
+const requiredSecurityHeaders = [
+  "Content-Security-Policy: base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+  'Permissions-Policy: camera=(), geolocation=(), microphone=()',
+  'Referrer-Policy: strict-origin-when-cross-origin',
+  'Strict-Transport-Security: max-age=31536000',
+  'X-Content-Type-Options: nosniff',
+  'X-Frame-Options: DENY',
+];
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -51,6 +59,20 @@ async function walk(directory, base = directory) {
     else files.push(path.relative(base, absolute).split(path.sep).join('/'));
   }
   return files;
+}
+
+const headersArtifact = await readFile(path.join(distDir, '_headers'), 'utf8');
+const headerLines = headersArtifact
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean);
+assert(headerLines[0] === '/*', '_headers: la regla global debe ser /*');
+assert(
+  headerLines.filter((line) => line === '/*').length === 1,
+  '_headers: debe existir una única regla global',
+);
+for (const header of requiredSecurityHeaders) {
+  assert(headerLines.includes(header), `_headers: falta la cabecera obligatoria «${header}»`);
 }
 
 for (const locale of locales) {
@@ -164,5 +186,5 @@ for (const locale of locales) {
 }
 
 console.log(
-  `Contrato comercial del sitio verificado: ${locales.length * 2} páginas de planes, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
+  `Contrato comercial y cabeceras del sitio verificados: ${locales.length * 2} páginas de planes, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
 );

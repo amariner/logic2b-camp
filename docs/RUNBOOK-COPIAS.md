@@ -9,11 +9,13 @@
 
 ## Qué hay, y qué NO hay
 
-|                                                    |                                                                            |
-| -------------------------------------------------- | -------------------------------------------------------------------------- |
-| **Restauración a un punto en el tiempo**           | ✅ Cloudflare D1 _Time Travel_, continua, gestionada. **Ventana: 30 días** |
-| **Exportación bajo demanda** (SQL + CSV)           | ✅ `pnpm export:tenant <slug>`                                             |
-| **Exportación programada a almacenamiento propio** | ❌ **A propósito.** Ver abajo                                              |
+|                                                    |                                                                 |
+| -------------------------------------------------- | --------------------------------------------------------------- |
+| **Restauración a un punto en el tiempo**           | ✅ D1 _Time Travel_, gestionada. Ventana declarada: **30 días** |
+| **Exportación bajo demanda** (SQL + CSV)           | ✅ `pnpm export:tenant <slug>`                                  |
+| **Ensayo automático de restauración local**        | ✅ `pnpm backup:rehearse <slug>`                                |
+| **Restauración remota ensayada**                   | ❌ requiere cuenta, base nueva y autorización                   |
+| **Exportación programada a almacenamiento propio** | ❌ **A propósito.** Ver abajo                                   |
 
 ### Por qué no hay exportación programada
 
@@ -36,10 +38,18 @@ pnpm export:tenant demo --local  # ensayo contra la base local
 
 Deja en `exports/{slug}-{fecha}/`:
 
-- `{slug}-{fecha}.sql` — volcado completo. **Es el que vale para restaurar.**
+- `{slug}-{fecha}.sql` — volcado completo y restaurable. **Es el que vale para restaurar.**
 - `{slug}-bookings-{fecha}.csv`, `-guests-`, `-payments-` — los cuadros que un camping abre sin saber SQL.
 
-**`--local` no genera el `.sql`, y lo dice.** `wrangler d1 export` no acepta `--persist-to`, así que en local leería el directorio por defecto —vacío— y escribiría un fichero con aspecto de copia buena y sin datos dentro. Se omite explícitamente en vez de mentir.
+`--local` genera los mismos cuatro ficheros contra la persistencia predeterminada
+de Wrangler junto al `wrangler.jsonc`. Reset, seed, servidor, consulta y export
+leen así exactamente la misma D1.
+
+El CLI ejecuta dos exports y concatena **esquema antes de datos**. Wrangler 4.111
+intercala cada tabla y sus `INSERT`; con claves foráneas, ese orden intentaba
+insertar `booking_guests` antes de crear `guests`. El ensayo del §4 reproduce el
+restore del SQL final y evita publicar una copia con aspecto válido pero imposible
+de cargar.
 
 > ⚠️ `exports/` está en `.gitignore` y **debe seguir estando**. Contiene nombres, documentos de identidad y contacto de huéspedes reales. Se entrega al camping y se borra del disco.
 
@@ -77,14 +87,17 @@ cuenta.
 # 1. base NUEVA — nunca encima de la que está en producción
 npx wrangler d1 create logic-camp-demo-restore
 
-# 2. cargar el volcado
+# 2. crear un config TEMPORAL que apunte al nombre e ID devueltos arriba.
+#    No reutilizar el database_id de producción.
+
+# 3. cargar el volcado con ese config temporal
 npx wrangler d1 execute logic-camp-demo-restore --remote \
-  --config tenants/demo/wrangler.jsonc \
+  --config /ruta/segura/wrangler.restore.jsonc \
   --file exports/demo-2026-07-21/demo-2026-07-21.sql -y
 
-# 3. comprobar ANTES de apuntar nada (ver §3)
+# 4. comprobar ANTES de apuntar nada (ver §3)
 
-# 4. solo entonces: cambiar database_id en tenants/demo/wrangler.jsonc y desplegar
+# 5. solo entonces: cambiar database_id en tenants/demo/wrangler.jsonc y desplegar
 ```
 
 El orden importa: **se verifica sobre la base restaurada y solo después se repunta el
@@ -130,6 +143,29 @@ Si 3 o 4 devuelven filas, **la copia no sirve**: no la promociones a producción
 
 ## 4. Ensayo (hazlo antes de necesitarlo)
 
+### 4a. Ensayo local reproducible
+
+```bash
+pnpm db:reset && pnpm db:seed
+pnpm backup:rehearse demo
+```
+
+El comando crea un directorio temporal, toma la huella de la D1 local, exporta
+el SQL, lo carga en otra D1 local aislada y compara:
+
+- recuentos de `bookings`, `guests` y `payments`;
+- fecha de la última reserva y lista ordenada de migraciones;
+- cero pagos descuadrados y cero reservas activas solapadas.
+
+La D1 restaurada y el volcado temporal se eliminan al terminar. Esto acredita el
+artefacto y el procedimiento local; **no acredita la API remota ni Time Travel**.
+
+| Fecha      | Huella `reservas/huéspedes/pagos` |         Invariantes | Resultado                     |
+| ---------- | --------------------------------: | ------------------: | ----------------------------- |
+| 2026-08-10 |                3426 / 2568 / 3109 | pagos 0 · solapes 0 | ✅ restauración local íntegra |
+
+### 4b. Ensayo remoto autorizado
+
 Contra la demo, que para eso está y se resetea sola cada noche:
 
 1. `pnpm export:tenant demo`
@@ -141,9 +177,9 @@ Contra la demo, que para eso está y se resetea sola cada noche:
 Anota aquí la fecha del último ensayo. Si hace más de seis meses, la copia ha vuelto
 a ser una suposición.
 
-| Fecha del ensayo                                                                                   | Quién | Resultado |
-| -------------------------------------------------------------------------------------------------- | ----- | --------- |
-| _(pendiente — primer ensayo real desde la máquina de Andreu, requiere credenciales de Cloudflare)_ |       |           |
+| Fecha del ensayo                                                  | Quién | Base nueva / evidencia | Resultado |
+| ----------------------------------------------------------------- | ----- | ---------------------- | --------- |
+| _(pendiente: requiere credenciales y autorización de Cloudflare)_ |       |                        |           |
 
 ## 5. Si un camping se va
 

@@ -34,7 +34,7 @@ Decisiones de detalle:
 
 - **Tests del generador** (Vitest): conteos exigidos, cero solapes entre reservas activas por unidad, `sum(payments) == paid_cents` por reserva, breakdown suma = total.
 
-**Comandos raíz**: `pnpm db:reset` (borra estado local + aplica migraciones a la D1 local demo) y `pnpm db:seed` (genera y ejecuta `seed.sql`), vía wrangler `--local --persist-to .wrangler-demo`.
+**Comandos raíz**: `pnpm db:reset` (borra estado local + aplica migraciones a la D1 local demo) y `pnpm db:seed` (genera y ejecuta `seed.sql`), vía Wrangler `--local`. Se usa su persistencia predeterminada junto al `wrangler.jsonc`, de modo que `d1 execute`, `d1 export` y `wrangler dev` lean exactamente la misma base.
 
 ## Alternativas descartadas
 

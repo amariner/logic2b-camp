@@ -5,6 +5,7 @@ import { notifySystemError } from './notify';
 import { adminRoutes } from './routes/admin';
 import { leadsRoutes } from './routes/leads';
 import { publicRoutes } from './routes/public';
+import { securityHeaders } from './security';
 import { createRateLimiter, tenantMiddleware, type Env } from './tenant';
 
 export function createApp() {
@@ -12,6 +13,7 @@ export function createApp() {
     new Hono<Env>()
       // el primero de todos: nada de lo que se lance puede saltarse el onError
       .use('*', normalizeThrown)
+      .use('*', securityHeaders)
       .use('*', tenantMiddleware)
       // Cuotas por superficie anónima (ADR 0042). Siguen siendo v1 por isolate;
       // el límite general protege el resto sin ahogar las ráfagas del dashboard.

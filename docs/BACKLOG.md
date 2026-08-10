@@ -2,16 +2,16 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
-## Índice operativo de pendientes vivos (R11 · 2026-08-10)
+## Índice operativo de pendientes vivos (R12 · 2026-08-10)
 
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R11 seguridad y preparación del primer
-  cliente: aislamiento/auth, RGPD, backups, observabilidad, dossier de
-  activación y riesgos corregibles. R10 está cerrado; la auditoría R9 deja D5-V
-  en espera 3/3 porque una demo nueva sigue detrás de señal comercial, no de
-  disponibilidad técnica.
+- **Local ahora, por checkpoint:** R12 integraciones y proveedores. Primero se
+  inventaría por tier qué recorrido existe y se termina el contrato común que
+  pueda probarse sin red; cualquier sandbox o cuenta permanece en su gate. R11
+  está cerrado y la auditoría R9 deja D5-V en espera 3/3 porque una demo nueva
+  sigue detrás de señal comercial, no de disponibilidad técnica.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -170,11 +170,19 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[C6] Guías de las pantallas de **gestión** (`/informes`, `/tarifas`, `/ajustes`)~~ → hecho 2026-07-22 (sesión 41): **cuarta guía "gestión"** en `camp.logic2b.com/docs/` (decisión de IA con Andreu: guía propia, no dentro de "dueño", para no mezclar páginas estratégicas con operativas). Tres páginas de prosa `es` (`content/docs/gestion/{informes,tarifas,ajustes}.es.md`) escritas contra el código real de cada pantalla (Informes: 5 tiles + ocupación por tipo; Tarifas: tabla por temporada con invariante 3 a la vista; Ajustes: datos + nivel/idiomas de solo-lectura + notificaciones). `GUIAS` pasa a `['recepcion','gestion','dueno','tecnica']` (escalera), cromo en los 6 idiomas (subtítulo "Cuatro guías…", seo y `docs.guias.gestion`), y `ayuda.ts` deja de devolver `null` → el `?` se pinta ya en las tres pantallas (el componente ya estaba puesto). Verificado: build 180 páginas, `pnpm check` 42/42, navegador (índice con 4 tarjetas, prosa renderizada, fallback visible en en). Diferido con motivo: NO se desplegó a producción esta sesión (ver SIGUIENTE-SESION)
 - ~~[C6] Vídeo/GIF de los gestos del planning~~ → **hecho 2026-08-09 (sesión 104, ADR 0040)**: una captura reproducible de 22,1 s muestra mover, estirar con revisión del precio y crear arrastrando hasta el alta precargada, sin confirmar una reserva. MP4 H.264 1280×720 sin audio de 590 kB, póster WebP de 42 kB, pista descriptiva y alternativa textual dentro de `/docs/recepcion/mover/`. El generador y su QA quedan acotados a esta pieza; no nace un pipeline general. Verificado a 1366/375 y `pnpm check` 53/53. Sin desplegar — 2026-08-08, cerrado 2026-08-09
 - [C6] Traducir la prosa de las guías a en/ca (hoy solo `es`, con aviso de fallback visible en pantalla). La estructura por idioma ya está montada (`{slug}.{lang}.md` + fallback **por página**): es soltar ficheros, sin tocar código. Decisión consciente del ADR 0025 §3 — 21 páginas ×3 triplica el mantenimiento de por vida con cero clientes en producción; hacerlo cuando lo pida un cliente real — 2026-07-21
-- [11] **Parte de viajeros** (SES.Hospedajes / Guardia Civil): el modelo ya captura documento, nacimiento y nacionalidad (ADR 0022) y la retención ya respeta su plazo legal de 3 años (ADR 0026 §2.2). Falta el fichero con el formato oficial y su envío — es integración con la Administración, fase propia, no un bloque de endurecimiento — 2026-07-21
+- [12] **SES.Hospedajes real**: modelo, validación, XML, descarga manual y
+  transporte están implementados y probados contra endpoint simulado (ADR
+  0028). Falta acreditar credenciales/formato vigente y recorrer aceptación,
+  rechazo, reintento y duplicado en el entorno oficial autorizado. INE no está
+  implementado — 2026-07-21, actualizado 2026-08-10.
 - [11] **Sentry / Logpush**: el `logEvent` de `apps/api/src/errors.ts` deja el enganche señalado en UN solo punto — el día que haya credenciales es una llamada. Cierra además el punto ciego circular que ADR 0026 §3 deja escrito: hoy el aviso de fallo viaja por correo, así que **si lo que falla es el correo no se entera nadie**. La observabilidad de verdad necesita un canal que no dependa del sistema que vigila — 2026-07-21
 - [11] **Auditoría con encadenado criptográfico** (append-only + hash): hoy `audit_log` es una tabla D1 normal. La ficha técnica decía "inalterable" y **se ha corregido** para decir exactamente lo que es y lo que no (ADR 0026 §3). Construirlo solo si un cliente lo exige por política: su valor real frente a un D1 gestionado con PITR es discutible — 2026-07-21
 - [11] **Pruebas de carga**: fuera de ADR 0026 a propósito. Necesitan un entorno desplegado y, sobre todo, **un objetivo declarado** ("cuántas reservas simultáneas en agosto", "cuántas recepcionistas a la vez en el planning"). Sin ese número, medir es teatro: responder la pregunta antes de escribir el primer script — 2026-07-21
-- [11] **Ensayo real de restauración**: `docs/RUNBOOK-COPIAS.md` §4 tiene la tabla de ensayos vacía. El comando de export está probado contra la base local (2032 reservas, CSV verificado), pero **nadie ha restaurado nunca una copia remota** — que es justamente lo que el runbook dice que no vale suponer. Requiere credenciales de Cloudflare. Anotar fecha y resultado en la tabla — 2026-07-21
+- [12] **Ensayo remoto de restauración**: R11 ya restauró el SQL local en una D1
+  aislada (3426 reservas, 2568 huéspedes, 3109 pagos, huella exacta e invariantes
+  0/0). Sigue sin acreditarse una copia **remota** ni Time Travel; requiere
+  credenciales, autorización y una base nueva. Anotar fecha/evidencia en
+  `RUNBOOK-COPIAS.md` — 2026-07-21, actualizado 2026-08-10.
 - [11] **Reintento de notificaciones en `failed`**: `notifications_log` marca los fallos pero nada los reintenta (ADR 0026 §3 lo deja fuera por depender del mismo canal roto). Ligado al ítem de Sentry/Logpush y al de Queues de la Fase 7 — 2026-07-21
 - ~~[11] **`payments.raw` puede contener PII del proveedor**~~ → **cerrado en R4 (ADR 0042, 2026-08-10)**: la aplicación ya no lo expone ni escribe, el export lo omite y `0007_scrub_payment_raw.sql` limpia el legado. Un proveedor futuro deberá definir evidencia mínima y retención antes de guardar payloads.
 - ~~[11] **`bookings.notes` puede contener datos personales**~~ → **cerrado en R4 (ADR 0042, 2026-08-10)**: la anonimización vacía las notas de todas las reservas vinculadas en el mismo batch que la ficha; prevalece la supresión verificable sobre conservar texto libre ambiguo.

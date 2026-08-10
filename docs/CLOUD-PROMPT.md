@@ -25,7 +25,7 @@ Trabajas en **LOGIC CAMP**, el SaaS de Logic2B para campings (web + reservas + g
 **Entorno y despliegue:**
 
 - Monorepo pnpm 11 (corepack) + Turborepo, Node ≥22. `pnpm install` primero.
-- API local: `pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787` (D1 local: `pnpm db:reset && pnpm db:seed`).
+- API local: `pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --port 8787` (D1 local: `pnpm db:reset && pnpm db:seed`).
 - Web local: `pnpm --filter @logic-camp/web dev` (proxy `/api` → 8787). `TIER=1` delante para previsualizar el nivel 1.
 - Producción demo: Worker `logic-camp-demo` en `camp.logic2b.com/api/*`, D1 remota migrada y sembrada, secret `AUTH_SECRET` puesto. Deploy: `pnpm --filter @logic-camp/api deploy:demo`. Si la sesión cloud no tiene sesión wrangler, pide el `CLOUDFLARE_API_TOKEN` o deja el deploy anotado como pendiente — NUNCA lo simules.
 - Usuarios demo del dashboard: `direccion|gerencia|recepcion|consulta@calasereno.example`, contraseña `calasereno` (ver `tenants/demo/README.md`).

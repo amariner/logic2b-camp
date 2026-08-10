@@ -68,4 +68,22 @@ describe('sqlDumpArgs', () => {
     // un nombre hostil viaja como UN argumento, no como comando
     expect(sqlDumpArgs('a; rm -rf /', 'c', 'o')[2]).toBe('a; rm -rf /');
   });
+
+  it('apunta a la persistencia local compartida sin inventar otro directorio', () => {
+    expect(sqlDumpArgs('logic-camp-demo', 'tenants/demo/wrangler.jsonc', 'out.sql', true)).toEqual([
+      'd1',
+      'export',
+      'logic-camp-demo',
+      '--local',
+      '--config',
+      'tenants/demo/wrangler.jsonc',
+      '--output',
+      'out.sql',
+    ]);
+  });
+
+  it('puede separar esquema y datos para concatenar un volcado restaurable', () => {
+    expect(sqlDumpArgs('db', 'config', 'schema.sql', true, 'schema')).toContain('--no-data');
+    expect(sqlDumpArgs('db', 'config', 'data.sql', true, 'data')).toContain('--no-schema');
+  });
 });

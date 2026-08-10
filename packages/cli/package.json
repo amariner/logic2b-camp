@@ -14,7 +14,8 @@
     "lint": "eslint src",
     "test": "vitest run",
     "new:camping": "tsx src/cli.ts",
-    "export:tenant": "tsx src/export-cli.ts"
+    "export:tenant": "tsx src/export-cli.ts",
+    "backup:rehearse": "tsx src/backup-rehearsal-cli.ts"
   },
   "devDependencies": {
     "@logic-camp/tsconfig": "workspace:*",

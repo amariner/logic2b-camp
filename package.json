@@ -14,13 +14,14 @@
     "test": "turbo run test",
     "build": "turbo run build",
     "format": "prettier --write .",
-    "db:reset": "rm -rf .wrangler-demo && wrangler d1 migrations apply logic-camp-demo --local --persist-to .wrangler-demo --config tenants/demo/wrangler.jsonc",
-    "db:seed": "pnpm --filter @tenant/demo seed:sql && wrangler d1 execute logic-camp-demo --local --persist-to .wrangler-demo --config tenants/demo/wrangler.jsonc --file tenants/demo/seed.sql -y",
+    "db:reset": "rm -rf tenants/demo/.wrangler/state && wrangler d1 migrations apply logic-camp-demo --local --config tenants/demo/wrangler.jsonc",
+    "db:seed": "pnpm --filter @tenant/demo seed:sql && wrangler d1 execute logic-camp-demo --local --config tenants/demo/wrangler.jsonc --file tenants/demo/seed.sql -y",
     "db:seed:remote": "pnpm --filter @tenant/demo seed:remote",
     "e2e": "pnpm --filter @logic-camp/web e2e",
     "fotos": "node apps/web/scripts/foto-pipeline.mjs",
     "new:camping": "pnpm --filter @logic-camp/cli run new:camping --",
-    "export:tenant": "pnpm --filter @logic-camp/cli run export:tenant"
+    "export:tenant": "pnpm --filter @logic-camp/cli run export:tenant",
+    "backup:rehearse": "pnpm --filter @logic-camp/cli run backup:rehearse"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",

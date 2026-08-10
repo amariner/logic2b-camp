@@ -8,7 +8,12 @@ import { env } from 'cloudflare:test';
 import { and, eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
-import { authRateLimitEnabled, provisionUser, resolveAuthSecret } from '../src/auth';
+import {
+  authRateLimitEnabled,
+  authUsesSecureCookies,
+  provisionUser,
+  resolveAuthSecret,
+} from '../src/auth';
 import { seedTenant } from './fixtures';
 
 const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
@@ -126,6 +131,33 @@ describe('auth', () => {
       }),
     ).toBe(true);
     expect(authRateLimitEnabled({ DB: env.DB, TENANT_SLUG: 'alfa' })).toBe(true);
+  });
+
+  it('un entorno con AUTH_SECRET fuerza una cookie Secure, HttpOnly y SameSite=Lax', async () => {
+    const productionEnv = {
+      DB: env.DB,
+      TENANT_SLUG: 'alfa',
+      AUTH_SECRET: 'produccion-8Kq4Yp2Vm9Rz7Tx5Nc3Hs6Wb1Df0GjLu',
+    };
+    expect(authUsesSecureCookies(envA)).toBe(false);
+    expect(authUsesSecureCookies(productionEnv)).toBe(true);
+
+    const response = await app.request(
+      'https://camp.example/api/auth/sign-in/email',
+      json(
+        { email: 'owner@alfa.test', password: 'secreto123' },
+        { 'cf-connecting-ip': '203.0.113.74' },
+      ),
+      productionEnv,
+    );
+    expect(response.status).toBe(200);
+    const cookies = (response.headers as Headers & { getSetCookie(): string[] }).getSetCookie();
+    const session = cookies.find((cookie) => cookie.includes('session_token'));
+    expect(session).toMatch(/^__Secure-/);
+    expect(session).toContain('; Secure');
+    expect(session).toContain('; HttpOnly');
+    expect(session).toContain('; SameSite=Lax');
+    expect(session).toContain('; Path=/');
   });
 
   it('sin sesión → 401', async () => {

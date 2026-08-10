@@ -384,17 +384,26 @@ identidad de cliente del harness sin desactivar cuotas de producción.
 
 ### R11 · Seguridad y preparación del primer cliente
 
-- [ ] Revisar aislamiento, auth, roles, cookies, headers y superficies públicas.
-- [ ] Revisar RGPD, retención, anonimización, consentimiento y exports existentes.
-- [ ] Revisar backups/runbook y distinguir prueba local de restauración real.
-- [ ] Revisar observabilidad mínima y documentar el punto ciego externo.
-- [ ] Actualizar el dossier de activación con lo que realmente falta para Inicio,
+- [x] Revisar aislamiento, auth, roles, cookies, headers y superficies públicas.
+- [x] Revisar RGPD, retención, anonimización, consentimiento y exports existentes.
+- [x] Revisar backups/runbook y distinguir prueba local de restauración real.
+- [x] Revisar observabilidad mínima y documentar el punto ciego externo.
+- [x] Actualizar el dossier de activación con lo que realmente falta para Inicio,
       Gestión, pagos, comunicaciones, fiscal/SES, OTA e IA.
-- [ ] Convertir cualquier riesgo local corregible en test o runbook.
-- [ ] No ejecutar infra, secretos, restauración remota o proveedor sin autoridad.
+- [x] Convertir cualquier riesgo local corregible en test o runbook.
+- [x] No ejecutar infra, secretos, restauración remota o proveedor sin autoridad.
 
 **Cierra cuando:** el primer cliente no obligaría a descubrir de nuevo qué hay
 que activar, qué riesgo existe y cómo se aceptará cada módulo.
+
+**Cerrado el 2026-08-10:** la auditoría ejecutable cubre aislamiento, 47 rutas,
+auth, roles, cookies, CORS/CSRF, cuotas, RGPD y errores. API y assets comparten un
+contrato de cabeceras defensivas; producción fuerza cookie `Secure`. El flujo
+D1 local usa una sola persistencia y el nuevo ensayo exportó/restauró
+3426/2568/3109 filas con huellas iguales e invariantes 0/0. El dossier separa
+estado local, dueño, secretos, aceptación y rollback de ocho módulos. La
+restauración remota, observabilidad independiente y proveedores siguen detrás
+de credencial y autorización; no se tocó infraestructura externa.
 
 ### R12 · Integraciones y proveedores reales
 

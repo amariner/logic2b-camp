@@ -60,6 +60,24 @@ export function csvFileName(slug: string, table: string, isoDate: string): strin
  * Comando de volcado SQL completo. Se devuelve como array de argumentos —no como
  * cadena— para que el slug no pueda inyectar nada en una shell.
  */
-export function sqlDumpArgs(databaseName: string, configPath: string, output: string): string[] {
-  return ['d1', 'export', databaseName, '--remote', '--config', configPath, '--output', output];
+export function sqlDumpArgs(
+  databaseName: string,
+  configPath: string,
+  output: string,
+  local = false,
+  contents: 'full' | 'schema' | 'data' = 'full',
+): string[] {
+  const args = [
+    'd1',
+    'export',
+    databaseName,
+    local ? '--local' : '--remote',
+    '--config',
+    configPath,
+    '--output',
+    output,
+  ];
+  if (contents === 'schema') args.push('--no-data');
+  if (contents === 'data') args.push('--no-schema');
+  return args;
 }

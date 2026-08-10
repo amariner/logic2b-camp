@@ -9,7 +9,7 @@ Hacen falta **dos procesos**, porque el dashboard no tiene backend propio:
 ```bash
 # 1) API + D1 local (Worker)
 pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc \
-  --persist-to .wrangler-demo --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1
+  --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1
 
 # 2) dashboard con HMR
 pnpm --filter @logic-camp/dashboard exec vite --port 5173

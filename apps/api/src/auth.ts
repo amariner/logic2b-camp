@@ -62,6 +62,11 @@ export function authRateLimitEnabled(env: Bindings): boolean {
   return env.AUTH_SECRET !== undefined || env.LOGIC_CAMP_DEV_AUTH !== '1';
 }
 
+/** Un entorno con secreto real nunca debe emitir la sesión sin el atributo Secure. */
+export function authUsesSecureCookies(env: Bindings): boolean {
+  return env.AUTH_SECRET !== undefined;
+}
+
 /** Producción nunca cae a una clave conocida; el fallback necesita un interruptor local explícito. */
 export function resolveAuthSecret(env: Bindings): string {
   if (env.AUTH_SECRET !== undefined) {
@@ -112,6 +117,9 @@ export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) 
       },
     },
     advanced: {
+      // Better Auth también lo infiere del protocolo, pero producción no debe
+      // depender de que un proxy reconstruya correctamente la URL original.
+      useSecureCookies: authUsesSecureCookies(env),
       // `cf-connecting-ip` la fija Cloudflare; no confiamos en una cabecera
       // arbitraria del cliente para separar los buckets de autenticación.
       ipAddress: { ipAddressHeaders: ['cf-connecting-ip'] },

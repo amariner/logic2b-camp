@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Seguridad y activación de producción R11 · 2026-08-10 (sesión 114)
+
+- R11 queda cerrado con una auditoría reproducible de superficie, autenticación,
+  CORS, CSRF, cuotas, RGPD y operación. API y sitio estático emiten una política
+  defensiva común (CSP mínima, HSTS, `nosniff`, `DENY`, referrer y permisos);
+  Better Auth activa cookies `__Secure-`, `Secure`, `HttpOnly` y `SameSite=Lax`
+  cuando existe secreto, sin alterar el modo demo local. Las pruebas cubren 200,
+  401 y 404, origen CORS no permitido y cookie de producción.
+- El export local ya usa el estado D1 asociado al `wrangler.jsonc` del tenant y
+  genera el SQL en dos fases, esquema antes que datos. Esto evita la ordenación
+  intercalada de Wrangler que podía insertar `booking_guests` antes de crear
+  `guests`. `backup:rehearse demo` restaura en una D1 temporal y exige igualdad
+  exacta: **3.426 reservas / 2.568 huéspedes / 3.109 relaciones**, migraciones
+  idénticas, cero descuadres de pago y cero solapes.
+- El dossier de activación fija la verdad local de Inicio, Gestión, pagos,
+  comunicaciones, fiscalidad, SES, OTA, IA, copias y observabilidad, con gate,
+  responsable, secretos, criterio de aceptación y rollback. El runbook separa
+  claramente copias locales de D1 remoto y deja las comprobaciones remotas
+  pendientes de cuenta, base, permisos y autorización explícita.
+- Verificación final: `pnpm check` completó **53/53** tareas en **22,50 s**
+  (API **272/272**, CLI **33/33**, demo **63/63**); `qa:canonical` pasó
+  **11 superficies / 22 vistas**, cinco assets y 11.673 enlaces; Playwright pasó
+  **25/25**, incluidas las cabeceras estáticas y del Worker. No hubo deploy,
+  reseed remoto, secretos ni escritura de producción. La siguiente ruta es
+  **R12**, cierre de huecos operativos sin fingir integraciones externas.
+
 ## Auditoría de portfolio R9 y QA canónico R10 · 2026-08-10 (sesión 113)
 
 - R9 queda agotado hasta recibir aprendizaje externo. La matriz compara

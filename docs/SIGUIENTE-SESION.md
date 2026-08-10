@@ -1,58 +1,56 @@
-# Prompt para la siguiente sesión — objetivo duradero en R11
+# Prompt para la siguiente sesión — objetivo duradero en R12
 
-> Reescrito tras la sesión 113 (2026-08-10). R0–R10 están cerrados; producción
-> sigue requiriendo autorización explícita.
+> Reescrito tras la sesión 114 (2026-08-10). R0–R11 están cerrados; producción y
+> proveedores siguen requiriendo autorización explícita.
 
 ## Estado en una línea
 
-El portfolio no necesita otra demo sin señal comercial y el bundle canónico ya
-tiene un recorrido reproducible de venta, temas, gestor, assets y responsive;
-ahora toca convertir la seguridad y la activación del primer cliente en una
-lista verificable, no en supuestos dispersos.
+Seguridad, RGPD, cabeceras, copia local y dossier de activación ya tienen
+evidencia ejecutable; ahora toca ordenar las integraciones por recorrido y
+terminar solo los contratos locales que reduzcan riesgo antes de abrir una
+cuenta externa.
 
 ## Objetivo prioritario
 
-Abrir **R11 · Seguridad y preparación del primer cliente** de
-`docs/RUTA-DESARROLLO-CONTINUO.md` y agotar primero su trabajo local:
+Abrir **R12 · Integraciones y proveedores reales** de
+`docs/RUTA-DESARROLLO-CONTINUO.md` con este orden:
 
-1. Inventariar las fronteras existentes de aislamiento, auth, roles, cookies,
-   headers, CORS/CSRF, rate limits y rutas públicas; reproducir antes de tocar.
-2. Revisar RGPD, retención, anonimización, consentimiento y exports contra código,
-   tests, ADR y runbooks actuales, separando riesgo real de deuda hipotética.
-3. Auditar `docs/RUNBOOK-COPIAS.md`: probar solo export/restauración local y dejar
-   la restauración remota detrás de credencial y autorización.
-4. Documentar la observabilidad mínima disponible y el punto ciego que no puede
-   cerrarse sin una cuenta externa autorizada.
-5. Actualizar el dossier de activación por módulo —Inicio, Gestión, pagos,
-   comunicaciones, fiscal/SES, OTA e IA— con estado, dueño, secreto/proveedor,
-   prueba de aceptación, rollback y gate.
-6. Convertir cada defecto local demostrado en una corrección pequeña con prueba
-   o runbook; no crear infraestructura ni activar integraciones por anticipado.
+1. Inventariar por tier y recorrido qué usan hoy Inicio, Gestión, Automatiza e
+   Inteligente: Resend, pagos, analítica/errores, SES/fiscal, OTA e IA.
+2. Comparar cada adaptador existente con el contrato transversal exigido por
+   R12: Zod, idempotencia, timeout, reintento, correlación, redacción de PII,
+   estado degradado, ownership, coste y apagado.
+3. Elegir el primer defecto **local y reproducible** que atraviese un recorrido
+   actual; arreglarlo con prueba. No construir un conector sin módulo aprobado.
+4. Mantener `none`, `disabled`, `manual` y demo como estados explícitos; ninguna
+   simulación puede compartir el éxito de un proveedor.
+5. Actualizar dossier/runbook por cada contrato que cambie y dejar toda prueba
+   externa como checklist, no como afirmación.
 
 ## Gates que siguen cerrados
 
-- D5-V continúa en tres demos: Montaña, Familiar y Parcela carecen de una señal
-  observada propia. Sus disparadores están en `docs/AUDITORIA-PORTFOLIO-R9.md`.
-- Restauración remota, Analytics/Sentry, email, pagos, SES.Hospedajes, OTA e IA
-  requieren cuenta, credencial, destino y autorización según el módulo.
-- El candidato acumulado incluye `0007_scrub_payment_raw.sql`; cualquier deploy
-  debe revisar el borrado deliberado, backup/rollback y `AUTH_SECRET` remoto.
+- Resend real, Stripe/Redsys sandbox, Analytics, Sentry/Logpush,
+  SES.Hospedajes oficial, fiscal/VeriFactu, OTA e IA requieren cuenta, destino,
+  credencial, alcance y autorización del módulo.
+- Restauración D1 remota y Time Travel siguen pendientes pese al ensayo local
+  íntegro; nunca restaurar encima de la base viva.
+- D5-V continúa esperando señal propia de Montaña/Familiar/Parcela. D6-V aún no
+  es evaluable.
+- El candidato incluye la migración deliberada `0007_scrub_payment_raw.sql`;
+  cualquier deploy requiere backup/rollback y confirmar `AUTH_SECRET` remoto.
 
 ## Ya verificado — no repetir sin un cambio relevante
 
-- R9 comparó tres demos con Montaña/Familiar/Parcela y dejó D5-V esperando 3/3;
-  D6-V todavía no es evaluable.
-- `qa:canonical` construye el bundle compuesto y recorre 11 superficies / 22
-  vistas a 375/1366 px: ES/EN, docs, Cala, L'Olivar, Pinada y Mar de Fondo.
-- El gate comprueba testigos, indexación/noindex, imágenes, fuentes, overflow,
-  consola, peticiones y cinco assets/MIME; la inspección visual cubrió landing,
-  planning y los dos prototipos supervisados.
-- Playwright recorre funnel, gestión, mobile, permisos, reduced motion, temas y
-  reset real; cada test usa una IP de cliente determinista sin desactivar las
-  cuotas de producción.
-- El dashboard compuesto ya publica favicon bajo cada `BASE_URL`. Better Auth
-  conserva rate limit en producción, usa `cf-connecting-ip` y solo desactiva su
-  segunda cuota bajo el flag local sin `AUTH_SECRET`.
+- `AUDITORIA-SEGURIDAD-R11.md` cierra aislamiento, auth, roles, cookies,
+  cabeceras, CORS/CSRF, cuotas, superficie pública, RGPD y observabilidad mínima.
+- API y assets tienen cabeceras verificadas; la cookie de producción es Secure,
+  HttpOnly y SameSite=Lax.
+- `pnpm backup:rehearse demo` restauró 3426/2568/3109 con huella exacta y
+  pagos/solapes 0/0. No es evidencia remota.
+- `DOSSIER-ACTIVACION-PRODUCCION.md` separa estado, dueño, secreto, aceptación y
+  rollback para Inicio, Gestión, pagos, comunicaciones, fiscal/SES, OTA e IA.
+- R10 conserva el bundle canónico de 11 superficies / 22 vistas y Playwright
+  recorre funnel, gestión, permisos, responsive y reset real.
 - No hubo deploy, reseed remoto, proveedor, secreto ni escritura de producción.
 
 ## Prompt
