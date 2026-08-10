@@ -2,9 +2,12 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const VIEWPORTS = [320, 375, 430] as const;
 
-async function entrarEnDemo(page: Page) {
+async function entrarComoRecepcion(page: Page) {
+  const login = await page.request.post('/api/auth/sign-in/email', {
+    data: { email: 'recepcion@calasereno.example', password: 'calasereno' },
+  });
+  expect(login.ok()).toBe(true);
   await page.goto('/admin/');
-  await page.getByRole('button', { name: 'Ver la demo' }).click();
   await expect(page.getByRole('heading', { name: 'Hoy en el camping' })).toBeVisible({
     timeout: 20_000,
   });
@@ -31,10 +34,10 @@ async function sinDesborde(page: Page) {
 
 test('dashboard: la operación del día se puede tocar con una mano', async ({ page }) => {
   await page.setViewportSize({ width: VIEWPORTS[0], height: 812 });
-  await entrarEnDemo(page);
+  await entrarComoRecepcion(page);
 
   // Igual que la regresión del shell: una sesión recorre la matriz de anchos y
-  // no convierte el rate limit del login demo en parte accidental de la prueba.
+  // no convierte el rate limit del login en parte accidental de la prueba.
   for (const width of VIEWPORTS) {
     await page.setViewportSize({ width, height: 812 });
 

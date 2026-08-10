@@ -230,6 +230,9 @@ export default function BookingPanel({
     data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt,
   );
   const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
+  // Una estancia ya iniciada se cierra exclusivamente con check-out: además de
+  // registrar la salida, esa acción completa la reserva en una sola operación.
+  const stateActions = data && !inHouse ? ACTIONS_BY_STATUS[data.status] : [];
 
   const content = (
     <>
@@ -609,41 +612,60 @@ export default function BookingPanel({
           )}
 
           {/* acciones tipadas según estado */}
-          {puedeGestionar && ACTIONS_BY_STATUS[data.status].length > 0 && (
+          {puedeGestionar && stateActions.length > 0 && (
             <section>
               <h3 className="lc-panel-h">{t('ficha.acciones')}</h3>
               <div className="flex flex-wrap gap-2">
-                {ACTIONS_BY_STATUS[data.status].map((a) =>
-                  a === 'cancel' ? (
-                    // libera inventario y puede disparar reembolso: confirmación real,
-                    // no el doble click que había aquí antes
+                {stateActions.map((a) =>
+                  a !== 'confirm' ? (
+                    // Toda transición terminal libera inventario y no tiene deshacer
+                    // desde el gestor: confirmar antes de cambiar el histórico.
                     <AlertDialog key={a}>
                       <AlertDialogTrigger asChild>
                         <Button
                           type="button"
                           size="sm"
-                          variant="destructiveOutline"
+                          variant={a === 'complete' ? 'outline' : 'destructiveOutline'}
                           disabled={transition.isPending}
                         >
-                          {t('accion.cancel')}
+                          {t(`accion.${a}`)}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>
-                            {t('confirmar.cancelarReserva.titulo', { code: data.code })}
+                            {t(
+                              a === 'cancel'
+                                ? 'confirmar.cancelarReserva.titulo'
+                                : a === 'no_show'
+                                  ? 'confirmar.noShow.titulo'
+                                  : 'confirmar.completar.titulo',
+                              { code: data.code },
+                            )}
                           </AlertDialogTitle>
                           <AlertDialogDescription>
-                            {t('confirmar.cancelarReserva.desc')}
+                            {t(
+                              a === 'cancel'
+                                ? 'confirmar.cancelarReserva.desc'
+                                : a === 'no_show'
+                                  ? 'confirmar.noShow.desc'
+                                  : 'confirmar.completar.desc',
+                            )}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
                           <AlertDialogAction
-                            variant="destructive"
-                            onClick={() => transition.mutate('cancel')}
+                            variant={a === 'complete' ? 'primary' : 'destructive'}
+                            onClick={() => transition.mutate(a)}
                           >
-                            {t('confirmar.cancelarReserva.ok')}
+                            {t(
+                              a === 'cancel'
+                                ? 'confirmar.cancelarReserva.ok'
+                                : a === 'no_show'
+                                  ? 'confirmar.noShow.ok'
+                                  : 'confirmar.completar.ok',
+                            )}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -653,7 +675,7 @@ export default function BookingPanel({
                       key={a}
                       type="button"
                       size="sm"
-                      variant={a === 'confirm' ? 'primary' : 'outline'}
+                      variant="primary"
                       disabled={transition.isPending}
                       onClick={() => transition.mutate(a)}
                     >

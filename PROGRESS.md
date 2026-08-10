@@ -1,5 +1,33 @@
 # PROGRESS — Logic Camp
 
+## Estados, cierres y semántica del gestor R6 · 2026-08-10 (sesión 110)
+
+- R6 queda cerrado. El alta manual y el diálogo de bloqueos ya distinguen carga
+  y error del catálogo con `SkeletonText`/`QueryError` y permiten reintentar. La
+  cotización inesperadamente fallida deja de ser un hueco sin explicación y
+  «Crear la reserva» permanece deshabilitado hasta tener la cotización vigente
+  del servidor; el cliente continúa sin calcular ningún precio.
+- Cancelar, marcar no presentada y completar son transiciones terminales con
+  `AlertDialog` y texto propio. Una estancia «En casa» ya no ofrece cancelación,
+  no-show ni cierre paralelo: el check-out es el único camino que registra la
+  salida y completa la reserva. El E2E encontró y corrigió también una primera
+  etiqueta repetida que mostraba «Cancelar reserva» en los tres disparadores.
+- La deuda semántica se resolvió por evidencia. No queda ningún uso de los
+  antiguos alias `pino`/`arena`/`tinta`/`crema` en el dashboard; las clases
+  `lc-*` restantes nombran componentes de dominio. Diez claves i18n de
+  carga/error verificadas como huérfanas se retiraron y los ejemplos visibles
+  del alta entraron en el diccionario.
+- Los E2E móviles que prueban edición y solicitudes pasan ahora con recepción,
+  no con el visitante demo al que R6 retiró esas puertas. Bundle real: alta,
+  confirmaciones y ficha móvil **5/5**; planning, plano, operación diaria,
+  búsqueda, shell y carga dinámica **6/6**, recorriendo 320/375/430/1366 px sin
+  mutaciones confirmadas. Entradas M6: **173,18 / 177,65 / 183,43 kB gzip** y
+  **11.671 enlaces / 360 HTML** verdes.
+- Verificación final: dashboard **37/37**, typecheck y lint verdes; `pnpm check`
+  completó **53/53** tareas en **3,13 s**. No hubo deploy, reseed ni escritura
+  remota. La siguiente ruta es **R7**, landing de venta y documentación de
+  producto.
+
 ## Afordancias por rol del gestor R6 · 2026-08-10 (sesión 109)
 
 - API y dashboard comparten ahora una política pura de roles y capacidades en

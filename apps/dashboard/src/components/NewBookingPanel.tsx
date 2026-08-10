@@ -5,12 +5,13 @@
  * servidor (POST /api/admin/bookings, auditado). La UI nunca calcula un precio.
  */
 import { errorMutacion } from '../avisos';
-import { Button, toast } from '@logic-camp/ui';
+import { Button, SkeletonText, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError, apiGet, apiPost, type Catalog, type QuoteResponse } from '../api';
 import { t } from '../i18n';
 import { conceptLabel, eur, stayError } from '../lib/format';
+import { QueryError } from './QueryError';
 
 type StayIssue = { code: string; params?: Record<string, string | number> };
 
@@ -55,15 +56,16 @@ export default function NewBookingPanel({
   const [holderPhone, setHolderPhone] = useState('');
   const [notes, setNotes] = useState('');
 
-  const { data: catalog } = useQuery({
+  const catalogQuery = useQuery({
     queryKey: ['catalog'],
     queryFn: () => apiGet<Catalog>('/api/admin/catalog'),
     staleTime: 5 * 60_000,
   });
+  const catalog = catalogQuery.data;
 
   useEffect(() => {
-    panelRef.current?.querySelector<HTMLElement>('select, input')?.focus();
-  }, []);
+    if (catalog) panelRef.current?.querySelector<HTMLElement>('select, input')?.focus();
+  }, [catalog]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -144,8 +146,13 @@ export default function NewBookingPanel({
     },
   });
 
+  const cotizacionLista = Boolean(cotizacion.data) && !cotizacion.isFetching;
   const puedeCrear =
-    Boolean(listo) && holderName.trim().length > 0 && /\S+@\S+\.\S+/.test(holderEmail);
+    Boolean(listo) &&
+    cotizacionLista &&
+    holderName.trim().length > 0 &&
+    /\S+@\S+\.\S+/.test(holderEmail);
+  const errorCotizacionInesperado = cotizacion.isError && stayIssues.length === 0;
 
   const input =
     'w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[13px]';
@@ -172,8 +179,20 @@ export default function NewBookingPanel({
         </Button>
       </div>
 
+      {catalogQuery.isPending && (
+        <div aria-busy="true" aria-label={t('alta.cargandoCatalogo')} className="p-4">
+          <SkeletonText lines={7} />
+        </div>
+      )}
+      {catalogQuery.isError && (
+        <QueryError
+          error={catalogQuery.error}
+          onRetry={() => void catalogQuery.refetch()}
+          className="px-4 py-8"
+        />
+      )}
       <form
-        className="flex flex-col gap-3 p-4 text-[13px]"
+        className={`${catalog ? 'flex' : 'hidden'} flex-col gap-3 p-4 text-[13px]`}
         onSubmit={(e) => {
           e.preventDefault();
           if (puedeCrear && !crear.isPending) crear.mutate();
@@ -277,7 +296,7 @@ export default function NewBookingPanel({
             id="alta-ninos"
             type="text"
             inputMode="numeric"
-            placeholder="4, 7"
+            placeholder={t('alta.ninosEjemplo')}
             value={childrenRaw}
             onChange={(e) => setChildrenRaw(e.target.value)}
             className={`${input} tnum`}
@@ -338,6 +357,13 @@ export default function NewBookingPanel({
                 </li>
               ))}
             </ul>
+          )}
+          {errorCotizacionInesperado && (
+            <QueryError
+              error={cotizacion.error}
+              onRetry={() => void cotizacion.refetch()}
+              className="px-2 py-5"
+            />
           )}
           {cotizacion.data && (
             <dl>
@@ -435,11 +461,7 @@ export default function NewBookingPanel({
           />
         </div>
 
-        <Button
-          type="submit"
-          size="sm"
-          disabled={!puedeCrear || crear.isPending || Boolean(cotizacion.error)}
-        >
+        <Button type="submit" size="sm" disabled={!puedeCrear || crear.isPending}>
           {crear.isPending ? t('alta.creando') : t('alta.crear')}
         </Button>
       </form>

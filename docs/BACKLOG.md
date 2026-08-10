@@ -7,9 +7,8 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R6 estados, acciones destructivas, nombres
-  semánticos de clases e i18n huérfana; R7 `BreadcrumbList`; R11 reset local y
-  riesgos corregibles.
+- **Local ahora, por checkpoint:** R7 landing, documentación de producto y
+  `BreadcrumbList`; R11 reset local y riesgos corregibles.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -78,9 +77,20 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[B4] Documentación de producto con marca Logic2B~~ → **hecho en ADR 0025
   y sus ampliaciones C6**.
 - ~~[B1] Reskin del dashboard a Logic2B UI~~ → hecho 2026-07-20 (ADR 0017): sidebar agrupada plegable con isotipo, tokens/fuentes del DS, planning con el mapa de colores aprobado. Verificado en vivo. Quedan dos remates abajo.
-- [B1] Rename literal de las clases del dashboard: hoy los nombres camping (`bg-pino`, `text-tinta-suave`, `border-arena`…) puentean a tokens del DS vía `@theme` en `styles.css` (ADR 0017); reescribirlos a `bg-primary`/`text-muted-foreground`/`border-border` para que el código no mienta. ~400 usos en 15 ficheros — 2026-07-20
+- ~~[B1] Rename literal de las clases del dashboard~~ → **cerrado 2026-08-10
+  (sesión 110/R6)**: la deuda descrita ya no existe. Un barrido literal sobre
+  `apps/dashboard/src` devuelve cero usos de `pino`, `arena`, `tinta`, `crema`
+  y `tinta-suave`; ADR 0020 ya había eliminado los puentes de `styles.css`.
+  `.lc-bar`, `.lc-chip` y `.lc-receipt` permanecen porque nombran componentes
+  de dominio, no colores del tenant. No se ejecutó un rename sin objetivos.
 - [C2] **AVISO antes de tocar este ítem (sesión 52)**: siete de las claves que el detector marcaba como huérfanas —`pagl.fecha/reserva/proveedor/importe` y `ntf.fecha/evento/destino/canal`— **no lo eran**: eran las cabeceras de columna de Pagos y Notificaciones, que nunca se pintaron. Ya se usan. La lección para el resto de la lista: una clave sin usar puede significar "falta la UI", no "sobra la clave" — mirar qué describe antes de borrarla.
-- [C2] Limpiar claves i18n huérfanas del dashboard tras ADR 0020: los `*.cargando` y `*.error` que sustituyeron los esqueletos y `QueryError` (`planning.error`, `ficha.error`, `dia.error`, `res.error`, `inv.cargando/error`, `tar.cargando/error`, `inf.cargando/error`, `pagl.error`). **Verificar una a una antes de borrar**: un detector automático marca ~105 como huérfanas, pero ~53 se construyen con plantilla (`t(\`concepto.${x}\`)`, `canal._`, `notif._`, `accionSol.*`) y NO lo son. Barato, pero es limpieza, no acabado — 2026-07-21
+- ~~[C2] Limpiar claves i18n huérfanas del dashboard tras ADR 0020~~ → **hecho
+  2026-08-10 (sesión 110/R6)**: comprobadas por literal y por familia antes de
+  borrar. Se retiraron `planning.error`, `ficha.error`, `res.error`,
+  `inv.cargando/error`, `tar.cargando/error`, `inf.cargando/error` y
+  `pagl.error`; `dia.error` ya no existía. Las claves dinámicas y las cabeceras
+  advertidas en la sesión 52 no se tocaron. Los estados visibles usan
+  `Skeleton*` y `QueryError` con salida de reintento.
 - ~~[C1] Planning: virtualizar también el eje horizontal~~ → resuelto de otra forma en ADR 0023 §5 (2026-07-21): el coste no eran las barras sino el sombreado de finde por celda×fila; ahora es UN `repeating-linear-gradient` por lienzo (`weekendBackground`, `packages/config`) y la virtualización de columnas queda **descartada con medida** — reabrir solo si algún día existe un zoom "Año" (365 días × 300 uds), con medidas nuevas
 - ~~[C2] Auditar las animaciones nuevas del DS (`tw-animate-css`) bajo `prefers-reduced-motion`~~ → hecho 2026-07-25 (sesión 51), y la sospecha era fundada: **`motion-reduce:animate-none` no servía para nada** en dialog/alert-dialog/sheet/popover/dropdown/tooltip. Motivo comprobado en navegador: las variantes de Radix generan `.clase[data-state=open]` —especificidad (0,2,0)— y `motion-reduce:animate-none` vive en un `@media`, que **no suma especificidad**: (0,1,0). Perdía siempre, en cualquier orden. Además seguían vivas TODAS las transiciones de Tailwind en la web pública y el dashboard (43 y 151 elementos). Arreglado con el reset canónico en un solo bloque por raíz (`packages/ui/theme.css`, `apps/web`, `apps/site`) en lugar de N clases por componente; las 14 clases `motion-reduce:*` se han borrado para que nadie vuelva a creerse una guardia inerte. `animation-iteration-count: 1` faltaba también en el bloque de `apps/site` (0,01ms en bucle infinito repinta para siempre). Lo vigila `apps/web/e2e/reduced-motion.spec.ts`, que barre el DOM y falla si algo se mueve
 - ~~[B1] Sidebar del dashboard en móvil (375px): off-canvas con botón hamburguesa~~ → hecho 2026-07-21 (sesión 38): bajo `md` la sidebar persistente se oculta (`hidden md:flex`) y una barra con hamburguesa abre la navegación en el primitivo `Sheet` (`side="left"`, trampa de foco + Escape + overlay); pulsar un enlace cierra el drawer. El contenido se extrajo a `SidebarInner`, compartido por la sidebar de escritorio y el off-canvas (añadir un enlace no se olvida en una de las dos vistas). Verificado con Playwright a 1366px (aside visible, sin hamburguesa) y 375px (aside oculta, drawer abre con los 12 enlaces y cierra al navegar), light y dark. **Hallazgo**: destapó que la familia `--color-sidebar*` NO estaba mapeada en el `@theme` de `packages/ui/src/theme.css` — `bg-sidebar`/`border-sidebar-border` no generaban CSS desde B1 (ADR 0017) y la sidebar iba **transparente** (invisible sobre página blanca, el overlay del drawer la destapó). Mapeada — misma clase de bug "el DS funciona por coincidencia" del hallazgo Tailwind de ADR 0020

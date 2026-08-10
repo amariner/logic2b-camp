@@ -7,13 +7,16 @@ for (const width of VIEWPORTS) {
     page,
   }) => {
     await page.setViewportSize({ width, height: 812 });
+    const login = await page.request.post('/api/auth/sign-in/email', {
+      data: { email: 'recepcion@calasereno.example', password: 'calasereno' },
+    });
+    expect(login.ok()).toBe(true);
     await page.goto('/admin/');
-    await page.getByRole('button', { name: 'Ver la demo' }).click();
     await expect(page.locator('h1', { hasText: 'Hoy en el camping' })).toBeVisible({
       timeout: 20_000,
     });
 
-    // Un rol demo no recibe una puerta que el servidor va a rechazar.
+    // Recepción tampoco recibe una puerta reservada a gerencia.
     expect(await page.getByRole('link', { name: 'Parte de viajeros' }).count()).toBe(0);
 
     await page.goto('/admin/#/llegadas');
@@ -23,9 +26,9 @@ for (const width of VIEWPORTS) {
 
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await expect.poll(() => dialog.evaluate((node) => node.contains(document.activeElement))).toBe(
-      true,
-    );
+    await expect
+      .poll(() => dialog.evaluate((node) => node.contains(document.activeElement)))
+      .toBe(true);
     // `toBeVisible` coincide desde el primer fotograma del slide-in; la medida
     // estable empieza cuando el borde de la hoja ya alcanzó el viewport.
     await expect.poll(() => dialog.evaluate((node) => node.getBoundingClientRect().left)).toBe(0);
@@ -52,9 +55,11 @@ for (const width of VIEWPORTS) {
     expect(closeBox?.width).toBeGreaterThanOrEqual(44);
     expect(closeBox?.height).toBeGreaterThanOrEqual(44);
 
-    const editableSizes = await dialog.locator('input, select, textarea').evaluateAll((nodes) =>
-      nodes.map((node) => Number.parseFloat(getComputedStyle(node).fontSize)),
-    );
+    const editableSizes = await dialog
+      .locator('input, select, textarea')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => Number.parseFloat(getComputedStyle(node).fontSize)),
+      );
     expect(editableSizes.length).toBeGreaterThan(0);
     expect(editableSizes.every((size) => size >= 16)).toBe(true);
 

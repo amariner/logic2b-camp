@@ -1,27 +1,26 @@
-# Prompt para la siguiente sesión — objetivo duradero en R6
+# Prompt para la siguiente sesión — objetivo duradero en R7
 
-> Reescrito tras la sesión 109 (2026-08-10). R0–R5 están cerrados; producción
+> Reescrito tras la sesión 110 (2026-08-10). R0–R6 están cerrados; producción
 > sigue requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Shell, portada, navegación y mutaciones por rol ya están alineados; el siguiente
-trabajo seguro es revisar los estados y acciones destructivas de los recorridos
-firma y resolver solo la deuda semántica/i18n que tenga evidencia.
+El gestor ya está cerrado por roles, estados, semántica y recorridos firma; el
+siguiente trabajo seguro es auditar la landing de venta y la documentación de
+producto como un único recorrido comercial honesto.
 
 ## Objetivo prioritario
 
-Cerrar **R6 · Gestor y Logic2B UI** de
+Cerrar **R7 · Landing de venta y documentación de producto** de
 `docs/RUTA-DESARROLLO-CONTINUO.md`:
 
-1. Revisar loading/empty/error/success y acciones destructivas en los recorridos
-   firma. Priorizar defectos observables, confirmaciones engañosas o salidas sin
-   recuperación; no uniformar estados solo por simetría.
-2. Resolver por evidencia los nombres camping que puentean tokens Logic2B y la
-   i18n realmente huérfana; no hacer renames masivos ni borrar claves por
-   detector automático.
-3. Confirmar planning, plano, ficha, llegadas, solicitudes y búsqueda a 1366 y
-   375 px, manteniendo los presupuestos de bundle fijados en R2/R3.
+1. Recorrer la home completa y contrastar jerarquía, promesa, CTAs, estados
+   comerciales y saltos landing↔demo↔gestor con lo que el producto hace hoy.
+2. Corregir primero promesas, enlaces o marca obsoletos que se reproduzcan;
+   revisar `DEMO-SCRIPT.md` y `BRAND.md` sin reescribir prosa por simetría.
+3. Añadir `BreadcrumbList` a las guías si el inventario confirma que sigue
+   faltando, validar el JSON-LD y verificar formularios, pistas y alternativas
+   textuales a 1366/375 px sin perder presupuestos.
 
 ## Publicación preparada, no autorizada
 
@@ -44,12 +43,12 @@ Cerrar **R6 · Gestor y Logic2B UI** de
   coherentes por idioma y volumen diario/plano verificado. La relación de una
   solicitud convertida con su reserva sigue diferida porque ninguna pantalla la
   muestra.
-- R6 parcial: guía contextual de Inicio y shell verificados; política compartida
-  de roles/capacidades con config 66/66, dashboard 37/37, API dirigida 137/137 y
-  E2E permisos+shell 2/2. Demo solo ve las cinco acciones de estancia que la API
-  autoriza; las demás mutaciones ya no conducen a 403. La sesión sembrada acepta
-  el ID opaco del tenant y la provisión nueva lo conserva. Los bundles siguen en
-  173,10/177,58/183,36 kB gzip.
+- R6 cerrado: guía y shell, política compartida de roles, estados recuperables,
+  cotización vigente antes del alta y confirmaciones terminales. Demo solo ve
+  las cinco acciones de estancia autorizadas; una estancia en casa se cierra por
+  check-out. Recorridos firma 11/11 en 320/375/430/1366 px; cero alias visuales
+  antiguos y diez claves i18n huérfanas retiradas. Bundles en
+  173,18/177,65/183,43 kB gzip.
 - D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
   cerrados; D5-V continúa detrás de aprendizaje comercial.
 - La entrega visual de la sesión 104 sigue incluida en el candidato, pero ya no

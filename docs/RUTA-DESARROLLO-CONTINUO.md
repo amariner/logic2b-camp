@@ -282,14 +282,14 @@ y cada garantía relevante tiene test.
 - [x] Auditar shell, portada y navegación por rol.
 - [x] Resolver affordances que conducen a muros de permisos o explicarlas antes.
 - [x] Crear/terminar la guía contextual de la portada si sigue faltando.
-- [ ] Revisar estados loading/empty/error/success y acciones destructivas.
-- [ ] Continuar adopción semántica de `packages/ui` donde reduzca mentira o
+- [x] Revisar estados loading/empty/error/success y acciones destructivas.
+- [x] Continuar adopción semántica de `packages/ui` donde reduzca mentira o
       duplicación; no migrar markup por simetría.
-- [ ] Revisar los nombres de clases camping que puentean tokens Logic2B y decidir
+- [x] Revisar los nombres de clases camping que puentean tokens Logic2B y decidir
       cambios por lotes verificables.
-- [ ] Confirmar planning, plano, ficha, llegadas, solicitudes y búsqueda en
+- [x] Confirmar planning, plano, ficha, llegadas, solicitudes y búsqueda en
       escritorio y móvil.
-- [ ] Mantener rendimiento M6 y carga dinámica de pantallas pesadas.
+- [x] Mantener rendimiento M6 y carga dinámica de pantallas pesadas.
 
 **Cierra cuando:** los roles alcanzan solo lo que entienden y pueden usar, el
 gestor habla Logic2B UI sin perder densidad y no quedan P0/P1 visibles.

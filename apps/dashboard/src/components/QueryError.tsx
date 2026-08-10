@@ -29,7 +29,7 @@ export function QueryError({
 }: {
   error: unknown;
   onRetry?: () => void;
-  /** Texto propio de la pantalla, si lo tiene (`planning.error`, `cli.error`…). */
+  /** Permite adaptar el espacio del estado a la pantalla que lo contiene. */
   className?: string;
 }) {
   const tipo = clasificar(error);
