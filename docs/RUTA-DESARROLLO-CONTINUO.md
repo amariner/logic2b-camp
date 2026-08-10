@@ -413,6 +413,8 @@ de credencial y autorización; no se tocó infraestructura externa.
       reintentos, correlación, redacción de PII y estados de degradación.
   - [x] Primer corte vertical: Resend con respuesta Zod, timeout, reintento
         idempotente, referencia, intentos exactos y error sin body remoto.
+  - [x] Segundo corte vertical: webhook Stripe con tolerancia antirreplay de 300
+        s, firmas de rotación y payload Checkout validado con Zod.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir

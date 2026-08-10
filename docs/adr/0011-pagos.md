@@ -127,3 +127,31 @@ Redsys es "su comercio, su clave, por camping" — obligatorio en España, conex
 - El dashboard gana dos acciones (`record_payment`, `refund`) sobre una UI que ya estaba preparada desde la Fase 6 para mostrarlas.
 - Riesgo aceptado y declarado: Redsys sin verificar contra sandbox real; fianza vía pasarela fuera de v1; sin cron de purga de `pending` colgadas (BACKLOG, simétrico al de holds).
 - Pendiente de Andreu: cuenta Stripe (modo test primero) + su comercio Redsys real (clave, FUC, terminal) para verificar de verdad antes de cobrar un euro real.
+
+## Addenda R12 · frontera de entrada Stripe (2026-08-10)
+
+La implementación original verificaba el HMAC de `Stripe-Signature`, pero no la
+antigüedad de `t`. Una petición correctamente firmada seguía siendo válida de
+forma indefinida. Además, el cuerpo firmado se convertía mediante casts y
+`Number(...)`: un `amount_total: "12345"` podía atravesar la frontera aunque no
+fuera la forma documentada por Stripe.
+
+La entrada de webhook aplica ahora la misma tolerancia predeterminada de
+**300 segundos** que publica el
+[SDK oficial de Stripe](https://github.com/stripe/stripe-node/blob/master/src/Webhooks.ts)
+y conserva el body crudo como material firmado. Una cabecera debe incluir un
+timestamp entero y al menos una firma `v1` hexadecimal; se admite cualquiera de
+las firmas de una rotación y cada comparación recorre todos sus caracteres. Una
+firma válida con más de 300 segundos se rechaza antes de producir un evento de
+dominio.
+
+Después de autenticar cabecera y recencia, Zod valida únicamente los eventos
+Checkout que este producto procesa: id de evento y sesión no vacíos, tipo
+permitido e importe entero no negativo (nullable solo en el caso fallido). No se
+coacciona un string a céntimos ni se persiste el payload. El test de API exige
+además que un evento caducado responda 400 y no cree ningún asiento.
+
+Este addenda no acredita endpoint, secret, entrega ni sandbox. Continúan
+pendientes en cortes separados la frontera HTTP saliente de Stripe
+(idempotencia, timeout, respuesta y error cerrado), el acuse REST de Redsys y la
+verificación extremo a extremo de ambos proveedores.

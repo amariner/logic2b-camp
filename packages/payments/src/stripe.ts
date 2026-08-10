@@ -11,6 +11,7 @@ import type {
   PaymentProvider,
   PaymentWebhookEvent,
 } from './types';
+import { z } from 'zod';
 
 export type StripeConfig = {
   secretKey: string;
@@ -18,6 +19,24 @@ export type StripeConfig = {
 };
 
 const API_BASE = 'https://api.stripe.com/v1';
+const WEBHOOK_TOLERANCE_SECONDS = 300;
+
+const stripeWebhookSchema = z.object({
+  id: z.string().trim().min(1),
+  type: z.enum([
+    'checkout.session.completed',
+    'checkout.session.async_payment_failed',
+    'checkout.session.expired',
+  ]),
+  data: z.object({
+    object: z.object({
+      id: z.string().trim().min(1),
+      client_reference_id: z.string().trim().min(1).nullable().optional(),
+      metadata: z.record(z.string(), z.string()).nullable().optional(),
+      amount_total: z.number().int().nonnegative().nullable(),
+    }),
+  }),
+});
 
 function formEncode(params: Record<string, string>): string {
   return Object.entries(params)
@@ -73,18 +92,35 @@ async function hmacSha256Hex(key: string, message: string): Promise<string> {
 }
 
 /** Cabecera `Stripe-Signature: t=…,v1=…,v1=…` (puede traer varios v1 en rotación de secret). */
-function parseSignatureHeader(header: string): { timestamp: string; signatures: string[] } {
-  const parts = Object.fromEntries(
-    header.split(',').map((kv) => {
-      const [k, v] = kv.split('=', 2);
-      return [k, v ?? ''];
-    }),
-  ) as Record<string, string>;
-  const signatures = header
-    .split(',')
-    .filter((kv) => kv.trim().startsWith('v1='))
-    .map((kv) => kv.trim().slice(3));
-  return { timestamp: parts.t ?? '', signatures };
+function parseSignatureHeader(header: string): { timestamp: number; signatures: string[] } | null {
+  let timestamp: number | null = null;
+  const signatures: string[] = [];
+  for (const item of header.split(',')) {
+    const [rawKey, rawValue] = item.trim().split('=', 2);
+    if (!rawKey || !rawValue) continue;
+    if (rawKey === 't' && /^\d+$/.test(rawValue)) timestamp = Number(rawValue);
+    if (rawKey === 'v1' && /^[a-f0-9]{64}$/i.test(rawValue)) signatures.push(rawValue);
+  }
+  return timestamp !== null && Number.isSafeInteger(timestamp) && signatures.length > 0
+    ? { timestamp, signatures }
+    : null;
+}
+
+function constantTimeHexEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let index = 0; index < a.length; index += 1) {
+    diff |= a.charCodeAt(index) ^ b.charCodeAt(index);
+  }
+  return diff === 0;
+}
+
+function parseJson(value: string): unknown {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
 }
 
 export function stripeProvider(config: StripeConfig): PaymentProvider {
@@ -120,48 +156,39 @@ export function stripeProvider(config: StripeConfig): PaymentProvider {
     }): Promise<PaymentWebhookEvent | null> {
       const header = req.headers.get('stripe-signature');
       if (!header) return null;
-      const { timestamp, signatures } = parseSignatureHeader(header);
-      if (!timestamp || signatures.length === 0) return null;
+      const signatureHeader = parseSignatureHeader(header);
+      if (!signatureHeader) return null;
+      const { timestamp, signatures } = signatureHeader;
 
       const expected = await hmacSha256Hex(config.webhookSecret, `${timestamp}.${req.rawBody}`);
-      if (!signatures.includes(expected)) return null;
+      if (!signatures.some((signature) => constantTimeHexEqual(signature, expected))) return null;
+      if (Math.floor(Date.now() / 1_000) - timestamp > WEBHOOK_TOLERANCE_SECONDS) return null;
 
-      let event: {
-        id?: string;
-        type?: string;
-        data?: { object?: Record<string, unknown> };
-      };
-      try {
-        event = JSON.parse(req.rawBody);
-      } catch {
-        return null;
-      }
-      const session = event.data?.object ?? {};
-      const bookingId =
-        (session.client_reference_id as string | undefined) ??
-        ((session.metadata as Record<string, string> | undefined)?.bookingId as string | undefined);
-      const sessionId = session.id as string | undefined;
-      if (!event.id || !sessionId) return null;
+      const event = stripeWebhookSchema.safeParse(parseJson(req.rawBody));
+      if (!event.success) return null;
+      const session = event.data.data.object;
+      const bookingId = session.client_reference_id ?? session.metadata?.bookingId;
 
-      if (event.type === 'checkout.session.completed') {
+      if (event.data.type === 'checkout.session.completed') {
+        if (session.amount_total === null) return null;
         return {
-          eventId: event.id,
-          providerRef: sessionId,
+          eventId: event.data.id,
+          providerRef: session.id,
           orderRef: bookingId,
           status: 'succeeded',
-          amountCents: Number(session.amount_total ?? 0),
+          amountCents: session.amount_total,
         };
       }
       if (
-        event.type === 'checkout.session.async_payment_failed' ||
-        event.type === 'checkout.session.expired'
+        event.data.type === 'checkout.session.async_payment_failed' ||
+        event.data.type === 'checkout.session.expired'
       ) {
         return {
-          eventId: event.id,
-          providerRef: sessionId,
+          eventId: event.data.id,
+          providerRef: session.id,
           orderRef: bookingId,
           status: 'failed',
-          amountCents: Number(session.amount_total ?? 0),
+          amountCents: session.amount_total ?? 0,
         };
       }
       return null; // otros eventos no nos interesan

@@ -82,6 +82,24 @@ async function buildNotification(
   }).toString();
 }
 
+async function signStripeWebhook(secret: string, timestamp: number, body: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const digest = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(`${timestamp}.${body}`),
+  );
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 beforeAll(async () => {
   await seedTenant(env.DB, 'alfa');
 });
@@ -421,6 +439,48 @@ describe('reserva web con pago (redsys deposit)', () => {
       persisted: true,
     });
     expect(body.ref).toMatch(/^err_/);
+  });
+
+  it('Stripe rechaza en la frontera HTTP un evento correctamente firmado pero caducado', async () => {
+    await setPaymentsConfig({ provider: 'stripe', mode: 'full' });
+    const stripeEnv = {
+      DB: env.DB,
+      TENANT_SLUG: 'alfa',
+      STRIPE_SECRET_KEY: 'sk_test',
+      STRIPE_WEBHOOK_SECRET: 'whsec_test',
+    };
+    const body = JSON.stringify({
+      id: 'evt_expired_signature',
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          id: 'cs_expired_signature',
+          client_reference_id: 'bkg_unknown',
+          amount_total: 12_345,
+        },
+      },
+    });
+    const timestamp = Math.floor(Date.now() / 1_000) - 301;
+    const signature = await signStripeWebhook(stripeEnv.STRIPE_WEBHOOK_SECRET, timestamp, body);
+    const db = createDb(env.DB);
+    const paymentsBefore = (await db.select().from(schema.payments)).length;
+
+    const hook = await app.request(
+      '/api/payments/webhook/stripe',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'stripe-signature': `t=${timestamp},v1=${signature}`,
+        },
+        body,
+      },
+      stripeEnv,
+    );
+
+    expect(hook.status).toBe(400);
+    await expect(hook.json()).resolves.toEqual({ error: 'invalid_signature' });
+    expect((await db.select().from(schema.payments)).length).toBe(paymentsBefore);
   });
 
   it('firma inválida → 400, no toca la reserva', async () => {

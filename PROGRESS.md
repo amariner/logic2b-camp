@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Antirreplay y frontera Zod de Stripe R12 · 2026-08-10 (sesión 116)
+
+- El segundo corte R12 cierra la entrada del webhook Stripe sin proveedor ni
+  red. La reproducción demostró dos falsos aceptados: un HMAC correcto con 301 s
+  de antigüedad y un `amount_total: "12345"` firmado atravesaban el driver. Los
+  dos tests nacieron rojos antes de cambiar la implementación.
+- `Stripe-Signature` exige ahora timestamp entero y al menos una firma `v1` de
+  64 hex; conserva varias firmas durante rotación, compara cada candidata en
+  tiempo constante y aplica los **300 s** predeterminados por el SDK oficial.
+  Después del HMAC y la recencia, Zod valida evento, tipo, sesión e importe
+  entero no negativo. Ya no hay casts ni coerción de dinero en esta entrada.
+- La prueba HTTP envía una firma válida pero caducada, recibe 400 y exige que no
+  aparezca ningún asiento. El contrato D1 previo sigue deduplicando evento y
+  referencia, exige importe idéntico al intent y mantiene `payments.raw=null`.
+  Pagos pasa **22/22**, el recorrido API de pagos **13/13** y la API completa
+  **273/273**.
+- `RUNBOOK-PAGOS.md` separa estado local, ownership, variables, coste, preflight,
+  sandbox, rotación, conciliación, apagado e incidente para Stripe y Redsys. El
+  ADR 0011, inventario, dossier, roadmap y ruta distinguen este contrato de una
+  activación. La salida Stripe y el acuse refund Redsys continúan abiertos.
+- El `pnpm check` global encontró un único rojo fuera de la entrega: el tenant
+  no versionado `riuclar` importa `@logic-camp/core` sin declararlo. Se preservó
+  intacto. Excluyendo solo ese workspace ajeno, el mismo gate completó **53/53**
+  tareas en **14,75 s**. No hubo deploy, secrets, sandbox, cobro, reembolso ni
+  escritura de producción.
+
 ## Contrato acotado de correo e inventario R12 · 2026-08-10 (sesión 115)
 
 - R12 arranca con un inventario trazable por oferta y familia: correo, Stripe,

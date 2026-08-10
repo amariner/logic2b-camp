@@ -16,6 +16,7 @@ const PARAMS = {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.useRealTimers();
 });
 
 describe('stripeProvider.createIntent', () => {
@@ -81,9 +82,13 @@ describe('stripeProvider.parseWebhook', () => {
       },
     });
     const timestamp = '1700000000';
+    vi.useFakeTimers();
+    vi.setSystemTime(Number(timestamp) * 1_000);
     const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
     const event = await provider.parseWebhook({
-      headers: new Headers({ 'stripe-signature': `t=${timestamp},v1=${signature}` }),
+      headers: new Headers({
+        'stripe-signature': `t=${timestamp},v1=${'0'.repeat(64)},v1=${signature}`,
+      }),
       rawBody: body,
     });
     expect(event).toEqual({
@@ -117,11 +122,61 @@ describe('stripeProvider.parseWebhook', () => {
       data: { object: {} },
     });
     const timestamp = '1700000000';
+    vi.useFakeTimers();
+    vi.setSystemTime(Number(timestamp) * 1_000);
     const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
     const event = await provider.parseWebhook({
       headers: new Headers({ 'stripe-signature': `t=${timestamp},v1=${signature}` }),
       rawBody: body,
     });
+    expect(event).toBeNull();
+  });
+
+  it('rechaza una firma correcta recibida fuera de la ventana antirreplay', async () => {
+    const provider = stripeProvider(CONFIG);
+    const body = JSON.stringify({
+      id: 'evt_old',
+      type: 'checkout.session.completed',
+      data: {
+        object: { id: 'cs_test_old', client_reference_id: 'bkg_old', amount_total: 12_345 },
+      },
+    });
+    const timestamp = 1_700_000_000;
+    vi.useFakeTimers();
+    vi.setSystemTime((timestamp + 301) * 1_000);
+    const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
+
+    const event = await provider.parseWebhook({
+      headers: new Headers({ 'stripe-signature': `t=${timestamp},v1=${signature}` }),
+      rawBody: body,
+    });
+
+    expect(event).toBeNull();
+  });
+
+  it('rechaza un payload firmado cuyo importe no respeta el esquema de Stripe', async () => {
+    const provider = stripeProvider(CONFIG);
+    const body = JSON.stringify({
+      id: 'evt_bad_amount',
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          id: 'cs_test_bad_amount',
+          client_reference_id: 'bkg_bad_amount',
+          amount_total: '12345',
+        },
+      },
+    });
+    const timestamp = 1_700_000_000;
+    vi.useFakeTimers();
+    vi.setSystemTime(timestamp * 1_000);
+    const signature = await sign(CONFIG.webhookSecret, `${timestamp}.${body}`);
+
+    const event = await provider.parseWebhook({
+      headers: new Headers({ 'stripe-signature': `t=${timestamp},v1=${signature}` }),
+      rawBody: body,
+    });
+
     expect(event).toBeNull();
   });
 });
