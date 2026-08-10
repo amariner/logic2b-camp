@@ -36,7 +36,7 @@ Mismo origen para todo. Eso significa que **no hay CORS**, la cookie de sesión 
 
 ## Decisiones que igual te llaman la atención
 
-**Dinero en céntimos enteros, nunca decimales.** Todo importe se guarda como entero. Los decimales flotantes acumulan error de redondeo, y en un sistema que factura eso acaba en un descuadre que nadie sabe explicar.
+**Dinero en céntimos enteros, nunca decimales.** Todo importe se guarda como entero. Los decimales flotantes acumulan error de redondeo, y en un sistema que registra reservas y cobros eso acaba en un descuadre que nadie sabe explicar.
 
 **Los precios se guardan con su desglose completo, no como un total.** Cada reserva conserva línea a línea de dónde sale su importe: cada tramo de temporada, cada extra, cada descuento, la tasa, la fianza. Años después se puede justificar cada céntimo ante un cliente o ante Hacienda. Y cambiar una tarifa **nunca** altera una reserva ya confirmada.
 

@@ -75,3 +75,24 @@ La sesión 88 añade el primer corte Automatiza al mismo build: fixture tipado,
 revisión editable, aprobación local y reset, sin endpoint ni ejecución posible.
 Inteligente, los fixtures restantes y el lote fotográfico siguen siendo cortes
 posteriores de D3-V; no alteran esta decisión arquitectónica.
+
+## Addenda R12 · valor de reservas no es facturación (2026-08-10)
+
+La auditoría contractual posterior encontró una contradicción con el punto 4:
+Inicio decía «facturado» y la guía de Informes describía el total de reservas
+como factura e ingreso de caja, aunque el producto no emite facturas ni fecha
+los cobros por el periodo del informe.
+
+El contrato se corrige en todas las capas:
+
+- `/api/admin/reports` expone `bookingValue`, no `revenue`;
+- `totalCents` es el valor de las reservas cuya llegada cae dentro del rango;
+- `paidCents` es lo que consta pagado hoy en esas mismas reservas, aunque el
+  cobro pudiera registrarse fuera del rango;
+- Inicio e Informes nombran valor reservado, cobro registrado y saldo pendiente;
+- el recibo continúa rotulado como documento informativo que no es una factura.
+
+Una prueba de API rechaza que reaparezca `revenue`; el dashboard prueba la misma
+frontera en el transporte demo y en sus textos. Facturación/VeriFactu conserva el
+sistema fiscal vigente como autoridad hasta que un cliente, su asesoría y un
+proveedor aprueben el contrato real.

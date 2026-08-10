@@ -1,5 +1,29 @@
 # PROGRESS — Logic Camp
 
+## Frontera fiscal honesta de informes R12 · 2026-08-10 (sesión 125)
+
+- La auditoría detectó una contradicción con ADR 0034 y el dossier: el dashboard
+  llamaba «facturado» e «ingresos» al valor total de reservas, aunque no existe
+  motor fiscal, serie, factura, firma, envío ni VeriFactu. También presentaba el
+  cobro como caja del periodo cuando se atribuía por fecha de llegada.
+- Pruebas rojas fijaron el contrato de API, la copia visible y los datos demo.
+  `/reports` expone ahora `bookingValue`: valor de las reservas cuya llegada cae
+  en el rango y cobro registrado en esas mismas reservas. Se eliminó `revenue`
+  de esta frontera y los informes explican que no son factura ni flujo de caja
+  por fecha.
+- Inicio, Informes, Mar de Fondo y Pina da Mar consumen el contrato preciso. Las
+  guías públicas, el inventario, el dossier, ADR 0034, BACKLOG y la ruta R12
+  conservan como gate real el alcance fiscal, asesoría, series, rectificativas,
+  proveedor, firma/envío y conciliación.
+- API pasa **276/276** y dashboard **39/39**, con tipos y lint verdes. El sitio
+  construye **73 páginas** y valida su artefacto comercial. La build demo supera
+  presupuesto y la revisión visual 1366/375 no muestra desbordes, errores ni
+  afirmaciones fiscales. El gate serial sin Delta cierra **57/57** tareas.
+- `pnpm check` global alcanza 47/57 antes de que Turbo cancele por el `ES1623`
+  inválido del `tsconfig` de Delta, ajeno a este corte. No hubo deploy, secrets,
+  proveedor ni escritura externa; Delta, Duna y RiuClar se preservaron. R12
+  continúa con la auditoría local final de Analytics, observabilidad, OTA e IA.
+
 ## Frontera fail-closed de SES.Hospedajes R12 · 2026-08-10 (sesión 123)
 
 - La guía y las preguntas frecuentes vigentes del Ministerio acreditan el alta,

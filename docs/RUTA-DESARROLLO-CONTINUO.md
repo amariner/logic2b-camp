@@ -428,6 +428,9 @@ de credencial y autorización; no se tocó infraestructura externa.
         documentación técnica requiere acceso autenticado; se retira el
         transporte provisional, las credenciales no activan red y el XML queda
         identificado como borrador para el recorrido manual de la Sede.
+  - [x] Séptimo corte vertical: frontera fiscal honesta. Informes transporta
+        `bookingValue` y distingue valor reservado, cobro registrado y saldo;
+        ninguna pantalla lo presenta como factura, caja por fecha o VeriFactu.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir

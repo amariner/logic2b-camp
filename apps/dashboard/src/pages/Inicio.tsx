@@ -242,8 +242,8 @@ export default function Inicio() {
   const totales = ocup.reduce((n, o) => n + o.units, 0);
   const pct = totales > 0 ? Math.round((ocupadas / totales) * 100) : 0;
 
-  const rev = qMes.data?.revenue;
-  const pendiente = rev ? rev.totalCents - rev.paidCents : 0;
+  const bookingValue = qMes.data?.bookingValue;
+  const pendiente = bookingValue ? bookingValue.totalCents - bookingValue.paidCents : 0;
 
   // Las cinco más recientes: `/enquiries` ya llega ordenado por fecha descendente.
   const solicitudes = (qSol.data?.items ?? []).slice(0, 5);
@@ -300,7 +300,7 @@ export default function Inicio() {
                     valor={eur(pendiente)}
                     detalle={t('ini.kpi.pendienteDetalle').replace(
                       '{total}',
-                      eur(rev?.totalCents ?? 0),
+                      eur(bookingValue?.totalCents ?? 0),
                     )}
                     to="/informes"
                     accion={t('ini.kpi.verInformes')}

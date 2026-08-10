@@ -1,6 +1,6 @@
 ---
 title: 'Los números del negocio'
-description: 'Leer la ocupación, los ingresos y la carga de llegadas y salidas de un periodo, y la ocupación por tipo de alojamiento.'
+description: 'Leer la ocupación, el valor de las reservas, sus cobros y la carga de llegadas y salidas de un periodo.'
 lang: es
 orden: 1
 ---
@@ -22,12 +22,12 @@ Al lado se ve siempre el rango exacto de fechas, para que no haya duda de qué e
 ## Las cinco cifras
 
 - **Ocupación** — el porcentaje de noches ocupadas sobre las que había disponibles en el periodo. Es la salud del camping de un vistazo.
-- **Ingresos** — lo que suman las reservas del periodo, con el número de reservas debajo. Es lo **facturado**, se haya cobrado ya o no.
-- **Cobrado** — lo que de verdad ha entrado en caja. Si es menor que los ingresos, es que queda dinero por cobrar.
+- **Valor de reservas** — lo que suman las reservas cuya llegada cae dentro del periodo, con el número de reservas debajo. Es importe operativo, no una factura ni una serie fiscal.
+- **Cobrado en esas reservas** — cuánto consta como pagado en esas mismas reservas. El cobro pudo registrarse antes o durante el periodo: esta tarjeta no es un informe de caja por fecha.
 - **Llegadas** — cuántas entradas hay en el periodo.
 - **Salidas** — cuántas salidas hay en el periodo.
 
-La pareja que conviene mirar junta es **Ingresos** y **Cobrado**: la diferencia entre las dos es lo que el camping ha facturado pero todavía no ha ingresado.
+La pareja que conviene mirar junta es **Valor de reservas** y **Cobrado en esas reservas**: la diferencia es el saldo que todavía figura pendiente en las reservas con llegada dentro del periodo. Logic Camp no emite hoy facturas ni sustituye el sistema fiscal del camping.
 
 ## Ocupación por tipo
 

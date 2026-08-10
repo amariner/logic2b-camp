@@ -152,11 +152,11 @@ export default function Informes() {
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
             <Tile titulo={t('inf.ocupacion')} valor={`${global}%`} />
             <Tile
-              titulo={t('inf.ingresos')}
-              valor={eur(data.revenue.totalCents)}
-              detalle={t('inf.reservasN', { n: data.revenue.bookings })}
+              titulo={t('inf.valorReservas')}
+              valor={eur(data.bookingValue.totalCents)}
+              detalle={t('inf.reservasN', { n: data.bookingValue.bookings })}
             />
-            <Tile titulo={t('inf.cobrado')} valor={eur(data.revenue.paidCents)} />
+            <Tile titulo={t('inf.cobradoReservas')} valor={eur(data.bookingValue.paidCents)} />
             <Tile titulo={t('inf.llegadas')} valor={String(data.arrivals)} />
             <Tile titulo={t('inf.salidas')} valor={String(data.departures)} />
           </div>

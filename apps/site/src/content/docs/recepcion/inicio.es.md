@@ -12,7 +12,7 @@ La portada reúne lo que necesita atención **hoy** y da acceso al resto del ges
 - **Ocupación de hoy** indica cuántas unidades están ocupadas sobre el parque disponible. Pulsa la tarjeta para ver su posición en el [planning](/docs/recepcion/planning/).
 - **Llegadas de hoy** cuenta las estancias que empiezan hoy. La tarjeta abre la pantalla de [llegadas y salidas](/docs/recepcion/el-dia/).
 - **Salidas de hoy** cuenta las estancias que terminan hoy y lleva a la misma hoja de trabajo.
-- **Pendiente de cobro** es lo facturado este mes que todavía no consta como pagado. Desde ahí se abren los informes; para registrar un cobro concreto, entra en la reserva y sigue [Cobrar lo que falta](/docs/recepcion/cobrar/).
+- **Pendiente de cobro** es la diferencia entre el valor de las reservas con llegada este mes y lo que ya consta como pagado en ellas. No es una factura ni un informe de caja por fecha. Desde ahí se abren los informes; para registrar un cobro concreto, entra en la reserva y sigue [Cobrar lo que falta](/docs/recepcion/cobrar/).
 
 Las tarjetas son enlaces completos: puedes abrirlas con el ratón, el teclado o en una pestaña nueva.
 

@@ -31,6 +31,18 @@ describe('escenario Mar de Fondo', () => {
     expect(detail.body).toMatchObject({ code: 'MF-DEMO-001', unitCode: 'BL-008' });
   });
 
+  it('expone valor de reservas y cobros sin fabricar una métrica fiscal', async () => {
+    const result = await demoScenarioRequest('/api/admin/reports?from=2026-08-01&to=2026-09-01');
+    const body = result.body as {
+      bookingValue?: { totalCents: number; paidCents: number; bookings: number };
+      revenue?: unknown;
+    };
+
+    expect(body.bookingValue).toMatchObject({ bookings: expect.any(Number) });
+    expect(body.bookingValue!.totalCents).toBeGreaterThanOrEqual(body.bookingValue!.paidCents);
+    expect(body.revenue).toBeUndefined();
+  });
+
   it('no genera solapes de unidad en el agosto canónico', async () => {
     const planning = await demoScenarioRequest('/api/admin/planning?from=2026-08-01&to=2026-09-01');
     const bookings = (

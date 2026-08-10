@@ -271,7 +271,7 @@ function reports(state: ScenarioState, from: string, to: string): ReportsData {
       capacityNights: type.count,
       occupancyPct: Math.round((active.filter((booking) => booking.unitTypeId === type.id).length / type.count) * 100),
     })),
-    revenue: { totalCents: total, paidCents: paid, bookings: active.length },
+    bookingValue: { totalCents: total, paidCents: paid, bookings: active.length },
     arrivals: state.bookings.filter((booking) => booking.dateFrom >= from && booking.dateFrom < to).length,
     departures: state.bookings.filter((booking) => booking.dateTo > from && booking.dateTo <= to).length,
   };

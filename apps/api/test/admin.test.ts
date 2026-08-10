@@ -1167,7 +1167,7 @@ describe('pagos (log)', () => {
 });
 
 describe('informes y ajustes', () => {
-  it('reports devuelve ocupación e ingresos del rango', async () => {
+  it('reports separa valor de reservas y cobros sin presentarlos como facturación', async () => {
     // autocontenido: el storage se aísla por test, la reserva se crea aquí
     const created = await app.request(
       '/api/admin/bookings',
@@ -1187,12 +1187,15 @@ describe('informes y ajustes', () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as {
       occupancy: { unitTypeId: string; occupiedNights: number; capacityNights: number }[];
-      revenue: { totalCents: number; bookings: number };
+      bookingValue: { totalCents: number; paidCents: number; bookings: number };
+      revenue?: unknown;
     };
     const std = body.occupancy.find((o) => o.unitTypeId === 'ut_std')!;
     expect(std.capacityNights).toBe(9); // 3 unidades × 3 noches
     expect(std.occupiedNights).toBeGreaterThanOrEqual(3); // la reserva de 2026-09-01→04
-    expect(body.revenue.bookings).toBeGreaterThanOrEqual(1);
+    expect(body.bookingValue.bookings).toBeGreaterThanOrEqual(1);
+    expect(body.bookingValue.totalCents).toBeGreaterThanOrEqual(body.bookingValue.paidCents);
+    expect(body.revenue).toBeUndefined();
   });
 
   it('settings: GET readonly, PATCH exige manager y audita', async () => {

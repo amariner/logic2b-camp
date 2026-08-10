@@ -363,7 +363,7 @@ export type ReportsData = {
     capacityNights: number;
     occupancyPct: number;
   }[];
-  revenue: { totalCents: number; paidCents: number; bookings: number };
+  bookingValue: { totalCents: number; paidCents: number; bookings: number };
   arrivals: number;
   departures: number;
 };

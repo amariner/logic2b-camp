@@ -179,6 +179,12 @@ es un gate de producción, no un pendiente local de implementación.
   autenticación, request, acuse, errores y duplicados, e implementar también el
   momento de reserva/formalización/cancelación además del inicio de la estancia.
   INE no está implementado — 2026-07-21, actualizado 2026-08-10 (sesión 123).
+- ~~[12] **Los informes llaman facturación al valor de reservas**~~ → **cerrado
+  2026-08-10 (sesión 125)**: el contrato deja de exponer `revenue` y usa
+  `bookingValue`; Inicio, Informes y sus guías distinguen valor de las reservas
+  con llegada en el rango, cobro registrado y saldo pendiente. Ninguna cifra se
+  presenta ya como factura o caja por fecha. Facturación/VeriFactu real continúa
+  detrás del gate de cliente+asesoría+proveedor.
 - [11] **Sentry / Logpush**: el `logEvent` de `apps/api/src/errors.ts` deja el enganche señalado en UN solo punto — el día que haya credenciales es una llamada. Cierra además el punto ciego circular que ADR 0026 §3 deja escrito: hoy el aviso de fallo viaja por correo, así que **si lo que falla es el correo no se entera nadie**. La observabilidad de verdad necesita un canal que no dependa del sistema que vigila — 2026-07-21
 - [11] **Auditoría con encadenado criptográfico** (append-only + hash): hoy `audit_log` es una tabla D1 normal. La ficha técnica decía "inalterable" y **se ha corregido** para decir exactamente lo que es y lo que no (ADR 0026 §3). Construirlo solo si un cliente lo exige por política: su valor real frente a un D1 gestionado con PITR es discutible — 2026-07-21
 - [11] **Pruebas de carga**: fuera de ADR 0026 a propósito. Necesitan un entorno desplegado y, sobre todo, **un objetivo declarado** ("cuántas reservas simultáneas en agosto", "cuántas recepcionistas a la vez en el planning"). Sin ese número, medir es teatro: responder la pregunta antes de escribir el primer script — 2026-07-21

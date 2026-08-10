@@ -1320,7 +1320,8 @@ export const adminRoutes = new Hono<AuthEnv>()
       };
     });
 
-    // ingresos atribuidos por llegada dentro del rango
+    // Valor de reserva y cobro registrado, atribuidos por llegada. No es una
+    // factura, una serie fiscal ni flujo de caja ocurrido dentro del rango.
     const arrivals = rows.filter((b) => b.dateFrom >= from && b.dateFrom < to);
     const departures = rows.filter((b) => b.dateTo > from && b.dateTo <= to);
 
@@ -1329,7 +1330,7 @@ export const adminRoutes = new Hono<AuthEnv>()
       to,
       nights: rangeNights,
       occupancy,
-      revenue: {
+      bookingValue: {
         totalCents: arrivals.reduce((s, b) => s + b.totalCents, 0),
         paidCents: arrivals.reduce((s, b) => s + b.paidCents, 0),
         bookings: arrivals.length,
