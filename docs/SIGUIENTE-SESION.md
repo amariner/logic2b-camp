@@ -1,40 +1,45 @@
-# Prompt para la siguiente sesión — R12 acuse de refund Redsys
+# Prompt para la siguiente sesión — R12 callback Redsys tipado
 
-> Reescrito tras la sesión 117 (2026-08-10). R0–R11 están cerrados; R12 tiene
-> inventario, contrato Resend y fronteras Stripe entrante/saliente. Producción y
+> Reescrito tras la sesión 119 (2026-08-10). R0–R11 están cerrados; R12 tiene
+> inventario, contrato Resend, Stripe local y acuse refund Redsys. Producción y
 > proveedores siguen requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Stripe ya tiene antirreplay, Zod, timeout, POST idempotentes, reintento seguro y
-errores cerrados; el siguiente riesgo local es `redsysProvider.refund`, que hoy
-acepta cualquier HTTP 2xx como una devolución confirmada.
+El refund Redsys ya exige sobre firmado, `0900`, pedido e importe exactos y no
+reintenta ambigüedades; el siguiente riesgo local está en `parseWebhook`, que
+ignora `Ds_SignatureVersion`, castea el JSON y coacciona respuesta e importe.
 
 ## Objetivo prioritario
 
 Continuar **R12 · Integraciones y proveedores reales** con un único corte de
-refund Redsys:
+entrada Redsys:
 
-1. Auditar la petición y el acuse REST vigente contra documentación oficial de
-   Redsys; no deducir el éxito a partir de ejemplos de terceros.
-2. Reproducir primero que un 2xx vacío o funcionalmente rechazado devuelve
-   `{ok:true}` y que timeout/red pueden filtrar texto del transporte.
-3. Modelar con Zod exclusivamente los campos oficiales necesarios para decidir
-   aceptación. Un HTTP 2xx no equivale por sí solo a dinero devuelto.
-4. Añadir timeout y códigos cerrados. Definir reintento solo si Redsys ofrece una
-   identidad/semántica documentada que descarte una devolución duplicada; no
-   trasladar `Idempotency-Key` ni la política Stripe por analogía.
-5. Mantener la firma y el pedido exactos, `provider:none`, cobro manual y
-   reserva `pending` como degradaciones honestas. Tests inyectados, sin red,
-   sandbox, FUC ni credenciales.
-6. Actualizar ADR 0011, inventario, runbook, dossier y continuidad. El sandbox
-   Stripe/Redsys continúa siendo un gate externo posterior.
+1. Auditar el callback y la versión SHA-256 que implementa el adaptador contra
+   el manual oficial y `RUNBOOK-PAGOS.md`; no mezclar SHA-512 sin diseñar una
+   migración/configuración explícita.
+2. Reproducir primero: versión de firma ausente/ajena aceptada, valores no string
+   convertidos mediante `String`, importe inseguro/`NaN` y campos mínimos
+   ausentes que producen evento.
+3. Validar formulario, base64 y payload con Zod antes de firmar o convertir.
+   Exigir pedido, respuesta de cuatro dígitos e importe entero no negativo en
+   string; no coaccionar tipos remotos.
+4. Conservar comparación de firma en tiempo constante, `0000`–`0099` como
+   autorización y códigos cerrados de la frontera HTTP. Tests inyectados, sin
+   red, sandbox, FUC ni credenciales.
+5. Añadir una integración API que demuestre que un callback firmado pero mal
+   tipado responde 400 y no escribe pagos ni saldo.
+6. Actualizar ADR 0011, inventario, runbook, dossier y continuidad. Después,
+   auditar si queda otro contrato local R12 ejecutable o si los siguientes pasos
+   están detrás de gate externo.
 
 ## Gates que siguen cerrados
 
 - Stripe/Redsys sandbox, Resend real, Analytics, Sentry/Logpush,
   SES.Hospedajes oficial, fiscal/VeriFactu, OTA e IA requieren cuenta, destino,
   credencial, alcance y autorización del módulo.
+- La versión de firma Redsys habilitada por cada terminal debe confirmarse con
+  entidad/sandbox; el manual recomienda SHA-512 y mantiene SHA-256 disponible.
 - Restauración D1 remota y Time Travel siguen pendientes; nunca restaurar sobre
   la base viva.
 - D5-V continúa esperando señal propia de Montaña/Familiar/Parcela. D6-V aún no
@@ -44,16 +49,15 @@ refund Redsys:
 
 ## Ya verificado — no repetir sin cambio relevante
 
-- Cada POST Stripe usa una clave estable sin PII; los reintentos conservan clave
-  y cuerpo. Checkout deriva `checkout/{bookingId}` y refund recibe identidad
-  explícita desde la API.
-- Cada intento Stripe tiene timeout 8 s; hay máximo dos intentos y solo ante red,
-  timeout, 409/5xx o indicación expresa del proveedor. Un 4xx ordinario termina.
-- Checkout, consulta de sesión y refund validan 2xx con Zod; body remoto y error
-  de transporte nunca atraviesan los códigos cerrados.
-- Webhook Stripe: body crudo, HMAC, varias firmas de rotación, tolerancia 300 s,
-  payload Zod, importe exacto y deduplicación D1 por evento/referencia.
-- Pagos unitarios **27/27** y recorrido API de pagos **14/14**, todo con fetch
+- Refund Redsys: `TransactionType=3`, un intento de 8 s y ningún reintento ante
+  timeout/red por falta de garantía idempotente oficial.
+- El 2xx debe contener sobre `HMAC_SHA256_V1` firmado; `errorCode`, vacío, firma
+  inválida, pedido/importe distintos o `Ds_Response != 0900` fallan cerrados.
+- La integración D1 recibe un `0180` firmado y conserva `paidCents` y el único
+  asiento positivo.
+- El manual REST oficial v4.0.1 confirma sobre, firma y código 900; recomienda
+  SHA-512 pero documenta SHA-256 como disponible. No hubo migración implícita.
+- Pagos unitarios **35/35** y recorrido API de pagos **15/15**, todo con fetch
   inyectado. No hubo deploy, secrets, proveedor válido ni dinero real.
 
 ## Prompt

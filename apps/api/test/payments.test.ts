@@ -10,6 +10,7 @@ import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
+import { executeRefund } from '../src/payments';
 import { seedTenant } from './fixtures';
 
 const REDSYS_ENV = {
@@ -403,6 +404,67 @@ describe('reserva web con pago (redsys deposit)', () => {
       await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
     )[0]!;
     expect(booking.paidCents).toBe(amount);
+    expect(
+      await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id)),
+    ).toHaveLength(1);
+  });
+
+  it('un refund Redsys funcionalmente rechazado no reduce el saldo local', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-21', '2026-06-24', 'refund-denied@example.com')),
+      REDSYS_ENV,
+    );
+    const created = (await create.json()) as {
+      id: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+    const amountCents = Math.round(created.totalCents * 0.3);
+    const notification = await buildNotification(created.payment.providerRef, '0000', amountCents);
+    const hook = await app.request(
+      '/api/payments/webhook/redsys',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
+      REDSYS_ENV,
+    );
+    expect(hook.status).toBe(200);
+
+    const responseFields = {
+      Ds_Order: created.payment.providerRef,
+      Ds_Amount: String(amountCents),
+      Ds_Response: '0180',
+    };
+    const responseParams = Buffer.from(JSON.stringify(responseFields)).toString('base64');
+    const responseSignature = await signRedsysParameters(
+      responseParams,
+      created.payment.providerRef,
+      REDSYS_ENV.REDSYS_MERCHANT_KEY,
+    );
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () =>
+        Response.json({
+          Ds_SignatureVersion: 'HMAC_SHA256_V1',
+          Ds_MerchantParameters: responseParams,
+          Ds_Signature: responseSignature,
+        }),
+      ),
+    );
+
+    const db = createDb(env.DB);
+    await expect(executeRefund(db, REDSYS_ENV, created.id, amountCents)).resolves.toEqual({
+      ok: false,
+      error: 'redsys_refund_rejected',
+    });
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    expect(booking.paidCents).toBe(amountCents);
     expect(
       await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id)),
     ).toHaveLength(1);

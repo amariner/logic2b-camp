@@ -1,5 +1,26 @@
 # PROGRESS — Logic Camp
 
+## Acuse funcional de refund Redsys R12 · 2026-08-10 (sesión 119)
+
+- El cuarto corte local R12 contrasta la devolución REST con el manual oficial
+  v4.0.1. Cinco reproducciones rojas demostraron que el adaptador aceptaba 2xx
+  vacíos, rechazos firmados y pedidos ajenos, omitía el timeout y filtraba el
+  error de transporte.
+- El refund tiene ahora un único intento de **8 s**: valida con Zod el sobre y
+  sus parámetros, verifica la firma en tiempo constante y solo confirma
+  `Ds_Response=0900` para el mismo pedido e importe. `errorCode`, HTTP, red,
+  timeout, firma, esquema y rechazo quedan reducidos a códigos cerrados.
+- No se reintenta una devolución ambigua porque Redsys no documenta una clave
+  idempotente equivalente. El manual recomienda `HMAC_SHA512_V1`, pero mantiene
+  SHA-256 disponible; el adaptador conserva `HMAC_SHA256_V1` hasta confirmar en
+  sandbox la versión habilitada por el terminal.
+- La integración D1 prueba que un `0180` válido no reduce `paidCents` ni inserta
+  un refund. Pagos pasa **35/35**, el recorrido API de pagos **15/15**, la API
+  **275/275** y `pnpm check` completa **55/55** tareas en **14,824 s**.
+- No hubo deploy, secrets, llamada a proveedor, cobro, devolución ni escritura
+  externa. El trabajo simultáneo de Riu Clar se preservó separado. R12 continúa
+  con la frontera Zod del callback Redsys.
+
 ## Salida HTTP idempotente de Stripe R12 · 2026-08-10 (sesión 117)
 
 - El tercer corte local R12 cierra `stripeRequest`, Checkout y refund sin

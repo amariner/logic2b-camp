@@ -30,8 +30,15 @@ error cerrados sin leer el body remoto. Solo se reintentan ambigüedades de red,
 
 Redsys genera y verifica HMAC-SHA256 con la clave diversificada mediante 3DES;
 la implementación pura está cruzada localmente contra `node:crypto`. Esa
-evidencia no sustituye el TPV de pruebas. Su acuse de refund todavía considera
-aceptado cualquier HTTP 2xx y es el siguiente corte local R12.
+evidencia no sustituye el TPV de pruebas. El refund REST tiene un único intento
+de 8 s y solo acepta un sobre válido, firmado, para el mismo pedido e importe con
+`Ds_Response=0900`; un 2xx vacío, `errorCode`, rechazo, firma ajena o ambigüedad
+de transporte fallan cerrados sin tocar el saldo.
+
+El manual REST v4.0.1 recomienda `HMAC_SHA512_V1` para comercios actuales y
+mantiene SHA-256 disponible en su anexo. Este adaptador conserva
+`HMAC_SHA256_V1`; confirmar con la entidad qué versión tiene habilitada el
+terminal antes del sandbox y no mezclar versiones en petición/respuesta.
 
 ## 2. Configuración y ownership
 
@@ -90,6 +97,8 @@ repositorio.
 4. Comparar pedido, importe y código de autorización con el panel del TPV.
 5. Probar devolución y validar el acuse funcional, no solo el HTTP 2xx.
 6. Conciliar los asientos locales con el informe del comercio.
+7. Cortar la conexión después de enviar una devolución: no repetir a ciegas;
+   comprobar pedido e importe en el Portal antes de decidir el asiento local.
 
 No pasar a live hasta conservar evidencia fechada de todos los casos y resolver
 cualquier diferencia de firma, importe, estado o conciliación.
@@ -133,12 +142,11 @@ retira cuando autorización, notificación y devolución se hayan conciliado.
 
 ## 7. Evidencia local y gates restantes
 
-- pagos unitarios: **27/27**, incluida salida Stripe idempotente, timeout,
-  respuesta inválida, errores cerrados, firma reciente/caducada, firma Redsys y
-  DES/3DES;
-- API de pagos: **14/14**; además de la entrada caducada y los invariantes de
-  importe/duplicado, una creación ambigua repite la misma clave de la reserva;
+- pagos unitarios: **35/35**, incluida salida Stripe idempotente y refund Redsys
+  con timeout, sobre firmado, `0900`, pedido/importe y rechazos cerrados;
+- API de pagos: **15/15**; además de Stripe y los invariantes de entrada, un
+  `0180` Redsys firmado conserva saldo y único asiento positivo;
 - `payments.raw` permanece nulo y fuera de la API/export;
 - no se usaron secrets válidos ni hubo llamada sandbox;
-- faltan acuse funcional Redsys, recepción real, refund y conciliación extremo
-  a extremo.
+- faltan recepción real, refund y conciliación extremo a extremo, además de
+  confirmar la versión de firma habilitada por el terminal.

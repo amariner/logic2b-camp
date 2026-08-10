@@ -22,6 +22,7 @@ import type {
   PaymentProvider,
   PaymentWebhookEvent,
 } from './types';
+import { z } from 'zod';
 
 export type RedsysConfig = {
   /** FUC, 9 dígitos */
@@ -32,6 +33,11 @@ export type RedsysConfig = {
   environment: 'test' | 'production';
 };
 
+export type RedsysProviderOptions = {
+  fetchImpl?: typeof fetch;
+  timeoutMs?: number;
+};
+
 const REDIRECT_URL: Record<RedsysConfig['environment'], string> = {
   test: 'https://sis-t.redsys.es:25443/sis/realizarPago',
   production: 'https://sis.redsys.es/sis/realizarPago',
@@ -40,6 +46,25 @@ const REST_URL: Record<RedsysConfig['environment'], string> = {
   test: 'https://sis-t.redsys.es:25443/sis/rest/trataPeticionREST',
   production: 'https://sis.redsys.es/sis/rest/trataPeticionREST',
 };
+const DEFAULT_REFUND_TIMEOUT_MS = 8_000;
+
+const signedValueSchema = z
+  .string()
+  .min(1)
+  .regex(/^[A-Za-z0-9+/_-]+={0,2}$/);
+const redsysRestEnvelopeSchema = z.object({
+  Ds_SignatureVersion: z.literal('HMAC_SHA256_V1'),
+  Ds_MerchantParameters: signedValueSchema,
+  Ds_Signature: signedValueSchema,
+});
+const redsysRestErrorSchema = z.object({
+  errorCode: z.string().trim().min(1).max(32),
+});
+const redsysRefundResponseSchema = z.object({
+  Ds_Order: z.string().trim().min(1),
+  Ds_Amount: z.string().regex(/^\d+$/),
+  Ds_Response: z.string().regex(/^\d{4}$/),
+});
 
 const CONSUMER_LANGUAGE: Record<string, string> = {
   es: '001',
@@ -112,7 +137,64 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
   return diff === 0;
 }
 
-export function redsysProvider(config: RedsysConfig): PaymentProvider {
+function matchesCents(value: string, amountCents: number): boolean {
+  if (!Number.isSafeInteger(amountCents) || amountCents < 0) return false;
+  return value.replace(/^0+(?=\d)/, '') === String(amountCents);
+}
+
+async function validateRefundResponse(
+  payload: unknown,
+  providerRef: string,
+  amountCents: number,
+  secretKeyBase64: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (redsysRestErrorSchema.safeParse(payload).success) {
+    return { ok: false, error: 'redsys_provider_error' };
+  }
+
+  const envelope = redsysRestEnvelopeSchema.safeParse(payload);
+  if (!envelope.success) return { ok: false, error: 'redsys_invalid_response' };
+
+  let decoded: unknown;
+  try {
+    decoded = JSON.parse(utf8Decode(base64Decode(envelope.data.Ds_MerchantParameters)));
+  } catch {
+    return { ok: false, error: 'redsys_invalid_response' };
+  }
+  const refund = redsysRefundResponseSchema.safeParse(decoded);
+  if (!refund.success) return { ok: false, error: 'redsys_invalid_response' };
+
+  const expectedSignature = await signRedsysParameters(
+    envelope.data.Ds_MerchantParameters,
+    refund.data.Ds_Order,
+    secretKeyBase64,
+  );
+  if (
+    !constantTimeEqual(base64Decode(expectedSignature), base64Decode(envelope.data.Ds_Signature))
+  ) {
+    return { ok: false, error: 'redsys_invalid_signature' };
+  }
+
+  if (refund.data.Ds_Order !== providerRef || !matchesCents(refund.data.Ds_Amount, amountCents)) {
+    return { ok: false, error: 'redsys_invalid_response' };
+  }
+  return refund.data.Ds_Response === '0900'
+    ? { ok: true }
+    : { ok: false, error: 'redsys_refund_rejected' };
+}
+
+export function redsysProvider(
+  config: RedsysConfig,
+  options: RedsysProviderOptions = {},
+): PaymentProvider {
+  const timeoutMs =
+    options.timeoutMs !== undefined &&
+    Number.isSafeInteger(options.timeoutMs) &&
+    options.timeoutMs > 0
+      ? Math.min(options.timeoutMs, 60_000)
+      : DEFAULT_REFUND_TIMEOUT_MS;
+  const fetchImpl = options.fetchImpl ?? fetch;
+
   return {
     name: 'redsys',
 
@@ -198,9 +280,16 @@ export function redsysProvider(config: RedsysConfig): PaymentProvider {
         providerRef,
         config.secretKeyBase64,
       );
+      const controller = new AbortController();
+      let timedOut = false;
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, timeoutMs);
       try {
-        const res = await fetch(REST_URL[config.environment], {
+        const res = await fetchImpl(REST_URL[config.environment], {
           method: 'POST',
+          signal: controller.signal,
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
             Ds_SignatureVersion: 'HMAC_SHA256_V1',
@@ -208,10 +297,20 @@ export function redsysProvider(config: RedsysConfig): PaymentProvider {
             Ds_Signature: signature,
           }),
         });
-        if (!res.ok) return { ok: false, error: `redsys_${res.status}` };
+        if (!res.ok) return { ok: false, error: `redsys_http_${res.status}` };
+        const payload: unknown = await res.json().catch(() => null);
+        const validated = await validateRefundResponse(
+          payload,
+          providerRef,
+          amountCents,
+          config.secretKeyBase64,
+        );
+        if (!validated.ok) return validated;
         return { ok: true, providerRef };
-      } catch (e) {
-        return { ok: false, error: `redsys_network: ${String(e).slice(0, 200)}` };
+      } catch {
+        return { ok: false, error: timedOut ? 'redsys_timeout' : 'redsys_network' };
+      } finally {
+        clearTimeout(timeout);
       }
     },
   };

@@ -185,3 +185,29 @@ degradación anterior.
 Las pruebas inyectan toda la red: misma clave tras ambigüedad, timeout con
 `AbortSignal`, 401 sin reintento ni filtración, respuesta inválida y refund con
 identidad explícita. No hubo cuenta, credencial válida, sandbox ni dinero real.
+
+## Addenda R12 · acuse funcional de refund Redsys (2026-08-10)
+
+El endpoint REST no confirma una devolución por responder HTTP 2xx. El
+[manual oficial REST v4.0.1](https://pagosonline.redsys.es/download/1738/)
+define dos respuestas: `errorCode` cuando la petición no se procesa, o un sobre
+con `Ds_SignatureVersion`, `Ds_MerchantParameters` y `Ds_Signature`. Solo tras
+validar la firma se descodifican los parámetros; una devolución está autorizada
+cuando `Ds_Response` representa **900** (`0900` en el campo de cuatro dígitos).
+
+`redsysProvider.refund` tiene ahora un único intento con timeout de **8 s**. No
+se reintenta timeout ni error de red porque la documentación no ofrece una clave
+idempotente que descarte duplicar dinero; esos casos fallan cerrados y requieren
+conciliación. HTTP, red, timeout, `errorCode`, firma inválida, respuesta inválida
+y rechazo funcional producen códigos propios sin copiar cuerpo o excepción.
+
+Zod valida el sobre y los parámetros mínimos. Además del `0900`, pedido e
+importe deben coincidir exactamente con la operación solicitada antes de
+escribir el asiento local. La integración D1 demuestra que un `0180` firmado no
+reduce `paidCents` ni inserta un refund.
+
+El adaptador mantiene `HMAC_SHA256_V1`: el mismo manual recomienda SHA-512 para
+comercios actuales, pero declara SHA-256 todavía disponible y lo documenta en su
+anexo. La versión habilitada por el terminal se debe confirmar en sandbox; este
+corte no migra criptografía por inferencia ni acredita comercio, FUC, devolución
+o conciliación real.
