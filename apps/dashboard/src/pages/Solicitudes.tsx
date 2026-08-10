@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
 import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
+import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
@@ -50,6 +51,7 @@ const CABECERA = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foregro
 
 export default function Solicitudes() {
   const qc = useQueryClient();
+  const puedeGestionar = usePuede('enquiry:manage');
   const navigate = useNavigate();
   const [filtro, setFiltro] = useState<EnquiryStatus | 'todas'>('todas');
   const [abierta, setAbierta] = useState<string | null>(null);
@@ -242,10 +244,10 @@ export default function Solicitudes() {
                         {t('sol.idioma')}: {e.locale.toUpperCase()} · {t('sol.origen')}: {e.source}
                       </p>
                     </div>
-                    {NEXT[e.status].length > 0 && (
+                    {puedeGestionar && NEXT[e.status].length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {(isPinadaScenario && e.status === 'contacted'
-                          ? ['converted', 'lost'] as EnquiryStatus[]
+                          ? (['converted', 'lost'] as EnquiryStatus[])
                           : NEXT[e.status]
                         ).map((s) => (
                           <Button

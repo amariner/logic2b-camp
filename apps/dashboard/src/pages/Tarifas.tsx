@@ -29,6 +29,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, apiPut, type Catalog, type RatePlan, type RatesData } from '../api';
+import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { fecha } from '../lib/format';
@@ -48,7 +49,15 @@ type CampoCents = (typeof CAMPOS)[number][0];
 const aEuros = (cents: number) => (cents / 100).toFixed(2);
 const aCents = (euros: string) => Math.round(Number(euros.replace(',', '.')) * 100);
 
-function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
+function Fila({
+  plan,
+  tipoNombre,
+  editable,
+}: {
+  plan: RatePlan;
+  tipoNombre: string;
+  editable: boolean;
+}) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<Partial<Record<CampoCents | 'minStay', string>>>({});
 
@@ -95,6 +104,7 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
             aria-label={`${t(etiqueta)} · ${tipoNombre}`}
             value={draft[campo] ?? aEuros(plan[campo])}
             onChange={(e) => setDraft((d) => ({ ...d, [campo]: e.target.value }))}
+            disabled={!editable}
             className={celda}
           />
         </TableCell>
@@ -106,28 +116,31 @@ function Fila({ plan, tipoNombre }: { plan: RatePlan; tipoNombre: string }) {
           aria-label={`${t('tar.minStay')} · ${tipoNombre}`}
           value={draft.minStay ?? String(plan.minStay)}
           onChange={(e) => setDraft((d) => ({ ...d, minStay: e.target.value }))}
+          disabled={!editable}
           className={`${celda} w-14`}
         />
       </TableCell>
       <TableCell className="py-1.5 pr-4">
         {/* Guardar una tarifa afecta a las reservas NUEVAS: se confirma (ADR 0020). */}
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button type="button" size="xs" disabled={!sucia || guardar.isPending}>
-              {t('tar.guardar')}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t('confirmar.tarifas.titulo')}</AlertDialogTitle>
-              <AlertDialogDescription>{t('confirmar.tarifas.desc')}</AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
-              <AlertDialogAction onClick={enviar}>{t('confirmar.tarifas.ok')}</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {editable && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button type="button" size="xs" disabled={!sucia || guardar.isPending}>
+                {t('tar.guardar')}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t('confirmar.tarifas.titulo')}</AlertDialogTitle>
+                <AlertDialogDescription>{t('confirmar.tarifas.desc')}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                <AlertDialogAction onClick={enviar}>{t('confirmar.tarifas.ok')}</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </TableCell>
     </TableRow>
   );
@@ -152,6 +165,7 @@ function TarifasEsqueleto() {
 }
 
 export default function Tarifas() {
+  const puedeEditar = usePuede('rates:manage');
   const rates = useQuery({
     queryKey: ['rates'],
     queryFn: () => apiGet<RatesData>('/api/admin/rates'),
@@ -209,7 +223,12 @@ export default function Tarifas() {
                 </TableHeader>
                 <TableBody>
                   {planes.map((p) => (
-                    <Fila key={p.id} plan={p} tipoNombre={tipoNombre(p.unitTypeId)} />
+                    <Fila
+                      key={p.id}
+                      plan={p}
+                      tipoNombre={tipoNombre(p.unitTypeId)}
+                      editable={puedeEditar}
+                    />
                   ))}
                 </TableBody>
               </Table>

@@ -22,6 +22,7 @@ import {
   focusRing,
 } from '@logic-camp/ui';
 import { apiGet, type BookingDetail, type BookingListItem } from '../api';
+import { usePuede } from '../auth';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel from '../components/NewBookingPanel';
 import { QueryError } from '../components/QueryError';
@@ -39,6 +40,7 @@ const ESTADOS: BookingDetail['status'][] = [
 const PAGE_SIZE = 25;
 
 export default function Reservas() {
+  const puedeCrear = usePuede('booking:create');
   const [q, setQ] = useState('');
   const [estado, setEstado] = useState<BookingDetail['status'] | ''>('');
   const [page, setPage] = useState(1);
@@ -123,17 +125,19 @@ export default function Reservas() {
               →
             </Button>
           </div>
-          <Button
-            size="xs"
-            className="ml-auto"
-            onClick={() => {
-              void navigate({ to: '/reservas' });
-              setAltaAbierta(true);
-            }}
-          >
-            {t('res.nueva')}
-          </Button>
-          <BotonAyuda />
+          {puedeCrear && (
+            <Button
+              size="xs"
+              className="ml-auto"
+              onClick={() => {
+                void navigate({ to: '/reservas' });
+                setAltaAbierta(true);
+              }}
+            >
+              {t('res.nueva')}
+            </Button>
+          )}
+          <BotonAyuda className={puedeCrear ? undefined : 'ml-auto'} />
         </div>
 
         {isPending && (
@@ -254,7 +258,7 @@ export default function Reservas() {
       </div>
 
       {openId && <BookingPanel bookingId={openId} onClose={closePanel} />}
-      {altaAbierta && (
+      {puedeCrear && altaAbierta && (
         <NewBookingPanel
           onClose={() => setAltaAbierta(false)}
           onCreated={(id) => {

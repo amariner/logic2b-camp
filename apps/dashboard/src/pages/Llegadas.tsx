@@ -28,6 +28,7 @@ import {
 } from '@logic-camp/ui';
 import { DoorOpen, LogOut } from 'lucide-react';
 import { apiGet, apiPatch, type BookingListItem } from '../api';
+import { usePuede } from '../auth';
 import BookingPanel from '../components/BookingPanel';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
@@ -248,6 +249,7 @@ function Lista({
 }
 
 export default function Llegadas() {
+  const puedeOperar = usePuede('booking:operate');
   const [dia, setDia] = useState(hoyIso);
   const [openId, setOpenId] = useState<string | null>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -381,7 +383,7 @@ export default function Llegadas() {
               items={llegadasHoy}
               onOpen={openPanel}
               action={(b) =>
-                b.status === 'confirmed' && !b.checkedInAt ? (
+                puedeOperar && b.status === 'confirmed' && !b.checkedInAt ? (
                   <BotonRecepcion
                     icono={DoorOpen}
                     rotulo={t('accion.check_in')}
@@ -409,7 +411,7 @@ export default function Llegadas() {
               items={salidasHoy}
               onOpen={openPanel}
               action={(b) =>
-                inHouse(b) ? (
+                puedeOperar && inHouse(b) ? (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <BotonRecepcion

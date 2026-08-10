@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { apiDelete, apiPatch, apiPost, type BookingGuest } from '../api';
+import { usePuede } from '../auth';
 import { t } from '../i18n';
 
 const DOC_TYPES = ['dni', 'nie', 'passport', 'other'] as const;
@@ -250,10 +251,12 @@ function GuestRow({
   bookingId,
   guest,
   invalidate,
+  editable,
 }: {
   bookingId: string;
   guest: BookingGuest;
   invalidate: () => void;
+  editable: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<GuestForm>(() => fromGuest(guest));
@@ -324,50 +327,54 @@ function GuestRow({
           </p>
         )}
       </div>
-      <div className="flex shrink-0 gap-0.5">
-        <Button
-          type="button"
-          size="iconSm"
-          variant="ghost"
-          aria-label={t('ficha.editarHuesped')}
-          title={t('ficha.editarHuesped')}
-          onClick={() => setEditing(true)}
-        >
-          <Pencil className="size-3.5" />
-        </Button>
-        {!guest.isLead && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                type="button"
-                size="iconSm"
-                variant="ghost"
-                aria-label={t('ficha.quitarHuesped')}
-                title={t('ficha.quitarHuesped')}
-                disabled={remove.isPending}
-              >
-                <Trash2 className="size-3.5" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {t('confirmar.quitarHuesped.titulo', {
-                    nombre: `${guest.name} ${guest.surname}`.trim(),
-                  })}
-                </AlertDialogTitle>
-                <AlertDialogDescription>{t('confirmar.quitarHuesped.desc')}</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={() => remove.mutate()}>
-                  {t('confirmar.quitarHuesped.ok')}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
-      </div>
+      {editable && (
+        <div className="flex shrink-0 gap-0.5">
+          <Button
+            type="button"
+            size="iconSm"
+            variant="ghost"
+            aria-label={t('ficha.editarHuesped')}
+            title={t('ficha.editarHuesped')}
+            onClick={() => setEditing(true)}
+          >
+            <Pencil className="size-3.5" />
+          </Button>
+          {!guest.isLead && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  type="button"
+                  size="iconSm"
+                  variant="ghost"
+                  aria-label={t('ficha.quitarHuesped')}
+                  title={t('ficha.quitarHuesped')}
+                  disabled={remove.isPending}
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t('confirmar.quitarHuesped.titulo', {
+                      nombre: `${guest.name} ${guest.surname}`.trim(),
+                    })}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('confirmar.quitarHuesped.desc')}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                  <AlertDialogAction variant="destructive" onClick={() => remove.mutate()}>
+                    {t('confirmar.quitarHuesped.ok')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+        </div>
+      )}
     </li>
   );
 }
@@ -380,6 +387,7 @@ export default function GuestsSection({
   guests: BookingGuest[];
 }) {
   const qc = useQueryClient();
+  const editable = usePuede('guest:edit');
   const invalidate = () => void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState<GuestForm>(emptyForm);
@@ -400,47 +408,54 @@ export default function GuestsSection({
       <h3 className="lc-panel-h">{t('ficha.titular')}</h3>
       <ul className="flex flex-col divide-y divide-border/30">
         {guests.map((g) => (
-          <GuestRow key={g.id} bookingId={bookingId} guest={g} invalidate={invalidate} />
+          <GuestRow
+            key={g.id}
+            bookingId={bookingId}
+            guest={g}
+            invalidate={invalidate}
+            editable={editable}
+          />
         ))}
       </ul>
 
-      {adding ? (
-        <div className="mt-2 rounded-(--lc-radius) border border-border/60 p-2">
-          <GuestFields form={form} set={(p) => setForm((f) => ({ ...f, ...p }))} idPrefix="add" />
-          <div className="mt-2 flex gap-2">
-            <Button
-              type="button"
-              size="xs"
-              disabled={!form.name || !form.surname || add.isPending}
-              onClick={() => add.mutate()}
-            >
-              {t('ficha.guardarHuesped')}
-            </Button>
-            <Button
-              type="button"
-              size="xs"
-              variant="outline"
-              onClick={() => {
-                setForm(emptyForm);
-                setAdding(false);
-              }}
-            >
-              {t('ficha.cancelarEdicion')}
-            </Button>
+      {editable &&
+        (adding ? (
+          <div className="mt-2 rounded-(--lc-radius) border border-border/60 p-2">
+            <GuestFields form={form} set={(p) => setForm((f) => ({ ...f, ...p }))} idPrefix="add" />
+            <div className="mt-2 flex gap-2">
+              <Button
+                type="button"
+                size="xs"
+                disabled={!form.name || !form.surname || add.isPending}
+                onClick={() => add.mutate()}
+              >
+                {t('ficha.guardarHuesped')}
+              </Button>
+              <Button
+                type="button"
+                size="xs"
+                variant="outline"
+                onClick={() => {
+                  setForm(emptyForm);
+                  setAdding(false);
+                }}
+              >
+                {t('ficha.cancelarEdicion')}
+              </Button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <Button
-          type="button"
-          size="xs"
-          variant="outline"
-          className="mt-2"
-          onClick={() => setAdding(true)}
-        >
-          <Plus className="size-3.5" />
-          {t('ficha.anadirHuesped')}
-        </Button>
-      )}
+        ) : (
+          <Button
+            type="button"
+            size="xs"
+            variant="outline"
+            className="mt-2"
+            onClick={() => setAdding(true)}
+          >
+            <Plus className="size-3.5" />
+            {t('ficha.anadirHuesped')}
+          </Button>
+        ))}
     </section>
   );
 }

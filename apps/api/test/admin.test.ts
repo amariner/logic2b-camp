@@ -86,6 +86,23 @@ beforeAll(async () => {
 });
 
 describe('auth', () => {
+  it('el usuario provisionado conserva el ID opaco del tenant aunque el Worker use su slug', async () => {
+    const db = createDb(env.DB);
+    const [row] = await db
+      .select({ tenantId: schema.users.tenantId })
+      .from(schema.users)
+      .where(eq(schema.users.email, 'owner@alfa.test'))
+      .limit(1);
+    expect(row?.tenantId).toBe('ten_alfa');
+
+    const res = await app.request(
+      '/api/admin/planning?from=2026-05-01&to=2026-05-08',
+      { headers: { cookie: owner } },
+      envA,
+    );
+    expect(res.status).toBe(200);
+  });
+
   it('sin AUTH_SECRET ni interruptor local, la autenticación falla cerrada', () => {
     expect(() => resolveAuthSecret({ DB: env.DB, TENANT_SLUG: 'alfa' })).toThrow(
       'AUTH_SECRET ausente',

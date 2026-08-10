@@ -28,6 +28,7 @@ import type { UnitDayState } from '@logic-camp/config';
 import { Ban, CalendarRange } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { apiDelete, type PlanningBlock, type PlanningUnit } from '../api';
+import { usePuede } from '../auth';
 import { t, tDyn } from '../i18n';
 import { fecha } from '../lib/format';
 
@@ -71,6 +72,7 @@ export default function UnitPanel({
   onOpenPlanning: () => void;
 }) {
   const qc = useQueryClient();
+  const puedeBloquear = usePuede('block:manage');
   const panelRef = useRef<HTMLElement>(null);
   const mobile = useMobilePanel();
   const blocked = state.kind === 'blocked';
@@ -157,7 +159,7 @@ export default function UnitPanel({
         )}
 
         <div className="flex flex-col gap-1.5">
-          {inactive ? null : blocked && block ? (
+          {inactive || !puedeBloquear ? null : blocked && block ? (
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" size="sm" disabled={quitar.isPending}>

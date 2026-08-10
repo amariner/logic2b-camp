@@ -1,6 +1,13 @@
 /** Sesión Better Auth por cookie (misma-origen). El servidor manda; la UI solo pregunta. */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  hasDashboardCapability,
+  isRole,
+  roleAtLeast,
+  type DashboardCapability,
+  type Role,
+} from '@logic-camp/config/roles';
+import {
   activePortfolioScenario,
   isPortfolioScenario,
   resetPortfolioScenario,
@@ -17,13 +24,7 @@ import {
  * igual que en el servidor: lo que puede tocar de más (los gestos del planning)
  * no es un nivel más alto, es una excepción declarada allí.
  */
-const ROLES = ['demo', 'readonly', 'reception', 'manager', 'owner'] as const;
-export type Role = (typeof ROLES)[number];
-
-const NIVEL: Record<Role, number> = { demo: 0, readonly: 0, reception: 1, manager: 2, owner: 3 };
-
-const esRole = (v: unknown): v is Role =>
-  typeof v === 'string' && (ROLES as readonly string[]).includes(v);
+export type { Role } from '@logic-camp/config/roles';
 
 /** `role` llega como campo adicional del usuario de Better Auth (auth.ts:70). */
 type Session = { user: { id: string; email: string; name: string; role?: string } } | null;
@@ -54,12 +55,12 @@ export function useSession() {
 export function useRol(): Role | null {
   const { data } = useSession();
   const rol = data?.user.role;
-  return esRole(rol) ? rol : null;
+  return isRole(rol) ? rol : null;
 }
 
 /** Comparación pura para compartir la misma jerarquía con navegación y permisos visuales. */
 export function tieneRol(rol: Role | null, min: Role): boolean {
-  return rol !== null && NIVEL[rol] >= NIVEL[min];
+  return roleAtLeast(rol, min);
 }
 
 /**
@@ -68,6 +69,11 @@ export function tieneRol(rol: Role | null, min: Role): boolean {
  */
 export function useTieneRol(min: Role): boolean {
   return tieneRol(useRol(), min);
+}
+
+/** Afordancia visual; la API vuelve a autorizar cada mutación. */
+export function usePuede(capability: DashboardCapability): boolean {
+  return hasDashboardCapability(useRol(), capability);
 }
 
 /**

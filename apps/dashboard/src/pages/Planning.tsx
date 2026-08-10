@@ -56,6 +56,7 @@ import {
   type PlanningUnit,
   type RequoteResponse,
 } from '../api';
+import { usePuede } from '../auth';
 import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel, { type NewBookingInitial } from '../components/NewBookingPanel';
@@ -198,6 +199,9 @@ function useMobilePlanning(): boolean {
 }
 
 export default function Planning() {
+  const puedeOperar = usePuede('booking:operate');
+  const puedeCrear = usePuede('booking:create');
+  const puedeBloquear = usePuede('block:manage');
   // date+unit por la URL: el salto plano ↔ planning conserva ambas (ADR 0021 §4)
   const search = useSearch({ strict: false }) as { date?: string; unit?: string };
   const navigate = useNavigate();
@@ -662,6 +666,7 @@ export default function Planning() {
       openPanel(b.id, e.currentTarget as HTMLElement);
       return;
     }
+    if (!puedeOperar) return;
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       e.preventDefault();
       if (e.repeat) return; // cada pulsación = una re-cotización; mantenerla no debe ametrallar
@@ -723,6 +728,7 @@ export default function Planning() {
   const onRowPointerDown = (e: React.PointerEvent<HTMLDivElement>, row: Row, rowTop: number) => {
     // solo el lienzo vacío: las barras y bloqueos capturan su propio pointerdown
     if (
+      !puedeCrear ||
       e.button !== 0 ||
       e.target !== e.currentTarget ||
       row.kind !== 'unit' ||
@@ -789,7 +795,7 @@ export default function Planning() {
   });
 
   const onChipPointerDown = (e: React.PointerEvent<HTMLElement>, b: PlanningBooking) => {
-    if (e.button !== 0) return;
+    if (!puedeOperar || e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     chipDragRef.current = {
       booking: b,
@@ -938,6 +944,7 @@ export default function Planning() {
           statusFilter={estadoFiltro}
           search={buscar}
           movePending={requote.isPending || mover.isPending}
+          canEditStay={puedeOperar}
           onAnchorChange={setAnchor}
           onModeChange={setAgendaMode}
           onTypeFilterChange={setTipoFiltro}
@@ -1017,25 +1024,29 @@ export default function Planning() {
               <MapIcon className="size-4" />
               {t('planning.verEnPlano')}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setBloqueoAbierto(true)}
-              title={t('bloqueo.crear')}
-            >
-              <Ban className="size-4" />
-              {t('bloqueo.crear')}
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => {
-                setOpenId(null);
-                setAlta({});
-              }}
-            >
-              <Plus className="size-4" />
-              {t('planning.nuevaReserva')}
-            </Button>
+            {puedeBloquear && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setBloqueoAbierto(true)}
+                title={t('bloqueo.crear')}
+              >
+                <Ban className="size-4" />
+                {t('bloqueo.crear')}
+              </Button>
+            )}
+            {puedeCrear && (
+              <Button
+                size="sm"
+                onClick={() => {
+                  setOpenId(null);
+                  setAlta({});
+                }}
+              >
+                <Plus className="size-4" />
+                {t('planning.nuevaReserva')}
+              </Button>
+            )}
             {data && (
               <p className="tnum ml-auto text-[12px] text-muted-foreground">
                 {t('planning.unidades', { n: data.units.length })} ·{' '}
@@ -1100,12 +1111,12 @@ export default function Planning() {
                   key={b.id}
                   variant="ghost"
                   size="xs"
-                  title={`${b.code} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.arrastrarChip')}`}
-                  className={`lc-chip lc-grab st-${b.status} h-6 px-1.5`}
-                  onPointerDown={(e) => onChipPointerDown(e, b)}
-                  onPointerMove={onChipPointerMove}
-                  onPointerUp={onChipPointerUp}
-                  onPointerCancel={onChipPointerUp}
+                  title={`${b.code} · ${b.dateFrom} → ${b.dateTo}${puedeOperar ? ` · ${t('planning.arrastrarChip')}` : ''}`}
+                  className={`lc-chip st-${b.status} h-6 px-1.5${puedeOperar ? ' lc-grab' : ''}`}
+                  onPointerDown={puedeOperar ? (e) => onChipPointerDown(e, b) : undefined}
+                  onPointerMove={puedeOperar ? onChipPointerMove : undefined}
+                  onPointerUp={puedeOperar ? onChipPointerUp : undefined}
+                  onPointerCancel={puedeOperar ? onChipPointerUp : undefined}
                   onClick={(e) => {
                     if (chipClickGuard.current) {
                       chipClickGuard.current = false;
@@ -1255,10 +1266,12 @@ export default function Planning() {
                               className="relative"
                               data-unit-row={row.unit.id}
                               style={{ width: gridW }}
-                              onPointerDown={(e) => onRowPointerDown(e, row, vi.start)}
-                              onPointerMove={onRowPointerMove}
-                              onPointerUp={onRowPointerUp}
-                              onPointerCancel={onRowPointerUp}
+                              onPointerDown={
+                                puedeCrear ? (e) => onRowPointerDown(e, row, vi.start) : undefined
+                              }
+                              onPointerMove={puedeCrear ? onRowPointerMove : undefined}
+                              onPointerUp={puedeCrear ? onRowPointerUp : undefined}
+                              onPointerCancel={puedeCrear ? onRowPointerUp : undefined}
                             >
                               {inactive && (
                                 <div
@@ -1282,24 +1295,32 @@ export default function Planning() {
                                 return g ? (
                                   <div
                                     key={blk.id}
-                                    role="button"
-                                    tabIndex={0}
+                                    role={puedeBloquear ? 'button' : undefined}
+                                    tabIndex={puedeBloquear ? 0 : undefined}
                                     className="lc-block"
                                     style={{ left: g.left, width: g.width }}
-                                    title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo} · ${t('planning.bloqueo.pista')}`}
+                                    title={`${t(`bloqueo.${blk.reason}`)} · ${blk.dateFrom} → ${blk.dateTo}${puedeBloquear ? ` · ${t('planning.bloqueo.pista')}` : ''}`}
                                     aria-label={t('planning.bloqueo.aria', {
                                       motivo: t(`bloqueo.${blk.reason}`),
                                       desde: blk.dateFrom,
                                       hasta: blk.dateTo,
                                       unidad: row.unit.code,
                                     })}
-                                    onClick={(e) => askUnblock(blk, e.currentTarget)}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        askUnblock(blk, e.currentTarget);
-                                      }
-                                    }}
+                                    onClick={
+                                      puedeBloquear
+                                        ? (e) => askUnblock(blk, e.currentTarget)
+                                        : undefined
+                                    }
+                                    onKeyDown={
+                                      puedeBloquear
+                                        ? (e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                              e.preventDefault();
+                                              askUnblock(blk, e.currentTarget);
+                                            }
+                                          }
+                                        : undefined
+                                    }
                                   >
                                     {t(`bloqueo.${blk.reason}`)}
                                   </div>
@@ -1321,17 +1342,26 @@ export default function Planning() {
                                   <div
                                     key={b.id}
                                     tabIndex={0}
-                                    className={`lc-bar lc-grab st-${barStatusClass(b)}${g.clipStart ? ' lc-clip-l' : ''}${g.clipEnd ? ' lc-clip-r' : ''}${dim ? ' lc-dim' : ''}`}
+                                    className={`lc-bar st-${barStatusClass(b)}${puedeOperar ? ' lc-grab' : ''}${g.clipStart ? ' lc-clip-l' : ''}${g.clipEnd ? ' lc-clip-r' : ''}${dim ? ' lc-dim' : ''}`}
                                     style={{ left: g.left, width: g.width }}
                                     title={`${b.code} · ${t(`estado.${b.status}`)} · ${b.dateFrom} → ${b.dateTo} · ${t('planning.pax', { n: pax })}`}
-                                    onPointerDown={(e) => onBarPointerDown(e, b, row.unit.id)}
-                                    onPointerMove={onBarPointerMove}
-                                    onPointerUp={onBarPointerUp}
-                                    onPointerCancel={onBarPointerUp}
+                                    onPointerDown={
+                                      puedeOperar
+                                        ? (e) => onBarPointerDown(e, b, row.unit.id)
+                                        : undefined
+                                    }
+                                    onPointerMove={puedeOperar ? onBarPointerMove : undefined}
+                                    onPointerUp={puedeOperar ? onBarPointerUp : undefined}
+                                    onPointerCancel={puedeOperar ? onBarPointerUp : undefined}
+                                    onClick={
+                                      puedeOperar
+                                        ? undefined
+                                        : (e) => openPanel(b.id, e.currentTarget)
+                                    }
                                     onKeyDown={(e) => onBarKeyDown(e, b, row.unit.id)}
                                   >
                                     {/* asas de estirar (ADR 0023 §1); en un borde recortado no hay asa */}
-                                    {!g.clipStart && (
+                                    {puedeOperar && !g.clipStart && (
                                       <div
                                         aria-hidden
                                         className="lc-handle lc-handle-l"
@@ -1341,7 +1371,7 @@ export default function Planning() {
                                       />
                                     )}
                                     {b.code.replace(/^CS-\d{4}-/, '')} · {pax}p
-                                    {!g.clipEnd && (
+                                    {puedeOperar && !g.clipEnd && (
                                       <div
                                         aria-hidden
                                         className="lc-handle lc-handle-r"
@@ -1367,7 +1397,7 @@ export default function Planning() {
       )}
 
       {openId && data && <BookingPanel bookingId={openId} onClose={closePanel} />}
-      {alta && (
+      {puedeCrear && alta && (
         <NewBookingPanel
           initial={alta}
           onClose={() => setAlta(null)}
@@ -1377,58 +1407,62 @@ export default function Planning() {
           }}
         />
       )}
-      <BlockDialog open={bloqueoAbierto} onOpenChange={setBloqueoAbierto} defaultDate={from} />
+      {puedeBloquear && (
+        <BlockDialog open={bloqueoAbierto} onOpenChange={setBloqueoAbierto} defaultDate={from} />
+      )}
 
       {/* levantar un bloqueo pinchando su barra rayada (BACKLOG [C1], remate de C4.4) */}
-      <AlertDialog
-        open={pendingUnblock !== null}
-        onOpenChange={(open) => {
-          if (!open) setPendingUnblock(null);
-        }}
-      >
-        <AlertDialogContent
-          // volver atrás devuelve el foco a la barra que abrió el diálogo; si el
-          // bloqueo se ha levantado la barra ya no existe y no hay a dónde volver
-          onCloseAutoFocus={(e) => {
-            const opener = unblockOpenerRef.current;
-            unblockOpenerRef.current = null;
-            if (!unblockConfirmedRef.current && opener?.isConnected) {
-              e.preventDefault();
-              opener.focus();
-            }
+      {puedeBloquear && (
+        <AlertDialog
+          open={pendingUnblock !== null}
+          onOpenChange={(open) => {
+            if (!open) setPendingUnblock(null);
           }}
         >
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('confirmar.quitarBloqueo.titulo')}</AlertDialogTitle>
-            <AlertDialogDescription>{t('confirmar.quitarBloqueo.desc')}</AlertDialogDescription>
-          </AlertDialogHeader>
-          {pendingUnblock && (
-            <div className="text-[13px]">
-              <p className="font-medium">
-                {tDyn(`bloqueo.${pendingUnblock.reason}`, pendingUnblock.reason)}
-              </p>
-              <p className="tnum text-muted-foreground">
-                {pendingUnblock.dateFrom} → {pendingUnblock.dateTo}
-              </p>
-              {!pendingUnblock.unitId && (
-                <p className="mt-1 text-muted-foreground">{t('plano.unidad.bloqueoTipo')}</p>
-              )}
-            </div>
-          )}
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                unblockConfirmedRef.current = true;
-                if (pendingUnblock) quitarBloqueo.mutate(pendingUnblock.id);
-                setPendingUnblock(null);
-              }}
-            >
-              {t('confirmar.quitarBloqueo.ok')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <AlertDialogContent
+            // volver atrás devuelve el foco a la barra que abrió el diálogo; si el
+            // bloqueo se ha levantado la barra ya no existe y no hay a dónde volver
+            onCloseAutoFocus={(e) => {
+              const opener = unblockOpenerRef.current;
+              unblockOpenerRef.current = null;
+              if (!unblockConfirmedRef.current && opener?.isConnected) {
+                e.preventDefault();
+                opener.focus();
+              }
+            }}
+          >
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('confirmar.quitarBloqueo.titulo')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('confirmar.quitarBloqueo.desc')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            {pendingUnblock && (
+              <div className="text-[13px]">
+                <p className="font-medium">
+                  {tDyn(`bloqueo.${pendingUnblock.reason}`, pendingUnblock.reason)}
+                </p>
+                <p className="tnum text-muted-foreground">
+                  {pendingUnblock.dateFrom} → {pendingUnblock.dateTo}
+                </p>
+                {!pendingUnblock.unitId && (
+                  <p className="mt-1 text-muted-foreground">{t('plano.unidad.bloqueoTipo')}</p>
+                )}
+              </div>
+            )}
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  unblockConfirmedRef.current = true;
+                  if (pendingUnblock) quitarBloqueo.mutate(pendingUnblock.id);
+                  setPendingUnblock(null);
+                }}
+              >
+                {t('confirmar.quitarBloqueo.ok')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
 
       {/* el precio cambia: desglose nuevo ANTES de confirmar (ADR 0023 §1) */}
       <AlertDialog

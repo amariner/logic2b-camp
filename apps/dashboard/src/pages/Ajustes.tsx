@@ -31,6 +31,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { apiGet, apiPatch, type TenantSettings } from '../api';
+import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
@@ -69,6 +70,7 @@ function AjustesEsqueleto() {
 
 export default function Ajustes() {
   const qc = useQueryClient();
+  const puedeEditar = usePuede('settings:manage');
   const [draft, setDraft] = useState<
     Partial<Pick<TenantSettings, 'name' | 'timezone' | 'currency'>>
   >({});
@@ -125,6 +127,7 @@ export default function Ajustes() {
                       type="text"
                       value={draft.name ?? data.name}
                       onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                      disabled={!puedeEditar}
                       className="max-w-sm"
                     />
                   </div>
@@ -135,6 +138,7 @@ export default function Ajustes() {
                       type="text"
                       value={draft.timezone ?? data.timezone}
                       onChange={(e) => setDraft((d) => ({ ...d, timezone: e.target.value }))}
+                      disabled={!puedeEditar}
                       className="max-w-sm"
                     />
                   </div>
@@ -148,17 +152,20 @@ export default function Ajustes() {
                       onChange={(e) =>
                         setDraft((d) => ({ ...d, currency: e.target.value.toUpperCase() }))
                       }
+                      disabled={!puedeEditar}
                       className="tnum w-24"
                     />
                   </div>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    disabled={!sucia || guardar.isPending}
-                    className="w-fit"
-                  >
-                    {t('aju.guardar')}
-                  </Button>
+                  {puedeEditar && (
+                    <Button
+                      type="submit"
+                      size="sm"
+                      disabled={!sucia || guardar.isPending}
+                      className="w-fit"
+                    >
+                      {t('aju.guardar')}
+                    </Button>
+                  )}
                 </form>
               </CardContent>
             </Card>
@@ -183,7 +190,7 @@ export default function Ajustes() {
             </Card>
           </div>
 
-          <Notificaciones data={data} />
+          <Notificaciones data={data} editable={puedeEditar} />
         </div>
       )}
     </div>
@@ -206,7 +213,7 @@ type NotifConfig = {
   notifyTo?: string;
 };
 
-function Notificaciones({ data }: { data: TenantSettings }) {
+function Notificaciones({ data, editable }: { data: TenantSettings; editable: boolean }) {
   const qc = useQueryClient();
   const actual = (data.modules.notifications ?? {}) as NotifConfig;
   const [draft, setDraft] = useState<NotifConfig | null>(null); // null = sin cambios
@@ -246,6 +253,7 @@ function Notificaciones({ data }: { data: TenantSettings }) {
               <Switch
                 id={`aju-notif-${ev}`}
                 checked={config.enabled?.[ev] ?? true}
+                disabled={!editable}
                 onCheckedChange={(checked) =>
                   setDraft({
                     ...config,
@@ -269,6 +277,7 @@ function Notificaciones({ data }: { data: TenantSettings }) {
               placeholder="Camping X <reservas@campingx.com>"
               value={config.from ?? ''}
               onChange={(e) => setDraft({ ...config, from: e.target.value })}
+              disabled={!editable}
               className="max-w-sm"
             />
           </div>
@@ -279,17 +288,20 @@ function Notificaciones({ data }: { data: TenantSettings }) {
               type="email"
               value={config.notifyTo ?? ''}
               onChange={(e) => setDraft({ ...config, notifyTo: e.target.value })}
+              disabled={!editable}
               className="max-w-sm"
             />
           </div>
-          <Button
-            type="submit"
-            size="sm"
-            disabled={draft === null || guardar.isPending}
-            className="mt-2 w-fit"
-          >
-            {t('aju.guardarNotif')}
-          </Button>
+          {editable && (
+            <Button
+              type="submit"
+              size="sm"
+              disabled={draft === null || guardar.isPending}
+              className="mt-2 w-fit"
+            >
+              {t('aju.guardarNotif')}
+            </Button>
+          )}
         </form>
       </CardContent>
     </Card>

@@ -23,6 +23,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import { Ban, CalendarRange } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import { apiGet, type MapData, type PlanningData, type PlanningUnit } from '../api';
+import { usePuede } from '../auth';
 import BlockDialog from '../components/BlockDialog';
 import BookingPanel from '../components/BookingPanel';
 import CampingMap from '../components/CampingMap';
@@ -59,6 +60,7 @@ function PlanoSkeleton() {
 }
 
 export default function Plano() {
+  const puedeBloquear = usePuede('block:manage');
   const search = useSearch({ strict: false }) as { date?: string; unit?: string };
   const navigate = useNavigate();
   const today = iso(new Date());
@@ -277,7 +279,11 @@ export default function Plano() {
           </Button>
           {data && (
             <p className="tnum ml-auto shrink-0 text-[12px] text-muted-foreground">
-              {t('plano.ocupacion', { pct: summary.pct, occ: summary.ocupadas, total: summary.total })}
+              {t('plano.ocupacion', {
+                pct: summary.pct,
+                occ: summary.ocupadas,
+                total: summary.total,
+              })}
             </p>
           )}
           <BotonAyuda className="size-11 shrink-0 md:size-7" />
@@ -345,12 +351,14 @@ export default function Plano() {
             onOpenPlanning={openInPlanning}
           />
         )}
-      <BlockDialog
-        open={bloqueoAbierto}
-        onOpenChange={setBloqueoAbierto}
-        defaultUnitId={search.unit}
-        defaultDate={date}
-      />
+      {puedeBloquear && (
+        <BlockDialog
+          open={bloqueoAbierto}
+          onOpenChange={setBloqueoAbierto}
+          defaultUnitId={search.unit}
+          defaultDate={date}
+        />
+      )}
     </div>
   );
 }

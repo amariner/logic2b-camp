@@ -170,6 +170,14 @@ ruta duradera; ninguno reabre el frente.
 «Orientarte desde la portada» y pasa a 15 páginas; Inicio enlaza su `?` al nuevo
 destino. Un E2E comprueba la URL y la lectura sin desbordamiento a 375/1366 px.
 
+**Actualización sesión 109 (2026-08-10)**: una política compartida y testeada de
+roles/capacidades mantiene al servidor como autoridad y evita que el gestor
+ofrezca mutaciones destinadas a 403. Demo conserva únicamente los gestos de
+estancia autorizados; el resto de controles se adapta desde Planning hasta
+ajustes. El E2E destapó y fijó además la comparación ID opaco↔slug que hacía
+válido el login demo pero devolvía 401 en la API privada. La carga por subpath
+mantiene verdes los presupuestos M6.
+
 **Orden**: C0 primero y no es negociable (el seed denso cambia cómo se ve todo lo demás; el HMR cambia la velocidad de todo lo demás). Luego C3 antes que C4 (lo transversal antes que lo profundo), con C2 en paralelo porque los alimenta. C7 después de C1.5+C2 (el plano hereda el mapa de color).
 
 ## Frente D — Escaparate: portfolio de demos y marketing de captación

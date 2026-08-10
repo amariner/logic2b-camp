@@ -7,9 +7,9 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R6 afordancias por rol, nombres semánticos de
-  clases e i18n huérfana; R7 `BreadcrumbList`; R11 reset local y riesgos
-  corregibles.
+- **Local ahora, por checkpoint:** R6 estados, acciones destructivas, nombres
+  semánticos de clases e i18n huérfana; R7 `BreadcrumbList`; R11 reset local y
+  riesgos corregibles.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -45,7 +45,7 @@ es un gate de producción, no un pendiente local de implementación.
 - [9.x] Cachear `TenantConfig` en KV (`CONFIG` binding) con invalidación en `PATCH /api/admin/settings` — hoy es un `SELECT` por request, barato mientras solo exista la demo; optimizar cuando haya un camping real con tráfico (ADR 0012 §2) — 2026-07-19
 - ~~[10] Acceso al dashboard demo sin registro~~ → **hecho 2026-07-25 (sesión 50, ADR 0029)**: las tres preguntas que lo tenían parado se le plantearon a Andreu y las contestó — puerta **anónima** (botón "Ver la demo" en el login), alcance **leer + gestos del planning + check-in/out**, y limpieza con **botón de restablecer** además del cron nocturno. Rol `demo` en el **nivel 0** (empatado con `readonly`, fail-closed: nace sin poder mutar nada) + la excepción autorizada **por acción, no por ruta** (`PATCH /bookings/:id` es la puerta de 13 acciones; abrirlo entero habría regalado `cancel`/`record_payment`/`refund`). Barrido `demo-role.test.ts` dirigido por `app.routes`: una ruta nueva nace denegada y la entrega falla si alguien la abre sin declararlo. Puerta en `tenants/demo/worker.ts` (sonda + sign-in + reset), nunca en `apps/api`. Sin migración: `users.role` no tiene `CHECK`
 - [10] Que el visitante de la demo pueda **crear y levantar bloqueos**: fuera del alcance que acotó Andreu en la sesión 50 (un bloqueo quita inventario a la vista hasta el reset). El gesto de "crear arrastrando sobre celda libre" del planning (ADR 0023 §2) también acaba en el aviso de solo lectura — es coherente y está explicado, pero es el único gesto del planning que el visitante empieza y no puede terminar. Reabrir si al enseñar la demo se echa en falta — 2026-07-25
-- [10] Esconder por rol las afordancias de mutación en las 13 pantallas que hoy pintan botones sin mirarlo (ADR 0029 §5 lo deja fuera a propósito: la barrera es el servidor y una lista en cliente se desincroniza). Hoy el 403 se traduce a un aviso honesto en UN punto (`avisos.ts`) — 2026-07-25
+- ~~[10] Esconder por rol las afordancias de mutación en las 13 pantallas que hoy pintan botones sin mirarlo~~ → **hecho 2026-08-10 (sesión 109/R6)**: API y gestor consumen `@logic-camp/config/roles`; no existe una lista cliente independiente. El servidor conserva la autoridad y el rol demo solo recibe la capacidad visual que corresponde a sus cinco acciones explícitas. Planning, plano, ficha, huéspedes, reservas, llegadas, solicitudes, inventario, tarifas, ajustes y RGPD ocultan o desactivan la mutación sin perder lectura; un E2E fija la matriz demo. El subpath dedicado evita arrastrar el barrel de configuración al bundle — 2026-07-25, cerrado 2026-08-10
 - [10] Cloudflare Web Analytics en la demo — necesita un token real del panel de Cloudflare, mismo bloqueo que Resend/Stripe/Redsys en fases anteriores — 2026-07-19
 - ~~[10] `ui.logic2b.com` / Storybook propio~~ → **descartado 2026-08-10
   (R1)**: `ui.logic2b.com` ya es la referencia externa y `packages/ui` cubre el

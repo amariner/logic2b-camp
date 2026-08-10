@@ -20,6 +20,7 @@ import { AlertTriangle, CheckCircle2, Download, Send } from 'lucide-react';
 import { useState } from 'react';
 import {
   apiGet,
+  apiPatch,
   apiPost,
   ApiError,
   type ParteData,
@@ -51,7 +52,7 @@ function PaymentKindSelect({ estancia }: { estancia: ParteEstanciaItem }) {
   const qc = useQueryClient();
   const set = useMutation({
     mutationFn: (value: PaymentKind | null) =>
-      apiPost(`/api/admin/bookings/${estancia.bookingId}`, {
+      apiPatch(`/api/admin/bookings/${estancia.bookingId}`, {
         action: 'set_payment_kind',
         paymentKind: value,
       }),

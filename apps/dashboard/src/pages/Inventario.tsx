@@ -26,6 +26,7 @@ import {
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiGet, apiPatch, type Catalog } from '../api';
+import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
@@ -54,6 +55,7 @@ function InventarioEsqueleto() {
 
 export default function Inventario() {
   const qc = useQueryClient();
+  const puedeEditar = usePuede('inventory:manage');
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['catalog'],
@@ -114,6 +116,20 @@ export default function Inventario() {
                 <ul className="flex flex-wrap gap-1.5">
                   {propias.map((u) => {
                     const activa = u.status === 'active';
+                    if (!puedeEditar)
+                      return (
+                        <li key={u.id}>
+                          <span
+                            className={`tnum inline-flex h-7 items-center rounded-(--lc-radius) border px-2 text-xs font-medium ${
+                              activa
+                                ? 'border-input bg-background'
+                                : 'border-destructive/40 bg-destructive/10 text-destructive line-through'
+                            }`}
+                          >
+                            {u.code}
+                          </span>
+                        </li>
+                      );
                     const chip = (
                       <Button
                         type="button"

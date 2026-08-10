@@ -41,7 +41,7 @@ import {
   type GuestExport,
   type RetentionHold,
 } from '../api';
-import { useTieneRol } from '../auth';
+import { usePuede } from '../auth';
 import { t, tDyn } from '../i18n';
 import { fecha } from '../lib/format';
 
@@ -86,8 +86,8 @@ function AvisoPlazo({ hold }: { hold: RetentionHold }) {
 
 export default function GuestRgpdSection({ guest }: { guest: GuestDetail }) {
   const qc = useQueryClient();
-  const puedeGestionar = useTieneRol('manager');
-  const puedeEditar = useTieneRol('reception');
+  const puedeGestionar = usePuede('guest:rgpd');
+  const puedeEditar = usePuede('guest:edit');
   const [hold, setHold] = useState<RetentionHold | null>(null);
 
   const refrescar = () => {

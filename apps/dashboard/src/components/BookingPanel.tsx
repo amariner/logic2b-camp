@@ -27,6 +27,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { DoorOpen, LogOut, Printer, Undo2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail, type TenantSettings } from '../api';
+import { usePuede } from '../auth';
 import { t } from '../i18n';
 import { conceptLabel, eur, fecha, noches } from '../lib/format';
 import BookingReceipt from './BookingReceipt';
@@ -98,6 +99,8 @@ export default function BookingPanel({
   const [payAmount, setPayAmount] = useState('');
   const [payMethod, setPayMethod] = useState<'cash' | 'card'>('cash');
   const [refundAmount, setRefundAmount] = useState('');
+  const puedeOperar = usePuede('booking:operate');
+  const puedeGestionar = usePuede('booking:manage');
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['booking', bookingId],
@@ -319,7 +322,7 @@ export default function BookingPanel({
           </section>
 
           {/* recepción: check-in / check-out (ADR 0022). "En casa" se deriva. */}
-          {(canCheckIn || inHouse) && (
+          {puedeOperar && (canCheckIn || inHouse) && (
             <section>
               <h3 className="lc-panel-h">{t('ficha.recepcion')}</h3>
               {canCheckIn && (
@@ -464,7 +467,7 @@ export default function BookingPanel({
               ))}
             </ul>
 
-            {(data.status === 'pending' || data.status === 'confirmed') && (
+            {puedeGestionar && (data.status === 'pending' || data.status === 'confirmed') && (
               <div className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-2">
                 {/* cobrar todo lo pendiente en un gesto (ADR 0022): hasta ahora
                     había que leer la cifra arriba y teclearla a mano. */}
@@ -578,33 +581,35 @@ export default function BookingPanel({
           </section>
 
           {/* notas internas */}
-          <section>
-            <h3 className="lc-panel-h">
-              <label htmlFor="lc-booking-notes">{t('ficha.notas')}</label>
-            </h3>
-            <textarea
-              id="lc-booking-notes"
-              rows={3}
-              maxLength={2000}
-              value={notes ?? data.notes ?? ''}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder={t('ficha.notasPlaceholder')}
-              className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base md:text-[13px]"
-            />
-            <Button
-              type="button"
-              size="sm"
-              variant="outline"
-              className="mt-1"
-              disabled={notes === null || notes === (data.notes ?? '') || saveNote.isPending}
-              onClick={() => notes !== null && saveNote.mutate(notes)}
-            >
-              {t('ficha.guardarNota')}
-            </Button>
-          </section>
+          {puedeGestionar && (
+            <section>
+              <h3 className="lc-panel-h">
+                <label htmlFor="lc-booking-notes">{t('ficha.notas')}</label>
+              </h3>
+              <textarea
+                id="lc-booking-notes"
+                rows={3}
+                maxLength={2000}
+                value={notes ?? data.notes ?? ''}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder={t('ficha.notasPlaceholder')}
+                className="w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base md:text-[13px]"
+              />
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="mt-1"
+                disabled={notes === null || notes === (data.notes ?? '') || saveNote.isPending}
+                onClick={() => notes !== null && saveNote.mutate(notes)}
+              >
+                {t('ficha.guardarNota')}
+              </Button>
+            </section>
+          )}
 
           {/* acciones tipadas según estado */}
-          {ACTIONS_BY_STATUS[data.status].length > 0 && (
+          {puedeGestionar && ACTIONS_BY_STATUS[data.status].length > 0 && (
             <section>
               <h3 className="lc-panel-h">{t('ficha.acciones')}</h3>
               <div className="flex flex-wrap gap-2">

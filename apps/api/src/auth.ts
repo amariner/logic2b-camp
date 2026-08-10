@@ -4,30 +4,15 @@
  * autenticar contra su propia D1 — el aislamiento lo da el entorno, como siempre.
  */
 import { createDb, schema } from '@logic-camp/db';
+import { DEMO_BOOKING_ACTIONS, roleAtLeast, type Role } from '@logic-camp/config/roles';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { eq } from 'drizzle-orm';
 import type { Context, MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 import type { Bindings, Env } from './tenant';
 
-export type Role = 'owner' | 'manager' | 'reception' | 'readonly' | 'demo';
-
-/**
- * Jerarquía: cada rol incluye lo del anterior.
- *
- * `demo` empata con `readonly` A PROPÓSITO (ADR 0029 §1): el visitante anónimo
- * de la demo nace en el suelo, así que sin escribir una línea más ya lee lo
- * mismo que un `readonly` y se estrella contra un 403 en TODA mutación. Lo que
- * puede tocar se abre después, explícitamente y por acción — nunca al revés.
- * El sentido en el que falla la autorización es la decisión, no un detalle.
- */
-const ROLE_LEVEL: Record<Role, number> = {
-  demo: 0,
-  readonly: 0,
-  reception: 1,
-  manager: 2,
-  owner: 3,
-};
+export type { Role } from '@logic-camp/config/roles';
 
 /**
  * Lo ÚNICO que el rol `demo` puede mutar (ADR 0029 §2).
@@ -36,7 +21,7 @@ const ROLE_LEVEL: Record<Role, number> = {
  * (`schemas.ts`), así que autorizar por RUTA le regalaría al visitante `cancel`,
  * `record_payment` y `refund`. La unidad de autorización aquí es la acción.
  */
-export const DEMO_ACTIONS = ['move', 'reassign', 'check_in', 'check_out', 'undo_checkin'] as const;
+export const DEMO_ACTIONS = DEMO_BOOKING_ACTIONS;
 
 export type AuthUser = {
   id: string;
@@ -132,21 +117,28 @@ export async function provisionUser(
     body: { email: input.email, password: input.password, name: input.name },
   });
   const db = createDb(env.DB);
-  const { eq } = await import('drizzle-orm');
-  await db.update(schema.users).set({ role: input.role }).where(eq(schema.users.id, res.user.id));
+  const tenantSlug = env.TENANT_SLUG ?? 'unknown';
+  const [tenant] = await db
+    .select({ id: schema.tenants.id })
+    .from(schema.tenants)
+    .where(eq(schema.tenants.slug, tenantSlug))
+    .limit(1);
+  const tenantId = tenant?.id ?? tenantSlug;
+  await db
+    .update(schema.users)
+    .set({ role: input.role, tenantId })
+    .where(eq(schema.users.id, res.user.id));
   return {
     id: res.user.id,
     email: res.user.email,
     name: res.user.name,
     role: input.role,
-    tenantId: env.TENANT_SLUG ?? 'unknown',
+    tenantId,
   };
 }
 
 /** Fail-closed: un rol que no esté en la tabla no alcanza ningún nivel. */
-function alcanza(role: Role, min: Role): boolean {
-  return ROLE_LEVEL[role] !== undefined && ROLE_LEVEL[role] >= ROLE_LEVEL[min];
-}
+const alcanza = roleAtLeast;
 
 /**
  * Resuelve la sesión de la petición. Cada guarda la resuelve por su cuenta (no
@@ -165,7 +157,20 @@ async function resolverUsuario(c: Context<AuthEnv>): Promise<AuthUser | null> {
       tenantId: z.string().min(1),
     })
     .safeParse(session.user);
-  if (!parsed.success || parsed.data.tenantId !== c.get('tenant').slug) return null;
+  if (!parsed.success) return null;
+
+  const tenant = c.get('tenant');
+  if (parsed.data.tenantId !== tenant.slug) {
+    // Los seeds guardan el ID opaco de `tenants`; usuarios provisionados antes
+    // de esta corrección podían guardar el slug. Ambos identifican la misma D1,
+    // pero cualquier otro valor falla cerrado.
+    const [row] = await tenant.db
+      .select({ id: schema.tenants.id })
+      .from(schema.tenants)
+      .where(eq(schema.tenants.slug, tenant.slug))
+      .limit(1);
+    if (!row || parsed.data.tenantId !== row.id) return null;
+  }
   return parsed.data;
 }
 

@@ -30,6 +30,7 @@ type Props = {
   statusFilter: string;
   search: string;
   movePending: boolean;
+  canEditStay: boolean;
   onAnchorChange: (date: string) => void;
   onModeChange: (mode: AgendaMode) => void;
   onTypeFilterChange: (value: string) => void;
@@ -77,6 +78,7 @@ export default function PlanningAgenda({
   statusFilter,
   search,
   movePending,
+  canEditStay,
   onAnchorChange,
   onModeChange,
   onTypeFilterChange,
@@ -272,6 +274,7 @@ export default function PlanningAgenda({
                       const editorKey = `${day}:${booking.id}`;
                       const editing = editor?.key === editorKey;
                       const canMove =
+                        canEditStay &&
                         Boolean(unit) &&
                         (booking.status === 'pending' || booking.status === 'confirmed');
                       const compatibleUnits = data.units.filter(

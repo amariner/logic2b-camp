@@ -1,5 +1,38 @@
 # PROGRESS — Logic Camp
 
+## Afordancias por rol del gestor R6 · 2026-08-10 (sesión 109)
+
+- API y dashboard comparten ahora una política pura de roles y capacidades en
+  `@logic-camp/config/roles`. El servidor continúa siendo la barrera de
+  seguridad, pero la interfaz deja de ofrecer mutaciones que acabarían en 403;
+  la excepción `demo` conserva únicamente mover, reasignar y registrar o
+  deshacer entradas/salidas.
+- Planning, plano, ficha, huéspedes, reservas, llegadas, solicitudes,
+  inventario, tarifas, ajustes y RGPD adaptan controles, arrastre, teclado y
+  diálogos al rol real. Los datos de lectura siguen visibles. Un E2E de navegador
+  fija que demo puede operar estancias, pero no crear reservas/bloqueos, cobrar,
+  cancelar, editar huéspedes, cambiar solicitudes, inventario, tarifas o
+  ajustes.
+- El barrido encontró un defecto independiente y reproducible en Parte de
+  viajeros: cambiar la forma de pago enviaba `POST` a una ruta que solo acepta
+  `PATCH`, por lo que un manager recibía 404. El cliente usa ya el verbo del
+  contrato que cubre la integración API existente.
+- El E2E también reveló que la puerta demo creaba una sesión válida, pero las
+  guardas privadas comparaban solo el slug `demo` con el ID opaco sembrado
+  `ten_calasereno`; toda llamada `/api/admin` terminaba en 401. La guarda valida
+  ahora ambas representaciones de la misma D1, falla cerrada ante cualquier otra
+  y la provisión nueva persiste el ID canónico. La integración fija el caso
+  `ten_alfa` ↔ `alfa` que los tests anteriores no distinguían.
+- Importar la política desde el barrel general elevó Mar de Fondo a **203,17 kB
+  gzip** y la barrera M6 falló. El subpath dedicado evita arrastrar configuración
+  de tenant al gestor: entradas finales de **173,10 kB** (normal), **177,58 kB**
+  (Pinada) y **183,36 kB** (Mar de Fondo), con **11.671 enlaces internos / 360
+  HTML** verdes.
+- Verificación: config **66/66**, dashboard **37/37**, API dirigida **137/137**,
+  E2E de permisos+shell **2/2** y `pnpm check` **53/53** en **31,19 s**. No hubo
+  deploy, reseed ni escritura remota. R6 continúa con estados de interfaz,
+  acciones destructivas y deuda semántica/i18n demostrable.
+
 ## Shell y ayuda del gestor R6 · 2026-08-10 (sesión 108)
 
 - La portada ya no es la única pantalla operativa sin ayuda: incorpora
