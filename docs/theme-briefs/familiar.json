@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "id": "familiar",
+  "name": "Familiar",
+  "status": "catalog-concept",
+  "icp": "Camping familiar de 80 a 180 unidades con piscina, animación y picos de llegadas que vende sobre todo a familias con niños.",
+  "objection": "Teme que una interfaz sobria no comunique facilidad, servicios infantiles ni la coordinación necesaria en días de cambio.",
+  "commercialLevel": "Concepto sin nivel asignado; R9 decidirá si cubre Gestión o Automatiza.",
+  "story": "Una familia compara capacidad y servicios; recepción entiende de inmediato llegadas, peticiones y tareas del día.",
+  "tone": "Cálido, claro y tranquilizador; alegre sin infantilizar ni usar colores de parque temático.",
+  "palette": {
+    "tinta": "#4b2c1d",
+    "hueso": "#fff5e5",
+    "pino": "#8a4d25",
+    "arena": "#e0bd82",
+    "mar": "#286b73"
+  },
+  "typography": "Display amable con curvas abiertas y sans muy legible para capacidades, edades y horarios.",
+  "signatureScreens": [
+    "Comparador de alojamientos por familia y capacidad",
+    "Portada operativa de llegadas y peticiones infantiles"
+  ],
+  "photoInventory": [
+    "Héroe familiar sin rostros reconocibles",
+    "Bungalow, parcela y zona de agua",
+    "Material de juego, sombra y comedor común"
+  ],
+  "successCriterion": "La identidad transmite facilidad familiar y el recorrido resuelve una objeción operativa distinta de Pinada del Mar."
+}

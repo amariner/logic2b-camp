@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "mardefondo",
+  "name": "Camping Resort Mar de Fondo",
+  "status": "approved-demo",
+  "icp": "Dirección de un resort de 180 a 350 unidades que ya usa software, canales y campañas.",
+  "objection": "Tiene datos y herramientas, pero no una experiencia unida ni decisiones explicables.",
+  "commercialLevel": "Visión, sobre el carril técnico tier 3 con reserva y operación locales.",
+  "story": "Una creatividad abre disponibilidad, la reserva termina en recibo y el gestor demuestra escala, automatización supervisada y recomendación explicable.",
+  "tone": "Seguro, preciso y editorial; premium por orden y servicio, nunca por dorados o grandilocuencia.",
+  "palette": {
+    "tinta": "#172a2d",
+    "hueso": "#f6f4ee",
+    "pino": "#176b73",
+    "arena": "#d8c7a5",
+    "mar": "#a64e3b"
+  },
+  "typography": "Clash Display e Inter con composiciones abiertas, cifras tabulares y jerarquía editorial contenida.",
+  "signatureScreens": [
+    "Portada de piscina laguna con disponibilidad",
+    "Planning de unas 300 unidades",
+    "Recomendación Inteligente con evidencia y aprobación"
+  ],
+  "photoInventory": [
+    "Héroes de laguna y horizonte",
+    "Parcela, bungalow, mobil-home y glamping con interiores",
+    "Laguna, restaurante, recepción, entorno y textura de agua"
+  ],
+  "successCriterion": "Venta, reserva y operación forman un recorrido de doce minutos creíble, reversible y claramente ficticio."
+}

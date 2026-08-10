@@ -1,4 +1,10 @@
 {
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Codex integrado como principal y Higgsfield según el registro verificable fotos.estado.json.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Mar de Fondo.",
+    "nota": "La procedencia por pieza, modelo, trabajo, prompt y aprobación permanece en fotos.estado.json."
+  },
   "_": [
     "Encargo visual de Camping Resort Mar de Fondo · D3-V.",
     "Codex integrado es el proveedor principal; tras dos fallos técnicos sin bytes, usar el fallback Higgsfield declarado en fotos.estado.json.",

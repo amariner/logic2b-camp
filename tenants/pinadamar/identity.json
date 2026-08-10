@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "pinadamar",
+  "name": "Camping Pinada del Mar",
+  "status": "approved-demo",
+  "icp": "Gerencia y recepción de un camping de 70 a 140 unidades, con varias personas y calendario manual.",
+  "objection": "Se pierden solicitudes y el equipo copia datos entre la web, el planning y el mostrador.",
+  "commercialLevel": "Gestión, sobre el carril técnico tier 2 y un escenario local reversible.",
+  "story": "Una familia envía una solicitud en la web; recepción la abre, la convierte y localiza la estancia en planning y plano.",
+  "tone": "Práctico, familiar y luminoso; resolutivo y con densidad operativa, sin lenguaje corporativo.",
+  "palette": {
+    "tinta": "#1e2925",
+    "hueso": "#f3f0e8",
+    "pino": "#245845",
+    "arena": "#c8b58f",
+    "mar": "#436f73"
+  },
+  "typography": "Clash Display 600 en titulares compactos; Inter y cifras tabulares en fechas, unidades y ocupación.",
+  "signatureScreens": [
+    "Solicitud recién llegada en la portada del gestor",
+    "Planning denso con la estancia enfocada",
+    "Plano propio con unidad y fecha conservadas"
+  ],
+  "photoInventory": [
+    "Calle y bungalows bajo pinada litoral",
+    "Parcela, mobil-home e interiores",
+    "Recepción, piscina, entorno costero y textura de lona"
+  ],
+  "successCriterion": "El recorrido web a gestor conserva la solicitud sin red y se reconoce una operación costera mediana, no otra Cala Sereno."
+}

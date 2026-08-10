@@ -1,0 +1,31 @@
+{
+  "procedencia": {
+    "tipo": "cliente",
+    "fuente": "__TODO__ Cliente, biblioteca licenciada o proveedor de generación.",
+    "licencia": "__TODO__ Alcance de uso y prueba documental.",
+    "nota": "No ejecutar el lote hasta aprobar brief, presupuesto y procedencia."
+  },
+  "lotes": [["hero-principal", "alojamiento-principal"], ["entorno"]],
+  "derivados": {
+    "fuente": "hero-principal",
+    "titulo": "__NOMBRE_DEL_CAMPING__",
+    "subtitulo": "__TODO__ Localización y propuesta breve"
+  },
+  "piezas": {
+    "hero-principal": {
+      "aspecto": "21:9",
+      "papel": "Héroe con espacio negativo para titular y CTA a 375 y 1366 px.",
+      "prompt": "__TODO__ Encargo fotográfico completo, coherente con identity.json y sin texto, marcas ni rostros reconocibles."
+    },
+    "alojamiento-principal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha del inventario que abre la conversación.",
+      "prompt": "__TODO__ Vista documental del alojamiento o parcela principal con escala, materia y luz creíbles."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno y cierre material de la identidad.",
+      "prompt": "__TODO__ Paisaje local documental de la misma geografía y hora, sin postal turística ni saturación de folleto."
+    }
+  }
+}

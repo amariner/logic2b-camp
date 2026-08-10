@@ -67,6 +67,7 @@
         "href": "/demos/mardefondo/"
       },
       {
+        "slug": "montana",
         "nombre": "Mountain",
         "estilo": "Refuge and long season",
         "imagen": "/temas/montana.webp",
@@ -75,6 +76,7 @@
         "href": ""
       },
       {
+        "slug": "familiar",
         "nombre": "Family",
         "estilo": "Warm and friendly",
         "imagen": "/temas/familiar.webp",
@@ -83,6 +85,7 @@
         "href": ""
       },
       {
+        "slug": "parcela",
         "nombre": "Pitch",
         "estilo": "Direct and functional",
         "imagen": "/temas/parcela.webp",

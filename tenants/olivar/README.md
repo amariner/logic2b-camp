@@ -14,3 +14,6 @@ TENANT=olivar TIER=1 BASE_PATH=/demos/olivar pnpm --filter @logic-camp/web build
 ```
 
 Estados QA del formulario: `?demoState=error#contacto` y `?demoState=spam#contacto`.
+
+Brief aprobado en `identity.json`; encargo, procedencia y ocho piezas completas
+en `fotos.json`. La receta local común está en `docs/FABRICA-IDENTIDADES.md`.

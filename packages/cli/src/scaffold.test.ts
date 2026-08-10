@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -75,7 +75,20 @@ describe('scaffoldTenant', () => {
     expect(es).toContain('__TODO__');
     expect(result.contentTodos.length).toBeGreaterThan(0);
     expect(result.contentTodos.every((t) => t.file.startsWith('content/'))).toBe(true);
+    expect(result.setupTodos.some((t) => t.file === 'identity.json')).toBe(true);
+    expect(result.setupTodos.some((t) => t.file === 'fotos.json')).toBe(true);
+    expect(existsSync(join(result.targetDir, 'content/media'))).toBe(true);
     expect(result.pendingDatabaseId).toBe(true);
+  });
+
+  it('personaliza el brief y el manifiesto sin tocar apps ni packages', () => {
+    tenantsDir = mkdtempSync(join(tmpdir(), 'logic-camp-cli-'));
+    const result = scaffoldTenant(templateDir, tenantsDir, identity);
+    const brief = JSON.parse(readFileSync(join(result.targetDir, 'identity.json'), 'utf8'));
+    const fotos = JSON.parse(readFileSync(join(result.targetDir, 'fotos.json'), 'utf8'));
+    expect(brief.id).toBe(identity.slug);
+    expect(brief.name).toBe(identity.name);
+    expect(fotos.derivados.titulo).toBe(identity.name);
   });
 
   it('no copia el README de plantilla ni el wrangler.jsonc.example', () => {

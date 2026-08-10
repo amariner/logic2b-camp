@@ -19,15 +19,14 @@ Estados QA del formulario: `?demoState=error#contacto` y `?demoState=spam#contac
 
 ## Fotografía
 
-El encargo de arte y el manifiesto de descarga de las 11 piezas viven en
-`fotos.json`: cada clave es el **nombre de fichero** que la web ya espera en
-`content/media/`. Dejar el `.webp` con ese nombre basta — no hay código que
-tocar. Mientras una pieza no exista, su caja la ocupa `<Materia>`, el campo de
-color de la paleta del propio camping.
+El encargo de arte, procedencia, lotes y derivados de las 11 piezas viven en
+`fotos.json`; las 11 están completas. `fetch-fotos.mjs` queda únicamente como
+lector legado de manifiestos con URL. Cualquier sustitución usa el pipeline
+común, con staging y aprobación explícita:
 
 ```bash
-node apps/web/scripts/fetch-fotos.mjs pinadamar
+pnpm fotos -- status pinadamar
+pnpm fotos -- run pinadamar
 ```
 
-Requiere salida a internet: el contenedor cloud sale por lista blanca y contesta
-403 a la CDN del generador. Generar sí se puede desde cloud; bajar, no.
+La receta completa está en `docs/FABRICA-IDENTIDADES.md`.

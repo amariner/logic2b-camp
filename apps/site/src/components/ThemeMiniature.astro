@@ -154,6 +154,17 @@ const { name, style, image, variant, eager = false } = Astro.props;
     width: 68%;
     align-self: end;
   }
+  .theme-miniature[data-theme-variant='pine'] {
+    --mini-ink: #1e2925;
+    --mini-paper: #f3f0e8;
+    --mini-accent: #c8b58f;
+  }
+  .theme-miniature[data-theme-variant='pine'] .theme-miniature-wash {
+    background: linear-gradient(90deg, rgba(30,41,37,.76) 0 42%, transparent 76%);
+  }
+  .theme-miniature[data-theme-variant='pine'] .theme-miniature-site { color: #f3f0e8; }
+  .theme-miniature[data-theme-variant='pine'] .theme-miniature-nav i,
+  .theme-miniature[data-theme-variant='pine'] .theme-miniature-booking b { background:#f3f0e8; color:#1e2925; }
   .theme-miniature[data-theme-variant='family'] {
     --mini-ink: #5c2f18;
     --mini-paper: #fff4df;

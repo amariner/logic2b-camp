@@ -33,7 +33,14 @@ const SKIP_FILES = new Set(['wrangler.jsonc.example', 'README.md']);
 // Ficheros donde se sustituyen los tokens de identidad — el resto
 // (content/*.json, custom/hooks.ts, data.ts) se copia byte a byte: sus
 // TODOs son trabajo de la Capa 2 (interpretar el material real del cliente).
-const TOKEN_FILES = new Set(['config.ts', 'seed.ts', 'wrangler.jsonc', 'package.json']);
+const TOKEN_FILES = new Set([
+  'config.ts',
+  'seed.ts',
+  'wrangler.jsonc',
+  'package.json',
+  'identity.json',
+  'fotos.json',
+]);
 
 function tokenMap(identity: TenantIdentity): Array<[string, string]> {
   const tokens: Array<[string, string]> = [
@@ -73,8 +80,10 @@ export type TodoReport = { file: string; todoCount: number };
 export type ScaffoldResult = {
   targetDir: string;
   filesWritten: string[];
-  /** Ficheros con `__TODO__` sin resolver (Capa 2: contenido en idioma real). */
+  /** Compatibilidad: subconjunto de TODOs que vive bajo content/. */
   contentTodos: TodoReport[];
+  /** Todos los ficheros de identidad/contenido/media que requieren criterio. */
+  setupTodos: TodoReport[];
   /** `true` si `wrangler.jsonc` sigue con `database_id` de plantilla (Capa 3: infra real). */
   pendingDatabaseId: boolean;
 };
@@ -112,18 +121,23 @@ export function scaffoldTenant(
   // README.md es contenido fresco de este scaffold (no copiado de _template) y
   // habla DEL marcador __TODO__ en su propia checklist — excluirlo evita un
   // falso positivo, no es un TODO sin resolver.
-  const contentTodos = filesWritten
+  // Un directorio vacío no viaja en git ni aparece en `walk()`: se crea de
+  // forma explícita para que `pnpm fotos` tenga siempre el mismo destino.
+  mkdirSync(join(targetDir, 'content', 'media'), { recursive: true });
+
+  const setupTodos = filesWritten
     .filter((rel) => rel !== 'README.md')
     .map((rel) => ({
       file: rel,
       todoCount: (readFileSync(join(targetDir, rel), 'utf8').match(/__TODO__/g) ?? []).length,
     }))
     .filter((r) => r.todoCount > 0);
+  const contentTodos = setupTodos.filter((report) => report.file.startsWith('content/'));
 
   const wranglerContent = readFileSync(join(targetDir, 'wrangler.jsonc'), 'utf8');
   const pendingDatabaseId = wranglerContent.includes('__TODO_DATABASE_ID__');
 
-  return { targetDir, filesWritten, contentTodos, pendingDatabaseId };
+  return { targetDir, filesWritten, contentTodos, setupTodos, pendingDatabaseId };
 }
 
 function tenantReadme(identity: TenantIdentity): string {
@@ -138,9 +152,12 @@ trabajo real, no mecánico — nadie lo automatiza por ti.
 
 **Capa 2 — contenido e inventario reales** (interpreta el material del cliente, \`/new-camping\` ayuda; valida
 los números con Andreu antes de sembrar nada):
+- [ ] \`identity.json\`: aprueba ICP, objeción, nivel, historia, tono, paleta, tipografía, pantallas firma,
+      inventario fotográfico y criterio de éxito antes de producir piezas.
 - [ ] \`content/{lang}.json\`: redacta cada \`__TODO__\` (\`grep -rln __TODO__ content/\`) en los idiomas que
       este camping vaya a ofrecer; borra los ficheros de los idiomas que NO ofrece.
-- [ ] \`content/media/\`: fotos + favicon + \`og.jpg\` propios — no hay placeholders, sin fotos no se despliega.
+- [ ] \`fotos.json\` + \`content/media/\`: fija procedencia/licencia, prompts y lotes; genera o ingiere con
+      \`pnpm fotos -- status ${slug}\` / \`run ${slug}\` y aprueba antes de crear derivados. Sin fotos no se despliega.
 - [ ] \`seed.ts\`: sustituye la temporada/tipo/unidades/tarifas de ejemplo por las reales (\`base_cents: 0\` es
       deliberado — imposible desplegar con un precio inventado sin que salte a la vista).
 - [ ] \`config.ts\`: revisa \`tier\`, \`locales\`, \`contact\` (el asistente solo rellena identidad, no todo el resto).

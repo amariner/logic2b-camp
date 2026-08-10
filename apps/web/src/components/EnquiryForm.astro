@@ -12,8 +12,10 @@ const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
 const transport = config.enquiryTransport ?? 'persisted';
 const isDemoTransport = transport === 'demo' || transport === 'demo-session';
 const managerPath = config.demoManagerPath;
+const tenantSlug = config.slug;
 const nombres = getContent(locale).tipos.nombres;
 const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id] ?? tipo.id }));
+const defaultStayId = stays[0]?.id ?? '';
 ---
 
 <form
@@ -106,7 +108,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
   )}
 </form>
 
-<script define:vars={{ locale, uid, transport }}>
+<script define:vars={{ locale, uid, transport, tenantSlug, defaultStayId }}>
   const form = document.getElementById(uid);
   const btn = form.querySelector('button[type=submit]');
   const status = form.querySelector('[data-status]');
@@ -154,7 +156,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
         ].join('\n');
         if (transport === 'demo-session') {
           const submitted = {
-            id: 'enq_pinada_web',
+            id: `enq_${tenantSlug}_web`,
             status: 'new',
             dateFrom: dateFrom || '2026-08-18',
             dateTo: dateTo || '2026-08-24',
@@ -164,7 +166,7 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
               pets: 0,
               vehicles: 1,
             },
-            unitTypeId: data.get('stay') || 'ut_bungalow',
+            unitTypeId: data.get('stay') || defaultStayId,
             message: data.get('message'),
             contact: { name: data.get('name'), email: data.get('email') },
             locale,
@@ -172,8 +174,8 @@ const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id
             convertedBookingId: null,
             createdAt: '2026-08-06T12:00:00.000Z',
           };
-          localStorage.setItem('logic2b-demo:pinadamar:submitted-enquiry:v1', JSON.stringify(submitted));
-          localStorage.removeItem('logic2b-demo:pinadamar:state:v1');
+          localStorage.setItem(`logic2b-demo:${tenantSlug}:submitted-enquiry:v1`, JSON.stringify(submitted));
+          localStorage.removeItem(`logic2b-demo:${tenantSlug}:state:v1`);
         }
         confirmation.classList.remove('hidden');
         confirmation.focus();

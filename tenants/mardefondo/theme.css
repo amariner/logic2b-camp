@@ -3,7 +3,8 @@
   --lc-hueso: #f6f4ee;
   --lc-pino: #176b73;
   --lc-arena: #d8c7a5;
-  --lc-mar: #d0644b;
+  /* Coral accesible también como texto de estado (AA sobre hueso). */
+  --lc-mar: #a64e3b;
 
   --lc-pino-oscuro: #10535a;
   --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
@@ -12,8 +13,9 @@
   --lc-font-display: 'Clash Display', system-ui, sans-serif;
   --lc-font-text: 'Inter', system-ui, sans-serif;
 
-  --lc-radius: 2px;
-  --lc-radius-sm: 2px;
-  --lc-radius-md: 4px;
-  --lc-radius-lg: 8px;
+  /* Se preservan los 2/4/8 px renderizados con una única base semántica. */
+  --lc-radius: 4px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 2px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 4px);
 }

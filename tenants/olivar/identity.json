@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "olivar",
+  "name": "Camping L'Olivar",
+  "status": "approved-demo",
+  "icp": "Propietaria de un camping familiar de 12 a 30 unidades, sin equipo digital ni PMS que quiera sustituir.",
+  "objection": "Su web parece antigua, no transmite el lugar y las consultas llegan dispersas.",
+  "commercialLevel": "Inicio, sobre el carril técnico estático tier 1.",
+  "story": "Reconocer el olivar, elegir entre parcela y tienda, ganar confianza en el entorno y completar una consulta sin red ni PII.",
+  "tone": "Sereno, honesto y próximo; habla de sombra, piedra y noches frescas, nunca de lujo o paraíso.",
+  "palette": {
+    "tinta": "#272820",
+    "hueso": "#f3efe3",
+    "pino": "#566044",
+    "arena": "#c9bda4",
+    "mar": "#995537"
+  },
+  "typography": "Clash Display 500/600 para titulares cortos e Inter para cuerpo; mucho aire y caja normal.",
+  "signatureScreens": [
+    "Héroe móvil entre olivos con CTA",
+    "Ficha de tienda con galería",
+    "Confirmación de consulta marcada como demostración"
+  ],
+  "photoInventory": [
+    "Héroes de día y anochecer",
+    "Parcela y tienda bajo olivos",
+    "Interior de tienda, balsa, piedra seca y textura de lona"
+  ],
+  "successCriterion": "Una captura sin contexto se reconoce como microcamping seco del Maestrat y el build no contiene motor ni dashboard."
+}

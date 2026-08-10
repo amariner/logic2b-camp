@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "id": "parcela",
+  "name": "Parcela",
+  "status": "catalog-concept",
+  "icp": "Camping de tránsito o larga estancia con mayoría de parcelas, clientela camper y fuerte necesidad de especificaciones prácticas.",
+  "objection": "Teme que un catálogo visual esconda medidas, electricidad, acceso, vehículo y disponibilidad real.",
+  "commercialLevel": "Concepto sin nivel asignado; R9 lo abrirá solo si el caso motor-first no duplica las demos actuales.",
+  "story": "Elegir por dimensiones y servicios, comprobar fechas y reservar una parcela sin navegar por contenido ornamental.",
+  "tone": "Directo, funcional y experto; evita jerga hostelera, lifestyle forzado y promesas vagas.",
+  "palette": {
+    "tinta": "#222b28",
+    "hueso": "#f4f3ed",
+    "pino": "#365d50",
+    "arena": "#c7c2af",
+    "mar": "#3f6874"
+  },
+  "typography": "Sans de alta legibilidad y cifras tabulares; display solo para orientar secciones, no para ocultar datos.",
+  "signatureScreens": [
+    "Comparador de parcelas por medidas y conexiones",
+    "Disponibilidad directa con vehículo y ocupación visibles"
+  ],
+  "photoInventory": [
+    "Héroe de calle y parcelas legibles",
+    "Tomas de acceso, suelo y sombra",
+    "Electricidad, agua y detalle de dimensiones"
+  ],
+  "successCriterion": "En menos de un minuto se puede decidir si una parcela encaja y por qué, sin pedir información por otro canal."
+}

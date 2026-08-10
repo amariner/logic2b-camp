@@ -1,32 +1,38 @@
 # tenants/_template — base de clonación (ADR 0012)
 
-Copia esta carpeta a `tenants/{slug}/` al dar de alta un camping (`pnpm new:camping` la automatiza cuando exista `packages/cli` — hoy se sigue a mano con esta checklist).
+Crea un camping con la CLI local. El dry-run escribe solo dentro del repositorio
+y muestra el plan de infraestructura; no toca Cloudflare sin la doble
+confirmación documentada.
 
 ```bash
-cp -r tenants/_template tenants/{slug}
+pnpm new:camping -- {slug} --name "Camping …" --domain camping.example
 ```
 
-| Fichero                     | Qué es                                                                                                           |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `config.ts`                 | Tier, idiomas, dominio, contacto e identidad legal (`TenantWebConfig`, build time)                               |
-| `theme.css`                 | Tokens del camping: color, tipografía, radios                                                                    |
-| `content/{locale}.json`     | Textos de la web por idioma — busca `__TODO__` (`grep -rn __TODO__ content/`)                                    |
-| `content/media/`            | **No incluido aquí** — fotos WebP + `favicon.svg`/`apple-touch-icon.png`/`og.jpg` (1200×630) propios del camping |
-| `data.ts`                   | Datos que la web consume en build (tipos, temporadas, tarifas, extras) — misma fuente que el seed de la D1       |
-| `custom/hooks.ts`           | Puntos de extensión — diseñado, `apps/api` aún no lo carga (ver ADR 0012 §3)                                     |
-| `seed.ts` / `write-seed.ts` | Generador determinista del seed inicial de su D1 (mínimo: 1 temporada, 1 tipo, 3 unidades, 1 owner)              |
-| `wrangler.jsonc`            | Su Worker (web por Workers Assets + API), su D1 (`logic-camp-{slug}`), su dominio, sus secrets                   |
+| Fichero                     | Qué es                                                                                                     |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `config.ts`                 | Tier, idiomas, dominio, contacto e identidad legal (`TenantWebConfig`, build time)                         |
+| `theme.css`                 | Tokens del camping: color, tipografía, radios                                                              |
+| `identity.json`             | Brief aprobable: ICP, objeción, historia, tono, paleta, pantallas, inventario y éxito                      |
+| `content/{locale}.json`     | Textos de la web por idioma — busca `__TODO__` (`grep -rn __TODO__ content/`)                              |
+| `fotos.json`                | Procedencia/licencia, prompts, lotes de 1–2 y fuente de derivados                                          |
+| `content/media/`            | Destino de WebP + `favicon.svg`/`apple-touch-icon.png`/`og.jpg` (1200×630) propios del camping             |
+| `data.ts`                   | Datos que la web consume en build (tipos, temporadas, tarifas, extras) — misma fuente que el seed de la D1 |
+| `custom/hooks.ts`           | Puntos de extensión — diseñado, `apps/api` aún no lo carga (ver ADR 0012 §3)                               |
+| `seed.ts` / `write-seed.ts` | Generador determinista del seed inicial de su D1 (mínimo: 1 temporada, 1 tipo, 3 unidades, 1 owner)        |
+| `wrangler.jsonc`            | Su Worker (web por Workers Assets + API), su D1 (`logic-camp-{slug}`), su dominio, sus secrets             |
 
 ## Checklist de alta
 
 **1. Datos base**
 
 - [ ] `config.ts`: slug, nombre, nivel (`docs/TIERS.md`), idiomas, dominio, contacto.
+- [ ] `identity.json`: aprobar todos los campos antes de redactar o producir fotografía.
 - [ ] `config.ts` → `legal`: razón social, NIF, domicilio, datos registrales (o borra la línea) y buzón de derechos RGPD. El TEXTO de las páginas legales es de producto y no se toca: solo estos campos (ADR 0026 §2.5).
 - [ ] `wrangler.jsonc`: `__SLUG__`/`__DOMINIO__`/`__ZONA__` — el `database_id` real se rellena DESPUÉS de crear la D1, nunca a mano.
 - [ ] `theme.css`: los 5 hex de la paleta real del camping (dirección visual en `CLAUDE.md`).
 - [ ] `content/{lang}.json`: redacta cada `__TODO__` en los idiomas que el camping vaya a ofrecer; borra los ficheros de idiomas que NO ofrece.
-- [ ] `content/media/`: fotos + favicon + `og.jpg` propios (no hay placeholders — sin fotos reales no se despliega).
+- [ ] `fotos.json`: documentar procedencia/licencia, papeles, prompts y lotes máximos de dos.
+- [ ] `pnpm fotos -- status {slug}` → `run`/`ingest` → inspección → `approve`; luego derivados responsive, favicon y OG.
 
 **2. Inventario y tarifas**
 

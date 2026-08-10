@@ -315,19 +315,19 @@ dudas sin encontrar promesas, enlaces o estilos contradictorios.
 
 ### R8 · Fábrica común de temas, contenido y media
 
-- [ ] Auditar el contrato de variación `config.ts` + `theme.css` + `content/` +
+- [x] Auditar el contrato de variación `config.ts` + `theme.css` + `content/` +
       `custom/` y eliminar conocimiento de marca filtrado al core.
-- [ ] Confirmar que `_template`, CLI/dry-run, esquemas y builds permiten crear una
+- [x] Confirmar que `_template`, CLI/dry-run, esquemas y builds permiten crear una
       identidad nueva sin copiar aplicaciones ni adaptar el backend.
-- [ ] Definir el brief mínimo por tema: ICP, objeción, nivel comercial, historia,
+- [x] Definir el brief mínimo por tema: ICP, objeción, nivel comercial, historia,
       tono, paleta, tipografía, pantallas firma, inventario y criterio de éxito.
-- [ ] Consolidar tokens semánticos y puntos de extensión para web y, cuando
+- [x] Consolidar tokens semánticos y puntos de extensión para web y, cuando
       aporte valor, tematización controlada del dashboard.
-- [ ] Verificar selector y catálogo de temas, persistencia, URL, fallback,
+- [x] Verificar selector y catálogo de temas, persistencia, URL, fallback,
       contraste, claro/oscuro, reduced motion y ausencia de fuga a producción.
-- [ ] Consolidar el pipeline de fotografía: prompt/manifiesto, revisión por lotes,
+- [x] Consolidar el pipeline de fotografía: prompt/manifiesto, revisión por lotes,
       conversión, responsive, OG, licencia/procedencia y presupuestos.
-- [ ] Preparar una receta repetible que construya, pruebe, capture y documente un
+- [x] Preparar una receta repetible que construya, pruebe, capture y documente un
       tema sin crear infraestructura por marca.
 
 **Cierra cuando:** una nueva identidad puede pasar de brief aprobado a build y QA

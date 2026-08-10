@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "id": "montana",
+  "name": "Montaña",
+  "status": "catalog-concept",
+  "icp": "Propiedad de camping interior o prepirenaico de 35 a 90 unidades que quiere alargar temporada y vender estancias activas.",
+  "objection": "Teme que el producto esté pensado solo para costa y agosto y no explique cierres, clima o estancias de varios días.",
+  "commercialLevel": "Concepto sin nivel asignado; R9 solo lo abrirá con evidencia comercial.",
+  "story": "Llegar como refugio base, entender temporada y accesos, elegir estancia y resolver una consulta condicionada por apertura y meteorología.",
+  "tone": "Sobrio, útil y acogedor; evita aventura extrema, postal alpina y rusticidad decorativa.",
+  "palette": {
+    "tinta": "#17241f",
+    "hueso": "#f2f0e8",
+    "pino": "#315744",
+    "arena": "#b9b2a1",
+    "mar": "#41667a"
+  },
+  "typography": "Display de proporción contenida con sans legible para partes meteorológicos, aperturas y distancias.",
+  "signatureScreens": [
+    "Héroe de refugio base con temporada visible",
+    "Ficha de estancia con acceso, clima y equipamiento"
+  ],
+  "photoInventory": [
+    "Héroe de valle o bosque con espacio negativo",
+    "Parcela y cabaña en clima fresco",
+    "Sendero, piedra húmeda y refugio común"
+  ],
+  "successCriterion": "Una persona reconoce operación de interior y temporada larga sin confundirla con un reskin de costa."
+}

@@ -1,0 +1,83 @@
+{
+  "procedencia": {
+    "tipo": "legado-documentado",
+    "fuente": "Nano Banana Pro y Higgsfield Soul 2.0; ADR 0006 y trabajos/roles de ADR 0024.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Cala Sereno.",
+    "nota": "Los primeros trabajos preceden a fotos.estado.json; no se inventan metadatos retroactivos. Toda sustitución futura usa foto-pipeline.mjs."
+  },
+  "lotes": [
+    ["hero-dia", "hero-anochecer"],
+    ["tipo-parcela", "tipo-premium"],
+    ["tipo-bungalow", "tipo-glamping"],
+    ["tipo-autocaravana", "detalle-bungalow-interior"],
+    ["detalle-glamping-interior", "instalacion-piscina"],
+    ["instalacion-restaurante", "textura-lona"]
+  ],
+  "derivados": {
+    "fuente": "hero-dia",
+    "titulo": "Cala Sereno",
+    "subtitulo": "Camping mediterráneo · demostración"
+  },
+  "piezas": {
+    "hero-dia": {
+      "aspecto": "21:9",
+      "papel": "Héroe de nivel 3.",
+      "prompt": "Camping mediterráneo bajo pino carrasco en luz de mañana, lona y arena compactada, fotografía editorial sin personas reconocibles, texto, marcas, HDR o saturación de folleto."
+    },
+    "hero-anochecer": {
+      "aspecto": "21:9",
+      "papel": "Héroe de nivel 1.",
+      "prompt": "Camping mediterráneo bajo pinos al anochecer, luces cálidas contenidas y cielo azul, fotografía editorial sin personas reconocibles, texto, marcas, HDR o arquitectura imposible."
+    },
+    "tipo-parcela": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta de parcela estándar.",
+      "prompt": "Parcela mediterránea realista bajo pinos con suelo de arena compactada y conexión discreta, luz natural, sin personas reconocibles, texto, logos, HDR o saturación."
+    },
+    "tipo-premium": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta de parcela premium.",
+      "prompt": "Parcela amplia de camping mediterráneo con mayor sombra y servicios visibles, escala operativa real, sin personas reconocibles, texto, logos, HDR o lujo imposible."
+    },
+    "tipo-bungalow": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta de bungalow.",
+      "prompt": "Bungalow sobrio de una planta bajo pinos mediterráneos, porche sencillo y materia creíble, sin personas reconocibles, texto, logos, HDR o estilismo de hotel."
+    },
+    "tipo-glamping": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta de glamping.",
+      "prompt": "Tienda de lona de glamping contenida y plausible bajo pinos, plataforma de madera sencilla, sin personas reconocibles, texto, logos, HDR o lujo fantástico."
+    },
+    "tipo-autocaravana": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta de autocaravana.",
+      "prompt": "Plaza de autocaravana con toldo a medio desplegar, sombra moteada de mañana y agujas de pino en el suelo, sin personas, texto, marcas, matrículas o HDR."
+    },
+    "detalle-bungalow-interior": {
+      "aspecto": "3:2",
+      "papel": "Galería interior de bungalow.",
+      "prompt": "Interior de bungalow con madera clara, cama de lino blanco y salvia y sombra de pino en la ventana, luz natural, sin personas, texto, logos o espacio imposible."
+    },
+    "detalle-glamping-interior": {
+      "aspecto": "3:2",
+      "papel": "Galería interior de glamping.",
+      "prompt": "Interior de tienda safari con lona cruda, cama de lino natural y luz cálida moteada, escala creíble, sin personas, texto, logos o estilismo excesivo."
+    },
+    "instalacion-piscina": {
+      "aspecto": "3:2",
+      "papel": "Página de instalaciones.",
+      "prompt": "Piscina de camping bajo pinos de Alepo con sombras largas, piedra y tumbonas vacías, luz de última mañana, sin personas, texto, logos, HDR o saturación."
+    },
+    "instalacion-restaurante": {
+      "aspecto": "3:2",
+      "papel": "Página de instalaciones.",
+      "prompt": "Terraza restaurante bajo lona crema entre pinos, mesas sencillas y mar distante, luz dorada contenida, sin personas, texto legible, logos, HDR o lujo hotelero."
+    },
+    "textura-lona": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano de lona mediterránea con sombra de pino y textura visible, luz natural lateral, sin personas, texto, logos, HDR o tratamiento artificial."
+    }
+  }
+}

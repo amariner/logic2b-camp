@@ -3,7 +3,8 @@
   --lc-hueso: #f3efe3;
   --lc-pino: #566044;
   --lc-arena: #c9bda4;
-  --lc-mar: #a85e3b;
+  /* Barro accesible también como texto de estado (AA sobre hueso). */
+  --lc-mar: #995537;
 
   --lc-pino-oscuro: #3e4631;
   --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));

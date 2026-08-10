@@ -81,8 +81,8 @@ function main(): void {
     }
     const result = scaffoldTenant(join(root, 'tenants/_template'), join(root, 'tenants'), identity);
     console.log(`✓ tenants/${identity.slug}/ creado (${result.filesWritten.length} ficheros)`);
-    console.log('\nCapa 2 pendiente (contenido real, no automatizable):');
-    for (const t of result.contentTodos) console.log(`  · ${t.file}: ${t.todoCount} __TODO__`);
+    console.log('\nCapa 2 pendiente (brief, contenido y media reales):');
+    for (const t of result.setupTodos) console.log(`  · ${t.file}: ${t.todoCount} __TODO__`);
     if (result.pendingDatabaseId) {
       console.log(
         '  · wrangler.jsonc: database_id pendiente (se rellena tras crear la D1 real, paso 1 del plan)',

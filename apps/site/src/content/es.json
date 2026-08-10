@@ -67,6 +67,7 @@
         "href": "/demos/mardefondo/"
       },
       {
+        "slug": "montana",
         "nombre": "Montaña",
         "estilo": "Refugio y temporada larga",
         "imagen": "/temas/montana.webp",
@@ -75,6 +76,7 @@
         "href": ""
       },
       {
+        "slug": "familiar",
         "nombre": "Familiar",
         "estilo": "Cálido y cercano",
         "imagen": "/temas/familiar.webp",
@@ -83,6 +85,7 @@
         "href": ""
       },
       {
+        "slug": "parcela",
         "nombre": "Parcela",
         "estilo": "Directo y funcional",
         "imagen": "/temas/parcela.webp",

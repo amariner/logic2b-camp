@@ -1,4 +1,10 @@
 {
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Modelo integrado de imagen de Codex, sesión 85 del 2026-08-06.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Pinada del Mar.",
+    "nota": "Once másteres inspeccionados antes de optimizar; sin URLs externas ni material de otros tenants."
+  },
   "_": [
     "Encargo de arte y manifiesto de descarga de Camping Pinada del Mar.",
     "Cada clave es el NOMBRE DE FICHERO que la web ya espera en content/media/:",
@@ -18,6 +24,19 @@
     "Los archivos finales viven en content/media/ con el nombre de cada clave.",
     "No dependen de URLs externas ni del proveedor usado en sesiones anteriores."
   ],
+  "lotes": [
+    ["hero-calle", "hero-anochecer"],
+    ["parcela", "calle-pinos"],
+    ["bungalow-exterior", "bungalow-interior"],
+    ["mobil-home", "instalacion-recepcion"],
+    ["instalacion-piscina", "textura-lona"],
+    ["entorno"]
+  ],
+  "derivados": {
+    "fuente": "hero-calle",
+    "titulo": "Pinada del Mar",
+    "subtitulo": "110 unidades · Costa Daurada"
+  },
   "piezas": {
     "hero-calle": {
       "prompt": "Editorial documentary photograph of the main street of a Mediterranean coastal campsite at mid-morning in August. A wide compacted sand-and-gravel avenue runs away from the camera under tall Aleppo pines with high open canopies. On both sides, numbered pitches with white touring caravans, green canvas awnings and simple wooden posts; dappled pine shade falls across the sand. At the far end the street opens onto a pale strip of sea and sky. Natural Mediterranean light, no HDR, no brochure saturation, muted greens and warm sand tones, subtle 35mm film grain, 35mm lens at f/5.6. No people, no text, no signage lettering, no logos, no watermarks.",

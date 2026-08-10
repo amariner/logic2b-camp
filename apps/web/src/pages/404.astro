@@ -9,7 +9,7 @@ const c = getContent(locale);
 // `hero-anochecer` es el nombre del ROL (héroe secundario), no de una foto que
 // todo camping tenga: se cae al héroe estático del tenant y, si tampoco, a la
 // materia de su paleta. Esta línea con `!` era la que impedía construir
-// Pinada del Mar entera por una sola imagen ausente.
+// un tenant entero por una sola imagen ausente.
 const fotoBase = images['hero-anochecer'] ?? images[config.staticHeroImage ?? 'hero-dia'];
 const foto = fotoBase
   ? await getImage({ src: fotoBase, widths: [828, 1280, 1920], format: 'webp' })

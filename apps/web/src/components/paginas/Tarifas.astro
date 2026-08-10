@@ -17,8 +17,8 @@ const plan = (unitTypeId: string, seasonId: string) =>
 // Suplementos de parcela: iguales para todos los tipos pitch dentro de cada
 // temporada, así que basta con leer UNA parcela — la primera del propio tenant.
 // Antes esto era `plan('ut_std', …)!`, el id de la demo escrito a mano en el
-// core: cualquier camping que llame a sus parcelas de otra forma (Pinada del
-// Mar: `ut_parcela_pino`) rompía la página entera de tarifas.
+// core: cualquier camping que llame a sus parcelas de otra forma rompía la
+// página entera de tarifas.
 // Cabecera y cuerpo salen de la MISMA lista de pares (temporada, plan): si una
 // temporada no tiene tarifa para ese tipo, no se pinta su columna en ninguno de
 // los dos, en vez de descuadrar la tabla una celda.
@@ -91,7 +91,7 @@ const filasSuplemento: [string, (p: (typeof suplementos)[number]['p']) => number
         estira la rejilla y saca el DOCUMENTO de la pantalla, por mucho
         `overflow-x-auto` que lleve el envoltorio de dentro. Se veía solo en los
         campings de nombres de temporada largos ("Final de temporada" desbordaba
-        108px a 375px en Pinada del Mar; "Alta"/"Media" de la demo cabían). */}
+        108px a 375px en un tenant real; los nombres cortos de la demo cabían). */}
     <div class="min-w-0">
       <h2 class="font-display mb-5 text-[17px] font-semibold">{t.suplementos.titulo}</h2>
       <div class="overflow-x-auto">

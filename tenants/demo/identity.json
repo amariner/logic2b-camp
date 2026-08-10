@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "demo",
+  "name": "Camping Cala Sereno",
+  "status": "approved-demo",
+  "icp": "Gerencia de camping mediterráneo que necesita entender la escalera completa antes de elegir alcance.",
+  "objection": "Teme que web, reserva y gestión sean piezas separadas o una plantilla sin identidad propia.",
+  "commercialLevel": "Recorrido canónico de Inicio a Inteligente; el selector de nivel solo compara Inicio y Gestión en vivo.",
+  "story": "Reconocer el camping, consultar disponibilidad, reservar y continuar en un gestor operativo de demostración.",
+  "tone": "Mediterráneo, directo y sereno; evita promesas de paraíso, lujo genérico y jerga técnica.",
+  "palette": {
+    "tinta": "#0e1512",
+    "hueso": "#f4f2ec",
+    "pino": "#1f4d3a",
+    "arena": "#c9b99a",
+    "mar": "#2e6e73"
+  },
+  "typography": "Clash Display para titulares e Inter para lectura y cifras; escala compartida optimizada del tenant.",
+  "signatureScreens": [
+    "Portada con disponibilidad real de demo",
+    "Planning del gestor con ocupación de agosto",
+    "Plano operativo enlazado con la estancia"
+  ],
+  "photoInventory": [
+    "Héroes de día y anochecer bajo pinada",
+    "Parcelas, bungalows, glamping y autocaravana",
+    "Piscina, restaurante, interiores y textura de lona"
+  ],
+  "successCriterion": "El recorrido completo funciona en seis idiomas y sus cuatro temas conservan contraste AA sin aparentar cuatro productos."
+}

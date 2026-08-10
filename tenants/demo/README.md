@@ -1,8 +1,15 @@
 # Tenant demo — Camping Cala Sereno
 
-- **Qué es**: camping ficticio de la demo comercial → `camp.logic2b.com`. Reset nocturno (Fase 10).
-- **Nivel**: conmutable 1/3 en la demo (Fase 10).
-- **Estado**: Fase 3 — D1 real creada, migrada y sembrada; Worker desplegado con la API pública y privada. Pendiente: DNS `camp` (AAAA `100::` proxied), config/theme/content en Fases 4 y 9.
+- **Qué es**: camping ficticio canónico bajo `/demo/` dentro de la herramienta
+  comercial compuesta de `camp.logic2b.com`.
+- **Nivel**: build técnico tier 3; el conmutador de demo compara Inicio y
+  Gestión sin crear otro bundle.
+- **Identidad**: `identity.json`, `theme.css`, contenido en seis idiomas y cuatro
+  temas accesibles (`pinada`, `mar`, `garriga`, `nit`).
+- **Media**: 12/12 piezas finales locales, procedencia histórica documentada en
+  `fotos.json` y derivados dentro de presupuesto.
+- **Estado remoto**: cualquier deploy, migración o reseed sigue requiriendo
+  autorización explícita; este README no afirma el estado actual de producción.
 
 ## Usuarios del dashboard (seed)
 
@@ -37,3 +44,14 @@ preservando `d1_migrations` → siembra con `--file seed.sql` (INSERT-only). El
 orden de borrado es el mismo `DELETE_ORDER` del reset local (`reset.ts`), fuente
 única; la lógica es pura y está testeada en `remote-seed.test.ts`. Ojo: el wipe
 borra sesiones, así que después toca re-login en el dashboard.
+
+## Fábrica local
+
+```bash
+pnpm fotos -- status demo
+node apps/web/scripts/check-tenant-factory.mjs
+pnpm --filter @logic-camp/web capture:tenant -- demo / --theme=nit
+```
+
+La receta y las fronteras de marca completas viven en
+`docs/FABRICA-IDENTIDADES.md`.

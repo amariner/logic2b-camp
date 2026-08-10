@@ -1,0 +1,61 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D1-V producido para Logic2B en la sesión 82; se conservan los másteres *-source.png.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia L'Olivar.",
+    "nota": "El contrato de arte y los ocho papeles están en docs/CONTRATO-VISUAL-OLA-1.md §3.4."
+  },
+  "lotes": [
+    ["hero-dia", "hero-anochecer"],
+    ["tipo-parcela", "tipo-tienda"],
+    ["detalle-tienda-interior", "instalacion-balsa"],
+    ["entorno-piedra-seca", "textura-lona"]
+  ],
+  "derivados": {
+    "fuente": "hero-dia",
+    "titulo": "L'Olivar",
+    "subtitulo": "22 unidades · Maestrat"
+  },
+  "piezas": {
+    "hero-dia": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo.",
+      "prompt": "Fotografía documental editorial de una tienda y parcela bajo olivos en un microcamping del Maestrat, luz seca de mañana, piedra y cal, sin personas, texto, logos ni HDR."
+    },
+    "hero-anochecer": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía documental de una masía y tienda entre olivos al anochecer, luz cálida contenida y cielo todavía azul, sin personas, texto, logos ni estética de resort."
+    },
+    "tipo-parcela": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de parcela.",
+      "prompt": "Parcela honesta sobre suelo firme bajo olivos, muro de piedra seca y mesa sencilla, escala real de microcamping, luz natural, sin personas, texto, logos ni HDR."
+    },
+    "tipo-tienda": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de tienda.",
+      "prompt": "Tienda premontada de lona cruda bajo olivos con estructura simple de madera, fotografía documental y creíble, sin lujo, personas, texto, logos ni HDR."
+    },
+    "detalle-tienda-interior": {
+      "aspecto": "3:2",
+      "papel": "Galería interior de tienda.",
+      "prompt": "Interior de tienda de lona con cama sencilla, lino y estructura de madera, sombra de hojas y luz natural, sin estilismo de resort, personas, texto o logos."
+    },
+    "instalacion-balsa": {
+      "aspecto": "3:2",
+      "papel": "Instalación de baño pequeña y creíble.",
+      "prompt": "Pequeña balsa o alberca segura entre olivos y piedra seca, agua tranquila y luz de mañana, fotografía editorial documental sin personas, texto, logos ni HDR."
+    },
+    "entorno-piedra-seca": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno.",
+      "prompt": "Camino entre bancales y muros de piedra seca del Maestrat, materia antes que postal, luz natural y color contenido, sin personas, texto, logos ni saturación turística."
+    },
+    "textura-lona": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano documental de sombra de hoja de olivo sobre cal o lona cruda, textura visible, luz lateral natural, sin personas, texto, logos ni efectos digitales."
+    }
+  }
+}

@@ -129,7 +129,7 @@ validar en contraste:
 | Cal           | `#F3EFE3` | Fondo principal                      |
 | Piedra        | `#C9BDA4` | Bordes, superficies y separadores    |
 | Hoja de olivo | `#566044` | Enlaces, foco y acción de marca      |
-| Barro cocido  | `#A85E3B` | Acento corto, nunca texto largo      |
+| Barro cocido  | `#995537` | Acento y estados AA sobre cal        |
 
 **Tipografía:** Clash Display 500/600 para titulares cortos con caja normal e
 Inter para cuerpo. Se reutilizan las fuentes existentes; la identidad nace del
@@ -204,8 +204,8 @@ arena compactada, lona verde, bungalows sobrios y recepción muy activa.
 **Personalidad:** práctica, familiar y luminosa. Menos contemplativa que
 L'Olivar: aquí se nota el volumen y el trabajo de recepción.
 
-**Paleta de partida:** tinta `#1E2925`, hueso `#F3F0E8`, arena `#C8B58F`,
-pino `#245845`, sal marina `#5F8D91`. Clash Display 600 en titulares más
+**Paleta aprobada:** tinta `#1E2925`, hueso `#F3F0E8`, arena `#C8B58F`, pino
+`#245845`, sal marina `#436F73`. Clash Display 600 en titulares más
 compactos; Inter y cifras tabulares en fechas/ocupación.
 
 **Marca:** wordmark horizontal «Pinada del Mar» con un corte simple entre
@@ -262,7 +262,7 @@ orden y servicio, no por dorados ni clichés de hotel.
 vende control. La automatización vende revisión humana, no magia.
 
 **Paleta de tenant:** tinta atlántica `#172A2D`, blanco sal `#F6F4EE`, arena
-clara `#D8C7A5`, agua profunda `#176B73`, coral corto `#D0644B`. Clash Display
+clara `#D8C7A5`, agua profunda `#176B73`, coral corto `#A64E3B`. Clash Display
 600/semibold a gran escala e Inter; cifras y dashboards permanecen en el DS
 neutral de Logic2B con un único acento del tenant.
 

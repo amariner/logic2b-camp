@@ -67,6 +67,7 @@ const themeBootScript = `try{
 var v=${JSON.stringify(demoThemes)};
 var p=new URLSearchParams(location.search).get('tema');
 if(p&&v.indexOf(p)>-1){if(p===v[0]){localStorage.removeItem('lc-theme')}else{localStorage.setItem('lc-theme',p)}}
+else if(p){var u=new URL(location.href);u.searchParams.delete('tema');history.replaceState(null,'',u.pathname+u.search+u.hash)}
 var t=localStorage.getItem('lc-theme');
 if(t&&v.indexOf(t)>-1)document.documentElement.dataset.theme=t;
 }catch(e){}`;
@@ -81,6 +82,12 @@ const themeMenuScript = `
   function marcar(t) {
     botones.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.tema === t)); });
   }
+  function sincronizarUrl(t) {
+    var url = new URL(location.href);
+    if (t === def) url.searchParams.delete('tema');
+    else url.searchParams.set('tema', t);
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+  }
   botones.forEach(function (b) {
     b.addEventListener('click', function () {
       var t = b.dataset.tema;
@@ -92,6 +99,7 @@ const themeMenuScript = `
         try { localStorage.setItem('lc-theme', t); } catch (e) {}
       }
       marcar(t);
+      sincronizarUrl(t);
       menu.removeAttribute('open');
     });
   });
@@ -134,7 +142,7 @@ const tierMenuScript = `
 `;
 
 // D3-V: el portfolio de nivel 3 debe recorrer reserva y recibo sin hablar con
-// la D1 de Cala Sereno ni con un proveedor. Se instala antes de hidratar las
+// una D1 ni con un proveedor. Se instala antes de hidratar las
 // islas y solo intercepta las rutas públicas del funnel. Todo lo demás conserva
 // `window.fetch` nativo. El fixture nace del catálogo tipado del tenant: no hay
 // precios ni tipos duplicados dentro de componentes.

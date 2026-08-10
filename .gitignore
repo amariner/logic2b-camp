@@ -28,3 +28,4 @@ exports/
 
 # Builds de verificación del escaparate (apps/web/scripts/check-portfolio.mjs)
 dist-portfolio/
+dist-capture/

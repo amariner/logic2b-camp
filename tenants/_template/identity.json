@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "id": "__SLUG__",
+  "name": "__NOMBRE_DEL_CAMPING__",
+  "status": "template",
+  "icp": "__TODO__ Quién compra y en qué contexto opera el camping.",
+  "objection": "__TODO__ Qué duda concreta debe resolver esta identidad.",
+  "commercialLevel": "__TODO__ Inicio, Gestión, Automatiza o Inteligente.",
+  "story": "__TODO__ Recorrido demostrable con inicio, decisión y cierre.",
+  "tone": "__TODO__ Voz, ritmo y palabras que la marca evita.",
+  "palette": {
+    "tinta": "#14140f",
+    "hueso": "#f5f3ee",
+    "pino": "#2a5c46",
+    "arena": "#c8ba9c",
+    "mar": "#2e6e73"
+  },
+  "typography": "__TODO__ Jerarquía tipográfica y fuente aprobada o compartida.",
+  "signatureScreens": [
+    "__TODO__ Pantalla de reconocimiento",
+    "__TODO__ Pantalla que demuestra el trabajo resuelto"
+  ],
+  "photoInventory": [
+    "__TODO__ Héroe con papel y proporción",
+    "__TODO__ Inventario o alojamiento",
+    "__TODO__ Materia o entorno"
+  ],
+  "successCriterion": "__TODO__ Evidencia observable que aprobará la identidad."
+}

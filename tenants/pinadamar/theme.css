@@ -3,7 +3,8 @@
   --lc-hueso: #f3f0e8;
   --lc-pino: #245845;
   --lc-arena: #c8b58f;
-  --lc-mar: #5f8d91;
+  /* Sal marina accesible también como texto de estado (AA sobre hueso). */
+  --lc-mar: #436f73;
 
   --lc-pino-oscuro: #183d30;
   --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));

@@ -2,13 +2,14 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
-## Índice operativo de pendientes vivos (R1 · 2026-08-10)
+## Índice operativo de pendientes vivos (R8 · 2026-08-10)
 
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R8 fábrica común de temas, contenido y media;
-  R11 reset local y riesgos corregibles.
+- **Local ahora, por checkpoint:** R9 auditoría de cobertura y gate del
+  portfolio; R11 reset local y riesgos corregibles. Una demo D5-V sigue detrás
+  de señal comercial, no de disponibilidad técnica.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -27,7 +28,11 @@ La publicación del vídeo de la sesión 104 está **preparada pero no autorizad
 es un gate de producción, no un pendiente local de implementación.
 
 - ~~[10] `?tema=x` en la URL de la demo~~ → hecho 2026-07-19 (sesión 18: el parámetro valida contra la lista, persiste y gana a localStorage)
-- [10] Tematizar también el dashboard de la demo con los temas del ADR 0009 (hoy solo la web pública; los tokens del dashboard se tenant-izan en Fase 9) — 2026-07-19
+- [10] Tematizar también el dashboard de la demo con los temas del ADR 0009 —
+  **no seleccionado en R8**: el gestor conserva marca Logic2B y los escenarios
+  cambian datos/recorrido dentro de `apps/dashboard/src/demo/`, no la piel. Abrir
+  solo si una demostración comercial observa valor superior al coste de mezclar
+  ambas marcas — 2026-07-19, auditado 2026-08-10.
 - [7.x] Migrar plantillas de email a React Email cuando haga falta diseño rico (el contrato render() no cambia — ADR 0010) — 2026-07-19
 - [7.x] Cloudflare Queues + reintentos programados para notificaciones cuando el volumen lo pida (hoy waitUntil — ADR 0010) — 2026-07-19
 - ~~[7.x] Pantalla de log de notificaciones en el dashboard~~ → hecho 2026-07-19 (sesión 21: `GET /api/admin/notifications` + `/admin/#/notificaciones`, filtro por estado, destino resuelto a booking/enquiry). **Reenvío manual de fallidos queda fuera**: sin `RESEND_API_KEY` real todo queda "desactivada", nunca "fallida" — no hay nada que reenviar ni forma de probarlo hasta que exista una cuenta Resend real con tráfico que falle de verdad; retomar entonces

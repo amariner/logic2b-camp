@@ -118,8 +118,17 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ## Dirección visual
 
-- **Dos marcas, no confundirlas** (ver `docs/BRAND.md`): el **producto Logic2B** (dashboard, landing de venta, docs) lleva marca **Logic2B** — shadcn/ui neutro, Inter Variable + Space Grotesk, wordmark «Logic2B Campings», radius 10px y tokens oklch derivados de `ui.logic2b.com`. La **web pública de cada camping** lleva la marca del **tenant** (mediterránea, ADR 0006), con el isotipo discreto «powered by Logic2B» únicamente en el pie. El Frente B de `docs/ROADMAP.md` está construido; sus remates viven en la ruta duradera y el BACKLOG.
-- **Antimodelo**: SaaS azul isométrico Y TAMBIÉN el look crema+serif+terracota. Ambos gastados.
+- **Tres superficies, dos marcas, no confundirlas** (ver `docs/BRAND.md`): el
+  **dashboard Logic2B** conserva el sistema operativo neutro de `packages/ui`
+  (Inter Variable + Space Grotesk, radius 10px y tokens oklch); la **landing y
+  documentación comercial Logic2B** usan el sistema botánico editorial ya
+  aprobado (papel, verde, serif expresiva y radius 14px); la **web pública de
+  cada camping** usa exclusivamente su identidad `--lc-*`, con «powered by
+  Logic2B» discreto en el pie. El sistema botánico nunca viste el dashboard y
+  los tokens del tenant nunca visten producto o landing.
+- **Antimodelo**: SaaS azul isométrico y la plantilla turística genérica
+  crema+serif+terracota. El sistema botánico comercial usa serif y papel como
+  voz propia de Logic2B, no como disfraz intercambiable de un tenant.
 - **Territorio**: camping mediterráneo real — pino carrasco, sombra, lona, arena compactada. Materia, no vector.
 - Landing nivel 3: el héroe es el **widget de disponibilidad funcionando de verdad**. Nivel 1: héroe distinto (sin motor).
 - Dashboard: densidad sin ruido. **El planning (tape chart) es el elemento firma** — ahí va la ambición. Rápido antes que bonito.

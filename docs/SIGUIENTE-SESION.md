@@ -1,32 +1,30 @@
-# Prompt para la siguiente sesión — objetivo duradero en R8
+# Prompt para la siguiente sesión — objetivo duradero en R9
 
-> Reescrito tras la sesión 111 (2026-08-10). R0–R7 están cerrados; producción
+> Reescrito tras la sesión 112 (2026-08-10). R0–R8 están cerrados; producción
 > sigue requiriendo autorización explícita.
 
 ## Estado en una línea
 
-El producto, el gestor y su recorrido comercial ya dicen la misma verdad; el
-siguiente trabajo seguro es demostrar que una identidad nueva puede construirse
-con la fábrica común sin copiar aplicaciones ni filtrar marcas al core.
+Una identidad nueva ya puede pasar de brief a contenido, tema, media, build y
+capturas locales sin tocar el core ni crear infraestructura; ahora toca decidir
+qué hueco comercial real falta en el portfolio antes de fabricar otra demo.
 
 ## Objetivo prioritario
 
-Cerrar **R8 · Fábrica común de temas, contenido y media** de
-`docs/RUTA-DESARROLLO-CONTINUO.md`:
+Abrir **R9 · Portfolio, nuevos temas y olas D5-V/D6-V** de
+`docs/RUTA-DESARROLLO-CONTINUO.md`, empezando solo por su auditoría y gate:
 
-1. Inventariar el contrato real `config.ts` + `theme.css` + `content/` +
-   `custom/`, la plantilla y el dry-run del CLI; localizar conocimiento de
-   Cala Sereno o de las demos que haya escapado al core compartido.
-2. Contrastar Montaña, Familiar y Parcela con el brief mínimo de identidad,
-   tokens semánticos, selector, persistencia, URL, fallback, contraste,
-   reduced motion y fronteras entre sitio comercial, tenant y gestor.
-3. Auditar el pipeline fotográfico y de media desde manifiesto/brief hasta
-   responsive, OG, procedencia y presupuestos. Corregir primero cualquier
-   duplicación o paso manual reproducible; no generar activos ni gastar
-   créditos sin una necesidad y aprobación concretas.
-4. Terminar con una receta ejecutable y verificada para crear, construir,
-   probar, capturar y documentar una identidad sin modificar el core ni crear
-   infraestructura por marca.
+1. Comparar L'Olivar, Pinada del Mar y Mar de Fondo con los briefs de Montaña,
+   Familiar y Parcela: ICP, objeción, nivel, recorrido y pantallas firma.
+2. Identificar gaps demostrables sin asumir que seis tarjetas exigen seis demos.
+3. Buscar en ROADMAP, notas comerciales y evidencia disponible qué concepto
+   responde a una señal observada y registrar explícitamente por qué no duplica
+   una ancla existente.
+4. Si no existe señal suficiente, cerrar la auditoría con el gate en espera y
+   avanzar al siguiente trabajo local permitido por la ruta; no generar activos,
+   consumir proveedor ni inventar aprendizaje.
+5. Solo si el gate queda probado, ejecutar una demo como entrega vertical usando
+   `docs/FABRICA-IDENTIDADES.md`; D5-V precede siempre a D6-V.
 
 ## Publicación preparada, no autorizada
 
@@ -41,21 +39,21 @@ Cerrar **R8 · Fábrica común de temas, contenido y media** de
 
 ## Ya verificado — no repetir sin un cambio relevante
 
-- R0–R6: línea base, fronteras de configuración/demo, API y pagos fail-closed,
-  motor/seed creíbles y gestor cerrado por roles, estados, semántica y
-  recorridos firma.
-- R7: los cuatro estados comerciales aparecen en home y precios; las cuatro
-  guías se enlazan desde la portada; `BRAND.md` reconoce el sistema botánico sin
-  contaminar dashboard o tenant; el guion usa URLs HTTPS y alcance real del rol
-  demo. Las 60 rutas de guía llevan `BreadcrumbList` validado en `<head>`.
-- QA R7 recorrió home, precios y guía en ES/EN a 1366/375, formulario, diálogo,
-  FAQ visible+JSON-LD, vídeo de 38,9 s con controles, pistas ES/EN y
-  transcripción, y tres formatos de campaña sin desborde, recursos rotos ni
-  errores de navegador.
-- D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
-  cerrados; D5-V continúa detrás de aprendizaje comercial y no autoriza una
-  demo nueva en R8.
-- No hubo deploy, reseed ni escritura remota en R7.
+- R0–R7: línea base, fronteras, motor, gestor y recorrido comercial cerrados.
+- R8: `identity.json` fija el brief mínimo para cuatro tenants y tres conceptos;
+  `_template` y `pnpm new:camping` incluyen brief, manifiesto y destino de media.
+- `check-tenant-factory.mjs`, dentro de `pnpm check`, descubre identidades y
+  valida locales, tokens, AA, temas claro/oscuro, radios, procedencia, lotes,
+  dimensiones y presupuestos. Los cuatro manifiestos están completos: 12/12,
+  8/8, 11/11 y 14/14.
+- El selector sincroniza URL/localStorage, limpia temas inválidos y conserva el
+  predeterminado; Playwright pasó selector + reduced motion 5/5 contra el bundle.
+- La captura genérica construyó L'Olivar y Cala en tema nocturno a 375/1366 sin
+  4xx ni errores; la inspección visual confirmó jerarquía, media, formulario,
+  footer y el héroe histórico ya normalizado.
+- Los tres builds de portfolio y el bundle compuesto pasaron. No se generó
+  fotografía ni se consumieron créditos; sí se normalizaron derivados locales.
+  No hubo deploy, reseed ni escritura remota en R8.
 
 ## Prompt
 

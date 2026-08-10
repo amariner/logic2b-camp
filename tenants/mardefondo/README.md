@@ -47,3 +47,6 @@ valida descarga, dimensiones y proporción, y deja el WebP en `.staging`.
 Solamente `approve` lo mueve a `content/media/`, que es lo que consume la web.
 Mientras no exista una pieza final aprobada, `<Materia>` mantiene la web
 construible sin reciclar fotos de otro camping.
+
+Brief aprobado en `identity.json`; la receta local completa y sus presupuestos
+están en `docs/FABRICA-IDENTIDADES.md`.
