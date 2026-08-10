@@ -84,6 +84,24 @@ const routes = [
     texts: ['Sombra de olivo', 'Veintidós maneras'],
   },
   {
+    id: 'riuclar-home',
+    path: '/demos/riuclar/',
+    noindex: true,
+    texts: ['Boira al riu', 'Vint-i-quatre llocs'],
+  },
+  {
+    id: 'duna-home',
+    path: '/demos/duna/',
+    noindex: true,
+    texts: ['Sal en el aire', 'Veinte plazas'],
+  },
+  {
+    id: 'delta-home',
+    path: '/demos/delta/',
+    noindex: true,
+    texts: ['Dieciséis parcelas', 'Dos parcelas'],
+  },
+  {
     id: 'pinada-home',
     path: '/demos/pinadamar/',
     noindex: true,

@@ -1,0 +1,25 @@
+/* Riu Clar: bosc humit, pissarra i aigua freda. */
+:root {
+  --lc-tinta: #17241f;
+  --lc-hueso: #f2f0e8;
+  --lc-pino: #315744;
+  --lc-arena: #b9b2a1;
+  --lc-mar: #41667a;
+
+  /* derivados — NUNCA colores nuevos, siempre color-mix de los 5 de arriba */
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 82%, black);
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+
+  --lc-font-display: 'Clash Display', system-ui, sans-serif;
+  --lc-font-text: 'Inter', system-ui, sans-serif;
+
+  /* forma (ADR 0018): UNA base + derivados por calc(), como la escala del DS
+     Logic2B (BRAND.md §5) pero con la firmeza mediterránea de ADR 0006 —
+     base 4px, lejos del 10px del producto. Subir de nivel un tenant = cambiar
+     SOLO --lc-radius; los tres derivados se recalculan solos. */
+  --lc-radius: 3px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 2px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 4px);
+}

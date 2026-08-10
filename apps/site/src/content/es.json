@@ -33,7 +33,7 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Tres campings ficticios convierten Inicio, Gestión y Visión en recorridos navegables sobre el mismo producto.",
+    "texto": "Seis campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
@@ -67,13 +67,31 @@
         "href": "/demos/mardefondo/"
       },
       {
-        "slug": "montana",
-        "nombre": "Montaña",
-        "estilo": "Refugio y temporada larga",
+        "slug": "riuclar",
+        "nombre": "Riu Clar",
+        "estilo": "Inicio · río y temporada visible",
         "imagen": "/temas/montana.webp",
         "variante": "natural",
-        "estado": "Concepto visual",
-        "href": ""
+        "estado": "Demo navegable",
+        "href": "/demos/riuclar/"
+      },
+      {
+        "slug": "duna",
+        "nombre": "La Duna",
+        "estilo": "Inicio · camper y sal",
+        "imagen": "/temas/parcela.webp",
+        "variante": "pitch",
+        "estado": "Demo navegable",
+        "href": "/demos/duna/"
+      },
+      {
+        "slug": "delta",
+        "nombre": "El Delta",
+        "estilo": "Inicio · humedal y temporada corta",
+        "imagen": "/temas/montana.webp",
+        "variante": "natural",
+        "estado": "Demo navegable",
+        "href": "/demos/delta/"
       },
       {
         "slug": "familiar",

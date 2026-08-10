@@ -1,0 +1,61 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D5-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping La Duna.",
+    "nota": "Producción en cuatro tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-amanecer", "hero-ultima-luz"],
+    ["tipo-plaza-base", "tipo-plaza-duna"],
+    ["detalle-tienda-tablas", "instalacion-banos-modulo"],
+    ["entorno-pasarela-mar", "textura-madera-sal"]
+  ],
+  "derivados": {
+    "fuente": "hero-amanecer",
+    "titulo": "Camping La Duna",
+    "subtitulo": "20 plazas · costa de Levante"
+  },
+  "piezas": {
+    "hero-amanecer": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para el titular a 375 y 1366 px.",
+      "prompt": "Fotografía editorial documental de un microcamping mediterráneo para furgonetas al amanecer, situado detrás de una duna protegida, nunca sobre la playa. Primer plano de arena compactada y madera lavada por la sal, con dos plazas amplias y distintas entre tamariscos bajos; una furgoneta camper blanca contemporánea, genérica y sin logotipo ocupa una plaza, la otra queda vacía. Una pasarela elevada de madera atraviesa la duna hacia un horizonte de mar apenas visible. Luz coral y azul natural, composición panorámica gráfica con mucho espacio negativo a la izquierda. Escena completamente desierta: ninguna persona, rostro o silueta; sin texto, señal, marca, matrícula, tablas clavadas en la arena, palmeras, resort, HDR ni acampada ilegal sobre la playa."
+    },
+    "hero-ultima-luz": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental del mismo microcamping mediterráneo para furgonetas detrás de una duna protegida a última hora. Tres plazas de arena compactada separadas por traviesas de madera salina y vegetación baja; una sola furgoneta camper compacta genérica con un toldo sencillo, sin logotipo ni matrícula visible. Al fondo se reconoce la duna, la pasarela elevada y una línea fina de mar, nunca vehículos sobre la playa. Luz azul y coral contenida, composición panorámica con espacio negativo. Ninguna persona, rostro, silueta, texto, señal, marca, palmera, fiesta, fuego, guirnalda, lujo de resort ni HDR."
+    },
+    "tipo-plaza-base": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de la plaza Base.",
+      "prompt": "Fotografía editorial documental de una plaza Base de 55 metros cuadrados en el mismo microcamping mediterráneo detrás de la duna. Suelo firme de arena compactada y grava clara, límites bajos de madera lavada, tamariscos jóvenes y una conexión eléctrica discreta. Una furgoneta camper compacta contemporánea y completamente genérica está correctamente estacionada, sin logotipos, textos ni matrícula visible; una mesa plegable sencilla muestra la escala. Luz limpia de mañana, viento suave y geometría legible. Ninguna persona, playa bajo las ruedas, palmera, césped artificial, glamping, fiesta, HDR ni lujo."
+    },
+    "tipo-plaza-duna": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de la plaza Duna.",
+      "prompt": "Fotografía editorial documental de una plaza Duna de 75 metros cuadrados en el mismo microcamping mediterráneo, protegida detrás de una duna con vegetación autóctona. Suelo firme de arena compactada, límites de madera lavada y una conexión eléctrica discreta. Una autocaravana mediana, moderna y completamente genérica, sin logotipos, texto o matrícula visible, deja espacio de maniobra y un lateral libre. La pasarela elevada aparece al fondo sin tocar la plaza. Luz natural de mañana y escala real. Ninguna persona, vehículo sobre playa, palmera, césped artificial, glamping, fiesta, HDR o resort."
+    },
+    "detalle-tienda-tablas": {
+      "aspecto": "3:2",
+      "papel": "Tienda pequeña, recepción y alquiler de tablas.",
+      "prompt": "Fotografía editorial documental de día del interior de una tienda-recepción pequeña en el mismo microcamping mediterráneo. Madera contrachapada clara y acero pintado, mostrador sencillo, nevera cerrada, estantes con productos genéricos sin etiquetas legibles y tres tablas de surf blandas lisas colocadas verticalmente, sin marcas ni texto. Una ventana amplia deja ver tamariscos y la duna, no la playa. Espacio joven, funcional y modesto, con luz natural. Ninguna persona, rostro, póster, palabra, logotipo, neón, bar de lujo, decoración hawaiana, HDR ni sombras negras."
+    },
+    "instalacion-banos-modulo": {
+      "aspecto": "3:2",
+      "papel": "Baños compactos y accesibles.",
+      "prompt": "Fotografía arquitectónica documental de día de un módulo de baños compacto y bien cuidado en el mismo microcamping mediterráneo. Volumen rectangular revestido con listones verticales de madera salinizada, dos puertas opacas y un pequeño porche de sombra; acceso plano de arena estabilizada con una rampa suave y ducha exterior para pies integrada, sin mostrar interiores. Tamariscos y duna protegida alrededor, luz natural dura pero controlada. Ninguna persona, texto, rótulo, logotipo, icono, sanitario visible, palmera, lujo de resort ni arquitectura imposible."
+    },
+    "entorno-pasarela-mar": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno y acceso a pie al mar.",
+      "prompt": "Fotografía documental panorámica de una pasarela elevada de madera que cruza una duna mediterránea protegida hacia el mar. La pasarela empieza grande en primer plano y guía toda la composición entre barrón, siemprevivas y arena movida por el viento; al fondo se ve una línea limpia de mar azul. No hay parcelas ni vehículos en la playa. Luz de primera mañana, aire salino y horizonte despejado. Ninguna persona, huella protagonista, tabla, señal, texto, logo, papelera, palmera, chiringuito, saturación, postal tropical ni HDR."
+    },
+    "textura-madera-sal": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de tablones de madera lavados por sol y sal junto a arena fina con pequeñas hojas de barrón, veta gris y cálida muy nítida, luz lateral coral suave y una sombra lineal de barandilla; sin personas, pies, texto, logos, pintura, basura, conchas decorativas ni efectos digitales."
+    }
+  }
+}

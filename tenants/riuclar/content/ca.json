@@ -1,0 +1,295 @@
+{
+  "seo": {
+    "title": "Càmping Riu Clar — vint-i-quatre parcel·les entre riu i bosc",
+    "description": "Un microcàmping prepirinenc de 24 parcel·les sota pins i pollancres. Obert de Setmana Santa a mitjan octubre, amb el riu i els camins a tocar."
+  },
+  "nav": {
+    "alojamientos": "Parcel·les",
+    "instalaciones": "El càmping",
+    "entorno": "Riu i camins",
+    "tarifas": "Tarifes",
+    "blog": "Quadern",
+    "contacto": "Consulta les dates",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estil"
+  },
+  "demo": {
+    "banner": "Demostració fictícia de Logic2B: cap consulta no s'envia ni es desa.",
+    "nivel": "Inici",
+    "nivel1": "Inici",
+    "nivel3": "Gestió"
+  },
+  "hero3": {
+    "titulo": "El camp base més petit del riu.",
+    "prueba": "24 parcel·les · tracte directe"
+  },
+  "hero1": {
+    "titulo": "Boira al riu. Terra humida. Vint-i-quatre llocs on aturar-se.",
+    "cta": "Consulta les dates"
+  },
+  "ticker": [
+    "24 parcel·les sota els arbres",
+    "obert de Setmana Santa a octubre",
+    "sender des de la porta",
+    "nits fresques tot l'estiu",
+    "accés final per carretera estreta"
+  ],
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Arribada",
+    "salida": "Sortida",
+    "adultos": "Adults",
+    "ninos": "Infants"
+  },
+  "tipos": {
+    "titulo": "Dues maneres de ser a prop del riu",
+    "subtitulo": "Totes les parcel·les tenen terra ferma, ombra i punt elèctric. Canvien l'espai, el silenci i la distància fins a l'aigua.",
+    "verTodo": "Veure les 24 parcel·les",
+    "nombres": {
+      "ut_std": "Parcel·la de bosc",
+      "ut_conf": "Parcel·la de ribera"
+    },
+    "cards": [
+      {
+        "id": "bosc",
+        "nombre": "Parcel·les de bosc",
+        "desc": "Setze parcel·les d'uns 75 m², sota pins, amb grava compactada, ombra fonda i electricitat de 6 A.",
+        "foto": "tipus-parcella-bosc"
+      },
+      {
+        "id": "ribera",
+        "nombre": "Parcel·les de ribera",
+        "desc": "Vuit parcel·les d'uns 90 m², més obertes i a prop del camí del riu, amb electricitat de 10 A.",
+        "foto": "tipus-parcella-riu"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Aquí la temporada la marquen l'aigua, el camí i la primera glaçada.",
+    "texto": "Obrim quan el terreny torna a estar ferm i tanquem a mitjan octubre. Des de la porta surt el sender de ribera; per a les rutes altes convé mirar el temps abans d'arrencar."
+  },
+  "form": {
+    "titulo": "Consulta les dates",
+    "subtitulo": "Digues-nos quan vens, quants sou i quin vehicle portes. Aquesta demostració ensenya la resposta sense enviar les teves dades.",
+    "nombre": "Nom",
+    "email": "Correu electrònic",
+    "fechas": "Dates aproximades",
+    "fechasEjemplo": "12 → 16 setembre",
+    "grupo": "Persones",
+    "estancia": "On vols quedar-te",
+    "estanciaVacia": "Tria bosc o ribera",
+    "mensaje": "Vehicle, tenda i què necessites saber",
+    "enviar": "Veure resposta de mostra",
+    "enviando": "Preparant la resposta…",
+    "ok": "Consulta rebuda.",
+    "error": "Demostració d'error: la consulta no s'ha enviat. En producció podries tornar-ho a provar o trucar al càmping.",
+    "demoEtiqueta": "Demostració:",
+    "demoAviso": "no enviarem ni desarem les teves dades.",
+    "demoSpam": "Demostració antispam: la consulta s'ha aturat abans d'enviar o desar dades.",
+    "demoExitoTitulo": "La consulta està preparada",
+    "demoExitoTexto": "En una web activa, el càmping rebria ara aquestes dades i confirmaria obertura, accés i parcel·la. Aquí no s'ha enviat ni desat res.",
+    "demoCopiar": "Copiar el resum",
+    "demoCopiado": "Resum copiat",
+    "demoCta": "Vull una web així per al meu càmping",
+    "demoResumenEstancia": "Parcel·la",
+    "demoResumenFechas": "Dates",
+    "demoResumenGrupo": "Persones",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Per concretar"
+  },
+  "footer": {
+    "aviso": "Un microcàmping fluvial al Prepirineu · demostració fictícia",
+    "legal": "Avís legal",
+    "privacidad": "Privacitat",
+    "cookies": "Galetes",
+    "poweredBy": "Web de càmping per Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Parcel·les de bosc i de ribera | Càmping Riu Clar",
+      "description": "Setze parcel·les sota el bosc i vuit de ribera, amb ombra, grava ferma i electricitat, en un microcàmping prepirinenc."
+    },
+    "titulo": "Les 24 parcel·les",
+    "intro": "No numerem un carrer interminable: cada parcel·la segueix el relleu i els arbres. Quan consultes, et proposem la que encaixa amb el vehicle i la mida de la tenda.",
+    "desdeNoche": "des de {precio}/nit",
+    "verFicha": "Veure la fitxa",
+    "consultar": "Consultar aquestes dates",
+    "volver": "Totes les parcel·les",
+    "parcelas": "Parcel·les",
+    "alojados": "Allotjaments",
+    "fichas": {
+      "ut_std": "Grava ferma, uns 75 m² i ombra de pins gairebé tot el dia. Per a tenda, caravana curta o furgoneta.",
+      "ut_conf": "Uns 90 m², electricitat de 10 A i més espai de maniobra. El riu queda a prop, separat per vegetació i el sender."
+    },
+    "ficha": {
+      "capacidad": "Capacitat",
+      "personas": "persones",
+      "personasIncluidas": "{n} incloses en el preu",
+      "superficie": "Superfície",
+      "electricidad": "Electricitat",
+      "sombra": "Ombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitori",
+      "banos": "Banys privats",
+      "aire": "Aire condicionat",
+      "mascotas": "Animals",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unitats d'aquest tipus",
+      "tarifasTitulo": "Tarifa orientativa per nit",
+      "estanciaMin": "estada mínima de {n} nits",
+      "estanciaMin1": "sense estada mínima",
+      "llegadaSabado": "arribada en dissabte",
+      "notaPrecios": "Preu orientatiu amb {n} persones. El càmping confirmaria import, obertura i parcel·la en respondre.",
+      "disponibilidadTitulo": "Obert i lliure per a les teves dates?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "El càmping — refugi, banys i riu | Riu Clar",
+      "description": "Refugi comú, banys accessibles, zona de rentat i informació de camins en un càmping prepirinenc de 24 parcel·les."
+    },
+    "titulo": "Poc, robust i a recer de la pluja",
+    "intro": "No hi ha piscina ni animació. Hi ha dutxa calenta, un lloc on assecar l'impermeable i algú que no et recomanarà un camí si el riu baixa massa ple.",
+    "items": [
+      {
+        "id": "refugi",
+        "nombre": "El refugi comú",
+        "desc": "Una sala petita amb taula, bancs, pica i estufa per als dies freds. No és un restaurant ni una sala d'animació."
+      },
+      {
+        "id": "banys",
+        "nombre": "Banys i dutxes",
+        "desc": "Un bloc de pedra amb aigua calenta, cabina accessible i neteja al matí i al vespre."
+      },
+      {
+        "id": "rentat",
+        "nombre": "Aigua i zona de rentat",
+        "desc": "Piques cobertes, rentadora i punts d'aigua potable. El cabal del riu no es fa servir com a servei del càmping."
+      },
+      {
+        "id": "camins",
+        "nombre": "Camins amb criteri",
+        "desc": "Estat dels accessos, previsió bàsica i recomanacions segons pluja, temperatura i hores de llum."
+      },
+      {
+        "id": "recepcio",
+        "nombre": "Recepció amb nom",
+        "desc": "De 8:00 a 11:30 i de 17:00 a 20:00. Les arribades tardanes s'acorden abans perquè l'últim tram és estret."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Riu, bosc i camins des del càmping | Riu Clar",
+      "description": "Sender de ribera, passeres, bosc humit i rutes prepirinenques amb informació clara d'accés i meteorologia."
+    },
+    "titulo": "El riu no és decorat: decideix el dia",
+    "intro": "La ruta fàcil surt de la porta. Per pujar més amunt cal mirar núvols, cabal i hores de llum; aquí una previsió útil val més que una llista de deu excursions.",
+    "secciones": [
+      {
+        "titulo": "El sender de ribera",
+        "texto": "Un camí ombrívol segueix l'aigua durant quatre quilòmetres, amb dues passeres i una tornada curta d'una hora. Després de pluja forta, preguntem abans de travessar."
+      },
+      {
+        "titulo": "El poble",
+        "texto": "A divuit minuts en cotxe hi ha forn, botiga, farmàcia i dos bars. La benzinera queda a mitja hora; convé arribar amb el dipòsit resolt."
+      },
+      {
+        "titulo": "Camins alts",
+        "texto": "Dues rutes pugen cap a prats i un coll obert. A l'estiu també refresca ràpid quan s'amaga el sol; calçat ferm i una capa seca no sobren mai."
+      },
+      {
+        "titulo": "Quan plou",
+        "texto": "El bosc guanya color i el riu, soroll. El refugi comú obre tot el dia i proposem passejades curtes sense vendre la pluja com una aventura."
+      }
+    ],
+    "distancias": {
+      "titulo": "Des de la parcel·la",
+      "items": [
+        { "lugar": "Sender de ribera", "valor": "2 min a peu" },
+        { "lugar": "Passera baixa", "valor": "25 min a peu" },
+        { "lugar": "Forn i botiga", "valor": "18 min en cotxe" },
+        { "lugar": "Farmàcia", "valor": "18 min en cotxe" },
+        { "lugar": "Inici de la ruta del coll", "valor": "12 min en cotxe" },
+        { "lugar": "Estació de tren", "valor": "42 min en cotxe" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifes orientatives | Càmping Riu Clar",
+      "description": "Preus orientatius per nit per a parcel·les de bosc i ribera, amb dates d'obertura i condicions clares."
+    },
+    "titulo": "Tarifes i temporada, abans de fer plans",
+    "intro": "Aquests imports formen part de la demostració i són orientatius. Una consulta real rebria confirmació d'obertura, estat de l'accés, preu final i condicions.",
+    "tabla": { "tipo": "On et quedes", "noche": "€/nit" },
+    "temporadas": {
+      "sea_primavera": "Primavera · 4 abril – 20 juny",
+      "sea_estiu": "Estiu · 20 juny – 14 setembre",
+      "sea_tardor": "Tardor · 14 setembre – 19 octubre"
+    },
+    "suplementos": {
+      "titulo": "Suplements de parcel·la orientatius",
+      "personaExtra": "Persona a partir de la {n}a",
+      "nino": "Infant de 3 a 12 anys",
+      "electricidad": "Electricitat",
+      "vehiculo": "Segon vehicle",
+      "mascota": "Animal"
+    },
+    "extras": {
+      "titulo": "Extres opcionals",
+      "por": { "person": "per persona", "night": "per nit", "stay": "per estada" },
+      "nombres": { "ext_llenya": "Feix de llenya local", "ext_esmorzar": "Cistella d'esmorzar" }
+    },
+    "condiciones": {
+      "titulo": "Abans de venir",
+      "items": [
+        "El càmping obre de Setmana Santa fins al 19 d'octubre; a l'hivern consta com a tancat, no com a complet.",
+        "L'últim quilòmetre és asfaltat però estret. Vehicles de més de 8 metres han de consultar abans.",
+        "Les parcel·les admeten animals tranquils, sempre lligats a prop del riu.",
+        "No es cobra res des d'aquesta demostració i cap consulta genera una reserva."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Consulta les dates | Càmping Riu Clar",
+      "description": "Prova una consulta d'estada a la demostració de Riu Clar sense enviar ni desar dades personals."
+    },
+    "titulo": "Parlem de les dates i del vehicle",
+    "intro": "Aquesta pantalla reprodueix el canal directe d'un microcàmping de muntanya. Pots provar-la: les dades no surten del navegador.",
+    "datos": {
+      "titulo": "On som",
+      "direccion": "Adreça",
+      "telefono": "Telèfon",
+      "email": "Correu electrònic"
+    },
+    "horario": {
+      "titulo": "Recepció",
+      "texto": "Horari de mostra: de 8:00 a 11:30 i de 17:00 a 20:00, de Setmana Santa a mitjan octubre."
+    },
+    "llegar": {
+      "titulo": "Com arribar-hi",
+      "texto": "La ubicació i les dades de contacte d'aquesta demo són fictícies. En una activació real es publicarien ruta, limitacions d'accés i canals verificats pel càmping."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Quadern del riu | Càmping Riu Clar",
+      "description": "Notes de cabal, camins, obertura i vida al bosc prepirinenc."
+    },
+    "titulo": "Quadern del riu",
+    "intro": "Aquest càmping de mostra encara no publica notes. La secció queda preparada per informar d'obertura i camins, no per omplir paraules clau.",
+    "leerMas": "Llegir",
+    "volver": "Totes les notes",
+    "vacio": "Encara no hi ha notes."
+  },
+  "noEncontrada": {
+    "titulo": "Aquest camí no arriba al riu",
+    "texto": "L'adreça no existeix o ha canviat. La portada i la consulta continuen a un pas.",
+    "cta": "Tornar a l'inici"
+  }
+}

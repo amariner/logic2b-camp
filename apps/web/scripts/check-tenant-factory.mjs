@@ -304,7 +304,7 @@ await validateManifest('_template', join(tenantsDir, '_template', 'fotos.json'),
   requireFiles: false,
 });
 
-const conceptSlugs = ['montana', 'familiar', 'parcela'];
+const conceptSlugs = ['familiar', 'parcela'];
 for (const slug of conceptSlugs) {
   const brief = validateBrief(json(join(conceptsDir, `${slug}.json`)), `theme-briefs/${slug}.json`);
   if (brief.id !== slug || brief.status !== 'catalog-concept')

@@ -85,6 +85,31 @@
   Agotada la porción local honesta de R12, el siguiente corte local abre R13 con
   plantilla, esquema, CLI y dry-run sin `--apply`.
 
+## Camping El Delta cierra D5-V en 6/6 · 2026-08-10 (sesión 126)
+
+- La sexta demo programada, **Camping El Delta (`delta`)**, queda terminada y
+  abre el paso a D6-V; `serralta` es ahora la siguiente. Es un tenant tier 1,
+  demo-only y en español, con 16 parcelas —10 Cañizo y 6 Arrozal—, tres momentos
+  de una temporada corta, precios y extras deterministas.
+- El recorrido convierte el tamaño mínimo en argumento comercial: abril–octubre,
+  silencio nocturno, suelo drenante, caminos llanos, bicicletas y observación
+  responsable. Reutiliza el core y el transporte demo sin Worker, D1 ni
+  dashboard propios.
+- Fotografía **8/8** aprobada y trazada en cuatro tandas. El generador integrado
+  falló dos veces antes de entregar bytes y abrió el fallback documentado. La
+  revisión descartó matrículas, marcas, cableado, objetos deformados, cubiertas
+  imposibles y geografía incoherente; Higgsfield escaló una parcela a GPT Image
+  2 tras dos rechazos. Los finales miden como máximo 2.000 px y tienen miniatura,
+  OG, favicon y apple-touch icon derivados.
+- `/temas` incorpora la sexta tarjeta navegable y el bundle declara
+  `/demos/delta/` con `noindex`. La build aislada produce 13 páginas sin motor;
+  la fábrica valida **7 tenants + plantilla + 2 conceptos** y el portfolio
+  construye **6/6** campings.
+- El QA canónico dirigido pasa a **375/1366**, cinco formatos/MIME, sin desborde
+  ni fallos visibles. El bundle serial completo quedó temporalmente detenido por
+  la frontera R12 concurrente de observabilidad, no por Delta; no se modificó
+  ese trabajo ajeno. No hubo deploy ni escritura remota.
+
 ## Frontera fiscal honesta de informes R12 · 2026-08-10 (sesión 125)
 
 - La auditoría detectó una contradicción con ADR 0034 y el dossier: el dashboard
@@ -139,6 +164,29 @@
   continúa con la auditoría contractual de los módulos restantes antes de
   decidir su cierre local y la transición a R13.
 
+## Camping La Duna lleva D5-V a 5/6 · 2026-08-10 (sesión 122)
+
+- El mandato visual se amplía al portfolio completo de doce demos. La quinta,
+  **Camping La Duna (`duna`)**, queda terminada y `delta` pasa a ser la siguiente
+  programada; después se continúa por B2–B4 y C2–C4, siempre de forma vertical.
+- La Duna es un tenant tier 1, demo-only y en español: microcamping de 20 plazas
+  camper, con dos tamaños, tres temporadas, precios y extras deterministas.
+  Gálibo, suelo, viento y pasarela forman el recorrido; reutiliza el core y el
+  transporte demo sin Worker, D1 ni dashboard propios.
+- Fotografía **8/8** aprobada y trazada en cuatro tandas. El generador integrado
+  falló dos veces antes de producir bytes y abrió el fallback documentado. La
+  inspección descartó personas, matrículas, marcas, arena de playa, tendidos y
+  geometría dudosa; Higgsfield Soul Location escaló a GPT Image 2 tras dos
+  rechazos por pieza. Los finales miden como máximo 2.000 px y tienen miniatura,
+  OG, favicon y apple-touch icon derivados.
+- `/temas` incorpora la quinta tarjeta navegable y el bundle sirve
+  `/demos/duna/` con `noindex`. La build aislada produce 13 páginas sin motor;
+  la fábrica valida **6 tenants + plantilla + 2 conceptos** y el portfolio
+  construye **5/5**.
+- El bundle compuesto valida **12.297 enlaces / 384 HTML**. El QA canónico pasa
+  a **375/1366**, cinco formatos/MIME, sin desborde ni fallos visibles. No hubo
+  deploy ni escritura remota; el desarrollo global simultáneo se preservó.
+
 ## Frontera Zod del callback Redsys R12 · 2026-08-10 (sesión 121)
 
 - El quinto corte local R12 contrasta la notificación POST con el manual oficial
@@ -181,6 +229,34 @@
 - No hubo deploy, secrets, llamada a proveedor, cobro, devolución ni escritura
   externa. El trabajo simultáneo de Riu Clar se preservó separado. R12 continúa
   con la frontera Zod del callback Redsys.
+
+## Càmping Riu Clar abre D5-V · 2026-08-10 (sesión 118)
+
+- La decisión explícita de Andreu sustituye el gate de espera de R9 y abre el
+  desarrollo visual en paralelo al trabajo global, demo a demo. La siguiente
+  programada, **Càmping Riu Clar (`riuclar`)**, ya es la cuarta demo del
+  portfolio; D5-V pasa de 3/6 a **4/6** y `duna` queda como siguiente de la cola.
+- Riu Clar es un tenant tier 1, demo-only y catalán: microcamping fluvial de 24
+  parcelas, con dos tipologías, tres temporadas, precios y extras
+  deterministas. Identidad, tema, contenido, datos y aviso legal son propios;
+  reutiliza el core y el transporte demo sin backend ni infraestructura por
+  marca.
+- El manifiesto fotográfico queda **8/8** aprobado y trazado. El generador
+  integrado falló dos veces por red antes de producir bytes; el pipeline registró
+  ambos fallos y abrió su fallback documentado. Higgsfield completó después las
+  tandas con inspección y descartes auditables. Los finales se normalizaron a
+  2.000 px y derivaron miniatura, OG, favicon y apple-touch icon.
+- `/temas` incorpora la cuarta tarjeta navegable y el bundle compuesto publica
+  `/demos/riuclar/` con `noindex`; el concepto genérico Montaña queda sustituido
+  por la demo real. La build aislada produjo 13 páginas sin rutas ni chunks de
+  motor. La fábrica valida **5 tenants + plantilla + 2 conceptos**.
+- La build comercial, el bundle de la API (**11.985 enlaces / 372 HTML**) y el
+  QA canónico de Riu Clar pasaron en **375/1366**, con cinco assets/MIME y cero
+  desborde visible. `pnpm check` cerró **55/55** tareas, con portfolio **4/4**,
+  fábrica **5 tenants + plantilla + 2 conceptos**, API **275/275** y pagos
+  **33/33**. No hubo deploy ni escritura remota. Los cambios simultáneos de
+  pagos se preservaron sin modificarlos; el bloqueo histórico que sesiones
+  116/117 atribuían al tenant no versionado queda resuelto en su configuración.
 
 ## Salida HTTP idempotente de Stripe R12 · 2026-08-10 (sesión 117)
 

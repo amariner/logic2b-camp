@@ -474,6 +474,22 @@ importers:
         specifier: ^5.8.0
         version: 5.9.3
 
+  tenants/delta:
+    dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+    devDependencies:
+      '@logic-camp/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
   tenants/demo:
     dependencies:
       '@logic-camp/api':
@@ -517,6 +533,22 @@ importers:
         specifier: ^4.24.0
         version: 4.111.0(@cloudflare/workers-types@4.20260702.1)
 
+  tenants/duna:
+    dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+    devDependencies:
+      '@logic-camp/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
   tenants/mardefondo:
     dependencies:
       '@logic-camp/config':
@@ -550,6 +582,22 @@ importers:
         version: 5.9.3
 
   tenants/pinadamar:
+    dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+    devDependencies:
+      '@logic-camp/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
+  tenants/riuclar:
     dependencies:
       '@logic-camp/config':
         specifier: workspace:*

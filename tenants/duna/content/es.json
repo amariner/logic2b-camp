@@ -1,0 +1,298 @@
+{
+  "seo": {
+    "title": "Camping La Duna — veinte plazas detrás del mar",
+    "description": "Un microcamping mediterráneo con 20 plazas para furgoneta o autocaravana, detrás de una duna protegida y a pie de pasarela."
+  },
+  "nav": {
+    "alojamientos": "Plazas",
+    "instalaciones": "El camping",
+    "entorno": "Duna y mar",
+    "tarifas": "Tarifas",
+    "blog": "Parte de costa",
+    "contacto": "Consulta tus fechas",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: ninguna consulta se envía ni se guarda.",
+    "nivel": "Inicio",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
+  },
+  "hero3": {
+    "titulo": "Tu base pequeña detrás de la duna.",
+    "prueba": "20 plazas · acceso directo"
+  },
+  "hero1": {
+    "titulo": "Sal en el aire. Ruedas quietas. Veinte plazas detrás de la duna.",
+    "cta": "Consulta tus fechas"
+  },
+  "ticker": [
+    "20 plazas para furgoneta o autocaravana",
+    "pasarela al mar desde la puerta",
+    "gálibo de acceso: 3,4 m",
+    "parte de viento cada mañana",
+    "abierto de primavera a noviembre"
+  ],
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
+  "tipos": {
+    "titulo": "Dos tamaños. El mismo camino al mar.",
+    "subtitulo": "Todas las plazas tienen suelo firme, electricidad y espacio exterior. Cambian la longitud útil, la maniobra y la cercanía a la pasarela.",
+    "verTodo": "Ver las 20 plazas",
+    "nombres": {
+      "ut_std": "Plaza Base",
+      "ut_conf": "Plaza Duna"
+    },
+    "cards": [
+      {
+        "id": "base",
+        "nombre": "Plazas Base",
+        "desc": "Doce plazas de unos 55 m² para furgoneta o camper compacta, con suelo estabilizado y electricidad de 6 A.",
+        "foto": "tipo-plaza-base"
+      },
+      {
+        "id": "duna",
+        "nombre": "Plazas Duna",
+        "desc": "Ocho plazas de unos 75 m² para vehículos de hasta 7,5 m, con más maniobra, 10 A y la pasarela cerca.",
+        "foto": "tipo-plaza-duna"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Aquí el día empieza mirando el viento, no el calendario.",
+    "texto": "La duna protege el camping y la pasarela protege la duna. Antes de salir compartimos viento, mar y acceso; después cada cual decide si toca agua, bicicleta o mesa a la sombra."
+  },
+  "form": {
+    "titulo": "Consulta tus fechas",
+    "subtitulo": "Dinos cuándo vienes, cuántos sois y cuánto mide el vehículo. Esta demostración enseña la respuesta sin enviar tus datos.",
+    "nombre": "Nombre",
+    "email": "Correo electrónico",
+    "fechas": "Fechas aproximadas",
+    "fechasEjemplo": "8 → 12 septiembre",
+    "grupo": "Personas",
+    "estancia": "Qué plaza necesitas",
+    "estanciaVacia": "Elige Base o Duna",
+    "mensaje": "Vehículo, longitud y qué necesitas saber",
+    "enviar": "Ver respuesta de muestra",
+    "enviando": "Preparando la respuesta…",
+    "ok": "Consulta recibida.",
+    "error": "Demostración de error: la consulta no se ha enviado. En producción podrías volver a intentarlo o llamar al camping.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ni guardaremos tus datos.",
+    "demoSpam": "Demostración antispam: la consulta se ha detenido antes de enviar o guardar datos.",
+    "demoExitoTitulo": "La consulta está preparada",
+    "demoExitoTexto": "En una web activa, el camping recibiría ahora estos datos y confirmaría acceso, viento y plaza. Aquí no se ha enviado ni guardado nada.",
+    "demoCopiar": "Copiar el resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una web así para mi camping",
+    "demoResumenEstancia": "Plaza",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
+  },
+  "footer": {
+    "aviso": "Un microcamping de furgonetas detrás de una duna mediterránea · demostración ficticia",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web de camping por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Plazas Base y Duna | Camping La Duna",
+      "description": "Veinte plazas para furgonetas y autocaravanas con medidas, suelo, electricidad y acceso explicados antes de consultar."
+    },
+    "titulo": "Las 20 plazas",
+    "intro": "No prometemos primera línea: estamos detrás de la duna, donde se puede dormir y donde el terreno aguanta. Elige por vehículo y espacio, no por una foto sin medidas.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver la ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todas las plazas",
+    "parcelas": "Plazas",
+    "alojados": "Alojamientos",
+    "fichas": {
+      "ut_std": "Unos 55 m², acceso sencillo y electricidad de 6 A. Para furgoneta compacta, camper o coche con tienda de techo.",
+      "ut_conf": "Unos 75 m², más longitud útil y electricidad de 10 A. Para autocaravana de hasta 7,5 m o quien quiera desplegar toldo sin invadir el paso."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorio",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Animales",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima de {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio orientativo con {n} personas. El camping confirmaría importe, gálibo y plaza al responder.",
+      "disponibilidadTitulo": "¿Cabe y está libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "El camping — tienda, baños y tablas | La Duna",
+      "description": "Una tienda pequeña, baños accesibles, zona de agua y alquiler de tablas en un camping de veinte plazas."
+    },
+    "titulo": "Lo justo para llegar con poco y salir temprano",
+    "intro": "No hay piscina, escenario ni pulsera. Hay duchas calientes, una tienda que abre cuando hace falta y un sitio donde aclarar la sal sin llenar el vehículo de arena.",
+    "items": [
+      {
+        "id": "tienda",
+        "nombre": "Tienda y recepción",
+        "desc": "Pan, fruta, hielo, repuestos básicos y café desde las 7:30. También resolvemos acceso, viento y llegada tardía."
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños compactos",
+        "desc": "Duchas calientes, cabina accesible y limpieza tres veces al día en un módulo sencillo de madera."
+      },
+      {
+        "id": "agua",
+        "nombre": "Agua y vaciado",
+        "desc": "Puntos de agua potable, fregaderos, vaciado de aguas grises y un punto separado para el químico."
+      },
+      {
+        "id": "tablas",
+        "nombre": "Tablas para empezar",
+        "desc": "Tablas blandas y trajes básicos para probar con mar pequeño. No vendemos una clase cuando las condiciones no acompañan."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Bicis y herramientas",
+        "desc": "Aparcamiento cubierto, bomba, caballete y herramientas para los arreglos pequeños antes de seguir la costa."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Duna, pasarela y mar desde el camping | La Duna",
+      "description": "Acceso a pie por pasarela, parte de viento, rutas litorales y servicios prácticos cerca de un microcamping de Levante."
+    },
+    "titulo": "La duna marca por dónde se pasa",
+    "intro": "El mar está cerca, pero no todo vale para acercarse. Dejamos las ruedas atrás y cruzamos por la pasarela; así el acceso sigue abierto cuando acaba el verano.",
+    "secciones": [
+      {
+        "titulo": "La pasarela",
+        "texto": "Son nueve minutos a pie desde la última plaza. Cruza la duna sin pisar vegetación y termina junto a una playa abierta, sin vehículos ni música del camping."
+      },
+      {
+        "titulo": "El viento",
+        "texto": "Cada mañana publicamos dirección y fuerza observada. Levante fuerte significa toldos recogidos; poniente seco pide agua y sombra antes de pedalear."
+      },
+      {
+        "titulo": "La ruta litoral",
+        "texto": "Una vía tranquila enlaza salinas, torre costera y mercado en 18 kilómetros casi llanos. Hay un tramo de tierra donde una bici urbana también pasa."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "A doce minutos en bici hay mercado, farmacia, taller y varios sitios donde cenar. El supermercado grande queda a nueve minutos en vehículo."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde la plaza",
+      "items": [
+        { "lugar": "Inicio de la pasarela", "valor": "3 min a pie" },
+        { "lugar": "Orilla", "valor": "9 min a pie" },
+        { "lugar": "Mercado y farmacia", "valor": "12 min en bici" },
+        { "lugar": "Taller", "valor": "14 min en bici" },
+        { "lugar": "Salinas", "valor": "25 min en bici" },
+        { "lugar": "Estación de tren", "valor": "31 min en vehículo" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas orientativas | Camping La Duna",
+      "description": "Precios orientativos por noche para plazas Base y Duna, con temporada, medidas y condiciones claras."
+    },
+    "titulo": "Tarifas claras, vehículo claro",
+    "intro": "Estos importes forman parte de la demostración y son orientativos. Una consulta real recibiría confirmación de plaza, gálibo, viento previsto, precio final y condiciones.",
+    "tabla": { "tipo": "Qué plaza", "noche": "€/noche" },
+    "temporadas": {
+      "sea_brisa": "Brisa · 27 marzo – 19 junio",
+      "sea_sal": "Sal · 19 junio – 13 septiembre",
+      "sea_calma": "Calma · 13 septiembre – 2 noviembre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos orientativos",
+      "personaExtra": "Persona a partir de la {n}.ª",
+      "nino": "Niño de 3 a 12 años",
+      "electricidad": "Electricidad",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Animal"
+    },
+    "extras": {
+      "titulo": "Extras opcionales",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_tabla": "Tabla blanda de iniciación",
+        "ext_desayuno": "Desayuno para llevar"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de venir",
+      "items": [
+        "El gálibo del acceso mide 3,4 m y el giro más cerrado admite vehículos de hasta 7,5 m.",
+        "La parcela es de suelo estabilizado: se duerme detrás de la duna, nunca sobre la playa.",
+        "Con viento fuerte los toldos deben quedar recogidos y la pasarela puede cerrarse temporalmente.",
+        "No se cobra nada desde esta demostración y ninguna consulta genera una reserva."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Consulta tus fechas | Camping La Duna",
+      "description": "Prueba una consulta de estancia en La Duna sin enviar ni guardar datos personales."
+    },
+    "titulo": "Hablemos de fechas y medidas",
+    "intro": "Esta pantalla reproduce el canal directo de un microcamping para furgonetas. Puedes probarla: los datos no salen del navegador.",
+    "datos": {
+      "titulo": "Dónde estamos",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Correo electrónico"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: de 7:30 a 12:00 y de 17:00 a 21:00, desde finales de marzo hasta el 2 de noviembre."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La ubicación y los datos de contacto de esta demo son ficticios. En una activación real se publicarían coordenadas, gálibo, radio de giro y canales verificados por el camping."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Parte de costa | Camping La Duna",
+      "description": "Notas de viento, mar, acceso y temporada desde un microcamping mediterráneo."
+    },
+    "titulo": "Parte de costa",
+    "intro": "Este camping de muestra todavía no publica partes. La sección queda preparada para informar de viento y acceso, no para fingir un diario surfero.",
+    "leerMas": "Leer",
+    "volver": "Todos los partes",
+    "vacio": "Todavía no hay partes."
+  },
+  "noEncontrada": {
+    "titulo": "Esta pasarela no llega al mar",
+    "texto": "La dirección no existe o ha cambiado. La portada y la consulta siguen detrás de la duna.",
+    "cta": "Volver al inicio"
+  }
+}

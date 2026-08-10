@@ -1,0 +1,61 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D5-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping El Delta.",
+    "nota": "Producción en cuatro tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-amanecer", "hero-ultima-luz"],
+    ["tipo-parcela-canizo", "tipo-parcela-arrozal"],
+    ["detalle-observatorio", "instalacion-banos-cal"],
+    ["entorno-camino-arrozal", "textura-canizo-agua"]
+  ],
+  "derivados": {
+    "fuente": "hero-amanecer",
+    "titulo": "Camping El Delta",
+    "subtitulo": "16 parcelas · humedal mediterráneo"
+  },
+  "piezas": {
+    "hero-amanecer": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para el titular a 375 y 1366 px.",
+      "prompt": "Fotografía editorial documental panorámica de un microcamping mínimo en un delta mediterráneo al amanecer. Dos parcelas discretas de grava drenante bajo estructuras ligeras de cañizo, separadas de un arrozal inundado por una acequia y un camino agrícola; una furgoneta camper pequeña, blanca, genérica y sin logotipo ocupa una parcela, la otra queda vacía. Juncos y arroz joven reflejados en agua somera, horizonte completamente llano y luz crema verdosa, suave y real. Mucho espacio negativo a la izquierda para titular. Escena desierta: ninguna persona, rostro o silueta; sin texto, señal, marca, matrícula, ave gigante, playa, montaña, palmera, resort, HDR ni acampada dentro del cultivo."
+    },
+    "hero-ultima-luz": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica del mismo microcamping de humedal a última hora de una tarde nublada. Tres parcelas pequeñas de grava clara, pantallas de cañizo y una sola camper compacta genérica sin logotipo ni matrícula visible; al fondo, arrozales dorados, acequias estrechas y una línea baja de chopos. Luz plana verde y ámbar, serena, sin puesta de sol espectacular, con espacio negativo. Ninguna persona, rostro, texto, señal, ave protagonista, montaña, playa, piscina, fuego, guirnalda, resort ni HDR."
+    },
+    "tipo-parcela-canizo": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de la parcela Cañizo.",
+      "prompt": "Fotografía editorial documental de una parcela Cañizo de 48 metros cuadrados en el mismo microcamping del delta. Suelo de grava drenante, límites bajos de madera, una pérgola ligera de cañizo y conexión eléctrica discreta; una furgoneta camper compacta contemporánea y completamente genérica está bien estacionada, sin logotipo, texto ni matrícula visible. Una mesa plegable sencilla muestra la escala. Al fondo se ve el camino, después la acequia y el arrozal, nunca el vehículo dentro del cultivo. Luz suave de mañana y geometría creíble. Ninguna persona, glamping, césped artificial, piscina, playa, montaña, fiesta, HDR ni lujo."
+    },
+    "tipo-parcela-arrozal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de la parcela Arrozal.",
+      "prompt": "Fotografía editorial documental de una parcela Arrozal de 68 metros cuadrados en el mismo microcamping del delta. Suelo de grava compactada, sombra parcial de cañizo y conexión eléctrica discreta; una autocaravana mediana, moderna y completamente genérica, sin logotipo, texto o matrícula visible, deja espacio de maniobra y un lateral libre. Detrás hay un camino ciclista, una acequia segura y arrozales verdes bajo cielo blanco. Luz natural plana, escala real y arquitectura mínima. Ninguna persona, vehículo dentro del arrozal, glamping, piscina, playa, montaña, fiesta, HDR o resort."
+    },
+    "detalle-observatorio": {
+      "aspecto": "3:2",
+      "papel": "Observatorio pequeño y responsable.",
+      "prompt": "Fotografía arquitectónica documental de un observatorio de aves mínimo junto al mismo arrozal mediterráneo. Una pantalla recta de cañizo sobre estructura de madera, banco corrido y tres aberturas horizontales sin cristal; acceso por camino firme, borde de juncos y agua somera más allá. Diseño modesto, mantenido y real, con luz plana de mañana. Ninguna persona, rostro, cartel, texto, logo, telescopio gigante, ave en primer plano, torre, pasarela imposible, safari, lujo ni HDR."
+    },
+    "instalacion-banos-cal": {
+      "aspecto": "3:2",
+      "papel": "Baños compactos y accesibles.",
+      "prompt": "Fotografía arquitectónica documental de día de un módulo de baños pequeño y bien cuidado en el mismo microcamping del delta. Volumen bajo de muros encalados color hueso, zócalo de cerámica verde apagada, dos puertas lisas y porche de cañizo; acceso plano de grava con rampa suave y lavadero exterior, sin mostrar interiores. Juncos, bicicletas aparcadas y arrozal lejano, luz blanca natural. Ninguna persona, texto, rótulo, logotipo, sanitario visible, piscina, resort, lujo ni arquitectura imposible."
+    },
+    "entorno-camino-arrozal": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno y ruta ciclista entre arrozales.",
+      "prompt": "Fotografía documental panorámica de un camino rural estrecho y completamente llano entre arrozales mediterráneos inundados. Dos bicicletas urbanas sencillas y sin marca están apoyadas en una pequeña barandilla de madera en primer plano, sin ciclistas; acequias, juncos y campos verdes forman líneas horizontales hasta un cielo blanco azulado. Luz plana de primera mañana, aire húmedo y composición silenciosa. Ninguna persona, rostro, texto, logo, coche, matrícula, ave gigante, montaña, playa, palmera, edificio turístico, saturación ni HDR."
+    },
+    "textura-canizo-agua": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de cañizo natural trenzado proyectando líneas finas sobre una lámina de agua somera y tierra húmeda, con tallos jóvenes de arroz desenfocados al fondo. Tonos hueso, verde apagado y oro, luz lateral suave, material real y patrón legible; sin personas, manos, pies, texto, logos, plástico, basura, decoración tropical ni efectos digitales."
+    }
+  }
+}

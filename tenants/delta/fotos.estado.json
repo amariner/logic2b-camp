@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-amanecer": [
+      {
+        "at": "2026-08-10T14:38:15.130Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "Fallo de red antes de recibir bytes"
+      },
+      {
+        "at": "2026-08-10T14:38:58.678Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "00e90161-1a13-4ad8-9ad6-668c6c23f588",
+        "reusedJob": false,
+        "promptSha256": "dcf893498609e97ffbb2a12b1e089399d544488ce526acca4b2536277e9012f3",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-ultima-luz": [
+      {
+        "at": "2026-08-10T14:38:27.846Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "Fallo de red antes de recibir bytes"
+      },
+      {
+        "at": "2026-08-10T14:39:24.132Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "ea215dc3-2265-4f59-8c1d-7ff0320afdc8",
+        "reusedJob": false,
+        "promptSha256": "aec44e7ffc20de25b237719c6cb7dd911e606a55582ea78b143530fef64cc5cc",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:40:25.615Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "ea22c47c-691a-4e41-9f3f-4be0080eb5b8",
+        "reusedJob": false,
+        "promptSha256": "aec44e7ffc20de25b237719c6cb7dd911e606a55582ea78b143530fef64cc5cc",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "tipo-parcela-canizo": [
+      {
+        "at": "2026-08-10T14:41:08.987Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "9f27ae8f-c100-4dc1-9842-8e909b1c2be7",
+        "reusedJob": false,
+        "promptSha256": "29562f7cbb0015a1269e7caccb57d72fdefc26966aeffaddaf1254d3723faeea",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:43:12.415Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "53a92fa0-c456-4f30-8149-98956ae10fd2",
+        "reusedJob": false,
+        "promptSha256": "29562f7cbb0015a1269e7caccb57d72fdefc26966aeffaddaf1254d3723faeea",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:46:32.531Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "c3cf257b-ad45-4530-aa6d-93baa07b8866",
+        "reusedJob": false,
+        "promptSha256": "29562f7cbb0015a1269e7caccb57d72fdefc26966aeffaddaf1254d3723faeea",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "tipo-parcela-arrozal": [
+      {
+        "at": "2026-08-10T14:41:52.428Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "982e0012-1681-4925-b7ef-e5975fccdc31",
+        "reusedJob": false,
+        "promptSha256": "d0f17b33bb7bf4e01958ef286b88c65bfb843d3165e3ea0773b7a06d497ef9f3",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:43:43.885Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "487b4bcc-913f-4d89-8440-fa7664a13aeb",
+        "reusedJob": false,
+        "promptSha256": "d0f17b33bb7bf4e01958ef286b88c65bfb843d3165e3ea0773b7a06d497ef9f3",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "detalle-observatorio": [
+      {
+        "at": "2026-08-10T14:47:24.201Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "6d7add6c-b39d-496e-bf77-814bfb5deac9",
+        "reusedJob": false,
+        "promptSha256": "f800161ad6f858b1d424f25036ea3f2914bcb8419c561c03fc58508a099dacb4",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "instalacion-banos-cal": [
+      {
+        "at": "2026-08-10T14:48:04.483Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "1af00fd9-b79b-439d-9659-1de9dbabad40",
+        "reusedJob": false,
+        "promptSha256": "395d367ab779a74d295d31b0888d1da44b468724d9dba755a5fc5143c6bfcea3",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "entorno-camino-arrozal": [
+      {
+        "at": "2026-08-10T14:49:55.151Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b60e9ff5-d8ad-4026-8b98-02c7086530e3",
+        "reusedJob": false,
+        "promptSha256": "5fe646a9af0c69d718c8acb3f66ed72eba65095af52ab978633acbaccc2d78fb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:53:09.886Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "e0ab489c-2dac-468d-b73b-cf6d22d03d47",
+        "reusedJob": false,
+        "promptSha256": "5fe646a9af0c69d718c8acb3f66ed72eba65095af52ab978633acbaccc2d78fb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "textura-canizo-agua": [
+      {
+        "at": "2026-08-10T14:51:44.518Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "bbcccac7-4b55-4eb7-a700-e34bda684bfd",
+        "reusedJob": false,
+        "promptSha256": "c3fe029b09429b8ec3ee6a4a2b70ba21569d554263da28ad436638caedeb38bb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-amanecer": {
+      "at": "2026-08-10T14:39:52.593Z",
+      "gate": "visual-inspection"
+    },
+    "hero-ultima-luz": {
+      "at": "2026-08-10T14:40:36.984Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-arrozal": {
+      "at": "2026-08-10T14:43:57.415Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-canizo": {
+      "at": "2026-08-10T14:46:43.299Z",
+      "gate": "visual-inspection"
+    },
+    "detalle-observatorio": {
+      "at": "2026-08-10T14:48:17.297Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-banos-cal": {
+      "at": "2026-08-10T14:48:17.297Z",
+      "gate": "visual-inspection"
+    },
+    "textura-canizo-agua": {
+      "at": "2026-08-10T14:52:04.365Z",
+      "gate": "visual-inspection"
+    },
+    "entorno-camino-arrozal": {
+      "at": "2026-08-10T14:53:22.737Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "hero-ultima-luz": [
+      {
+        "at": "2026-08-10T14:39:52.832Z",
+        "reason": "Demasiado oscura; aparecen marca en la autocaravana, papelera y poste eléctrico; la composición no sirve como héroe",
+        "jobId": "ea215dc3-2265-4f59-8c1d-7ff0320afdc8"
+      }
+    ],
+    "tipo-parcela-canizo": [
+      {
+        "at": "2026-08-10T14:42:10.053Z",
+        "reason": "Matrícula legible, postes dominantes y mobiliario/objeto central de geometría defectuosa",
+        "jobId": "9f27ae8f-c100-4dc1-9842-8e909b1c2be7"
+      },
+      {
+        "at": "2026-08-10T14:43:57.092Z",
+        "reason": "La cubierta de cañizo tiene una geometría imposible y el encuadre corta el mobiliario",
+        "jobId": "53a92fa0-c456-4f30-8149-98956ae10fd2"
+      }
+    ],
+    "tipo-parcela-arrozal": [
+      {
+        "at": "2026-08-10T14:42:10.286Z",
+        "reason": "Parcela descuidada con cables, cuerda y maquinaria visibles; sombra y límites poco seguros",
+        "jobId": "982e0012-1681-4925-b7ef-e5975fccdc31"
+      }
+    ],
+    "entorno-camino-arrozal": [
+      {
+        "at": "2026-08-10T14:52:04.110Z",
+        "reason": "Aparecen montaña y núcleo urbano; las bicicletas no son de paseo y una lleva texto visible",
+        "jobId": "b60e9ff5-d8ad-4026-8b98-02c7086530e3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "seo": {
+    "title": "Camping El Delta — 16 parcelas entre arrozales",
+    "description": "Un microcamping estacional con dieciséis parcelas, caminos para bicicleta y observación tranquila junto al humedal."
+  },
+  "nav": {
+    "alojamientos": "Parcelas",
+    "instalaciones": "El camping",
+    "entorno": "Arrozal y aves",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno del agua",
+    "contacto": "Consulta tus fechas",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: ninguna consulta se envía ni se guarda.",
+    "nivel": "Inicio",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
+  },
+  "hero3": {
+    "titulo": "Una base pequeña donde el agua marca la estación.",
+    "prueba": "16 parcelas · abril a octubre"
+  },
+  "hero1": {
+    "titulo": "Dieciséis parcelas. Arroz, aves y caminos sin desnivel.",
+    "cta": "Consulta tus fechas"
+  },
+  "ticker": [
+    "16 parcelas en un camping muy pequeño",
+    "observatorio a 700 m",
+    "rutas llanas desde la puerta",
+    "silencio de 22:00 a 8:00",
+    "abierto de abril a octubre"
+  ],
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
+  "tipos": {
+    "titulo": "Dos parcelas y nada que distraiga del paisaje.",
+    "subtitulo": "Las dieciséis tienen suelo drenante y electricidad. Cambian la superficie, la sombra de cañizo y la distancia al camino del arrozal.",
+    "verTodo": "Ver las 16 parcelas",
+    "nombres": {
+      "ut_std": "Parcela Cañizo",
+      "ut_conf": "Parcela Arrozal"
+    },
+    "cards": [
+      {
+        "id": "canizo",
+        "nombre": "Parcelas Cañizo",
+        "desc": "Diez parcelas de unos 48 m² para tienda o camper compacta, con sombra ligera, suelo drenante y electricidad de 6 A.",
+        "foto": "tipo-parcela-canizo"
+      },
+      {
+        "id": "arrozal",
+        "nombre": "Parcelas Arrozal",
+        "desc": "Seis parcelas de unos 68 m², con más maniobra, electricidad de 10 A y salida directa al camino ciclista.",
+        "foto": "tipo-parcela-arrozal"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Aquí la hora se reconoce por la luz sobre el agua.",
+    "texto": "Los arrozales cambian de espejo a verde y de verde a oro durante nuestra temporada. Desde la puerta salen caminos llanos; para observar, basta ir despacio y dejar espacio a quien vive en el humedal."
+  },
+  "form": {
+    "titulo": "Consulta tus fechas",
+    "subtitulo": "Dinos cuándo vienes, cuántos sois y si traes tienda, camper o autocaravana. Esta demostración enseña la respuesta sin enviar tus datos.",
+    "nombre": "Nombre",
+    "email": "Correo electrónico",
+    "fechas": "Fechas aproximadas",
+    "fechasEjemplo": "8 → 12 septiembre",
+    "grupo": "Personas",
+    "estancia": "Qué parcela necesitas",
+    "estanciaVacia": "Elige Cañizo o Arrozal",
+    "mensaje": "Equipo, vehículo y qué necesitas saber",
+    "enviar": "Ver respuesta de muestra",
+    "enviando": "Preparando la respuesta…",
+    "ok": "Consulta recibida.",
+    "error": "Demostración de error: la consulta no se ha enviado. En producción podrías volver a intentarlo o llamar al camping.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ni guardaremos tus datos.",
+    "demoSpam": "Demostración antispam: la consulta se ha detenido antes de enviar o guardar datos.",
+    "demoExitoTitulo": "La consulta está preparada",
+    "demoExitoTexto": "En una web activa, el camping recibiría ahora estos datos y confirmaría parcela, acceso y condiciones de la temporada. Aquí no se ha enviado ni guardado nada.",
+    "demoCopiar": "Copiar el resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una web así para mi camping",
+    "demoResumenEstancia": "Parcela",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
+  },
+  "footer": {
+    "aviso": "Un microcamping de dieciséis parcelas junto al humedal · demostración ficticia",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web de camping por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Parcelas Cañizo y Arrozal | Camping El Delta",
+      "description": "Dieciséis parcelas con superficie, suelo, electricidad y acceso explicados antes de consultar."
+    },
+    "titulo": "Las 16 parcelas",
+    "intro": "Un camping pequeño debe explicar bien cada metro. Elige según tu equipo, la maniobra y la sombra; el paisaje empieza al salir de la parcela.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver la ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todas las parcelas",
+    "parcelas": "Parcelas",
+    "alojados": "Alojamientos",
+    "fichas": {
+      "ut_std": "Unos 48 m², suelo drenante y electricidad de 6 A. Para tienda, furgoneta compacta o coche con tienda de techo.",
+      "ut_conf": "Unos 68 m², más maniobra y electricidad de 10 A. Para autocaravana de hasta 7 m o quien necesite desplegar un toldo corto."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorio",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Animales",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima de {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio orientativo con {n} personas. El camping confirmaría importe, acceso y parcela al responder.",
+      "disponibilidadTitulo": "¿Encaja y está libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "El camping — baños, bicis y observatorio | El Delta",
+      "description": "Baños accesibles, zona de agua, bicicletas y un observatorio sencillo en un camping de dieciséis parcelas."
+    },
+    "titulo": "Lo necesario para estar fuera casi todo el día",
+    "intro": "No hay piscina ni programa de animación. Hay duchas calientes, sombra común, un pequeño observatorio y bicicletas para moverse sin arrancar el vehículo.",
+    "items": [
+      {
+        "id": "tienda",
+        "nombre": "Recepción y despensa",
+        "desc": "Pan por encargo, fruta, agua fría, mapas y café desde las 8:00. También explicamos caminos abiertos y zonas sensibles."
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños compactos",
+        "desc": "Duchas calientes, cabina accesible y limpieza diaria en un volumen sencillo de cal y cerámica."
+      },
+      {
+        "id": "agua",
+        "nombre": "Agua y lavado",
+        "desc": "Puntos de agua potable, fregaderos, vaciado de aguas grises y una zona para limpiar botas y bicicletas sin verter al canal."
+      },
+      {
+        "id": "observatorio",
+        "nombre": "Observatorio pequeño",
+        "desc": "Una pantalla de cañizo, banco y guía visual sin reclamos ni iluminación nocturna. La presencia de aves nunca se garantiza."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Bicis y herramientas",
+        "desc": "Ocho bicicletas de paseo, aparcamiento cubierto, bomba y herramientas para seguir los caminos llanos del delta."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Arrozales, aves y caminos desde el camping | El Delta",
+      "description": "Observatorios, rutas llanas y servicios prácticos junto a un microcamping de humedal mediterráneo."
+    },
+    "titulo": "El agua dibuja el camino",
+    "intro": "El paisaje parece abierto, pero tiene límites. Usamos caminos existentes, reducimos la velocidad y dejamos en paz los márgenes donde crían y descansan las aves.",
+    "secciones": [
+      {
+        "titulo": "El arrozal",
+        "texto": "En abril es espejo; en verano, verde; al final de la temporada, oro y tierra. Un recorrido señalizado de seis kilómetros permite verlo sin entrar en las fincas."
+      },
+      {
+        "titulo": "Las aves",
+        "texto": "Garzas, calamones y limícolas usan el humedal a su ritmo. Facilitamos guía y puntos de observación; no usamos reclamos, focos ni comida."
+      },
+      {
+        "titulo": "La ruta en bicicleta",
+        "texto": "Una pista casi llana enlaza embarcadero, observatorios y pueblo en 22 kilómetros. El firme alterna asfalto tranquilo y tierra compactada."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "A diecisiete minutos en bicicleta hay mercado, farmacia, taller y cocina local. El supermercado grande queda a once minutos en vehículo."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde la parcela",
+      "items": [
+        { "lugar": "Camino del arrozal", "valor": "1 min a pie" },
+        { "lugar": "Observatorio", "valor": "9 min a pie" },
+        { "lugar": "Embarcadero", "valor": "11 min en bici" },
+        { "lugar": "Mercado y farmacia", "valor": "17 min en bici" },
+        { "lugar": "Centro de interpretación", "valor": "24 min en bici" },
+        { "lugar": "Estación de tren", "valor": "28 min en vehículo" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas orientativas | Camping El Delta",
+      "description": "Precios orientativos por noche para parcelas Cañizo y Arrozal, con temporada y condiciones claras."
+    },
+    "titulo": "Una temporada corta, tres momentos del paisaje",
+    "intro": "Estos importes forman parte de la demostración y son orientativos. Una consulta real recibiría confirmación de parcela, acceso, precio final y condiciones del humedal.",
+    "tabla": { "tipo": "Qué parcela", "noche": "€/noche" },
+    "temporadas": {
+      "sea_primavera": "Primavera · 3 abril – 20 junio",
+      "sea_arroz": "Arroz · 20 junio – 6 septiembre",
+      "sea_aves": "Aves · 6 septiembre – 18 octubre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos orientativos",
+      "personaExtra": "Persona a partir de la {n}.ª",
+      "nino": "Niño de 3 a 12 años",
+      "electricidad": "Electricidad",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Animal"
+    },
+    "extras": {
+      "titulo": "Extras opcionales",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_bici": "Bicicleta de paseo",
+        "ext_cesta": "Cesta de producto local"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de venir",
+      "items": [
+        "El acceso admite vehículos de hasta 7 m; la última curva es estrecha y se entra entre las 15:00 y las 20:00.",
+        "Las parcelas tienen suelo drenante y sombra ligera: no invaden caminos, acequias ni márgenes del arrozal.",
+        "El silencio nocturno empieza a las 22:00 y no se permite iluminación exterior intensa junto al humedal.",
+        "No se cobra nada desde esta demostración y ninguna consulta genera una reserva."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Consulta tus fechas | Camping El Delta",
+      "description": "Prueba una consulta de parcela en El Delta sin enviar ni guardar datos personales."
+    },
+    "titulo": "Hablemos de fechas y medidas",
+    "intro": "Esta pantalla reproduce el canal directo de un microcamping de dieciséis parcelas. Puedes probarla: los datos no salen del navegador.",
+    "datos": {
+      "titulo": "Dónde estamos",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Correo electrónico"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: de 8:00 a 12:00 y de 16:00 a 20:00, desde el 3 de abril hasta el 18 de octubre."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La ubicación y los datos de contacto de esta demo son ficticios. En una activación real se publicarían coordenadas, acceso recomendado y caminos verificados por el camping."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Cuaderno del agua | Camping El Delta",
+      "description": "Notas de arrozal, caminos, observación responsable y temporada desde un microcamping mediterráneo."
+    },
+    "titulo": "Cuaderno del agua",
+    "intro": "Este camping de muestra todavía no publica notas. La sección queda preparada para informar de caminos, agua y observación responsable, no para prometer avistamientos.",
+    "leerMas": "Leer",
+    "volver": "Todos los partes",
+    "vacio": "Todavía no hay partes."
+  },
+  "noEncontrada": {
+    "titulo": "Este camino termina en el agua",
+    "texto": "La dirección no existe o ha cambiado. La portada y la consulta siguen junto al arrozal.",
+    "cta": "Volver al inicio"
+  }
+}

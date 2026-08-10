@@ -1,0 +1,61 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D5-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Càmping Riu Clar.",
+    "nota": "Producción en cuatro tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-boira", "hero-vespre"],
+    ["tipus-parcella-bosc", "tipus-parcella-riu"],
+    ["detall-refugi-comu", "installacio-banys-pedra"],
+    ["entorn-sender-humit", "textura-pissarra-molsa"]
+  ],
+  "derivados": {
+    "fuente": "hero-boira",
+    "titulo": "Càmping Riu Clar",
+    "subtitulo": "24 parcel·les · Prepirineu"
+  },
+  "piezas": {
+    "hero-boira": {
+      "aspecto": "21:9",
+      "papel": "Heroi principal amb espai negatiu per al titular a 375 i 1366 px.",
+      "prompt": "Fotografia documental editorial d'un microcàmping fluvial del Prepirineu a primera hora. Primer pla amb dues parcel·les desocupades i diferents sota pins i pollancres: grava compactada, una taula de fusta senzilla i connexions discretes, sense tendes ni files repetides. Al centre, el riu fred ha de ser clarament visible darrere una franja segura de vegetació; al fons, vessants boscosos amb boira baixa. Llum natural continguda, terra humida i pedra fosca, composició panoràmica amb espai negatiu, cap persona o silueta, cap text, senyal, marca, matrícula, vehicle, HDR ni arquitectura impossible."
+    },
+    "hero-vespre": {
+      "aspecto": "21:9",
+      "papel": "Heroi secundari i pàgina no trobada.",
+      "prompt": "Fotografia documental del mateix microcàmping fluvial prepirinenc al vespre. Una petita construcció funcional de pedra fosca i fusta sense cap rètol, cartell, paper, símbol ni lletra ocupa un lateral; una sola finestra emet llum càlida continguda. Al costat hi ha dues parcel·les buides sota pins, sense tendes, vehicles o objectes amb forma humana. Cel blau fred, terra humida i composició panoràmica amb espai negatiu. Escena completament deserta: cap persona, figura, silueta o rostre; cap text, marca, matrícula, luxe de resort ni HDR."
+    },
+    "tipus-parcella-bosc": {
+      "aspecto": "3:2",
+      "papel": "Targeta i fitxa de parcel·la de bosc.",
+      "prompt": "Fotografia editorial documental d'una parcel·la ordinària de 75 metres quadrats al mateix microcàmping fluvial humit del Prepirineu que l'heroi aprovat. Grava fosca encara mullada, pins i pollancres densos, falgueres i límits baixos de pedra fosca. Una única tenda de càmping familiar moderna i senzilla, de perfil baix i teixit verd gris, no glamping, no lona premuntada, amb una taula plegable discreta. Llum fresca de matí ennuvolat, geografia verda i creïble. Cap persona, text, logo, matrícula, carretera, paisatge sec, HDR o luxe."
+    },
+    "tipus-parcella-riu": {
+      "aspecto": "3:2",
+      "papel": "Targeta i fitxa de parcel·la de ribera.",
+      "prompt": "Fotografia editorial documental d'una parcel·la de ribera de 90 metres quadrats al mateix microcàmping fluvial humit del Prepirineu que l'heroi aprovat. Grava fosca mullada, pollancres i falgueres; el riu corrent és visible al fons darrere una franja vegetal segura. Una furgoneta camper compacta, contemporània i completament genèrica vista de costat i sense cap logotip, text o matrícula visible, amb un tendal lateral senzill. Llum fresca de matí ennuvolat i qualitat fotogràfica nítida. Cap persona, embassament, paisatge sec, vehicle antic, marca, HDR o estil de resort."
+    },
+    "detall-refugi-comu": {
+      "aspecto": "3:2",
+      "papel": "Instal·lació comuna i recer de pluja.",
+      "prompt": "Fotografia editorial documental, clara i diürna, de l'interior d'un petit refugi comú del mateix microcàmping prepirinenc. Una finestra ampla deixa entrar llum natural de dia plujós i permet llegir tota la sala: murs de pedra fosca, bigues senzilles de fusta, estufa negra apagada, una taula llarga amb bancs i dos impermeables llisos assecant-se. Espai modest, funcional, net i acollidor, no fosc ni luxós. Cap persona, text llegible, cartell, marca, decoració alpina, HDR o ombres negres."
+    },
+    "installacio-banys-pedra": {
+      "aspecto": "3:2",
+      "papel": "Banys petits i accessibles.",
+      "prompt": "Fotografia arquitectònica documental de dia d'un bloc de banys petit i ben cuidat al mateix microcàmping prepirinenc. Edifici rectangular i tancat de pedra local fosca amb dues portes opaques de fusta sota un ràfec senzill; no es veu cap interior. Accés exterior clar, pla i accessible de grava compactada amb una rampa suau, canal de pluja i bosc humit al voltant. Llum ennuvolada natural, escala real i arquitectura construïble. Cap persona, text, rètol, logo, llum nocturna, façana oberta, lavabo visible, bol·lard de color, luxe o estil de resort."
+    },
+    "entorn-sender-humit": {
+      "aspecto": "21:9",
+      "papel": "Capçalera d'entorn i accés a peu.",
+      "prompt": "Fotografia documental panoràmica d'un sender de ribera inequívoc al Prepirineu: un camí estret de terra i grava mullada comença en primer pla i recorre tota la composició en diagonal, paral·lel a un riu corrent visible a través de pollancres, pins, falgueres i pedra fosca. Boira lleugera després de pluja, camí practicable i sense cap zona d'acampada. El sender és el subjecte principal, no una vista del riu. Cap persona, foguera, cercle de pedres, tronc tallat, banc, senyal, text, logo, llac, postal turística, saturació o HDR."
+    },
+    "textura-pissarra-molsa": {
+      "aspecto": "21:9",
+      "papel": "Signatura material transversal.",
+      "prompt": "Primer pla documental de pissarra fosca mullada, molsa i fulles de pollancre al costat d'aigua corrent, textura nítida i llum lateral natural molt suau, paleta verda grisosa i blava, sense persones, text, logos ni efectes digitals."
+    }
+  }
+}

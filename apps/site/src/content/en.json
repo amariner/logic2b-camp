@@ -33,7 +33,7 @@
     },
     "kicker": "Visual directions for campsites",
     "titulo": "Your campsite should not look like everyone else's.",
-    "texto": "Three fictional campsites turn Start, Management and Vision into browsable journeys on the same product.",
+    "texto": "Six fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
     "verTodos": "See all themes",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
@@ -67,13 +67,31 @@
         "href": "/demos/mardefondo/"
       },
       {
-        "slug": "montana",
-        "nombre": "Mountain",
-        "estilo": "Refuge and long season",
+        "slug": "riuclar",
+        "nombre": "Riu Clar",
+        "estilo": "Start · river and visible season",
         "imagen": "/temas/montana.webp",
         "variante": "natural",
-        "estado": "Visual concept",
-        "href": ""
+        "estado": "Browsable demo",
+        "href": "/demos/riuclar/"
+      },
+      {
+        "slug": "duna",
+        "nombre": "La Duna",
+        "estilo": "Start · camper vans and salt",
+        "imagen": "/temas/parcela.webp",
+        "variante": "pitch",
+        "estado": "Browsable demo",
+        "href": "/demos/duna/"
+      },
+      {
+        "slug": "delta",
+        "nombre": "El Delta",
+        "estilo": "Start · wetlands and a short season",
+        "imagen": "/temas/montana.webp",
+        "variante": "natural",
+        "estado": "Browsable demo",
+        "href": "/demos/delta/"
       },
       {
         "slug": "familiar",

@@ -1,0 +1,356 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-amanecer": [
+      {
+        "at": "2026-08-10T13:57:57.574Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen network error before bytes"
+      },
+      {
+        "at": "2026-08-10T13:59:48.404Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "86d5c35c-899f-4d4c-8ef0-afcca966d84c",
+        "reusedJob": false,
+        "promptSha256": "7e9a0dcbf241057b58515c738d73c45e8bb257507c1a3bc740f98ac961866473",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:01:55.286Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "daea7b40-35e6-40c9-8e21-e656c9556207",
+        "reusedJob": false,
+        "promptSha256": "7e9a0dcbf241057b58515c738d73c45e8bb257507c1a3bc740f98ac961866473",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:04:52.735Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "0d68cc39-a3b4-43fc-840c-d551aa5d24aa",
+        "reusedJob": false,
+        "promptSha256": "7e9a0dcbf241057b58515c738d73c45e8bb257507c1a3bc740f98ac961866473",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ],
+    "hero-ultima-luz": [
+      {
+        "at": "2026-08-10T13:58:15.686Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen network error before bytes"
+      },
+      {
+        "at": "2026-08-10T14:00:47.931Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b440b428-d590-4bcb-8888-6555d35d5b3e",
+        "reusedJob": false,
+        "promptSha256": "1e38391a3c731cea7155f06caff920a2674d472f02b05da8bd4f782f1c6adbdb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:02:23.595Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "cb21932d-7416-4e2d-8368-faf498b5ae89",
+        "reusedJob": false,
+        "promptSha256": "1e38391a3c731cea7155f06caff920a2674d472f02b05da8bd4f782f1c6adbdb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:06:54.449Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "6d277240-f390-4b96-a7b6-7c79d749932e",
+        "reusedJob": false,
+        "promptSha256": "1e38391a3c731cea7155f06caff920a2674d472f02b05da8bd4f782f1c6adbdb",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ],
+    "tipo-plaza-base": [
+      {
+        "at": "2026-08-10T14:07:39.633Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "c0e4d933-0f73-43c3-8288-198877bc5874",
+        "reusedJob": false,
+        "promptSha256": "a66d18ca860bcd96a523e307edd171d6d903e3c33cbb71f6a2e4c6300dd42f62",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:08:50.855Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "491f79f6-d352-4251-b16f-4820e30977aa",
+        "reusedJob": false,
+        "promptSha256": "a66d18ca860bcd96a523e307edd171d6d903e3c33cbb71f6a2e4c6300dd42f62",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:11:42.645Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "f650cff7-f965-4bec-bf3f-794ba89a20d4",
+        "reusedJob": false,
+        "promptSha256": "a66d18ca860bcd96a523e307edd171d6d903e3c33cbb71f6a2e4c6300dd42f62",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "tipo-plaza-duna": [
+      {
+        "at": "2026-08-10T14:08:08.083Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "8338682d-c121-47c6-8e87-270a51962b9f",
+        "reusedJob": false,
+        "promptSha256": "38e302cdb961f7164e5bd872e5050053a579b42fd430304da07a057fab8c0748",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:09:13.298Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "bb7a4b51-9db7-4e93-9ea6-8525a9acc9fc",
+        "reusedJob": false,
+        "promptSha256": "38e302cdb961f7164e5bd872e5050053a579b42fd430304da07a057fab8c0748",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:14:23.165Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "6115c6c4-1e31-4d7a-87b4-f218934db84d",
+        "reusedJob": false,
+        "promptSha256": "38e302cdb961f7164e5bd872e5050053a579b42fd430304da07a057fab8c0748",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "detalle-tienda-tablas": [
+      {
+        "at": "2026-08-10T14:15:21.046Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "0131b4b7-3484-4cf2-b538-5e9fcae0bb16",
+        "reusedJob": false,
+        "promptSha256": "98b66ad7cc9fdc2ac6c252b87131b03cf65feaf6b70d83a4f69d67acb46e32c2",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:16:48.907Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "174d6f6d-86e4-4b17-b81f-a63e651281d0",
+        "reusedJob": false,
+        "promptSha256": "98b66ad7cc9fdc2ac6c252b87131b03cf65feaf6b70d83a4f69d67acb46e32c2",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T14:19:05.732Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "9f768f95-4a48-418f-9109-91671433f2ae",
+        "reusedJob": false,
+        "promptSha256": "98b66ad7cc9fdc2ac6c252b87131b03cf65feaf6b70d83a4f69d67acb46e32c2",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "instalacion-banos-modulo": [
+      {
+        "at": "2026-08-10T14:16:04.512Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "89aed01b-0771-4fae-8566-3c30662c86a2",
+        "reusedJob": false,
+        "promptSha256": "cae148a186b7362a8113697b9c38babb13a1da9ced1f95c444f8a716e263689a",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "entorno-pasarela-mar": [
+      {
+        "at": "2026-08-10T14:19:44.107Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "4d60ffcb-dcc3-4551-8eb0-070c5af80508",
+        "reusedJob": false,
+        "promptSha256": "b4c6306ae88a6da92364adf3e35482dfda01ba649ecda3608bbe7d8bb1f3f63e",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T14:21:24.843Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "919a5cc9-698b-44c1-93f9-444df5c0a80d",
+        "reusedJob": false,
+        "promptSha256": "b4c6306ae88a6da92364adf3e35482dfda01ba649ecda3608bbe7d8bb1f3f63e",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "textura-madera-sal": [
+      {
+        "at": "2026-08-10T14:20:18.747Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "18c0fd57-0afe-4ca2-9a01-ec30baed02b9",
+        "reusedJob": false,
+        "promptSha256": "3dcdfc6ae64a3792d1ff9db4e87143e21b402d7e716b53063aa477f5ca36a5c2",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-amanecer": {
+      "at": "2026-08-10T14:07:07.525Z",
+      "gate": "visual-inspection"
+    },
+    "hero-ultima-luz": {
+      "at": "2026-08-10T14:07:07.526Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-plaza-base": {
+      "at": "2026-08-10T14:14:42.939Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-plaza-duna": {
+      "at": "2026-08-10T14:14:42.940Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-banos-modulo": {
+      "at": "2026-08-10T14:16:19.517Z",
+      "gate": "visual-inspection"
+    },
+    "detalle-tienda-tablas": {
+      "at": "2026-08-10T14:19:15.249Z",
+      "gate": "visual-inspection"
+    },
+    "textura-madera-sal": {
+      "at": "2026-08-10T14:20:37.683Z",
+      "gate": "visual-inspection"
+    },
+    "entorno-pasarela-mar": {
+      "at": "2026-08-10T14:21:44.264Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "hero-amanecer": [
+      {
+        "at": "2026-08-10T14:01:23.109Z",
+        "reason": "no_boardwalk_pitches_read_as_beach_parking_and_vehicle_has_pseudo_text",
+        "jobId": "86d5c35c-899f-4d4c-8ef0-afcca966d84c"
+      },
+      {
+        "at": "2026-08-10T14:02:41.510Z",
+        "reason": "license_plate_visible_and_vehicle_is_not_contemporary_camper_van",
+        "jobId": "daea7b40-35e6-40c9-8e21-e656c9556207"
+      }
+    ],
+    "hero-ultima-luz": [
+      {
+        "at": "2026-08-10T14:01:23.340Z",
+        "reason": "visible_human_figure_magenta_artificial_light_and_no_boardwalk",
+        "jobId": "b440b428-d590-4bcb-8888-6555d35d5b3e"
+      },
+      {
+        "at": "2026-08-10T14:02:41.763Z",
+        "reason": "utility_pole_and_overhead_wires_dominate_protected_dune_scene",
+        "jobId": "cb21932d-7416-4e2d-8368-faf498b5ae89"
+      }
+    ],
+    "tipo-plaza-base": [
+      {
+        "at": "2026-08-10T14:08:24.689Z",
+        "reason": "visible_license_plate_pseudo_branding_and_raised_platforms_not_compacted_pitch",
+        "jobId": "c0e4d933-0f73-43c3-8288-198877bc5874"
+      },
+      {
+        "at": "2026-08-10T14:09:37.401Z",
+        "reason": "visible_vehicle_logo_license_plate_and_pitch_reads_as_dune_sand",
+        "jobId": "491f79f6-d352-4251-b16f-4820e30977aa"
+      }
+    ],
+    "tipo-plaza-duna": [
+      {
+        "at": "2026-08-10T14:08:24.915Z",
+        "reason": "visible_brand_license_plate_text_and_cluttered_non_generic_scene",
+        "jobId": "8338682d-c121-47c6-8e87-270a51962b9f"
+      },
+      {
+        "at": "2026-08-10T14:09:37.674Z",
+        "reason": "visible_vehicle_logo_cargo_van_not_motorhome_and_missing_maneuver_space",
+        "jobId": "bb7a4b51-9db7-4e93-9ea6-8525a9acc9fc"
+      }
+    ],
+    "detalle-tienda-tablas": [
+      {
+        "at": "2026-08-10T14:16:19.772Z",
+        "reason": "visible_person_and_legible_pseudo_labels_on_surfboards_and_products",
+        "jobId": "0131b4b7-3484-4cf2-b538-5e9fcae0bb16"
+      },
+      {
+        "at": "2026-08-10T14:17:00.670Z",
+        "reason": "visible_person_on_right_and_pseudo_logos_on_surfboards",
+        "jobId": "174d6f6d-86e4-4b17-b81f-a63e651281d0"
+      }
+    ],
+    "entorno-pasarela-mar": [
+      {
+        "at": "2026-08-10T14:20:37.926Z",
+        "reason": "underexposed_green_cast_and_not_clean_first_morning_editorial_quality",
+        "jobId": "4d60ffcb-dcc3-4551-8eb0-070c5af80508"
+      }
+    ]
+  }
+}

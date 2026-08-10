@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "duna",
+  "name": "Camping La Duna",
+  "status": "approved-demo",
+  "icp": "Propiedad de un microcamping de costa con 15 a 30 plazas para furgonetas y autocaravanas, público joven y una temporada larga condicionada por viento y acceso a playa.",
+  "objection": "Teme que una web de camping parezca rural, clásica o genérica y no pueda explicar con rapidez altura, suelo, electricidad, viento y acceso real para una furgoneta.",
+  "commercialLevel": "Inicio, sobre el carril técnico estático tier 1.",
+  "story": "Reconocer la duna y la pasarela, comprobar gálibo, suelo y parte de viento, elegir una de veinte plazas y completar una consulta sin red ni datos persistidos.",
+  "tone": "Directo, ligero y despierto; habla de sal, viento, ruedas y amaneceres sin postureo surfero, anglicismos innecesarios ni promesas de primera línea.",
+  "palette": {
+    "tinta": "#142126",
+    "hueso": "#f4efe3",
+    "pino": "#a83f2c",
+    "arena": "#d5b36a",
+    "mar": "#0b6f7a"
+  },
+  "typography": "Clash Display 600 para titulares compactos e Inter para datos de acceso, medidas y viento; contraste alto, cifras grandes y composición gráfica sin serif.",
+  "signatureScreens": [
+    "Héroe de amanecer tras la duna con parte de viento visible",
+    "Ficha de plaza con longitud, suelo, electricidad y gálibo",
+    "Confirmación de consulta marcada como demostración"
+  ],
+  "photoInventory": [
+    "Héroes de amanecer y última luz detrás de la duna",
+    "Plazas Base y Duna con furgonetas genéricas y escala real",
+    "Tienda de tablas, módulo de baños, pasarela al mar y textura de madera salina"
+  ],
+  "successCriterion": "Una captura sin contexto se reconoce como microcamping joven de furgonetas detrás de una duna mediterránea; acceso, viento y medidas se encuentran en menos de un minuto y el build no contiene motor ni dashboard."
+}

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "delta",
+  "name": "Camping El Delta",
+  "status": "approved-demo",
+  "icp": "Propiedad de un microcamping estacional de 16 parcelas junto a arrozales y humedales, con observación de aves, cicloturismo y una operación muy contenida.",
+  "objection": "Cree que un negocio tan pequeño no puede justificar una web propia ni convertir paisaje, silencio y temporada corta en consultas bien informadas.",
+  "commercialLevel": "Inicio, sobre el carril técnico estático tier 1.",
+  "story": "Entrar despacio entre arrozales, entender los turnos de silencio y las fechas de apertura, elegir una de dieciséis parcelas y preparar una consulta sin red ni datos persistidos.",
+  "tone": "Sereno, preciso y observador; habla de agua, aves, arroz y bicicleta sin convertir el humedal en parque temático ni prometer fauna a demanda.",
+  "palette": {
+    "tinta": "#173029",
+    "hueso": "#f6f1d8",
+    "pino": "#74451f",
+    "arena": "#c8b85b",
+    "mar": "#315f57"
+  },
+  "typography": "Fraunces 600 para titulares de ritmo editorial e IBM Plex Sans para datos de temporada, parcelas y rutas; composición amplia, suave y muy legible.",
+  "signatureScreens": [
+    "Héroe de luz plana sobre arrozal con cañizo en primer término",
+    "Ficha de parcela con superficie, electricidad, sombra y acceso",
+    "Confirmación de consulta marcada como demostración"
+  ],
+  "photoInventory": [
+    "Héroes de amanecer y tarde sobre arrozales inundados",
+    "Parcelas Cañizo y Arrozal con vehículos genéricos y escala real",
+    "Observatorio, baños de cal, camino ciclista y textura de cañizo"
+  ],
+  "successCriterion": "Una captura sin contexto se reconoce como microcamping mínimo de humedal mediterráneo; temporada, silencio, parcelas y rutas se entienden en menos de un minuto y el build no contiene motor ni dashboard."
+}

@@ -1,6 +1,9 @@
+import delta from '../../../../tenants/delta/content/media/miniatura.webp?url';
+import duna from '../../../../tenants/duna/content/media/miniatura.webp?url';
 import marDeFondo from '../../../../tenants/mardefondo/content/media/miniatura.webp?url';
 import olivar from '../../../../tenants/olivar/content/media/miniatura.webp?url';
 import pinadaMar from '../../../../tenants/pinadamar/content/media/miniatura.webp?url';
+import riuClar from '../../../../tenants/riuclar/content/media/miniatura.webp?url';
 
 /**
  * Una sola fuente para las miniaturas comerciales: el derivado aprobado de
@@ -8,9 +11,12 @@ import pinadaMar from '../../../../tenants/pinadamar/content/media/miniatura.web
  * alguien elimina el activo que sostiene la tarjeta del portfolio.
  */
 export const portfolioImages = {
+  delta,
+  duna,
   olivar,
   pinadamar: pinadaMar,
   mardefondo: marDeFondo,
+  riuclar: riuClar,
 } as const;
 
 export type PortfolioSlug = keyof typeof portfolioImages;

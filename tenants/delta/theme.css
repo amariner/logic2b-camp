@@ -1,0 +1,21 @@
+/* El Delta: agua somera, arroz maduro, cañizo y tierra húmeda. */
+:root {
+  --lc-tinta: #173029;
+  --lc-hueso: #f6f1d8;
+  --lc-pino: #74451f;
+  --lc-arena: #c8b85b;
+  --lc-mar: #315f57;
+
+  /* derivados — NUNCA colores nuevos, siempre color-mix de los 5 de arriba */
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 76%, var(--lc-tinta));
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+
+  --lc-font-display: 'Fraunces', Georgia, serif;
+  --lc-font-text: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --lc-radius: 12px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 6px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 10px);
+}

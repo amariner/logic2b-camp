@@ -1,0 +1,21 @@
+/* La Duna: sal, coral de señal, madera lavada y mar profundo. */
+:root {
+  --lc-tinta: #142126;
+  --lc-hueso: #f4efe3;
+  --lc-pino: #a83f2c;
+  --lc-arena: #d5b36a;
+  --lc-mar: #0b6f7a;
+
+  /* derivados — NUNCA colores nuevos, siempre color-mix de los 5 de arriba */
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 76%, var(--lc-tinta));
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 62%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 34%, var(--lc-hueso));
+
+  --lc-font-display: 'Clash Display', system-ui, sans-serif;
+  --lc-font-text: 'Inter', system-ui, sans-serif;
+
+  --lc-radius: 1px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 1px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 3px);
+}

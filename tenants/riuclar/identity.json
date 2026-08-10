@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "riuclar",
+  "name": "Càmping Riu Clar",
+  "status": "approved-demo",
+  "icp": "Propietat d'un microcàmping prepirinenc de 20 a 40 parcel·les que viu de la primavera a la tardor i necessita explicar obertura, accés i clima abans de rebre una consulta.",
+  "objection": "Tem que el producte estigui pensat només per a costa i agost i que una web bonica amagui la informació pràctica de temporada i muntanya.",
+  "commercialLevel": "Inici, sobre el carril tècnic estàtic tier 1.",
+  "story": "Reconèixer el riu i el bosc humit, comprovar quan obre i com s'hi arriba, triar una de les vint-i-quatre parcel·les i completar una consulta sense xarxa ni dades persistides.",
+  "tone": "Serè, concret i acollidor; parla de cabal, ombra, camins i nits fresques, sense aventura extrema, postal alpina ni rusticitat decorativa.",
+  "palette": {
+    "tinta": "#17241f",
+    "hueso": "#f2f0e8",
+    "pino": "#315744",
+    "arena": "#b9b2a1",
+    "mar": "#41667a"
+  },
+  "typography": "Clash Display 500/600 per a titulars curts i Inter per a cos, avisos de temporada, accessos i distàncies; xifres clares i molt aire.",
+  "signatureScreens": [
+    "Heroi de boira al riu amb temporada visible",
+    "Fitxa de parcel·la amb accés, clima i equipament",
+    "Confirmació de consulta marcada com a demostració"
+  ],
+  "photoInventory": [
+    "Herois de boira matinal i vespre blau al costat del riu",
+    "Parcel·les de bosc i de ribera amb escala real",
+    "Refugi comú, banys de pedra, sender humit i textura de pissarra i molsa"
+  ],
+  "successCriterion": "Una captura sense context es reconeix com a microcàmping fluvial prepirinenc, la temporada i l'accés es troben en menys d'un minut i el build no conté motor ni dashboard."
+}

@@ -343,7 +343,7 @@ sin modificar el core, improvisar activos ni duplicar infraestructura.
       dirección nueva solo si ninguno lo cubre.
 - [ ] Ejecutar cada demo como una entrega vertical: contrato visual → contenido →
       fotografía → config/tema → recorrido web/gestor → capturas → ficha → QA.
-- [ ] Completar D5-V de tres a seis demos antes de abrir D6-V.
+- [x] Completar D5-V de tres a seis demos antes de abrir D6-V.
 - [ ] Completar D6-V de seis a doce solo con evidencia propia por demo.
 - [ ] Mantener un único core, un único sistema de componentes y adaptadores demo
       compartidos; ninguna marca gana rama, backend o servicio propio.
@@ -353,11 +353,13 @@ sin modificar el core, improvisar activos ni duplicar infraestructura.
 **Cierra cuando:** el portfolio llega a la ola cuyo gate esté abierto y cada demo
 cubre un caso distinto, es vendible y no multiplica el coste técnico por marca.
 
-**Gate auditado el 2026-08-10:** la ola abierta permanece en tres demos. No hay
-señal propia que seleccione Montaña, Familiar o Parcela; D5-V queda en espera
-con disparadores exactos y D6-V no es evaluable todavía. La porción local de R9
-está agotada y la ruta continúa por R10. Ver
-`docs/AUDITORIA-PORTFOLIO-R9.md`.
+**Gate actualizado el 2026-08-10:** la auditoría dejó inicialmente la ola en
+tres demos, pero la decisión explícita posterior de Andreu abre D5-V y pide
+terminar todos los temas por el orden programado. Càmping Riu Clar convierte
+Montaña en la cuarta demo, Camping La Duna añade la quinta y Camping El Delta
+cierra D5-V en **6/6**, todas verticales y sin core ni backend propio. D6-V se
+abre con `serralta` y continúa en orden B2–B4 y C2–C4. Ver
+`docs/AUDITORIA-PORTFOLIO-R9.md` para la matriz inicial.
 
 ### R10 · Web y demos canónicas
 

@@ -1,0 +1,326 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-boira": [
+      {
+        "at": "2026-08-10T13:13:45.526Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "chatgpt backend image generation network error"
+      },
+      {
+        "at": "2026-08-10T13:16:22.396Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "5af86978-793b-4d3d-bb77-015c6debfb60",
+        "reusedJob": false,
+        "promptSha256": "c86989a50e3ed91d1ddef04d86dcb1f374e0a2e04497a07966a31251bb01e4d2",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T13:19:22.554Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "da33cf60-e833-4577-8431-7dfc52f63b4a",
+        "reusedJob": false,
+        "promptSha256": "d0e9da636977b811a62942d5913b3b0ad924c1469c5ac2437cd890834ccac0c3",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-vespre": [
+      {
+        "at": "2026-08-10T13:14:09.181Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "chatgpt backend image generation network error"
+      },
+      {
+        "at": "2026-08-10T13:17:47.958Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "9e40fb21-9d91-4a86-86ac-647d7407924b",
+        "reusedJob": false,
+        "promptSha256": "402679f024fb1cc40743a3232bba9ab465867874ede3b7512f85f938c53ed2cf",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T13:19:47.769Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "2bb4bda3-21d2-4643-b3f2-c82998d97d4d",
+        "reusedJob": false,
+        "promptSha256": "3e1c0dcc8a3d6ec0b1354ca30e63e5168be8805c3cd2e5676a236231dd85ff89",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "tipus-parcella-bosc": [
+      {
+        "at": "2026-08-10T13:20:44.278Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "62a1b271-2728-4be1-959c-7295ff6e3ae4",
+        "reusedJob": false,
+        "promptSha256": "399ae4e8b5854226540a090938d49cbd09f19aefa9966e4ae39398d82868022c",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T13:22:39.705Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "aaf572c8-5ef1-45c1-a7b2-55ee7cfab3b4",
+        "reusedJob": false,
+        "promptSha256": "fb0cb0035501de1a8eb507872629d0d11ea8a1d7808a702e822f55d847abb180",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "tipus-parcella-riu": [
+      {
+        "at": "2026-08-10T13:21:12.699Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "6ab96c87-a5b1-48c7-8458-26884b7f5a8d",
+        "reusedJob": false,
+        "promptSha256": "079bf666f2bab054c7fd9a4a5b8092f834323b25e1005be3181f1730fa5d3135",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T13:23:05.098Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "a9dc4d27-9c8f-476d-8031-51e674d6d1e0",
+        "reusedJob": false,
+        "promptSha256": "a5f61f5c1afe70e139225db09ec73414d5f38a52f3821613e50d2deb85c5e08b",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T13:26:01.024Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "41062418-55d4-4cc7-a8b3-6c420570cb6a",
+        "reusedJob": false,
+        "promptSha256": "a5f61f5c1afe70e139225db09ec73414d5f38a52f3821613e50d2deb85c5e08b",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "detall-refugi-comu": [
+      {
+        "at": "2026-08-10T13:27:25.486Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d1bcc077-0985-414a-a965-52ef13e6d6e7",
+        "reusedJob": false,
+        "promptSha256": "e70caac3ed9697116ddcdd34165dc73e63b5d34e4d853d7af2d331e623d22bf4",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T13:29:07.815Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "a0cac5a2-fcca-473a-b863-af1ac94c8caa",
+        "reusedJob": false,
+        "promptSha256": "2925ceb0fd9083604942e6c2dbb3e58aadd9d0be4596a058e925218cd6445045",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "installacio-banys-pedra": [
+      {
+        "at": "2026-08-10T13:27:53.905Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "c7c8f368-654a-48f4-bc2b-40b3d28dbb4d",
+        "reusedJob": false,
+        "promptSha256": "67e22fbcfdc84dafd36606a6bf98c186400246e4888c5b08b7a22bf4a5118708",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-10T13:29:33.393Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "e94a7d43-dd1d-49bb-9822-b205de8251a9",
+        "reusedJob": false,
+        "promptSha256": "1e072e223868e4763bbed3745514b441f42b9112eca9423a57ee8a6f4aedfb9f",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "entorn-sender-humit": [
+      {
+        "at": "2026-08-10T13:30:21.909Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "8748e204-6c98-45bc-bee7-f0887c4e7183",
+        "reusedJob": false,
+        "promptSha256": "a4ddedba0d7767e2748d8903bd18536d890122705edba334d905be53f372b0fa",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T13:31:47.628Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "2d84ad7c-c22d-48da-bf41-0a1a8c1e1959",
+        "reusedJob": false,
+        "promptSha256": "d0dee5ab5a8553b844c55c063998c49579a8c07c708692e4f3f12856847ffe4c",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-10T13:35:48.979Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "13213bfe-05b8-4045-8609-f7005b350498",
+        "reusedJob": false,
+        "promptSha256": "d0dee5ab5a8553b844c55c063998c49579a8c07c708692e4f3f12856847ffe4c",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ],
+    "textura-pissarra-molsa": [
+      {
+        "at": "2026-08-10T13:30:47.298Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "316d513f-a0aa-4dc5-88c8-0387aa5a9d48",
+        "reusedJob": false,
+        "promptSha256": "0d71b46a2e7ae532da37771240f313f7d6b8d4be5595f072f3a6c668b926b707",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-boira": {
+      "at": "2026-08-10T13:20:14.467Z",
+      "gate": "visual-inspection"
+    },
+    "hero-vespre": {
+      "at": "2026-08-10T13:20:14.468Z",
+      "gate": "visual-inspection"
+    },
+    "tipus-parcella-bosc": {
+      "at": "2026-08-10T13:23:24.863Z",
+      "gate": "visual-inspection"
+    },
+    "tipus-parcella-riu": {
+      "at": "2026-08-10T13:26:26.430Z",
+      "gate": "visual-inspection"
+    },
+    "detall-refugi-comu": {
+      "at": "2026-08-10T13:29:52.945Z",
+      "gate": "visual-inspection"
+    },
+    "installacio-banys-pedra": {
+      "at": "2026-08-10T13:29:52.946Z",
+      "gate": "visual-inspection"
+    },
+    "textura-pissarra-molsa": {
+      "at": "2026-08-10T13:31:04.182Z",
+      "gate": "visual-inspection"
+    },
+    "entorn-sender-humit": {
+      "at": "2026-08-10T13:36:20.325Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "hero-boira": [
+      {
+        "at": "2026-08-10T13:18:20.635Z",
+        "reason": "Fila repetida de tiendas, persona visible y río ausente; no representa 24 parcelas honestas.",
+        "jobId": "5af86978-793b-4d3d-bb77-015c6debfb60"
+      }
+    ],
+    "hero-vespre": [
+      {
+        "at": "2026-08-10T13:18:20.966Z",
+        "reason": "Genera texto en fachada y figuras humanas; incumple el contrato sin texto ni personas.",
+        "jobId": "9e40fb21-9d91-4a86-86ac-647d7407924b"
+      }
+    ],
+    "tipus-parcella-bosc": [
+      {
+        "at": "2026-08-10T13:21:43.952Z",
+        "reason": "Paisaje seco y tienda de glamping; rompe la geografía húmeda y la escala de parcela ordinaria.",
+        "jobId": "62a1b271-2728-4be1-959c-7295ff6e3ae4"
+      }
+    ],
+    "tipus-parcella-riu": [
+      {
+        "at": "2026-08-10T13:21:44.184Z",
+        "reason": "Imagen blanda y seca de autocaravana junto a embalse; no muestra ribera prepirenaica ni calidad editorial.",
+        "jobId": "6ab96c87-a5b1-48c7-8458-26884b7f5a8d"
+      },
+      {
+        "at": "2026-08-10T13:23:25.085Z",
+        "reason": "Baca deforme y dos todoterrenos repetidos al fondo; artefactos incompatibles con fotografía documental.",
+        "jobId": "a9dc4d27-9c8f-476d-8031-51e674d6d1e0"
+      }
+    ],
+    "detall-refugi-comu": [
+      {
+        "at": "2026-08-10T13:28:10.882Z",
+        "reason": "Interior casi negro e ilegible; no comunica un refugio común útil y cuidado.",
+        "jobId": "d1bcc077-0985-414a-a965-52ef13e6d6e7"
+      }
+    ],
+    "installacio-banys-pedra": [
+      {
+        "at": "2026-08-10T13:28:11.117Z",
+        "reason": "Baños abiertos de noche, sin privacidad y arquitectura poco creíble; no cumple instalación documental.",
+        "jobId": "c7c8f368-654a-48f4-bc2b-40b3d28dbb4d"
+      }
+    ],
+    "entorn-sender-humit": [
+      {
+        "at": "2026-08-10T13:31:04.521Z",
+        "reason": "Muestra un hogar de fuego frente a agua quieta y no el sendero de ribera que debe encabezar Entorno.",
+        "jobId": "8748e204-6c98-45bc-bee7-f0887c4e7183"
+      },
+      {
+        "at": "2026-08-10T13:32:04.886Z",
+        "reason": "Sender correcto pero agua quemada, dominante magenta y detalle blando; no iguala el acabado editorial aprobado.",
+        "jobId": "2d84ad7c-c22d-48da-bf41-0a1a8c1e1959"
+      }
+    ]
+  }
+}

@@ -12,7 +12,11 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   acreditados; sigue un candidato sintético para bindings, nombres de secrets y
   adaptadores `none`, todavía sin `--apply`, proveedor, dominio ni deploy. Los
   ensayos que necesiten un entorno real permanecen en su gate. La porción local
-  de R12 está agotada.
+  de R12 está agotada. En paralelo, la decisión de Andreu abre el
+  portfolio
+  completo: Riu Clar, La Duna y El Delta cierran D5-V en 6/6; `serralta` abre
+  D6-V y después continúan las cinco restantes. Los temas se entregan
+  verticalmente, uno por uno.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -21,8 +25,9 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   revisión del payload real de pagos.
 - **Decisión/aprendizaje comercial:** tematizar el gestor, enriquecer email,
   abrir bloqueos al visitante, volver a mostrar «cerrado», nacionalidad/nombre y
-  cualquier nueva demo D5-V/D6-V. Requieren señal observada, no iniciativa
-  técnica.
+  cambios de alcance posteriores al portfolio de doce demos. D5-V y D6-V ya
+  cuentan con autorización explícita; los demás puntos requieren señal
+  observada, no iniciativa técnica.
 - **Descartado o ya absorbido:** Storybook duplicado, crear bloqueos arrastrando,
   textos originales conservados bajo cierres posteriores y E3-V/E4-V absorbidos
   por D1-V. No se seleccionan como trabajo.
@@ -272,8 +277,22 @@ es un gate de producción, no un pendiente local de implementación.
   Parcela**~~ → **hecho 2026-08-08 (sesión 102)**: tres piezas originales del
   integrado de Codex, en tandas 2+1, sustituyen los préstamos de la propuesta
   Azahar. WebP 1440×960 locales, prompts/proveedor/huellas trazados y QA ES/EN
-  1366/375 verde. Son conceptos visuales, no nuevas demos ni marcas; D5-V sigue
-  detrás de aprendizaje comercial.
+  1366/375 verde. Familiar y Parcela continúan como conceptos visuales; Montaña
+  se convirtió el 2026-08-10 en la demo Càmping Riu Clar por decisión explícita
+  de Andreu.
+- ~~[D5-V/A2] **Càmping Riu Clar (`riuclar`)**~~ → **hecho 2026-08-10**:
+  cuarta demo, tier 1 y catalana, con 24 parcelas, dos tipologías, identidad y
+  contenido propios, fotografía 8/8 trazada, catálogo navegable y QA canónico a
+  1366/375. Abrió la ola en 4/6.
+- ~~[D5-V/A3] **Camping La Duna (`duna`)**~~ → **hecho 2026-08-10**: quinta
+  demo, tier 1 y española, con 20 plazas camper, dos tamaños, acceso y viento
+  visibles, fotografía 8/8 trazada, catálogo navegable y QA canónico a 1366/375.
+  Abrió el cierre de la ola en 5/6.
+- ~~[D5-V/A4] **Camping El Delta (`delta`)**~~ → **hecho 2026-08-10**: sexta
+  demo, tier 1 y española, con 16 parcelas, dos tipologías, temporada corta,
+  arrozal, bicis y observación responsable; fotografía 8/8 trazada, catálogo
+  navegable y QA canónico a 1366/375. D5-V queda 6/6 y `serralta` es la
+  siguiente programada.
 - ~~[D4-V/ficha] **Ficha comercial descargable de la primera ola**~~ → **hecho
   2026-08-08 (sesión 99)**: dos PDF A4 de tres páginas generados desde el
   portfolio i18n, con las tres miniaturas, capturas aprobadas, comparación por
