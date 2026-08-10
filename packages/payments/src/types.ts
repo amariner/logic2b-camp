@@ -48,5 +48,9 @@ export interface PaymentProvider {
   createIntent(params: PaymentIntentParams): Promise<PaymentIntentResult>;
   /** null = firma inválida o payload irreconocible (nunca lanza) */
   parseWebhook(req: { headers: Headers; rawBody: string }): Promise<PaymentWebhookEvent | null>;
-  refund(providerRef: string, amountCents: number): Promise<RefundResult>;
+  /**
+   * `idempotencyKey` identifica la operación lógica y debe reutilizarse en
+   * todos sus intentos. No debe contener PII ni secretos.
+   */
+  refund(providerRef: string, amountCents: number, idempotencyKey: string): Promise<RefundResult>;
 }

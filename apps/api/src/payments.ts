@@ -179,7 +179,12 @@ export async function executeRefund(
     const config = await loadPaymentsConfig(db);
     const provider = resolveProvider(config, env);
     if (!provider) return { ok: false, error: 'payment_not_configured' };
-    const result = await provider.refund(gatewayPayment.providerRef ?? '', amountCents);
+    const refundIdempotencyKey = `refund/${bookingId}/${booking.paidCents}/${amountCents}`;
+    const result = await provider.refund(
+      gatewayPayment.providerRef ?? '',
+      amountCents,
+      refundIdempotencyKey,
+    );
     if (!result.ok) return { ok: false, error: result.error };
     refundProvider = gatewayPayment.provider as 'stripe' | 'redsys';
     providerRef = gatewayPayment.providerRef;

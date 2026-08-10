@@ -415,6 +415,9 @@ de credencial y autorización; no se tocó infraestructura externa.
         idempotente, referencia, intentos exactos y error sin body remoto.
   - [x] Segundo corte vertical: webhook Stripe con tolerancia antirreplay de 300
         s, firmas de rotación y payload Checkout validado con Zod.
+  - [x] Tercer corte vertical: salida Stripe con timeout de 8 s, POST
+        idempotentes, respuesta Zod, un reintento semánticamente seguro y
+        errores cerrados sin body remoto.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir

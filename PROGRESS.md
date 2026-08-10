@@ -1,5 +1,32 @@
 # PROGRESS — Logic Camp
 
+## Salida HTTP idempotente de Stripe R12 · 2026-08-10 (sesión 117)
+
+- El tercer corte local R12 cierra `stripeRequest`, Checkout y refund sin
+  proveedor ni red real. Siete pruebas rojas reprodujeron POST sin identidad,
+  error remoto con PII, 2xx mal formado aceptado, ausencia de reintento y de
+  timeout, y refund sin referencia validada.
+- Cada POST lleva ahora una identidad explícita sin PII: Checkout usa
+  `checkout/{bookingId}` y la API entrega al refund una clave versionada por el
+  saldo previo. Un `AbortController` limita cada intento a **8 s**; hay máximo
+  **dos intentos** con la misma clave y cuerpo, solo ante red/timeout, 409/5xx o
+  indicación expresa de Stripe. Los 4xx ordinarios no se reintentan.
+- Zod valida las respuestas 2xx de Checkout, consulta de sesión y refund. Body,
+  mensaje remoto y error de transporte se reducen a códigos cerrados; un 2xx
+  inválido nunca fabrica redirección ni afirma que devolvió dinero. El contrato
+  `PaymentProvider.refund` transporta identidad, pero Redsys la deja sin usar
+  hasta demostrar su semántica oficial en el corte siguiente.
+- Pagos pasa **27/27**, el recorrido API de pagos **14/14** y la API completa
+  **274/274**. La prueba de integración corta la primera conexión y exige dos
+  intentos Stripe con `checkout/{bookingId}` idéntico. El gate sin el workspace
+  ajeno completa **53/53** tareas en **11,70 s**.
+- `pnpm check` global mantiene un único bloqueo externo a la entrega: el tenant
+  no versionado `riuclar` importa `@logic-camp/core` sin declararlo. Se preservó
+  intacto y se retiró solo su importer automático del lockfile. ADR 0011,
+  inventario, runbook, dossier, backlog, roadmap y continuidad distinguen este
+  cierre local de sandbox/producción. No hubo deploy, secrets, cobro, reembolso
+  ni escritura externa.
+
 ## Antirreplay y frontera Zod de Stripe R12 · 2026-08-10 (sesión 116)
 
 - El segundo corte R12 cierra la entrada del webhook Stripe sin proveedor ni

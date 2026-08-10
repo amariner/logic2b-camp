@@ -55,7 +55,11 @@ export interface PaymentProvider {
   readonly name: 'stripe' | 'redsys' | 'none';
   createIntent(params: PaymentIntentParams): Promise<PaymentIntentResult>;
   parseWebhook(req: { headers: Headers; rawBody: string }): Promise<PaymentWebhookEvent | null>;
-  refund(providerRef: string, amountCents: number): Promise<{ ok: boolean; providerRef?: string }>;
+  refund(
+    providerRef: string,
+    amountCents: number,
+    idempotencyKey: string,
+  ): Promise<{ ok: boolean; providerRef?: string }>;
 }
 ```
 
@@ -100,12 +104,12 @@ z.object({ action: z.literal('refund'), amountCents: z.number().int().positive()
 ```
 
 - `record_payment`: inserta `payments` (`provider:'manual'`, `status:'succeeded'`, `providerRef: null`) y `paidCents += amountCents` — para cobros en efectivo/TPV físico ya recibidos (canal `phone`/`walkin`, o un resto de `deposit` cobrado in situ). Auditado igual que las demás acciones (`audit(..., 'record_payment', {amountCents, method})`).
-- `refund`: nunca deja `paidCents` negativo (422 si `amountCents > paidCents`); inserta `payments` con `amountCents` **negativo**; si el último pago con ese `providerRef` fue por `stripe`/`redsys`, llama a `provider.refund(providerRef, amountCents)` primero (409 si el proveedor lo rechaza, nada se escribe); si fue `manual`, es un asiento contable sin llamada externa. Mismo `audit()`.
+- `refund`: nunca deja `paidCents` negativo (422 si `amountCents > paidCents`); inserta `payments` con `amountCents` **negativo**; si el último pago con ese `providerRef` fue por `stripe`/`redsys`, llama primero a `provider.refund` con una identidad explícita y estable durante la operación (409 si el proveedor lo rechaza, nada se escribe); si fue `manual`, es un asiento contable sin llamada externa. Mismo `audit()`.
 - La cancelación web (`POST /bookings/:code/cancel`, `public.ts:375` "Fase 8: ejecución real del reembolso") y la cancelación del dashboard (`admin.ts:348`) pasan a ejecutar el reembolso real con el mismo mecanismo antes de notificar, en vez de solo mandar el email con la cifra prevista.
 
 ### 6. Adaptador `stripe`: Checkout Session por `fetch`, sin SDK (mismo criterio que `resendSender` en Fase 7)
 
-`createIntent` → `POST https://api.stripe.com/v1/checkout/sessions` (form-urlencoded, `Authorization: Bearer STRIPE_SECRET_KEY`) con `mode:'payment'`, `line_items[0][price_data]...`, `client_reference_id: bookingId`, `success_url`/`cancel_url`. Devuelve `{method:'redirect', redirectUrl: session.url, providerRef: session.id}`. `refund` → `POST /v1/refunds`. Verificación de webhook con `crypto.subtle` (HMAC-SHA256), sin el SDK de Stripe (evita arrastrar su cliente Node al Worker, igual razón que evitó React Email en notificaciones).
+`createIntent` → `POST https://api.stripe.com/v1/checkout/sessions` (form-urlencoded, `Authorization: Bearer STRIPE_SECRET_KEY`) con `mode:'payment'`, `line_items[0][price_data]...`, `client_reference_id: bookingId`, `success_url`/`cancel_url`. Devuelve `{method:'redirect', redirectUrl: session.url, providerRef: session.id}`. `refund` → `POST /v1/refunds`. Verificación de webhook con `crypto.subtle` (HMAC-SHA256), sin el SDK de Stripe (evita arrastrar su cliente Node al Worker, igual razón que evitó React Email en notificaciones). El contrato HTTP endurecido en R12 se detalla en el addenda inferior.
 
 ### 7. Adaptador `redsys`: firma HMAC SHA256 con 3DES en JS puro (Workers no lo soporta nativo)
 
@@ -151,7 +155,33 @@ permitido e importe entero no negativo (nullable solo en el caso fallido). No se
 coacciona un string a céntimos ni se persiste el payload. El test de API exige
 además que un evento caducado responda 400 y no cree ningún asiento.
 
-Este addenda no acredita endpoint, secret, entrega ni sandbox. Continúan
-pendientes en cortes separados la frontera HTTP saliente de Stripe
-(idempotencia, timeout, respuesta y error cerrado), el acuse REST de Redsys y la
-verificación extremo a extremo de ambos proveedores.
+Este addenda no acredita endpoint, secret, entrega ni sandbox. El corte de
+salida Stripe se cerró después en el addenda siguiente; continúan pendientes el
+acuse REST de Redsys y la verificación extremo a extremo de ambos proveedores.
+
+## Addenda R12 · frontera HTTP saliente Stripe (2026-08-10)
+
+Cada POST Stripe lleva una `Idempotency-Key` de hasta 255 caracteres, sin PII ni
+secretos. Crear Checkout usa `checkout/{bookingId}`. La API entrega al refund
+`refund/{bookingId}/{saldoPrevio}/{amountCents}`: el saldo previo funciona como
+versión de la operación, permanece igual mientras la devolución externa no se
+haya asentado localmente y cambia para una devolución legítima posterior.
+
+Cada intento tiene timeout de **8 segundos** y como máximo hay **dos intentos**.
+Se reutilizan clave y cuerpo. Una ambigüedad de transporte, 409 o 5xx se puede reintentar; la
+cabecera `Stripe-Should-Retry` del proveedor prevalece. Un 4xx ordinario no se
+reintenta. Esta política sigue la semántica publicada por Stripe para
+[peticiones idempotentes](https://docs.stripe.com/api/idempotent_requests) y el
+[cliente oficial Node](https://github.com/stripe/stripe-node/blob/master/src/RequestSender.ts),
+sin incorporar el SDK al Worker.
+
+Las respuestas 2xx de Checkout, consulta de sesión y refund atraviesan esquemas
+Zod antes de producir dominio. Un 2xx mal formado es
+`stripe_invalid_response`; timeout, red y HTTP se reducen a códigos cerrados.
+Nunca se copia el body, mensaje remoto o error de transporte a la respuesta o
+al log. `provider:none`, cobro manual y reserva `pending` conservan la
+degradación anterior.
+
+Las pruebas inyectan toda la red: misma clave tras ambigüedad, timeout con
+`AbortSignal`, 401 sin reintento ni filtración, respuesta inválida y refund con
+identidad explícita. No hubo cuenta, credencial válida, sandbox ni dinero real.

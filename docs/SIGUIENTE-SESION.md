@@ -1,34 +1,34 @@
-# Prompt para la siguiente sesión — R12 salida HTTP de pagos
+# Prompt para la siguiente sesión — R12 acuse de refund Redsys
 
-> Reescrito tras la sesión 116 (2026-08-10). R0–R11 están cerrados; R12 tiene
-> inventario, contrato Resend y frontera de entrada Stripe. Producción y
+> Reescrito tras la sesión 117 (2026-08-10). R0–R11 están cerrados; R12 tiene
+> inventario, contrato Resend y fronteras Stripe entrante/saliente. Producción y
 > proveedores siguen requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Stripe ya rechaza replay >300 s y payloads Checkout mal tipados; el siguiente
-riesgo local está en sus llamadas salientes, todavía sin timeout, idempotencia
-HTTP, respuesta Zod ni error cerrado.
+Stripe ya tiene antirreplay, Zod, timeout, POST idempotentes, reintento seguro y
+errores cerrados; el siguiente riesgo local es `redsysProvider.refund`, que hoy
+acepta cualquier HTTP 2xx como una devolución confirmada.
 
 ## Objetivo prioritario
 
 Continuar **R12 · Integraciones y proveedores reales** con un único corte de
-salida Stripe:
+refund Redsys:
 
-1. Auditar `stripeRequest`, `createIntent` y `refund` contra el checklist de
-   `INVENTARIO-INTEGRACIONES-R12.md` y `RUNBOOK-PAGOS.md`.
-2. Reproducir primero: fetch sin límite, POST sin `Idempotency-Key`, respuesta
-   casteada y mensaje/body remoto propagado al error.
-3. Definir una clave estable por operación sin PII. Si el contrato actual de
-   `PaymentProvider` no transporta suficiente identidad para un refund, ajustar
-   el contrato explícitamente; no derivarla de datos mutables ni aleatorios.
-4. Añadir timeout, Zod y códigos cerrados. Reintentar solo si la semántica e
-   idempotencia de Stripe lo hacen seguro; no copiar automáticamente la política
-   de Resend.
-5. Mantener `provider:none`, cobro manual y reserva `pending` como degradaciones
-   honestas. Tests inyectados, sin red, SDK, sandbox ni credenciales.
-6. Actualizar ADR 0011, inventario, runbook, dossier y continuidad. Redsys refund
-   queda como el corte posterior: hoy cualquier 2xx se considera aceptación.
+1. Auditar la petición y el acuse REST vigente contra documentación oficial de
+   Redsys; no deducir el éxito a partir de ejemplos de terceros.
+2. Reproducir primero que un 2xx vacío o funcionalmente rechazado devuelve
+   `{ok:true}` y que timeout/red pueden filtrar texto del transporte.
+3. Modelar con Zod exclusivamente los campos oficiales necesarios para decidir
+   aceptación. Un HTTP 2xx no equivale por sí solo a dinero devuelto.
+4. Añadir timeout y códigos cerrados. Definir reintento solo si Redsys ofrece una
+   identidad/semántica documentada que descarte una devolución duplicada; no
+   trasladar `Idempotency-Key` ni la política Stripe por analogía.
+5. Mantener la firma y el pedido exactos, `provider:none`, cobro manual y
+   reserva `pending` como degradaciones honestas. Tests inyectados, sin red,
+   sandbox, FUC ni credenciales.
+6. Actualizar ADR 0011, inventario, runbook, dossier y continuidad. El sandbox
+   Stripe/Redsys continúa siendo un gate externo posterior.
 
 ## Gates que siguen cerrados
 
@@ -44,17 +44,17 @@ salida Stripe:
 
 ## Ya verificado — no repetir sin cambio relevante
 
-- Webhook Stripe: body crudo, timestamp entero, al menos una firma `v1`, HMAC,
-  tolerancia de 300 s y cualquiera de las firmas de rotación.
-- Zod exige evento/tipo/sesión e importe entero no negativo; un string firmado
-  ya no se coacciona a céntimos.
-- El test HTTP envía una firma HMAC válida de 301 s, recibe 400 y comprueba que
-  no aparece ningún asiento.
-- Idempotencia D1 por evento/referencia, importe exacto y `payments.raw=null`
-  siguen vigentes.
-- `RUNBOOK-PAGOS.md` documenta variables, ownership, coste, preflight, sandbox,
-  rotación, conciliación y apagado sin afirmar una activación.
-- No hubo deploy, secrets, proveedor válido ni escritura de producción.
+- Cada POST Stripe usa una clave estable sin PII; los reintentos conservan clave
+  y cuerpo. Checkout deriva `checkout/{bookingId}` y refund recibe identidad
+  explícita desde la API.
+- Cada intento Stripe tiene timeout 8 s; hay máximo dos intentos y solo ante red,
+  timeout, 409/5xx o indicación expresa del proveedor. Un 4xx ordinario termina.
+- Checkout, consulta de sesión y refund validan 2xx con Zod; body remoto y error
+  de transporte nunca atraviesan los códigos cerrados.
+- Webhook Stripe: body crudo, HMAC, varias firmas de rotación, tolerancia 300 s,
+  payload Zod, importe exacto y deduplicación D1 por evento/referencia.
+- Pagos unitarios **27/27** y recorrido API de pagos **14/14**, todo con fetch
+  inyectado. No hubo deploy, secrets, proveedor válido ni dinero real.
 
 ## Prompt
 

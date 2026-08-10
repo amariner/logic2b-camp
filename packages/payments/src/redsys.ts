@@ -180,7 +180,10 @@ export function redsysProvider(config: RedsysConfig): PaymentProvider {
       };
     },
 
-    async refund(providerRef: string, amountCents: number) {
+    async refund(providerRef: string, amountCents: number, idempotencyKey: string) {
+      // El contrato ya transporta identidad, pero Redsys no la usa hasta
+      // verificar en su documentación qué semántica evita duplicar devoluciones.
+      void idempotencyKey;
       const merchantParams = {
         Ds_Merchant_Amount: String(amountCents),
         Ds_Merchant_Order: providerRef,

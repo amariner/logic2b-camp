@@ -24,6 +24,7 @@ describe('stripeProvider.createIntent', () => {
     const fetchMock = vi.fn(async (url: string, init: RequestInit) => {
       expect(url).toBe('https://api.stripe.com/v1/checkout/sessions');
       expect(init.method).toBe('POST');
+      expect(new Headers(init.headers).get('idempotency-key')).toBe('checkout/bkg_abc123');
       expect(String(init.body)).toContain('client_reference_id=bkg_abc123');
       expect(String(init.body)).toContain('unit_amount%5D=12345');
       return new Response(
@@ -44,16 +45,75 @@ describe('stripeProvider.createIntent', () => {
     });
   });
 
-  it('lanza con el mensaje de Stripe si la sesión falla', async () => {
+  it('devuelve un código cerrado sin copiar el body de error de Stripe', async () => {
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({ error: { message: 'holder@example.com y sk_live_no_copiar' } }),
+          { status: 401 },
+        ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const provider = stripeProvider(CONFIG);
+    const failure = provider.createIntent(PARAMS);
+    await expect(failure).rejects.toThrow('stripe_create_intent_failed: stripe_http_401');
+    await expect(failure).rejects.not.toThrow(/holder@example|sk_live/);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('rechaza un 2xx mal formado en vez de fabricar una redirección', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(
-        async () =>
-          new Response(JSON.stringify({ error: { message: 'clave inválida' } }), { status: 401 }),
-      ),
+      vi.fn(async () => new Response(JSON.stringify({ id: 123, url: 'javascript:alert(1)' }))),
     );
     const provider = stripeProvider(CONFIG);
-    await expect(provider.createIntent(PARAMS)).rejects.toThrow(/clave inválida/);
+
+    await expect(provider.createIntent(PARAMS)).rejects.toThrow(
+      'stripe_create_intent_failed: stripe_invalid_response',
+    );
+  });
+
+  it('reintenta una ambigüedad de red una vez con la MISMA clave', async () => {
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockRejectedValueOnce(new TypeError('socket holder@example.com closed'))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({ id: 'cs_after_retry', url: 'https://checkout.stripe.com/retry' }),
+        ),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+    const provider = stripeProvider(CONFIG, { sleep: async () => {} });
+
+    await expect(provider.createIntent(PARAMS)).resolves.toMatchObject({
+      providerRef: 'cs_after_retry',
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(
+      fetchMock.mock.calls.map(([, init]) =>
+        new Headers((init as RequestInit).headers).get('idempotency-key'),
+      ),
+    ).toEqual(['checkout/bkg_abc123', 'checkout/bkg_abc123']);
+  });
+
+  it('aborta dos intentos acotados y no filtra el error de transporte', async () => {
+    const fetchMock = vi.fn((_url: Parameters<typeof fetch>[0], init?: RequestInit) => {
+      if (!init?.signal) return Promise.reject(new Error('missing_abort_signal'));
+      return new Promise<Response>((_resolve, reject) => {
+        init.signal?.addEventListener(
+          'abort',
+          () => reject(new DOMException('holder@example.com timeout', 'AbortError')),
+          { once: true },
+        );
+      });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const provider = stripeProvider(CONFIG, { timeoutMs: 5, sleep: async () => {} });
+
+    const failure = provider.createIntent(PARAMS);
+    await expect(failure).rejects.toThrow('stripe_create_intent_failed: stripe_timeout');
+    await expect(failure).rejects.not.toThrow(/holder@example|missing_abort_signal/);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });
 
@@ -182,22 +242,53 @@ describe('stripeProvider.parseWebhook', () => {
 });
 
 describe('stripeProvider.refund', () => {
-  it('busca el payment_intent de la session y reembolsa', async () => {
+  it('busca el payment_intent y reembolsa con la identidad explícita de la operación', async () => {
     const calls: string[] = [];
     vi.stubGlobal(
       'fetch',
-      vi.fn(async (url: string) => {
+      vi.fn(async (url: string, init: RequestInit) => {
         calls.push(url);
         if (url.includes('/checkout/sessions/cs_test_1')) {
+          expect(new Headers(init.headers).has('idempotency-key')).toBe(false);
           return new Response(JSON.stringify({ payment_intent: 'pi_test_1' }), { status: 200 });
         }
+        expect(new Headers(init.headers).get('idempotency-key')).toBe(
+          'refund/bkg_abc123/12345/5000',
+        );
         return new Response(JSON.stringify({ id: 're_test_1' }), { status: 200 });
       }),
     );
     const provider = stripeProvider(CONFIG);
-    const result = await provider.refund('cs_test_1', 5_000);
+    const result = await provider.refund('cs_test_1', 5_000, 'refund/bkg_abc123/12345/5000');
     expect(result).toEqual({ ok: true, providerRef: 're_test_1' });
     expect(calls[0]).toContain('/checkout/sessions/cs_test_1');
     expect(calls[1]).toBe('https://api.stripe.com/v1/refunds');
+  });
+
+  it('rechaza un refund 2xx sin id en vez de afirmar que devolvió dinero', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(new Response(JSON.stringify({ payment_intent: 'pi_test_1' })))
+        .mockResolvedValueOnce(new Response(JSON.stringify({ id: '' }))),
+    );
+    const provider = stripeProvider(CONFIG);
+
+    await expect(
+      provider.refund('cs_test_1', 5_000, 'refund/bkg_abc123/12345/5000'),
+    ).resolves.toEqual({ ok: false, error: 'stripe_invalid_response' });
+  });
+
+  it('rechaza una identidad inválida antes de consultar Stripe', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const provider = stripeProvider(CONFIG);
+
+    await expect(provider.refund('cs_test_1', 5_000, ' ')).resolves.toEqual({
+      ok: false,
+      error: 'stripe_invalid_idempotency_key',
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

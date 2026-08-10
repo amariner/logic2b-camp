@@ -18,8 +18,36 @@ export type StripeConfig = {
   webhookSecret: string;
 };
 
+export type StripeProviderOptions = {
+  fetchImpl?: typeof fetch;
+  timeoutMs?: number;
+  retryDelayMs?: number;
+  sleep?: (delayMs: number) => Promise<void>;
+};
+
 const API_BASE = 'https://api.stripe.com/v1';
 const WEBHOOK_TOLERANCE_SECONDS = 300;
+const DEFAULT_TIMEOUT_MS = 8_000;
+const DEFAULT_MAX_ATTEMPTS = 2;
+const DEFAULT_RETRY_DELAY_MS = 200;
+
+const stripeCheckoutSessionSchema = z.object({
+  id: z.string().trim().min(1),
+  url: z
+    .string()
+    .url()
+    .refine((value) => value.startsWith('https://')),
+});
+
+const stripeRefundSessionSchema = z.object({
+  payment_intent: z.string().trim().min(1).nullable(),
+});
+
+const stripeRefundSchema = z.object({
+  id: z.string().trim().min(1),
+});
+
+const stripeIdempotencyKeySchema = z.string().trim().min(1).max(255);
 
 const stripeWebhookSchema = z.object({
   id: z.string().trim().min(1),
@@ -44,37 +72,96 @@ function formEncode(params: Record<string, string>): string {
     .join('&');
 }
 
-async function stripeRequest(
+type StripeRequest = {
+  path: string;
+  params: Record<string, string>;
+  method?: 'GET' | 'POST';
+  idempotencyKey?: string;
+};
+
+type StripeRuntime = {
+  fetchImpl: typeof fetch;
+  timeoutMs: number;
+  retryDelayMs: number;
+  sleep: (delayMs: number) => Promise<void>;
+};
+
+function shouldRetryResponse(response: Response): boolean {
+  const directive = response.headers.get('stripe-should-retry');
+  if (directive === 'false') return false;
+  if (directive === 'true') return true;
+  return response.status === 409 || response.status >= 500;
+}
+
+async function stripeRequest<T>(
   secretKey: string,
-  path: string,
-  params: Record<string, string>,
-  method: 'GET' | 'POST' = 'POST',
-): Promise<{ ok: true; data: Record<string, unknown> } | { ok: false; error: string }> {
-  try {
-    const url =
-      method === 'GET' && Object.keys(params).length > 0
-        ? `${API_BASE}${path}?${formEncode(params)}`
-        : `${API_BASE}${path}`;
-    const res = await fetch(url, {
-      method,
-      headers: {
-        authorization: `Bearer ${secretKey}`,
-        ...(method === 'POST' ? { 'content-type': 'application/x-www-form-urlencoded' } : {}),
-      },
-      ...(method === 'POST' ? { body: formEncode(params) } : {}),
-    });
-    const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-    if (!res.ok) {
-      const message =
-        typeof data.error === 'object' && data.error && 'message' in data.error
-          ? String((data.error as { message?: unknown }).message)
-          : `stripe_${res.status}`;
-      return { ok: false, error: message };
-    }
-    return { ok: true, data };
-  } catch (e) {
-    return { ok: false, error: `stripe_network: ${String(e).slice(0, 200)}` };
+  request: StripeRequest,
+  schema: z.ZodType<T>,
+  runtime: StripeRuntime,
+): Promise<{ ok: true; data: T } | { ok: false; error: string }> {
+  const method = request.method ?? 'POST';
+  const parsedIdempotencyKey = stripeIdempotencyKeySchema.safeParse(request.idempotencyKey);
+  if (method === 'POST' && !parsedIdempotencyKey.success) {
+    return { ok: false, error: 'stripe_invalid_idempotency_key' };
   }
+
+  const url =
+    method === 'GET' && Object.keys(request.params).length > 0
+      ? `${API_BASE}${request.path}?${formEncode(request.params)}`
+      : `${API_BASE}${request.path}`;
+
+  for (let attempt = 1; attempt <= DEFAULT_MAX_ATTEMPTS; attempt += 1) {
+    const controller = new AbortController();
+    let timedOut = false;
+    const timeout = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, runtime.timeoutMs);
+
+    try {
+      const response = await runtime.fetchImpl(url, {
+        method,
+        signal: controller.signal,
+        headers: {
+          authorization: `Bearer ${secretKey}`,
+          ...(method === 'POST'
+            ? {
+                'content-type': 'application/x-www-form-urlencoded',
+                'Idempotency-Key': parsedIdempotencyKey.success ? parsedIdempotencyKey.data : '',
+              }
+            : {}),
+        },
+        ...(method === 'POST' ? { body: formEncode(request.params) } : {}),
+      });
+
+      if (!response.ok) {
+        if (attempt < DEFAULT_MAX_ATTEMPTS && shouldRetryResponse(response)) {
+          clearTimeout(timeout);
+          await runtime.sleep(runtime.retryDelayMs);
+          continue;
+        }
+        return { ok: false, error: `stripe_http_${response.status}` };
+      }
+
+      const payload: unknown = await response.json().catch(() => null);
+      const parsed = schema.safeParse(payload);
+      return parsed.success
+        ? { ok: true, data: parsed.data }
+        : { ok: false, error: 'stripe_invalid_response' };
+    } catch {
+      const error = timedOut ? 'stripe_timeout' : 'stripe_network';
+      if (attempt < DEFAULT_MAX_ATTEMPTS) {
+        clearTimeout(timeout);
+        await runtime.sleep(runtime.retryDelayMs);
+        continue;
+      }
+      return { ok: false, error };
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  return { ok: false, error: 'stripe_network' };
 }
 
 async function hmacSha256Hex(key: string, message: string): Promise<string> {
@@ -123,31 +210,49 @@ function parseJson(value: string): unknown {
   }
 }
 
-export function stripeProvider(config: StripeConfig): PaymentProvider {
+export function stripeProvider(
+  config: StripeConfig,
+  options: StripeProviderOptions = {},
+): PaymentProvider {
+  const positiveInteger = (value: number | undefined, fallback: number, maximum: number): number =>
+    value !== undefined && Number.isSafeInteger(value) && value > 0
+      ? Math.min(value, maximum)
+      : fallback;
+  const runtime: StripeRuntime = {
+    fetchImpl: options.fetchImpl ?? fetch,
+    timeoutMs: positiveInteger(options.timeoutMs, DEFAULT_TIMEOUT_MS, 60_000),
+    retryDelayMs: positiveInteger(options.retryDelayMs, DEFAULT_RETRY_DELAY_MS, 5_000),
+    sleep: options.sleep ?? ((delayMs) => new Promise((resolve) => setTimeout(resolve, delayMs))),
+  };
+
   return {
     name: 'stripe',
 
     async createIntent(params: PaymentIntentParams): Promise<PaymentIntentResult> {
-      const result = await stripeRequest(config.secretKey, '/checkout/sessions', {
-        mode: 'payment',
-        'payment_method_types[0]': 'card',
-        client_reference_id: params.bookingId,
-        'metadata[bookingId]': params.bookingId,
-        success_url: params.successUrl,
-        cancel_url: params.cancelUrl,
-        'line_items[0][price_data][currency]': params.currency.toLowerCase(),
-        'line_items[0][price_data][unit_amount]': String(params.amountCents),
-        'line_items[0][price_data][product_data][name]': params.description.slice(0, 250),
-        'line_items[0][quantity]': '1',
-        locale: params.locale.slice(0, 2),
-      });
+      const result = await stripeRequest(
+        config.secretKey,
+        {
+          path: '/checkout/sessions',
+          params: {
+            mode: 'payment',
+            'payment_method_types[0]': 'card',
+            client_reference_id: params.bookingId,
+            'metadata[bookingId]': params.bookingId,
+            success_url: params.successUrl,
+            cancel_url: params.cancelUrl,
+            'line_items[0][price_data][currency]': params.currency.toLowerCase(),
+            'line_items[0][price_data][unit_amount]': String(params.amountCents),
+            'line_items[0][price_data][product_data][name]': params.description.slice(0, 250),
+            'line_items[0][quantity]': '1',
+            locale: params.locale.slice(0, 2),
+          },
+          idempotencyKey: `checkout/${params.bookingId}`,
+        },
+        stripeCheckoutSessionSchema,
+        runtime,
+      );
       if (!result.ok) throw new Error(`stripe_create_intent_failed: ${result.error}`);
-      const url = result.data.url;
-      const id = result.data.id;
-      if (typeof url !== 'string' || typeof id !== 'string') {
-        throw new Error('stripe_create_intent_failed: respuesta inesperada');
-      }
-      return { method: 'redirect', redirectUrl: url, providerRef: id };
+      return { method: 'redirect', redirectUrl: result.data.url, providerRef: result.data.id };
     },
 
     async parseWebhook(req: {
@@ -194,24 +299,40 @@ export function stripeProvider(config: StripeConfig): PaymentProvider {
       return null; // otros eventos no nos interesan
     },
 
-    async refund(providerRef: string, amountCents: number) {
+    async refund(providerRef: string, amountCents: number, idempotencyKey: string) {
       // providerRef aquí es el checkout session id; Stripe reembolsa por payment_intent.
+      if (!stripeIdempotencyKeySchema.safeParse(idempotencyKey).success) {
+        return { ok: false, error: 'stripe_invalid_idempotency_key' };
+      }
       const session = await stripeRequest(
         config.secretKey,
-        `/checkout/sessions/${providerRef}`,
-        {},
-        'GET',
+        {
+          path: `/checkout/sessions/${encodeURIComponent(providerRef)}`,
+          params: {},
+          method: 'GET',
+        },
+        stripeRefundSessionSchema,
+        runtime,
       );
-      const paymentIntent = session.ok
-        ? (session.data.payment_intent as string | undefined)
-        : undefined;
-      if (!paymentIntent) return { ok: false, error: 'stripe_refund_no_payment_intent' };
-      const result = await stripeRequest(config.secretKey, '/refunds', {
-        payment_intent: paymentIntent,
-        amount: String(amountCents),
-      });
+      if (!session.ok) return { ok: false, error: session.error };
+      if (!session.data.payment_intent) {
+        return { ok: false, error: 'stripe_refund_no_payment_intent' };
+      }
+      const result = await stripeRequest(
+        config.secretKey,
+        {
+          path: '/refunds',
+          params: {
+            payment_intent: session.data.payment_intent,
+            amount: String(amountCents),
+          },
+          idempotencyKey,
+        },
+        stripeRefundSchema,
+        runtime,
+      );
       if (!result.ok) return { ok: false, error: result.error };
-      return { ok: true, providerRef: String(result.data.id ?? '') };
+      return { ok: true, providerRef: result.data.id };
     },
   };
 }

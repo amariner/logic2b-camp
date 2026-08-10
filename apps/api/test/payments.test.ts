@@ -441,6 +441,50 @@ describe('reserva web con pago (redsys deposit)', () => {
     expect(body.ref).toMatch(/^err_/);
   });
 
+  it('Stripe reintenta una creación ambigua con la identidad estable de la reserva', async () => {
+    await setPaymentsConfig({ provider: 'stripe', mode: 'full' });
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockRejectedValueOnce(new TypeError('socket closed after send'))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            id: 'cs_after_retry',
+            url: 'https://checkout.stripe.com/c/pay/cs_after_retry',
+          }),
+          { headers: { 'content-type': 'application/json' } },
+        ),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const res = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-17', '2026-06-20', 'stripe-retry@example.com')),
+      {
+        DB: env.DB,
+        TENANT_SLUG: 'alfa',
+        STRIPE_SECRET_KEY: 'sk_test',
+        STRIPE_WEBHOOK_SECRET: 'whsec_test',
+      },
+    );
+
+    expect(res.status).toBe(201);
+    const body = (await res.json()) as {
+      id: string;
+      status: string;
+      payment: { providerRef: string };
+    };
+    expect(body).toMatchObject({
+      status: 'pending',
+      payment: { providerRef: 'cs_after_retry' },
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const keys = fetchMock.mock.calls.map(([, init]) =>
+      new Headers((init as RequestInit).headers).get('idempotency-key'),
+    );
+    expect(keys).toEqual([`checkout/${body.id}`, `checkout/${body.id}`]);
+  });
+
   it('Stripe rechaza en la frontera HTTP un evento correctamente firmado pero caducado', async () => {
     await setPaymentsConfig({ provider: 'stripe', mode: 'full' });
     const stripeEnv = {

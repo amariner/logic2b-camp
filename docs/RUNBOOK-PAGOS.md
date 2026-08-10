@@ -23,11 +23,15 @@ La frontera Stripe entrante exige:
 6. importe entero no negativo y coincidencia exacta con el intent recordado;
 7. deduplicación por evento y por referencia de pago antes de escribir.
 
+La salida Stripe exige además timeout de 8 s por intento, máximo dos intentos,
+la misma `Idempotency-Key` en cada POST repetido, respuesta Zod y códigos de
+error cerrados sin leer el body remoto. Solo se reintentan ambigüedades de red,
+409/5xx o una indicación explícita de Stripe; un 4xx ordinario termina.
+
 Redsys genera y verifica HMAC-SHA256 con la clave diversificada mediante 3DES;
 la implementación pura está cruzada localmente contra `node:crypto`. Esa
-evidencia no sustituye el TPV de pruebas. La salida HTTP de Stripe y el acuse de
-refund Redsys todavía necesitan timeout, idempotencia/validación y códigos de
-error cerrados en los siguientes cortes R12.
+evidencia no sustituye el TPV de pruebas. Su acuse de refund todavía considera
+aceptado cualquier HTTP 2xx y es el siguiente corte local R12.
 
 ## 2. Configuración y ownership
 
@@ -74,6 +78,8 @@ repositorio.
 6. Probar importe distinto, firma inválida y evento con más de 300 s: deben
    fallar cerrados sin confirmar la reserva.
 7. Probar reembolso parcial/total, conciliación, recibo y referencia del panel.
+8. Forzar timeout/conexión cortada tras enviar y comprobar en el panel que una
+   misma operación no creó dos Checkout Sessions ni dos refunds.
 
 ### Redsys
 
@@ -127,11 +133,12 @@ retira cuando autorización, notificación y devolución se hayan conciliado.
 
 ## 7. Evidencia local y gates restantes
 
-- pagos unitarios: **22/22**, incluida firma Stripe reciente/caducada, payload
-  mal tipado, firma Redsys y DES/3DES;
-- API de pagos: evento Stripe de 301 s responde 400 y no crea asiento; importe,
-  duplicado y conflicto siguen fallando cerrados;
+- pagos unitarios: **27/27**, incluida salida Stripe idempotente, timeout,
+  respuesta inválida, errores cerrados, firma reciente/caducada, firma Redsys y
+  DES/3DES;
+- API de pagos: **14/14**; además de la entrada caducada y los invariantes de
+  importe/duplicado, una creación ambigua repite la misma clave de la reserva;
 - `payments.raw` permanece nulo y fuera de la API/export;
 - no se usaron secrets válidos ni hubo llamada sandbox;
-- faltan timeout/idempotencia/respuesta cerrada de la salida Stripe, acuse
-  funcional Redsys, recepción real, refund y conciliación extremo a extremo.
+- faltan acuse funcional Redsys, recepción real, refund y conciliación extremo
+  a extremo.

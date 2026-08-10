@@ -23,7 +23,7 @@ describe('noneProvider', () => {
     await expect(
       provider.parseWebhook({ headers: new Headers(), rawBody: '' }),
     ).resolves.toBeNull();
-    await expect(provider.refund('x', 100)).resolves.toEqual({
+    await expect(provider.refund('x', 100, 'refund/bkg_1/100/100')).resolves.toEqual({
       ok: false,
       error: 'none_provider_no_refund',
     });
