@@ -2,8 +2,8 @@
  * Orquestación del parte de viajeros (ADR 0028): el ÚNICO sitio que junta lo que
  * `apps/api` lee de D1 con el motor puro `@logic-camp/hospedajes`. Mismo patrón que
  * `payments.ts`: lee la config del tenant de `modules.hospedajes`, resuelve el
- * transporte con los secrets del Worker, y deja el cálculo (validar + serializar)
- * al paquete puro. No decide nada de negocio que no esté ya en el paquete.
+ * transporte local seguro y deja el cálculo (validar + serializar) al paquete
+ * puro. No decide nada de negocio que no esté ya en el paquete.
  */
 import { tenantHospedajesSchema, type TenantHospedajes } from '@logic-camp/config';
 import { schema, type Db } from '@logic-camp/db';
@@ -11,17 +11,15 @@ import {
   buildParte,
   manualTransport,
   serializeParte,
-  sesTransport,
   type Establecimiento,
   type HospedajesTransport,
   type ParteEstancia,
   type ParteHuesped,
-  type SesCredentials,
 } from '@logic-camp/hospedajes';
 import { and, eq, inArray } from 'drizzle-orm';
 import type { Bindings } from './tenant';
 
-/** Solo los secrets de SES — un `{}` vale como "sin webservice", sin arrastrar DB. */
+/** Variables reservadas de SES; no activan red mientras el contrato siga gated. */
 export type HospedajesEnv = Pick<
   Bindings,
   'SES_HOSPEDAJES_ENDPOINT' | 'SES_HOSPEDAJES_USER' | 'SES_HOSPEDAJES_PASSWORD'
@@ -37,24 +35,15 @@ export async function loadHospedajesConfig(db: Db): Promise<TenantHospedajes | n
 }
 
 /**
- * Transporte + credenciales según los secrets del Worker: con las tres claves de
- * SES, envío automático; sin ellas, modo manual (descarga). Espejo de
- * `resolveProvider` en pagos.
+ * La especificación técnica se obtiene únicamente dentro del área autenticada de
+ * una entidad. Las credenciales por sí solas nunca activan un contrato inferido:
+ * hasta importar y verificar esa documentación, el resultado es siempre manual.
  */
 export function resolveTransport(env: HospedajesEnv): {
   transport: HospedajesTransport;
-  creds: SesCredentials | null;
+  creds: null;
 } {
-  if (env.SES_HOSPEDAJES_ENDPOINT && env.SES_HOSPEDAJES_USER && env.SES_HOSPEDAJES_PASSWORD) {
-    return {
-      transport: sesTransport(),
-      creds: {
-        endpoint: env.SES_HOSPEDAJES_ENDPOINT,
-        usuario: env.SES_HOSPEDAJES_USER,
-        password: env.SES_HOSPEDAJES_PASSWORD,
-      },
-    };
-  }
+  void env;
   return { transport: manualTransport(), creds: null };
 }
 

@@ -111,14 +111,14 @@ describe('resolveTransport', () => {
     expect(creds).toBeNull();
   });
 
-  it('con los tres secrets → modo ses con credenciales', () => {
+  it('las credenciales solas no activan un contrato SES no verificado', () => {
     const { transport, creds } = resolveTransport({
       SES_HOSPEDAJES_ENDPOINT: 'https://ses.example/ws',
       SES_HOSPEDAJES_USER: 'u',
       SES_HOSPEDAJES_PASSWORD: 'p',
     });
-    expect(transport.mode).toBe('ses');
-    expect(creds?.endpoint).toBe('https://ses.example/ws');
+    expect(transport.mode).toBe('manual');
+    expect(creds).toBeNull();
   });
 });
 
@@ -144,7 +144,11 @@ describe('buildParteForDate', () => {
   it('huésped sin documento → issues, sin XML', async () => {
     await enableHospedajes();
     await insertBooking('bkg_bad', { code: 'BKG_BAD', unitId: 'unt_2' });
-    await insertGuest('bkg_bad', 'gst_bad', { docType: null, docNumber: null, docSupportNumber: null });
+    await insertGuest('bkg_bad', 'gst_bad', {
+      docType: null,
+      docNumber: null,
+      docSupportNumber: null,
+    });
     const r = await buildParteForDate(db, DATE);
     // el almacenamiento se aísla por test: solo existe esta reserva, con doc incompleto
     expect(r.status).toBe('issues');

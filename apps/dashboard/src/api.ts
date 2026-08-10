@@ -442,7 +442,7 @@ export type ParteIssue = {
 export type ParteData = {
   status: 'disabled' | 'empty' | 'issues' | 'ready';
   date?: string;
-  transport?: 'manual' | 'ses';
+  transport?: 'manual';
   count?: number;
   estancias?: ParteEstanciaItem[];
   issues?: ParteIssue[];

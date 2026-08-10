@@ -911,9 +911,10 @@ export const adminRoutes = new Hono<AuthEnv>()
     });
   })
 
-  // Envío al webservice real (ADR 0028 §2). Solo con credenciales SES (secrets del
-  // Worker); sin ellas, el parte se descarga y se sube a mano. Deja rastro en
-  // audit_log: la obligación incluye poder probar QUÉ se comunicó y CUÁNDO.
+  // Frontera reservada para el futuro servicio web (ADR 0028, addenda R12).
+  // La documentación técnica oficial solo está disponible tras autenticarse como
+  // entidad; hasta importarla y verificarla, este endpoint falla cerrado y nunca
+  // transmite PII ni registra un envío que no ocurrió.
   .post('/hospedajes/enviar', requireRole('manager'), async (c) => {
     const parsed = parteQuerySchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
@@ -925,25 +926,7 @@ export const adminRoutes = new Hono<AuthEnv>()
     if (result.status === 'issues')
       return c.json({ error: 'incomplete', issues: result.issues }, 422);
 
-    const { transport, creds } = resolveTransport(c.env);
-    if (transport.mode === 'manual') return c.json({ error: 'manual_only' }, 409); // descarga: no hay envío automático
-
-    const sent = await transport.send(result.xml, creds);
-    if (!sent.ok) return c.json({ error: sent.error }, 502);
-
-    await audit(
-      tenant.db,
-      tenant.slug,
-      c.get('user').id,
-      'hospedajes',
-      parsed.data.date,
-      'enviar',
-      {
-        count: result.estancias.length,
-        reference: sent.reference,
-      },
-    );
-    return c.json({ ok: true, date: parsed.data.date, reference: sent.reference });
+    return c.json({ error: 'manual_only' }, 409);
   })
 
   // ---------- Huéspedes editables (ADR 0022 §2): parte de viajeros ----------

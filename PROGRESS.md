@@ -1,5 +1,35 @@
 # PROGRESS — Logic Camp
 
+## Frontera fail-closed de SES.Hospedajes R12 · 2026-08-10 (sesión 123)
+
+- La guía y las preguntas frecuentes vigentes del Ministerio acreditan el alta,
+  la gestión manual y los dos momentos de comunicación, pero sitúan la descarga
+  técnica del servicio web dentro del acceso autenticado de la entidad. No hay
+  base pública suficiente para afirmar endpoint, autenticación, XML, acuse,
+  códigos, duplicados o reintentos.
+- Una prueba roja demostró que endpoint, usuario y contraseña bastaban para
+  activar un adaptador provisional: enviaba PII con Basic Auth, aceptaba
+  cualquier 2xx y extraía un supuesto acuse por regex. Se retiró ese transporte
+  y las variables quedan reservadas sin habilitar red.
+- El módulo resuelve siempre `manualTransport`; `/hospedajes/enviar` responde
+  `manual_only` y no registra una entrega inexistente. La UI y la guía pública
+  llaman al XML determinista **borrador local** y remiten a revisión/comunicación
+  en la Sede. El flujo actual no se presenta como cobertura del momento de
+  reserva/formalización/cancelación.
+- ADR 0028, inventario, dossier, runbook, BACKLOG y continuidad fijan el gate:
+  obtener la documentación autenticada y aprobar endpoint, autenticación,
+  request, acuse, errores, cancelación, duplicados y reintentos antes de volver a
+  añadir una integración directa.
+- Hospedajes pasa **17/17**, su recorrido API **7/7**, dashboard **37/37**, el
+  sitio construye **73 páginas** y la API completa **276/276**. El gate global
+  alcanza 53 tareas antes de quedar bloqueado por el `tsconfig` inválido del
+  tenant concurrente y, al excluirlo, por `EADDRNOTAVAIL` de Workers; la misma
+  suite API pasa completa en aislamiento.
+- No hubo deploy, secrets, acceso autenticado, proveedor ni escritura externa.
+  El trabajo simultáneo de Delta, Duna y RiuClar se preservó separado. R12
+  continúa con la auditoría contractual de los módulos restantes antes de
+  decidir su cierre local y la transición a R13.
+
 ## Frontera Zod del callback Redsys R12 · 2026-08-10 (sesión 121)
 
 - El quinto corte local R12 contrasta la notificación POST con el manual oficial

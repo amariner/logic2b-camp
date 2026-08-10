@@ -1,8 +1,9 @@
 /**
  * Parte de viajeros (ADR 0028): SES.Hospedajes / RD 933/2021. Reúne las llegadas de
  * un día, avisa de los datos que faltan (con salto a la ficha para rellenarlos) y,
- * cuando está completo, deja descargar el XML o enviarlo al webservice si el camping
- * tiene credenciales. Pantalla de GESTIÓN — es una obligación legal, no de mostrador.
+ * cuando está completo, deja exportar un borrador XML local para revisión. El envío
+ * directo permanece cerrado hasta verificar el contrato autenticado del Ministerio.
+ * Pantalla de GESTIÓN — es una obligación legal, no de mostrador.
  *
  * B1 (sesión 59): campo de fecha al `Input` del DS (era un `<input>` a mano sin
  * anillo de foco), estados vacíos al `EmptyState`, y la forma de pago deja de ir
@@ -16,13 +17,11 @@ import { errorMutacion } from '../avisos';
 import { Button, EmptyState, Input, SelectNative, Skeleton, toast } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import { AlertTriangle, CheckCircle2, Download, Send } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Download } from 'lucide-react';
 import { useState } from 'react';
 import {
   apiGet,
   apiPatch,
-  apiPost,
-  ApiError,
   type ParteData,
   type ParteEstanciaItem,
   type ParteIssue,
@@ -146,24 +145,10 @@ function EstanciaRow({ estancia, issues }: { estancia: ParteEstanciaItem; issues
 
 export default function Parte() {
   const [date, setDate] = useState(() => iso(new Date()));
-  const qc = useQueryClient();
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['parte', date],
     queryFn: () => apiGet<ParteData>(`/api/admin/hospedajes/parte?date=${date}`),
-  });
-
-  const enviar = useMutation({
-    mutationFn: () =>
-      apiPost<{ ok: true; reference: string | null }>('/api/admin/hospedajes/enviar', { date }),
-    onSuccess: (r) => {
-      toast.success(r.reference ? t('parte.enviadoRef', { ref: r.reference }) : t('parte.enviado'));
-      void qc.invalidateQueries({ queryKey: ['parte'] });
-    },
-    onError: (e) => {
-      const code = e instanceof ApiError ? String((e.body as { error?: string })?.error) : '';
-      toast.error(tDyn(`parte.error.${code}`, t('parte.errorEnviar')));
-    },
   });
 
   const descargar = () => {
@@ -178,7 +163,6 @@ export default function Parte() {
   };
 
   const ready = data?.status === 'ready';
-  const puedeEnviar = ready && data?.transport === 'ses';
 
   return (
     <div className="flex h-full flex-col">
@@ -219,17 +203,6 @@ export default function Parte() {
             <Download className="size-3.5" />
             {t('parte.descargar')}
           </Button>
-          {data?.transport === 'ses' && (
-            <Button
-              type="button"
-              size="xs"
-              onClick={() => enviar.mutate()}
-              disabled={!puedeEnviar || enviar.isPending}
-            >
-              <Send className="size-3.5" />
-              {t('parte.enviar')}
-            </Button>
-          )}
           <BotonAyuda />
         </div>
       </div>
@@ -279,6 +252,11 @@ export default function Parte() {
                   </span>
                 )}
               </div>
+              {data.status === 'ready' && (
+                <p className="mb-3 max-w-3xl text-[13px] text-muted-foreground">
+                  {t('parte.borradorAviso')}
+                </p>
+              )}
               <div className="max-w-3xl">
                 <div
                   /* `border-transparent`: la fila lleva borde de 1px, y sin él la

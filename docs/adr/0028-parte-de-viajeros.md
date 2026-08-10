@@ -43,24 +43,28 @@ del webservice cuando se implemente el adaptador de envío.
 
 ## Decisión
 
-**Espejar PaymentProvider (ADR 0011)**: paquete PURO y testeable + adaptador de I/O
-+ orquestación en `apps/api`.
+**Espejar PaymentProvider (ADR 0011)**: paquete PURO y testeable, adaptador de I/O
+y orquestación en `apps/api`.
 
 ### 1. Paquete nuevo `packages/hospedajes` (puro, sin D1, sin fetch)
 
 ```ts
 // types.ts — entrada plana, derivada de lo que la API ya lee de D1
 export interface ParteHuesped {
-  name: string; surname: string;
+  name: string;
+  surname: string;
   docType: 'dni' | 'nie' | 'passport' | 'other' | null;
   docNumber: string | null;
-  birthdate: IsoDate | null;      // menores sin documento: birthdate obligatorio, doc no
-  nationality: string | null;     // ISO 3166-1 alpha-3 (lo que ya guarda la ficha)
-  address: string | null; phone: string | null; email: string | null;
+  birthdate: IsoDate | null; // menores sin documento: birthdate obligatorio, doc no
+  nationality: string | null; // ISO 3166-1 alpha-3 (lo que ya guarda la ficha)
+  address: string | null;
+  phone: string | null;
+  email: string | null;
 }
 export interface ParteEstancia {
   bookingCode: string;
-  dateFrom: IsoDate; dateTo: IsoDate;   // from inclusive / to exclusive, como todo el sistema
+  dateFrom: IsoDate;
+  dateTo: IsoDate; // from inclusive / to exclusive, como todo el sistema
   checkedInAt: string | null;
   // Medio de pago: dato PROPIO, no derivado de payments.provider (que es el proveedor,
   // no el medio). Nulo hasta que se capture; su enum exacto se fija contra la espec SES.
@@ -68,13 +72,19 @@ export interface ParteEstancia {
   huespedes: ParteHuesped[];
 }
 export interface Establecimiento {
-  codigo: string;                  // código de establecimiento asignado por SES
-  nombre: string; direccion: string; municipio: string; provincia: string; cp: string;
+  codigo: string; // código de establecimiento asignado por SES
+  nombre: string;
+  direccion: string;
+  municipio: string;
+  provincia: string;
+  cp: string;
 }
 
 // Generador — el equivalente a computeChargeAmount: puro, 100 % testeable aquí
-export function buildParte(est: Establecimiento, estancias: ParteEstancia[]):
-  { ok: true; payload: PartePayload } | { ok: false; issues: ParteIssue[] };
+export function buildParte(
+  est: Establecimiento,
+  estancias: ParteEstancia[],
+): { ok: true; payload: PartePayload } | { ok: false; issues: ParteIssue[] };
 ```
 
 - `buildParte` **valida antes de generar**: cada huésped sin documento (adulto), sin
@@ -109,8 +119,13 @@ export const tenantHospedajesSchema = z.object({
   enabled: z.boolean(),
   codigoEstablecimiento: z.string(),
   // datos del establecimiento que el XML repite en cada parte
-  establecimiento: z.object({ nombre: z.string(), direccion: z.string(),
-    municipio: z.string(), provincia: z.string(), cp: z.string() }),
+  establecimiento: z.object({
+    nombre: z.string(),
+    direccion: z.string(),
+    municipio: z.string(),
+    provincia: z.string(),
+    cp: z.string(),
+  }),
 });
 ```
 
@@ -149,11 +164,43 @@ Stripe/Redsys/Resend.
 - Se gana el mayor hueco funcional para un camping español real, con el motor de
   generación 100 % testeado en el repo y el riesgo (webservice) acotado al adaptador.
 - Un camping sin credenciales SES ya cumple con la descarga manual desde el día uno.
-- Queda pendiente y señalizado: verificación contra el webservice real (credenciales
-  + código de establecimiento — misma categoría que Stripe/Redsys), cierre de campos
-  contra la especificación oficial, y la página de guía del `?`.
+- Queda pendiente y señalizado: verificación contra el webservice real
+  (credenciales y código de establecimiento —misma categoría que
+  Stripe/Redsys—), cierre de campos contra la especificación oficial y la página
+  de guía del `?`.
 - Vigilar: el medio de pago y el trato de menores se fijan contra la espec oficial,
   no contra suposiciones; el medio de pago se **captura**, no se infiere del proveedor.
   Los datos que hoy no se capturan (sexo, 2º apellido, expedición del documento,
   parentesco del menor, medio de pago) se añadirán como **columnas nulables aditivas**
   con su migración `0006`, ampliando la ficha, nunca rompiéndola.
+
+## Addenda R12 · contrato técnico autenticado y fallo cerrado (2026-08-10)
+
+La auditoría usa la [información oficial de la Sede](https://sede.interior.gob.es/portal/sede/informacion_hospedajes),
+la guía visual de Hospedajes v. 29.08.2025 y la FAQ oficial actualizada el
+09.04.2025. La parte pública confirma:
+
+- el registro de entidad/establecimiento entrega credenciales diferenciadas para
+  aplicación y servicio web;
+- la aplicación permite nueva comunicación, alta masiva, consulta y anulación, y
+  una aceptación visible produce un código de comunicación;
+- los datos deben comunicarse inmediatamente y en un máximo de 24 horas desde la
+  reserva/formalización/anulación y desde el inicio del servicio; una modificación
+  obliga a una nueva comunicación;
+- la propia **documentación del servicio web** solo se descarga tras acceder con
+  Cl@ve/certificado al área de credenciales de una entidad registrada.
+
+La fuente pública no define endpoint, protocolo de autenticación HTTP, request,
+namespaces/XSD, acuse, códigos de error, duplicados ni semántica de reintento. Por
+tanto, la implementación anterior —Basic Auth, `application/xml`, regex de tres
+etiquetas y cualquier 2xx como éxito— no era un contrato verificable. Se retira el
+adaptador `sesTransport`: incluso con las tres variables reservadas, el runtime
+permanece en `manualTransport`; `POST /hospedajes/enviar` responde `409
+manual_only`, no hace red y no crea auditoría de un envío inexistente.
+
+`serializeParte` se conserva como export determinista local, rotulado en producto
+como **borrador XML**. No se afirma que la Sede lo acepte ni que cubra las dos
+comunicaciones legales. Para reabrir el automático hacen falta acceso autorizado,
+descarga fechada de la documentación técnica, contrato versionado en el repo,
+fixtures oficiales, Zod para request/acuse, pruebas de rechazo/duplicado/timeout y
+un recorrido oficial conciliado. Tener URL/usuario/contraseña no levanta ese gate.

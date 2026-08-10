@@ -5,10 +5,10 @@
  * (nombres de elementos, espacio de nombres, códigos de país/parentesco/pago) NO
  * está en contexto fiable y no se inventa de memoria. Este serializador produce un
  * XML **determinista, bien formado y con los datos correctamente escapados**, con
- * una estructura legible que refleja el modelo de datos — el fichero que el modo
- * MANUAL descarga para que una persona lo revise y lo suba a la sede electrónica.
- * Cuando haya credenciales y la especificación oficial, se ajustan aquí los nombres
- * y los códigos; la arquitectura (build → serialize → transport) no cambia.
+ * una estructura legible que refleja el modelo de datos: un borrador local para
+ * revisión, no un fichero que se afirme compatible con la carga de la Sede. Cuando
+ * haya acceso autorizado a la especificación autenticada, se ajustan aquí nombres y
+ * códigos; la arquitectura (build → serialize → transport) no cambia.
  */
 import type { PartePayload, ParteHuesped, PaymentKind, Sex } from './types';
 

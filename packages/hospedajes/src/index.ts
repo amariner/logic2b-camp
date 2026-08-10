@@ -1,12 +1,6 @@
 export { ageOn, buildParte, EDAD_MENOR } from './build';
 export { escapeXml, serializeParte } from './serialize';
-export {
-  manualTransport,
-  sesTransport,
-  type HospedajesTransport,
-  type SendResult,
-  type SesCredentials,
-} from './transport';
+export { manualTransport, type HospedajesTransport, type SendResult } from './transport';
 export type {
   DocKind,
   Establecimiento,
