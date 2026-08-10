@@ -1,16 +1,16 @@
 # DEMO-SCRIPT — el recorrido de venta de 12 minutos
 
-> Guion para enseñar **camp.logic2b.com** (producto) y
-> **camp.logic2b.com/demo/** (Camping Cala Sereno, ficticio) a un director de
+> Guion para enseñar [**camp.logic2b.com**](https://camp.logic2b.com/) (producto) y
+> [**camp.logic2b.com/demo/**](https://camp.logic2b.com/demo/) (Camping Cala Sereno, ficticio) a un director de
 > camping desde el primer email comercial. Objetivo: que piense «esto es más
 > serio que mi web actual» antes del minuto 5.
 
 ## Antes de empezar
 
 - **Dispositivo**: portátil a 1366px si es posible — es el ancho mínimo que el producto garantiza pulido; el móvil se enseña aparte en el minuto 3 (375px, la web es responsive de verdad).
-- **Pestañas abiertas**: `camp.logic2b.com/` (landing),
-  `camp.logic2b.com/demo/` (web de Cala Sereno) y
-  `camp.logic2b.com/admin/`. Para el recorrido compartido, entrar con «Ver la
+- **Pestañas abiertas**: [landing](https://camp.logic2b.com/),
+  [web de Cala Sereno](https://camp.logic2b.com/demo/) y
+  [gestor](https://camp.logic2b.com/admin/). Para el recorrido compartido, entrar con «Ver la
   demo»; usar una cuenta de gerencia solo si hace falta enseñar ajustes o
   operaciones deliberadamente cerradas al visitante.
 - **Fechas a usar en el mostrador**: un rango futuro que el propio mostrador
@@ -27,7 +27,7 @@
 ## Minuto 0–1 · La web: el mostrador de verdad
 
 Si el interlocutor pregunta por captación propia, empezar 30 segundos antes en
-`camp.logic2b.com/#campanas`: abrir búsqueda, display o feed, señalar el rótulo
+[la campaña de muestra](https://camp.logic2b.com/#campanas): abrir búsqueda, display o feed, señalar el rótulo
 «Creatividad de ejemplo» y clicar. En Mar de Fondo, enseñar en la barra de
 direcciones las UTM de muestra y el salto directo a `#mostrador` antes de seguir.
 Frase de encuadre:
@@ -36,7 +36,7 @@ Frase de encuadre:
 > completo que sí controlamos, desde una campaña propia hasta la disponibilidad y
 > una reserva directa. El pago de esta demo es simulado y no hace ningún cargo."
 
-Sin esa entrada alternativa, abrir `camp.logic2b.com/demo/`; si se ha usado la
+Sin esa entrada alternativa, abrir [la web demo](https://camp.logic2b.com/demo/); si se ha usado la
 campaña, quedarse en Mar de Fondo. Dejar que la portada respire un segundo
 (fotografía de demostración aprobada, no una imagen atribuida a un camping real)
 y decir la frase que ancla todo lo que sigue:
@@ -57,7 +57,7 @@ Clicar "Reservar" en un resultado. Recorrer rápido, narrando en vez de leyendo:
 - Confirmar. Mostrar la página de confirmación: código de reserva, desglose imprimible, y el enlace de autogestión.
 - Abrir ese enlace de gestión (código + email) en una pestaña aparte un momento: "el cliente cancela o cambia fechas sin llamar a recepción — y si cancela, ve el reembolso previsto ANTES de confirmar, no después".
 
-Volver a `/admin` más tarde en el minuto 5 y enseñar esa misma reserva ya en el planning — es el momento "click" de la demo: lo que el cliente acaba de hacer en la web, recepción ya lo tiene delante.
+Volver al [gestor](https://camp.logic2b.com/admin/) más tarde en el minuto 5 y enseñar esa misma reserva ya en el planning — es el momento "click" de la demo: lo que el cliente acaba de hacer en la web, recepción ya lo tiene delante.
 
 ## Minuto 3–4 · Multi-idioma y el móvil
 
@@ -73,13 +73,16 @@ Abrir el selector de temas de la cabecera (solo existe en esta demo — ver nota
 
 ## Minuto 5–8 · El programa de gestión: el planning
 
-Cambiar a la pestaña de `/admin/`, entrando por la puerta anónima de la demo. El
+Cambiar a la pestaña del [gestor](https://camp.logic2b.com/admin/), entrando por la puerta anónima de la demo. El
 planning (tape chart) es el elemento firma — dejarlo cargar y quedarse un
 segundo callado antes de hablar, que se vea.
 
 - Señalar los colores por estado, la bandeja "sin asignar", los bloqueos con motivo.
 - **Arrastrar una reserva** de una parcela a otra del mismo tipo: "reasignar es esto, un arrastre — y el servidor lo valida siempre, si hay solape rebota solo".
-- Abrir la ficha de una reserva: desglose, pagos con signo, acciones según el estado ("solo se ofrecen las que tienen sentido ahora mismo — no hay un botón de cancelar en una reserva ya cancelada").
+- Abrir la ficha de una reserva: desglose y pagos con signo. La puerta anónima
+  permite los gestos acotados de demo —reasignar y registrar entrada/salida
+  cuando corresponda— y oculta cobros, devoluciones y cancelación; esas
+  operaciones solo se enseñan con una cuenta de gerencia preparada a propósito.
 - Si hay tiempo, buscar por el código de la reserva creada en el minuto 2: verla en la lista de reservas confirma el hilo de principio a fin.
 
 ## Minuto 8–9 · Gestión (si el camping empieza por solicitudes)
@@ -106,7 +109,10 @@ Tres pantallas rápidas, sin detenerse mucho en ninguna:
 
 Volver a la tabla de niveles (`docs/FUNCIONALIDADES.md` §1 si hace falta apoyo visual). Frase de cierre:
 
-> "No le estoy vendiendo un proyecto a medida de tres meses. Empieza en el nivel que necesita hoy — aunque sea solo la web con un formulario que avisa por email — y sube de nivel activando lo que ya existe, sin migrar nada. Lo que ha visto en el planning es literalmente lo que tendría funcionando en cuestión de una tarde una vez tengamos su material."
+> "Empieza en el nivel que necesita hoy — aunque sea solo la web con un formulario
+> que avisa por email — y sube de nivel sin cambiar de plataforma. Antes de empezar
+> cerramos alcance, materiales y calendario; el planning que ha visto es el mismo
+> producto que configuramos con su inventario y su operativa."
 
 Cerrar con la pregunta abierta: qué nivel encaja con lo que tienen hoy, y qué material necesitaríamos de su camping (tarifas, parcelas, fotos) para el alta.
 
@@ -122,4 +128,4 @@ Cerrar con la pregunta abierta: qué nivel encaja con lo que tienen hoy, y qué 
 
 ## Después de la demo
 
-Registrar en la ficha del prospecto: nivel que le interesa, comunidad autónoma (para la tasa turística), idiomas que necesita, y si tiene ya web/fotos propias o hay que generarlas. Es lo que la Fase 9 (`docs/ONBOARDING.md`) pide para dar de alta en una tarde.
+Registrar en la ficha del prospecto: nivel que le interesa, comunidad autónoma (para la tasa turística), idiomas que necesita, y si tiene ya web/fotos propias o hay que generarlas. Es la información que la Fase 9 ([`docs/ONBOARDING.md`](ONBOARDING.md)) pide para preparar un alcance y un calendario de alta realistas.

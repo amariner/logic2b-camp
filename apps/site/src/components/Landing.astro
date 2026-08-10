@@ -4,9 +4,11 @@ import CampaignShowcase from './CampaignShowcase.astro';
 import EcosystemRail from './EcosystemRail.astro';
 import GuidedTour from './GuidedTour.astro';
 import PlanningVisual from './PlanningVisual.astro';
+import PlanStatus from './PlanStatus.astro';
 import PortfolioGallery from './PortfolioGallery.astro';
 import ProductCardVisual from './ProductCardVisual.astro';
 import ThemeRail from './ThemeRail.astro';
+import { GUIAS } from '../lib/docs';
 import { getContent, localePath, type Locale } from '../lib/i18n';
 
 interface Props {
@@ -225,6 +227,7 @@ const iconosProblema = [
               >
                 <div class="botanical-plan-top">
                   <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
+                  <PlanStatus label={n.estado} state={n.estadoTipo} />
                 </div>
                 <h3>{n.nombre}</h3>
                 <p class="botanical-plan-for">{n.para}</p>
@@ -278,7 +281,7 @@ const iconosProblema = [
         <p class="botanical-copy">{c.docs.subtitulo}</p>
         <div class="botanical-guide-grid">
           {
-            (['recepcion', 'dueno', 'tecnica'] as const).map((guia) => (
+            GUIAS.map((guia) => (
               <a href={localePath(locale, `docs/${guia}/`)} class="botanical-guide">
                 <span>{c.docs.guias[guia].nombre}</span>
                 <span>{c.docs.guias[guia].para} →</span>

@@ -35,9 +35,12 @@ try {
       if (message.type() === 'error') failures.push(`console: ${message.text()}`);
     });
     page.on('pageerror', (error) => failures.push(`page: ${error.message}`));
-    page.on('requestfailed', (request) =>
-      failures.push(`request: ${request.url()} (${request.failure()?.errorText ?? 'unknown'})`),
-    );
+    page.on('requestfailed', (request) => {
+      const reason = request.failure()?.errorText ?? 'unknown';
+      // `preload=metadata` puede cancelar el rango restante del vídeo cuando
+      // ya conoce duración y dimensiones; no es un recurso roto.
+      if (!reason.includes('ERR_ABORTED')) failures.push(`request: ${request.url()} (${reason})`);
+    });
     page.on('response', (response) => {
       if (response.status() >= 400)
         failures.push(`response: ${response.status()} ${response.url()}`);

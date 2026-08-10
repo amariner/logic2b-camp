@@ -28,7 +28,7 @@ const d = c.docs;
 const meta = d.guias[guia];
 const site = 'https://camp.logic2b.com';
 const breadcrumbItems = [
-  { name: d.volver, url: new URL(localePath(locale, 'docs/'), site).href },
+  { name: d.titulo, url: new URL(localePath(locale, 'docs/'), site).href },
   { name: meta.nombre, url: new URL(localePath(locale, `docs/${guia}/`), site).href },
   ...(actual ? [{ name: seo.title, url: new URL(localePath(locale, ruta), site).href }] : []),
 ];
@@ -49,8 +49,8 @@ const breadcrumbJsonLd = {
   <div
     class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:py-14"
   >
-    {/* top-10, no top-20: con el tema botánico el header ya no es sticky. */}
-    <aside class="order-last lg:order-first lg:sticky lg:top-10 lg:self-start">
+    {/* El header botánico mide 72px; 96px deja 24px de respiración visible. */}
+    <aside class="order-last lg:order-first lg:sticky lg:top-24 lg:self-start">
       <a
         href={localePath(locale, 'docs/')}
         class="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"

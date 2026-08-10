@@ -733,11 +733,23 @@
 }
 
 .botanical-plan-status {
+  border: 1px solid transparent;
   border-radius: 999px;
   background: var(--botanical-keylime);
   padding: 7px 9px;
+  color: var(--botanical-ink);
   letter-spacing: 0;
   text-transform: none;
+}
+
+.botanical-plan-status[data-plan-status='desarrollo'] {
+  border-color: var(--botanical-border);
+  background: var(--botanical-paper);
+}
+
+.botanical-plan-status[data-plan-status='vision'] {
+  border-color: color-mix(in srgb, var(--botanical-ink) 42%, transparent);
+  background: transparent;
 }
 
 .botanical-plan h3 {

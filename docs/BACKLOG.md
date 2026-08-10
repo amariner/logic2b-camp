@@ -7,8 +7,8 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R7 landing, documentación de producto y
-  `BreadcrumbList`; R11 reset local y riesgos corregibles.
+- **Local ahora, por checkpoint:** R8 fábrica común de temas, contenido y media;
+  R11 reset local y riesgos corregibles.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -247,11 +247,20 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[marca] `docs/brand/`/BRAND seguía describiendo el isotipo como logo del
   producto~~ → **hecho 2026-08-10 (sesión 105/R1)**: wordmark para producto;
   isotipo solo para favicon y crédito del tenant.
-- [seo] **`BreadcrumbList` en las guías**: el sitemap declara las 25 páginas de documentación como "la superficie de búsqueda larga del producto" (cómo hacer el check-in en un camping…), y son las únicas con jerarquía real (guía → página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage` desde la 61; las guías no tienen ninguno. Barato: va en `Docs.astro`, que las sirve todas — 2026-07-30
+- ~~[seo] **`BreadcrumbList` en las guías**~~ → **hecho 2026-08-10
+  (sesión 111/R7)**: `Docs.astro` emite una lista de dos o tres niveles en la
+  ranura real de `<head>` de `Base`; raíz, guía y página usan URL absoluta y
+  canonical localizado. El build analiza las 60 rutas de guía ES/EN y fija
+  tipo, posiciones, nombres, URL final y ausencia de una copia en `<body>`.
 - ~~[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle compuesto~~ → **hecho 2026-08-04 (sesión 70)**: `apps/api/scripts/check-demo-links.mjs` recorre los `<a href>` internos del `dist` compuesto y comprueba que resuelven dentro de él (incluye `/demo/`, `/admin/`, rutas sin barra que Workers Assets redirige y URLs absolutas del mismo origen). Corre tras copiar los tres builds y **antes** de migrar o desplegar en `deploy:demo`; informa cada HTML origen y ruta rota. El `404.html` se excluye correctamente: es el documento fallback de Astro, no una ruta publicada. Tres tests nativos fijan el contrato; el primer barrido real dio **9.286 enlaces / 304 HTML, OK**.
 - ~~[web] **El héroe de nivel 1 de la home queda invisible en un build de nivel 1 REAL**~~ → **hecho 2026-08-03 (sesión 67)**: `Home.astro` solo emite `data-hero-nivel="1"` cuando está activo el conmutador de la demo; el build real de nivel 1 mantiene visible el héroe. Verificado con `TIER=1`.
 - ~~[web] **La regla dura de niveles está incumplida hoy: un build de nivel 1 SÍ arrastra el motor en el bundle**~~ → **hecho 2026-08-03 (sesión 67)**: aliases de build y `getStaticPaths()` aíslan el motor y sus rutas en niveles 1–2. Verificado con `TIER=1` (126 páginas, cero rutas/chunks del motor) y `TIER=3` (motor conservado).
-- [dashboard] **La portada del gestor no tiene página de guía** (65): `lib/ayuda.ts` la mapea a `null` a propósito —un `?` que lleva a un sitio que no responde la pregunta es peor que no tener `?` (ADR 0025 §5)—, pero es ahora la primera pantalla que ve cualquiera. Una página `recepcion/inicio` que explique las cuatro cifras y para qué sirve cada bloque cierra el hueco. Va en `apps/site/src/content/docs/recepcion/` — 2026-07-31
+- ~~[dashboard] **La portada del gestor no tiene página de guía**~~ → **hecho
+  2026-08-10 (sesión 108/R6)**: `BotonAyuda` enlaza
+  `recepcion/inicio`, «Orientarte desde la portada», con las cuatro cifras,
+  listas diarias, catálogo por rol y punto de entrada de cada tarea. La entrada
+  histórica seguía abierta aunque implementación, E2E y PROGRESS ya la daban
+  por cerrada.
 - ~~[dashboard] La portada enseñaba módulos inalcanzables por rol~~ → **hecho
   2026-08-04 (M1)**: portada y sidebar usan `navGroupsForRole()` sobre
   `NAV_GROUPS`; el test fija que «Parte» solo aparece para manager/owner.

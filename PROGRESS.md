@@ -1,5 +1,42 @@
 # PROGRESS — Logic Camp
 
+## Recorrido comercial y documentación R7 · 2026-08-10 (sesión 111)
+
+- R7 queda cerrado. Home y precios muestran el estado localizado de cada plan
+  desde el mismo componente: Inicio/Gestión disponibles, Automatiza en
+  desarrollo e Inteligente en roadmap. La portada consume `GUIAS` y vuelve a
+  ofrecer las cuatro ayudas, incluida Gestión, sin una lista duplicada.
+- La auditoría de copy retiró promesas que el producto no podía sostener: la
+  versión inglesa deja de garantizar una implantación en una tarde, evita
+  absolutos sobre temporada/escala y llama «de ejemplo» a los datos del
+  planning. El mensaje de lead ya no promete un SLA de 24 h. El guion comercial
+  usa enlaces HTTPS reales, explica exactamente qué puede hacer la puerta demo
+  y acuerda alcance, materiales y calendario antes del alta.
+- `BRAND.md` deja de describir un sitio neutro que ya no existe: separa gestor
+  Logic2B UI, sitio comercial botánico y web de tenant; documenta papel, verde
+  tinta, serif editorial, radio 14 px y tokens comunes sin contaminar dashboard
+  ni identidades de camping. Home, precios, temas y docs siguen usando un solo
+  `Base.astro` y overlay botánico.
+- El `BreadcrumbList` que ya calculaba `Docs.astro` ahora entra en una ranura
+  real de `<head>`, usa el título del índice como raíz y deja la última miga
+  alineada con canonical. El build incorpora un contrato sobre el artefacto:
+  estados y enlaces de las cuatro páginas de planes, 60 rutas de guía ES/EN,
+  ocho índices localizados, posiciones continuas, URLs absolutas y cero copia
+  del breadcrumb en `<body>`.
+- QA de navegador contra el build estático: home, precios y guía en ES/EN a
+  **1366/375 px**, formulario principal, diálogo con plan, FAQ visible+JSON-LD,
+  índice desktop/móvil y tratamientos de estado, todo sin overflow, recursos
+  rotos ni errores. El vídeo dura **38,9 s**, conserva controles, póster, foco,
+  pistas ES/EN y transcripción; los tres formatos de campaña mantienen sus UTM.
+  `qa:video` puede leer metadatos con `mdls` en macOS cuando `ffprobe` no está
+  instalado, y las QA de media ya distinguen la cancelación deliberada de un
+  rango `preload=metadata` de una descarga rota.
+- Verificación final: site **53 archivos / 0 diagnósticos**, contrato comercial
+  **4 páginas de planes + 60 guías**, QA comercial **4/4**, vídeo **4/4** y
+  campaña **4/4**. `pnpm check` completó **53/53** tareas en **4,72 s**. No hubo
+  deploy, reseed ni escritura remota. El siguiente checkpoint es **R8**, fábrica
+  común de temas, contenido y media.
+
 ## Estados, cierres y semántica del gestor R6 · 2026-08-10 (sesión 110)
 
 - R6 queda cerrado. El alta manual y el diálogo de bloqueos ya distinguen carga

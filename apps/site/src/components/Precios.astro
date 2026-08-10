@@ -10,6 +10,7 @@
 import type { Locale } from '../lib/i18n';
 import { getContent, localePath } from '../lib/i18n';
 import Base from '../layouts/Base.astro';
+import PlanStatus from './PlanStatus.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -44,6 +45,7 @@ const inicio = localePath(locale);
               >
                 <div class="botanical-plan-top">
                   <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
+                  <PlanStatus label={plan.estado} state={plan.estadoTipo} />
                 </div>
                 <h3>{plan.nombre}</h3>
                 <p class="botanical-plan-for">{plan.para}</p>

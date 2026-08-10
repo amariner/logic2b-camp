@@ -287,44 +287,44 @@
     ]
   },
   "problema": {
-    "titulo": "What's costing you money every August",
+    "titulo": "When every channel works separately, reception ends up doing the work twice",
     "puntos": [
       {
-        "titulo": "Your website doesn't book",
-        "texto": "A form that lands in your inbox and a call the next day. Meanwhile the guest already booked somewhere else."
+        "titulo": "Your website does not take bookings",
+        "texto": "Enquiries by form or email require someone to check availability and reply manually. Every delay reduces the chance of converting the enquiry."
       },
       {
-        "titulo": "The portal's commission",
-        "texto": "Booking takes its cut of every night. With direct bookings from your own site, that cut stays home."
+        "titulo": "Too much reliance on intermediaries",
+        "texto": "Portals provide visibility, but they should not be the only channel. Direct booking improves the margin and the relationship with the guest."
       },
       {
         "titulo": "The notebook and the spreadsheet",
-        "texto": "A paper planner overlaps, gets erased, and only its author understands it. Moving a pitch is half an hour."
+        "texto": "Spreadsheets and scattered notes make it difficult to know what is free, what has been paid and what changes during the day."
       },
       {
-        "titulo": "Six languages by hand",
-        "texto": "Answering in French, German and Dutch one by one. Your website should do that for you."
+        "titulo": "Information does not always arrive clearly",
+        "texto": "A multilingual website helps answer questions before booking and reduces repeated enquiries for the reception team."
       }
     ]
   },
   "producto": {
-    "titulo": "One system, two faces",
-    "subtitulo": "The same information, without copying anything from one place to another.",
+    "titulo": "From search to check-out, without duplicating information",
+    "subtitulo": "The website captures the booking and the manager turns it into an operational stay for reception.",
     "bloques": [
       {
         "titulo": "The public website",
-        "texto": "Fast, in six languages, with your photos and your brand. Guests search dates, see real availability and book —or leave a request— without leaving your domain. Built to be found on Google.",
+        "texto": "A fast, multilingual website adapted to your brand. Guests search dates, review the available accommodation and book —or send an enquiry— without leaving your domain.",
         "puntos": [
-          "A real availability engine, not a mockup",
+          "Availability connected to inventory",
           "Direct booking with no portal commission",
-          "6 languages, responsive, accessible"
+          "Six languages and a mobile-friendly experience"
         ],
         "capturaAlt": "A campsite's public website home page with the date search",
         "cta": "See website pricing"
       },
       {
         "titulo": "The front-desk manager",
-        "texto": "Every unit at a glance, drag to reassign a pitch, take payment, see today's arrivals and departures, each guest's file and history. Built for the receptionist, not for an IT expert.",
+        "texto": "Reception checks occupancy, arrivals, departures and payments in one place. The team can reassign a pitch, open the guest record and follow each stay without jumping between tools.",
         "puntos": [
           "Visual planner with drag and drop",
           "Today's arrivals, departures and payments",
@@ -336,13 +336,13 @@
     ]
   },
   "planning": {
-    "kicker": "The signature piece",
-    "titulo": "The planner your front desk actually uses",
-    "texto": "Every unit, all summer, on one screen. Colours by status, blocks in plain sight, and reassigning a unit is dragging the booking —no cancelling, no charging again. Fast even with hundreds of pitches.",
+    "kicker": "Operations at a glance",
+    "titulo": "A planner designed for the real rhythm of reception",
+    "texto": "Check occupancy by date and unit, distinguish statuses and blocks, and reassign a stay with one gesture. Every change preserves the booking and its audit trail, so the team can act safely even in high season.",
     "ventana": "Occupancy planner · August 2026",
     "pieMovil": "The mobile view focuses on the operational detail: dates, pitches and booking status. On desktop, the planner expands to show more units at once.",
     "cta": "See it working in the demo",
-    "capturaAlt": "View of the planner with real bookings for a campsite in August",
+    "capturaAlt": "View of the manager planner with sample campsite bookings in August",
     "planoAlt": "The interactive campsite map with the state of each unit",
     "planoTitulo": "Live map",
     "planoEstado": "Synced",
@@ -353,7 +353,7 @@
       "bloqueada": "Blocked"
     },
     "puntos": [
-      "Drag to reassign — no cancelling, no charging again",
+      "Reassign a unit without recreating the booking",
       "Colours by status and blocks in plain sight",
       "Also as a map: every unit on your campsite's plan"
     ]
@@ -625,8 +625,8 @@
     "cta": "Request a proposal"
   },
   "alta": {
-    "titulo": "From zero to selling, in an afternoon",
-    "texto": "Send us your photos, your accommodation types and your rates, and we set up your instance. Your own database, your domain, your brand —isolated from any other campsite. No endless projects."
+    "titulo": "Guided implementation, with a clear scope",
+    "texto": "We collect your accommodation, rates, content and brand materials; configure the environment and review the complete flow with you before launch. Timing is agreed according to scope and the state of the source data."
   },
   "faq": {
     "titulo": "Questions we get",
@@ -645,7 +645,7 @@
       },
       {
         "q": "Is it hard for my receptionist?",
-        "a": "It's designed for her: large screens, clear text, keyboard focus, and a planner you understand at a glance. No 200-page manual."
+        "a": "It is designed around everyday reception tasks: reviewing arrivals, finding a booking, taking payment, reassigning a unit and recording departure. The implementation includes guidance for the team."
       },
       {
         "q": "Is my data safe?",
@@ -677,7 +677,7 @@
     "enviar": "Request demo",
     "solicitudEnviar": "Request project",
     "enviando": "Sending…",
-    "ok": "Got it! We'll write to you within 24 h.",
+    "ok": "Got it! We'll write to arrange the next step.",
     "demo": "Simulation completed: no message was sent.",
     "error": "Couldn't send. Email us at hola@logic2b.com and we'll sort it out.",
     "verDemoTexto": "Rather see it now? The demo has two sides and both are open: the campsite website and the manager it's all run from.",

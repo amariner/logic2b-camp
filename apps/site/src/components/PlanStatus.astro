@@ -1,0 +1,19 @@
+---
+/**
+ * Estado comercial compartido por las tarjetas de la portada y de precios.
+ * El texto viene del contenido localizado; el tipo es el contrato estable que
+ * permite distinguir lo disponible de lo que aún es desarrollo o visión.
+ */
+interface Props {
+  label: string;
+  state: string;
+}
+
+const { label, state } = Astro.props;
+const VALID_STATES = ['disponible', 'desarrollo', 'vision'] as const;
+if (!VALID_STATES.includes(state as (typeof VALID_STATES)[number])) {
+  throw new Error(`Estado comercial desconocido: ${state}`);
+}
+---
+
+<span class="botanical-plan-status" data-plan-status={state}>{label}</span>

@@ -25,25 +25,12 @@ await mkdir(screenshotDir, { recursive: true });
 const file = await stat(videoPath);
 assert.ok(file.size <= 7_500_000, `el MP4 pesa ${file.size} bytes`);
 
-const { stdout } = await run(ffprobe, [
-  '-v',
-  'error',
-  '-show_entries',
-  'format=duration:stream=codec_name,codec_type,width,height',
-  '-of',
-  'json',
-  videoPath,
-]);
-const metadata = JSON.parse(stdout);
-const stream = metadata.streams.find((item) => item.codec_type === 'video');
-assert.equal(stream?.codec_name, 'h264');
-assert.equal(stream?.width, 1280);
-assert.equal(stream?.height, 720);
-assert.equal(
-  metadata.streams.some((item) => item.codec_type === 'audio'),
-  false,
-);
-assert.ok(Number(metadata.format.duration) >= 35 && Number(metadata.format.duration) <= 60);
+const metadata = await inspectVideo();
+assert.equal(metadata.codec, 'h264');
+assert.equal(metadata.width, 1280);
+assert.equal(metadata.height, 720);
+assert.equal(metadata.hasAudio, false);
+assert.ok(metadata.duration >= 35 && metadata.duration <= 60);
 
 const browser = await chromium.launch(chromiumPath ? { executablePath: chromiumPath } : undefined);
 
@@ -165,4 +152,42 @@ try {
   }
 } finally {
   await browser.close();
+}
+
+async function inspectVideo() {
+  try {
+    const { stdout } = await run(ffprobe, [
+      '-v',
+      'error',
+      '-show_entries',
+      'format=duration:stream=codec_name,codec_type,width,height',
+      '-of',
+      'json',
+      videoPath,
+    ]);
+    const data = JSON.parse(stdout);
+    const stream = data.streams.find((item) => item.codec_type === 'video');
+    return {
+      codec: stream?.codec_name,
+      width: stream?.width,
+      height: stream?.height,
+      hasAudio: data.streams.some((item) => item.codec_type === 'audio'),
+      duration: Number(data.format.duration),
+    };
+  } catch (error) {
+    if (error?.code !== 'ENOENT' || process.platform !== 'darwin') throw error;
+    // macOS trae Spotlight aunque no tenga FFmpeg. Mantiene la misma prueba
+    // local sin convertir la ausencia opcional de ffprobe en un falso rojo.
+    const mdls = async (key) =>
+      (await run('/usr/bin/mdls', ['-raw', '-name', key, videoPath])).stdout.trim();
+    const codecs = await mdls('kMDItemCodecs');
+    const audioBitRate = await mdls('kMDItemAudioBitRate');
+    return {
+      codec: codecs.includes('H.264') ? 'h264' : codecs,
+      width: Number(await mdls('kMDItemPixelWidth')),
+      height: Number(await mdls('kMDItemPixelHeight')),
+      hasAudio: audioBitRate !== '(null)',
+      duration: Number(await mdls('kMDItemDurationSeconds')),
+    };
+  }
 }

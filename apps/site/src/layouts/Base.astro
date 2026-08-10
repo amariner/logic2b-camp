@@ -152,13 +152,14 @@ const acciones = [
       is:inline
       set:html={JSON.stringify(datosEstructurados).replace(/</g, '\\u003c')}
     />
+    <slot name="head" />
   </head>
   <body class="theme-botanical min-h-screen bg-background text-foreground antialiased">
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
-      {/* Raíles de logic2b.com: contenedor 1440px, gutter 24→32px, 50px de alto. */}
-      <div class="site-header-inner mx-auto flex h-[50px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
+      {/* Raíles botánicos: el CSS amplía el contenedor y fija 72px de alto. */}
+      <div class="site-header-inner mx-auto flex h-[72px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
         {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}

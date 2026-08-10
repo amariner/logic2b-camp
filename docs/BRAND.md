@@ -4,16 +4,25 @@
 
 ## 0. Las dos marcas — no confundirlas
 
-Logic Camp tiene **dos superficies visuales distintas**, cada una con su dueño de marca:
+Logic Camp tiene **tres superficies visuales distintas**, cada una con un
+contrato de marca explícito:
 
-| Superficie                                                               | Marca                                                                       | Dónde                                        |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------- |
-| **Producto Logic2B** — dashboard/gestor, landing de venta, documentación | **Logic2B** (esta guía): neutra, Inter, wordmark, shadcn                    | `/admin`, landing de producto, docs          |
-| **Web pública de cada camping** (tenant)                                 | **Del camping** — su color, sus fotos, su identidad mediterránea (ADR 0006) | `/demo/`, `/demos/*` y dominios de cliente   |
+| Superficie                               | Marca y sistema visual                                                      | Dónde                                      |
+| ---------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------ |
+| **Gestor Logic2B**                       | **Logic2B UI**: neutro, Inter/Space Grotesk, wordmark y primitivos shadcn   | `/admin/` y gestores de las demos          |
+| **Sitio comercial y documentación**      | **Logic2B botánico**: papel, verde tinta, serif editorial y wordmark común  | `/`, `/precios/`, `/temas/` y `/docs/`     |
+| **Web pública de cada camping** (tenant) | **Del camping**: su color, sus fotos y su identidad mediterránea (ADR 0006) | `/demo/`, `/demos/*` y dominios de cliente |
 
 Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara al huésped lleva la marca del camping.** El producto usa el wordmark «Logic2B Campings». El isotipo queda limitado al favicon y, de forma discreta («powered by Logic2B»), al pie de las webs de tenant. Esto respeta el principio de §0 (cada cliente es su marca) sin perder que el producto es reconociblemente Logic2B.
 
-> **Excepción (ADR 0027, 2026-07-22):** la **landing de venta** puede llevar **fotografía atmosférica de camping** en el héroe (contrato de arte del ADR 0024, con scrim que garantiza AA). El resto de superficies Logic2B — `og.png`, cards, guías, dashboard — siguen neutras, y la tipografía/paleta no cambian: la foto es atmósfera, no un rebrand.
+> **Evolución cerrada (2026-08-05):** ADR 0027 abrió únicamente la fotografía
+> atmosférica. El rediseño posterior aprobado de la landing y la unificación del
+> sitio ampliaron esa excepción: `apps/site` usa una identidad botánica propia y
+> coherente en home, precios, temas y guías. No es un tema de tenant ni modifica
+> el gestor: conserva el wordmark Logic2B, el cuerpo Inter y los contratos de
+> accesibilidad, pero adopta papel, verde tinta, serif editorial y radio de 14 px.
+> La OG corporativa continúa neutra para no atribuir al producto la identidad de
+> un camping ficticio.
 
 ## 1. Origen técnico
 
@@ -79,7 +88,21 @@ texto**. El isotipo se retira del lockup; la referencia es el wordmark de
 - **Webfonts subsetadas** (self-hosted, no Google Fonts CDN): `inter-*-wght-normal.woff2` y `space-grotesk-*-wght-normal.woff2` (latin, latin-ext, y demás rangos). Servir desde el propio origen, igual que la web pública ya subsetea sus fuentes.
 - Estilo de titular observado: `font-bold tracking-tighter leading-[1.08]` (negrita, interletrado apretado, línea compacta). Números: `tabular-nums`.
 
-> Convergencia de fuentes — **CERRADA en ADR 0018** (fase B2): **producto → Space Grotesk; web de tenant → sigue con Clash Display**. Inter es común a ambas superficies (cuerpo/UI). B2 alinea el _ritmo_ tipográfico (tracking apretado, `tabular-nums`) entre web y producto, pero **no** la familia display: cambiar Clash Display por Space Grotesk neutralizaría la voz editorial del héroe mediterráneo (ADR 0006) — eso sería un reskin, no un alineamiento estructural.
+> Convergencia de fuentes — **CERRADA en ADR 0018** (fase B2): **gestor neutro
+> → Space Grotesk; web de tenant → sigue con Clash Display**. Inter es común a
+> las superficies como cuerpo/UI. El sitio comercial añadió después una serif
+> de sistema para sus titulares; no altera ni el gestor ni la voz editorial del
+> tenant. B2 alinea el _ritmo_ tipográfico (`tracking` apretado,
+> `tabular-nums`), no obliga a compartir familia display.
+
+### Sitio comercial botánico
+
+- **Cuerpo, controles y navegación:** Inter Variable. El sitio continúa siendo
+  una superficie Logic2B y no adopta la tipografía del tenant.
+- **Titulares editoriales:** `--botanical-serif` — Iowan Old Style, Baskerville y
+  Times New Roman como cadena de sistema. No añade otra webfont al presupuesto.
+- **Wordmark:** Poppins 600/800, idéntico al dashboard; el cambio de voz se limita
+  a titulares y cifras editoriales.
 
 ## 4. Tokens de color (shadcn "neutral", oklch)
 
@@ -114,12 +137,34 @@ Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El c
 `--chart-4` `oklch(62.7% .265 303.9)` / `oklch(82.8% .189 84.429)` ·
 `--chart-5` `oklch(64.5% .246 16.439)` / `oklch(76.9% .188 70.08)`.
 
+### Tokens del sitio comercial
+
+`apps/site/src/styles/botanical.css` es la implementación autoritativa del
+overlay, aplicado desde `Base.astro` a home, precios, temas y documentación:
+
+| Token                  | Valor     | Uso principal                  |
+| ---------------------- | --------- | ------------------------------ |
+| `--botanical-ink`      | `#0f3e17` | Titulares, acciones y foco     |
+| `--botanical-shadow`   | `#0c2f10` | Superficies oscuras            |
+| `--botanical-sage`     | `#b1dbb8` | Acentos y fondos auxiliares    |
+| `--botanical-keylime`  | `#e1f4df` | Destacados y estado disponible |
+| `--botanical-mint`     | `#cfe7d3` | Bandas y grupos de producto    |
+| `--botanical-slate`    | `#b6ced5` | Contraste editorial secundario |
+| `--botanical-paper`    | `#fffefc` | Fondo general                  |
+| `--botanical-charcoal` | `#222222` | Texto de lectura               |
+| `--botanical-border`   | `#e8e9e4` | Bordes y separación            |
+
+Estos tokens remapean las variables semánticas del layout; una sección no debe
+introducir una segunda paleta ni estilos aislados.
+
 > El tenant puede aportar **un color de acento** que tiña `--primary`/`--ring` en su instancia del dashboard, sin romper la neutralidad del resto. A decidir en el ADR.
 
 ## 5. Radios y geometría
 
 - `--radius: .625rem` (**10px**) base. Derivados: `--radius-sm = radius - 4px`, `--radius-md = radius - 2px`, `--radius-lg = radius`, `--radius-xl = radius + 4px`, `--radius-2xl = 1rem`.
-- **Producto** (dashboard, landing, docs): base 10px.
+- **Gestor**: base 10px.
+- **Sitio comercial y docs**: tarjetas principales a 14px mediante el sistema
+  botánico; controles y primitivos conservan su geometría semántica.
 - **Web de tenant** (ADR 0018, fase B2): adopta la **forma** de la escala (una base + derivados por `calc()`) pero **no el valor** — base **4px** (`--lc-radius`, con `-sm`/`-md`/`-lg` derivados). Sube un punto respecto al 2px de ADR 0006 (más generoso, alineado con el ritmo del DS) sin ablandar la firmeza mediterránea hacia el 10px del producto. Un tenant cambia su radio tocando **un solo** número.
 
 ## 6. Componentes y layout (convenciones observadas)
@@ -129,7 +174,13 @@ Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El c
 - **Badge**: `inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium`.
 - **Input**: `h-9 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs`; foco `focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]`.
 - **Botones**: variantes `primary` (sólido `--primary`), `outline`, `secondary`, `ghost` (`text-muted-foreground`, hover `bg-accent`).
-- **Header/nav**: barra superior con wordmark + navegación de secciones + buscador (`Search… ⌘K`) + acción primaria. En el dashboard, **sidebar agrupada por bloques** con etiquetas `text-[11px] uppercase tracking-wide text-muted-foreground` e ítems `rounded-md px-2 py-1.5 text-sm`, activo con `bg-accent text-accent-foreground`.
+- **Header/nav del sitio**: wordmark compartido, secciones comerciales, acceso a
+  demo y gestor y una acción primaria; header y footer consumen la misma lista.
+  En el dashboard, **sidebar agrupada por bloques** con etiquetas
+  `text-[11px] uppercase tracking-wide text-muted-foreground` e ítems
+  `rounded-md px-2 py-1.5 text-sm`, activo con
+  `bg-accent text-accent-foreground`. El buscador global (`⌘K`) pertenece al
+  gestor, no al sitio comercial.
 - **Ritmo de bloques**: tarjetas modulares en columnas, `gap` consistente, `break-inside-avoid` (layout tipo masonry en la home del DS).
 - Titulares hero: `text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter leading-[1.08]`.
 
@@ -138,6 +189,9 @@ Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El c
 1. **`packages/ui`**: DS real ya consumido por el dashboard; concentra primitivos, tokens, fuentes y wordmark compartidos.
 2. **Dashboard** (`apps/dashboard`): producto Logic2B sobre esos tokens/componentes, sidebar agrupada y wordmark. El **planning** mantiene su color semántico por estado derivado del DS.
 3. **Web pública de tenant** (`apps/web`): estructura común y marca propia; isotipo discreto «powered by Logic2B» en el pie.
-4. **Landing y documentación** (`apps/site`): superficies Logic2B ya construidas sobre un mismo layout y pipeline.
+4. **Landing y documentación** (`apps/site`): superficies Logic2B construidas
+   sobre un mismo `Base.astro`, overlay botánico y pipeline. Home, precios,
+   temas y guías no pueden divergir en paleta, tipografía, navegación ni estados
+   comerciales.
 
 Detalle de fases, orden y criterios de "hecho": ver `docs/ROADMAP.md` → sección **"Frente B — Marca, sitio de producto y documentación"**.

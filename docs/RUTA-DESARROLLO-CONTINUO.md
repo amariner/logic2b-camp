@@ -296,18 +296,18 @@ gestor habla Logic2B UI sin perder densidad y no quedan P0/P1 visibles.
 
 ### R7 · Landing de venta y documentación de producto
 
-- [ ] Auditar la home completa por jerarquía, promesa, CTAs, estados comerciales
+- [x] Auditar la home completa por jerarquía, promesa, CTAs, estados comerciales
       y recorrido web↔gestor.
-- [ ] Mantener la estética botánica como sistema del sitio, no como CSS aislado
+- [x] Mantener la estética botánica como sistema del sitio, no como CSS aislado
       por sección.
-- [ ] Revisar coherencia de componentes con Logic2B UI sin neutralizar la voz
+- [x] Revisar coherencia de componentes con Logic2B UI sin neutralizar la voz
       comercial.
-- [ ] Corregir documentación de marca aún obsoleta.
-- [ ] Actualizar URLs antiguas de `DEMO-SCRIPT.md` y enlaces reales.
-- [ ] Añadir `BreadcrumbList` a las guías si sigue pendiente y validar JSON-LD.
-- [ ] Completar la ayuda de pantallas actuales; no traducir toda la prosa sin
+- [x] Corregir documentación de marca aún obsoleta.
+- [x] Actualizar URLs antiguas de `DEMO-SCRIPT.md` y enlaces reales.
+- [x] Añadir `BreadcrumbList` a las guías si sigue pendiente y validar JSON-LD.
+- [x] Completar la ayuda de pantallas actuales; no traducir toda la prosa sin
       demanda real.
-- [ ] Verificar formularios, FAQ, precios, guías, vídeos, pistas y alternativas
+- [x] Verificar formularios, FAQ, precios, guías, vídeos, pistas y alternativas
       textuales.
 
 **Cierra cuando:** un gerente entiende el producto, puede probarlo y resolver
