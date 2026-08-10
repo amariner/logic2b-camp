@@ -26,7 +26,8 @@ export default defineConfig({
   webServer: {
     command:
       `pnpm exec wrangler dev --config ../../tenants/demo/wrangler.jsonc ` +
-      `--persist-to ../../.wrangler-demo --port ${E2E_PORT}`,
+      `--persist-to ../../.wrangler-demo --port ${E2E_PORT} ` +
+      `--var LOGIC_CAMP_DEV_AUTH:1`,
     url: `${E2E_ORIGIN}/api/health`,
     reuseExistingServer: true,
     timeout: 60_000,

@@ -2,7 +2,7 @@
 title: 'Cobrar lo que falta'
 description: 'Registrar un pago en efectivo o con tarjeta, cobrar todo lo pendiente de una vez y devolver dinero.'
 lang: es
-orden: 4
+orden: 5
 ---
 
 Cuando alguien te paga en el mostrador —en efectivo o con el datáfono— hay que dejarlo apuntado en su reserva. Si no, el programa seguirá diciendo que debe dinero.

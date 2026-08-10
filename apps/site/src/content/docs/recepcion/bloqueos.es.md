@@ -2,7 +2,7 @@
 title: 'Cerrar una parcela por avería'
 description: 'Impedir que se venda una unidad que no se puede usar, sin tocar las reservas que ya tiene.'
 lang: es
-orden: 11
+orden: 12
 ---
 
 Se rompe el agua de un bungalow, hay obra en una zona, o el propietario de una parcela viene a usarla. Esa unidad **no se puede vender** esos días, pero tampoco quieres borrar nada.

@@ -2,7 +2,7 @@
 title: 'Las solicitudes de la web'
 description: 'Las peticiones que llegan por el formulario, y cómo no perder ninguna.'
 lang: es
-orden: 12
+orden: 13
 ---
 
 Cuando alguien rellena el formulario de la web, esa petición **queda guardada** en el programa. No es una reserva: es alguien preguntando.

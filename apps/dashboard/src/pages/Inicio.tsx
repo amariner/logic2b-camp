@@ -30,6 +30,7 @@ import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import { apiGet, type BookingListItem, type EnquiryItem, type ReportsData } from '../api';
 import { useRol } from '../auth';
+import { BotonAyuda } from '../components/BotonAyuda';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur } from '../lib/format';
@@ -257,7 +258,10 @@ export default function Inicio() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 p-4 sm:p-6">
         {/* ---------- cifras del día ---------- */}
         <section>
-          <h1 className="font-display text-[20px] font-semibold">{t('ini.titulo')}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-[20px] font-semibold">{t('ini.titulo')}</h1>
+            <BotonAyuda className="ml-auto size-11 md:size-7" />
+          </div>
           <p className="mt-0.5 text-[13px] text-muted-foreground">{t('ini.saludo')}</p>
 
           {qHoy.isError ? (

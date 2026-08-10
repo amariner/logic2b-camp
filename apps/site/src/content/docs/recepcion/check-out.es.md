@@ -2,7 +2,7 @@
 title: 'La salida: el check-out'
 description: 'Cerrar la cuenta y liberar la parcela cuando el huésped se va.'
 lang: es
-orden: 10
+orden: 11
 ---
 
 El check-out cierra la estancia: comprueba que no queda dinero por cobrar, marca la reserva como terminada y **libera la parcela**.

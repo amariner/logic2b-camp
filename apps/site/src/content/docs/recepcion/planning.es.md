@@ -2,7 +2,7 @@
 title: 'Leer el planning'
 description: 'La pantalla grande: qué significa cada color, cómo moverte por las fechas y cómo encontrar lo que buscas.'
 lang: es
-orden: 5
+orden: 6
 ---
 
 El planning es la pantalla principal, y es el cuaderno de recepción de toda la vida: **las unidades en filas, los días en columnas**. Cada reserva es una barra que ocupa sus noches.

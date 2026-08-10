@@ -21,6 +21,9 @@ async function topDelBloque(page: Page, heading: string) {
 test('dashboard: la portada y el shell responden entre móvil y escritorio', async ({ page }) => {
   await page.setViewportSize({ width: VIEWPORTS[0], height: 812 });
   await entrarEnDemo(page);
+  await expect(
+    page.getByRole('link', { name: 'Abrir la guía de esta pantalla (se abre en otra pestaña)' }),
+  ).toHaveAttribute('href', 'https://camp.logic2b.com/docs/recepcion/inicio/');
 
   // Una sola sesión de demo recorre todos los anchos: además de ser más rápida,
   // evita que la propia regresión consuma el rate limit de autenticación.
@@ -90,4 +93,39 @@ test('dashboard: la portada y el shell responden entre móvil y escritorio', asy
   await expect(shortcutDialog.getByPlaceholder('Buscar reserva, cliente o unidad…')).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(shortcutDialog).toHaveCount(0);
+
+  // La ruta activa debe ser una propiedad del router, no un residuo del click.
+  // Los enlaces externos y algunos E2E cambian el hash sin un gesto de puntero;
+  // históricamente eso dejaba también el enlace anterior con aria-current.
+  const current = page.locator('aside a[aria-current="page"]');
+  await expect(current).toHaveCount(1);
+  await expect(current).toHaveText('Inicio');
+
+  await page.evaluate(() => {
+    window.location.hash = '#/solicitudes';
+  });
+  await expect(page).toHaveURL(/#\/solicitudes$/);
+  await expect(current).toHaveCount(1);
+  await expect(current).toHaveText('Solicitudes');
+
+  await page
+    .locator('aside')
+    .getByRole('link', { name: 'Planning', exact: true })
+    .evaluate((planning) => planning.click());
+  await expect(page).toHaveURL(/#\/planning$/);
+  await expect(current).toHaveCount(1);
+  await expect(current).toHaveText('Planning');
+
+  // La ayuda enlazada forma parte del mismo bundle y tiene que ser legible en
+  // los dos anchos que promete el gestor, no solo existir en el sitemap.
+  await page.goto('/docs/recepcion/inicio/');
+  await expect(page.getByRole('heading', { name: 'Orientarte desde la portada' })).toBeVisible();
+  for (const width of [375, 1366]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+  }
 });

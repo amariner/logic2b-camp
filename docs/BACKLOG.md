@@ -8,8 +8,8 @@ Este índice manda para elegir trabajo; las entradas extensas de debajo conserva
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
 - **Local ahora, por checkpoint:** R6 afordancias por rol, nombres semánticos de
-  clases, i18n huérfana y `aria-current`; R7
-  `BreadcrumbList` y guía de portada; R11 reset local y riesgos corregibles.
+  clases e i18n huérfana; R7 `BreadcrumbList`; R11 reset local y riesgos
+  corregibles.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -102,7 +102,16 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[C4] Ficha de reserva móvil como `Sheet` completo~~ → **hecho 2026-08-04
   (M1)** a 320/375/430 px con foco, Escape y retorno al origen.
 - ~~[seed] **Ninguna de las 83 unidades está fuera de servicio**~~ → **hecho 2026-08-03 (sesión 69)**: `C-10` (avería eléctrica) y `MH-04` (reforma) quedan `inactive` en las 23 anclas, sin reservas asignadas. Inventario, Planning y Plano enseñan el estado; Planning impide crear, mover o reasignar hacia una baja y el Plano la distingue de un bloqueo temporal. El relleno y la banda diaria excluyen ambas, sin romper capacidad ni invariantes.
-- [B1] La sidebar deja **dos enlaces marcados como activos** al navegar cambiando el hash programáticamente (URL directa `/admin/#/x` o `.click()` sintético): el contenido cambia pero el `aria-current` del enlace anterior no se limpia. Con click real de puntero funciona perfecto (verificado: un solo `aria-current=page`), así que ningún usuario lo ve — pero un E2E o un enlace externo al dashboard sí. Menor — 2026-07-28
+- ~~[B1] La sidebar deja **dos enlaces marcados como activos** al navegar
+  cambiando el hash programáticamente~~ → **cerrado 2026-08-10 (sesión
+  108/R6)**: el defecto ya no se reproduce con el router actual. Un E2E contra
+  el bundle y Worker reales fija exactamente un `aria-current=page` en portada,
+  tras asignar `window.location.hash` y tras un `.click()` sintético; los dos
+  últimos casos dejan activo únicamente el destino.
+- ~~[dashboard] La portada no tenía guía contextual~~ → **hecho 2026-08-10
+  (sesión 108/R6)**: nueva guía «Orientarte desde la portada» sobre cifras,
+  listas, módulos por rol y puntos de entrada; el `?` de Inicio la abre y una
+  prueba E2E comprueba destino y ausencia de desbordamiento a 375/1366 px.
 - [infra] **`POST /api/demo/reset` cuelga el workerd LOCAL con el seed grande de ADR 0030** (3,4 MB / 84 sentencias): 180 s sin respuesta y el proceso deja de contestar del todo (ni `GET /`) — hay que matar el server, `pnpm db:reset && pnpm db:seed` (rápido, el camino CLI no pasa por el batch en-worker) y volver a levantarlo. **El atajo de la sesión 56 («reset sin parar nada») ha muerto en local.** Contra la D1 real desplegada el mismo endpoint tarda **1,2 s** (verificado en la sesión 58), así que es un límite del miniflare-D1 local, no del producto; aún así molesta para iterar y para enseñar la demo en local — 2026-07-28
 - ~~[seed] Los nombres de las solicitudes no concordaban con su idioma~~ →
   **hecho 2026-08-10 (sesión 107/R5)**: las 15 firmas salen de repertorios

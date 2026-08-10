@@ -2,7 +2,7 @@
 title: 'Huéspedes y documentos'
 description: 'Apuntar quién viene de verdad y sus documentos. Es obligatorio, y se tarda dos minutos.'
 lang: es
-orden: 9
+orden: 10
 ---
 
 En un camping español hay que llevar registro de las personas que se alojan: es el **parte de viajeros**. No es una manía del programa, es la ley.

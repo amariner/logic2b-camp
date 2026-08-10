@@ -1,5 +1,28 @@
 # PROGRESS — Logic Camp
 
+## Shell y ayuda del gestor R6 · 2026-08-10 (sesión 108)
+
+- La portada ya no es la única pantalla operativa sin ayuda: incorpora
+  `BotonAyuda` y una guía propia, «Orientarte desde la portada», que explica las
+  cuatro cifras, las tres listas diarias, el catálogo filtrado por rol y el
+  punto de entrada adecuado para cada tarea. El orden de la guía de recepción
+  pasa a 15 páginas sin alterar sus URLs.
+- El doble `aria-current` registrado en B1 ya no se reproduce con TanStack
+  Router actual. La regresión queda cerrada con navegador real: exige un solo
+  enlace activo en Inicio, después de cambiar el hash directamente a
+  Solicitudes y después de activar Planning con `.click()` sintético.
+- El E2E del gestor había dejado de poder iniciar la demo tras el cierre
+  fail-closed de auth de R4. Playwright levanta ahora exclusivamente su Worker
+  local con `LOGIC_CAMP_DEV_AUTH=1`; no relaja el runtime desplegable ni escribe
+  en producción.
+- Verificación dirigida: dashboard **37/37**, E2E del shell/portada **1/1** a
+  320/375/430/1366 px, nueva guía sin overflow a 375/1366 px, bundle compuesto
+  con **11.671 enlaces internos / 360 HTML** y entradas gzip de 172,99 kB
+  (normal), 177,46 kB (Pinada) y 183,25 kB (Mar de Fondo), todas dentro de R2.
+  La línea final `pnpm check` completa **53/53** tareas en **10,75 s**. R6
+  continúa abierto: el siguiente checkpoint son las afordancias de mutación por
+  rol y la revisión de estados/acciones destructivas.
+
 ## Motor, seed y datos creíbles R5 · 2026-08-10 (sesión 107)
 
 - R5 queda cerrado tras reejecutar el motor puro y los recorridos API que lo

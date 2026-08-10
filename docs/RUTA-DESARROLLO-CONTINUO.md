@@ -281,7 +281,7 @@ y cada garantía relevante tiene test.
 
 - [ ] Auditar shell, portada y navegación por rol.
 - [ ] Resolver affordances que conducen a muros de permisos o explicarlas antes.
-- [ ] Crear/terminar la guía contextual de la portada si sigue faltando.
+- [x] Crear/terminar la guía contextual de la portada si sigue faltando.
 - [ ] Revisar estados loading/empty/error/success y acciones destructivas.
 - [ ] Continuar adopción semántica de `packages/ui` donde reduzca mentira o
       duplicación; no migrar markup por simetría.

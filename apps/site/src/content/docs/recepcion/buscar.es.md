@@ -2,7 +2,7 @@
 title: 'Buscar cualquier cosa en un segundo'
 description: 'El buscador rápido: reservas por código, clientes por nombre, unidades por su número.'
 lang: es
-orden: 13
+orden: 14
 ---
 
 Cuando hay cola en el mostrador no da tiempo a ir pantalla por pantalla. Para eso está el buscador rápido.
