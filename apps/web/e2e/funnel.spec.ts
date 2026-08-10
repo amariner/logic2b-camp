@@ -2,7 +2,7 @@
  * E2E del flujo de reserva (ADR 0007): camino feliz + los 3 infelices.
  * Corre contra el Worker real (web estática + API + D1 local sembrada).
  */
-import { expect, test, type APIRequestContext } from '@playwright/test';
+import { expect, test, type APIRequestContext } from './fixtures';
 import { estanciaLibre, WEB } from './base';
 
 // Fechas preguntadas a la API, no inventadas: ver `estanciaLibre` en base.ts —

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 import { WEB } from './base';
 
 test('tema por URL se aplica antes del paint, persiste y vuelve al predeterminado', async ({

@@ -1,59 +1,59 @@
-# Prompt para la siguiente sesión — objetivo duradero en R9
+# Prompt para la siguiente sesión — objetivo duradero en R11
 
-> Reescrito tras la sesión 112 (2026-08-10). R0–R8 están cerrados; producción
+> Reescrito tras la sesión 113 (2026-08-10). R0–R10 están cerrados; producción
 > sigue requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Una identidad nueva ya puede pasar de brief a contenido, tema, media, build y
-capturas locales sin tocar el core ni crear infraestructura; ahora toca decidir
-qué hueco comercial real falta en el portfolio antes de fabricar otra demo.
+El portfolio no necesita otra demo sin señal comercial y el bundle canónico ya
+tiene un recorrido reproducible de venta, temas, gestor, assets y responsive;
+ahora toca convertir la seguridad y la activación del primer cliente en una
+lista verificable, no en supuestos dispersos.
 
 ## Objetivo prioritario
 
-Abrir **R9 · Portfolio, nuevos temas y olas D5-V/D6-V** de
-`docs/RUTA-DESARROLLO-CONTINUO.md`, empezando solo por su auditoría y gate:
+Abrir **R11 · Seguridad y preparación del primer cliente** de
+`docs/RUTA-DESARROLLO-CONTINUO.md` y agotar primero su trabajo local:
 
-1. Comparar L'Olivar, Pinada del Mar y Mar de Fondo con los briefs de Montaña,
-   Familiar y Parcela: ICP, objeción, nivel, recorrido y pantallas firma.
-2. Identificar gaps demostrables sin asumir que seis tarjetas exigen seis demos.
-3. Buscar en ROADMAP, notas comerciales y evidencia disponible qué concepto
-   responde a una señal observada y registrar explícitamente por qué no duplica
-   una ancla existente.
-4. Si no existe señal suficiente, cerrar la auditoría con el gate en espera y
-   avanzar al siguiente trabajo local permitido por la ruta; no generar activos,
-   consumir proveedor ni inventar aprendizaje.
-5. Solo si el gate queda probado, ejecutar una demo como entrega vertical usando
-   `docs/FABRICA-IDENTIDADES.md`; D5-V precede siempre a D6-V.
+1. Inventariar las fronteras existentes de aislamiento, auth, roles, cookies,
+   headers, CORS/CSRF, rate limits y rutas públicas; reproducir antes de tocar.
+2. Revisar RGPD, retención, anonimización, consentimiento y exports contra código,
+   tests, ADR y runbooks actuales, separando riesgo real de deuda hipotética.
+3. Auditar `docs/RUNBOOK-COPIAS.md`: probar solo export/restauración local y dejar
+   la restauración remota detrás de credencial y autorización.
+4. Documentar la observabilidad mínima disponible y el punto ciego que no puede
+   cerrarse sin una cuenta externa autorizada.
+5. Actualizar el dossier de activación por módulo —Inicio, Gestión, pagos,
+   comunicaciones, fiscal/SES, OTA e IA— con estado, dueño, secreto/proveedor,
+   prueba de aceptación, rollback y gate.
+6. Convertir cada defecto local demostrado en una corrección pequeña con prueba
+   o runbook; no crear infraestructura ni activar integraciones por anticipado.
 
-## Publicación preparada, no autorizada
+## Gates que siguen cerrados
 
-- El candidato acumulado incluye código R4 y la migración
-  `0007_scrub_payment_raw.sql`; `deploy:demo` aplicaría la migración antes del
-  Worker.
-- Antes de una autorización: comprobar destino y diff, confirmar que el secret
-  remoto `AUTH_SECRET` existe y tiene al menos 32 caracteres, revisar el borrado
-  deliberado de `payments.raw` y conservar rollback/backup.
-- La demo declara `LEADS_TRANSPORT=demo`; los formularios muestran una
-  simulación explícita y no prometen una entrega real.
+- D5-V continúa en tres demos: Montaña, Familiar y Parcela carecen de una señal
+  observada propia. Sus disparadores están en `docs/AUDITORIA-PORTFOLIO-R9.md`.
+- Restauración remota, Analytics/Sentry, email, pagos, SES.Hospedajes, OTA e IA
+  requieren cuenta, credencial, destino y autorización según el módulo.
+- El candidato acumulado incluye `0007_scrub_payment_raw.sql`; cualquier deploy
+  debe revisar el borrado deliberado, backup/rollback y `AUTH_SECRET` remoto.
 
 ## Ya verificado — no repetir sin un cambio relevante
 
-- R0–R7: línea base, fronteras, motor, gestor y recorrido comercial cerrados.
-- R8: `identity.json` fija el brief mínimo para cuatro tenants y tres conceptos;
-  `_template` y `pnpm new:camping` incluyen brief, manifiesto y destino de media.
-- `check-tenant-factory.mjs`, dentro de `pnpm check`, descubre identidades y
-  valida locales, tokens, AA, temas claro/oscuro, radios, procedencia, lotes,
-  dimensiones y presupuestos. Los cuatro manifiestos están completos: 12/12,
-  8/8, 11/11 y 14/14.
-- El selector sincroniza URL/localStorage, limpia temas inválidos y conserva el
-  predeterminado; Playwright pasó selector + reduced motion 5/5 contra el bundle.
-- La captura genérica construyó L'Olivar y Cala en tema nocturno a 375/1366 sin
-  4xx ni errores; la inspección visual confirmó jerarquía, media, formulario,
-  footer y el héroe histórico ya normalizado.
-- Los tres builds de portfolio y el bundle compuesto pasaron. No se generó
-  fotografía ni se consumieron créditos; sí se normalizaron derivados locales.
-  No hubo deploy, reseed ni escritura remota en R8.
+- R9 comparó tres demos con Montaña/Familiar/Parcela y dejó D5-V esperando 3/3;
+  D6-V todavía no es evaluable.
+- `qa:canonical` construye el bundle compuesto y recorre 11 superficies / 22
+  vistas a 375/1366 px: ES/EN, docs, Cala, L'Olivar, Pinada y Mar de Fondo.
+- El gate comprueba testigos, indexación/noindex, imágenes, fuentes, overflow,
+  consola, peticiones y cinco assets/MIME; la inspección visual cubrió landing,
+  planning y los dos prototipos supervisados.
+- Playwright recorre funnel, gestión, mobile, permisos, reduced motion, temas y
+  reset real; cada test usa una IP de cliente determinista sin desactivar las
+  cuotas de producción.
+- El dashboard compuesto ya publica favicon bajo cada `BASE_URL`. Better Auth
+  conserva rate limit en producción, usa `cf-connecting-ip` y solo desactiva su
+  segunda cuota bajo el flag local sin `AUTH_SECRET`.
+- No hubo deploy, reseed remoto, proveedor, secreto ni escritura de producción.
 
 ## Prompt
 

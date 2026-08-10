@@ -11,7 +11,7 @@
  * Corre contra el bundle compuesto (raíz = landing Logic2B, /demo/ = web del
  * tenant, /admin/ = dashboard), igual que producción.
  */
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from './fixtures';
 import { WEB } from './base';
 
 /* `test.use({ reducedMotion: 'reduce' })` NO llegó a activar la preferencia con

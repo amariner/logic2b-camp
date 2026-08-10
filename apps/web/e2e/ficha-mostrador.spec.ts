@@ -8,7 +8,7 @@
  *
  * Corre contra el Worker real, igual que el funnel.
  */
-import { expect, test, type APIRequestContext } from '@playwright/test';
+import { expect, test, type APIRequestContext } from './fixtures';
 import { estanciaLibre, WEB } from './base';
 
 const TIPO = 'ut_glamp';

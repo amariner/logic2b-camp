@@ -1,5 +1,59 @@
 # PROGRESS — Logic Camp
 
+## Auditoría de portfolio R9 y QA canónico R10 · 2026-08-10 (sesión 113)
+
+- R9 queda agotado hasta recibir aprendizaje externo. La matriz compara
+  L'Olivar, Pinada del Mar y Mar de Fondo con Montaña, Familiar y Parcela por
+  ICP, objeción, nivel, recorrido y pantalla firma. Ningún concepto tiene una
+  señal observada propia: D5-V permanece esperando 3/3 con disparadores exactos
+  y D6-V todavía no es evaluable. No se generaron activos ni se consumió
+  proveedor para inventar otra demo.
+- R10 queda cerrado con un gate canónico reproducible. `qa:canonical` construye
+  el bundle compuesto y recorre landing ES/EN, docs, Cala home+detalle,
+  L'Olivar, Pinada web+planning y Mar de Fondo web+Automatiza+Inteligente a
+  **375/1366 px**: **11 superficies / 22 vistas** más cinco formatos/MIME. Cada
+  vista exige testigos, política de indexación, imágenes y fuentes cargadas,
+  cero overflow, 4xx, fallos de petición, errores de consola o página.
+- La inspección de capturas confirmó jerarquía y encaje en landing móvil,
+  planning de escritorio y prototipos supervisados. El barrido encontró un 404
+  real en `/favicon.ico`: los tres builds del gestor incluyen ahora el mismo
+  favicon SVG bajo su `BASE_URL`, sin depender de la raíz del sitio.
+- La suite completa compartía localhost como una sola identidad y agotaba las
+  cuotas antes de llegar a la puerta demo. Cada contexto de Playwright usa ahora
+  una IP privada determinista en `cf-connecting-ip`; Better Auth reconoce esa
+  cabecera de Cloudflare y solo desactiva su segunda cuota bajo el flag local
+  sin `AUTH_SECRET`. Producción conserva ambos rate limits. La unidad fija esa
+  frontera y API pasa **267/267**.
+- Un E2E nuevo cerró la deuda antigua del reset local: ejecuta las 84 sentencias,
+  exige 200, espera la renovación de sesión, comprueba el aviso y recarga sin
+  expulsar al visitante. El recorrido completo contra Worker+D1+bundle reales
+  pasó **23/23**; el bundle conserva **11.673 enlaces internos / 360 HTML** y
+  entradas de **173,18 / 177,64 / 183,44 kB gzip**.
+- Verificación final: `pnpm check` completó **53/53** tareas en **17,67 s**;
+  `qa:canonical` pasó 22/22 vistas y 5/5 assets; Playwright, 23/23. No hubo
+  deploy, reseed remoto, secretos, proveedor ni escritura de producción. La
+  siguiente ruta es **R11**, seguridad y preparación del primer cliente.
+
+## Fábrica común de identidades R8 · 2026-08-10 (sesión 112)
+
+- R8 queda cerrado. `identity.json` fija el brief mínimo de Cala Sereno,
+  L'Olivar, Pinada del Mar y Mar de Fondo; Montaña, Familiar y Parcela tienen el
+  mismo contrato como conceptos. `_template` y `pnpm new:camping` ya entregan
+  brief, manifiesto y destino de media sin modificar aplicaciones ni core.
+- `check-tenant-factory.mjs`, incorporado a `pnpm check`, descubre identidades y
+  valida locales, tokens, contraste AA, temas claro/oscuro, radios, procedencia,
+  lotes, dimensiones y presupuestos. Los cuatro manifiestos quedan completos:
+  **12/12, 8/8, 11/11 y 14/14**.
+- El selector de tema sincroniza URL y `localStorage`, limpia valores inválidos y
+  conserva el predeterminado; Playwright pasó selector y reduced motion
+  **5/5**. La captura genérica construyó L'Olivar y Cala nocturna a 375/1366 px
+  sin 4xx ni errores, y la inspección confirmó jerarquía, media, formulario,
+  footer y el héroe histórico normalizado.
+- Los tres builds de portfolio y el bundle compuesto pasaron. No se generó
+  fotografía ni se consumieron créditos; solo se normalizaron derivados locales.
+  No hubo deploy, reseed ni escritura remota. La siguiente ruta quedó en R9,
+  auditoría del hueco comercial antes de abrir D5-V.
+
 ## Recorrido comercial y documentación R7 · 2026-08-10 (sesión 111)
 
 - R7 queda cerrado. Home y precios muestran el estado localizado de cada plan

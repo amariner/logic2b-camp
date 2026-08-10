@@ -8,7 +8,7 @@ import { env } from 'cloudflare:test';
 import { and, eq } from 'drizzle-orm';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
-import { provisionUser, resolveAuthSecret } from '../src/auth';
+import { authRateLimitEnabled, provisionUser, resolveAuthSecret } from '../src/auth';
 import { seedTenant } from './fixtures';
 
 const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
@@ -113,6 +113,19 @@ describe('auth', () => {
     expect(() =>
       resolveAuthSecret({ DB: env.DB, TENANT_SLUG: 'alfa', AUTH_SECRET: 'demasiado-corto' }),
     ).toThrow('al menos 32 caracteres');
+  });
+
+  it('la cuota propia de auth solo se relaja con el secreto local explícito', () => {
+    expect(authRateLimitEnabled(envA)).toBe(false);
+    expect(
+      authRateLimitEnabled({
+        DB: env.DB,
+        TENANT_SLUG: 'alfa',
+        AUTH_SECRET: 'produccion-8Kq4Yp2Vm9Rz7Tx5Nc3Hs6Wb1Df0GjLu',
+        LOGIC_CAMP_DEV_AUTH: '1',
+      }),
+    ).toBe(true);
+    expect(authRateLimitEnabled({ DB: env.DB, TENANT_SLUG: 'alfa' })).toBe(true);
   });
 
   it('sin sesión → 401', async () => {

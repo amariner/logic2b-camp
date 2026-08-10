@@ -51,6 +51,17 @@ export type AuthEnv = {
 const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
 const LOCAL_AUTH_SECRET = 'local-only-8Kq4Yp2Vm9Rz7Tx5Nc3Hs6Wb1Df0GjLu';
 
+/**
+ * Better Auth trae una segunda cuota propia para `sign-in` (3/10 s). En el
+ * Worker real debe seguir activa y agrupar por la cabecera que Cloudflare
+ * garantiza. En local, `wrangler dev` ve todos los navegadores como la misma
+ * IP: el interruptor de secreto local desactiva solo esa segunda cuota; el
+ * limitador Hono de `/api/auth/*` continúa activo a 20/min.
+ */
+export function authRateLimitEnabled(env: Bindings): boolean {
+  return env.AUTH_SECRET !== undefined || env.LOGIC_CAMP_DEV_AUTH !== '1';
+}
+
 /** Producción nunca cae a una clave conocida; el fallback necesita un interruptor local explícito. */
 export function resolveAuthSecret(env: Bindings): string {
   if (env.AUTH_SECRET !== undefined) {
@@ -71,6 +82,7 @@ export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) 
     basePath: '/api/auth',
     // Fail-closed: ausencia del interruptor ⇒ ningún origen cruzado autorizado.
     trustedOrigins: env.LOGIC_CAMP_DEV_ORIGINS ? DEV_ORIGINS : [],
+    rateLimit: { enabled: authRateLimitEnabled(env) },
     database: drizzleAdapter(createDb(env.DB), {
       provider: 'sqlite',
       schema: {
@@ -100,6 +112,9 @@ export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) 
       },
     },
     advanced: {
+      // `cf-connecting-ip` la fija Cloudflare; no confiamos en una cabecera
+      // arbitraria del cliente para separar los buckets de autenticación.
+      ipAddress: { ipAddressHeaders: ['cf-connecting-ip'] },
       database: { generateId: () => `usr_${crypto.randomUUID().replace(/-/g, '').slice(0, 12)}` },
     },
   });

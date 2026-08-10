@@ -335,11 +335,11 @@ sin modificar el core, improvisar activos ni duplicar infraestructura.
 
 ### R9 · Portfolio, nuevos temas y olas D5-V/D6-V
 
-- [ ] Auditar las tres demos actuales y el catálogo Montaña/Familiar/Parcela para
+- [x] Auditar las tres demos actuales y el catálogo Montaña/Familiar/Parcela para
       localizar ICP, objeciones y recorridos todavía no cubiertos.
-- [ ] Registrar en ROADMAP la evidencia o decisión que abre cada nueva demo y el
+- [x] Registrar en ROADMAP la evidencia o decisión que abre cada nueva demo y el
       criterio por el que no duplica una existente.
-- [ ] Elegir primero entre conceptos ya creados cuando cubran el gap; crear una
+- [x] Elegir primero entre conceptos ya creados cuando cubran el gap; crear una
       dirección nueva solo si ninguno lo cubre.
 - [ ] Ejecutar cada demo como una entrega vertical: contrato visual → contenido →
       fotografía → config/tema → recorrido web/gestor → capturas → ficha → QA.
@@ -353,20 +353,34 @@ sin modificar el core, improvisar activos ni duplicar infraestructura.
 **Cierra cuando:** el portfolio llega a la ola cuyo gate esté abierto y cada demo
 cubre un caso distinto, es vendible y no multiplica el coste técnico por marca.
 
+**Gate auditado el 2026-08-10:** la ola abierta permanece en tres demos. No hay
+señal propia que seleccione Montaña, Familiar o Parcela; D5-V queda en espera
+con disparadores exactos y D6-V no es evaluable todavía. La porción local de R9
+está agotada y la ruta continúa por R10. Ver
+`docs/AUDITORIA-PORTFOLIO-R9.md`.
+
 ### R10 · Web y demos canónicas
 
-- [ ] Recorrer web pública, disponibilidad, detalle, funnel, confirmación y
+- [x] Recorrer web pública, disponibilidad, detalle, funnel, confirmación y
       gestión de reserva.
-- [ ] Recorrer gestor demo, reset, planning, plano y operación del día.
-- [ ] Verificar etiquetas honestas de pago, automatización e inteligencia.
-- [ ] Confirmar `noindex` de superficies ficticias y SEO de superficies de venta.
-- [ ] Revisar 1366 y 375, teclado, foco, reduced motion, contraste y desborde.
-- [ ] Revisar imágenes, fuentes, favicon/OG, vídeos y MIME.
-- [ ] Ejecutar E2E relevantes contra el bundle real.
-- [ ] Recorrer también cada tema/demo nueva y compararla con su contrato visual.
+- [x] Recorrer gestor demo, reset, planning, plano y operación del día.
+- [x] Verificar etiquetas honestas de pago, automatización e inteligencia.
+- [x] Confirmar `noindex` de superficies ficticias y SEO de superficies de venta.
+- [x] Revisar 1366 y 375, teclado, foco, reduced motion, contraste y desborde.
+- [x] Revisar imágenes, fuentes, favicon/OG, vídeos y MIME.
+- [x] Ejecutar E2E relevantes contra el bundle real.
+- [x] Recorrer también cada tema/demo nueva y compararla con su contrato visual.
 
 **Cierra cuando:** la herramienta de venta actual se puede recorrer de principio
 a fin sin explicación técnica, botones muertos ni errores visibles.
+
+**Cerrado el 2026-08-10:** el gate reproducible `qa:canonical` recorre 11
+superficies y 22 vistas a 375/1366 px sobre el bundle compuesto, comprueba
+indexación, testigos, imágenes, fuentes, overflow, consola, peticiones y cinco
+formatos/MIME. Playwright cubre además funnel, gestión y el reset real con
+renovación de sesión. La inspección visual confirma landing, temas, planning y
+prototipos; el barrido corrigió el favicon ausente de los tres dashboards y la
+identidad de cliente del harness sin desactivar cuotas de producción.
 
 ### R11 · Seguridad y preparación del primer cliente
 

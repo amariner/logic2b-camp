@@ -11,6 +11,7 @@
     "e2e": "playwright test",
     "e2e:factory": "pnpm --filter @logic-camp/api bundle:demo && playwright test e2e/theme-selector.spec.ts e2e/reduced-motion.spec.ts",
     "capture:tenant": "node scripts/capture-tenant.mjs",
+    "qa:canonical": "pnpm --filter @logic-camp/api bundle:demo && node scripts/qa-canonical.mjs",
     "test": "node --test scripts/foto-pipeline.test.mjs && node scripts/check-tenant-factory.mjs && node scripts/check-portfolio.mjs"
   },
   "dependencies": {

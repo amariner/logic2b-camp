@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 const VIEWPORTS = [320, 375, 430] as const;
 

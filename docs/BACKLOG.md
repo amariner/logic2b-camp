@@ -2,14 +2,16 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
-## Índice operativo de pendientes vivos (R8 · 2026-08-10)
+## Índice operativo de pendientes vivos (R11 · 2026-08-10)
 
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R9 auditoría de cobertura y gate del
-  portfolio; R11 reset local y riesgos corregibles. Una demo D5-V sigue detrás
-  de señal comercial, no de disponibilidad técnica.
+- **Local ahora, por checkpoint:** R11 seguridad y preparación del primer
+  cliente: aislamiento/auth, RGPD, backups, observabilidad, dossier de
+  activación y riesgos corregibles. R10 está cerrado; la auditoría R9 deja D5-V
+  en espera 3/3 porque una demo nueva sigue detrás de señal comercial, no de
+  disponibilidad técnica.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -127,7 +129,14 @@ es un gate de producción, no un pendiente local de implementación.
   (sesión 108/R6)**: nueva guía «Orientarte desde la portada» sobre cifras,
   listas, módulos por rol y puntos de entrada; el `?` de Inicio la abre y una
   prueba E2E comprueba destino y ausencia de desbordamiento a 375/1366 px.
-- [infra] **`POST /api/demo/reset` cuelga el workerd LOCAL con el seed grande de ADR 0030** (3,4 MB / 84 sentencias): 180 s sin respuesta y el proceso deja de contestar del todo (ni `GET /`) — hay que matar el server, `pnpm db:reset && pnpm db:seed` (rápido, el camino CLI no pasa por el batch en-worker) y volver a levantarlo. **El atajo de la sesión 56 («reset sin parar nada») ha muerto en local.** Contra la D1 real desplegada el mismo endpoint tarda **1,2 s** (verificado en la sesión 58), así que es un límite del miniflare-D1 local, no del producto; aún así molesta para iterar y para enseñar la demo en local — 2026-07-28
+- ~~[infra] **`POST /api/demo/reset` cuelga el workerd LOCAL con el seed grande
+  de ADR 0030**~~ → **cerrado 2026-08-10 (sesión 113/R10)**: ya no se reproduce
+  con el runtime local actual. Un E2E dedicado ejecuta el `db.batch()` completo,
+  exige 200, espera el nuevo sign-in, comprueba el aviso y recarga el gestor sin
+  expulsar al visitante; la respuesta volvió en menos de un segundo. El seed
+  conserva sus 3,4 MB / 84 sentencias y no se añadió un atajo distinto para
+  local. Texto original: el workerd de 2026-07-28 quedaba colgado tras 180 s,
+  aunque D1 remota completaba el mismo endpoint en 1,2 s.
 - ~~[seed] Los nombres de las solicitudes no concordaban con su idioma~~ →
   **hecho 2026-08-10 (sesión 107/R5)**: las 15 firmas salen de repertorios
   locales independientes por idioma, con email único y sin tocar el recorrido
