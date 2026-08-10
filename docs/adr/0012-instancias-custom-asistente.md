@@ -133,3 +133,32 @@ Este incidente invalida la frase anterior «Nada en `--apply` se ha invocado
 nunca contra la cuenta real» como estado histórico absoluto. El estado vigente
 es: no queda recurso creado por la prueba, no existe un apply real acreditado y
 el runner fail-closed impide repetir el arranque parcial.
+
+## 9. Addendum (sesión 128) — migración, seed, owner y rollback locales
+
+El segundo corte R13 añade un gate anterior a cualquier binding o cuenta real:
+`pnpm onboarding:rehearse <año>`. No parte de `tenants/demo`, de su persistencia
+Wrangler ni de otro candidato. Genera un scaffold sintético y copia las
+migraciones dentro de un único `mkdtemp`; allí crea dos D1 locales, origen y
+restauración.
+
+- Todas las órdenes D1 declaran `--local` y se rechaza cualquier argv con
+  `--remote`. Wrangler se ejecuta con `cwd` en el temporal y sin variables de
+  credenciales Cloudflare.
+- Las ocho migraciones se aplican dos veces y su lista ordenada conserva la misma
+  huella. Dos ejecuciones del generador con el mismo año producen el mismo
+  SHA-256 antes de sembrar una sola vez.
+- La huella posterior cubre el esquema y todas las tablas poblables por el seed,
+  incluido tenant, temporada, tipo, tres unidades, tarifa, usuario owner y cuenta
+  credential. Comprueba exactamente un owner, su correo, la relación con el ID
+  opaco del tenant y los invariantes de pagos/solapes.
+- El ensayo exporta esquema y datos, elimina de forma deliberada la credencial,
+  demuestra que cambia la huella y restaura el volcado en la segunda D1. Solo
+  acepta el resultado si recuentos, migraciones, datos e invariantes recuperan la
+  huella previa completa.
+- Un `finally` elimina scaffold, SQL, estado Wrangler y ambas D1 aun ante error.
+  El test de fallo previo al runner acredita también este límite.
+
+Este gate demuestra el carril local recuperable, no un alta productiva. Dominio,
+binding, secrets, correo, pagos, Time Travel remoto y publicación permanecen
+condicionados por sus cuentas, datos reales y autorización explícita.

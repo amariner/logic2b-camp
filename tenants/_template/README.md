@@ -51,6 +51,8 @@ enumera **todos** los marcadores `__...__`; no solo los `__TODO__` de contenido.
 > `--apply` para empezar un alta parcial. La ejecución real se hará por fases
 > supervisadas cuando exista destino, credenciales y autorización explícitos.
 
+- [ ] `pnpm onboarding:rehearse {año}` → migraciones, seed, owner y rollback
+      verdes en dos D1 locales desechables; no usa este tenant ni credenciales.
 - [ ] `wrangler d1 create logic-camp-{slug}` → pega el `database_id` en `wrangler.jsonc`.
 - [ ] `wrangler d1 migrations apply logic-camp-{slug} --remote --config tenants/{slug}/wrangler.jsonc`.
 - [ ] `pnpm --filter @tenant/{slug} seed:sql` → genera `seed.sql` → `wrangler d1 execute logic-camp-{slug} --remote --file tenants/{slug}/seed.sql -y`.

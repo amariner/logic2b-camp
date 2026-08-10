@@ -468,6 +468,12 @@ mentir sobre su estado.
         el runner rechaza pasos manuales antes de lanzar procesos.
 - [ ] Probar migraciones, seed inicial, usuarios, dominio, bindings, secrets,
       correo, pagos, backup, restauración y rollback en entorno no productivo.
+  - [x] Migraciones idempotentes, seed determinista, owner coherente,
+        exportación, mutación y restauración íntegra en D1 locales desechables.
+  - [ ] Binding, nombres de secrets y adaptadores `none` sobre un candidato
+        sintético local, sin valores, proveedor, dominio ni publicación.
+  - [ ] Dominio, correo, pagos y restauración remotos solo en sandbox/destino
+        autorizado con sus credenciales y criterios de aceptación.
 - [ ] Confirmar que dar de alta un camping no modifica `apps/` ni `packages/` y
       cabe en el coste operativo definido por CLAUDE.md.
 - [ ] Construir el candidato completo, ejecutar verificador de enlaces, tests,

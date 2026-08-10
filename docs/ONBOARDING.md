@@ -16,26 +16,34 @@ Necesitas (§5 del super prompt):
 
 ### Capa 1 — mecánica (automatizada por `pnpm new:camping`, `packages/cli`)
 
-1. Ensaya primero sin persistir nada:
+1. Acredita primero el carril de datos sin usar ningún tenant existente:
+   `pnpm onboarding:rehearse 2026` (sustituye el año por el ancla que vayas a
+   usar). El comando crea un scaffold sintético y dos D1 locales dentro de un
+   temporal del sistema; aplica las migraciones dos veces, genera dos veces el
+   seed, verifica el owner, exporta, rompe la credencial de control y restaura el
+   volcado. Compara recuentos y huellas y elimina todo incluso si falla. Cada
+   orden D1 exige `--local`; el proceso hijo no recibe variables de credenciales
+   Cloudflare.
+2. Ensaya la identidad concreta sin persistir nada:
    `pnpm new:camping {slug} --name "Nombre real" --domain dominio.com [--zone zona.com] [--address "..."] --dry-run`.
    La CLI valida y normaliza la identidad, genera el conjunto completo en un temporal,
    comprueba JSON/TS por construcción, enumera todos los marcadores pendientes,
    imprime una huella SHA-256 y elimina el temporal. No escribe en `tenants/`.
-2. Tras aprobar el informe, ejecuta el mismo comando **sin** `--dry-run`: copia
+3. Tras aprobar el informe, ejecuta el mismo comando **sin** `--dry-run`: copia
    `tenants/_template` a `tenants/{slug}` mediante un staging atómico y rellena
    `config.ts`, `seed.ts`, `wrangler.jsonc`, `package.json`, `identity.json` y
    `fotos.json`. Un fallo no deja un tenant parcial.
-3. Ambos modos imprimen el plan de infraestructura en el orden correcto. El
+4. Ambos modos imprimen el plan de infraestructura en el orden correcto. El
    informe incluye los `__TODO__` de contenido/brief/fotos, el bloque legal,
    dirección si falta y `__TODO_DATABASE_ID__`.
-4. El plan actual contiene pasos humanos (`database_id` y DNS). Aunque `--apply`
+5. El plan actual contiene pasos humanos (`database_id` y DNS). Aunque `--apply`
    conserva el doble candado con `LOGIC_CAMP_ALLOW_INFRA=1`, el runner lo rechaza
    entero **antes del primer proceso**: no se inicia infraestructura parcial. La
    ejecución real necesita un contrato por fases, credenciales y supervisión.
-5. Secrets según los módulos contratados: `RESEND_API_KEY` (notificaciones),
+6. Secrets según los módulos contratados: `RESEND_API_KEY` (notificaciones),
    `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` o `REDSYS_MERCHANT_KEY` (pagos,
    ADR 0011) — nunca en `config.ts`, siempre `wrangler secret put`.
-6. Cambia la contraseña del owner sembrado antes de dar el acceso al cliente.
+7. Cambia la contraseña del owner sembrado antes de dar el acceso al cliente.
 
 El checklist completo, fichero a fichero, sigue en `tenants/_template/README.md` — este documento es el resumen narrativo, aquel es la fuente de verdad operativa.
 
@@ -61,6 +69,9 @@ Checklist dentro del propio dashboard para que el camping se sienta dueño del a
 
 ## Verificación de que el alta está completa
 
+- `pnpm onboarding:rehearse {año}` debe cerrar migración → seed → owner →
+  exportación → restauración con huellas coincidentes. Es un gate local del
+  carril común; no acredita dominio, binding, secrets ni proveedor reales.
 - Repite `--dry-run`: misma identidad y fecha deben producir la misma huella y
   `tenants/{slug}` debe seguir inexistente hasta aprobar la creación local.
 - `grep -rn '__[A-Z_]*__' tenants/{slug}/` no debe devolver nada — ni los `__TODO__` de `content/{lang}.json` ni los marcadores de `config.ts`, **incluido el bloque `legal`**: sin él las páginas de aviso legal, privacidad y cookies salen publicadas con huecos.

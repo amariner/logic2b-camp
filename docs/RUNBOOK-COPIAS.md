@@ -14,6 +14,7 @@
 | **Restauración a un punto en el tiempo**           | ✅ D1 _Time Travel_, gestionada. Ventana declarada: **30 días** |
 | **Exportación bajo demanda** (SQL + CSV)           | ✅ `pnpm export:tenant <slug>`                                  |
 | **Ensayo automático de restauración local**        | ✅ `pnpm backup:rehearse <slug>`                                |
+| **Alta vacía + rollback local, sin tenant**        | ✅ `pnpm onboarding:rehearse <año>`                             |
 | **Restauración remota ensayada**                   | ❌ requiere cuenta, base nueva y autorización                   |
 | **Exportación programada a almacenamiento propio** | ❌ **A propósito.** Ver abajo                                   |
 
@@ -144,6 +145,25 @@ Si 3 o 4 devuelven filas, **la copia no sirve**: no la promociones a producción
 ## 4. Ensayo (hazlo antes de necesitarlo)
 
 ### 4a. Ensayo local reproducible
+
+Para acreditar primero el alta desde cero sin leer ni modificar la demo local:
+
+```bash
+pnpm onboarding:rehearse 2026
+```
+
+Este ensayo crea su scaffold, configuración, migraciones y dos D1 bajo un único
+directorio temporal. Aplica las migraciones dos veces, compara dos seeds del
+mismo año, verifica el tenant/owner/credential, exporta el estado, borra la
+credencial como mutación de control y restaura el volcado en la segunda D1. La
+huella lógica incluye migraciones, tenant, temporada, tipo, unidades, tarifa,
+usuario, cuenta, todas las tablas poblables por el seed y el esquema SQLite,
+además de los invariantes de pagos y solapes. Todas las órdenes D1 llevan
+`--local`, Wrangler se ejecuta desde el temporal sin variables de credenciales
+Cloudflare y el directorio se elimina también en error.
+
+Esto prueba el carril común de una **alta nueva**. Para ensayar además una copia
+con el volumen realista de la demo local existente:
 
 ```bash
 pnpm db:reset && pnpm db:seed

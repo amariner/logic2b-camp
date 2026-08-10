@@ -1,5 +1,33 @@
 # PROGRESS — Logic Camp
 
+## Alta local recuperable R13 · 2026-08-10 (sesión 128)
+
+- La auditoría de migraciones, seed de `_template`, auth y ensayo de copias
+  confirmó tres huecos: el backup local partía del estado compartido de un
+  tenant, la huella del seed mínimo no cubría inventario ni owner y no existía
+  una prueba que alterase datos antes de restaurarlos.
+- `pnpm onboarding:rehearse <año>` crea un scaffold sintético, copia las ocho
+  migraciones y ejecuta origen+restauración dentro de un único temporal. Todas
+  las órdenes D1 declaran `--local`, Wrangler corre desde ese directorio sin
+  variables de credenciales Cloudflare y un `finally` elimina SQL, scaffold y
+  persistencia en éxito o error.
+- El gate aplica las migraciones dos veces, genera el seed dos veces con el mismo
+  año y compara SHA-256. Verifica exactamente un tenant, temporada, tipo,
+  tarifa, owner/credential y tres unidades; además comprueba relación owner→ID
+  opaco del tenant, correo, pagos y solapes.
+- Tras exportar esquema+datos elimina deliberadamente la credential sintética,
+  exige que cambie la huella y restaura el volcado en una segunda D1. El ensayo
+  2026 cerró 8/8 migraciones (`9ed0b4a0…`), seed `54f45866…`, esquema
+  `435e846a…` y datos `03471cef…`, recuperando la huella lógica exacta sin dejar
+  tenant ni D1.
+- CLI pasa **48/48**, tipos/lint y `_template` están verdes. `pnpm check` alcanza
+  **39/59** y se corta únicamente porque el tenant concurrente `serralta` aún no
+  tiene el final aprobado `instalacion-recepcion.webp`; Turbo canceló el resto y
+  se confirmó que no dejó temporal del ensayo.
+- No hubo `--remote`, `--apply`, red, secrets, proveedor ni escritura en demos.
+  El siguiente corte selecciona bindings, nombres de secrets y adaptadores
+  `none` sobre otro candidato sintético local.
+
 ## Dry-run literal y preflight fail-closed R13 · 2026-08-10 (sesión 127)
 
 - La auditoría de `_template`, `TenantWebConfig` y `packages/cli` encontró tres

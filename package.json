@@ -20,6 +20,7 @@
     "e2e": "pnpm --filter @logic-camp/web e2e",
     "fotos": "node apps/web/scripts/foto-pipeline.mjs",
     "new:camping": "pnpm --filter @logic-camp/cli run new:camping --",
+    "onboarding:rehearse": "pnpm --filter @logic-camp/cli run onboarding:rehearse --",
     "export:tenant": "pnpm --filter @logic-camp/cli run export:tenant",
     "backup:rehearse": "pnpm --filter @logic-camp/cli run backup:rehearse"
   },
