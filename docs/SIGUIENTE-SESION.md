@@ -1,57 +1,59 @@
-# Prompt para la siguiente sesión — objetivo duradero en R12
+# Prompt para la siguiente sesión — R12 pagos y frontera HTTP
 
-> Reescrito tras la sesión 114 (2026-08-10). R0–R11 están cerrados; producción y
-> proveedores siguen requiriendo autorización explícita.
+> Reescrito tras la sesión 115 (2026-08-10). R0–R11 están cerrados; R12 tiene
+> inventario común y el primer corte Resend local. Producción y proveedores
+> siguen requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Seguridad, RGPD, cabeceras, copia local y dossier de activación ya tienen
-evidencia ejecutable; ahora toca ordenar las integraciones por recorrido y
-terminar solo los contratos locales que reduzcan riesgo antes de abrir una
-cuenta externa.
+Correo ya limita cada intento, reintenta una vez con la misma clave, valida la
+respuesta y no registra el body remoto; el siguiente riesgo local está en la
+frontera HTTP y de webhooks de Stripe/Redsys, todavía sin acreditar sandbox.
 
 ## Objetivo prioritario
 
-Abrir **R12 · Integraciones y proveedores reales** de
-`docs/RUTA-DESARROLLO-CONTINUO.md` con este orden:
+Continuar **R12 · Integraciones y proveedores reales** con pagos:
 
-1. Inventariar por tier y recorrido qué usan hoy Inicio, Gestión, Automatiza e
-   Inteligente: Resend, pagos, analítica/errores, SES/fiscal, OTA e IA.
-2. Comparar cada adaptador existente con el contrato transversal exigido por
-   R12: Zod, idempotencia, timeout, reintento, correlación, redacción de PII,
-   estado degradado, ownership, coste y apagado.
-3. Elegir el primer defecto **local y reproducible** que atraviese un recorrido
-   actual; arreglarlo con prueba. No construir un conector sin módulo aprobado.
-4. Mantener `none`, `disabled`, `manual` y demo como estados explícitos; ninguna
-   simulación puede compartir el éxito de un proveedor.
-5. Actualizar dossier/runbook por cada contrato que cambie y dejar toda prueba
-   externa como checklist, no como afirmación.
+1. Partir de `INVENTARIO-INTEGRACIONES-R12.md` y comparar Stripe y Redsys con
+   Zod, idempotencia saliente, timeout, reintento, firma/antireplay,
+   correlación, PII, degradación y conciliación.
+2. Reproducir primero el defecto local de mayor riesgo. Candidatos visibles en
+   el código actual: respuestas externas casteadas, llamadas sin timeout,
+   timestamp de firma Stripe sin tolerancia y refund Redsys que trata cualquier
+   HTTP 2xx como aceptación.
+3. Cerrar un único corte vertical con tests puros y de API. No generalizar el
+   runtime de Resend hasta que dos adaptadores demuestren la misma semántica.
+4. Mantener `provider:none`, cobro manual y reserva `pending` como degradaciones
+   honestas. Ningún mock, clave pública o firma local equivale a sandbox.
+5. Actualizar ADR 0011/dossier y crear o completar el runbook de pagos con
+   variables, ownership, coste, rotación y apagado.
 
 ## Gates que siguen cerrados
 
-- Resend real, Stripe/Redsys sandbox, Analytics, Sentry/Logpush,
-  SES.Hospedajes oficial, fiscal/VeriFactu, OTA e IA requieren cuenta, destino,
-  credencial, alcance y autorización del módulo.
-- Restauración D1 remota y Time Travel siguen pendientes pese al ensayo local
-  íntegro; nunca restaurar encima de la base viva.
+- Resend real y dominio remitente; Stripe/Redsys sandbox; Analytics,
+  Sentry/Logpush, SES.Hospedajes oficial, fiscal/VeriFactu, OTA e IA requieren
+  cuenta, destino, credencial, alcance y autorización del módulo.
+- La prueba Resend de esta sesión usó solo `fetch` inyectado. La clave ficticia
+  `re_test` recibió un 401 durante la reproducción inicial; no hubo entrega.
+- Restauración D1 remota y Time Travel siguen pendientes; nunca restaurar sobre
+  la base viva.
 - D5-V continúa esperando señal propia de Montaña/Familiar/Parcela. D6-V aún no
   es evaluable.
-- El candidato incluye la migración deliberada `0007_scrub_payment_raw.sql`;
-  cualquier deploy requiere backup/rollback y confirmar `AUTH_SECRET` remoto.
+- Cualquier deploy requiere backup/rollback, revisión de migraciones y confirmar
+  `AUTH_SECRET` remoto.
 
-## Ya verificado — no repetir sin un cambio relevante
+## Ya verificado — no repetir sin cambio relevante
 
-- `AUDITORIA-SEGURIDAD-R11.md` cierra aislamiento, auth, roles, cookies,
-  cabeceras, CORS/CSRF, cuotas, superficie pública, RGPD y observabilidad mínima.
-- API y assets tienen cabeceras verificadas; la cookie de producción es Secure,
-  HttpOnly y SameSite=Lax.
-- `pnpm backup:rehearse demo` restauró 3426/2568/3109 con huella exacta y
-  pagos/solapes 0/0. No es evidencia remota.
-- `DOSSIER-ACTIVACION-PRODUCCION.md` separa estado, dueño, secreto, aceptación y
-  rollback para Inicio, Gestión, pagos, comunicaciones, fiscal/SES, OTA e IA.
-- R10 conserva el bundle canónico de 11 superficies / 22 vistas y Playwright
-  recorre funnel, gestión, permisos, responsive y reset real.
-- No hubo deploy, reseed remoto, proveedor, secreto ni escritura de producción.
+- `INVENTARIO-INTEGRACIONES-R12.md` clasifica oferta, recorrido y nueve familias
+  por contrato y gate; `none`, `manual`, `disabled` y demo siguen explícitos.
+- Resend: clave ≤256 validada, timeout 8 s, máximo dos intentos para
+  timeout/red/408/429/5xx, misma clave, 4xx definitivo, éxito Zod y error sin
+  body remoto.
+- El lead integra correlación: los dos intentos comparten clave, otra petición
+  usa otra y el error público conserva su referencia sin PII.
+- `RUNBOOK-CORREO.md` separa preparación local de activación, rotación y apagado;
+  no acredita cuenta, DNS, entrega, rebote ni recepción.
+- No hubo deploy, secrets, proveedor válido ni escritura de producción.
 
 ## Prompt
 

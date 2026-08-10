@@ -407,10 +407,12 @@ de credencial y autorización; no se tocó infraestructura externa.
 
 ### R12 · Integraciones y proveedores reales
 
-- [ ] Inventariar por tier qué integración aporta un recorrido actual y qué gate
+- [x] Inventariar por tier qué integración aporta un recorrido actual y qué gate
       necesita: email, pagos, analítica, errores, canales, fiscal/SES e IA.
 - [ ] Terminar contratos y adaptadores comunes con Zod, idempotencia, timeouts,
       reintentos, correlación, redacción de PII y estados de degradación.
+  - [x] Primer corte vertical: Resend con respuesta Zod, timeout, reintento
+        idempotente, referencia, intentos exactos y error sin body remoto.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir
@@ -419,7 +421,7 @@ de credencial y autorización; no se tocó infraestructura externa.
       alertas útiles y prueba de recepción cuando haya cuentas autorizadas.
 - [ ] Implementar y verificar canales/OTA, fiscal/SES.Hospedajes e IA por módulos
       separados solo cuando su contrato de producto y proveedor esté aprobado.
-- [ ] Mantener `none`/demo explícito y operativo cuando un proveedor no esté
+- [x] Mantener `none`/demo explícito y operativo cuando un proveedor no esté
       configurado; ninguna simulación se presenta como entrega real.
 - [ ] Actualizar runbooks, variables, rotación, ownership, coste y procedimiento
       de desactivación de cada proveedor activado.

@@ -1,5 +1,30 @@
 # PROGRESS — Logic Camp
 
+## Contrato acotado de correo e inventario R12 · 2026-08-10 (sesión 115)
+
+- R12 arranca con un inventario trazable por oferta y familia: correo, Stripe,
+  Redsys, SES, analítica, errores, fiscalidad, OTA e IA. Cada integración queda
+  clasificada por modo local, gate, credenciales, consentimiento, reintentos,
+  idempotencia, observabilidad, degradación y runbook; no se equiparan los dobles
+  locales con una activación real.
+- El primer corte vertical endurece Resend sin tocar proveedor ni producción.
+  Cada envío usa una clave de idempotencia sin PII, timeout de **8 s**, un máximo
+  de **2 intentos** y reintento solo ante timeout, red, 408, 429 o 5xx. La
+  respuesta 2xx se valida con Zod y los errores públicos ya no copian cuerpos del
+  proveedor. El log conserva correlación e intentos reales.
+- Las pruebas fijan aceptación, reintento 503 con la misma clave, 422 sin
+  reintento, respuesta 2xx inválida, timeout y clave inválida: notifications
+  **14/14**. La integración de leads comprueba además que correo y cuerpo remoto
+  no aparecen en el log; API pasó **272/272** y el recorrido dirigido **29/29**.
+- La guía pública ya no afirma que exista una cuenta o dominio verificados ni
+  confunde aceptación del proveedor con entrega en bandeja. El nuevo runbook
+  documenta preflight, activación autorizada, rotación, degradación y apagado.
+  La reproducción inicial con una clave ficticia `re_test` recibió 401 de Resend
+  y no produjo entrega; no se usaron credenciales válidas.
+- Verificación final: `pnpm check` completó **53/53** tareas en **16,60 s**. No
+  hubo deploy, secretos, cambios de proveedor ni escritura de producción. R12
+  continúa con la frontera local de Stripe y Redsys.
+
 ## Seguridad y activación de producción R11 · 2026-08-10 (sesión 114)
 
 - R11 queda cerrado con una auditoría reproducible de superficie, autenticación,

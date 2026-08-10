@@ -81,13 +81,17 @@ export type NotificationPayload =
 
 export type EmailMessage = { subject: string; html: string; text: string };
 
-export type SendResult = { ok: true; id?: string } | { ok: false; error: string };
+export type SendResult =
+  | { ok: true; id: string; attempts: number }
+  | { ok: false; error: string; attempts: number; retryable: boolean };
 
 /** Contrato de envío: Resend hoy, lo que haga falta mañana. */
 export type EmailSender = (input: {
   from: string;
   to: string;
   replyTo?: string;
+  /** Misma clave en todos los intentos de una entrega; nunca contiene PII. */
+  idempotencyKey: string;
   message: EmailMessage;
 }) => Promise<SendResult>;
 

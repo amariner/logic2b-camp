@@ -325,6 +325,10 @@ importers:
         version: 5.9.3
 
   packages/notifications:
+    dependencies:
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@logic-camp/tsconfig':
         specifier: workspace:*

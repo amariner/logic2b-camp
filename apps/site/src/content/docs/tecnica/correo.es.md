@@ -9,7 +9,7 @@ El sistema envía emails automáticos: confirmación de reserva, aviso de solici
 
 ## Quién los envía
 
-El proveedor es **[Resend](https://resend.com)**. Logic2B tiene una única cuenta con **varios dominios verificados**, uno por camping. Tu dominio es tuyo y tu reputación de envío también: lo que envíe otro camping no te afecta.
+El proveedor previsto es **[Resend](https://resend.com)**. Al activar el módulo, Logic2B configura el dominio o subdominio del camping dentro de la cuenta de envío; hasta que ese dominio y la entrega real se verifican, el sistema mantiene el correo desactivado y no afirma que haya salido.
 
 ## Qué hay que configurar
 
@@ -45,10 +45,10 @@ Cada uno en **el idioma en que el cliente navegó** (los seis soportados). Y **c
 
 ## Trazabilidad
 
-Todo intento de envío queda registrado —enviado, en cola, fallido o desactivado— con su destinatario, su evento y su fecha, consultable desde la pantalla **Notificaciones** del gestor.
+Todo intento de envío queda registrado —enviado, fallido o desactivado— con su destinatario, su evento, el número de intentos y su fecha, consultable desde la pantalla **Notificaciones** del gestor.
 
-Es la respuesta a "¿le llegó la confirmación al cliente?" sin depender de que alguien mire un buzón.
+Es la respuesta a "¿aceptó el proveedor la confirmación?" sin depender de que alguien mire un buzón. La recepción final, los rebotes y las quejas se comprueban al activar los eventos del proveedor; un estado `sent` por sí solo no demuestra que el mensaje llegara a la bandeja.
 
 ## Robustez
 
-El envío ocurre **después** de responder al usuario. Si Resend tuviera una caída, la reserva se crea igual: el email se registra como fallido y se puede reintentar. **Un problema del proveedor de correo nunca afecta a una reserva.**
+El envío ocurre **después** de responder al usuario. Si Resend tuviera una caída, la reserva se crea igual: el adaptador reintenta una vez los fallos transitorios con la misma clave para no duplicar el mensaje. Si tampoco funciona, queda registrado como fallido; el reenvío posterior todavía no está habilitado. **Un problema del proveedor de correo nunca afecta a una reserva.**

@@ -212,9 +212,10 @@ describe('POST /api/leads', () => {
     await expect(res.json()).resolves.toEqual({ ok: true, outcome: 'demo' });
   });
 
-  it('Resend aceptado responde delivered; el fallo del proveedor no comparte éxito', async () => {
+  it('Resend reintenta con una clave estable; el fallo funcional no comparte éxito ni PII', async () => {
     const fetchMock = vi
       .fn()
+      .mockResolvedValueOnce(new Response('temporal', { status: 503 }))
       .mockResolvedValueOnce(
         new Response(JSON.stringify({ id: 'email_123' }), {
           status: 200,
@@ -228,6 +229,7 @@ describe('POST /api/leads', () => {
         }),
       );
     vi.stubGlobal('fetch', fetchMock);
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     const delivered = await app.request('/api/leads', json(lead), {
       ...envA,
@@ -236,7 +238,6 @@ describe('POST /api/leads', () => {
     expect(delivered.status).toBe(202);
     await expect(delivered.json()).resolves.toEqual({ ok: true, outcome: 'delivered' });
 
-    vi.spyOn(console, 'error').mockImplementation(() => {});
     const failed = await app.request('/api/leads', json(lead), {
       ...envA,
       RESEND_API_KEY: 're_test',
@@ -245,6 +246,14 @@ describe('POST /api/leads', () => {
     const body = (await failed.json()) as Record<string, unknown>;
     expect(body).toMatchObject({ ok: false, outcome: 'failed', error: 'lead_delivery_failed' });
     expect(body.ref).toMatch(/^err_/);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    const keys = fetchMock.mock.calls.map(([, init]) =>
+      new Headers((init as RequestInit).headers).get('idempotency-key'),
+    );
+    expect(keys[0]).toBeTruthy();
+    expect(keys[1]).toBe(keys[0]);
+    expect(keys[2]).not.toBe(keys[0]);
+    expect(errorSpy.mock.calls.flat().join(' ')).not.toContain(lead.email);
   });
 
   it('rechaza nombres de plan fuera del límite permitido', async () => {

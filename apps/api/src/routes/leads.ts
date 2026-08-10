@@ -66,19 +66,21 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     return c.json({ ok: true as const, outcome: 'demo' as const }, 202);
   }
 
+  const ref = uid('err');
   const result = await resendSender(c.env.RESEND_API_KEY!)({
     from: LEADS_FROM,
     to: LEADS_TO,
     replyTo: d.email,
+    idempotencyKey: `lead/${ref}`,
     message: { subject: `${d.plan ? `Plan ${d.plan}` : 'Demo'}: ${d.campingName}`, html, text },
   });
   if (!result.ok) {
-    const ref = uid('err');
     logEvent({
       level: 'error',
       event: 'lead_send_failed',
       tenant: c.get('tenant').slug,
       requestId: ref,
+      attempts: result.attempts,
       detail: result.error,
     });
     return c.json(

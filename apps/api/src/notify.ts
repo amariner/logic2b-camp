@@ -7,7 +7,6 @@
 import { schema, type Db } from '@logic-camp/db';
 import {
   conceptLabel,
-  noopSender,
   render,
   resendSender,
   type BookingPayload,
@@ -59,7 +58,12 @@ async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void>
   const kind = input.payload.kind;
   const enabled = config.enabled?.[kind] ?? true;
   const to = input.to ?? config.notifyTo ?? null;
-  const sender = apiKey ? resendSender(apiKey) : noopSender;
+  const notificationId = uid('ntf');
+  const entityRef =
+    input.bookingId ??
+    input.enquiryId ??
+    (input.payload.kind === 'system_error' ? input.payload.data.ref : notificationId);
+  const deliveryRef = `notification/${tenantSlug}/${kind}/${entityRef}`;
 
   // el nombre real del camping entra aquí (la fila del tenant manda)
   const payload = {
@@ -70,9 +74,14 @@ async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void>
   let status: 'sent' | 'failed' | 'disabled' = 'disabled';
   let attempts = 0;
   if (enabled && to && apiKey) {
-    attempts = 1;
     const message = render(payload, input.locale);
-    const result = await sender({ from: config.from ?? PLATFORM_FROM, to, message });
+    const result = await resendSender(apiKey)({
+      from: config.from ?? PLATFORM_FROM,
+      to,
+      idempotencyKey: deliveryRef,
+      message,
+    });
+    attempts = result.attempts;
     status = result.ok ? 'sent' : 'failed';
     // ADR 0026 §3: si el correo falla, esta línea es lo ÚNICO que queda. El
     // aviso al buzón no sirve aquí — es el propio canal el que está roto.
@@ -81,13 +90,15 @@ async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void>
         level: 'error',
         event: 'notification_send_failed',
         tenant: tenantSlug,
+        requestId: deliveryRef,
         kind,
+        attempts,
         detail: result.error,
       });
   }
 
   await db.insert(schema.notificationsLog).values({
-    id: uid('ntf'),
+    id: notificationId,
     tenantId: tenantSlug,
     bookingId: input.bookingId ?? null,
     enquiryId: input.enquiryId ?? null,
