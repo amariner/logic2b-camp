@@ -2,16 +2,15 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
-## Índice operativo de pendientes vivos (R12 · 2026-08-10)
+## Índice operativo de pendientes vivos (R13 · 2026-08-10)
 
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R12 integraciones y proveedores. Primero se
-  inventaría por tier qué recorrido existe y se termina el contrato común que
-  pueda probarse sin red; cualquier sandbox o cuenta permanece en su gate. R11
-  está cerrado y la auditoría R9 deja D5-V en espera 3/3 porque una demo nueva
-  sigue detrás de señal comercial, no de disponibilidad técnica.
+- **Local ahora, por checkpoint:** R13 aprovisionamiento y onboarding. Validar
+  plantilla, esquema, CLI y dry-run sin `--apply`, infraestructura, secrets ni
+  deploy; los ensayos que necesiten un entorno real permanecen en su gate. La
+  porción local de R12 está agotada.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
@@ -42,6 +41,12 @@ es un gate de producción, no un pendiente local de implementación.
 - [8.x] Fianza (`deposit_cents`) cobrada vía pasarela: pre-autorización (Stripe `capture_method:manual`, Redsys autorización tipo 1 + confirmación tipo 2) sin mezclarla con `paidCents` — declarado fuera de v1 en ADR 0011 §2 — 2026-07-19
 - [8.x] Verificar el adaptador Redsys contra su sandbox real con las credenciales de comercio de Andreu (clave, FUC, terminal) antes del primer cobro real — la firma está verificada por construcción (3DES cruzado contra `node:crypto`, HMAC nativo) pero no contra el TPV real — ADR 0011 §7 — 2026-07-19
 - ~~[R12/pagos] Cerrar fronteras locales Stripe y Redsys~~ → **hecho 2026-08-10 (sesiones 117, 119 y 121)**: Stripe tiene antirreplay, timeout, identidad, Zod y reintento seguro. Redsys exige versión explícita, records string, campos, firma e importe en callback; el refund requiere `0900`+pedido+importe y no reintenta ambigüedades. Sigue pendiente confirmar en sandbox la versión del terminal y migrar a SHA-512 si corresponde. Nada de esto acredita proveedor.
+- ~~[R12/gates] Auditar Analytics, observabilidad, OTA e IA~~ → **hecho
+  2026-08-10 (sesión 126)**: el contrato de build inspecciona fuente,
+  dependencias y artefacto; prueba ausencia de trackers/SDKs/conectores, conserva
+  la política de cookies y fija que los prototipos no ejecutan acciones. El
+  runbook común documenta disparador, owner, aceptación, degradación y apagado.
+  Cuentas, sandbox y proveedores continúan detrás de sus gates explícitos.
 - ~~[8.x] Cron de purga/aviso de reservas `pending` colgadas~~ → hecho 2026-07-19 (sesión 26, ADR 0014): SOLO avisa (email interno + `notifications_log`, una vez por reserva), no cancela ni libera inventario — riesgo de cancelar una venta real por lag del webhook. Mismo cron de la purga de holds de la Fase 5 (`apps/api`, genérico). **Purgar de verdad (auto-cancelar) queda declarado para cuando el volumen real lo justifique**, no antes.
 - [8.x] Botón "reintentar el pago" en `/reserva` cuando `pago=cancelado`/queda `pending` mucho tiempo (hoy solo se informa y se remite a recepción) — 2026-07-19
 - ~~[8.x] Pantalla de log de pagos en el dashboard~~ → hecho 2026-07-19 (sesión 24: `GET /api/admin/payments` — `payments` ya era el log completo desde ADR 0011, esta pantalla solo lo hace visible — filtro por proveedor y estado, `/admin/#/pagos`)

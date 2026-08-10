@@ -409,8 +409,9 @@ de credencial y autorización; no se tocó infraestructura externa.
 
 - [x] Inventariar por tier qué integración aporta un recorrido actual y qué gate
       necesita: email, pagos, analítica, errores, canales, fiscal/SES e IA.
-- [ ] Terminar contratos y adaptadores comunes con Zod, idempotencia, timeouts,
-      reintentos, correlación, redacción de PII y estados de degradación.
+- [x] Terminar los contratos y adaptadores comunes que pueden verificarse sin
+      proveedor; Zod, idempotencia, timeouts, reintentos, correlación, redacción
+      de PII y degradación se aplican donde existe una frontera real.
   - [x] Primer corte vertical: Resend con respuesta Zod, timeout, reintento
         idempotente, referencia, intentos exactos y error sin body remoto.
   - [x] Segundo corte vertical: webhook Stripe con tolerancia antirreplay de 300
@@ -431,6 +432,10 @@ de credencial y autorización; no se tocó infraestructura externa.
   - [x] Séptimo corte vertical: frontera fiscal honesta. Informes transporta
         `bookingValue` y distingue valor reservado, cobro registrado y saldo;
         ninguna pantalla lo presenta como factura, caja por fecha o VeriFactu.
+  - [x] Octavo corte vertical: gates finales de Analytics, observabilidad, OTA e
+        IA. Un contrato de build prueba ausencia/no ejecución en fuente,
+        dependencias y artefacto; el runbook fija disparador, owner, aceptación,
+        degradación y apagado sin inventar proveedores.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir
@@ -441,8 +446,14 @@ de credencial y autorización; no se tocó infraestructura externa.
       separados solo cuando su contrato de producto y proveedor esté aprobado.
 - [x] Mantener `none`/demo explícito y operativo cuando un proveedor no esté
       configurado; ninguna simulación se presenta como entrega real.
-- [ ] Actualizar runbooks, variables, rotación, ownership, coste y procedimiento
-      de desactivación de cada proveedor activado.
+- [x] Documentar en `RUNBOOK-GATES-R12.md` ownership, entradas, aceptación,
+      coste, rotación, degradación y desactivación exigibles antes de activar
+      Analytics, observabilidad externa, OTA o IA.
+
+**Porción local agotada el 2026-08-10:** las cuatro verificaciones externas
+anteriores conservan su checkbox abierto y solo cambian con cuenta, contrato y
+autorización. No queda otro adaptador autónomo honesto; la ruta local avanza a
+R13 sin presentar esos gates como completados.
 
 **Cierra cuando:** toda integración cuyo gate esté abierto funciona extremo a
 extremo y las demás tienen contrato, prueba local y activación reproducible sin

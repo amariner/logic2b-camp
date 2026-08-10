@@ -1,5 +1,31 @@
 # PROGRESS — Logic Camp
 
+## Gates locales finales de R12 · 2026-08-10 (sesión 126)
+
+- La auditoría final confirma cuatro fronteras honestas: la web pública no carga
+  Analytics ni píxeles; los errores permanecen en JSON local con correlación y
+  redacción de PII; no existe conector OTA; y Automatiza/Inteligente no ejecutan
+  acciones ni modelos. Ningún SDK, cuenta o proveedor se presenta como activo.
+- Pruebas rojas fijaron un contrato ejecutable de build. El guard inspecciona
+  fuente, dependencias y artefacto publicado, rechaza trackers, SDKs externos,
+  recursos remotos ejecutables y términos de ejecución simulada, y conserva la
+  política de cookies sin analítica.
+- `RUNBOOK-GATES-R12.md` consolida para Analytics, observabilidad externa, OTA e
+  IA el disparador, owner, entradas, aceptación, degradación y apagado. Cuentas,
+  sandbox, coste, rotación y validación real siguen siendo gates abiertos; esta
+  documentación no los acredita.
+- La frontera nueva pasa **4/4**; errores **17/17**; Automatiza, Inteligente y Mar
+  de Fondo **23/23**; web **13/13**, fábrica **7 tenants + plantilla + 2
+  conceptos**, portfolio **6/6** y build **235 páginas**. El artefacto verifica
+  **198 fuentes, 25 manifiestos y 244 archivos** sin tracker, SDK externo, OTA ni
+  ejecución de IA.
+- `pnpm check` alcanza **50/59** y se detiene únicamente porque el tenant
+  concurrente `serralta` aún no contiene el final aprobado `hero-calle.webp`;
+  R12 ya había pasado sus pruebas dentro del mismo gate. No hubo deploy, secrets,
+  proveedor ni escritura externa y se preservó todo el portfolio paralelo.
+  Agotada la porción local honesta de R12, el siguiente corte local abre R13 con
+  plantilla, esquema, CLI y dry-run sin `--apply`.
+
 ## Frontera fiscal honesta de informes R12 · 2026-08-10 (sesión 125)
 
 - La auditoría detectó una contradicción con ADR 0034 y el dossier: el dashboard
