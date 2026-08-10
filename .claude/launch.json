@@ -6,7 +6,7 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-lc",
-        "mkdir -p apps/site/dist && pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1"
+        "mkdir -p apps/site/dist && pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc --persist-to .wrangler-demo --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1 --var LOGIC_CAMP_DEV_AUTH:1"
       ],
       "port": 8787
     },

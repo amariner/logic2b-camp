@@ -16,6 +16,7 @@ interface Props {
     };
     enviando: string;
     ok: string;
+    demo: string;
     error: string;
   };
   locale: string;
@@ -79,7 +80,7 @@ const { contacto, locale } = Astro.props;
   </div>
 </dialog>
 
-<script is:inline define:vars={{ ok: contacto.ok, err: contacto.error }}>
+<script is:inline define:vars={{ ok: contacto.ok, demo: contacto.demo, err: contacto.error }}>
   const dialog = document.getElementById('project-request-dialog');
   const form = document.getElementById('project-request-form');
   const message = document.getElementById('project-request-msg');
@@ -121,8 +122,9 @@ const { contacto, locale } = Astro.props;
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(data),
       });
+      const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error('bad');
-      if (message) message.textContent = ok;
+      if (message) message.textContent = result.outcome === 'demo' ? demo : ok;
       form.reset();
     } catch {
       if (message) message.textContent = err;

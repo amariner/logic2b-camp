@@ -365,7 +365,14 @@ const iconosProblema = [
   </div>
 </Base>
 
-<script is:inline define:vars={{ ok: getContent(locale).contacto.ok, err: getContent(locale).contacto.error }}>
+<script
+  is:inline
+  define:vars={{
+    ok: getContent(locale).contacto.ok,
+    demo: getContent(locale).contacto.demo,
+    err: getContent(locale).contacto.error,
+  }}
+>
   const form = document.getElementById('lead-form');
   const msg = document.getElementById('lead-msg');
   const btn = form?.querySelector('button[type=submit]');
@@ -383,8 +390,9 @@ const iconosProblema = [
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(data),
       });
+      const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error('bad');
-      msg.textContent = ok;
+      msg.textContent = result.outcome === 'demo' ? demo : ok;
       form.reset();
     } catch {
       msg.textContent = err;

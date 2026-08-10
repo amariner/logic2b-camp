@@ -1,46 +1,49 @@
-# Prompt para la siguiente sesión — objetivo duradero en R4
+# Prompt para la siguiente sesión — objetivo duradero en R5
 
-> Reescrito tras la sesión 105 (2026-08-10). R0–R3 están cerrados; la entrega
-> 104 sigue preparada para publicar, pero producción requiere autorización
-> explícita.
+> Reescrito tras la sesión 106 (2026-08-10). R0–R4 están cerrados; producción
+> sigue requiriendo autorización explícita.
 
 ## Estado en una línea
 
-Configuración y escenarios ya fallan cerrados; el siguiente trabajo seguro es
-auditar contratos de API, permisos, idempotencia, rate limit y errores.
+Los contratos actuales de API ya fallan cerrados; el siguiente trabajo seguro
+es revisar motor, seed y coherencia de datos visibles sin perfeccionar casos que
+la demo no enseña.
 
 ## Objetivo prioritario
 
-Cerrar **R4 · Backend mínimo y contratos de API** de
+Cerrar **R5 · Motor, seed y datos creíbles** de
 `docs/RUTA-DESARROLLO-CONTINUO.md`:
 
-1. Inventariar endpoints públicos, admin, auth y leads contra validación,
-   permisos, idempotencia, rate limit y errores.
-2. Separar inequívocamente los resultados demo/noop/entrega real del formulario
-   comercial.
-3. Revisar pagos y notificaciones para que una integración incompleta falle
-   cerrada sin dejar reservas o logs ambiguos.
-4. Añadir únicamente las pruebas de contrato que cubran huecos demostrados.
+1. Revalidar disponibilidad, pricing, asignación, cancelación y tasa turística
+   contra los cinco invariantes ya protegidos.
+2. Buscar contradicciones observables en reservas, solicitudes, pagos, estados y
+   fechas del seed actual.
+3. Corregir solo defectos que afecten a un recorrido presente; mantener reset,
+   fixtures, capturas y demo deterministas.
+4. Verificar el volumen firma de planning/plano y operación del día antes de
+   cerrar el checkpoint.
 
-## Publicación preparada, no autorizada todavía
+## Publicación preparada, no autorizada
 
-- Candidato: vídeo del planning de 22,1 s, póster de 42 kB y VTT ya verificados.
-- Comando único: `pnpm --filter @logic-camp/api deploy:demo`.
-- Tras una autorización explícita: comprobar destino/diff/migraciones, publicar
-  y verificar `/docs/recepcion/mover/` a 1366/375 y los MIME MP4/WebP/VTT.
+- El próximo candidato incluye código R4 y la migración
+  `0007_scrub_payment_raw.sql`; `deploy:demo` aplicaría la migración antes del
+  Worker.
+- Antes de una autorización: comprobar destino y diff, confirmar que el secret
+  remoto `AUTH_SECRET` existe y tiene al menos 32 caracteres, revisar el borrado
+  deliberado de `payments.raw` y conservar rollback/backup.
+- La demo declara `LEADS_TRANSPORT=demo`; el formulario mostrará que fue una
+  simulación y no prometerá una entrega real.
 
 ## Ya verificado — no repetir sin un cambio relevante
 
-- R0: rama sincronizada, entrega 104 aislada en `aa39ee3` y QA vídeo 1366/375.
-- R1: marca/rutas/fases reconciliadas y pendientes clasificados por gate.
-- R2: `docs/LINEA-BASE-CALIDAD.md`, `pnpm check` 53/53, tests secuenciales,
-  presupuestos y bundle compuesto verificados; el test web ya protege los tiers.
-- R3: ADR 0041, config web/API y módulos validados; dashboard normal sin fixtures
-  demo, escenarios aislados por build y API 245/245.
+- R0–R3: base sincronizada, fuentes reconciliadas, línea de calidad y fronteras
+  de configuración/demo cerradas.
+- R4: ADR 0042, 47 contratos de ruta, API 265/265, enlaces demo 3/3, auth y pagos
+  fail-closed, redacción/anonimización ampliadas y proveedores remitidos a R12.
 - D1-V L'Olivar, D2-V Pinada del Mar, D3-V Mar de Fondo y D4-V escaparate están
-  cerrados.
-- Mar de Fondo tiene 14/14 fotos, capturas firma, campaña, ficha y vídeo guiado.
-- Montaña, Familiar y Parcela siguen siendo conceptos, no demos abiertas.
+  cerrados; D5-V continúa detrás de aprendizaje comercial.
+- La entrega visual de la sesión 104 sigue incluida en el candidato, pero ya no
+  es el único cambio pendiente de publicar.
 
 ## Prompt
 

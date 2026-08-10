@@ -13,7 +13,15 @@ export function createApp() {
       // el primero de todos: nada de lo que se lance puede saltarse el onError
       .use('*', normalizeThrown)
       .use('*', tenantMiddleware)
-      .use('/api/*', createRateLimiter(60, 60_000))
+      // Cuotas por superficie anónima (ADR 0042). Siguen siendo v1 por isolate;
+      // el límite general protege el resto sin ahogar las ráfagas del dashboard.
+      .use('/api/leads/*', createRateLimiter(5, 60_000))
+      .use('/api/auth/*', createRateLimiter(20, 60_000))
+      .use('/api/bookings/*', createRateLimiter(120, 60_000))
+      .use('/api/holds/*', createRateLimiter(60, 60_000))
+      .use('/api/enquiries/*', createRateLimiter(30, 60_000))
+      .use('/api/payments/webhook/*', createRateLimiter(120, 60_000))
+      .use('/api/*', createRateLimiter(180, 60_000))
       // la ruta de producción solo expone /api/*; /health se mantiene para dev
       .on('GET', ['/health', '/api/health'], (c) =>
         c.json({

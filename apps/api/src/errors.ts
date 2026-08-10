@@ -46,13 +46,29 @@ export type LogEntry = {
   [key: string]: LogValue;
 };
 
+/** Redacción defensiva para los formatos de PII/credencial que más llegan de proveedores. */
+export function redactSensitiveText(value: string): string {
+  return value
+    .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, '[redacted-email]')
+    .replace(/\+?\d(?:[\s().-]*\d){8,14}\b/g, '[redacted-phone]')
+    .replace(/\bCS-\d{4}-[A-Z0-9-]+\b/gi, '[redacted-booking]')
+    .replace(/\bBearer\s+[^\s"']+/gi, 'Bearer [redacted-token]')
+    .replace(/\b(?:sk|rk|whsec|re)_(?:live_|test_)?[A-Za-z0-9_-]+\b/g, '[redacted-token]');
+}
+
 /**
  * Emite UNA línea de JSON. Un `console.error` con la cadena interpolada es
  * ilegible en cuanto hay volumen; esto se filtra por `event`, se agrupa por
  * `tenant` y se cruza por `requestId`.
  */
 export function logEvent(entry: LogEntry): void {
-  const line = JSON.stringify({ ts: new Date().toISOString(), ...entry });
+  const safeEntry = Object.fromEntries(
+    Object.entries(entry).map(([key, value]) => [
+      key,
+      typeof value === 'string' ? redactSensitiveText(value) : value,
+    ]),
+  );
+  const line = JSON.stringify({ ts: new Date().toISOString(), ...safeEntry });
 
   // ENGANCHE Logpush / Sentry (ADR 0026 §3): hoy la línea sale por la salida
   // estándar del Worker, que es lo que recoge `wrangler tail` y lo que Logpush

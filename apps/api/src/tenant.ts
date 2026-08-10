@@ -12,6 +12,8 @@ export type Bindings = {
   AUTH_SECRET?: string;
   /** wrangler secret; sin él las notificaciones quedan 'disabled' (ADR 0010) */
   RESEND_API_KEY?: string;
+  /** Captación Logic2B: `demo` simula de forma explícita; sin valor se usa Resend solo si hay key. */
+  LEADS_TRANSPORT?: string;
   /** wrangler secrets de pago (ADR 0011). Sin ellos, un provider≠none da 500 payment_not_configured. */
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
@@ -34,6 +36,8 @@ export type Bindings = {
    * ese fichero es el MISMO que despliega a producción.
    */
   LOGIC_CAMP_DEV_ORIGINS?: string;
+  /** Interruptor local explícito para el secreto fijo de Better Auth. Nunca se despliega. */
+  LOGIC_CAMP_DEV_AUTH?: string;
 };
 
 export type TenantContext = {
@@ -60,13 +64,16 @@ export const tenantMiddleware: MiddlewareHandler<Env> = async (c, next) => {
 export function createRateLimiter(limit: number, windowMs: number): MiddlewareHandler<Env> {
   const hits = new Map<string, { count: number; resetAt: number }>();
   return async (c, next) => {
-    const ip = c.req.header('cf-connecting-ip') ?? c.req.header('x-forwarded-for') ?? 'local';
+    const forwarded = c.req.header('x-forwarded-for')?.split(',', 1)[0]?.trim();
+    const ip = c.req.header('cf-connecting-ip') ?? forwarded ?? 'local';
     const now = Date.now();
     const entry = hits.get(ip);
     if (!entry || entry.resetAt <= now) {
       hits.set(ip, { count: 1, resetAt: now + windowMs });
     } else if (++entry.count > limit) {
-      return c.json({ error: 'rate_limited' }, 429);
+      const retryAfter = Math.max(1, Math.ceil((entry.resetAt - now) / 1000));
+      c.header('Retry-After', String(retryAfter));
+      return c.json({ error: 'rate_limited', retryAfter }, 429);
     }
     if (hits.size > 10_000) {
       for (const [k, v] of hits) if (v.resetAt <= now) hits.delete(k);

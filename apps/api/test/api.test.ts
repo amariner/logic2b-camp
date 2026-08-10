@@ -2,7 +2,7 @@
 import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
 import { seedTenant } from './fixtures';
 
@@ -30,6 +30,11 @@ const bookingBody = (from: string, to: string) => ({
 beforeAll(async () => {
   await seedTenant(env.DB, 'alfa');
   await seedTenant(env.DB_B, 'beta');
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('GET /api/availability', () => {
@@ -63,6 +68,12 @@ describe('GET /api/availability', () => {
   it('valida la query', async () => {
     const res = await app.request('/api/availability?from=nofecha&to=2026-05-04', {}, envA);
     expect(res.status).toBe(400);
+  });
+
+  it('rechaza una fecha con formato ISO pero inexistente en el calendario', async () => {
+    const res = await app.request('/api/availability?from=2026-02-31&to=2026-03-04', {}, envA);
+    expect(res.status).toBe(400);
+    expect((await res.json()) as { error: string }).toMatchObject({ error: 'invalid_query' });
   });
 });
 
@@ -131,6 +142,24 @@ describe('POST /api/enquiries', () => {
     expect(rows.some((r) => r.id === id && r.status === 'new')).toBe(true);
   });
 
+  it('no persiste un rango parcial o invertido', async () => {
+    for (const dates of [
+      { dateFrom: '2026-09-10' },
+      { dateFrom: '2026-09-12', dateTo: '2026-09-10' },
+    ]) {
+      const res = await app.request(
+        '/api/enquiries',
+        json({
+          message: 'Fechas incoherentes',
+          contact: { name: 'Ana', email: 'ana-fechas@example.com' },
+          ...dates,
+        }),
+        envA,
+      );
+      expect(res.status).toBe(400);
+    }
+  });
+
   it('notificaciones (ADR 0010): deja rastro en notifications_log; sin API key = disabled', async () => {
     const res = await app.request(
       '/api/enquiries',
@@ -164,20 +193,75 @@ describe('POST /api/leads', () => {
     lang: 'es',
   };
 
-  it('acepta una solicitud asociada a un plan comercial', async () => {
+  it('sin proveedor responde disabled y NO afirma que se entregó', async () => {
     const res = await app.request('/api/leads', json({ ...lead, plan: 'Inicio' }), envA);
-    expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ ok: true });
+    expect(res.status).toBe(503);
+    await expect(res.json()).resolves.toEqual({
+      ok: false,
+      outcome: 'disabled',
+      error: 'lead_delivery_disabled',
+    });
   });
 
-  it('mantiene compatible la petición de demo sin plan', async () => {
-    const res = await app.request('/api/leads', json(lead), envA);
-    expect(res.status).toBe(200);
+  it('la simulación solo existe si se declara y sale etiquetada como demo', async () => {
+    const res = await app.request('/api/leads', json(lead), {
+      ...envA,
+      LEADS_TRANSPORT: 'demo',
+    });
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual({ ok: true, outcome: 'demo' });
+  });
+
+  it('Resend aceptado responde delivered; el fallo del proveedor no comparte éxito', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ id: 'email_123' }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: 'recipient ana@example.com rejected' }), {
+          status: 422,
+          headers: { 'content-type': 'application/json' },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const delivered = await app.request('/api/leads', json(lead), {
+      ...envA,
+      RESEND_API_KEY: 're_test',
+    });
+    expect(delivered.status).toBe(202);
+    await expect(delivered.json()).resolves.toEqual({ ok: true, outcome: 'delivered' });
+
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const failed = await app.request('/api/leads', json(lead), {
+      ...envA,
+      RESEND_API_KEY: 're_test',
+    });
+    expect(failed.status).toBe(502);
+    const body = (await failed.json()) as Record<string, unknown>;
+    expect(body).toMatchObject({ ok: false, outcome: 'failed', error: 'lead_delivery_failed' });
+    expect(body.ref).toMatch(/^err_/);
   });
 
   it('rechaza nombres de plan fuera del límite permitido', async () => {
     const res = await app.request('/api/leads', json({ ...lead, plan: 'x'.repeat(101) }), envA);
     expect(res.status).toBe(400);
+  });
+
+  it('aplica una cuota propia de captación y comunica cuándo reintentar', async () => {
+    const headers = { 'cf-connecting-ip': '198.51.100.42' };
+    for (let i = 0; i < 5; i++) {
+      const res = await app.request('/api/leads', json(lead, headers), envA);
+      expect(res.status).toBe(503);
+    }
+    const limited = await app.request('/api/leads', json(lead, headers), envA);
+    expect(limited.status).toBe(429);
+    expect(Number(limited.headers.get('Retry-After'))).toBeGreaterThan(0);
+    await expect(limited.json()).resolves.toMatchObject({ error: 'rate_limited' });
   });
 });
 
@@ -262,6 +346,24 @@ describe('POST /api/bookings', () => {
     const b2 = (await r2.json()) as { code: string; idempotent: boolean };
     expect(b2.code).toBe(b1.code);
     expect(b2.idempotent).toBe(true);
+
+    const keys = (await createDb(env.DB).select({ key: schema.meta.key }).from(schema.meta)).map(
+      (row) => row.key,
+    );
+    expect(keys).toContainEqual(expect.stringMatching(/^idem:v2:[a-f0-9]{64}$/));
+    expect(keys).not.toContain(`idem:${key}`);
+  });
+
+  it('rechaza una Idempotency-Key vacía o desproporcionada antes de tocar D1', async () => {
+    for (const key of ['   ', 'x'.repeat(101)]) {
+      const res = await app.request(
+        '/api/bookings',
+        json(bookingBody('2026-05-23', '2026-05-25'), { 'Idempotency-Key': key }),
+        envA,
+      );
+      expect(res.status).toBe(400);
+      await expect(res.json()).resolves.toEqual({ error: 'invalid_idempotency_key' });
+    }
   });
 
   it('rechaza cuando el tipo está agotado (409), liberando el día de salida', async () => {
@@ -297,7 +399,7 @@ describe('GET /api/bookings/:code', () => {
       json(bookingBody('2026-09-01', '2026-09-04')),
       envA,
     );
-    const { code } = (await created.json()) as { code: string };
+    const { id, code } = (await created.json()) as { id: string; code: string };
 
     const ok = await app.request(`/api/bookings/${code}?email=holder@example.com`, {}, envA);
     expect(ok.status).toBe(200);
@@ -419,7 +521,7 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
       json(bookingBody('2026-10-25', '2026-10-27')),
       envA,
     );
-    const { code } = (await created.json()) as { code: string };
+    const { id, code } = (await created.json()) as { id: string; code: string };
 
     const res = await app.request(`/api/bookings/${code}?email=holder@example.com`, {}, envA);
     const body = (await res.json()) as {
@@ -430,13 +532,13 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
     expect(body.cancellation.refundCents).toBe(0); // sin pagos aún (Fase 8)
   });
 
-  it('cancelar libera inventario y es terminal (segunda vez → 409)', async () => {
+  it('cancelar libera inventario y un reintento es idempotente sin duplicar auditoría', async () => {
     const created = await app.request(
       '/api/bookings',
       json(bookingBody('2026-04-06', '2026-04-09')),
       envA,
     );
-    const { code } = (await created.json()) as { code: string };
+    const { id, code } = (await created.json()) as { id: string; code: string };
 
     const cancel = await app.request(
       `/api/bookings/${code}/cancel`,
@@ -458,7 +560,20 @@ describe('FUNNEL (ADR 0007): gestión por código + email', () => {
       json({ email: 'holder@example.com' }),
       envA,
     );
-    expect(again.status).toBe(409);
+    expect(again.status).toBe(200);
+    await expect(again.json()).resolves.toMatchObject({
+      code,
+      status: 'cancelled',
+      idempotent: true,
+    });
+
+    const audits = await createDb(env.DB)
+      .select()
+      .from(schema.auditLog)
+      .where(eq(schema.auditLog.action, 'cancel'));
+    const own = audits.filter((row) => row.entityId === id);
+    expect(own).toHaveLength(1);
+    expect(JSON.stringify(own[0]?.diff)).not.toContain('holder@example.com');
   });
 
   it('modificar re-cotiza entero en servidor y mantiene el desglose auditable', async () => {

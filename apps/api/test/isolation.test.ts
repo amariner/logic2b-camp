@@ -27,8 +27,8 @@ import { app } from '../src/app';
 import { provisionUser } from '../src/auth';
 import { seedTenant } from './fixtures';
 
-const envA = { DB: env.DB, TENANT_SLUG: 'alfa' };
-const envB = { DB: env.DB_B, TENANT_SLUG: 'beta' };
+const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
+const envB = { DB: env.DB_B, TENANT_SLUG: 'beta', LOGIC_CAMP_DEV_AUTH: '1' };
 
 /** Titular de la reserva de A: sirve de credencial en el funnel público por código+email. */
 const TITULAR_A = 'titular-solo-en-alfa@example.com';

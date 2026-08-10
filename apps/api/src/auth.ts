@@ -7,6 +7,7 @@ import { createDb, schema } from '@logic-camp/db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import type { Context, MiddlewareHandler } from 'hono';
+import { z } from 'zod';
 import type { Bindings, Env } from './tenant';
 
 export type Role = 'owner' | 'manager' | 'reception' | 'readonly' | 'demo';
@@ -35,13 +36,7 @@ const ROLE_LEVEL: Record<Role, number> = {
  * (`schemas.ts`), así que autorizar por RUTA le regalaría al visitante `cancel`,
  * `record_payment` y `refund`. La unidad de autorización aquí es la acción.
  */
-export const DEMO_ACTIONS = [
-  'move',
-  'reassign',
-  'check_in',
-  'check_out',
-  'undo_checkin',
-] as const;
+export const DEMO_ACTIONS = ['move', 'reassign', 'check_in', 'check_out', 'undo_checkin'] as const;
 
 export type AuthUser = {
   id: string;
@@ -69,11 +64,25 @@ export type AuthEnv = {
  * así que esta lista debe quedar vacía. Fail-closed: sin el flag, `[]`.
  */
 const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+const LOCAL_AUTH_SECRET = 'local-only-8Kq4Yp2Vm9Rz7Tx5Nc3Hs6Wb1Df0GjLu';
+
+/** Producción nunca cae a una clave conocida; el fallback necesita un interruptor local explícito. */
+export function resolveAuthSecret(env: Bindings): string {
+  if (env.AUTH_SECRET !== undefined) {
+    if (env.AUTH_SECRET.length < 32) {
+      throw new Error('AUTH_SECRET inválido: debe tener al menos 32 caracteres');
+    }
+    return env.AUTH_SECRET;
+  }
+  if (env.LOGIC_CAMP_DEV_AUTH === '1') return LOCAL_AUTH_SECRET;
+  throw new Error(
+    'AUTH_SECRET ausente: configure el secret o active LOGIC_CAMP_DEV_AUTH=1 en local',
+  );
+}
 
 export function createAuth(env: Bindings, opts: { allowSignUp?: boolean } = {}) {
   return betterAuth({
-    // El secret real llega por wrangler secret; el fallback es solo dev/test local.
-    secret: env.AUTH_SECRET ?? 'logic-camp-dev-secret',
+    secret: resolveAuthSecret(env),
     basePath: '/api/auth',
     // Fail-closed: ausencia del interruptor ⇒ ningún origen cruzado autorizado.
     trustedOrigins: env.LOGIC_CAMP_DEV_ORIGINS ? DEV_ORIGINS : [],
@@ -147,8 +156,17 @@ async function resolverUsuario(c: Context<AuthEnv>): Promise<AuthUser | null> {
   const auth = createAuth(c.env);
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
   if (!session) return null;
-  const user = session.user as unknown as AuthUser;
-  return { ...user, role: (user.role ?? 'readonly') as Role };
+  const parsed = z
+    .object({
+      id: z.string().min(1),
+      email: z.string().email(),
+      name: z.string(),
+      role: z.enum(['owner', 'manager', 'reception', 'readonly', 'demo']).default('readonly'),
+      tenantId: z.string().min(1),
+    })
+    .safeParse(session.user);
+  if (!parsed.success || parsed.data.tenantId !== c.get('tenant').slug) return null;
+  return parsed.data;
 }
 
 /** Exige sesión y rol mínimo. readonly=GETs; el nivel de escritura lo fija cada ruta. */

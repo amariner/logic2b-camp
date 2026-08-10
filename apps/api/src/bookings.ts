@@ -16,7 +16,13 @@ import { CONSENT_VERSION } from './consent';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from './data';
 import { errorDetail, logEvent } from './errors';
 import { nowIso, uid } from './ids';
-import { loadPaymentsConfig, rememberIntent, resolveProvider, type PaymentEnv } from './payments';
+import {
+  loadPaymentsConfig,
+  loadStoredPaymentIntent,
+  rememberIntent,
+  resolveProvider,
+  type PaymentEnv,
+} from './payments';
 import type { BookingRequest } from './schemas';
 import type { TenantContext } from './tenant';
 
@@ -24,8 +30,16 @@ const CURRENCY = 'EUR';
 
 export { nowIso, uid };
 
+async function idempotencyMetaKey(key: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key));
+  const hex = [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+  return `idem:v2:${hex}`;
+}
+
 export type CreateBookingResult =
-  | { ok: false; status: 404 | 409 | 422 | 500; body: Record<string, unknown> }
+  | { ok: false; status: 404 | 409 | 422 | 500 | 502; body: Record<string, unknown> }
   | { ok: true; status: 200 | 201; body: Record<string, unknown> };
 
 export async function createBooking(
@@ -47,16 +61,23 @@ export async function createBooking(
 
   // idempotencia: misma clave → misma reserva (ADR 0004)
   if (opts.idemKey) {
-    const existing = await db
-      .select()
-      .from(schema.meta)
-      .where(eq(schema.meta.key, `idem:${opts.idemKey}`));
+    const safeKey = await idempotencyMetaKey(opts.idemKey);
+    let existing = await db.select().from(schema.meta).where(eq(schema.meta.key, safeKey));
+    // Compatibilidad de lectura con reservas anteriores a ADR 0042. Las nuevas
+    // claves no se persisten nunca en claro: son input externo y podrían llevar PII.
+    if (!existing[0]) {
+      existing = await db
+        .select()
+        .from(schema.meta)
+        .where(eq(schema.meta.key, `idem:${opts.idemKey}`));
+    }
     if (existing[0]) {
       const booking = await db
         .select()
         .from(schema.bookings)
         .where(eq(schema.bookings.id, existing[0].value));
       if (booking[0]) {
+        const payment = await loadStoredPaymentIntent(db, booking[0].id);
         return {
           ok: true,
           status: 200,
@@ -65,6 +86,7 @@ export async function createBooking(
             code: booking[0].code,
             status: booking[0].status,
             idempotent: true,
+            ...(payment ? { payment } : {}),
           },
         };
       }
@@ -223,7 +245,7 @@ export async function createBooking(
     }),
     db.insert(schema.bookingGuests).values({ bookingId: id, guestId, isLead: true }),
     ...(opts.idemKey
-      ? [db.insert(schema.meta).values({ key: `idem:${opts.idemKey}`, value: id })]
+      ? [db.insert(schema.meta).values({ key: await idempotencyMetaKey(opts.idemKey), value: id })]
       : []),
     // el hold se consume EN la misma transacción que crea la reserva (ADR 0007)
     ...(body.holdId
@@ -253,7 +275,6 @@ export async function createBooking(
   // en D1. Si falla, la reserva ya existe como 'pending' — recepción la ve en
   // la bandeja y puede resolverlo a mano (ADR 0011 §4, no se auto-cancela).
   if (!provider || !opts.webOrigin) return { ok: true, status: 201, body: baseBody };
-  const email = encodeURIComponent(body.holder.email);
   try {
     const intent: PaymentIntentResult = await provider.createIntent({
       bookingId: id,
@@ -262,22 +283,36 @@ export async function createBooking(
       currency: CURRENCY,
       locale: body.locale,
       description: `Reserva ${code}`,
-      successUrl: `${opts.webOrigin}/reserva?code=${code}&email=${email}&nueva=1&pago=ok`,
-      cancelUrl: `${opts.webOrigin}/reserva?code=${code}&email=${email}&nueva=1&pago=cancelado`,
+      // El retorno no contiene PII. La pantalla pide el email para abrir la
+      // reserva; persistir el formulario Redsys no debe duplicar el correo en meta.
+      successUrl: `${opts.webOrigin}/reserva?code=${code}&nueva=1&pago=ok`,
+      cancelUrl: `${opts.webOrigin}/reserva?code=${code}&nueva=1&pago=cancelado`,
       notifyUrl: `${opts.webOrigin}/api/payments/webhook/${provider.name}`,
     });
-    await rememberIntent(tenant.db, provider.name, intent.providerRef, id);
+    await rememberIntent(tenant.db, provider.name, intent, id, chargeAmountCents);
     return { ok: true, status: 201, body: { ...baseBody, payment: intent } };
   } catch (e) {
+    const ref = uid('err');
     logEvent({
       level: 'error',
       event: 'payment_intent_failed',
       tenant: tenant.slug,
-      code,
+      requestId: ref,
       provider: provider.name,
       detail: errorDetail(e).message,
       stack: errorDetail(e).stack,
     });
-    return { ok: true, status: 201, body: baseBody };
+    return {
+      ok: false,
+      status: 502,
+      body: {
+        error: 'payment_intent_failed',
+        ref,
+        id,
+        code,
+        status: 'pending',
+        persisted: true,
+      },
+    };
   }
 }

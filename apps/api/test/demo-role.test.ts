@@ -21,7 +21,7 @@ import { app } from '../src/app';
 import { DEMO_ACTIONS, provisionUser } from '../src/auth';
 import { seedTenant } from './fixtures';
 
-const envA = { DB: env.DB, TENANT_SLUG: 'alfa' };
+const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
 
 const json = (body: unknown, headers: Record<string, string> = {}) => ({
   method: 'POST',

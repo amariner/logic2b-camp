@@ -6,13 +6,13 @@
 import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
 import { and, eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
-import { provisionUser } from '../src/auth';
+import { provisionUser, resolveAuthSecret } from '../src/auth';
 import { seedTenant } from './fixtures';
 
-const envA = { DB: env.DB, TENANT_SLUG: 'alfa' };
-const envB = { DB: env.DB_B, TENANT_SLUG: 'beta' };
+const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
+const envB = { DB: env.DB_B, TENANT_SLUG: 'beta', LOGIC_CAMP_DEV_AUTH: '1' };
 
 const json = (body: unknown, headers: Record<string, string> = {}) => ({
   method: 'POST',
@@ -86,6 +86,18 @@ beforeAll(async () => {
 });
 
 describe('auth', () => {
+  it('sin AUTH_SECRET ni interruptor local, la autenticación falla cerrada', () => {
+    expect(() => resolveAuthSecret({ DB: env.DB, TENANT_SLUG: 'alfa' })).toThrow(
+      'AUTH_SECRET ausente',
+    );
+  });
+
+  it('un AUTH_SECRET corto no se acepta como secreto de producción', () => {
+    expect(() =>
+      resolveAuthSecret({ DB: env.DB, TENANT_SLUG: 'alfa', AUTH_SECRET: 'demasiado-corto' }),
+    ).toThrow('al menos 32 caracteres');
+  });
+
   it('sin sesión → 401', async () => {
     const res = await app.request('/api/admin/planning?from=2026-05-01&to=2026-05-08', {}, envA);
     expect(res.status).toBe(401);
@@ -530,6 +542,26 @@ describe('bloqueos desde la UI (ADR 0022)', () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it('unidad y tipo son excluyentes, y un tipo desconocido no crea un bloqueo huérfano', async () => {
+    const both = await post('/api/admin/blocks', {
+      unitId: 'unt_1',
+      unitTypeId: 'ut_std',
+      dateFrom: '2026-06-20',
+      dateTo: '2026-06-24',
+      reason: 'manual',
+    });
+    expect(both.status).toBe(400);
+
+    const unknown = await post('/api/admin/blocks', {
+      unitTypeId: 'ut_no_existe',
+      dateFrom: '2026-06-20',
+      dateTo: '2026-06-24',
+      reason: 'manual',
+    });
+    expect(unknown.status).toBe(404);
+    await expect(unknown.json()).resolves.toEqual({ error: 'unknown_unit_type' });
+  });
 });
 
 describe('pagos (ADR 0011)', () => {
@@ -600,16 +632,12 @@ describe('pagos (ADR 0011)', () => {
     expect(((await res.json()) as { paymentKind: string }).paymentKind).toBe('transfer');
 
     const db = createDb(env.DB);
-    const booking = (
-      await db.select().from(schema.bookings).where(eq(schema.bookings.id, id))
-    )[0];
+    const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0];
     expect(booking?.paymentKind).toBe('transfer');
     const audit = await db
       .select()
       .from(schema.auditLog)
-      .where(
-        and(eq(schema.auditLog.entityId, id), eq(schema.auditLog.action, 'set_payment_kind')),
-      );
+      .where(and(eq(schema.auditLog.entityId, id), eq(schema.auditLog.action, 'set_payment_kind')));
     expect(audit).toHaveLength(1);
   });
 
@@ -954,6 +982,16 @@ describe('solicitudes', () => {
     const body = (await list.json()) as { items: { id: string }[] };
     expect(body.items.some((e) => e.id === id)).toBe(true);
   });
+
+  it('un estado de filtro desconocido es 400, nunca equivale a listar toda la bandeja', async () => {
+    const res = await app.request(
+      '/api/admin/enquiries?status=desconocido',
+      { headers: { cookie: readonly } },
+      envA,
+    );
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toMatchObject({ error: 'invalid_query' });
+  });
 });
 
 describe('notificaciones (log)', () => {
@@ -1033,11 +1071,28 @@ describe('pagos (log)', () => {
     );
     expect(res.status).toBe(200);
     const body = (await res.json()) as {
-      items: { bookingCode: string; provider: string; status: string; amountCents: number }[];
+      items: {
+        bookingCode: string;
+        provider: string;
+        status: string;
+        amountCents: number;
+        raw?: unknown;
+      }[];
     };
     const row = body.items.find((r) => r.bookingCode === code);
     expect(row).toBeDefined();
     expect(row).toMatchObject({ provider: 'manual', status: 'succeeded', amountCents: totalCents });
+    expect(row).not.toHaveProperty('raw');
+
+    const detail = await app.request(
+      `/api/admin/bookings/${id}`,
+      {
+        headers: { cookie: readonly, ...LOG_IP },
+      },
+      envA,
+    );
+    const detailBody = (await detail.json()) as { payments: Record<string, unknown>[] };
+    expect(detailBody.payments[0]).not.toHaveProperty('raw');
 
     const noneMatch = await app.request(
       '/api/admin/payments?provider=stripe',
@@ -1093,6 +1148,13 @@ describe('informes y ajustes', () => {
     );
     expect(res.status).toBe(200);
     expect(((await res.json()) as { name: string }).name).toBe('Camping Renombrado');
+  });
+
+  it('settings rechaza una moneda que rompería la siguiente lectura de TenantConfig', async () => {
+    const res = await app.request('/api/admin/settings', patch({ currency: 'eur' }, manager), envA);
+    expect(res.status).toBe(400);
+    const row = (await createDb(env.DB).select().from(schema.tenants))[0]!;
+    expect(row.currency).toBe('EUR');
   });
 });
 

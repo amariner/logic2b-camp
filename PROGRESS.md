@@ -1,5 +1,43 @@
 # PROGRESS — Logic Camp
 
+## Backend mínimo y contratos de API R4 · 2026-08-10 (sesión 106)
+
+- R4 queda cerrado con ADR 0042 y un inventario ejecutable de **47 rutas**. Cada
+  endpoint declara propietario, autenticación, validación, mutación,
+  idempotencia y cuota; el test falla tanto si aparece una ruta sin contrato
+  como si queda un contrato huérfano. Los barridos existentes mantienen cerrado
+  el rol demo y el aislamiento A↛B de datos y sesiones.
+- La reproducción inicial dejó **22 pruebas rojas / 239 verdes**: formulario de
+  venta con éxito ficticio, webhook que aceptaba otro importe, doble cobro por
+  `providerRef`, secreto de auth conocido, fechas inexistentes, inputs ambiguos,
+  `payments.raw`, PII sin anonimizar y rate limit compartido. La implementación
+  final separa `delivered`/`demo`/`disabled`/`failed`, exige un secreto de 32
+  caracteres o interruptor local y aplica cuotas por superficie con
+  `Retry-After`.
+- Cada intent guarda importe e instrucciones; el reintento idempotente recupera
+  la misma operación, la clave externa queda hasheada y el retorno no contiene
+  correo. El webhook exige importe exacto, deduplica evento y referencia, evita
+  sobrepago y actualiza asiento+reserva en un batch. Si crear el intent falla,
+  responde **502** con referencia y declara la reserva `pending` persistida.
+- La anonimización cubre segundo apellido, sexo, soporte documental, parentesco,
+  consentimiento y notas vinculadas. Los logs redactan email, teléfono, código
+  de reserva y credenciales reconocibles; `payments.raw` no sale por API/export
+  y la migración **0007** limpia el legado. Fechas, rangos, bloqueos, estados de
+  solicitud, moneda, locales e `Idempotency-Key` fallan antes de escribir.
+- Las cinco invariantes conservan evidencia: capacidad+holds en core,
+  pago/`paidCents` atómico, tarifa histórica inmutable, cancelación que libera
+  inventario y aislamiento por D1. Cron, avisos, reset y reintentos actuales
+  siguen verdes; Resend, Stripe, Redsys, SES.Hospedajes, WAF y observabilidad
+  externa pasan a R12 con sus gates escritos, sin activar cuentas ni secretos.
+- Verificación dirigida: API **265/265**, enlaces demo **3/3**, API TypeScript y
+  Astro **50 archivos / 0 diagnósticos**. La pasada final de `pnpm check` cerró
+  **53/53** tareas en **15,29 s**, incluidos seed demo **62/62**, builds y Worker
+  seco. El formulario se recorrió en Chrome a **1366/375**, ES/EN y diálogo
+  móvil: resultado demo explícito, sin overflow ni errores. El siguiente
+  checkpoint es **R5**, la coherencia del motor, seed y datos. No hubo deploy ni
+  escritura remota; la siguiente publicación incluye la migración 0007 y exige
+  confirmar el `AUTH_SECRET` remoto antes de autorizarla.
+
 ## Consolidación del punto de partida R0 · 2026-08-10 (sesión 105)
 
 - R0 de la ruta duradera queda cerrado sobre una base limpia y sincronizada:

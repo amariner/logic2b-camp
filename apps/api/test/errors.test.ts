@@ -196,6 +196,22 @@ describe('logEvent', () => {
     expect(warn).toHaveBeenCalledTimes(1);
     expect(log).toHaveBeenCalledTimes(1);
   });
+
+  it('redacta PII y credenciales reconocibles antes de escribir el log', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    logEvent({
+      level: 'error',
+      event: 'provider_failed',
+      detail:
+        'recipient ana@example.com phone +34 699 999 999 booking CS-2026-123456 Authorization: Bearer sk_live_secret',
+    });
+    const line = String(spy.mock.calls[0]?.[0]);
+    expect(line).not.toContain('ana@example.com');
+    expect(line).not.toContain('+34 699 999 999');
+    expect(line).not.toContain('CS-2026-123456');
+    expect(line).not.toContain('sk_live_secret');
+    expect(line).toContain('[redacted-email]');
+  });
 });
 
 describe('errorDetail', () => {

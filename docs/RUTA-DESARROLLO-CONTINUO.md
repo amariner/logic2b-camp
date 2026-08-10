@@ -244,18 +244,18 @@ tier incorrecto mediante un valor mal tipado o un default silencioso.
 
 ### R4 · Backend mínimo y contratos de API
 
-- [ ] Auditar endpoints públicos, admin, auth y leads por validación, permisos,
+- [x] Auditar endpoints públicos, admin, auth y leads por validación, permisos,
       idempotencia, rate limit y errores.
-- [ ] Revisar el formulario comercial: demo/noop/entrega real no pueden compartir
+- [x] Revisar el formulario comercial: demo/noop/entrega real no pueden compartir
       un “éxito” ambiguo.
-- [ ] Verificar las cinco invariantes de dominio y sus transacciones.
-- [ ] Reforzar el inventario de rutas y el fail-closed del rol demo.
-- [ ] Confirmar aislamiento A↛B de datos y sesión.
-- [ ] Revisar logs, correlación, PII, `payments.raw` y notas libres; corregir lo
+- [x] Verificar las cinco invariantes de dominio y sus transacciones.
+- [x] Reforzar el inventario de rutas y el fail-closed del rol demo.
+- [x] Confirmar aislamiento A↛B de datos y sesión.
+- [x] Revisar logs, correlación, PII, `payments.raw` y notas libres; corregir lo
       que pueda resolverse sin credenciales ni política nueva.
-- [ ] Revisar cron, holds, avisos, reset y reintentos solo hasta el límite que la
+- [x] Revisar cron, holds, avisos, reset y reintentos solo hasta el límite que la
       demo usa hoy.
-- [ ] Dejar identificados los contratos de proveedores que pasarán a R12, sin
+- [x] Dejar identificados los contratos de proveedores que pasarán a R12, sin
       activarlos prematuramente desde el backend base.
 
 **Cierra cuando:** los recorridos actuales descansan sobre contratos pequeños,

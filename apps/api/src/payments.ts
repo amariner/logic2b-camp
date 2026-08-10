@@ -60,30 +60,84 @@ export function resolveProvider(
   return null;
 }
 
-/** Recuerda a qué reserva pertenece un intent (providerRef → bookingId), tras crearlo. */
+type StoredPaymentIntent = {
+  bookingId: string;
+  amountCents: number;
+  payment: PaymentIntentResult;
+};
+
+function parseStoredIntent(value: string): StoredPaymentIntent | null {
+  try {
+    const parsed = JSON.parse(value) as Partial<StoredPaymentIntent>;
+    if (
+      typeof parsed.bookingId === 'string' &&
+      Number.isInteger(parsed.amountCents) &&
+      parsed.amountCents! > 0 &&
+      parsed.payment &&
+      typeof parsed.payment.providerRef === 'string'
+    ) {
+      return parsed as StoredPaymentIntent;
+    }
+  } catch {
+    // Los intents anteriores a ADR 0042 guardaban solo el bookingId. Se pueden
+    // localizar, pero no confirmar sin conocer el importe esperado.
+  }
+  return null;
+}
+
+/** Recuerda intent, importe esperado y reserva para reintentos y webhooks. */
 export async function rememberIntent(
   db: Db,
   provider: string,
-  providerRef: string,
+  payment: PaymentIntentResult,
   bookingId: string,
+  amountCents: number,
 ): Promise<void> {
-  await db
-    .insert(schema.meta)
-    .values({ key: `payment_order:${provider}:${providerRef}`, value: bookingId });
+  const stored: StoredPaymentIntent = { bookingId, amountCents, payment };
+  const value = JSON.stringify(stored);
+  await db.batch([
+    db
+      .insert(schema.meta)
+      .values({ key: `payment_order:${provider}:${payment.providerRef}`, value }),
+    db.insert(schema.meta).values({ key: `payment_intent:${bookingId}`, value }),
+  ]);
 }
 
-async function lookupBookingId(
+async function lookupStoredIntent(
   db: Db,
   provider: string,
   providerRef: string,
-): Promise<string | null> {
+): Promise<{ bookingId: string; stored: StoredPaymentIntent | null } | null> {
   const row = (
     await db
       .select()
       .from(schema.meta)
       .where(eq(schema.meta.key, `payment_order:${provider}:${providerRef}`))
   )[0];
-  return row?.value ?? null;
+  if (!row) return null;
+  const stored = parseStoredIntent(row.value);
+  return { bookingId: stored?.bookingId ?? row.value, stored };
+}
+
+/** Recupera exactamente las instrucciones emitidas al crear una reserva pendiente. */
+export async function loadStoredPaymentIntent(
+  db: Db,
+  bookingId: string,
+): Promise<PaymentIntentResult | null> {
+  const row = (
+    await db
+      .select()
+      .from(schema.meta)
+      .where(eq(schema.meta.key, `payment_intent:${bookingId}`))
+  )[0];
+  return row ? (parseStoredIntent(row.value)?.payment ?? null) : null;
+}
+
+/** Forma pública de un asiento: `raw` es legado interno y jamás sale de la API. */
+export function paymentView(payment: typeof schema.payments.$inferSelect) {
+  const { raw: _raw, ...safe } = payment;
+  void _raw;
+  return safe;
 }
 
 export type RefundOutcome = { ok: true; refundedCents: number } | { ok: false; error: string };
@@ -182,6 +236,9 @@ export async function recordManualPayment(
 export type PaymentEventResult =
   | { kind: 'duplicate' }
   | { kind: 'unknown_booking' }
+  | { kind: 'amount_mismatch'; bookingId: string }
+  | { kind: 'unverifiable_amount'; bookingId: string }
+  | { kind: 'payment_conflict'; bookingId: string }
   | { kind: 'failed'; bookingId: string }
   | { kind: 'recorded'; bookingId: string; justConfirmed: boolean };
 
@@ -200,42 +257,64 @@ export async function recordPaymentEvent(
   const already = await db.select().from(schema.meta).where(eq(schema.meta.key, metaKey));
   if (already[0]) return { kind: 'duplicate' };
 
-  const bookingId = await lookupBookingId(db, provider, event.providerRef);
-  if (!bookingId) return { kind: 'unknown_booking' };
+  const intent = await lookupStoredIntent(db, provider, event.providerRef);
+  if (!intent) return { kind: 'unknown_booking' };
+  const { bookingId } = intent;
 
   if (event.status === 'failed') {
     await db.insert(schema.meta).values({ key: metaKey, value: bookingId });
     return { kind: 'failed', bookingId };
   }
 
+  if (!intent.stored) return { kind: 'unverifiable_amount', bookingId };
+  if (event.amountCents !== intent.stored.amountCents) {
+    return { kind: 'amount_mismatch', bookingId };
+  }
+
+  const paymentKey = `payment_success:${provider}:${event.providerRef}`;
+  const processed = await db.select().from(schema.meta).where(eq(schema.meta.key, paymentKey));
+  if (processed[0]) return { kind: 'duplicate' };
+
   const booking = (
     await db.select().from(schema.bookings).where(eq(schema.bookings.id, bookingId))
   )[0];
   if (!booking) return { kind: 'unknown_booking' };
+  if (booking.paidCents + event.amountCents > booking.totalCents) {
+    return { kind: 'payment_conflict', bookingId };
+  }
 
   const ts = nowIso();
   const wasPending = booking.status === 'pending';
-  await db.batch([
-    db.insert(schema.payments).values({
-      id: uid('pay'),
-      bookingId,
-      provider,
-      providerRef: event.providerRef,
-      amountCents: event.amountCents,
-      status: 'succeeded',
-      raw: null,
-      createdAt: ts,
-    }),
-    db
-      .update(schema.bookings)
-      .set({
-        paidCents: booking.paidCents + event.amountCents,
-        status: wasPending ? 'confirmed' : booking.status,
-        updatedAt: ts,
-      })
-      .where(eq(schema.bookings.id, bookingId)),
-    db.insert(schema.meta).values({ key: metaKey, value: bookingId }),
-  ]);
+  try {
+    await db.batch([
+      // La clave única forma parte del mismo batch: una carrera no puede insertar
+      // dos cobros aunque los eventos tengan eventId diferentes.
+      db.insert(schema.meta).values({ key: paymentKey, value: bookingId }),
+      db.insert(schema.payments).values({
+        id: uid('pay'),
+        bookingId,
+        provider,
+        providerRef: event.providerRef,
+        amountCents: event.amountCents,
+        status: 'succeeded',
+        raw: null,
+        createdAt: ts,
+      }),
+      db
+        .update(schema.bookings)
+        .set({
+          paidCents: booking.paidCents + event.amountCents,
+          status: wasPending ? 'confirmed' : booking.status,
+          updatedAt: ts,
+        })
+        .where(eq(schema.bookings.id, bookingId)),
+      db.insert(schema.meta).values({ key: metaKey, value: bookingId }),
+    ]);
+  } catch (error) {
+    const raced = await db.select().from(schema.meta).where(eq(schema.meta.key, paymentKey));
+    if (raced[0]) return { kind: 'duplicate' };
+    throw error;
+  }
   return { kind: 'recorded', bookingId, justConfirmed: wasPending };
 }
 

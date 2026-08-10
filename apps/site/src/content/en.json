@@ -678,6 +678,7 @@
     "solicitudEnviar": "Request project",
     "enviando": "Sending…",
     "ok": "Got it! We'll write to you within 24 h.",
+    "demo": "Simulation completed: no message was sent.",
     "error": "Couldn't send. Email us at hola@logic2b.com and we'll sort it out.",
     "verDemoTexto": "Rather see it now? The demo has two sides and both are open: the campsite website and the manager it's all run from.",
     "verMostrador": "Enter the campsite manager"

@@ -320,6 +320,7 @@ export const payments = sqliteTable(
     /** Con signo: reembolso = negativo. sum(amount_cents) == bookings.paid_cents */
     amountCents: integer('amount_cents').notNull(),
     status: text('status', { enum: ['pending', 'succeeded', 'failed', 'refunded'] }).notNull(),
+    /** Legado: se mantiene para migraciones; la aplicación escribe null y nunca lo expone. */
     raw: text('raw', { mode: 'json' }).$type<Record<string, unknown>>(),
     createdAt: text('created_at').notNull(),
   },

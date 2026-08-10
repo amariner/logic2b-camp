@@ -14,6 +14,7 @@ import { and, eq } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from '../data';
+import { logEvent } from '../errors';
 import { notifyBookingCancelled, notifyBookingConfirmed, notifyEnquiry } from '../notify';
 import {
   executeRefund,
@@ -28,6 +29,7 @@ import {
   bookingRequestSchema,
   enquiryRequestSchema,
   holdRequestSchema,
+  idempotencyKeySchema,
   quoteRequestSchema,
 } from '../schemas';
 import type { Env } from '../tenant';
@@ -285,12 +287,15 @@ export const publicRoutes = new Hono<Env>()
     const parsed = bookingRequestSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
 
+    const idem = idempotencyKeySchema.safeParse(c.req.header('Idempotency-Key'));
+    if (!idem.success) return c.json({ error: 'invalid_idempotency_key' }, 400);
+
     const tenant = c.get('tenant');
     const tenantConfig = await loadTenantConfig(tenant.db);
     // toda la lógica vive en createBooking, compartida con el alta manual del dashboard (ADR 0005)
     const result = await createBooking(tenant, parsed.data, {
       channel: 'web',
-      idemKey: c.req.header('Idempotency-Key'),
+      idemKey: idem.data,
       taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
       env: c.env,
       webOrigin: new URL(c.req.url).origin,
@@ -349,6 +354,9 @@ export const publicRoutes = new Hono<Env>()
     const db = c.get('tenant').db;
     const booking = await findBookingByCodeEmail(db, c.req.param('code'), parsed.data.email);
     if (!booking) return c.json({ error: 'not_found' }, 404);
+    if (booking.status === 'cancelled') {
+      return c.json({ code: booking.code, status: 'cancelled', idempotent: true });
+    }
     if (!ACTIVE_STATUSES.includes(booking.status)) {
       return c.json({ error: 'not_cancellable', status: booking.status }, 409);
     }
@@ -375,7 +383,7 @@ export const publicRoutes = new Hono<Env>()
         action: 'cancel',
         diff: {
           via: 'web',
-          actor: `guest:${parsed.data.email.toLowerCase()}`,
+          actor: 'guest',
           refundCents: refund.refundCents,
         },
         createdAt: ts,
@@ -507,7 +515,7 @@ export const publicRoutes = new Hono<Env>()
         action: 'modify',
         diff: {
           via: 'web',
-          actor: `guest:${body.email.toLowerCase()}`,
+          actor: 'guest',
           from: {
             dateFrom: booking.dateFrom,
             dateTo: booking.dateTo,
@@ -553,6 +561,32 @@ export const publicRoutes = new Hono<Env>()
     if (!event) return c.json({ error: 'invalid_signature' }, 400);
 
     const outcome = await recordPaymentEvent(db, providerName, event);
+    if (
+      outcome.kind === 'amount_mismatch' ||
+      outcome.kind === 'unverifiable_amount' ||
+      outcome.kind === 'payment_conflict'
+    ) {
+      const ref = uid('err');
+      logEvent({
+        level: 'warn',
+        event: 'payment_webhook_rejected',
+        tenant: c.get('tenant').slug,
+        requestId: ref,
+        provider: providerName,
+        outcome: outcome.kind,
+      });
+      return c.json(
+        {
+          error:
+            outcome.kind === 'amount_mismatch'
+              ? 'payment_amount_mismatch'
+              : outcome.kind === 'unverifiable_amount'
+                ? 'payment_amount_unverifiable'
+                : 'payment_conflict',
+        },
+        409,
+      );
+    }
     if (outcome.kind === 'recorded' && outcome.justConfirmed) {
       // booking_confirmed se dispara AHORA (Fase 8) porque es el momento real
       // en que la reserva pasa a confirmed — no en la creación (ADR 0011 §4)

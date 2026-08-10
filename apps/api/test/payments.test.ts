@@ -8,7 +8,7 @@ import { createDb, schema } from '@logic-camp/db';
 import { base64Decode, signRedsysParameters, utf8Decode } from '@logic-camp/payments';
 import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
 import { seedTenant } from './fixtures';
 
@@ -26,9 +26,9 @@ const REDSYS_CONFIG = {
   environment: 'test' as const,
 };
 
-const json = (body: unknown) => ({
+const json = (body: unknown, headers: Record<string, string> = {}) => ({
   method: 'POST',
-  headers: { 'content-type': 'application/json' },
+  headers: { 'content-type': 'application/json', ...headers },
   body: JSON.stringify(body),
 });
 
@@ -58,12 +58,17 @@ function decodeMerchantParams(paramsBase64: string): Record<string, string> {
 }
 
 /** Fabrica una notificación Redsys válidamente firmada, como la mandaría el TPV. */
-async function buildNotification(order: string, responseCode: string, amountCents: number) {
+async function buildNotification(
+  order: string,
+  responseCode: string,
+  amountCents: number,
+  authorizationCode = '123456',
+) {
   const raw = {
     Ds_Order: order,
     Ds_Response: responseCode,
     Ds_Amount: String(amountCents),
-    Ds_AuthorisationCode: '123456',
+    Ds_AuthorisationCode: authorizationCode,
   };
   const encoded = Object.fromEntries(
     Object.entries(raw).map(([k, v]) => [k, encodeURIComponent(v)]),
@@ -79,6 +84,11 @@ async function buildNotification(order: string, responseCode: string, amountCent
 
 beforeAll(async () => {
   await seedTenant(env.DB, 'alfa');
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe('gating por modo de pago (ADR 0011 §3)', () => {
@@ -165,6 +175,8 @@ describe('reserva web con pago (redsys deposit)', () => {
     const expectedDeposit = Math.round(body.totalCents * 0.3);
     expect(params.Ds_Merchant_Amount).toBe(String(expectedDeposit));
     expect(params.Ds_Merchant_Order).toBe(body.payment.providerRef);
+    expect(JSON.stringify(params)).not.toContain('holder@example.com');
+    expect(JSON.stringify(params)).not.toContain('holder%40example.com');
 
     // la reserva mapea a su intent para poder confirmarla luego desde el webhook
     const meta = await createDb(env.DB)
@@ -172,6 +184,41 @@ describe('reserva web con pago (redsys deposit)', () => {
       .from(schema.meta)
       .where(eq(schema.meta.key, `payment_order:redsys:${body.payment.providerRef}`));
     expect(meta).toHaveLength(1);
+  });
+
+  it('un reintento de Idempotency-Key recupera las mismas instrucciones de pago', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const init = json(bookingBody('2026-06-01', '2026-06-04', 'idem-pay@example.com'), {
+      'Idempotency-Key': 'idem-payment-1',
+    });
+    const first = await app.request('/api/bookings', init, REDSYS_ENV);
+    expect(first.status).toBe(201);
+    const firstBody = (await first.json()) as {
+      id: string;
+      status: string;
+      payment: Record<string, unknown>;
+    };
+
+    const retry = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-01', '2026-06-04', 'idem-pay@example.com'), {
+        'Idempotency-Key': 'idem-payment-1',
+      }),
+      REDSYS_ENV,
+    );
+    expect(retry.status).toBe(200);
+    const retryBody = (await retry.json()) as {
+      id: string;
+      status: string;
+      idempotent: boolean;
+      payment: Record<string, unknown>;
+    };
+    expect(retryBody).toMatchObject({
+      id: firstBody.id,
+      status: 'pending',
+      idempotent: true,
+    });
+    expect(retryBody.payment).toEqual(firstBody.payment);
   });
 
   it('el webhook confirma la reserva, registra el pago y dispara booking_confirmed', async () => {
@@ -263,6 +310,117 @@ describe('reserva web con pago (redsys deposit)', () => {
       .from(schema.payments)
       .where(eq(schema.payments.bookingId, created.id));
     expect(payments).toHaveLength(1);
+  });
+
+  it('un importe firmado distinto del intent falla cerrado y no confirma ni registra pago', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-05', '2026-06-08', 'amount-mismatch@example.com')),
+      REDSYS_ENV,
+    );
+    const created = (await create.json()) as {
+      id: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+    const expected = Math.round(created.totalCents * 0.3);
+    const notification = await buildNotification(created.payment.providerRef, '0000', expected - 1);
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const hook = await app.request(
+      '/api/payments/webhook/redsys',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
+      REDSYS_ENV,
+    );
+    expect(hook.status).toBe(409);
+    await expect(hook.json()).resolves.toEqual({ error: 'payment_amount_mismatch' });
+
+    const db = createDb(env.DB);
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    expect(booking.status).toBe('pending');
+    expect(booking.paidCents).toBe(0);
+    expect(
+      await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id)),
+    ).toHaveLength(0);
+  });
+
+  it('dos eventId distintos del mismo providerRef representan un solo cobro', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-09', '2026-06-12', 'provider-ref@example.com')),
+      REDSYS_ENV,
+    );
+    const created = (await create.json()) as {
+      id: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+    const amount = Math.round(created.totalCents * 0.3);
+    const first = await buildNotification(created.payment.providerRef, '0000', amount, 'AUTH-ONE');
+    const second = await buildNotification(created.payment.providerRef, '0000', amount, 'AUTH-TWO');
+
+    for (const body of [first, second]) {
+      const res = await app.request(
+        '/api/payments/webhook/redsys',
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body,
+        },
+        REDSYS_ENV,
+      );
+      expect(res.status).toBe(200);
+    }
+
+    const db = createDb(env.DB);
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    expect(booking.paidCents).toBe(amount);
+    expect(
+      await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id)),
+    ).toHaveLength(1);
+  });
+
+  it('si crear el intent externo falla, responde 502 y declara la reserva pending persistida', async () => {
+    await setPaymentsConfig({ provider: 'stripe', mode: 'full' });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ error: { message: 'provider unavailable' } }), {
+          status: 503,
+          headers: { 'content-type': 'application/json' },
+        }),
+      ),
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const res = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-13', '2026-06-16', 'intent-failed@example.com')),
+      {
+        DB: env.DB,
+        TENANT_SLUG: 'alfa',
+        STRIPE_SECRET_KEY: 'sk_test',
+        STRIPE_WEBHOOK_SECRET: 'whsec_test',
+      },
+    );
+    expect(res.status).toBe(502);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body).toMatchObject({
+      error: 'payment_intent_failed',
+      status: 'pending',
+      persisted: true,
+    });
+    expect(body.ref).toMatch(/^err_/);
   });
 
   it('firma inválida → 400, no toca la reserva', async () => {

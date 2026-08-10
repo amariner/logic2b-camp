@@ -17,7 +17,7 @@ import { CONSENT_VERSION } from '../src/consent';
 import { anonymizeGuest, exportGuest, sweepEnquiries, sweepRetention } from '../src/rgpd';
 import { seedTenant } from './fixtures';
 
-const envA = { DB: env.DB, TENANT_SLUG: 'alfa' };
+const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
 
 const json = (body: unknown, headers: Record<string, string> = {}) => ({
   method: 'POST',
@@ -226,6 +226,29 @@ describe('export del interesado — art. 15 y 20 (ADR 0026 §2.1)', () => {
     expect(Array.isArray(data?.auditTrail)).toBe(true);
   });
 
+  it('el export no entrega el payload raw heredado del proveedor de pago', async () => {
+    await makeGuest('gst_export_raw');
+    await makeStay('gst_export_raw', 'bkg_export_raw', '2021-08-10');
+    await db()
+      .insert(schema.payments)
+      .values({
+        id: 'pay_export_raw',
+        bookingId: 'bkg_export_raw',
+        provider: 'stripe',
+        providerRef: 'cs_test',
+        amountCents: 10000,
+        status: 'succeeded',
+        raw: { customer_email: 'raw-secret@example.com', token: 'tok_secret' },
+        createdAt: '2021-08-01T00:00:00.000Z',
+      });
+
+    const data = await exportGuest(db(), 'alfa', 'gst_export_raw');
+    const dump = JSON.stringify(data?.payments);
+    expect(dump).not.toContain('raw-secret@example.com');
+    expect(dump).not.toContain('tok_secret');
+    expect(data?.payments[0]).not.toHaveProperty('raw');
+  });
+
   it('la ruta pide rol gerencia — no es una consulta de mostrador', async () => {
     await makeGuest('gst_export');
     const res = await app.request(
@@ -279,6 +302,45 @@ describe('supresión — anonimizar, y negar CON FECHA (ADR 0026 §2.2)', () => 
     expect(g?.address).toBeNull();
     // la fila SOBREVIVE: reservas y pagos la referencian
     expect(g).toBeDefined();
+  });
+
+  it('vacía también los campos del parte, el consentimiento y las notas libres vinculadas', async () => {
+    await makeGuest('gst_pii_completo', {
+      secondSurname: 'Personal',
+      sex: 'F',
+      docSupportNumber: 'SOPORTE-SECRETO',
+      kinship: 'Madre',
+      gdprConsentAt: '2020-01-01T00:00:00.000Z',
+      gdprConsentVersion: 'privacy-2020',
+    });
+    await makeStay('gst_pii_completo', 'bkg_pii_completo', '2021-01-03');
+    await db()
+      .update(schema.bookings)
+      .set({ notes: 'Alergia y teléfono privado +34699999999' })
+      .where(eq(schema.bookings.id, 'bkg_pii_completo'));
+
+    const result = await anonymizeGuest(db(), 'alfa', 'gst_pii_completo', {
+      today: '2026-07-21',
+    });
+    expect(result).toEqual({ ok: true, alreadyDone: false });
+
+    const guest = (
+      await db().select().from(schema.guests).where(eq(schema.guests.id, 'gst_pii_completo'))
+    )[0]!;
+    for (const field of [
+      'secondSurname',
+      'sex',
+      'docSupportNumber',
+      'kinship',
+      'gdprConsentAt',
+      'gdprConsentVersion',
+    ] as const) {
+      expect(guest[field]).toBeNull();
+    }
+    const booking = (
+      await db().select().from(schema.bookings).where(eq(schema.bookings.id, 'bkg_pii_completo'))
+    )[0]!;
+    expect(booking.notes).toBeNull();
   });
 
   it('una estancia dentro del plazo legal la BLOQUEA, y dice hasta cuándo', async () => {

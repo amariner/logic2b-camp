@@ -26,7 +26,7 @@ import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import { CONSENT_VERSION } from '../consent';
-import { executeRefund, recordManualPayment } from '../payments';
+import { executeRefund, paymentView, recordManualPayment } from '../payments';
 import { buildParteForDate, resolveTransport } from '../hospedajes';
 import { anonymizeGuest, exportGuest, sweepRetention } from '../rgpd';
 import {
@@ -35,9 +35,11 @@ import {
   bookingActionSchema,
   bookingsListQuerySchema,
   enquiryPatchSchema,
+  enquiriesListQuerySchema,
   guestCreateSchema,
   guestPatchSchema,
   guestsListQuerySchema,
+  idempotencyKeySchema,
   notificationsListQuerySchema,
   parteQuerySchema,
   paymentsListQuerySchema,
@@ -398,7 +400,7 @@ export const adminRoutes = new Hono<AuthEnv>()
         ...g,
         isLead: links.find((l) => l.guestId === g.id)?.isLead ?? false,
       })),
-      payments,
+      payments: payments.map(paymentView),
     });
   })
 
@@ -406,13 +408,15 @@ export const adminRoutes = new Hono<AuthEnv>()
   .post('/bookings', requireRole('reception'), async (c) => {
     const parsed = adminBookingCreateSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const idem = idempotencyKeySchema.safeParse(c.req.header('Idempotency-Key'));
+    if (!idem.success) return c.json({ error: 'invalid_idempotency_key' }, 400);
     const { channel, preferredUnitId, ...body } = parsed.data;
 
     const tenant = c.get('tenant');
     const tenantConfig = await loadTenantConfig(tenant.db);
     const result = await createBooking(tenant, body, {
       channel,
-      idemKey: c.req.header('Idempotency-Key'),
+      idemKey: idem.data,
       taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
       preferredUnitId,
     });
@@ -872,7 +876,8 @@ export const adminRoutes = new Hono<AuthEnv>()
   // es un dato de obligación legal, no una consulta de mostrador.
   .get('/hospedajes/parte', requireRole('manager'), async (c) => {
     const parsed = parteQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const db = c.get('tenant').db;
     const result = await buildParteForDate(db, parsed.data.date);
 
@@ -921,16 +926,23 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ error: 'incomplete', issues: result.issues }, 422);
 
     const { transport, creds } = resolveTransport(c.env);
-    if (transport.mode === 'manual')
-      return c.json({ error: 'manual_only' }, 409); // descarga: no hay envío automático
+    if (transport.mode === 'manual') return c.json({ error: 'manual_only' }, 409); // descarga: no hay envío automático
 
     const sent = await transport.send(result.xml, creds);
     if (!sent.ok) return c.json({ error: sent.error }, 502);
 
-    await audit(tenant.db, tenant.slug, c.get('user').id, 'hospedajes', parsed.data.date, 'enviar', {
-      count: result.estancias.length,
-      reference: sent.reference,
-    });
+    await audit(
+      tenant.db,
+      tenant.slug,
+      c.get('user').id,
+      'hospedajes',
+      parsed.data.date,
+      'enviar',
+      {
+        count: result.estancias.length,
+        reference: sent.reference,
+      },
+    );
     return c.json({ ok: true, date: parsed.data.date, reference: sent.reference });
   })
 
@@ -1075,6 +1087,11 @@ export const adminRoutes = new Hono<AuthEnv>()
     if (unitId) {
       const unit = (await db.select().from(schema.units).where(eq(schema.units.id, unitId)))[0];
       if (!unit) return c.json({ error: 'unknown_unit' }, 404);
+    } else {
+      const type = (
+        await db.select().from(schema.unitTypes).where(eq(schema.unitTypes.id, unitTypeId!))
+      )[0];
+      if (!type) return c.json({ error: 'unknown_unit_type' }, 404);
     }
 
     if (targetUnitIds.length) {
@@ -1128,14 +1145,14 @@ export const adminRoutes = new Hono<AuthEnv>()
 
   // ---------- Solicitudes ----------
   .get('/enquiries', async (c) => {
-    const status = c.req.query('status');
+    const parsed = enquiriesListQuerySchema.safeParse(c.req.query());
+    if (!parsed.success)
+      return c.json({ error: 'invalid_query', issues: parsed.error.issues }, 400);
     const db = c.get('tenant').db;
-    const valid = ['new', 'contacted', 'quoted', 'converted', 'lost'] as const;
-    const filter = valid.find((s) => s === status);
     const rows = await db
       .select()
       .from(schema.enquiries)
-      .where(filter ? eq(schema.enquiries.status, filter) : undefined)
+      .where(parsed.data.status ? eq(schema.enquiries.status, parsed.data.status) : undefined)
       .orderBy(desc(schema.enquiries.createdAt));
     return c.json({ items: rows });
   })
@@ -1239,7 +1256,7 @@ export const adminRoutes = new Hono<AuthEnv>()
     return c.json({
       page,
       pageSize,
-      items: rows.map((r) => ({ ...r.payment, bookingCode: r.bookingCode })),
+      items: rows.map((r) => ({ ...paymentView(r.payment), bookingCode: r.bookingCode })),
     });
   })
 
@@ -1383,15 +1400,28 @@ export const adminRoutes = new Hono<AuthEnv>()
     const parsed = userCreateSchema.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const tenant = c.get('tenant');
+    const input = { ...parsed.data, email: parsed.data.email.toLowerCase() };
+
+    const duplicate = await tenant.db
+      .select({ id: schema.users.id })
+      .from(schema.users)
+      .where(eq(schema.users.email, input.email));
+    if (duplicate[0]) return c.json({ error: 'user_exists' }, 409);
 
     try {
-      const user = await provisionUser(c.env, parsed.data);
+      const user = await provisionUser(c.env, input);
       await audit(tenant.db, tenant.slug, c.get('user').id, 'user', user.id, 'create', {
         role: user.role,
       });
       return c.json({ id: user.id, email: user.email, name: user.name, role: user.role }, 201);
-    } catch {
-      // email duplicado es el caso real; Better Auth lanza APIError
-      return c.json({ error: 'user_exists' }, 409);
+    } catch (error) {
+      // Cubre la carrera entre la comprobación y el insert sin convertir un
+      // fallo distinto de Better Auth/D1 en un falso "usuario existente".
+      const raced = await tenant.db
+        .select({ id: schema.users.id })
+        .from(schema.users)
+        .where(eq(schema.users.email, input.email));
+      if (raced[0]) return c.json({ error: 'user_exists' }, 409);
+      throw error;
     }
   });

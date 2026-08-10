@@ -15,6 +15,7 @@ import {
 import { schema, type Db } from '@logic-camp/db';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import { nowIso, uid } from './ids';
+import { paymentView } from './payments';
 
 /** Fecha de hoy en ISO sin zona horaria — el sistema opera en UTC. */
 export const todayIso = (): string => nowIso().slice(0, 10);
@@ -29,13 +30,19 @@ export { CONSENT_VERSION } from './consent';
 const SCRUBBED = {
   name: 'Anonimizado',
   surname: '',
+  secondSurname: null,
+  sex: null,
   docType: null,
   docNumber: null,
+  docSupportNumber: null,
   birthdate: null,
   nationality: null,
+  kinship: null,
   email: null,
   phone: null,
   address: null,
+  gdprConsentAt: null,
+  gdprConsentVersion: null,
 } as const;
 
 /** Claves de `guests` que son dato personal — el export y el borrado usan la MISMA lista. */
@@ -90,10 +97,30 @@ export async function anonymizeGuest(
   if (until) return { ok: false, reason: 'retention_hold', until };
 
   const at = nowIso();
-  await db
-    .update(schema.guests)
-    .set({ ...SCRUBBED, anonymizedAt: at })
-    .where(eq(schema.guests.id, guestId));
+  const links = await db
+    .select({ bookingId: schema.bookingGuests.bookingId })
+    .from(schema.bookingGuests)
+    .where(eq(schema.bookingGuests.guestId, guestId));
+  const writes = [
+    db
+      .update(schema.guests)
+      .set({ ...SCRUBBED, anonymizedAt: at })
+      .where(eq(schema.guests.id, guestId)),
+    ...(links.length
+      ? [
+          db
+            .update(schema.bookings)
+            .set({ notes: null })
+            .where(
+              inArray(
+                schema.bookings.id,
+                links.map((link) => link.bookingId),
+              ),
+            ),
+        ]
+      : []),
+  ];
+  await db.batch(writes as unknown as Parameters<typeof db.batch>[0]);
   await scrubAuditTrail(db, guestId);
   // La supresión se audita SIEMPRE, y su propio rastro no lleva ningún dato personal.
   await db.insert(schema.auditLog).values({
@@ -192,7 +219,7 @@ export async function exportGuest(
       isLeadOf: links.filter((l) => l.isLead).map((l) => l.bookingId),
     },
     bookings,
-    payments,
+    payments: payments.map(paymentView),
     auditTrail,
   };
 }

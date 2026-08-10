@@ -1,12 +1,14 @@
 /**
  * Leads de producto (ADR 0016, Frente B): el formulario "Pedir demo" de la landing.
  * NO es una `enquiry` (huésped→camping): es un comprador→Logic2B. Sin tabla en v1;
- * se envía por email reusando el driver Resend. Sin API key → noop (no rompe la landing).
+ * se envía por email reusando el driver Resend. El resultado público distingue
+ * entrega, simulación y ausencia/fallo de proveedor (ADR 0042).
  */
-import { noopSender, resendSender } from '@logic-camp/notifications';
+import { resendSender } from '@logic-camp/notifications';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { logEvent } from '../errors';
+import { uid } from '../ids';
 import type { Env } from '../tenant';
 
 const leadSchema = z.object({
@@ -44,23 +46,52 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     .map(([k, v]) => `<tr><td><strong>${k}</strong></td><td>${escapeHtml(v)}</td></tr>`)
     .join('')}</table><p><strong>Mensaje:</strong><br>${escapeHtml(d.message || '—')}</p>`;
 
-  const apiKey = c.env.RESEND_API_KEY;
-  const sender = apiKey ? resendSender(apiKey) : noopSender;
-  const result = await sender({
+  const configured = c.env.LEADS_TRANSPORT;
+  if (configured !== undefined && configured !== 'demo' && configured !== 'resend') {
+    throw new Error(`LEADS_TRANSPORT inválido: ${configured}`);
+  }
+  const transport = configured ?? (c.env.RESEND_API_KEY ? 'resend' : 'disabled');
+  if (transport === 'disabled' || (transport === 'resend' && !c.env.RESEND_API_KEY)) {
+    return c.json(
+      { ok: false as const, outcome: 'disabled' as const, error: 'lead_delivery_disabled' },
+      503,
+    );
+  }
+  if (transport === 'demo') {
+    logEvent({
+      level: 'info',
+      event: 'lead_demo_simulated',
+      tenant: c.get('tenant').slug,
+    });
+    return c.json({ ok: true as const, outcome: 'demo' as const }, 202);
+  }
+
+  const result = await resendSender(c.env.RESEND_API_KEY!)({
     from: LEADS_FROM,
     to: LEADS_TO,
     replyTo: d.email,
     message: { subject: `${d.plan ? `Plan ${d.plan}` : 'Demo'}: ${d.campingName}`, html, text },
   });
-  // El visitante siempre recibe ok si el input es válido; el fallo de envío se registra en servidor.
-  if (!result.ok)
+  if (!result.ok) {
+    const ref = uid('err');
     logEvent({
       level: 'error',
       event: 'lead_send_failed',
       tenant: c.get('tenant').slug,
+      requestId: ref,
       detail: result.error,
     });
-  return c.json({ ok: true });
+    return c.json(
+      {
+        ok: false as const,
+        outcome: 'failed' as const,
+        error: 'lead_delivery_failed',
+        ref,
+      },
+      502,
+    );
+  }
+  return c.json({ ok: true as const, outcome: 'delivered' as const }, 202);
 });
 
 function escapeHtml(s: string): string {

@@ -1,7 +1,18 @@
 import { z } from 'zod';
 import { tenantModulesPatchSchema } from './config-modules';
 
-export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD');
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Formato Y fecha de calendario real: `2026-02-31` no es un día ISO válido. */
+export const isoDate = z
+  .string()
+  .regex(ISO_DATE_PATTERN, 'YYYY-MM-DD')
+  .refine((value) => {
+    const parsed = new Date(`${value}T00:00:00.000Z`);
+    return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+  }, 'fecha inexistente');
+
+export const idempotencyKeySchema = z.string().trim().min(1).max(100).optional();
 
 export const occupancySchema = z.object({
   adults: z.number().int().min(1).max(20),
@@ -34,16 +45,24 @@ export const contactSchema = z.object({
   phone: z.string().max(40).optional(),
 });
 
-export const enquiryRequestSchema = z.object({
-  message: z.string().min(1).max(4000),
-  contact: contactSchema,
-  locale: z.string().min(2).max(5).default('es'),
-  dateFrom: isoDate.optional(),
-  dateTo: isoDate.optional(),
-  occupancy: occupancySchema.optional(),
-  unitTypeId: z.string().optional(),
-  source: z.string().max(40).default('web'),
-});
+export const enquiryRequestSchema = z
+  .object({
+    message: z.string().min(1).max(4000),
+    contact: contactSchema,
+    locale: z.string().min(2).max(5).default('es'),
+    dateFrom: isoDate.optional(),
+    dateTo: isoDate.optional(),
+    occupancy: occupancySchema.optional(),
+    unitTypeId: z.string().optional(),
+    source: z.string().max(40).default('web'),
+  })
+  .superRefine((value, ctx) => {
+    if (Boolean(value.dateFrom) !== Boolean(value.dateTo)) {
+      ctx.addIssue({ code: 'custom', message: 'date_range_incomplete', path: ['dateFrom'] });
+    } else if (value.dateFrom && value.dateTo && value.dateFrom >= value.dateTo) {
+      ctx.addIssue({ code: 'custom', message: 'invalid_dates', path: ['dateTo'] });
+    }
+  });
 
 /**
  * Todo lo que define una reserva MENOS el consentimiento, que se exige distinto
@@ -232,8 +251,8 @@ export const blockCreateSchema = z
     dateTo: isoDate,
     reason: z.enum(['maintenance', 'owner', 'longstay', 'manual']),
   })
-  .refine((b) => Boolean(b.unitId) || Boolean(b.unitTypeId), {
-    message: 'unit_or_type_required',
+  .refine((b) => Boolean(b.unitId) !== Boolean(b.unitTypeId), {
+    message: 'exactly_one_unit_or_type_required',
   })
   .refine((b) => b.dateFrom < b.dateTo, { message: 'invalid_dates' });
 
@@ -246,6 +265,10 @@ export const requoteSchema = z.object({
 
 export const enquiryPatchSchema = z.object({
   status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']),
+});
+
+export const enquiriesListQuerySchema = z.object({
+  status: z.enum(['new', 'contacted', 'quoted', 'converted', 'lost']).optional(),
 });
 
 export const unitPatchSchema = z.object({
@@ -293,8 +316,8 @@ export const settingsPatchSchema = z
   .object({
     name: z.string().min(1).max(200),
     timezone: z.string().min(1).max(60),
-    currency: z.string().length(3),
-    locales: z.array(z.string().min(2).max(5)).min(1),
+    currency: z.string().regex(/^[A-Z]{3}$/, 'ISO 4217 de tres letras mayúsculas'),
+    locales: z.array(z.string().regex(/^[a-z]{2}(?:-[A-Z]{2})?$/, 'locale BCP 47 corto')).min(1),
     modules: tenantModulesPatchSchema,
   })
   .partial();

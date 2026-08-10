@@ -678,6 +678,7 @@
     "solicitudEnviar": "Solicitar proyecto",
     "enviando": "Enviando…",
     "ok": "¡Recibido! Te escribimos en menos de 24 h.",
+    "demo": "Simulación completada: no se ha enviado ningún mensaje.",
     "error": "No se pudo enviar. Escríbenos a hola@logic2b.com y lo resolvemos.",
     "verDemoTexto": "¿Prefieres verla ya? La demo tiene dos caras y las dos están abiertas: la web del camping y el gestor con el que se lleva.",
     "verMostrador": "Entrar al gestor de camping"
