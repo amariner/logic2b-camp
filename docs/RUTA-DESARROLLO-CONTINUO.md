@@ -461,7 +461,11 @@ mentir sobre su estado.
 
 ### R13 · Aprovisionamiento, onboarding y publicación
 
-- [ ] Validar plantilla, CLI, esquema de configuración y dry-run de alta.
+- [x] Validar plantilla, CLI, esquema de configuración y dry-run de alta.
+  - [x] Identidad normalizada, escape TS/JSON, scaffold atómico, cero symlinks y
+        todos los marcadores pendientes inventariados.
+  - [x] `--dry-run` genera en temporal, emite huella SHA-256 y no deja tenant;
+        el runner rechaza pasos manuales antes de lanzar procesos.
 - [ ] Probar migraciones, seed inicial, usuarios, dominio, bindings, secrets,
       correo, pagos, backup, restauración y rollback en entorno no productivo.
 - [ ] Confirmar que dar de alta un camping no modifica `apps/` ni `packages/` y

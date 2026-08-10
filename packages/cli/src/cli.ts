@@ -6,15 +6,21 @@
  */
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { InfraNotConfirmedError, runInfraPlan } from './infra';
+import { InfraManualStepError, InfraNotConfirmedError, runInfraPlan } from './infra';
 import { formatPlan, infraPlan } from './plan';
-import { scaffoldTenant, validateSlug, type TenantIdentity } from './scaffold';
+import {
+  dryRunTenant,
+  scaffoldTenant,
+  validateTenantIdentity,
+  type TenantIdentity,
+} from './scaffold';
 
 const USAGE = `Uso:
-  pnpm new:camping <slug> --name "Nombre" --domain dominio.com [--zone zona.com] [--address "..."] [--apply]
+  pnpm new:camping <slug> --name "Nombre" --domain dominio.com [--zone zona.com] [--address "..."] [--dry-run | --apply]
   pnpm new:camping <slug> --plan-only    # reimprime el plan de infra para un tenant ya creado
 
-  --apply   ejecuta el plan de infra contra Cloudflare (requiere además LOGIC_CAMP_ALLOW_INFRA=1)
+  --dry-run ensaya el scaffold en un temporal, imprime su huella y no escribe en tenants/
+  --apply   solicita el runner (doble candado + preflight; hoy se bloquea por pasos manuales)
 `;
 
 type Args = {
@@ -24,6 +30,7 @@ type Args = {
   zone?: string;
   address?: string;
   apply: boolean;
+  dryRun: boolean;
   planOnly: boolean;
 };
 
@@ -33,16 +40,20 @@ function parseArgs(rawArgv: string[]): Args {
   const argv = rawArgv[0] === '--' ? rawArgv.slice(1) : rawArgv;
   const [slug, ...rest] = argv;
   if (!slug) throw new Error(USAGE);
-  const args: Args = { slug, apply: false, planOnly: false };
+  const args: Args = { slug, apply: false, dryRun: false, planOnly: false };
   for (let i = 0; i < rest.length; i++) {
     const flag = rest[i];
     if (flag === '--apply') args.apply = true;
+    else if (flag === '--dry-run') args.dryRun = true;
     else if (flag === '--plan-only') args.planOnly = true;
     else if (flag === '--name') args.name = rest[++i];
     else if (flag === '--domain') args.domain = rest[++i];
     else if (flag === '--zone') args.zone = rest[++i];
     else if (flag === '--address') args.address = rest[++i];
     else throw new Error(`flag desconocido: ${flag}\n\n${USAGE}`);
+  }
+  if (args.dryRun && (args.apply || args.planOnly)) {
+    throw new Error('--dry-run y --apply/--plan-only no se pueden combinar');
   }
   return args;
 }
@@ -55,21 +66,14 @@ function repoRoot(): string {
 function main(): void {
   const args = parseArgs(process.argv.slice(2));
 
-  const slugError = validateSlug(args.slug);
-  if (slugError) {
-    console.error(`✗ ${slugError}`);
-    process.exitCode = 1;
-    return;
-  }
-
   const root = repoRoot();
-  const identity: TenantIdentity = {
+  const identity = validateTenantIdentity({
     slug: args.slug,
     name: args.name ?? args.slug,
     domain: args.domain ?? `${args.slug}.example.com`,
     zone: args.zone ?? args.domain ?? `${args.slug}.example.com`,
     address: args.address,
-  };
+  } satisfies TenantIdentity);
 
   if (!args.planOnly) {
     if (!args.name || !args.domain) {
@@ -79,14 +83,19 @@ function main(): void {
       process.exitCode = 1;
       return;
     }
-    const result = scaffoldTenant(join(root, 'tenants/_template'), join(root, 'tenants'), identity);
-    console.log(`✓ tenants/${identity.slug}/ creado (${result.filesWritten.length} ficheros)`);
-    console.log('\nCapa 2 pendiente (brief, contenido y media reales):');
-    for (const t of result.setupTodos) console.log(`  · ${t.file}: ${t.todoCount} __TODO__`);
-    if (result.pendingDatabaseId) {
+    const result = args.dryRun
+      ? dryRunTenant(join(root, 'tenants/_template'), identity)
+      : scaffoldTenant(join(root, 'tenants/_template'), join(root, 'tenants'), identity);
+    if ('fingerprint' in result) {
       console.log(
-        '  · wrangler.jsonc: database_id pendiente (se rellena tras crear la D1 real, paso 1 del plan)',
+        `✓ dry-run temporal completado (${result.filesWritten.length} ficheros; huella ${result.fingerprint})`,
       );
+    } else {
+      console.log(`✓ tenants/${identity.slug}/ creado (${result.filesWritten.length} ficheros)`);
+    }
+    console.log('\nMarcadores pendientes antes de considerar lista el alta:');
+    for (const report of result.placeholders) {
+      console.log(`  · ${report.file}: ${report.markers.join(', ')}`);
     }
   }
 
@@ -97,7 +106,7 @@ function main(): void {
   console.log(formatPlan(steps));
 
   if (args.apply) {
-    console.log('\n--apply: ejecutando el plan contra Cloudflare…');
+    console.log('\n--apply: validando el plan completo antes de ejecutar…');
     try {
       const results = runInfraPlan(steps);
       const failed = results.find((r) => r.ranCommand && r.exitCode !== 0);
@@ -108,7 +117,7 @@ function main(): void {
         console.log('✓ plan ejecutado');
       }
     } catch (err) {
-      if (err instanceof InfraNotConfirmedError) {
+      if (err instanceof InfraNotConfirmedError || err instanceof InfraManualStepError) {
         console.error(`\n✗ ${err.message}`);
         process.exitCode = 1;
       } else {
@@ -117,9 +126,14 @@ function main(): void {
     }
   } else {
     console.log(
-      '\n(no ejecutado — pasa --apply, con LOGIC_CAMP_ALLOW_INFRA=1, cuando tengas las credenciales)',
+      '\n(no ejecutado — el plan contiene pasos manuales; requiere fases supervisadas, credenciales y autorización)',
     );
   }
 }
 
-main();
+try {
+  main();
+} catch (error) {
+  console.error(`✗ ${error instanceof Error ? error.message : String(error)}`);
+  process.exitCode = 1;
+}

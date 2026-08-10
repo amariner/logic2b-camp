@@ -95,3 +95,41 @@ Confirmando lo previsto en §5 ("se puede escribir y testear su lógica de plant
 - **17 tests** (`scaffold.test.ts`/`plan.test.ts`/`infra.test.ts`) contra el `_template` real del repo — incluye el bug real que atrapó la propia sesión: `walk()` seguía symlinks de `node_modules` (pnpm) y arrastraba miles de ficheros del store; arreglado excluyendo `node_modules`/`.turbo`/`dist`/`.wrangler` del recorrido. Verificado además a mano: `pnpm new:camping smoke-test --name … --domain …` seguido de `pnpm --filter @tenant/smoke-test typecheck && lint`, ambos limpios, tenant de prueba borrado después.
 - Efecto colateral corregido en `tenants/_template/wrangler.jsonc`: su comentario de cabecera mencionaba literalmente `__TODO__`/`__SLUG__` como texto documental — la sustitución de tokens (deliberadamente ciega, sin parseo de comentarios) lo convertía en texto sin sentido en el tenant generado. Reescrito para no citar los tokens por nombre.
 - **Sigue sin implementar**: la ejecución real de `runInfraPlan()` contra la cuenta de Cloudflare — sigue bloqueada por falta de credenciales y mandato, exactamente igual que antes de esta sesión. Nada en `--apply` se ha invocado nunca contra la cuenta real.
+
+## 8. Addendum (sesión 127) — dry-run literal y preflight fail-closed
+
+La auditoría R13 demuestra que el nombre histórico «dry-run» era impreciso: el
+comando sin `--apply` no tocaba Cloudflare, pero sí creaba `tenants/{slug}`. La
+misma sustitución textual podía romper TS/JSON con comillas en el nombre o la
+dirección, y el informe solo contaba `__TODO__`; omitía identidad legal,
+dirección y otros marcadores `__...__`.
+
+- `--dry-run` genera ahora el scaffold completo en un directorio temporal del
+  sistema, calcula una huella SHA-256 sobre rutas+bytes y lo elimina. No escribe
+  en `tenants/`, `apps/` ni `packages/`.
+- La identidad tiene una frontera única: slug, nombre, dominio, zona y dirección
+  se validan/normalizan antes de escribir; dominio y zona deben ser hostnames
+  coherentes. La sustitución escapa según TS o JSON sin perder apóstrofos ni
+  comillas legítimas.
+- El scaffold rechaza symlinks y escribe en staging antes de un `rename`
+  atómico. El resultado enumera todos los marcadores pendientes, incluido el
+  bloque legal y `database_id`.
+- `runInfraPlan()` hace preflight del plan entero. Si contiene un paso manual,
+  lanza `InfraManualStepError` antes de invocar el primer proceso. El plan actual
+  contiene `database_id` y DNS, por lo que `--apply` permanece deliberadamente
+  cerrado hasta diseñar una ejecución supervisada por fases.
+
+### Incidente de la prueba roja y reversión
+
+La reproducción inicial abrió el candado de prueba sobre el runner antiguo y
+expuso el defecto con un efecto real: Wrangler creó la D1 vacía
+`logic-camp-la-pineda` (`ae2d753c-9249-489d-bd81-69bbf044e5f5`) antes de llegar
+al paso manual. Se comprobó que tenía cero tablas, se eliminó inmediatamente y
+una segunda lista confirmó su ausencia; las otras cuatro D1 permanecieron sin
+cambios. Las pruebas del runner usan desde entonces un ejecutor inyectado sin
+red ni procesos reales.
+
+Este incidente invalida la frase anterior «Nada en `--apply` se ha invocado
+nunca contra la cuenta real» como estado histórico absoluto. El estado vigente
+es: no queda recurso creado por la prueba, no existe un apply real acreditado y
+el runner fail-closed impide repetir el arranque parcial.

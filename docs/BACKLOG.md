@@ -47,6 +47,12 @@ es un gate de producción, no un pendiente local de implementación.
   la política de cookies y fija que los prototipos no ejecutan acciones. El
   runbook común documenta disparador, owner, aceptación, degradación y apagado.
   Cuentas, sandbox y proveedores continúan detrás de sus gates explícitos.
+- ~~[R13/dry-run] Validar plantilla, configuración, CLI y dry-run de alta~~ →
+  **hecho 2026-08-10 (sesión 127)**: identidad validada, escape TS/JSON,
+  scaffold atómico sin symlinks, informe de todos los marcadores y `--dry-run`
+  temporal con huella reproducible. El runner rechaza planes con pasos manuales
+  antes del primer proceso; `--apply`, migraciones remotas y deploy siguen
+  cerrados hasta fases supervisadas.
 - ~~[8.x] Cron de purga/aviso de reservas `pending` colgadas~~ → hecho 2026-07-19 (sesión 26, ADR 0014): SOLO avisa (email interno + `notifications_log`, una vez por reserva), no cancela ni libera inventario — riesgo de cancelar una venta real por lag del webhook. Mismo cron de la purga de holds de la Fase 5 (`apps/api`, genérico). **Purgar de verdad (auto-cancelar) queda declarado para cuando el volumen real lo justifique**, no antes.
 - [8.x] Botón "reintentar el pago" en `/reserva` cuando `pago=cancelado`/queda `pending` mucho tiempo (hoy solo se informa y se remite a recepción) — 2026-07-19
 - ~~[8.x] Pantalla de log de pagos en el dashboard~~ → hecho 2026-07-19 (sesión 24: `GET /api/admin/payments` — `payments` ya era el log completo desde ADR 0011, esta pantalla solo lo hace visible — filtro por proveedor y estado, `/admin/#/pagos`)

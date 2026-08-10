@@ -1,5 +1,36 @@
 # PROGRESS — Logic Camp
 
+## Dry-run literal y preflight fail-closed R13 · 2026-08-10 (sesión 127)
+
+- La auditoría de `_template`, `TenantWebConfig` y `packages/cli` encontró tres
+  huecos reales: el supuesto dry-run escribía en `tenants/`; nombre/dirección se
+  sustituían sin escape contextual y podían romper TS/JSON; y el informe omitía
+  marcadores legales, dirección y D1. El runner también empezaba un plan antes
+  de cruzar sus pasos manuales.
+- Pruebas rojas fijaron identidad segura, escape, JSON/TS sintáctico, symlinks,
+  atomicidad, inventario completo de `__...__`, huella determinista y cero
+  residuos. `--dry-run` monta ahora el scaffold en un temporal del sistema,
+  calcula SHA-256 y lo elimina; el comando real escribe primero en staging y
+  publica con un `rename` atómico.
+- Slug, nombre, dominio, zona y dirección se validan/normalizan antes de generar.
+  Dominio y zona deben ser hostnames coherentes. `runInfraPlan` recibe un runner
+  inyectable para test y rechaza cualquier paso manual en preflight, antes del
+  primer proceso; el plan vigente conserva `database_id` y DNS como gates.
+- La reproducción inicial demostró el fallo antiguo creando accidentalmente la
+  D1 vacía `logic-camp-la-pineda`
+  (`ae2d753c-9249-489d-bd81-69bbf044e5f5`). Se verificó con cero tablas, se
+  eliminó de inmediato y una segunda lista confirmó su ausencia y la permanencia
+  de las cuatro D1 preexistentes. Ninguna prueba posterior lanza procesos reales.
+- CLI pasa **45/45**, configuración **66/66**, `_template`, tipos y lint están
+  verdes. El ensayo `r13-audit` genera 18 ficheros, huella
+  `9562db329d432f4dbebb457d0ad779f68a2d54cb80fb2b8c1e416d75ca8efe37`,
+  enumera legal/contenido/D1 y deja el destino inexistente. `pnpm check` alcanza
+  **39/59** y se corta solo porque el tenant concurrente `serralta` aún no tiene
+  `tipo-parcela-bosque.webp`; no se modificó ese trabajo.
+- El primer corte local R13 queda cerrado sin tenant persistido, deploy, secrets
+  ni infraestructura vigente. El siguiente ensaya migraciones, seed, usuario y
+  rollback exclusivamente sobre un entorno local desechable.
+
 ## Gates locales finales de R12 · 2026-08-10 (sesión 126)
 
 - La auditoría final confirma cuatro fronteras honestas: la web pública no carga

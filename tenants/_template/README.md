@@ -1,12 +1,17 @@
 # tenants/_template — base de clonación (ADR 0012)
 
-Crea un camping con la CLI local. El dry-run escribe solo dentro del repositorio
-y muestra el plan de infraestructura; no toca Cloudflare sin la doble
-confirmación documentada.
+Crea un camping con la CLI local. El dry-run monta y audita el scaffold en un
+directorio temporal del sistema, imprime su huella y lo elimina; no escribe en
+`tenants/` ni toca Cloudflare.
 
 ```bash
-pnpm new:camping -- {slug} --name "Camping …" --domain camping.example
+pnpm new:camping -- {slug} --name "Camping …" --domain camping.example --dry-run
+# tras aprobar el informe, quita --dry-run para crear tenants/{slug}/
 ```
+
+Nombre, dominio y zona se validan antes de escribir. El scaffold es atómico,
+rechaza symlinks y escapa los valores según el destino TS/JSON. El informe
+enumera **todos** los marcadores `__...__`; no solo los `__TODO__` de contenido.
 
 | Fichero                     | Qué es                                                                                                     |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -40,6 +45,11 @@ pnpm new:camping -- {slug} --name "Camping …" --domain camping.example
 - [ ] Los `rate_plans` de la plantilla tienen `base_cents: 0` **a propósito**: imposible desplegar con un precio inventado sin que salte a la vista.
 
 **3. Infraestructura** (requiere las credenciales de §5 del super prompt — token con los scopes ahí listados)
+
+> El plan contiene pasos humanos (`database_id` y DNS). El runner automático lo
+> rechaza entero en preflight antes de lanzar el primer comando: no se puede usar
+> `--apply` para empezar un alta parcial. La ejecución real se hará por fases
+> supervisadas cuando exista destino, credenciales y autorización explícitos.
 
 - [ ] `wrangler d1 create logic-camp-{slug}` → pega el `database_id` en `wrangler.jsonc`.
 - [ ] `wrangler d1 migrations apply logic-camp-{slug} --remote --config tenants/{slug}/wrangler.jsonc`.

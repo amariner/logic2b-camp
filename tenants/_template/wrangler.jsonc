@@ -1,6 +1,6 @@
 // Plantilla de alta (ADR 0012 §4). `pnpm new:camping` (packages/cli) rellena
-// la identidad de este fichero sola; database_id/kv id se rellenan al crear
-// los recursos reales (wrangler d1 create logic-camp-{slug}), NUNCA a mano.
+// la identidad de este fichero sola; database_id se copia de la respuesta al
+// crear el recurso real (wrangler d1 create logic-camp-{slug}), nunca se inventa.
 {
   "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
   "name": "logic-camp-__SLUG__",
