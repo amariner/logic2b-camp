@@ -3,7 +3,12 @@
  * Cero texto en componentes: TODO sale de tenants/{slug}/content/{locale}.json.
  * Los datos de tarifas/fichas salen de @tenant/data — la misma fuente que la D1.
  */
-import { bookingMode, type TenantWebConfig } from '@logic-camp/config';
+import {
+  bookingMode,
+  parseTenantWebConfig,
+  tenantTierSchema,
+  type TenantWebConfig,
+} from '@logic-camp/config';
 import tenantConfig from '@tenant/config';
 import { webData, type WebData, type WebUnitType } from '@tenant/data';
 import type { ImageMetadata, MarkdownInstance } from 'astro';
@@ -99,13 +104,20 @@ export type Content = {
   };
 };
 
-export const config: TenantWebConfig = tenantConfig;
+export const config: TenantWebConfig = parseTenantWebConfig(tenantConfig);
+if (config.slug !== import.meta.env.EXPECTED_TENANT) {
+  throw new Error(
+    `Config web de tenant inválida: slug ${config.slug} no coincide con TENANT=${import.meta.env.EXPECTED_TENANT}`,
+  );
+}
 export const data: WebData = webData;
 export type { WebUnitType };
 
 /** TIER=1 pnpm dev degrada la demo para previsualizar el nivel 1. */
-const tierOverride = Number(import.meta.env.TIER_OVERRIDE || '') || null;
-export const tier = (tierOverride ?? config.tier) as TenantWebConfig['tier'];
+const tierOverride = import.meta.env.TIER_OVERRIDE
+  ? tenantTierSchema.parse(Number(import.meta.env.TIER_OVERRIDE))
+  : null;
+export const tier: TenantWebConfig['tier'] = tierOverride ?? config.tier;
 export const mode = bookingMode(tier);
 /** El conmutador es atrezzo solo para el build normal de la demo. */
 export const demoTierSwitch = config.demoTierSwitch === true && tier === config.tier;

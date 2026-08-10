@@ -2,6 +2,32 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
+## Índice operativo de pendientes vivos (R1 · 2026-08-10)
+
+Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
+la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
+
+- **Local ahora, por checkpoint:** R2 línea base; R4 `payments.raw`/notas y
+  contratos; R5 coherencia idioma↔nombre y solicitud↔reserva; R6 afordancias por
+  rol, nombres semánticos de clases, i18n huérfana y `aria-current`; R7
+  `BreadcrumbList` y guía de portada; R11 reset local y riesgos corregibles.
+- **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
+  reintento de pago, mover entre tipos, traducción de guías, auditoría
+  encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.
+- **Credencial/proveedor:** sandbox Redsys, Analytics, Sentry/Logpush, Queues y
+  reintentos reales, restauración remota, carga contra un objetivo autorizado y
+  revisión del payload real de pagos.
+- **Decisión/aprendizaje comercial:** tematizar el gestor, enriquecer email,
+  abrir bloqueos al visitante, volver a mostrar «cerrado», nacionalidad/nombre y
+  cualquier nueva demo D5-V/D6-V. Requieren señal observada, no iniciativa
+  técnica.
+- **Descartado o ya absorbido:** Storybook duplicado, crear bloqueos arrastrando,
+  textos originales conservados bajo cierres posteriores y E3-V/E4-V absorbidos
+  por D1-V. No se seleccionan como trabajo.
+
+La publicación del vídeo de la sesión 104 está **preparada pero no autorizada**;
+es un gate de producción, no un pendiente local de implementación.
+
 - ~~[10] `?tema=x` en la URL de la demo~~ → hecho 2026-07-19 (sesión 18: el parámetro valida contra la lista, persiste y gana a localStorage)
 - [10] Tematizar también el dashboard de la demo con los temas del ADR 0009 (hoy solo la web pública; los tokens del dashboard se tenant-izan en Fase 9) — 2026-07-19
 - [7.x] Migrar plantillas de email a React Email cuando haga falta diseño rico (el contrato render() no cambia — ADR 0010) — 2026-07-19
@@ -22,7 +48,9 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - [10] Que el visitante de la demo pueda **crear y levantar bloqueos**: fuera del alcance que acotó Andreu en la sesión 50 (un bloqueo quita inventario a la vista hasta el reset). El gesto de "crear arrastrando sobre celda libre" del planning (ADR 0023 §2) también acaba en el aviso de solo lectura — es coherente y está explicado, pero es el único gesto del planning que el visitante empieza y no puede terminar. Reabrir si al enseñar la demo se echa en falta — 2026-07-25
 - [10] Esconder por rol las afordancias de mutación en las 13 pantallas que hoy pintan botones sin mirarlo (ADR 0029 §5 lo deja fuera a propósito: la barrera es el servidor y una lista en cliente se desincroniza). Hoy el 403 se traduce a un aviso honesto en UN punto (`avisos.ts`) — 2026-07-25
 - [10] Cloudflare Web Analytics en la demo — necesita un token real del panel de Cloudflare, mismo bloqueo que Resend/Stripe/Redsys en fases anteriores — 2026-07-19
-- [10] `ui.logic2b.com` / Storybook — es su propio objetivo de Fase 10 (paquete nuevo, deploy propio), no cabe como añadido de la sesión del reset nocturno sin diluir "una sesión, un objetivo" — 2026-07-19
+- ~~[10] `ui.logic2b.com` / Storybook propio~~ → **descartado 2026-08-10
+  (R1)**: `ui.logic2b.com` ya es la referencia externa y `packages/ui` cubre el
+  consumo local. Reabrir solo con un consumidor demostrado.
 - ~~[10] Reset nocturno v2: el ancla móvil~~ → **hecho 2026-07-27 (sesión 57, ADR 0030)**: `generateSeed` recibe una FECHA (`YYYY-MM-DD`) en vez de un año, y esa fecha es **hoy** — la lee el llamante (`reset.ts`/`write-seed.ts`/`data.ts`), no el generador, que sigue puro. El PRNG se sigue sembrando con el **año**, a propósito: el camping es el mismo los 365 días y lo único que se mueve es la línea de HOY (si colgara del día, la demo se reorganizaría entera cada madrugada y el `CS-2026-0412` de ayer sería hoy otra cosa). La ventana de siembra pasa de `abr-15 → oct-15` a **`${Y-1}-11-15 → ${Y+1}-02-15`** (el desborde es lo que evita que el 1 de enero no haya pasado y el 28 de diciembre no haya futuro), la apertura declarada pasa al **año natural** (`1 ene – 31 dic`, que es lo que la tabla de tarifas de la web sabe leer) y la curva de ocupación gana los meses de invierno con estancias largas de invernante. La línea temporal alrededor del ancla se resuelve en **una función con cinco casos** —pasada, sale hoy, en casa, llega hoy, futura— y las dos que faltaban son justo las del defecto. Además, **la banda del día se planta**: seis reservas alrededor del ancla garantizan los dos gestos incluso un 15 de enero al 18 % de ocupación, donde el sorteo dejaba una sola salida y encima ya cerrada. **Coste**: el seed pasa de 2 032 a 3 491 reservas y el SQL de 1,95 a 3,4 MB (53 → 84 sentencias) — verificado contra D1 real en workerd. Texto original abajo — 2026-07-19, cerrado 2026-07-27
 - ~~[seed] **`/clientes` enseña once "Aalto" seguidos**~~ → **hecho 2026-08-03 (sesión 68)**: el seed sustituye la biyección uniforme por plazas de apellido con cola larga (1–40 apariciones), manteniendo cada pareja nombre+apellido y correo única. En las 23 anclas, la primera página contiene ≥7 apellidos y ninguno ocupa más de cuatro filas.
 - ~~[seed] **`created_at` de las 3 500 reservas es el ancla**~~ → **hecho
@@ -41,10 +69,15 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[B3] Sustituir la maqueta CSS del planning en la landing por captura REAL~~ → hecho 2026-07-21 (sesión C5, ADR 0024): captura real del dashboard con datos del generador de seed puro, sin workerd (bundle + stub Node + Playwright, mismo patrón que C1). Animación queda fuera — solo se pidió sustituir la maqueta estática.
 - ~~[B3] Idiomas fr/de/nl de la landing~~ → hecho 2026-07-22 (sesión 40, ADR 0027): `fr.json`/`de.json`/`nl.json` completos + `LOCALES` ampliado — la landing y el cromo de las guías en 6 idiomas (156 páginas construidas)
 - ~~[B3] Re-correr el E2E de Playwright del funnel de reserva contra la demo bajo `/demo/`~~ → hecho 2026-07-25 (sesión 51), y no era solo re-correrlo: estaba **rojo 4/4** desde ADR 0016 porque el spec navegaba a `/reservar` y en el bundle compuesto la web del tenant vive en `/demo/reservar` (prefijo extraído a `e2e/base.ts` → `WEB`, sobreescribible con `E2E_WEB_BASE`). Debajo había **dos fuentes de flakiness propias del test**, no del producto: (a) las fechas salían de `10 + (minutos % 12)` a ciegas y el glamping está **lleno del 17 al 20 de septiembre** en el seed limpio → 4 de cada 12 minutos fallaba por el reloj; (b) el ciclo de fechas duraba **12 min** y un hold vive **15**, así que dos pasadas seguidas reciclaban holds vivos (el cron que los purga no corre en `wrangler dev`). Ahora `estanciaLibre()` **le pregunta a la API** y avanza hasta el primer hueco real, de una petición en una (el rate limit de `/api/*` es 60/min y barrer el mes entero se comía media suite). Suite **7/7 verde en tres vueltas consecutivas** sin resembrar entre medias
-- [B] Actualizar `docs/DEMO-SCRIPT.md`: las URLs de la demo pasan de `camp.logic2b.com/` a `camp.logic2b.com/demo/` (ADR 0016) — 2026-07-19
-- [B1] Reskin del dashboard a Logic2B UI (su ADR): componentes shadcn en `packages/ui`, sidebar agrupada, isotipo, radius 10px, planning con tokens del DS — 2026-07-19
-- [B2] Estructura Logic2B en la web de tenant + isotipo "powered by Logic2B" en el pie (su ADR) — 2026-07-19
-- [B4] Documentación de producto con marca Logic2B (su ADR) — 2026-07-19
+- ~~[B] Actualizar `docs/DEMO-SCRIPT.md` a `/demo/`~~ → **hecho 2026-08-10
+  (sesión 105/R1)**: separa landing, web ficticia y gestor; elimina agosto/año
+  fijos y usa la puerta anónima vigente.
+- ~~[B1] Reskin del dashboard a Logic2B UI~~ → **hecho en ADR 0017**; esta
+  entrada era un duplicado anterior al cierre ya documentado abajo.
+- ~~[B2] Estructura Logic2B en la web de tenant + firma «powered by Logic2B»~~
+  → **hecho en ADR 0018**.
+- ~~[B4] Documentación de producto con marca Logic2B~~ → **hecho en ADR 0025
+  y sus ampliaciones C6**.
 - ~~[B1] Reskin del dashboard a Logic2B UI~~ → hecho 2026-07-20 (ADR 0017): sidebar agrupada plegable con isotipo, tokens/fuentes del DS, planning con el mapa de colores aprobado. Verificado en vivo. Quedan dos remates abajo.
 - [B1] Rename literal de las clases del dashboard: hoy los nombres camping (`bg-pino`, `text-tinta-suave`, `border-arena`…) puentean a tokens del DS vía `@theme` en `styles.css` (ADR 0017); reescribirlos a `bg-primary`/`text-muted-foreground`/`border-border` para que el código no mienta. ~400 usos en 15 ficheros — 2026-07-20
 - [C2] **AVISO antes de tocar este ítem (sesión 52)**: siete de las claves que el detector marcaba como huérfanas —`pagl.fecha/reserva/proveedor/importe` y `ntf.fecha/evento/destino/canal`— **no lo eran**: eran las cabeceras de columna de Pagos y Notificaciones, que nunca se pintaron. Ya se usan. La lección para el resto de la lista: una clave sin usar puede significar "falta la UI", no "sobra la clave" — mirar qué describe antes de borrarla.
@@ -60,10 +93,15 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   en escritorio, 44 px/16 px en la agenda móvil. El anillo de foco deja de ser
   una piel local y vuelve a la fuente única del DS. Contexto original: Llegadas
   ya había migrado en la 56 y las tres pantallas arrastraban pieles distintas.
-- [marca] **El favicon sigue siendo el isotipo** tras el cambio de logo de la sesión 59 (`/logo-mark.svg`): un wordmark no funciona a 32px, así que hoy la pestaña enseña una marca que ya no aparece en ninguna pantalla. O se acepta como está (defendible: el isotipo sigue firmando el pie del tenant) o hace falta un favicon derivado del wordmark — «2B» en Poppins 800 sobre fondo de marca sería lo coherente con la variante `compact` de la sidebar plegada. **Decisión de Andreu**, no de una sesión autónoma — 2026-07-29
+- ~~[marca] Decidir el favicon tras el cambio a wordmark~~ → **cerrado al
+  reconciliar BRAND en R1 (2026-08-10)**: se conserva el isotipo precisamente
+  para favicon y firma del tenant; no se presenta como lockup del producto.
 - ~~[marca] **`docs/brand/` y el OG image siguen con el isotipo como logo del producto**~~ → **hecho 2026-07-30 (sesión 61)**: dos tarjetas (`og.png` / `og-en.png`, una por idioma) con el wordmark «Logic2B Campings», sin isotipo, y el texto sacado del mismo `content/{lang}.json` que pinta la landing. Lo que de verdad cierra el ítem es que ahora hay **generador commiteado** — `apps/site/scripts/og.mjs`, `pnpm --filter @logic-camp/site og` —: la tarjeta de C5.2 se hizo con un script de sesión que no se guardó, y por eso este ítem existió. Los colores se **leen** del `:root` de `packages/ui/src/theme.css` en vez de copiarse (verificado: el PNG sale byte a byte idéntico). Queda vivo solo lo de `docs/brand/`, abajo
-- [dashboard] **La pantalla «Parte de viajeros» es un muro de permisos para el visitante de la demo** y no lo anuncia hasta que la abres: el rol `demo` se estrella en los 4 GET elevados (decisión **aceptada**, ADR 0029 §1 — no es un defecto). Lo que sí chirría es que la **sidebar enseñe el enlace a todo el mundo**, incluida la recepcionista real de un camping, que tampoco alcanza `manager`. O el enlace se oculta por rol, o el muro deja de ser un error genérico y explica «esto es de gerencia» desde el propio menú. Afecta a la demo comercial: el enlace está a la vista y no lleva a ningún sitio — 2026-07-29
-- [C4] La ficha de reserva (`BookingPanel`, `w-[360px] shrink-0`) a 375px deja **15px** a la lista que hay detrás: en móvil debería ser hoja completa (`Sheet`), no panel lateral. Detectado midiendo Llegadas en la sesión 56; afecta a todas las pantallas que abren ficha — 2026-07-27
+- ~~[dashboard] «Parte de viajeros» se ofrecía a roles sin permiso~~ → **hecho
+  2026-08-04 (M1)**: `NAV_GROUPS` declara `manager` y sidebar/portada filtran
+  desde la misma fuente; el servidor conserva su 403.
+- ~~[C4] Ficha de reserva móvil como `Sheet` completo~~ → **hecho 2026-08-04
+  (M1)** a 320/375/430 px con foco, Escape y retorno al origen.
 - ~~[seed] **Ninguna de las 83 unidades está fuera de servicio**~~ → **hecho 2026-08-03 (sesión 69)**: `C-10` (avería eléctrica) y `MH-04` (reforma) quedan `inactive` en las 23 anclas, sin reservas asignadas. Inventario, Planning y Plano enseñan el estado; Planning impide crear, mover o reasignar hacia una baja y el Plano la distingue de un bloqueo temporal. El relleno y la banda diaria excluyen ambas, sin romper capacidad ni invariantes.
 - [B1] La sidebar deja **dos enlaces marcados como activos** al navegar cambiando el hash programáticamente (URL directa `/admin/#/x` o `.click()` sintético): el contenido cambia pero el `aria-current` del enlace anterior no se limpia. Con click real de puntero funciona perfecto (verificado: un solo `aria-current=page`), así que ningún usuario lo ve — pero un E2E o un enlace externo al dashboard sí. Menor — 2026-07-28
 - [infra] **`POST /api/demo/reset` cuelga el workerd LOCAL con el seed grande de ADR 0030** (3,4 MB / 84 sentencias): 180 s sin respuesta y el proceso deja de contestar del todo (ni `GET /`) — hay que matar el server, `pnpm db:reset && pnpm db:seed` (rápido, el camino CLI no pasa por el batch en-worker) y volver a levantarlo. **El atajo de la sesión 56 («reset sin parar nada») ha muerto en local.** Contra la D1 real desplegada el mismo endpoint tarda **1,2 s** (verificado en la sesión 58), así que es un límite del miniflare-D1 local, no del producto; aún así molesta para iterar y para enseñar la demo en local — 2026-07-28
@@ -72,14 +110,19 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[C7→C1.2] Crear reserva arrastrando sobre una celda LIBRE del plano~~ → cerrado con C1.2 (ADR 0023, 2026-07-21): arrastrar sobre celdas libres del planning abre el alta con tipo+fechas+unidad precargadas (`preferredUnitId`), y el plano ya salta al planning conservando unidad+fecha — esa fila es ahora un lienzo donde crear. (Si algún día se quiere el gesto DENTRO del `<svg>` del plano, es pulido aparte.)
 - ~~[C7→C4.4] Crear bloqueos (avería, larga estancia) desde el plano~~ → **hecho 2026-07-24 (sesión 47)**: panel contextual de unidad en el plano (`UnitPanel.tsx`) — click en unidad libre → "Bloquear esta unidad" (diálogo precargado con unidad+fecha, "hasta" = una noche); click en bloqueada → motivo/rango + "Levantar el bloqueo" con confirmación (`DELETE /blocks/:id`, que existía testeado pero SIN UI que lo llamara). De paso, fix real: `BlockDialog` captaba `defaultUnitId`/`defaultDate` solo en el primer render (siempre montado) y perdía la selección en silencio — ahora resincroniza al abrir. Verificado con Playwright contra el Worker real, ciclo completo, claro y oscuro — 2026-07-21, cerrado 2026-07-24
 - ~~[C1] Levantar un bloqueo desde el PLANNING (click en la barra rayada → confirmar)~~ → **hecho 2026-07-25 (sesión 48)**: la barra `lc-block` es ahora un `role="button"` con `tabIndex=0`, `aria-label` con motivo+rango+unidad y afordancia visible (cursor, realce al pasar por encima, anillo de foco del DS). Click o Enter → `AlertDialog` con el detalle del bloqueo (y el aviso de "cubre todas las unidades del tipo" si es un bloqueo de tipo) → `DELETE /blocks/:id` + toast + invalidación. El foco vuelve a la barra al cancelar (`onCloseAutoFocus`), y no vuelve si el bloqueo ha desaparecido. No hay arrastre: un bloqueo no se mueve, se levanta y se vuelve a crear. Verificado con Playwright contra el Worker real, claro y oscuro — 2026-07-24, cerrado 2026-07-25
-- [C7] Plano en 375px: el `<svg>` escala por `preserveAspectRatio` y el pan/zoom permite recorrerlo, pero no se ha verificado en vivo con dedo/teclado en móvil (workerd no arranca en el contenedor de la sesión). Comprobar cuando haya entorno con Worker — 2026-07-21
+- ~~[C7] Verificar el plano en móvil con dedo/teclado~~ → **hecho 2026-08-04
+  (M5)** a 320/375/430 px, con unidades ≥44 px, pan explícito, foco y teclado.
 - ~~[C7] Iconos de servicio en el plano~~ → hecho 2026-07-24 (sesión 46): los 7 `PlanoServiceIcon` mapeados a componentes lucide (`ConciergeBell`/`Waves`/`Utensils`/`ShowerHead`/`Baby`/`ShoppingCart`/`Store`) y dibujados dentro del `<svg>` del plano (svg anidado válido, hereda `currentColor` → `--muted-foreground`), icono centrado sobre la etiqueta con tamaño derivado del recinto (`clamp(min(w,h)*0.35, 12, 18)`). Verificado en navegador contra el Worker real en claro y oscuro, 0 errores de consola. Texto original: hoy se pinta la etiqueta de texto del descriptor (`PlanoServiceIcon` está tipado pero no se dibuja el glifo) — 2026-07-21
 - [C4→C4.2] Export del **parte de viajeros** (Guardia Civil / Mossos): el modelo ya captura documento, nacimiento y nacionalidad por huésped, y la ficha los edita (ADR 0022). Falta el fichero con el formato legal y su envío — pieza propia con su formato, no acabado visual — 2026-07-21
 - ~~[C4→C4.3] Recibo/ticket imprimible del check-out~~ → **hecho 2026-07-24 (sesión 45)**: botón "Imprimir recibo" en la ficha (`BookingPanel`, sección desglose, disponible en cualquier estado con cuenta) → `window.print()`. Recibo presentacional (`BookingReceipt.tsx`) montado por **portal a `<body>`** (hermano de `#root`), oculto en pantalla (`.lc-receipt{display:none}`) y ÚNICO contenido al imprimir (`@media print{ #root{display:none} .lc-receipt{display:block} }`), colores FIJOS negro/blanco (el modo oscuro no llega al papel). Reutiliza el desglose auditable + cobros de la ficha (misma `conceptLabel`/`eur`/`fecha`) + nombre del establecimiento (`/api/admin/settings`, caché compartida con Ajustes). Honesto: "Documento informativo del estado de cuenta. No es una factura." Verificado en navegador (bundle real + stub + Playwright `emulateMedia:print`): recibo completo y correcto, `#root` oculto / recibo en block, 0 errores (salvo el favicon del stub) — 2026-07-21, cerrado 2026-07-24
 - ~~[C4] "En casa" en la **lista de reservas** (`/reservas`) y en la ficha de cliente~~ → hecho 2026-07-21 (sesión 38): el estado se **deriva** en la tabla igual que en el planning (`status==='confirmed' && checkedInAt && !checkedOutAt → 'inhouse'`, misma expresión que `Planning.tsx`). `/reservas` no necesitó API (`BookingListItem` ya traía los timestamps); el historial de la ficha de cliente sí — se añadieron `checkedInAt`/`checkedOutAt` al select de `GET /guests/:id` (aditivo, ruta existente, sin tocar el barrido de aislamiento) y al tipo `GuestBooking`, con test extendido en `admin.test.ts`
 - [C1] Mover una reserva a OTRO tipo de unidad arrastrando: fuera de alcance en ADR 0023 (cambia el producto, no solo el precio; el validador/asignador están tipados por tipo). Hoy se resuelve cancelando y creando. Reabrir si un camping real lo pide — 2026-07-21
-- [C1] Crear BLOQUEOS arrastrando sobre celdas libres: descartado en ADR 0023 (ambigüedad con crear-reserva sin demanda real); el diálogo de bloqueo ya se abre desde planning y plano — 2026-07-21
-- [C1] Gestos del planning en táctil (375px): mover/estirar/crear usan pointer events y funcionan con ratón; en móvil el pan del scroll compite con el arrastre (las barras llevan `touch-action:none`, las celdas no). Decidir el gesto táctil (long-press?) cuando el dashboard móvil sea objetivo — hoy la usuaria real está en el mostrador a 1366px — 2026-07-21
+- ~~[C1] Crear BLOQUEOS arrastrando sobre celdas libres~~ → **descartado en
+  ADR 0023** por ambigüedad y falta de demanda; el diálogo ya se abre desde
+  planning y plano.
+- ~~[C1] Resolver el planning táctil~~ → **hecho 2026-08-04 (M4)**: móvil
+  usa agenda día/semana con campos y acciones ≥44 px que reutilizan requote y
+  mutación; el chart de arrastre permanece en escritorio.
 - [C1] Al confirmar un movimiento con cambio de precio y `paidCents > total` nuevo, la ficha enseña el pendiente negativo (reembolso manual, como el `modify` público) — considerar un aviso inline en el propio diálogo de precio — 2026-07-21
 - ~~[C6] Guías de las pantallas de **gestión** (`/informes`, `/tarifas`, `/ajustes`)~~ → hecho 2026-07-22 (sesión 41): **cuarta guía "gestión"** en `camp.logic2b.com/docs/` (decisión de IA con Andreu: guía propia, no dentro de "dueño", para no mezclar páginas estratégicas con operativas). Tres páginas de prosa `es` (`content/docs/gestion/{informes,tarifas,ajustes}.es.md`) escritas contra el código real de cada pantalla (Informes: 5 tiles + ocupación por tipo; Tarifas: tabla por temporada con invariante 3 a la vista; Ajustes: datos + nivel/idiomas de solo-lectura + notificaciones). `GUIAS` pasa a `['recepcion','gestion','dueno','tecnica']` (escalera), cromo en los 6 idiomas (subtítulo "Cuatro guías…", seo y `docs.guias.gestion`), y `ayuda.ts` deja de devolver `null` → el `?` se pinta ya en las tres pantallas (el componente ya estaba puesto). Verificado: build 180 páginas, `pnpm check` 42/42, navegador (índice con 4 tarjetas, prosa renderizada, fallback visible en en). Diferido con motivo: NO se desplegó a producción esta sesión (ver SIGUIENTE-SESION)
 - ~~[C6] Vídeo/GIF de los gestos del planning~~ → **hecho 2026-08-09 (sesión 104, ADR 0040)**: una captura reproducible de 22,1 s muestra mover, estirar con revisión del precio y crear arrastrando hasta el alta precargada, sin confirmar una reserva. MP4 H.264 1280×720 sin audio de 590 kB, póster WebP de 42 kB, pista descriptiva y alternativa textual dentro de `/docs/recepcion/mover/`. El generador y su QA quedan acotados a esta pieza; no nace un pipeline general. Verificado a 1366/375 y `pnpm check` 53/53. Sin desplegar — 2026-08-08, cerrado 2026-08-09
@@ -172,13 +215,17 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
   con Playwright/Chromium sobre el bundle compuesto y normalizado con ffmpeg.
   Comparte metraje en ES/EN, con póster aprobado, controles, carga bajo demanda,
   subtítulos y transcripción. `qa:video` verifica ambos idiomas a 1366/375.
-- [marca] **`docs/brand/` sigue describiendo el isotipo como logo del producto** (resto del ítem cerrado en la 61): la OG image ya está, pero el directorio de marca no se ha revisado desde el cambio de logo — 2026-07-30
+- ~~[marca] `docs/brand/`/BRAND seguía describiendo el isotipo como logo del
+  producto~~ → **hecho 2026-08-10 (sesión 105/R1)**: wordmark para producto;
+  isotipo solo para favicon y crédito del tenant.
 - [seo] **`BreadcrumbList` en las guías**: el sitemap declara las 25 páginas de documentación como "la superficie de búsqueda larga del producto" (cómo hacer el check-in en un camping…), y son las únicas con jerarquía real (guía → página). La landing ya tiene `Organization`/`SoftwareApplication`/`FAQPage` desde la 61; las guías no tienen ninguno. Barato: va en `Docs.astro`, que las sirve todas — 2026-07-30
 - ~~[B] Nadie comprueba los enlaces ENTRE las tres superficies del bundle compuesto~~ → **hecho 2026-08-04 (sesión 70)**: `apps/api/scripts/check-demo-links.mjs` recorre los `<a href>` internos del `dist` compuesto y comprueba que resuelven dentro de él (incluye `/demo/`, `/admin/`, rutas sin barra que Workers Assets redirige y URLs absolutas del mismo origen). Corre tras copiar los tres builds y **antes** de migrar o desplegar en `deploy:demo`; informa cada HTML origen y ruta rota. El `404.html` se excluye correctamente: es el documento fallback de Astro, no una ruta publicada. Tres tests nativos fijan el contrato; el primer barrido real dio **9.286 enlaces / 304 HTML, OK**.
 - ~~[web] **El héroe de nivel 1 de la home queda invisible en un build de nivel 1 REAL**~~ → **hecho 2026-08-03 (sesión 67)**: `Home.astro` solo emite `data-hero-nivel="1"` cuando está activo el conmutador de la demo; el build real de nivel 1 mantiene visible el héroe. Verificado con `TIER=1`.
 - ~~[web] **La regla dura de niveles está incumplida hoy: un build de nivel 1 SÍ arrastra el motor en el bundle**~~ → **hecho 2026-08-03 (sesión 67)**: aliases de build y `getStaticPaths()` aíslan el motor y sus rutas en niveles 1–2. Verificado con `TIER=1` (126 páginas, cero rutas/chunks del motor) y `TIER=3` (motor conservado).
 - [dashboard] **La portada del gestor no tiene página de guía** (65): `lib/ayuda.ts` la mapea a `null` a propósito —un `?` que lleva a un sitio que no responde la pregunta es peor que no tener `?` (ADR 0025 §5)—, pero es ahora la primera pantalla que ve cualquiera. Una página `recepcion/inicio` que explique las cuatro cifras y para qué sirve cada bloque cierra el hueco. Va en `apps/site/src/content/docs/recepcion/` — 2026-07-31
-- [dashboard] **La portada enseña los trece módulos a todo el mundo, también a quien no puede abrirlos** (65): es el hermano del enlace muerto de la barra lateral («Parte de viajeros» es un muro de permisos para el visitante de la demo y para cualquier recepcionista). Ahora el problema se duplica: el mismo módulo inalcanzable aparece dos veces en pantalla. Lo que se decida para la barra lateral —ocultar por rol o explicar «esto es de gerencia»— hay que aplicarlo a `NAV_GROUPS`, que desde esta sesión es la fuente de las dos — 2026-07-31
+- ~~[dashboard] La portada enseñaba módulos inalcanzables por rol~~ → **hecho
+  2026-08-04 (M1)**: portada y sidebar usan `navGroupsForRole()` sobre
+  `NAV_GROUPS`; el test fija que «Parte» solo aparece para manager/owner.
 
 ## Frente E — Escalera comercial y producto IA
 
@@ -194,7 +241,7 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 - ~~[E2] Sustituir `#niveles` por Inicio → Gestión → Automatiza → Inteligente~~
   → **hecho 2026-08-05**: selector por problema, escalera 00–03 y CTA propio;
   héroe orientado a la progresión. Verificado a 1366/375 px, sin desborde.
-- [E3-V/E4-V] **Inicio como demo y campaña**: queda absorbido por D1-V. El
+- ~~[E3-V/E4-V] **Inicio como demo y campaña**~~: queda absorbido por D1-V. El
   formulario usa un adaptador demo y muestra éxito/error/antispam; receptor,
   privacidad operativa y onboarding reales van al dossier de activación.
 - ~~[E5-V] **Automatiza representado**~~ → **hecho 2026-08-07 (sesión 91)**:

@@ -8,16 +8,16 @@ Logic Camp tiene **dos superficies visuales distintas**, cada una con su dueño 
 
 | Superficie                                                               | Marca                                                                       | Dónde                                        |
 | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------- |
-| **Producto Logic2B** — dashboard/gestor, landing de venta, documentación | **Logic2B** (esta guía): neutra, Inter, isotipo, shadcn                     | `/admin`, landing de producto, docs          |
-| **Web pública de cada camping** (tenant)                                 | **Del camping** — su color, sus fotos, su identidad mediterránea (ADR 0006) | `camp.logic2b.com` y cada dominio de cliente |
+| **Producto Logic2B** — dashboard/gestor, landing de venta, documentación | **Logic2B** (esta guía): neutra, Inter, wordmark, shadcn                    | `/admin`, landing de producto, docs          |
+| **Web pública de cada camping** (tenant)                                 | **Del camping** — su color, sus fotos, su identidad mediterránea (ADR 0006) | `/demo/`, `/demos/*` y dominios de cliente   |
 
-Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara al huésped lleva la marca del camping.** El isotipo Logic2B aparece en el producto y, de forma discreta ("powered by Logic2B"), en el pie de las webs de tenant. Esto respeta el principio de §0 (cada cliente es su marca) sin perder que el producto es reconociblemente Logic2B.
+Regla: **el gestor y todo lo "de Logic2B" llevan marca Logic2B; la web de cara al huésped lleva la marca del camping.** El producto usa el wordmark «Logic2B Campings». El isotipo queda limitado al favicon y, de forma discreta («powered by Logic2B»), al pie de las webs de tenant. Esto respeta el principio de §0 (cada cliente es su marca) sin perder que el producto es reconociblemente Logic2B.
 
 > **Excepción (ADR 0027, 2026-07-22):** la **landing de venta** puede llevar **fotografía atmosférica de camping** en el héroe (contrato de arte del ADR 0024, con scrim que garantiza AA). El resto de superficies Logic2B — `og.png`, cards, guías, dashboard — siguen neutras, y la tipografía/paleta no cambian: la foto es atmósfera, no un rebrand.
 
 ## 1. Origen técnico
 
-`ui.logic2b.com` es la instancia Logic2B de **shadcn/ui** (base de color **"neutral"**, estilo New York), construida con Astro + Tailwind v4 (tokens como CSS vars en oklch). Coincide con lo que CLAUDE.md ya declara: _"Tailwind v4 + shadcn/ui copiado en `packages/ui` (es nuestro DS)"_. Alinear la marca = **poblar `packages/ui` con estos tokens y componentes**, hoy vacío.
+`ui.logic2b.com` es la instancia externa de referencia de **shadcn/ui** (base de color **"neutral"**, estilo New York), construida con Astro + Tailwind v4 (tokens como CSS vars en oklch). Este repositorio ya materializa esa base en `packages/ui`: tema claro/oscuro, fuentes, wordmark, isotipo auxiliar y los primitivos compartidos que consume el gestor. La referencia orienta el sistema; no es un despliegue pendiente de este monorepo.
 
 Navegación del DS de referencia: `Home · Docs · Components · Blocks · Charts · Create · Typeset`.
 Tagline: _"The Foundation for your Design System — for humans and coding agents alike. Open Source. Open Code."_
@@ -129,16 +129,15 @@ Escala **monocroma neutra**: fondo blanco, tinta casi negra, grises fríos. El c
 - **Badge**: `inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium`.
 - **Input**: `h-9 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs`; foco `focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]`.
 - **Botones**: variantes `primary` (sólido `--primary`), `outline`, `secondary`, `ghost` (`text-muted-foreground`, hover `bg-accent`).
-- **Header/nav**: barra superior con logo-mark + navegación de secciones + buscador (`Search… ⌘K`) + acción primaria ("New Project"). En el dashboard, **sidebar agrupada por bloques** (`Overview / Planning / Account / Support`) con etiquetas `text-[11px] uppercase tracking-wide text-muted-foreground` e ítems `rounded-md px-2 py-1.5 text-sm`, activo con `bg-accent text-accent-foreground`.
+- **Header/nav**: barra superior con wordmark + navegación de secciones + buscador (`Search… ⌘K`) + acción primaria. En el dashboard, **sidebar agrupada por bloques** con etiquetas `text-[11px] uppercase tracking-wide text-muted-foreground` e ítems `rounded-md px-2 py-1.5 text-sm`, activo con `bg-accent text-accent-foreground`.
 - **Ritmo de bloques**: tarjetas modulares en columnas, `gap` consistente, `break-inside-avoid` (layout tipo masonry en la home del DS).
 - Titulares hero: `text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter leading-[1.08]`.
 
 ## 7. Mapa de aplicación en Logic Camp (qué se toca)
 
-1. **`packages/ui`** (hoy vacío): copiar shadcn/ui (primitivos + tokens de §4/§5 + fuentes de §3). Se vuelve el DS real, consumido por dashboard y por las superficies de producto.
-2. **Dashboard** (`apps/dashboard`): sustituir la paleta camping y `.lc-*` a mano por los tokens/componentes Logic2B; sidebar agrupada; isotipo en el header. El **planning** mantiene su color por estado, pero derivado de tokens del DS, no de hex sueltos.
-3. **Web pública de tenant** (`apps/web`): adopta la **estructura** (fuente base, ritmo de bloques, patrón de header, escala de radios) manteniendo la identidad del camping; isotipo discreto "powered by Logic2B" en el pie.
-4. **Landing de producto** (nueva): 100% marca Logic2B.
-5. **Documentación** (nueva): 100% marca Logic2B, a poder ser reutilizando el layout de docs del DS.
+1. **`packages/ui`**: DS real ya consumido por el dashboard; concentra primitivos, tokens, fuentes y wordmark compartidos.
+2. **Dashboard** (`apps/dashboard`): producto Logic2B sobre esos tokens/componentes, sidebar agrupada y wordmark. El **planning** mantiene su color semántico por estado derivado del DS.
+3. **Web pública de tenant** (`apps/web`): estructura común y marca propia; isotipo discreto «powered by Logic2B» en el pie.
+4. **Landing y documentación** (`apps/site`): superficies Logic2B ya construidas sobre un mismo layout y pipeline.
 
 Detalle de fases, orden y criterios de "hecho": ver `docs/ROADMAP.md` → sección **"Frente B — Marca, sitio de producto y documentación"**.

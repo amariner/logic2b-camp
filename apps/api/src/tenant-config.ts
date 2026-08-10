@@ -9,15 +9,6 @@ import { schema, type Db } from '@logic-camp/db';
 
 export async function loadTenantConfig(db: Db): Promise<TenantConfig> {
   const row = (await db.select().from(schema.tenants))[0];
-  return loadTenantConfigPure(
-    row ?? {
-      slug: 'unknown',
-      name: '',
-      tier: 1,
-      timezone: 'UTC',
-      currency: 'EUR',
-      locales: ['es'],
-      modules: {},
-    },
-  );
+  if (!row) throw new Error('TenantConfig ausente: la D1 no contiene una fila tenants');
+  return loadTenantConfigPure(row);
 }

@@ -187,27 +187,27 @@ reordenar tareas si una verificación descubre un riesgo mayor.
 
 ### R0 · Consolidar el punto de partida
 
-- [ ] Clasificar y preservar el árbol sucio heredado de la sesión 104.
-- [ ] Verificar el vídeo de gestos, guía, assets y ADR 0040.
-- [ ] Ejecutar los checks específicos y confirmar el estado global documentado.
-- [ ] Integrar la entrega en un commit coherente.
-- [ ] Prepararla para publicación sin desplegar salvo autorización explícita.
-- [ ] Confirmar que la rama local no está detrás de origin antes de avanzar.
+- [x] Clasificar y preservar el árbol sucio heredado de la sesión 104.
+- [x] Verificar el vídeo de gestos, guía, assets y ADR 0040.
+- [x] Ejecutar los checks específicos y confirmar el estado global documentado.
+- [x] Integrar la entrega en un commit coherente.
+- [x] Prepararla para publicación sin desplegar salvo autorización explícita.
+- [x] Confirmar que la rama local no está detrás de origin antes de avanzar.
 
 **Cierra cuando:** hay una base limpia, reproducible y sin mezclar la entrega 104
 con trabajo posterior.
 
 ### R1 · Reconciliar las fuentes de verdad
 
-- [ ] Eliminar contradicciones activas entre CLAUDE, ROADMAP, BACKLOG, PROGRESS y
+- [x] Eliminar contradicciones activas entre CLAUDE, ROADMAP, BACKLOG, PROGRESS y
       SIGUIENTE sin reescribir la historia.
-- [ ] Corregir estados obsoletos: fases cerradas con checkboxes abiertos,
+- [x] Corregir estados obsoletos: fases cerradas con checkboxes abiertos,
       duplicados y referencias a decisiones ya sustituidas.
-- [ ] Actualizar marca y arquitectura donde aún describen isotipo, Storybook,
+- [x] Actualizar marca y arquitectura donde aún describen isotipo, Storybook,
       rutas o prioridades antiguas como estado actual.
-- [ ] Clasificar cada pendiente en: local ahora, cliente real, credencial,
+- [x] Clasificar cada pendiente en: local ahora, cliente real, credencial,
       decisión comercial o descartado.
-- [ ] Reconciliar el cambio de alcance: temas, demos, integraciones y activación
+- [x] Reconciliar el cambio de alcance: temas, demos, integraciones y activación
       real pertenecen a esta ruta, respetando sus gates.
 
 **Cierra cuando:** una sesión nueva puede elegir el siguiente trabajo sin inferir
@@ -215,28 +215,28 @@ cuál documento dice la verdad.
 
 ### R2 · Fijar una línea base de calidad reproducible
 
-- [ ] Ejecutar suites por paquete y registrar duraciones/fallos reales.
-- [ ] Ejecutar `pnpm check` sin confundir timeouts ambientales con aserciones.
-- [ ] Fijar el procedimiento de revalidación aislada de Workers/D1.
-- [ ] Revisar presupuestos existentes de bundle, imágenes y entradas dinámicas.
-- [ ] Confirmar build tier 1 sin motor, tier 2 sin cobro y tier 3 con motor.
-- [ ] Confirmar el verificador de enlaces del bundle compuesto.
+- [x] Ejecutar suites por paquete y registrar duraciones/fallos reales.
+- [x] Ejecutar `pnpm check` sin confundir timeouts ambientales con aserciones.
+- [x] Fijar el procedimiento de revalidación aislada de Workers/D1.
+- [x] Revisar presupuestos existentes de bundle, imágenes y entradas dinámicas.
+- [x] Confirmar build tier 1 sin motor, tier 2 sin cobro y tier 3 con motor.
+- [x] Confirmar el verificador de enlaces del bundle compuesto.
 
 **Cierra cuando:** cualquier cambio posterior tiene una referencia verde y un
 comando claro que detecta regresión.
 
 ### R3 · Endurecer configuración y fronteras demo/producción
 
-- [ ] Auditar `TenantWebConfig`, `TenantConfig`, locales, tier, módulos y
+- [x] Auditar `TenantWebConfig`, `TenantConfig`, locales, tier, módulos y
       transportes.
-- [ ] Sustituir casts/defaults inseguros por validación explícita donde exista
+- [x] Sustituir casts/defaults inseguros por validación explícita donde exista
       riesgo demostrado.
-- [ ] Hacer que una config inválida falle en build/test con un mensaje útil.
-- [ ] Revisar `demoThemes`, `enquiryTransport`, `demo-session`, reset y flags de
+- [x] Hacer que una config inválida falle en build/test con un mensaje útil.
+- [x] Revisar `demoThemes`, `enquiryTransport`, `demo-session`, reset y flags de
       demo.
-- [ ] Garantizar que un tenant normal no expone rutas, sesión, reset o acciones
+- [x] Garantizar que un tenant normal no expone rutas, sesión, reset o acciones
       de demo.
-- [ ] Mantener los adaptadores demo tipados, deterministas, reseteables, sin red
+- [x] Mantener los adaptadores demo tipados, deterministas, reseteables, sin red
       y sin PII real.
 
 **Cierra cuando:** no se puede activar accidentalmente una capacidad demo o un

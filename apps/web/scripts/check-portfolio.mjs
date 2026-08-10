@@ -18,7 +18,7 @@
  * ya lo lee del `config.ts` de cada camping.
  */
 import { execFileSync } from 'node:child_process';
-import { readdirSync, rmSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -28,6 +28,59 @@ const outRoot = join(web, 'dist-portfolio');
 
 // `_template` no es un camping; `demo` ya lo construye la tarea `build`.
 const EXCLUIDOS = new Set(['_template', 'demo']);
+
+function filesUnder(root, prefix = '') {
+  return readdirSync(join(root, prefix)).flatMap((name) => {
+    const relative = join(prefix, name);
+    return statSync(join(root, relative)).isDirectory()
+      ? filesUnder(root, relative)
+      : [relative.replaceAll('\\', '/')];
+  });
+}
+
+function configuredTier(slug) {
+  const source = readFileSync(join(tenantsDir, slug, 'config.ts'), 'utf8');
+  const matches = [...source.matchAll(/^\s*tier\s*:\s*([1-4])\s*,/gim)];
+  if (matches.length !== 1) throw new Error(`${slug}: config.ts no declara un único tier 1–4`);
+  return Number(matches[0][1]);
+}
+
+function checkTierBoundary(slug, outDir) {
+  const tier = configuredTier(slug);
+  const files = filesUnder(outDir);
+  const html = files.filter((file) => file.endsWith('.html'));
+  const js = files.filter((file) => file.endsWith('.js'));
+  const bookingRoutes = html.filter(
+    (file) => file === 'reserva/index.html' || file.startsWith('reservar/'),
+  );
+  const bookingChunks = js.filter((file) =>
+    /(?:Mostrador|FunnelDetalle|FunnelTitular|ReservaGestion)\.[^.]+\.js$/.test(file),
+  );
+
+  if (tier < 3 && (bookingRoutes.length > 0 || bookingChunks.length > 0)) {
+    throw new Error(
+      `${slug}: tier ${tier} arrastra motor (${[...bookingRoutes, ...bookingChunks].join(', ')})`,
+    );
+  }
+  if (tier >= 3) {
+    const requiredRoutes = ['reserva/index.html', 'reservar/index.html'];
+    const missingRoutes = requiredRoutes.filter((file) => !html.includes(file));
+    const requiredChunks = ['Mostrador', 'FunnelDetalle', 'FunnelTitular', 'ReservaGestion'];
+    const missingChunks = requiredChunks.filter(
+      (name) => !bookingChunks.some((file) => file.includes(`${name}.`)),
+    );
+    if (missingRoutes.length > 0 || missingChunks.length > 0) {
+      throw new Error(
+        `${slug}: tier ${tier} ha perdido motor (${[
+          ...missingRoutes,
+          ...missingChunks.map((name) => `${name}.*.js`),
+        ].join(', ')})`,
+      );
+    }
+  }
+
+  return { tier, pages: html.length, js: js.length };
+}
 
 const tenants = readdirSync(tenantsDir)
   .filter((slug) => !EXCLUIDOS.has(slug) && statSync(join(tenantsDir, slug)).isDirectory())
@@ -49,11 +102,17 @@ for (const slug of tenants) {
       stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, TENANT: slug, BASE_PATH: `/demos/${slug}`, TIER: '' },
     });
-    console.log(`[portfolio] ✓ ${slug} (${((Date.now() - t0) / 1000).toFixed(1)}s)`);
+    const boundary = checkTierBoundary(slug, join(outRoot, slug));
+    console.log(
+      `[portfolio] ✓ ${slug} · tier ${boundary.tier} · ${boundary.pages} HTML / ${boundary.js} JS ` +
+        `(${((Date.now() - t0) / 1000).toFixed(1)}s)`,
+    );
   } catch (err) {
     const salida = `${err.stdout ?? ''}${err.stderr ?? ''}`.trim();
     fallos.push(slug);
-    console.error(`[portfolio] ✗ ${slug} NO construye\n${salida.split('\n').slice(-25).join('\n')}`);
+    console.error(
+      `[portfolio] ✗ ${slug} NO construye\n${salida.split('\n').slice(-25).join('\n')}`,
+    );
   }
 }
 

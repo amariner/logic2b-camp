@@ -110,26 +110,64 @@ type TenantRow = {
   timezone: string;
   currency: string;
   locales: unknown;
-  modules: Record<string, unknown> | null | undefined;
+  modules: unknown;
 };
 
-/** Valida y aplica defaults — nunca lanza: un módulo mal configurado cae a su default seguro. */
+const tenantRowSchema = z.object({
+  slug: z.string().trim().min(1),
+  name: z.string().trim().min(1),
+  tier: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
+  timezone: z.string().trim().min(1),
+  currency: z.string().regex(/^[A-Z]{3}$/, 'debe ser un código ISO 4217 de tres letras'),
+  locales: z.array(z.string().trim().min(2)).min(1),
+  modules: z.record(z.string(), z.unknown()).nullish(),
+});
+
+const demoThemesSchema = z
+  .array(z.string().trim().min(1))
+  .min(1)
+  .refine((themes) => new Set(themes).size === themes.length, 'no admite temas repetidos');
+
+function invalidConfig(area: string, error: z.ZodError): never {
+  const detail = error.issues
+    .map((issue) => `${issue.path.join('.') || area}: ${issue.message}`)
+    .join('; ');
+  throw new Error(`TenantConfig inválida (${area}): ${detail}`);
+}
+
+function parseModule<T>(area: string, schema: z.ZodType<T>, input: unknown): T {
+  const result = schema.safeParse(input);
+  if (!result.success) invalidConfig(area, result.error);
+  return result.data;
+}
+
+/**
+ * Valida la fila persistida. Solo la ausencia de una política conserva el
+ * default histórico; un valor presente pero inválido falla explícitamente.
+ */
 export function loadTenantConfig(row: TenantRow): TenantConfig {
-  const modules = row.modules ?? {};
-  const taxPolicy = taxPolicySchema.safeParse(modules.taxPolicy);
-  const cancellationPolicy = cancellationPolicySchema.safeParse(modules.cancellationPolicy);
+  const parsedRow = tenantRowSchema.safeParse(row);
+  if (!parsedRow.success) invalidConfig('fila', parsedRow.error);
+  const { modules: rawModules, ...tenant } = parsedRow.data;
+  const modules = rawModules ?? {};
 
   return {
-    slug: row.slug,
-    name: row.name,
-    tier: row.tier >= 1 && row.tier <= 4 ? (row.tier as 1 | 2 | 3 | 4) : 1,
-    timezone: row.timezone,
-    currency: row.currency,
-    locales: Array.isArray(row.locales) ? (row.locales as string[]) : ['es'],
-    taxPolicy: taxPolicy.success ? taxPolicy.data : 'none',
-    cancellationPolicy: cancellationPolicy.success
-      ? cancellationPolicy.data
-      : DEFAULT_CANCELLATION_POLICY,
-    demoThemes: Array.isArray(modules.demoThemes) ? (modules.demoThemes as string[]) : undefined,
+    ...tenant,
+    taxPolicy:
+      modules.taxPolicy === undefined
+        ? 'none'
+        : parseModule('modules.taxPolicy', taxPolicySchema, modules.taxPolicy),
+    cancellationPolicy:
+      modules.cancellationPolicy === undefined
+        ? DEFAULT_CANCELLATION_POLICY
+        : parseModule(
+            'modules.cancellationPolicy',
+            cancellationPolicySchema,
+            modules.cancellationPolicy,
+          ),
+    demoThemes:
+      modules.demoThemes === undefined
+        ? undefined
+        : parseModule('modules.demoThemes', demoThemesSchema, modules.demoThemes),
   };
 }

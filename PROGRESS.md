@@ -1,5 +1,57 @@
 # PROGRESS — Logic Camp
 
+## Consolidación del punto de partida R0 · 2026-08-10 (sesión 105)
+
+- R0 de la ruta duradera queda cerrado sobre una base limpia y sincronizada:
+  `main` y `origin/main` estaban en `acc60b7`, sin commits ni cambios locales
+  heredados. La entrega de la sesión 104 ya vive aislada en `aa39ee3` y no se
+  mezcló con trabajo posterior.
+- ADR 0040, componente, MP4, póster y VTT se revisaron contra su contrato. El QA
+  reproducible pasó a **1366/375** usando Chrome local y un `ffprobe` temporal:
+  H.264 **1280×720**, **22,1 s**, sin audio, controles, pista de tres capítulos,
+  foco visible, alternativa textual, cero desborde, errores o recursos fallidos.
+- El sitio conserva **50 archivos / 0 diagnósticos**. `pnpm check` completó
+  **53/53** tareas sin cancelaciones: API **240/240**, tenant demo **62/62**,
+  verificador de enlaces API **3/3** y todos los builds verdes en **32,52 s**.
+- El candidato queda listo para el único `deploy:demo`, sin migración ni reseed.
+  No se tocó producción: el despliegue continúa condicionado a autorización
+  explícita.
+- R1 también queda cerrado en la misma sesión: CLAUDE y BRAND distinguen ya
+  wordmark de producto e isotipo auxiliar; `ui.logic2b.com` queda como referencia
+  externa y no como Storybook pendiente; ROADMAP cierra Fase 4, Fase 10 local y
+  B0–B4, y corrige checkboxes viejos de fotos, planning y datos.
+- `DEMO-SCRIPT` separa landing, `/demo/` y `/admin/`, usa la puerta anónima y
+  fechas ofrecidas por el seed actual. BACKLOG incorpora un índice operativo
+  que clasifica cada resto por checkpoint local, cliente, credencial, decisión
+  comercial o descarte; además cierra duplicados ya resueltos por M1/M4/M5.
+- El siguiente checkpoint es **R2**, fijar una línea base de calidad reproducible
+  por paquete, tier y bundle. El diff documental pasó `git diff --check` y un
+  barrido dirigido de estados/rutas obsoletos; no cambió código de producto.
+- R2 queda cerrado en `docs/LINEA-BASE-CALIDAD.md`: tests secuenciales verdes en
+  **28,39 s**, `pnpm check` **53/53** en **32,52 s**, presupuesto inicial del
+  dashboard entre **176,11–184,38 kB gzip**, Worker seco en **451,47 KiB gzip**
+  y bundle compuesto con **11.535 enlaces / 358 HTML**.
+- El test del portfolio ya inspecciona el artefacto: L'Olivar tier 1 y Pinada
+  tier 2 rechazan rutas/chunks del motor; Mar de Fondo tier 3 exige ambos puntos
+  de entrada y sus cuatro chunks. La comprobación forma parte de `pnpm check` y
+  evita que una build verde oculte una frontera de producto rota.
+- El siguiente checkpoint pasa a **R3**, endurecer configuración y fronteras
+  demo/producción. Producción sigue intacta y sin autorización de despliegue.
+- R3 queda cerrado con ADR 0041. La web valida el objeto de tenant en runtime de
+  build, impide que `TIER` eleve capacidad y exige coherencia entre locale,
+  transportes, flags demo y ruta del gestor. La API ya no convierte una política
+  explícitamente inválida en otra silenciosa; pagos, notificaciones y el PATCH de
+  ajustes validan sus claves conocidas.
+- El dashboard resuelve normal/Pinada/Mar de Fondo como artefactos distintos. El
+  normal ya no importa sesión, reset ni fixtures del portfolio; Automatiza e
+  Inteligente solo existen en Mar de Fondo. El presupuesto inspecciona todos los
+  chunks y pasa con entradas de **173,01 / 177,48 / 183,26 kB gzip**.
+- Validación R3: config **59/59**, API **245/245 + 3/3**, dashboard **34/34**,
+  portfolio **3/3** y bundle compuesto **11.535 enlaces / 358 HTML**. Los builds
+  inválidos probados fallan con mensaje útil; la pasada final de `pnpm check`
+  cerró **53/53** tareas en **30,14 s**. El siguiente checkpoint es **R4**; no
+  hubo despliegue ni escritura remota.
+
 ## Vídeo de gestos del planning · 2026-08-09 (sesión 104)
 
 - Cierra el pendiente C6 con ADR 0040: una captura reproducible muestra mover
@@ -219,6 +271,18 @@ derive mardefondo` exige una fuente aprobada y genera miniatura 16:10 (62
 Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La sesión siguiente empieza leyendo este fichero.
 
 ## Estado actual
+
+- **Checkpoint activo: R1.** R0 está cerrado con `pnpm check` **53/53**, QA del
+  vídeo del planning a 1366/375 y `main` sincronizada. La entrega 104 está lista
+  para publicar, pero el deploy requiere autorización explícita.
+- **Producto visible:** D1-V L'Olivar, D2-V Pinada, D3-V Mar de Fondo y D4-V
+  escaparate están cerrados. La producción conserva la versión de la sesión
+  103; Montaña, Familiar y Parcela siguen siendo conceptos, no demos nuevas.
+- **Siguiente trabajo local:** reconciliar ROADMAP, BACKLOG, marca y guion de
+  demo. Después, R2 fijará la línea base reproducible. D5-V espera aprendizaje
+  comercial; cliente, proveedores e infraestructura esperan sus gates.
+
+## Historial consolidado hasta la sesión 102 (no usar para elegir trabajo)
 
 - **Sesión autónoma 102 (2026-08-08): los conceptos del catálogo ya tienen
   fotografía propia.** Montaña, Familiar y Parcela sustituyen los tres préstamos

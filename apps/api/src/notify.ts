@@ -16,6 +16,7 @@ import {
 } from '@logic-camp/notifications';
 import type { Context } from 'hono';
 import { nowIso, uid } from './bookings';
+import { parseNotificationsConfig, tenantModules } from './config-modules';
 import { logEvent, type SystemAlert } from './errors';
 import { loadTenantConfig } from './tenant-config';
 import type { Env, TenantContext } from './tenant';
@@ -50,9 +51,10 @@ async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void>
   const { db, tenantSlug, apiKey } = deps;
 
   const row = (await db.select().from(schema.tenants))[0];
-  const config: NotificationsConfig =
-    ((row?.modules as Record<string, unknown> | undefined)?.notifications as NotificationsConfig) ??
-    {};
+  if (!row) throw new Error('TenantConfig ausente: la D1 no contiene una fila tenants');
+  const config: NotificationsConfig = parseNotificationsConfig(
+    tenantModules(row.modules).notifications,
+  );
 
   const kind = input.payload.kind;
   const enabled = config.enabled?.[kind] ?? true;

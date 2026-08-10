@@ -1,12 +1,21 @@
 # DEMO-SCRIPT — el recorrido de venta de 12 minutos
 
-> Fase 10 (ROADMAP). Guion para enseñar **camp.logic2b.com** (Camping Cala Sereno, ficticio) a un director de camping desde el primer email comercial. Objetivo: que piense "esto es más serio que mi web actual" antes del minuto 5.
+> Guion para enseñar **camp.logic2b.com** (producto) y
+> **camp.logic2b.com/demo/** (Camping Cala Sereno, ficticio) a un director de
+> camping desde el primer email comercial. Objetivo: que piense «esto es más
+> serio que mi web actual» antes del minuto 5.
 
 ## Antes de empezar
 
 - **Dispositivo**: portátil a 1366px si es posible — es el ancho mínimo que el producto garantiza pulido; el móvil se enseña aparte en el minuto 3 (375px, la web es responsive de verdad).
-- **Pestañas abiertas**: `camp.logic2b.com` y `camp.logic2b.com/admin` (login: `gerencia@calasereno.example` / `calasereno` — rol gerencia, ve tarifas y ajustes además de operar).
-- **Fechas a usar en el mostrador**: cualquier rango dentro de agosto del año en curso — el seed ancla la temporada alta ahí a propósito.
+- **Pestañas abiertas**: `camp.logic2b.com/` (landing),
+  `camp.logic2b.com/demo/` (web de Cala Sereno) y
+  `camp.logic2b.com/admin/`. Para el recorrido compartido, entrar con «Ver la
+  demo»; usar una cuenta de gerencia solo si hace falta enseñar ajustes o
+  operaciones deliberadamente cerradas al visitante.
+- **Fechas a usar en el mostrador**: un rango futuro que el propio mostrador
+  ofrezca. El seed se ancla al día real y Cala Sereno abre todo el año; no fijar
+  agosto ni un año en el guion.
 - **Qué NO enseñar todavía** (honestidad primero, se pierde una venta más rápido prometiendo de más que admitiendo el roadmap):
   - El cobro online real: la demo tiene Stripe con `mode:'none'` — el pago se activa con credenciales reales del camping, no antes.
   - El reenvío manual de notificaciones fallidas: no construido (BACKLOG, requiere una cuenta Resend real para poder probarlo).
@@ -27,13 +36,14 @@ Frase de encuadre:
 > completo que sí controlamos, desde una campaña propia hasta la disponibilidad y
 > una reserva directa. El pago de esta demo es simulado y no hace ningún cargo."
 
-Sin esa entrada alternativa, abrir `camp.logic2b.com`; si se ha usado la campaña,
-quedarse en Mar de Fondo. Dejar que la portada respire un segundo (foto real, no
-un stock de playa genérica) y decir la frase que ancla todo lo que sigue:
+Sin esa entrada alternativa, abrir `camp.logic2b.com/demo/`; si se ha usado la
+campaña, quedarse en Mar de Fondo. Dejar que la portada respire un segundo
+(fotografía de demostración aprobada, no una imagen atribuida a un camping real)
+y decir la frase que ancla todo lo que sigue:
 
 > "Esto no es una web con un formulario de contacto disfrazado de motor de reservas. El buscador de aquí arriba consulta la disponibilidad real, ahora mismo."
 
-Rellenar el mostrador con un rango de agosto y 2 adultos, buscar. Señalar:
+Rellenar el mostrador con el rango futuro elegido y 2 adultos, buscar. Señalar:
 
 - Los precios que aparecen son del **mismo motor** que cobra — nunca hay un precio de la web y otro de la reserva.
 - Si el rango cae en unidades sin hueco, el sistema lo dice claro (no "error", sino "agotado" o "cerrado" según el caso — un camping real distingue las dos cosas).
@@ -63,18 +73,22 @@ Abrir el selector de temas de la cabecera (solo existe en esta demo — ver nota
 
 ## Minuto 5–8 · El programa de gestión: el planning
 
-Cambiar a la pestaña de `/admin`, ya logueado como gerencia. El planning (tape chart) es el elemento firma — dejarlo cargar y quedarse un segundo callado antes de hablar, que se vea.
+Cambiar a la pestaña de `/admin/`, entrando por la puerta anónima de la demo. El
+planning (tape chart) es el elemento firma — dejarlo cargar y quedarse un
+segundo callado antes de hablar, que se vea.
 
 - Señalar los colores por estado, la bandeja "sin asignar", los bloqueos con motivo.
 - **Arrastrar una reserva** de una parcela a otra del mismo tipo: "reasignar es esto, un arrastre — y el servidor lo valida siempre, si hay solape rebota solo".
 - Abrir la ficha de una reserva: desglose, pagos con signo, acciones según el estado ("solo se ofrecen las que tienen sentido ahora mismo — no hay un botón de cancelar en una reserva ya cancelada").
 - Si hay tiempo, buscar por el código de la reserva creada en el minuto 2: verla en la lista de reservas confirma el hilo de principio a fin.
 
-## Minuto 8–9 · Modo lite (si el camping es candidato a nivel Solicitudes)
+## Minuto 8–9 · Gestión (si el camping empieza por solicitudes)
 
 Bandeja de solicitudes: filtros por estado con recuento, mensaje completo al expandir, contacto con un clic. Llegadas del día: quién llega, quién sale, qué queda por cobrar destacado.
 
-> "Si usted hoy solo quiere que las peticiones de la web no se pierdan en una bandeja de correo, esto funciona igual de bien sin el motor completo encendido — se activa cuando usted quiera, sobre la misma base."
+> «Si usted hoy necesita que las peticiones de la web no se pierdan en una
+> bandeja de correo, Gestión cubre ese paso sin obligarle a activar todavía la
+> reserva directa. Puede subir después sobre la misma base.»
 
 ## Minuto 9–10 · Lo que no se ve pero vende
 

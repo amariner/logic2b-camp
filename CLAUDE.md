@@ -51,7 +51,7 @@ El desarrollador trabaja ~6h/semana. **Cualquier decisión que multiplique el tr
 - Si un cliente necesita tocar `apps/` o `packages/`: o es feature del core (la tienen todos) o falta un punto de extensión.
 
 ```
-apps/       web (Astro) · dashboard (React SPA) · api (Hono/Workers) · storybook (Fase 10)
+apps/       web (Astro) · dashboard (React SPA) · api (Hono/Workers) · site (landing/docs)
 packages/   core ★ (motor puro, sin I/O) · db · ui · config · extensions · i18n
             notifications · payments · cli · tsconfig
 tenants/    _template/ · demo/ (Camping Cala Sereno → camp.logic2b.com) · {slug}/
@@ -118,7 +118,7 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ## Dirección visual
 
-- **Dos marcas, no confundirlas** (ver `docs/BRAND.md`): el **producto Logic2B** (dashboard, landing de venta, docs) lleva marca **Logic2B** — shadcn/ui neutro, Inter Variable + Space Grotesk, isotipo `docs/brand/logo-mark.svg`, radius 10px, tokens oklch de `ui.logic2b.com`. La **web pública de cada camping** lleva la marca del **tenant** (mediterránea, ADR 0006), con isotipo discreto "powered by Logic2B" en el pie. El plan de alineación es el **Frente B** de `docs/ROADMAP.md`.
+- **Dos marcas, no confundirlas** (ver `docs/BRAND.md`): el **producto Logic2B** (dashboard, landing de venta, docs) lleva marca **Logic2B** — shadcn/ui neutro, Inter Variable + Space Grotesk, wordmark «Logic2B Campings», radius 10px y tokens oklch derivados de `ui.logic2b.com`. La **web pública de cada camping** lleva la marca del **tenant** (mediterránea, ADR 0006), con el isotipo discreto «powered by Logic2B» únicamente en el pie. El Frente B de `docs/ROADMAP.md` está construido; sus remates viven en la ruta duradera y el BACKLOG.
 - **Antimodelo**: SaaS azul isométrico Y TAMBIÉN el look crema+serif+terracota. Ambos gastados.
 - **Territorio**: camping mediterráneo real — pino carrasco, sombra, lona, arena compactada. Materia, no vector.
 - Landing nivel 3: el héroe es el **widget de disponibilidad funcionando de verdad**. Nivel 1: héroe distinto (sin motor).
@@ -149,8 +149,10 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ## Entornos
 
-- `camp.logic2b.com` → demo comercial (Camping Cala Sereno, ficticio, reset nocturno). ES la herramienta de ventas: prioridad visual máxima.
-- `ui.logic2b.com` → Storybook (Fase 10, no antes).
+- `camp.logic2b.com` → landing/documentación comercial en la raíz, Cala Sereno
+  ficticio bajo `/demo/`, otras marcas bajo `/demos/*` y gestor bajo `/admin/`.
+  El conjunto es la herramienta de ventas: prioridad visual máxima.
+- `ui.logic2b.com` → design system externo de referencia; este repo mantiene sus componentes en `packages/ui` y no duplica otro Storybook sin una necesidad demostrada.
 - `{cliente}` → dominio propio de cada camping.
 
 ## Comandos
@@ -167,7 +169,7 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 - ❌ Guardar precios como número suelto, o dinero en float.
 - ❌ Hardcodear textos de UI o contenido de tenant en componentes.
 - ❌ Deploy automático a producción de un tenant. Solo manual (`workflow_dispatch`).
-- ❌ Empezar Storybook / `ui.logic2b.com` antes de la Fase 10.
+- ❌ Duplicar `ui.logic2b.com` con un Storybook propio sin un consumidor o necesidad demostrada.
 - ❌ Mezclar fases en una sesión, o escribir código antes del ADR validado.
 - ❌ Que el nivel 1 arrastre el motor en el bundle o dependa de él para funcionar.
 - ❌ Reabrir decisiones cerradas de §0 del super prompt sin motivo nuevo real.

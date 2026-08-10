@@ -4,7 +4,7 @@ import {
   activePortfolioScenario,
   isPortfolioScenario,
   resetPortfolioScenario,
-} from './demo/scenario';
+} from '@demo-scenario';
 
 /**
  * Los mismos roles de `apps/api/src/auth.ts`, con su misma jerarquía.

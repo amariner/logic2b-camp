@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { tenantModulesPatchSchema } from './config-modules';
 
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'YYYY-MM-DD');
 
@@ -294,7 +295,7 @@ export const settingsPatchSchema = z
     timezone: z.string().min(1).max(60),
     currency: z.string().length(3),
     locales: z.array(z.string().min(2).max(5)).min(1),
-    modules: z.record(z.string(), z.unknown()),
+    modules: tenantModulesPatchSchema,
   })
   .partial();
 

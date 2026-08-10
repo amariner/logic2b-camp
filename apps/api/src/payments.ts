@@ -10,13 +10,13 @@ import {
   redsysProvider,
   stripeProvider,
   type PaymentIntentResult,
-  type PaymentMode,
   type PaymentProvider,
   type PaymentWebhookEvent,
 } from '@logic-camp/payments';
 import { schema, type Db } from '@logic-camp/db';
 import { eq } from 'drizzle-orm';
 import { nowIso, uid } from './ids';
+import { parsePaymentsConfig, tenantModules, type TenantPaymentsConfig } from './config-modules';
 import type { Bindings } from './tenant';
 
 /** Solo los secrets de pago — así un `{}` vale de "sin secrets" sin arrastrar DB. */
@@ -25,36 +25,12 @@ export type PaymentEnv = Pick<
   'STRIPE_SECRET_KEY' | 'STRIPE_WEBHOOK_SECRET' | 'REDSYS_MERCHANT_KEY'
 >;
 
-export type TenantPaymentsConfig = {
-  provider: 'stripe' | 'redsys' | 'none';
-  mode: PaymentMode;
-  depositPercent?: number;
-  redsysMerchantCode?: string;
-  redsysTerminal?: string;
-  environment?: 'test' | 'production';
-};
-
-const DEFAULT_CONFIG: TenantPaymentsConfig = { provider: 'none', mode: 'none' };
+export type { TenantPaymentsConfig } from './config-modules';
 
 export async function loadPaymentsConfig(db: Db): Promise<TenantPaymentsConfig> {
   const row = (await db.select().from(schema.tenants))[0];
-  const raw = (row?.modules as Record<string, unknown> | undefined)?.payments as
-    Partial<TenantPaymentsConfig> | undefined;
-  if (!raw) return DEFAULT_CONFIG;
-
-  // deposit sin % configurado no es un modo válido: se trata como 'none' para
-  // no crear NUNCA una reserva 'pending' a la espera de un cobro de 0€.
-  const mode: PaymentMode =
-    raw.mode === 'deposit' && !raw.depositPercent ? 'none' : (raw.mode ?? 'none');
-
-  return {
-    provider: raw.provider ?? 'none',
-    mode,
-    depositPercent: raw.depositPercent,
-    redsysMerchantCode: raw.redsysMerchantCode,
-    redsysTerminal: raw.redsysTerminal,
-    environment: raw.environment ?? 'test',
-  };
+  if (!row) throw new Error('TenantConfig ausente: la D1 no contiene una fila tenants');
+  return parsePaymentsConfig(tenantModules(row.modules).payments);
 }
 
 /** null = el provider elegido no tiene los secrets/datos que necesita (ADR 0011 §8). */

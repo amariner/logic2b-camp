@@ -30,19 +30,36 @@ describe('loadTenantConfig', () => {
     expect(config.cancellationPolicy.tiers).toEqual([{ minDaysBefore: 14, refundPct: 80 }]);
   });
 
-  it('un valor inválido no lanza: cae al default en vez de romper la petición', () => {
-    const config = loadTenantConfig({
-      ...baseRow,
-      modules: { taxPolicy: 'marte', cancellationPolicy: { tiers: [] } },
-    });
-    expect(config.taxPolicy).toBe('none');
-    expect(config.cancellationPolicy).toEqual(DEFAULT_CANCELLATION_POLICY);
+  it('un valor explícito inválido falla en vez de aplicar una política distinta en silencio', () => {
+    expect(() =>
+      loadTenantConfig({
+        ...baseRow,
+        modules: { taxPolicy: 'marte' },
+      }),
+    ).toThrow('TenantConfig inválida (modules.taxPolicy)');
+
+    expect(() =>
+      loadTenantConfig({
+        ...baseRow,
+        modules: { cancellationPolicy: { tiers: [] } },
+      }),
+    ).toThrow('TenantConfig inválida (modules.cancellationPolicy)');
   });
 
-  it('tier fuera de 1-4 cae a 1; locales no-array cae a [es]', () => {
-    const config = loadTenantConfig({ ...baseRow, tier: 9, locales: 'es' as unknown });
-    expect(config.tier).toBe(1);
-    expect(config.locales).toEqual(['es']);
+  it('rechaza tier y locales inválidos en la fila persistida', () => {
+    expect(() => loadTenantConfig({ ...baseRow, tier: 9 })).toThrow('TenantConfig inválida (fila)');
+    expect(() => loadTenantConfig({ ...baseRow, locales: 'es' as unknown })).toThrow(
+      'TenantConfig inválida (fila)',
+    );
+  });
+
+  it('rechaza demoThemes mal tipado o repetido', () => {
+    expect(() => loadTenantConfig({ ...baseRow, modules: { demoThemes: ['mar', 2] } })).toThrow(
+      'TenantConfig inválida (modules.demoThemes)',
+    );
+    expect(() => loadTenantConfig({ ...baseRow, modules: { demoThemes: ['mar', 'mar'] } })).toThrow(
+      'TenantConfig inválida (modules.demoThemes)',
+    );
   });
 });
 

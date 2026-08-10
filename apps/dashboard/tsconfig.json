@@ -1,4 +1,11 @@
 {
   "extends": "@logic-camp/tsconfig/react.json",
+  "compilerOptions": {
+    "paths": {
+      "@demo-scenario": ["./src/demo/scenario.ts"],
+      "@scenario-automatiza": ["./src/pages/ScenarioUnavailable.tsx"],
+      "@scenario-inteligente": ["./src/pages/ScenarioUnavailable.tsx"]
+    }
+  },
   "include": ["src/**/*", "vite.config.ts"]
 }

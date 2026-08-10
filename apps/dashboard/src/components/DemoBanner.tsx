@@ -31,7 +31,7 @@ import {
 import { ExternalLink, Info } from 'lucide-react';
 import { useResetDemo, useRol } from '../auth';
 import { t } from '../i18n';
-import { activePortfolioScenario } from '../demo/scenario';
+import { activePortfolioScenario } from '@demo-scenario';
 
 export default function DemoBanner() {
   const esDemo = useRol() === 'demo';

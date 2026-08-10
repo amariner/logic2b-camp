@@ -59,8 +59,8 @@ const Tarifas = lazyRouteComponent(() => import('./pages/Tarifas'));
 const Notificaciones = lazyRouteComponent(() => import('./pages/Notificaciones'));
 const Pagos = lazyRouteComponent(() => import('./pages/Pagos'));
 const Ajustes = lazyRouteComponent(() => import('./pages/Ajustes'));
-const Automatiza = lazyRouteComponent(() => import('./pages/Automatiza'));
-const Inteligente = lazyRouteComponent(() => import('./pages/Inteligente'));
+const Automatiza = lazyRouteComponent(() => import('@scenario-automatiza'));
+const Inteligente = lazyRouteComponent(() => import('@scenario-inteligente'));
 
 function RoutePending() {
   return (
@@ -365,6 +365,22 @@ const mapSearch = (s: Record<string, unknown>): { date?: string; unit?: string }
   unit: typeof s.unit === 'string' ? s.unit : undefined,
 });
 
+const scenarioRoutes =
+  import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo'
+    ? [
+        createRoute({
+          getParentRoute: () => rootRoute,
+          path: '/automatiza',
+          component: Automatiza,
+        }),
+        createRoute({
+          getParentRoute: () => rootRoute,
+          path: '/inteligente',
+          component: Inteligente,
+        }),
+      ]
+    : [];
+
 const routes = [
   createRoute({
     getParentRoute: () => rootRoute,
@@ -449,16 +465,7 @@ const routes = [
     path: '/ajustes',
     component: Ajustes,
   }),
-  createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/automatiza',
-    component: Automatiza,
-  }),
-  createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/inteligente',
-    component: Inteligente,
-  }),
+  ...scenarioRoutes,
 ] as const;
 
 const router = createRouter({

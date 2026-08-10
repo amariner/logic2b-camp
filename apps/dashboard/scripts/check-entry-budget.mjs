@@ -47,7 +47,32 @@ for (const page of ['Planning', 'Plano']) {
   }
 }
 
+const jsFiles = [
+  ...new Set(
+    Object.values(manifest)
+      .map((chunk) => chunk.file)
+      .filter((file) => file?.endsWith('.js')),
+  ),
+];
+const emittedSource = (
+  await Promise.all(jsFiles.map((file) => readFile(join(dist, file), 'utf8')))
+).join('\n');
+const scenario = process.env.VITE_DEMO_SCENARIO?.trim();
+const scenarioMarkers = {
+  pinadamar: ['usr_demo_pinadamar', 'logic2b-demo:pinadamar'],
+  mardefondo: ['usr_demo_mardefondo', 'MF-DEMO-001'],
+};
+for (const [id, markers] of Object.entries(scenarioMarkers)) {
+  const present = markers.every((marker) => emittedSource.includes(marker));
+  if (id === scenario && !present) {
+    throw new Error(`R3: el build ${id} no contiene su adaptador demo completo.`);
+  }
+  if (id !== scenario && markers.some((marker) => emittedSource.includes(marker))) {
+    throw new Error(`R3: el build ${scenario ?? 'normal'} arrastra fixtures de ${id}.`);
+  }
+}
+
 console.log(
   `M6: entrada JS ${(initialGzipBytes / 1000).toFixed(2)} kB gzip; ` +
-    'Planning y Plano bajo demanda.',
+    `Planning y Plano bajo demanda; frontera ${scenario ?? 'normal'} limpia.`,
 );

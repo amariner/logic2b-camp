@@ -1,5 +1,5 @@
 /** Cliente fino de /api/admin: misma-origen, cookie de sesión, errores tipados. */
-import { isPortfolioScenario, portfolioScenarioRequest } from './demo/scenario';
+import { isPortfolioScenario, portfolioScenarioRequest } from '@demo-scenario';
 
 export class ApiError extends Error {
   constructor(
