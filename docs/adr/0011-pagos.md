@@ -211,3 +211,32 @@ comercios actuales, pero declara SHA-256 todavía disponible y lo documenta en s
 anexo. La versión habilitada por el terminal se debe confirmar en sandbox; este
 corte no migra criptografía por inferencia ni acredita comercio, FUC, devolución
 o conciliación real.
+
+## Addenda R12 · frontera de entrada Redsys (2026-08-10)
+
+El [manual oficial de Redirección v4.1](https://pagosonline.redsys.es/download/1735/)
+define la notificación técnica como un POST independiente del retorno del
+navegador. Contiene `Ds_SignatureVersion`, `Ds_MerchantParameters` en
+Base64URL/UTF-8 y `Ds_Signature`; el comercio debe validar firma y parámetros.
+Para pagos y preautorizaciones, solo `Ds_Response` entre `0000` y `0099` es una
+autorización.
+
+La entrada anterior ignoraba la versión, casteaba el JSON a un record de strings
+y aplicaba `String`/`Number` a valores remotos. Así, un importe numérico firmado,
+`NaN`, un entero inseguro o la ausencia de respuesta/importe podían producir un
+evento de dominio. Ahora Zod valida primero el sobre y exige exactamente
+`HMAC_SHA256_V1`, la única versión que implementa este adaptador. Después valida
+que todos los valores del JSON sean strings, descodifica el percent-encoding y
+exige pedido Redsys, respuesta de cuatro dígitos e importe numérico de hasta 12
+dígitos antes de verificar la firma en tiempo constante y convertir céntimos.
+
+El mismo manual v4.1 presenta `HMAC_SHA512_V2` como estándar actual. No se acepta
+como alias: verificar una firma SHA-512 requiere configuración y primitivas
+propias, no etiquetar como V2 un HMAC SHA-256. La activación debe confirmar la
+versión del terminal y completar una migración explícita antes del sandbox si no
+es `HMAC_SHA256_V1`.
+
+La integración D1 firma deliberadamente un `Ds_Amount` JSON numérico: la ruta
+responde 400, la reserva permanece `pending`, `paidCents` sigue en cero y no se
+inserta ningún pago. Este corte no acredita terminal, firma, entrega ni cobro
+real.

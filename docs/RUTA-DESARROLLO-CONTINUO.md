@@ -421,6 +421,9 @@ de credencial y autorización; no se tocó infraestructura externa.
   - [x] Cuarto corte vertical: refund Redsys con timeout de 8 s, sobre y firma
         validados, éxito funcional 0900, pedido/importe correlacionados y cero
         reintentos ante ambigüedad no idempotente.
+  - [x] Quinto corte vertical: callback Redsys con versión explícita, payload
+        string tipado por Zod, pedido/respuesta/importe estrictos, firma en tiempo
+        constante y 400 sin escrituras ante datos firmados mal formados.
 - [ ] Verificar Resend/React Email y dominios remitentes en sandbox o cuenta real
       cuando haya credenciales autorizadas.
 - [ ] Verificar Stripe y Redsys en sandbox antes de cualquier cobro; incluir

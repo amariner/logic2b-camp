@@ -65,17 +65,24 @@ async function buildNotification(
   amountCents: number,
   authorizationCode = '123456',
 ) {
-  const raw = {
+  return buildSignedNotification({
     Ds_Order: order,
     Ds_Response: responseCode,
     Ds_Amount: String(amountCents),
     Ds_AuthorisationCode: authorizationCode,
-  };
+  });
+}
+
+async function buildSignedNotification(raw: Record<string, unknown>) {
   const encoded = Object.fromEntries(
-    Object.entries(raw).map(([k, v]) => [k, encodeURIComponent(v)]),
+    Object.entries(raw).map(([k, v]) => [k, typeof v === 'string' ? encodeURIComponent(v) : v]),
   );
   const paramsBase64 = Buffer.from(JSON.stringify(encoded)).toString('base64');
-  const signature = await signRedsysParameters(paramsBase64, order, REDSYS_ENV.REDSYS_MERCHANT_KEY);
+  const signature = await signRedsysParameters(
+    paramsBase64,
+    String(raw.Ds_Order ?? ''),
+    REDSYS_ENV.REDSYS_MERCHANT_KEY,
+  );
   return new URLSearchParams({
     Ds_SignatureVersion: 'HMAC_SHA256_V1',
     Ds_MerchantParameters: paramsBase64,
@@ -358,6 +365,49 @@ describe('reserva web con pago (redsys deposit)', () => {
     );
     expect(hook.status).toBe(409);
     await expect(hook.json()).resolves.toEqual({ error: 'payment_amount_mismatch' });
+
+    const db = createDb(env.DB);
+    const booking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    expect(booking.status).toBe('pending');
+    expect(booking.paidCents).toBe(0);
+    expect(
+      await db.select().from(schema.payments).where(eq(schema.payments.bookingId, created.id)),
+    ).toHaveLength(0);
+  });
+
+  it('un callback firmado pero mal tipado responde 400 y no escribe pagos ni saldo', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-06-25', '2026-06-28', 'typed-callback@example.com')),
+      REDSYS_ENV,
+    );
+    const created = (await create.json()) as {
+      id: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+    const amountCents = Math.round(created.totalCents * 0.3);
+    const notification = await buildSignedNotification({
+      Ds_Order: created.payment.providerRef,
+      Ds_Response: '0000',
+      Ds_Amount: amountCents,
+      Ds_AuthorisationCode: 'TYPE-FAIL',
+    });
+
+    const hook = await app.request(
+      '/api/payments/webhook/redsys',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
+      REDSYS_ENV,
+    );
+    expect(hook.status).toBe(400);
+    await expect(hook.json()).resolves.toEqual({ error: 'invalid_signature' });
 
     const db = createDb(env.DB);
     const booking = (

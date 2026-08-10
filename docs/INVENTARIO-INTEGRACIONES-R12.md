@@ -26,7 +26,7 @@ contrato; **gate** requiere tercero; **no** no existe y no se simula como real.
 | ------------------------------------ | ----------------------------------------------------------------------------- | --------------------------------------------------------- | ----------- | ---------------------- | ---------------------------------------------------- | ----------------------------------------------- | ----------------------- | ----------------------------------------------------------- |
 | **Resend: notificaciones y leads**   | sí: input tipado y éxito externo validado con Zod                             | sí: clave por entrega; misma en ambos intentos            | 8 s/intento | uno, solo transitorios | sí: ref, intentos y códigos cerrados sin body remoto | sí: `disabled` y eventos on/off                 | runbook + dossier       | **primer corte local R12 cerrado**; sin cuenta autorizada   |
 | **Stripe**                           | sí local: webhook y respuestas salientes Zod                                  | sí: D1 + clave estable en cada POST Stripe                | 8 s/intento | uno, solo seguro       | códigos cerrados sin body/error remoto               | sí: `provider:none` y fallo cerrado sin secrets | runbook + dossier       | **tercer corte local R12 cerrado**; sandbox sigue como gate |
-| **Redsys**                           | parcial: refund Zod+firma; callback aún castea/coacciona                      | webhook/pago D1; refund no reintenta sin garantía oficial | 8 s/refund  | no por ambigüedad      | refund cerrado; payload no persistido                | sí: `provider:none`                             | runbook + dossier       | **cuarto corte local R12**; callback y sandbox siguen       |
+| **Redsys**                           | sí local: callback y refund con Zod+firma                                     | webhook/pago D1; refund no reintenta sin garantía oficial | 8 s/refund  | no por ambigüedad      | códigos cerrados; payload no persistido              | sí: `provider:none`                             | runbook + dossier       | **quinto corte local R12 cerrado**; sandbox sigue como gate |
 | **SES.Hospedajes**                   | parcial: config tenant validada; credenciales/acuse no tienen esquema oficial | no                                                        | no          | no                     | Basic Auth no se loguea; acuse mínimo                | sí: descarga `manual` operativa                 | parcial en dossier      | endpoint simulado; credenciales/formato oficial son gate    |
 | **Analytics**                        | no                                                                            | n/a                                                       | n/a         | n/a                    | no hay captura ni CMP                                | sí: ausente                                     | pendiente               | cuenta, finalidad, consentimiento y retención son gate      |
 | **Errores: logs / Sentry / Logpush** | log propio cerrado                                                            | n/a                                                       | n/a         | n/a                    | sí: referencia y redacción local                     | stdout del Worker                               | canal externo pendiente | cuenta/destino y prueba de alerta son gate                  |
@@ -39,11 +39,11 @@ contrato; **gate** requiere tercero; **no** no existe y no se simula como real.
 1. **Correo:** timeout, reintento idempotente, respuesta Zod, códigos sin cuerpo
    remoto, referencia e intentos exactos. Es el único proveedor que atraviesa
    Inicio y reservas ya implementadas.
-2. **Pagos:** Stripe y el refund Redsys cierran ya sus fronteras HTTP locales.
-   Revisar en una entrega separada el callback Redsys todavía casteado. Ninguna
-   llamada sandbox sin credenciales y autorización.
-3. **SES:** mantener descarga manual como resultado principal; cerrar timeout,
-   validación y duplicados solo contra el contrato oficial aprobado.
+2. **Pagos:** Stripe y Redsys cierran ya sus fronteras HTTP locales. La versión
+   de firma Redsys sigue siendo un gate de terminal/sandbox y nunca se infiere.
+3. **SES:** mantener descarga manual como resultado principal; auditar primero
+   el contrato oficial y cerrar timeout, acuse y duplicados solo si está
+   publicado/aprobado, sin inventar XML de respuesta.
 4. **Analytics/errores/fiscal/OTA/IA:** no crear adaptador hasta que el módulo y
    el proveedor estén aprobados. Mantener ausencia, prototipo o modo manual como
    estados explícitos.

@@ -65,6 +65,18 @@ const redsysRefundResponseSchema = z.object({
   Ds_Amount: z.string().regex(/^\d+$/),
   Ds_Response: z.string().regex(/^\d{4}$/),
 });
+const redsysWebhookFormSchema = z.object({
+  Ds_SignatureVersion: z.literal('HMAC_SHA256_V1'),
+  Ds_MerchantParameters: signedValueSchema,
+  Ds_Signature: signedValueSchema,
+});
+const redsysWebhookEncodedPayloadSchema = z.record(z.string(), z.string());
+const redsysWebhookPayloadSchema = z.object({
+  Ds_Order: z.string().regex(/^\d{4}[A-Za-z0-9]{0,8}$/),
+  Ds_Response: z.string().regex(/^\d{4}$/),
+  Ds_Amount: z.string().regex(/^\d{1,12}$/),
+  Ds_AuthorisationCode: z.string().trim().min(1).max(64).optional(),
+});
 
 const CONSUMER_LANGUAGE: Record<string, string> = {
   es: '001',
@@ -232,33 +244,56 @@ export function redsysProvider(
       rawBody: string;
     }): Promise<PaymentWebhookEvent | null> {
       const form = new URLSearchParams(req.rawBody);
-      const paramsBase64 = form.get('Ds_MerchantParameters');
-      const receivedSignature = form.get('Ds_Signature');
-      if (!paramsBase64 || !receivedSignature) return null;
+      const envelope = redsysWebhookFormSchema.safeParse({
+        Ds_SignatureVersion: form.get('Ds_SignatureVersion'),
+        Ds_MerchantParameters: form.get('Ds_MerchantParameters'),
+        Ds_Signature: form.get('Ds_Signature'),
+      });
+      if (!envelope.success) return null;
 
-      let decoded: Record<string, string>;
+      let rawPayload: unknown;
       try {
-        const raw = JSON.parse(utf8Decode(base64Decode(paramsBase64))) as Record<string, string>;
-        decoded = Object.fromEntries(
-          Object.entries(raw).map(([k, v]) => [k, decodeURIComponent(String(v))]),
+        rawPayload = JSON.parse(
+          utf8Decode(base64Decode(envelope.data.Ds_MerchantParameters)),
+        ) as unknown;
+      } catch {
+        return null;
+      }
+      const encodedPayload = redsysWebhookEncodedPayloadSchema.safeParse(rawPayload);
+      if (!encodedPayload.success) return null;
+
+      let decodedPayload: Record<string, string>;
+      try {
+        decodedPayload = Object.fromEntries(
+          Object.entries(encodedPayload.data).map(([key, value]) => [
+            key,
+            decodeURIComponent(value),
+          ]),
         );
       } catch {
         return null;
       }
-      const order = decoded.Ds_Order;
-      if (!order) return null;
+      const payload = redsysWebhookPayloadSchema.safeParse(decodedPayload);
+      if (!payload.success) return null;
 
-      const expected = await signRedsysParameters(paramsBase64, order, config.secretKeyBase64);
-      if (!constantTimeEqual(base64Decode(expected), base64Decode(receivedSignature))) return null;
+      const expected = await signRedsysParameters(
+        envelope.data.Ds_MerchantParameters,
+        payload.data.Ds_Order,
+        config.secretKeyBase64,
+      );
+      if (!constantTimeEqual(base64Decode(expected), base64Decode(envelope.data.Ds_Signature))) {
+        return null;
+      }
 
-      const responseCode = Number(decoded.Ds_Response ?? '9999');
-      const succeeded = Number.isFinite(responseCode) && responseCode >= 0 && responseCode <= 99;
+      const amountCents = Number(payload.data.Ds_Amount);
+      if (!Number.isSafeInteger(amountCents) || amountCents < 0) return null;
+      const succeeded = payload.data.Ds_Response >= '0000' && payload.data.Ds_Response <= '0099';
       return {
-        eventId: `${order}:${decoded.Ds_AuthorisationCode ?? decoded.Ds_Response ?? ''}`,
-        providerRef: order,
-        orderRef: order,
+        eventId: `${payload.data.Ds_Order}:${payload.data.Ds_AuthorisationCode ?? payload.data.Ds_Response}`,
+        providerRef: payload.data.Ds_Order,
+        orderRef: payload.data.Ds_Order,
         status: succeeded ? 'succeeded' : 'failed',
-        amountCents: Number(decoded.Ds_Amount ?? '0'),
+        amountCents,
       };
     },
 

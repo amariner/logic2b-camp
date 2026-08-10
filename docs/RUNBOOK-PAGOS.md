@@ -35,10 +35,24 @@ de 8 s y solo acepta un sobre válido, firmado, para el mismo pedido e importe c
 `Ds_Response=0900`; un 2xx vacío, `errorCode`, rechazo, firma ajena o ambigüedad
 de transporte fallan cerrados sin tocar el saldo.
 
-El manual REST v4.0.1 recomienda `HMAC_SHA512_V1` para comercios actuales y
-mantiene SHA-256 disponible en su anexo. Este adaptador conserva
+La notificación Redsys solo produce evento cuando:
+
+1. el formulario contiene versión, parámetros y firma como strings válidos;
+2. la versión es exactamente `HMAC_SHA256_V1`, el algoritmo implementado;
+3. el JSON Base64URL/UTF-8 contiene únicamente valores string;
+4. pedido, `Ds_Response` de cuatro dígitos e importe de 1–12 dígitos están
+   presentes y tipados;
+5. la firma coincide en tiempo constante;
+6. `0000`–`0099` decide éxito de pago. Cualquier otro código es fallo, no 400.
+
+Un payload firmado pero mal tipado devuelve 400 antes de tocar D1. No se
+persisten parámetros ni se copian a logs.
+
+El manual REST v4.0.1 recomienda `HMAC_SHA512_V1` y el manual de Redirección
+v4.1 usa `HMAC_SHA512_V2` como estándar actual. Este adaptador conserva
 `HMAC_SHA256_V1`; confirmar con la entidad qué versión tiene habilitada el
-terminal antes del sandbox y no mezclar versiones en petición/respuesta.
+terminal y migrar de forma configurada antes del sandbox. Nunca mezclar el
+identificador de una versión con la criptografía de otra.
 
 ## 2. Configuración y ownership
 
@@ -91,13 +105,17 @@ repositorio.
 ### Redsys
 
 1. Confirmar FUC, terminal, clave y URLs del comercio de pruebas.
-2. Configurar `environment:test`; nunca usar la clave de producción para el
+2. Confirmar la versión de firma del terminal. Si exige SHA-512, completar y
+   probar antes una migración explícita del adaptador.
+3. Configurar `environment:test`; nunca usar la clave de producción para el
    smoke.
-3. Recorrer autorización, denegación, abandono y notificación duplicada.
-4. Comparar pedido, importe y código de autorización con el panel del TPV.
-5. Probar devolución y validar el acuse funcional, no solo el HTTP 2xx.
-6. Conciliar los asientos locales con el informe del comercio.
-7. Cortar la conexión después de enviar una devolución: no repetir a ciegas;
+4. Recorrer autorización, denegación, abandono y notificación duplicada.
+5. Enviar versión ausente/ajena, importe no string y campos mínimos ausentes:
+   deben responder 400 y conservar la reserva `pending` sin pagos.
+6. Comparar pedido, importe y código de autorización con el panel del TPV.
+7. Probar devolución y validar el acuse funcional, no solo el HTTP 2xx.
+8. Conciliar los asientos locales con el informe del comercio.
+9. Cortar la conexión después de enviar una devolución: no repetir a ciegas;
    comprobar pedido e importe en el Portal antes de decidir el asiento local.
 
 No pasar a live hasta conservar evidencia fechada de todos los casos y resolver
@@ -142,11 +160,11 @@ retira cuando autorización, notificación y devolución se hayan conciliado.
 
 ## 7. Evidencia local y gates restantes
 
-- pagos unitarios: **35/35**, incluida salida Stripe idempotente y refund Redsys
-  con timeout, sobre firmado, `0900`, pedido/importe y rechazos cerrados;
-- API de pagos: **15/15**; además de Stripe y los invariantes de entrada, un
-  `0180` Redsys firmado conserva saldo y único asiento positivo;
+- pagos unitarios: **44/44**, incluida entrada Redsys con versión, records string,
+  campos mínimos, importe seguro y firma, además de las salidas Stripe/Redsys;
+- API de pagos: **16/16**; un callback Redsys firmado con importe JSON numérico
+  responde 400 y conserva `pending`, saldo cero y cero pagos;
 - `payments.raw` permanece nulo y fuera de la API/export;
 - no se usaron secrets válidos ni hubo llamada sandbox;
 - faltan recepción real, refund y conciliación extremo a extremo, además de
-  confirmar la versión de firma habilitada por el terminal.
+  confirmar la versión de firma y migrar a SHA-512 si el terminal lo exige.

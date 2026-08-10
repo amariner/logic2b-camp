@@ -52,6 +52,24 @@ async function signedRefundResponse(
   );
 }
 
+async function signedWebhook(
+  raw: Record<string, unknown>,
+  signatureVersion: string | null = 'HMAC_SHA256_V1',
+): Promise<string> {
+  const paramsBase64 = base64Encode(utf8Encode(JSON.stringify(raw)));
+  const signature = await signRedsysParameters(
+    paramsBase64,
+    String(raw.Ds_Order ?? ''),
+    TEST_CONFIG.secretKeyBase64,
+  );
+  const form = new URLSearchParams({
+    Ds_MerchantParameters: paramsBase64,
+    Ds_Signature: signature,
+  });
+  if (signatureVersion !== null) form.set('Ds_SignatureVersion', signatureVersion);
+  return form.toString();
+}
+
 describe('redsysProvider.createIntent', () => {
   it('devuelve un formulario auto-post con la firma y el pedido', async () => {
     const provider = redsysProvider(TEST_CONFIG);
@@ -145,6 +163,75 @@ describe('redsysProvider.parseWebhook', () => {
       }).toString(),
     });
     expect(event?.status).toBe('failed');
+  });
+
+  it.each([null, 'HMAC_SHA512_V2'])(
+    'rechaza una versión de firma ausente o ajena: %s',
+    async (version) => {
+      const provider = redsysProvider(TEST_CONFIG);
+      const event = await provider.parseWebhook({
+        headers: new Headers(),
+        rawBody: await signedWebhook(
+          { Ds_Order: '1234vers0004', Ds_Response: '0000', Ds_Amount: '100' },
+          version,
+        ),
+      });
+
+      expect(event).toBeNull();
+    },
+  );
+
+  it.each([
+    ['importe', { Ds_Order: '1234type0005', Ds_Response: '0000', Ds_Amount: 100 }],
+    ['respuesta', { Ds_Order: '1234type0006', Ds_Response: 0, Ds_Amount: '100' }],
+  ])('no coacciona a string un %s remoto', async (_field, raw) => {
+    const provider = redsysProvider(TEST_CONFIG);
+    const event = await provider.parseWebhook({
+      headers: new Headers(),
+      rawBody: await signedWebhook(raw),
+    });
+
+    expect(event).toBeNull();
+  });
+
+  it.each(['9007199254740993', 'NaN'])('rechaza un importe no seguro: %s', async (amount) => {
+    const provider = redsysProvider(TEST_CONFIG);
+    const event = await provider.parseWebhook({
+      headers: new Headers(),
+      rawBody: await signedWebhook({
+        Ds_Order: '1234safe0007',
+        Ds_Response: '0000',
+        Ds_Amount: amount,
+      }),
+    });
+
+    expect(event).toBeNull();
+  });
+
+  it.each(['Ds_Order', 'Ds_Response', 'Ds_Amount'])('exige el campo mínimo %s', async (field) => {
+    const raw: Record<string, unknown> = {
+      Ds_Order: '1234need0008',
+      Ds_Response: '0000',
+      Ds_Amount: '100',
+    };
+    delete raw[field];
+    const paramsBase64 = base64Encode(utf8Encode(JSON.stringify(raw)));
+    const signature = await signRedsysParameters(
+      paramsBase64,
+      '1234need0008',
+      TEST_CONFIG.secretKeyBase64,
+    );
+    const provider = redsysProvider(TEST_CONFIG);
+    const event = await provider.parseWebhook({
+      headers: new Headers(),
+      rawBody: new URLSearchParams({
+        Ds_SignatureVersion: 'HMAC_SHA256_V1',
+        Ds_MerchantParameters: paramsBase64,
+        Ds_Signature: signature,
+      }).toString(),
+    });
+
+    expect(event).toBeNull();
   });
 });
 

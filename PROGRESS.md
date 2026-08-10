@@ -1,5 +1,27 @@
 # PROGRESS — Logic Camp
 
+## Frontera Zod del callback Redsys R12 · 2026-08-10 (sesión 121)
+
+- El quinto corte local R12 contrasta la notificación POST con el manual oficial
+  de Redirección v4.1. Ocho tests unitarios nacieron rojos: versión ausente/ajena,
+  importe o respuesta no string, importe inseguro/`NaN` y campos mínimos
+  ausentes producían eventos. La integración firmada con importe JSON numérico
+  recibía 200 y registraba el cobro.
+- El formulario exige ahora los tres campos y `HMAC_SHA256_V1`, la única versión
+  implementada. Zod valida que el JSON sea un record de strings antes del
+  percent-decoding y exige pedido Redsys, respuesta de cuatro dígitos e importe
+  de 1–12 dígitos. Solo después se compara la firma en tiempo constante y
+  `0000`–`0099` decide éxito.
+- El manual v4.1 presenta `HMAC_SHA512_V2` como estándar actual. No se acepta
+  como alias de SHA-256: terminal y versión deben confirmarse en sandbox y una
+  migración será explícita si corresponde.
+- La prueba D1 mal tipada devuelve 400 y conserva reserva `pending`, saldo cero y
+  cero pagos. Pagos pasa **44/44**, el recorrido API de pagos **16/16**, la API
+  completa **276/276** y `pnpm check` cierra **57/57** tareas en **12,138 s**.
+- No hubo deploy, secrets, sandbox, cobro ni escritura externa. El trabajo
+  simultáneo de las demos se preservó separado. R12 continúa con la auditoría
+  del contrato de transporte SES.Hospedajes sin inventar un acuse oficial.
+
 ## Acuse funcional de refund Redsys R12 · 2026-08-10 (sesión 119)
 
 - El cuarto corte local R12 contrasta la devolución REST con el manual oficial
