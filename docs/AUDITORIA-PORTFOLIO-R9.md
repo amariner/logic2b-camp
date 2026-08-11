@@ -67,7 +67,12 @@ propio para D5-V.
 
 - **D5-V: en espera, portfolio objetivo actual 3/3.** No se crea tenant, marca,
   contenido, fotografía, campaña ni infraestructura.
-- **D6-V: no evaluable.** Solo se audita después de completar una D5-V abierta
+- **D6-V: abierto y en 8/12.** Tras la decisión explícita posterior, D5-V cerró
+  con Riu Clar, La Duna y El Delta; Serralta y Entre Vinyes abren la tercera ola.
+  `vinyes` aporta una temporada Vendimia solapada de prioridad 2, 70 unidades,
+  fotografía propia 10/10 y recorrido web→gestor; no duplica la objeción de
+  montaña multilingüe de Serralta. La evaluación continúa verticalmente por
+  `tarongers`, `carrasca`, `ballena` y `soldhivern`.
   con evidencia individual para sus tres demos.
 - **Próximo trabajo local:** R10, QA extremo a extremo de las superficies
   canónicas ya vendibles.

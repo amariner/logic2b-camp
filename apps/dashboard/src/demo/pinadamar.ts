@@ -20,16 +20,33 @@ import type {
 
 export const isPinadaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'pinadamar';
 export const isSerraltaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'serralta';
+export const isVinyesScenario = import.meta.env.VITE_DEMO_SCENARIO === 'vinyes';
 
 export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:v1';
 export const PINADA_WEB_ENQUIRY_KEY = 'logic2b-demo:pinadamar:submitted-enquiry:v1';
 export const SERRALTA_STATE_KEY = 'logic2b-demo:serralta:state:v1';
 export const SERRALTA_WEB_ENQUIRY_KEY = 'logic2b-demo:serralta:submitted-enquiry:v1';
+export const VINYES_STATE_KEY = 'logic2b-demo:vinyes:state:v1';
+export const VINYES_WEB_ENQUIRY_KEY = 'logic2b-demo:vinyes:submitted-enquiry:v1';
 
-const activeScenarioId = isSerraltaScenario ? 'serralta' : 'pinadamar';
-const activeStateKey = isSerraltaScenario ? SERRALTA_STATE_KEY : PINADA_STATE_KEY;
-const activeWebEnquiryKey = isSerraltaScenario ? SERRALTA_WEB_ENQUIRY_KEY : PINADA_WEB_ENQUIRY_KEY;
-const activeBookingPrefix = isSerraltaScenario ? 'SR' : 'PM';
+const activeScenario = isVinyesScenario
+  ? {
+      id: 'vinyes', stateKey: VINYES_STATE_KEY, enquiryKey: VINYES_WEB_ENQUIRY_KEY,
+      bookingPrefix: 'VY', tenantId: 'ten_vinyes', name: 'Camping Entre Vinyes', locales: ['es'],
+    }
+  : isSerraltaScenario
+    ? {
+        id: 'serralta', stateKey: SERRALTA_STATE_KEY, enquiryKey: SERRALTA_WEB_ENQUIRY_KEY,
+        bookingPrefix: 'SR', tenantId: 'ten_serralta', name: 'Camping Serralta', locales: ['es', 'fr', 'de', 'en'],
+      }
+    : {
+        id: 'pinadamar', stateKey: PINADA_STATE_KEY, enquiryKey: PINADA_WEB_ENQUIRY_KEY,
+        bookingPrefix: 'PM', tenantId: 'ten_pinadamar', name: 'Camping Pinada del Mar', locales: ['es', 'ca', 'fr', 'de'],
+      };
+const activeScenarioId = activeScenario.id;
+const activeStateKey = activeScenario.stateKey;
+const activeWebEnquiryKey = activeScenario.enquiryKey;
+const activeBookingPrefix = activeScenario.bookingPrefix;
 
 const DAY_MS = 86_400_000;
 const anchorYear = 2026;
@@ -60,7 +77,18 @@ export const serraltaTypeSpecs = [
   { id: 'ut_refugio', kind: 'lodging' as const, name: 'Refugio Serralta', count: 4, prefix: 'REF' },
 ] as const;
 
-const typeSpecs = isSerraltaScenario ? serraltaTypeSpecs : pinadaTypeSpecs;
+export const vinyesTypeSpecs = [
+  { id: 'ut_cepa', kind: 'pitch' as const, name: 'Parcela Cepa', count: 38, prefix: 'CEP' },
+  { id: 'ut_bancal', kind: 'pitch' as const, name: 'Parcela Bancal', count: 18, prefix: 'BAN' },
+  { id: 'ut_cal', kind: 'lodging' as const, name: 'Cabaña de Cal', count: 10, prefix: 'CAL' },
+  { id: 'ut_caseta', kind: 'lodging' as const, name: 'Caseta de Viña', count: 4, prefix: 'CSV' },
+] as const;
+
+const typeSpecs = isVinyesScenario
+  ? vinyesTypeSpecs
+  : isSerraltaScenario
+    ? serraltaTypeSpecs
+    : pinadaTypeSpecs;
 
 const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
   id: spec.id,
@@ -72,10 +100,13 @@ const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
       ? 6
       : spec.id === 'ut_bungalow' || spec.id === 'ut_refugio'
         ? 6
-        : spec.id === 'ut_cabana'
+        : spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
           ? 4
           : 5,
-  includedPersons: spec.kind === 'pitch' ? 2 : spec.id === 'ut_cabana' ? 2 : 4,
+  includedPersons:
+    spec.kind === 'pitch' || spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
+      ? 2
+      : 4,
 }));
 
 const units: PlanningUnit[] = typeSpecs.flatMap((spec) =>
@@ -84,7 +115,9 @@ const units: PlanningUnit[] = typeSpecs.flatMap((spec) =>
     unitTypeId: spec.id,
     code,
     status:
-      (spec.prefix === 'B' && index === 11) || (spec.prefix === 'CAB' && index === 7)
+      (spec.prefix === 'B' && index === 11) ||
+      (spec.prefix === 'CAB' && index === 7) ||
+      (spec.prefix === 'CAL' && index === 7)
         ? 'inactive'
         : 'active',
   })),
@@ -139,12 +172,12 @@ const surnames = [
   'Serra',
   'Bernard',
 ];
-const locales = isSerraltaScenario
-  ? (['es', 'fr', 'de', 'en'] as const)
-  : (['es', 'ca', 'fr', 'de'] as const);
+const locales = activeScenario.locales;
 const statuses: EnquiryStatus[] = ['new', 'new', 'contacted', 'quoted', 'converted', 'lost'];
 const enquiryMessages: Record<string, string> = {
-  es: 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
+  es: isVinyesScenario
+    ? 'Queremos venir durante la vendimia y saber qué temporada se aplica a nuestras fechas.'
+    : 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
   ca: 'Preferim ombra i una zona tranquil·la. No s’enviarà cap missatge.',
   fr: 'Nous prévoyons une randonnée et souhaitons connaître l’état du sentier.',
   de: 'Wir planen eine Wanderung und möchten den aktuellen Wegezustand wissen.',
@@ -265,6 +298,7 @@ export function resetPinadaScenario(): void {
 }
 
 export const resetSerraltaScenario = resetPinadaScenario;
+export const resetVinyesScenario = resetPinadaScenario;
 
 export const pinadaPlano: PlanoDescriptor = {
   version: 1,
@@ -420,7 +454,52 @@ export const serraltaPlano: PlanoDescriptor = {
   ],
 };
 
-const activePlano = isSerraltaScenario ? serraltaPlano : pinadaPlano;
+export const vinyesPlano: PlanoDescriptor = {
+  version: 1,
+  decor: [
+    { kind: 'enclosure', x: 20, y: 20, w: 900, h: 650 },
+    { kind: 'green', x: 36, y: 36, w: 848, h: 78, label: 'Viña vieja · bancal norte' },
+    { kind: 'road', x: 70, y: 176, w: 742, h: 18 },
+    { kind: 'road', x: 70, y: 372, w: 742, h: 18 },
+    { kind: 'road', x: 430, y: 108, w: 18, h: 482 },
+    {
+      kind: 'service', x: 66, y: 516, w: 152, h: 66,
+      label: 'Recepción y cosecha', icon: 'reception',
+    },
+    { kind: 'service', x: 486, y: 236, w: 126, h: 68, label: 'Patio de sombra', icon: 'restaurant' },
+    { kind: 'service', x: 638, y: 236, w: 100, h: 68, label: 'Baños', icon: 'wc' },
+    { kind: 'service', x: 486, y: 432, w: 112, h: 56, label: 'Despensa', icon: 'shop' },
+    { kind: 'label', x: 716, y: 132, text: 'Camino de bancales', size: 's' },
+  ],
+  blocks: [
+    {
+      id: 'cepas_bajas', label: 'Cepas Bajas', cell: 'pitch', x: 70, y: 116, cols: 10,
+      units: range('CEP', 20),
+    },
+    {
+      id: 'cepas_altas', label: 'Cepas Altas', cell: 'pitch', x: 70, y: 216, cols: 9,
+      units: range('CEP', 38).slice(20),
+    },
+    {
+      id: 'bancal', label: 'Parcela Bancal', cell: 'pitch', x: 70, y: 410, cols: 9,
+      units: range('BAN', 18),
+    },
+    {
+      id: 'cabanas_cal', label: 'Cabañas de Cal', cell: 'lodging', x: 486, y: 116, cols: 5,
+      units: range('CAL', 10),
+    },
+    {
+      id: 'casetas_vinya', label: 'Casetas de Viña', cell: 'lodging', x: 630, y: 430, cols: 4,
+      units: range('CSV', 4),
+    },
+  ],
+};
+
+const activePlano = isVinyesScenario
+  ? vinyesPlano
+  : isSerraltaScenario
+    ? serraltaPlano
+    : pinadaPlano;
 
 function overlaps(booking: DemoBooking, from: string, to: string): boolean {
   return booking.dateFrom < to && booking.dateTo > from && booking.status !== 'cancelled';
@@ -580,13 +659,13 @@ export async function demoScenarioRequest(
   if (method === 'GET' && url.pathname === '/api/admin/map') return ok({ plano: activePlano });
   if (method === 'GET' && url.pathname === '/api/admin/settings') {
     const settings: TenantSettings = {
-      id: isSerraltaScenario ? 'ten_serralta' : 'ten_pinadamar',
+      id: activeScenario.tenantId,
       slug: activeScenarioId,
-      name: isSerraltaScenario ? 'Camping Serralta' : 'Camping Pinada del Mar',
+      name: activeScenario.name,
       tier: 2,
       timezone: 'Europe/Madrid',
       currency: 'EUR',
-      locales: isSerraltaScenario ? ['es', 'fr', 'de', 'en'] : ['es', 'ca', 'fr', 'de'],
+      locales: [...activeScenario.locales],
       modules: { demo: true },
     };
     return ok(settings);
@@ -604,15 +683,24 @@ export async function demoScenarioRequest(
       to,
       unitTypes,
       units,
-      seasons: [
-        {
-          id: isSerraltaScenario ? 'sea_cumbre' : 'sea_alta',
-          name: isSerraltaScenario ? 'Agosto · temporada Cumbre' : 'Agosto · temporada alta',
-          dateFrom: iso(1),
-          dateTo: '2026-09-01',
-          priority: 1,
-        },
-      ],
+      seasons: isVinyesScenario
+        ? [
+            {
+              id: 'sea_verano', name: 'Verano · prioridad 1',
+              dateFrom: '2026-06-01', dateTo: '2026-10-01', priority: 1,
+            },
+            {
+              id: 'sea_vendimia', name: 'Vendimia · prioridad 2',
+              dateFrom: '2026-08-25', dateTo: '2026-10-13', priority: 2,
+            },
+          ]
+        : [
+            {
+              id: isSerraltaScenario ? 'sea_cumbre' : 'sea_alta',
+              name: isSerraltaScenario ? 'Agosto · temporada Cumbre' : 'Agosto · temporada alta',
+              dateFrom: iso(1), dateTo: '2026-09-01', priority: 1,
+            },
+          ],
       bookings: state.bookings
         .filter((booking) => overlaps(booking, from, to))
         .map((booking) => ({
@@ -632,8 +720,10 @@ export async function demoScenarioRequest(
         })),
       blocks: [
         {
-          id: isSerraltaScenario ? 'block_cab08' : 'block_b12',
-          unitId: units.find((unit) => unit.code === (isSerraltaScenario ? 'CAB-08' : 'B-12'))!.id,
+          id: isVinyesScenario ? 'block_cal08' : isSerraltaScenario ? 'block_cab08' : 'block_b12',
+          unitId: units.find((unit) =>
+            unit.code === (isVinyesScenario ? 'CAL-08' : isSerraltaScenario ? 'CAB-08' : 'B-12'),
+          )!.id,
           unitTypeId: null,
           dateFrom: iso(1),
           dateTo: iso(31),
@@ -758,4 +848,12 @@ export const serraltaFixtureDefinition = {
   typeCount: serraltaTypeSpecs.length,
   locales: ['es', 'fr', 'de', 'en'] as const,
   inactiveUnit: 'CAB-08',
+};
+
+export const vinyesFixtureDefinition = {
+  units: vinyesTypeSpecs.reduce((sum, type) => sum + type.count, 0),
+  typeCount: vinyesTypeSpecs.length,
+  locales: ['es'] as const,
+  inactiveUnit: 'CAL-08',
+  overlappingSeasons: ['sea_verano', 'sea_vendimia'] as const,
 };

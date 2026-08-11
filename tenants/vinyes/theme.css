@@ -1,0 +1,20 @@
+:root {
+  --lc-tinta: #251d19;
+  --lc-hueso: #f5f0df;
+  --lc-pino: #5c6435;
+  --lc-arena: #c7aa72;
+  /* Garnacha oscura, accesible como texto de estado sobre hueso. */
+  --lc-mar: #7b3043;
+
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 72%, var(--lc-tinta));
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 32%, var(--lc-hueso));
+
+  --lc-font-display: 'Fraunces', Georgia, serif;
+  --lc-font-text: 'Manrope', system-ui, sans-serif;
+
+  --lc-radius: 3px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 3px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 6px);
+}

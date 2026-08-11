@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-V producido para Logic2B con generación integrada y fallback controlado; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping Entre Vinyes.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-vendimia", "hero-patio"],
+    ["tipo-parcela-cepa", "tipo-parcela-bancal"],
+    ["tipo-cabana-cal", "tipo-caseta-vinya"],
+    ["instalacion-recepcion", "instalacion-patio"],
+    ["entorno", "textura-caliza"]
+  ],
+  "derivados": {
+    "fuente": "hero-vendimia",
+    "titulo": "Camping Entre Vinyes",
+    "subtitulo": "70 unidades · interior mediterráneo"
+  },
+  "piezas": {
+    "hero-vendimia": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para el titular a 375 y 1366 px.",
+      "prompt": "Fotografía editorial documental panorámica de un camping rural mediano entre viñedos viejos al amanecer de vendimia. Una calle compacta de tierra calcárea atraviesa hileras bajas de cepas maduras y muros secos; dos parcelas ordenadas con caravanas completamente genéricas quedan separadas del cultivo por ribazos. Al fondo, una recepción pequeña encalada con tejado de teja. Luz dorada baja, polvo blanco contenido y mucho espacio negativo a la derecha para titular. Ninguna persona, rostro, texto, señal legible, matrícula, botella, copa, marca de vino, piscina, resort, castillo, HDR ni saturación."
+    },
+    "hero-patio": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica del mismo camping al final de la tarde. Un patio mineral vacío queda bajo una parra alta; mesas sencillas de madera, una fuente de cal y el volumen bajo de una antigua bodega sin rótulos reciben luz suave color garnacha. Tras el patio se perciben cepas y bancales, no un complejo turístico. Composición amplia con espacio negativo. Ninguna persona, rostro, texto, rótulo, marca, botella, copa, barrica decorativa, fiesta, guirnalda, piscina, resort ni HDR."
+    },
+    "tipo-parcela-cepa": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Cepa.",
+      "prompt": "Fotografía editorial documental de una Parcela Cepa de 80 metros cuadrados en el mismo camping rural. Rectángulo de grava calcárea separado de una hilera de viña vieja por un ribazo bajo, morera joven de sombra, conexión eléctrica cerrada y acequia seca protegida. Una camper compacta completamente genérica está bien estacionada sin logotipo, texto ni matrícula visible; mesa sobria bajo el toldo muestra escala. Luz de mañana y geometría agrícola creíble. Ninguna persona, botella, copa, barrica, césped artificial, glamping, piscina, HDR ni lujo."
+    },
+    "tipo-parcela-bancal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Bancal.",
+      "prompt": "Fotografía editorial documental de una Parcela Bancal de 90 metros cuadrados en el mismo camping. Suelo firme de grava clara, muro seco bajo, electricidad discreta y una autocaravana mediana completamente genérica sin logotipo, texto o matrícula visible, con lateral amplio y radio de giro. Detrás se abre un mosaico modesto de viñas, olivos y almendros, sin borde peligroso. Luz natural de tarde y escala real. Ninguna persona, botella, monumento, precipicio, glamping, césped artificial, HDR o resort."
+    },
+    "tipo-cabana-cal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Cabaña de Cal.",
+      "prompt": "Fotografía arquitectónica editorial de una cabaña compacta para cuatro en el mismo camping entre viñas. Volumen sencillo encalado, zócalo de piedra clara, teja cerámica, porche profundo y persianas de madera; acceso firme con rampa suave y canalón visible. Dos cepas y aromáticas alrededor, luz limpia de mañana y escala modesta. Ninguna persona, texto, rótulo, botella, chimenea, jacuzzi, arco de hacienda, cristal de lujo, arquitectura imposible, HDR ni resort."
+    },
+    "tipo-caseta-vinya": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Caseta de Viña.",
+      "prompt": "Fotografía arquitectónica editorial de una antigua caseta agrícola rehabilitada para cuatro en el mismo camping. Edificio bajo de mampostería clara y mortero de cal, dos ventanas proporcionadas, cubierta de teja y patio mineral bajo una parra, con mesa vacía. Viñas adultas detrás, luz natural suave y rehabilitación creíble. Ninguna persona, texto, marca, botella, copa, barrica decorativa, mansión, jacuzzi, piscina, HDR ni arquitectura imposible."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción y acceso durante vendimia.",
+      "prompt": "Fotografía editorial documental de la recepción del mismo camping rural. Edificio pequeño encalado con zócalo de piedra, porche profundo, mostrador sencillo visible por una puerta abierta y dos sombreros lisos colgados. No hay mapas, carteles, papeles ni señalética legible. Exterior de grava calcárea con una barrera discreta y viñas al fondo. Luz natural cálida, espacio funcional y cuidado. Ninguna persona, rostro, letra, número, palabra, logotipo, botella, copa, pantalla luminosa, lujo, HDR ni sombras negras."
+    },
+    "instalacion-patio": {
+      "aspecto": "3:2",
+      "papel": "Patio común de sombra y descanso.",
+      "prompt": "Fotografía editorial documental de un patio común seguro, accesible y vacío en el mismo camping. Una parra alta y real cubre una estructura sencilla de acero oscuro; debajo hay pavimento continuo de barro cocido, mesas separadas, una fuente baja encalada y paso libre suficiente. Al fondo, muro de mampostería y viñas. Luz tamizada de mediodía y uso cotidiano. Ninguna persona, texto, señal, marca, botella, copa, barrica, banquete, guirnalda, boda, lujo, piscina ni HDR."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno y caminos agrícolas.",
+      "prompt": "Fotografía documental panorámica de un camino agrícola entre viñas viejas del interior mediterráneo. Tierra calcárea clara, muros secos, hileras irregulares de cepas y colinas bajas con olivos; la bifurcación queda definida solo por los propios caminos, sin poste ni señal. Luz suave de septiembre y composición profunda, sin postal monumental. Ninguna persona, rostro, bicicleta, palabra, logo, poste, cruz, travesaño, símbolo religioso, botella, castillo, bodega de lujo, saturación ni HDR."
+    },
+    "textura-caliza": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de tierra calcárea clara junto a una hoja de vid verde oscura y un pequeño fragmento de teja color garnacha, textura mineral nítida y composición horizontal abstracta. Sin uvas protagonistas, personas, manos, pies, texto, logos, botellas, copas, basura, pintura, gemas, efectos digitales ni HDR."
+    }
+  }
+}

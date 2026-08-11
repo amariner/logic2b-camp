@@ -1,0 +1,322 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-vendimia": [
+      {
+        "at": "2026-08-11T09:40:14.853Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "Fallo de red del generador integrado antes de recibir bytes"
+      },
+      {
+        "at": "2026-08-11T09:40:55.229Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "0efad691-886e-4cc4-868d-1b8b5408170c",
+        "reusedJob": false,
+        "promptSha256": "206531b46b8ea3d6edf291765dce3e24fa187ab9d0fcec88afb6b0d8b3ce9f22",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-patio": [
+      {
+        "at": "2026-08-11T09:40:15.080Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "Fallo de red del generador integrado antes de recibir bytes"
+      },
+      {
+        "at": "2026-08-11T09:41:38.708Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d8f0eeb1-c6dd-4cf6-8c8b-4436cf0a50a9",
+        "reusedJob": false,
+        "promptSha256": "de7bf6b4f7cb912288a373d9c9775f774ba7d766afc1d457ef63abb619cfc7fc",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "tipo-parcela-cepa": [
+      {
+        "at": "2026-08-11T09:42:27.016Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "104e18ad-c3c6-4308-a1e0-7c21c120f5d0",
+        "reusedJob": false,
+        "promptSha256": "29afbd8041a27f7a52b6fa9e76c7ec3484a240ea0d7867ed74b227702333ced6",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T09:43:54.399Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d5ccb408-8ee1-4bcd-9659-cf9de643d868",
+        "reusedJob": false,
+        "promptSha256": "29afbd8041a27f7a52b6fa9e76c7ec3484a240ea0d7867ed74b227702333ced6",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T09:46:27.957Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "160785d0-a2cc-4db2-adb5-45fbcc246976",
+        "reusedJob": false,
+        "promptSha256": "29afbd8041a27f7a52b6fa9e76c7ec3484a240ea0d7867ed74b227702333ced6",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "tipo-parcela-bancal": [
+      {
+        "at": "2026-08-11T09:42:58.460Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d41e9bad-560a-4fb7-9b46-0b0d2e64900d",
+        "reusedJob": false,
+        "promptSha256": "6979f664a5b2e5c4e0cf0f0270da31a9289bec3ef368658c1bf2bb4da0992dc4",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "tipo-cabana-cal": [
+      {
+        "at": "2026-08-11T09:48:53.671Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "8f78e3ab-fad9-4b3b-ab8d-e988fb268018",
+        "reusedJob": false,
+        "promptSha256": "118d58a95c1fcc1bba81ebf5a8146b869768cefa18c2ca3f02a1c9383b409167",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T09:54:44.127Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "eee48c08-d0e7-4494-8d67-f47670270b14",
+        "reusedJob": false,
+        "promptSha256": "118d58a95c1fcc1bba81ebf5a8146b869768cefa18c2ca3f02a1c9383b409167",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "tipo-caseta-vinya": [
+      {
+        "at": "2026-08-11T09:49:40.178Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "eb912aeb-b54d-42b0-946e-3bbcf7be6f06",
+        "reusedJob": false,
+        "promptSha256": "fe82023742548da5f40f6313395579b7057e2ef0509ff2b6a04380e3fcbf2fa2",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T09:55:29.291Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "ea7746c3-a00d-47ff-bc1c-73a4f32d52e9",
+        "reusedJob": false,
+        "promptSha256": "510269f9837ef1d702ccaee6283d446312a51248effab912e2bd0bc83c3d71c6",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T09:57:10.296Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "8eca8603-b5a2-463e-babf-0e0ed7ead43f",
+        "reusedJob": false,
+        "promptSha256": "510269f9837ef1d702ccaee6283d446312a51248effab912e2bd0bc83c3d71c6",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T09:59:24.257Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "afd88537-e123-4931-8c36-b23ae620e157",
+        "reusedJob": false,
+        "promptSha256": "510269f9837ef1d702ccaee6283d446312a51248effab912e2bd0bc83c3d71c6",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "instalacion-patio": [
+      {
+        "at": "2026-08-11T09:55:54.798Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "8bd1bfdf-b719-47b2-931f-d786f49d8f2e",
+        "reusedJob": false,
+        "promptSha256": "d0476ba9d6afe5dfc4910fd759bb70f15d5f8d2321322a731ae33c5751ff2771",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-11T09:59:59.317Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b029a7b1-1b2f-4b90-9125-4f7947481adf",
+        "reusedJob": false,
+        "promptSha256": "d9df2d2d91008749c62f5142a6fb5eaf544652826c25b9f9992d9655f7ebdcd8",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:01:17.109Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "40a513df-f471-4c1e-8d32-91edab60a66c",
+        "reusedJob": false,
+        "promptSha256": "d9df2d2d91008749c62f5142a6fb5eaf544652826c25b9f9992d9655f7ebdcd8",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:03:54.054Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "93a16843-9cbe-45ba-934f-b0f94efff439",
+        "reusedJob": false,
+        "promptSha256": "c554b65db9a92c03aec67d2f5e662331e208125b4eb0061f8f2845170f1a4ec0",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ],
+    "textura-caliza": [
+      {
+        "at": "2026-08-11T10:00:21.763Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "45d43a9e-fc2b-4f34-83aa-08e3941e6010",
+        "reusedJob": false,
+        "promptSha256": "7e0024eed0d81f96c280e575968d60331d0a7957ec3fe2f484f1475ea5b92fac",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-vendimia": {
+      "at": "2026-08-11T09:42:00.925Z",
+      "gate": "visual-inspection"
+    },
+    "hero-patio": {
+      "at": "2026-08-11T09:42:00.925Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-bancal": {
+      "at": "2026-08-11T09:43:13.189Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-cepa": {
+      "at": "2026-08-11T09:46:36.841Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-caseta-vinya": {
+      "at": "2026-08-11T09:49:57.746Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-cabana-cal": {
+      "at": "2026-08-11T09:54:57.416Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-patio": {
+      "at": "2026-08-11T09:56:14.196Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-11T09:59:36.437Z",
+      "gate": "visual-inspection"
+    },
+    "textura-caliza": {
+      "at": "2026-08-11T10:00:33.146Z",
+      "gate": "visual-inspection"
+    },
+    "entorno": {
+      "at": "2026-08-11T10:04:09.125Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "tipo-parcela-cepa": [
+      {
+        "at": "2026-08-11T09:43:13.423Z",
+        "reason": "distintivo_legible_en_vehiculo",
+        "jobId": "104e18ad-c3c6-4308-a1e0-7c21c120f5d0"
+      },
+      {
+        "at": "2026-08-11T09:44:11.088Z",
+        "reason": "simbolo_visible_en_caravana",
+        "jobId": "d5ccb408-8ee1-4bcd-9659-cf9de643d868"
+      }
+    ],
+    "tipo-cabana-cal": [
+      {
+        "at": "2026-08-11T09:49:57.985Z",
+        "reason": "escala_excesiva_y_silueta_ambigua",
+        "jobId": "8f78e3ab-fad9-4b3b-ab8d-e988fb268018"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T09:56:14.436Z",
+        "reason": "pseudo_texto_en_cristal",
+        "jobId": "ea7746c3-a00d-47ff-bc1c-73a4f32d52e9"
+      },
+      {
+        "at": "2026-08-11T09:57:24.140Z",
+        "reason": "pseudo_texto_en_mostrador",
+        "jobId": "8eca8603-b5a2-463e-babf-0e0ed7ead43f"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-11T10:00:33.381Z",
+        "reason": "persona_bicicleta_y_poste_cruciforme",
+        "jobId": "b029a7b1-1b2f-4b90-9125-4f7947481adf"
+      },
+      {
+        "at": "2026-08-11T10:01:39.998Z",
+        "reason": "poste_cruciforme_dominante",
+        "jobId": "40a513df-f471-4c1e-8d32-91edab60a66c"
+      }
+    ]
+  }
+}

@@ -4,10 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
 const scenario = process.env.VITE_DEMO_SCENARIO?.trim();
-const portfolioScenarios = ['pinadamar', 'serralta', 'mardefondo'] as const;
+const portfolioScenarios = ['pinadamar', 'serralta', 'vinyes', 'mardefondo'] as const;
 if (scenario && !(portfolioScenarios as readonly string[]).includes(scenario)) {
   throw new Error(
-    `VITE_DEMO_SCENARIO inválido: "${scenario}". Usa pinadamar, serralta o mardefondo.`,
+    `VITE_DEMO_SCENARIO inválido: "${scenario}". Usa pinadamar, serralta, vinyes o mardefondo.`,
   );
 }
 const basePath = process.env.BASE_PATH?.replace(/\/$/, '');

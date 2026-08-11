@@ -130,6 +130,20 @@ const routes = [
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
   {
+    id: 'vinyes-home',
+    path: '/demos/vinyes/',
+    noindex: true,
+    texts: ['Cepa vieja', 'VENDIMIA POR ENCIMA DEL VERANO'],
+  },
+  {
+    id: 'vinyes-planning',
+    path: '/demos/vinyes/gestion/#/planning',
+    noindex: true,
+    texts: ['VY-26-', 'Caseta de Viña'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,

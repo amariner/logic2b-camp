@@ -5,6 +5,7 @@ import olivar from '../../../../tenants/olivar/content/media/miniatura.webp?url'
 import pinadaMar from '../../../../tenants/pinadamar/content/media/miniatura.webp?url';
 import riuClar from '../../../../tenants/riuclar/content/media/miniatura.webp?url';
 import serralta from '../../../../tenants/serralta/content/media/miniatura.webp?url';
+import vinyes from '../../../../tenants/vinyes/content/media/miniatura.webp?url';
 
 /**
  * Una sola fuente para las miniaturas comerciales: el derivado aprobado de
@@ -19,6 +20,7 @@ export const portfolioImages = {
   mardefondo: marDeFondo,
   riuclar: riuClar,
   serralta,
+  vinyes,
 } as const;
 
 export type PortfolioSlug = keyof typeof portfolioImages;

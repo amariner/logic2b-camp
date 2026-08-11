@@ -33,7 +33,7 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Siete campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
+    "texto": "Ocho campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
@@ -101,6 +101,15 @@
         "variante": "natural",
         "estado": "Demo navegable",
         "href": "/demos/serralta/"
+      },
+      {
+        "slug": "vinyes",
+        "nombre": "Entre Vinyes",
+        "estilo": "Gestión · vendimia y temporadas solapadas",
+        "imagen": "/temas/natural.webp",
+        "variante": "natural",
+        "estado": "Demo navegable",
+        "href": "/demos/vinyes/"
       },
       {
         "slug": "familiar",

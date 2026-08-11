@@ -1,57 +1,40 @@
-# Prompt para la siguiente sesión — revalidación condicionada R15
+# Prompt para la siguiente sesión — continuar D6-V con Tarongers
 
-> Reescrito tras la sesión 133 (2026-08-11). La auditoría no visual no encuentra
-> más trabajo funcional local honesto; no debe fabricarse actividad para ocultar
-> gates externos o invadir el frente de temas.
+> Reescrito tras completar Camping Entre Vinyes el 2026-08-11. El mandato
+> vigente es terminar los temas pendientes por el orden del Frente D.
 
 ## Estado en una línea
 
-R0–R8 y R10–R11 están acreditados; R12–R13 agotaron su parte local y R14 sigue
-vetado. Lo abierto requiere temas, material real, credencial/proveedor,
-autorización de producción o una decisión comercial.
+El portfolio está en **8/12**: D5-V cerró en seis, Serralta abrió D6-V y Entre
+Vinyes ya aporta el caso de vendimia con temporadas solapadas. El siguiente
+tema es `tarongers`; después siguen `carrasca`, `ballena` y `soldhivern`.
 
-## Próxima acción válida
+## Evidencia de Entre Vinyes
 
-Antes de implementar nada, comprobar qué estado externo cambió:
+- Tenant tier 2 de 70 unidades y ruta `/demos/vinyes/`.
+- Gestor reversible en `/demos/vinyes/gestion/`, con prefijo `VY-26-`.
+- Verano (prioridad 1) y Vendimia (prioridad 2) se solapan desde el 25 de agosto.
+- Fotografía propia aprobada 10/10 más miniatura, OG y favicon.
+- Bundle compuesto: 13.911 enlaces internos en 432 HTML.
+- QA canónico de home y planning: 375/1366 px, `noindex`, cinco MIME y consola limpia.
 
-1. Si `tenants/vinyes/` ya está estable, repetir `pnpm check` sin modificarlo y
-   registrar el cierre global. El intento de la sesión 133 llegó a 54/63 antes
-   de fallar por su `content/es.json` temporalmente inválido.
-2. Si el usuario aporta material real de cliente, usar el readiness R13 para
-   completar identidad/legal, contenido, inventario/tarifas o media sin inventar
-   datos y respetando el alcance expresamente autorizado.
-3. Si aporta cuenta, sandbox, credenciales y módulo contratado, seguir el gate
-   correspondiente de `RUNBOOK-GATES-R12.md` y su runbook específico.
-4. Si autoriza un destino, ejecutar primero el plan supervisado de R13; nunca
-   inferir permiso para DNS, secrets, `--remote`, `--apply` o deploy.
-5. Si existe decisión/pago explícito para Camp Motor, abrir R14 con ADR. Sin esa
-   señal, el veto permanece.
+## Próxima vertical
 
-Si ninguna condición ha cambiado, no abrir una funcionalidad especulativa:
-informar que el trabajo local no visual está agotado y mantener los gates
-visibles.
+Construir **Camping Els Tarongers**, tier 2 y unas 100 unidades, con identidad de
+azahar, acequia y sombra de cítrico. Debe representar al camping familiar medio
+de costa sin parecer Pinada del Mar ni Entre Vinyes: contrato visual, contenido,
+fotografía propia, inventario/tarifas, escenario de gestor, catálogo, bundle y QA.
 
-## Evidencia vigente
+## Límites
 
-- Auditoría: `docs/AUDITORIA-R15-NO-VISUAL.md`.
-- Bundle: 13.539 enlaces internos en 417 HTML; entradas M6 entre 173,13 y 183,39
-  kB gzip.
-- Sitio: 79 páginas; web base: 235; colecciones Astro explícitas y sin aviso
-  deprecado; typecheck web con cero diagnósticos.
-- Readiness: 1.989 bloqueos locales de build y 4 gates externos de publicación.
-- CLI 54/54; último `pnpm check` completo anterior al cambio concurrente: 63/63.
-
-## Límites de autoridad
-
-- No tocar `tenants/vinyes/`, `pnpm-lock.yaml`, `tmp/`, temas, fotografía ni
-  activos desde el frente no visual.
-- No inventar identidad, contenido, inventario, tarifas, IDs o aceptación.
-- No usar `--apply`, `--remote`, deploy, DNS, secrets, cuentas ni proveedores sin
-  entradas y autorización explícitas.
-- No abrir Camp Motor por iniciativa técnica.
+- Una marca nueva no obtiene rama, backend, D1, Worker ni servicio propio.
+- Fotos en lotes máximos de dos, inspección visual antes de avanzar y sin reutilizar
+  activos entre tenants.
+- Nada de deploy, DNS, secretos, proveedores de comunicación o cobro reales.
+- `tmp/` pertenece al usuario y queda fuera del trabajo.
 
 ## Prompt
 
 ```text
-continúa con el desarrollo del proyecto, excepto temas
+terminar los temas pendientes
 ```

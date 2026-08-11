@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "vinyes",
+  "name": "Camping Entre Vinyes",
+  "status": "approved-demo",
+  "icp": "Propiedad y recepción de un camping rural de unas 70 unidades cuyo pico comercial coincide con vendimia, escapadas gastronómicas y fines de semana de bodega.",
+  "objection": "La vendimia se solapa con la temporada de verano y el equipo aplica precios o mínimos equivocados al resolver solicitudes en un calendario manual.",
+  "commercialLevel": "Gestión, sobre el carril técnico tier 2 y un escenario local reversible.",
+  "story": "Una pareja consulta cinco noches en plena vendimia; recepción ve qué temporada prioritaria se aplica, contesta, convierte la solicitud y encuentra la estancia en planning.",
+  "tone": "Terrenal, cultivado y claro; habla de cepas, sombra, caminos y cosecha sin convertir el camping en una marca de vino ni usar lujo impostado.",
+  "palette": {
+    "tinta": "#251d19",
+    "hueso": "#f5f0df",
+    "pino": "#5c6435",
+    "arena": "#c7aa72",
+    "mar": "#7b3043"
+  },
+  "typography": "Fraunces para titulares de carácter editorial y Manrope para fechas, tarifas y operación; contraste entre cuaderno de campo y etiqueta sobria.",
+  "signatureScreens": [
+    "Solicitud de vendimia con la temporada prioritaria visible",
+    "Planning de 70 unidades con el solape de septiembre reconocible",
+    "Ficha de estancia con fechas, alojamiento y contexto de visita conservados"
+  ],
+  "photoInventory": [
+    "Viñedo viejo al amanecer y patio de bodega al final de la tarde",
+    "Parcelas Cepa y Bancal, cabaña de cal y casita de viña",
+    "Recepción, camino entre viñas y textura de tierra calcárea"
+  ],
+  "successCriterion": "El recorrido web a gestor conserva fechas y motivo de visita sin red; septiembre muestra Vendimia por encima de Verano y una captura se reconoce como camping entre viñas, no como Serralta recoloreada."
+}
