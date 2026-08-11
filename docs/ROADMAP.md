@@ -71,13 +71,14 @@ visual no modifica ese trabajo ni presenta 54/63 tareas como un check completo.
 | **B2** | Web pública: estructura Logic2B + marca discreta             | `apps/web` adopta la ESTRUCTURA del DS (fuente base, ritmo de bloques, patrón de header, escala de radios) **manteniendo la identidad mediterránea del tenant** (ADR 0006). Isotipo discreto "powered by Logic2B" en el pie, en 6 idiomas.                                                        | La web sigue siendo del camping pero comparte esqueleto con el producto; Lighthouse ≥95 se mantiene                   |
 | **B3** | Landing de producto (venta al CEO)                           | Sitio comercial nuevo que vende Logic Camp al dueño de camping: qué es, los 4 niveles (`TIERS.md`) como escalera de precio, web + gestor, el planning como pieza estrella, enlace a la demo viva (`camp.logic2b.com`), captación de contacto/solicitud de demo. 100% marca Logic2B. Multi-idioma. | Un director de camping entiende la propuesta y pide demo sin llamada previa; enlaza demo + docs; SEO/OG propios       |
 | **B4** | Documentación de producto → **absorbida en C6** (2026-07-20) | Docs de Logic Camp con layout del DS: guía de la recepcionista (operar el gestor), guía del dueño (niveles, qué incluye cada uno), y ficha técnica para el "informático de confianza". Reutiliza/alinea con `FUNCIONALIDADES.md` y `ONBOARDING.md`.                                               | Un cliente resuelve dudas de uso sin escribir a soporte; enlazada desde landing y dashboard                           |
+| **B5** | Contacto directo transversal por WhatsApp                    | Un CTA de contacto con Logic2B, inspirado en el banner flotante de `logic2b.com`, disponible en el sitio comercial, documentación, webs tenant/demos y gestor, sin confundirse con el canal de recepción del camping.                                                                                 | El contacto llega a WhatsApp con contexto de la superficie; no tapa navegación ni operación y pasa QA a 375/1366 px  |
 
-**Estado del Frente B** (reconciliado 2026-08-10): **B0, B1, B2, B3 y B4
-HECHOS.** `packages/ui` es el DS real (tema, tokens, fuentes, wordmark y
-primitivos); `apps/site` sirve landing y documentación en la raíz; la web del
-tenant vive en `/demo/`; el dashboard consume Logic2B UI y la web firma
-«powered by Logic2B». Los remates vivos están clasificados en BACKLOG y en la
-ruta duradera; ninguno reabre el frente.
+**Estado del Frente B** (actualizado 2026-08-11): **B0, B1, B2, B3 y B4
+HECHOS; B5 PROGRAMADO.** `packages/ui` es el DS real (tema, tokens, fuentes,
+wordmark y primitivos); `apps/site` sirve landing y documentación en la raíz;
+la web del tenant vive en `/demo/`; el dashboard consume Logic2B UI y la web
+firma «powered by Logic2B». B5 abre un único remate transversal de captación y
+soporte; no reabre las decisiones visuales ya cerradas del resto del frente.
 
 ### Detalle por fase (checklists — se afinan en cada ADR)
 
@@ -122,6 +123,52 @@ ruta duradera; ninguno reabre el frente.
 - [x] Guías de recepción, gestión y dueño, más ficha técnica.
 - [x] Layout de documentación con marca Logic2B compartido con la landing.
 - [x] Enlaces desde landing y ayuda contextual de las pantallas cubiertas.
+
+**B5 · Contacto directo transversal por WhatsApp — PROGRAMADO 2026-08-11**
+
+Mandato de Andreu: incorporar en todo el proyecto un acceso de contacto por
+WhatsApp al **626 432 316**, incluido el gestor de la demo. La referencia es el
+CTA de `logic2b.com`: píldora flotante compacta en la esquina inferior derecha,
+superficie oscura, icono verde y texto «Contacta», que entra tras avanzar por la
+página y deja de competir con el pie. La implementación tendrá su propia sesión;
+este corte solo fija el roadmap y las preguntas de colocación para revisarlas
+con Andreu.
+
+- [ ] **Destino único:** normalizar el número como `+34 626 432 316` y el enlace
+      como `https://wa.me/34626432316`. El mensaje precargado será genérico y
+      contextual, sin nombre, email, reserva, fechas ni ningún otro dato personal
+      en la URL.
+- [ ] **Sitio Logic2B:** cubrir landing, precios, portfolio, documentación y
+      legales de `apps/site`, sin competir con el banner de consentimiento, los
+      diálogos ni el CTA principal de cada página.
+- [ ] **Webs de camping:** cubrir `/demo/` y todas las rutas `/demos/{slug}/` en
+      sus seis idiomas. En marcas ficticias el texto debe identificar el destino
+      como **Logic2B**; nunca puede parecer el WhatsApp de recepción del camping.
+      La política para un tenant real quedará gobernada por configuración, no por
+      un fork ni por números repetidos en componentes.
+- [ ] **Gestor:** estar disponible desde el login y dentro del shell del
+      dashboard —incluidas las demos de portfolio— sin tapar navegación móvil,
+      toasts, paneles, acciones del planning, banner demo ni controles fijos. En
+      el gestor se presenta como ayuda/contacto con Logic2B, no como acción
+      operativa de una reserva.
+- [ ] **Un contrato, varias superficies:** número, URL base, etiquetas y reglas
+      de visibilidad tendrán una fuente de verdad compartida. Astro y React
+      podrán necesitar adaptadores de presentación distintos, pero no decisiones
+      comerciales duplicadas por app o tenant.
+- [ ] **Accesibilidad y privacidad:** enlace real y usable con teclado, foco
+      visible, objetivo táctil mínimo de 44 px, `aria-label`, `target="_blank"`
+      con `rel="noopener"` y movimiento reducido. Abrir `wa.me` no instala un
+      tracker ni exige consentimiento; cualquier evento analítico de clic solo
+      se emitirá cuando exista consentimiento válido.
+- [ ] **QA de colocación:** revisar visualmente 375 y 1366 px en home comercial,
+      documentación, una web Inicio, una Gestión, una Visión, login y planning.
+      Debe tolerar áreas seguras móviles, zoom, textos largos y apertura del
+      teclado sin provocar desborde ni pérdida de controles.
+- [ ] **Decidir con Andreu antes de implementar:** aparición inmediata o tras
+      scroll por superficie; comportamiento en páginas sin pie o con scroll
+      interno; texto visible y mensaje precargado por contexto; y si en un
+      cliente real actúa siempre como soporte Logic2B o puede desactivarse por
+      contrato.
 
 ### Decisiones pendientes del Frente B (bloquean sus ADR)
 
@@ -284,6 +331,12 @@ producto real se activa módulo a módulo cuando exista un cliente.
 
 ## Decisiones tomadas
 
+- 2026-08-11: **B5 programado: WhatsApp transversal con Logic2B.** Andreu pide
+  un acceso de contacto en el sitio comercial, todas las webs demo/tenant y el
+  gestor, usando el **626 432 316** y un patrón similar al CTA flotante de
+  `logic2b.com`. Dentro de una marca ficticia se identificará explícitamente
+  como Logic2B para no simular un canal del camping. Hoy se documenta; posición,
+  persistencia y copy se revisan antes de escribir código.
 - 2026-08-10: **Andreu abre D5-V y encarga los doce temas programados** — su
   decisión explícita sustituye el gate de espera y autoriza completar D5-V y
   D6-V por el orden del Frente D. Càmping Riu Clar convierte Montaña en la
@@ -389,6 +442,9 @@ producto real se activa módulo a módulo cuando exista un cliente.
 
 ## Orden de ataque (~6h/semana)
 
+- **Próxima revisión con Andreu** → cerrar posición, persistencia y copy de B5;
+  su implementación será una sesión visual propia y no se mezclará con un tema
+  del portfolio.
 - **Ahora** → D0-V + tres demos ancla + escaparate comercial = **tecnología que
   se puede ver, tocar y vender**.
 - **Después** → ampliar 3 → 6 → 12 según conversaciones y objeciones reales.
