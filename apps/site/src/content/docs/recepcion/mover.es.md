@@ -3,6 +3,7 @@ title: 'Cambiar una reserva de sitio o de fechas'
 description: 'Arrastrar para cambiar de parcela, mover las fechas, alargar la estancia — y deshacer si te equivocas.'
 lang: es
 orden: 7
+updated: '2026-08-10'
 ---
 
 Esta es la parte del planning que más se usa y la que más tiempo ahorra. Todo se hace **arrastrando la barra de la reserva**.

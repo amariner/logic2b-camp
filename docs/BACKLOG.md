@@ -12,13 +12,11 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
   candidato sigue con 1.989 bloqueos de build que requieren material real y 4
   gates externos de publicación. `--apply`, proveedor, dominio y deploy
-  permanecen cerrados. El check global debe repetirse cuando el JSON concurrente
-  de `vinyes` vuelva a ser válido; los builds aislados y el bundle están verdes.
-  En paralelo,
-  la decisión de Andreu abre el portfolio
-  completo: Riu Clar, La Duna y El Delta cierran D5-V en 6/6; `serralta` abre
-  D6-V y después continúan las cinco restantes. Los temas se entregan
-  verticalmente, uno por uno.
+  permanecen cerrados. Los builds aislados y el bundle están verdes. En
+  paralelo, la decisión de Andreu abre el portfolio completo: Riu Clar, La Duna
+  y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
+  Carrasca llevan D6-V hasta 10/12. Quedan Ballena y Sol d'Hivern, siempre en
+  vertical y una por una.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.

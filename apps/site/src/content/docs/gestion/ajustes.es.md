@@ -3,6 +3,7 @@ title: 'Ajustes del camping'
 description: 'Nombre, zona horaria y moneda; qué se cambia con Logic2B; y encender o apagar los avisos por correo.'
 lang: es
 orden: 3
+updated: '2026-07-22'
 ---
 
 En **Ajustes** está la configuración del camping: sus datos básicos y los avisos por correo que salen solos. Guardar exige permiso de **gerencia**, y todo cambio queda registrado.

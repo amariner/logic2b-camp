@@ -3,6 +3,7 @@ title: 'Los cuatro niveles'
 description: 'Qué incluye cada nivel de Logic2B Campings y para qué camping está pensado cada uno.'
 lang: es
 orden: 1
+updated: '2026-08-11'
 ---
 
 Logic2B Campings se ofrece como **una progresión de cuatro resultados**. Puedes empezar resolviendo solo la web y ampliar después sin cambiar de proveedor, dominio o marca.

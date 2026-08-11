@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod';
-import { tenantLegalSchema } from './tenant-config';
+import { cancellationPolicySchema, tenantLegalSchema } from './tenant-config';
 
 export type BookingMode = 'none' | 'enquiry' | 'instant';
 export type EnquiryTransport = 'persisted' | 'demo' | 'demo-session';
@@ -14,6 +14,19 @@ export type BookingTransport = 'persisted' | 'demo-session';
 
 const localeSchema = z.string().trim().min(2, 'debe ser un locale no vacío');
 const demoThemeSchema = z.string().trim().min(1, 'el tema no puede estar vacío');
+const demoBookingPolicySchema = z.object({
+  bookingCodePrefix: z
+    .string()
+    .regex(/^[A-Z]{2,4}$/)
+    .optional(),
+  touristTax: z.object({
+    adultCentsPerNight: z.number().int().min(0),
+    childCentsPerNight: z.number().int().min(0),
+    maxNights: z.number().int().positive(),
+  }),
+  depositPercent: z.number().gt(0).max(100),
+  cancellation: cancellationPolicySchema,
+});
 export const tenantTierSchema = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]);
 
 export const tenantWebConfigSchema = z
@@ -47,6 +60,8 @@ export const tenantWebConfigSchema = z
       .string()
       .regex(/^\/.*\/$/, 'debe ser una ruta absoluta terminada en /')
       .optional(),
+    /** Políticas ficticias reproducibles del motor demo; nunca configura producción. */
+    demoBookingPolicy: demoBookingPolicySchema.optional(),
     /** Foto de héroe del carril estático; por defecto conserva `hero-anochecer`. */
     staticHeroImage: z
       .string()
@@ -93,6 +108,7 @@ export const tenantWebConfigSchema = z
         : null,
       config.bookingTransport === 'demo-session' ? 'bookingTransport' : null,
       config.demoManagerPath ? 'demoManagerPath' : null,
+      config.demoBookingPolicy ? 'demoBookingPolicy' : null,
       config.demoThemes ? 'demoThemes' : null,
       config.demoTierSwitch === true ? 'demoTierSwitch' : null,
     ].filter((field): field is string => field !== null);
@@ -121,6 +137,13 @@ export const tenantWebConfigSchema = z
         code: 'custom',
         path: ['demoManagerPath'],
         message: 'solo se admite junto a un transporte demo-session',
+      });
+    }
+    if (config.demoBookingPolicy && config.bookingTransport !== 'demo-session') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['demoBookingPolicy'],
+        message: 'solo se admite con bookingTransport: demo-session',
       });
     }
     if (config.bookingTransport && config.tier < 3) {

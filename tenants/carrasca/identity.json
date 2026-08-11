@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "carrasca",
+  "name": "Camping La Carrasca",
+  "status": "approved-demo",
+  "icp": "Propiedad y dirección de un camping de interior de unas 150 unidades, abierto gran parte del año y sujeto a reglas regionales que recepción debe explicar con precisión.",
+  "objection": "El motor puede calcular una estancia, pero la dirección necesita que impuestos, depósito y cancelación queden visibles y auditables antes de cobrar.",
+  "commercialLevel": "Visión, sobre el carril técnico tier 3 con reserva y operación locales.",
+  "story": "Una familia reserva bajo el encinar; el total separa estancia e impuesto turístico ficticio, muestra la política de cancelación y llega al gestor sin perder el desglose.",
+  "tone": "Sereno, sobrio y hospitalario; explica reglas con lenguaje llano y evita tanto el folclore rural como la estética de resort.",
+  "palette": {
+    "tinta": "#25271f",
+    "hueso": "#f5f0df",
+    "pino": "#52633f",
+    "arena": "#c6aa72",
+    "mar": "#8b4b32"
+  },
+  "typography": "Fraunces para titulares con peso mineral y Source Sans 3 para importes, condiciones y operación.",
+  "signatureScreens": [
+    "Portada de encinar con disponibilidad directa",
+    "Resumen de reserva con tasa regional ficticia separada",
+    "Detalle de gestor con depósito y cancelación explicados"
+  ],
+  "photoInventory": [
+    "Encinar al amanecer y era de piedra al final de la tarde",
+    "Parcelas Encina y Carrascal, bungalow Bellota y casa Umbría",
+    "Recepción, piscina naturalizada, entorno y textura de carrasca"
+  ],
+  "successCriterion": "Una captura se reconoce como camping de interior bajo carrascas y el recorrido demuestra cómo Logic2B hace legibles reglas regionales sin presentarlas como asesoramiento legal."
+}

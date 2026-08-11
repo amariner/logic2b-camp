@@ -3,6 +3,7 @@ title: 'Crear una reserva por teléfono o en el mostrador'
 description: 'Dar de alta una reserva que no ha entrado por la web, con el precio calculado solo.'
 lang: es
 orden: 9
+updated: '2026-08-10'
 ---
 
 No todas las reservas entran por internet. El teléfono sigue sonando y la gente sigue apareciendo con la caravana en la puerta.

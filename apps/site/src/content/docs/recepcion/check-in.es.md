@@ -3,6 +3,7 @@ title: 'Dar la bienvenida: el check-in'
 description: 'Marcar que un huésped ha llegado, en un clic, desde donde te pille más a mano.'
 lang: es
 orden: 4
+updated: '2026-08-10'
 ---
 
 El check-in es el acto central del mostrador: dejar constancia de que **esa familia ya está dentro**. A partir de ese momento su parcela se pinta de **verde** en el planning y en el plano, y todo el mundo sabe de un vistazo quién está y quién solo tiene reserva.

@@ -1,0 +1,20 @@
+{
+  "name": "@tenant/carrasca",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "fotos:status": "node ../../apps/web/scripts/foto-pipeline.mjs status carrasca",
+    "fotos:run": "node ../../apps/web/scripts/foto-pipeline.mjs run carrasca"
+  },
+  "dependencies": {
+    "@logic-camp/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@logic-camp/tsconfig": "workspace:*",
+    "@types/node": "^26.1.1",
+    "typescript": "^5.8.0"
+  }
+}

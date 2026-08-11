@@ -21,8 +21,8 @@
 > **Primera ola cerrada el 2026-08-08:** D0-V–D4-V están completas. La
 > ampliación a seis queda sujeta a aprendizaje comercial, no al calendario.
 >
-> **Portfolio 9/12 el 2026-08-11:** D5-V está cerrada y D6-V ya incorpora
-> Serralta, Entre Vinyes y Els Tarongers. Quedan Carrasca, Ballena y Sol d'Hivern.
+> **Portfolio 10/12 el 2026-08-11:** D5-V está cerrada y D6-V ya incorpora
+> Serralta, Entre Vinyes, Els Tarongers y La Carrasca. Quedan Ballena y Sol d'Hivern.
 
 ---
 
@@ -320,7 +320,7 @@ En `docs/BACKLOG.md` queda como ítem propio con esta referencia.
 | **D3-V ✅** | Demo Visión       | Reserva y operación más automatización/IA representadas                                              | El futuro se entiende sin confundir prototipo con producción |
 | **D4-V ✅** | Landing y campaña | Galería de tres, comparador, fichas, capturas/vídeo y Ads de muestra                                 | Recorrido comercial completo y reproducible                  |
 | **D5-V ✅** | Ola de seis       | Tres variantes adicionales nacidas de la fábrica visual                                              | Ninguna exige rama o backend propio                          |
-| **D6-V**    | Ola de doce       | Completar el portfolio según aprendizaje comercial                                                   | 9/12; cada demo cubre una objeción o ICP distinto            |
+| **D6-V**    | Ola de doce       | Completar el portfolio según aprendizaje comercial                                                   | 10/12; cada demo cubre una objeción o ICP distinto           |
 
 ---
 

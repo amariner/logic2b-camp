@@ -1,0 +1,372 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-encinar": [
+      {
+        "at": "2026-08-11T10:47:11.906Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": ""
+      },
+      {
+        "at": "2026-08-11T10:47:41.108Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b8d97d02-95f7-43f2-ab9b-ae458e4e4e77",
+        "reusedJob": false,
+        "promptSha256": "e5af34f37ad90de80f422402793d62aea574107eeb17a8f2f61a85df3d63adbe",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-era": [
+      {
+        "at": "2026-08-11T10:47:12.138Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": ""
+      },
+      {
+        "at": "2026-08-11T10:48:06.531Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b024cf95-f142-4655-ba49-15a702a20701",
+        "reusedJob": false,
+        "promptSha256": "b93f20fd03a7695f60999940ebbf750480f49ce4a623c5085aeea7dce8cd78ba",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "parcela-encina": [
+      {
+        "at": "2026-08-11T13:23:28.492Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "4911d818-3d9f-4fc3-b7ee-1a239258198d",
+        "reusedJob": false,
+        "promptSha256": "874ee2b31429d50c0e1e642822e57cada2265294b16de5ea53b758e6ce92d379",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "parcela-carrascal": [
+      {
+        "at": "2026-08-11T13:24:24.196Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "631d11aa-84ce-4a3b-bd4e-571e875be049",
+        "reusedJob": false,
+        "promptSha256": "f9ee22a1a9790fa587373359b35ac17d981ff7d0e15ed1d4509c4cd46c2093f2",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:25:16.536Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "1e8c308d-0e43-491e-b0e3-13a1aa99ffc7",
+        "reusedJob": false,
+        "promptSha256": "f9ee22a1a9790fa587373359b35ac17d981ff7d0e15ed1d4509c4cd46c2093f2",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:31:16.536Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "efb872d2-83dd-4624-957c-08688dde607b",
+        "reusedJob": false,
+        "promptSha256": "f9ee22a1a9790fa587373359b35ac17d981ff7d0e15ed1d4509c4cd46c2093f2",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "bungalow-bellota": [
+      {
+        "at": "2026-08-11T13:31:50.329Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "0699b817-f310-49e2-87eb-e0d8cd7eaa4a",
+        "reusedJob": false,
+        "promptSha256": "966bd09a08cdd0e314bb45dc8fcc879c3b5653dec6626909a84449cd8d94c9f1",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:33:10.449Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "c17ba9c9-f618-484b-a922-2c66c11215b5",
+        "reusedJob": false,
+        "promptSha256": "966bd09a08cdd0e314bb45dc8fcc879c3b5653dec6626909a84449cd8d94c9f1",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:36:52.999Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "3edeb8aa-1c8c-43b8-80a7-2f33dfc4bbe8",
+        "reusedJob": false,
+        "promptSha256": "966bd09a08cdd0e314bb45dc8fcc879c3b5653dec6626909a84449cd8d94c9f1",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "casa-umbria": [
+      {
+        "at": "2026-08-11T13:32:16.667Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "27305214-da85-4d8a-b835-1edd6c7b40e5",
+        "reusedJob": false,
+        "promptSha256": "3e1982a4a65cd7b5a0f9f7dd57b2144e83fc7637c4b6164ec61a821f129d3c03",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:33:51.017Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f1e77fcd-8ce7-473e-a880-bd13f41e4277",
+        "reusedJob": false,
+        "promptSha256": "3e1982a4a65cd7b5a0f9f7dd57b2144e83fc7637c4b6164ec61a821f129d3c03",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:39:57.984Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "35f33d24-3ea2-41e4-804b-34a05b706290",
+        "reusedJob": false,
+        "promptSha256": "3e1982a4a65cd7b5a0f9f7dd57b2144e83fc7637c4b6164ec61a821f129d3c03",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T13:42:00.786Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "55c61666-c20f-459f-a557-e9c0428bc911",
+        "reusedJob": false,
+        "promptSha256": "e15a02095ea5d1304675cedccdf8cb82c01ecaa37fdee034e6f23d4e0a201db9",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "instalacion-piscina-natural": [
+      {
+        "at": "2026-08-11T13:42:35.442Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "1727f5c3-0995-4ab1-8df6-98ff767107ed",
+        "reusedJob": false,
+        "promptSha256": "0cfd399b99b34c73d3d5e9d00096c712d01e16086218e400f103ba1d968f3ed8",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:43:24.945Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d1edd0a7-f6d2-4e73-8c20-6aa1d6be62e4",
+        "reusedJob": false,
+        "promptSha256": "0cfd399b99b34c73d3d5e9d00096c712d01e16086218e400f103ba1d968f3ed8",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T13:46:17.085Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "f3a9978f-557a-4019-906a-574803645242",
+        "reusedJob": false,
+        "promptSha256": "0cfd399b99b34c73d3d5e9d00096c712d01e16086218e400f103ba1d968f3ed8",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-11T13:48:30.483Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f1779412-56f7-4dac-83ef-3fb907c1a855",
+        "reusedJob": false,
+        "promptSha256": "dc3fb595f297d77cd79e2567ba3abea624635bcb68f88505966b66a1770407a1",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "textura-carrasca": [
+      {
+        "at": "2026-08-11T13:50:28.941Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "9f38f948-695a-473d-829d-995feb330d0c",
+        "reusedJob": false,
+        "promptSha256": "362459af9481932faee5c35bf2cceec5716e6e68fe06a8db1ade768f90109c80",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T13:52:11.303Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f34a3365-2dba-4734-b897-42f1ca13556f",
+        "reusedJob": false,
+        "promptSha256": "362459af9481932faee5c35bf2cceec5716e6e68fe06a8db1ade768f90109c80",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T13:54:59.487Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "abe88615-74e5-4a13-bc43-2dd8977c9a31",
+        "reusedJob": false,
+        "promptSha256": "362459af9481932faee5c35bf2cceec5716e6e68fe06a8db1ade768f90109c80",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-encinar": {
+      "at": "2026-08-11T13:22:44.404Z",
+      "gate": "visual-inspection"
+    },
+    "hero-era": {
+      "at": "2026-08-11T13:22:44.404Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-encina": {
+      "at": "2026-08-11T13:24:49.908Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-carrascal": {
+      "at": "2026-08-11T13:31:27.282Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-bellota": {
+      "at": "2026-08-11T13:40:16.600Z",
+      "gate": "visual-inspection"
+    },
+    "casa-umbria": {
+      "at": "2026-08-11T13:40:16.601Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-11T13:42:52.676Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-piscina-natural": {
+      "at": "2026-08-11T13:46:28.355Z",
+      "gate": "visual-inspection"
+    },
+    "entorno": {
+      "at": "2026-08-11T13:50:48.133Z",
+      "gate": "visual-inspection"
+    },
+    "textura-carrasca": {
+      "at": "2026-08-11T13:55:13.513Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "parcela-carrascal": [
+      {
+        "at": "2026-08-11T13:24:50.179Z",
+        "reason": "marca-visible-y-entorno-urbano",
+        "jobId": "631d11aa-84ce-4a3b-bd4e-571e875be049"
+      },
+      {
+        "at": "2026-08-11T13:25:29.363Z",
+        "reason": "vehiculo-fusionado-imposible",
+        "jobId": "1e8c308d-0e43-491e-b0e3-13a1aa99ffc7"
+      }
+    ],
+    "bungalow-bellota": [
+      {
+        "at": "2026-08-11T13:32:38.019Z",
+        "reason": "texto-visible-y-calidad-insuficiente",
+        "jobId": "0699b817-f310-49e2-87eb-e0d8cd7eaa4a"
+      },
+      {
+        "at": "2026-08-11T13:34:14.278Z",
+        "reason": "villa-contemporanea-fuera-de-brief",
+        "jobId": "c17ba9c9-f618-484b-a922-2c66c11215b5"
+      }
+    ],
+    "casa-umbria": [
+      {
+        "at": "2026-08-11T13:32:38.319Z",
+        "reason": "alojamiento-no-legible-y-mobiliario-imposible",
+        "jobId": "27305214-da85-4d8a-b835-1edd6c7b40e5"
+      },
+      {
+        "at": "2026-08-11T13:34:14.600Z",
+        "reason": "edificio-oscuro-sin-rehabilitar",
+        "jobId": "f1e77fcd-8ce7-473e-a880-bd13f41e4277"
+      }
+    ],
+    "instalacion-piscina-natural": [
+      {
+        "at": "2026-08-11T13:42:52.939Z",
+        "reason": "escala-domestica-sin-zona-infantil",
+        "jobId": "1727f5c3-0995-4ab1-8df6-98ff767107ed"
+      },
+      {
+        "at": "2026-08-11T13:43:41.841Z",
+        "reason": "multiples-vasos-y-estetica-resort",
+        "jobId": "d1edd0a7-f6d2-4e73-8c20-6aa1d6be62e4"
+      }
+    ],
+    "textura-carrasca": [
+      {
+        "at": "2026-08-11T13:50:48.407Z",
+        "reason": "especie-y-fruto-incorrectos",
+        "jobId": "9f38f948-695a-473d-829d-995feb330d0c"
+      },
+      {
+        "at": "2026-08-11T13:52:24.386Z",
+        "reason": "hojas-de-especie-incorrecta",
+        "jobId": "f34a3365-2dba-4734-b897-42f1ca13556f"
+      }
+    ]
+  }
+}

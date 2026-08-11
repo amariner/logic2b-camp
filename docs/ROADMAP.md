@@ -240,11 +240,13 @@ desarrollar todos los temas programados amplía el mandato al portfolio completo
 **6/6** con el microcamping estacional de humedal. D6-V queda abierto y continúa
 por `serralta`, `vinyes`, `tarongers`, `carrasca`, `ballena` y `soldhivern`,
 siempre demo a demo y sin infraestructura propia.
-**Avance 2026-08-11:** `vinyes` eleva el portfolio a **8/12** con identidad,
-contenido, 70 unidades, fotografía propia 10/10 y gestor reversible. Su evidencia
-funcional es el solape Verano/Vendimia: del 25 de agosto al 30 de septiembre
-gana Vendimia por prioridad 2, visible en la franja del planning. Home y planning
-pasan QA canónico a 375/1366 px; el siguiente tema es `tarongers`.
+**Avance 2026-08-11:** `carrasca` eleva el portfolio a **10/12** tras Entre
+Vinyes y Els Tarongers. Aporta identidad de encinar, 150 unidades, fotografía
+propia 10/10 y gestor reversible. Su evidencia funcional es una política demo
+configurable: tasa de 1,20 € por adulto y noche limitada a siete noches, señal
+del 30 % y cancelación por tramos 14/7/0 días, visibles desde la reserva hasta
+el mostrador. Home y planning pasan QA canónico a 375/1366 px; el siguiente
+tema es `ballena`.
 Evidencia y matriz de no duplicación inicial:
 [`AUDITORIA-PORTFOLIO-R9.md`](AUDITORIA-PORTFOLIO-R9.md).
 

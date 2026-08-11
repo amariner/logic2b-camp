@@ -1,0 +1,468 @@
+{
+  "seo": {
+    "title": "Camping La Carrasca — 150 unidades bajo el encinar",
+    "description": "Camping ficticio de interior con parcelas y alojamientos bajo carrascas. Reserva demo con impuesto turístico y cancelación visibles."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Bosque y pueblos",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno del carrascal",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: reserva, impuesto, cancelación y pago son simulados y se restablecen.",
+    "mostrador": "Abrir la reserva en el gestor",
+    "nivel": "Visión",
+    "nivel1": "Inicio",
+    "nivel3": "Visión"
+  },
+  "hero3": {
+    "titulo": "Ciento cincuenta unidades. Cada regla a la vista.",
+    "prueba": "150 unidades · impuesto regional ficticio · cancelación explicada"
+  },
+  "hero1": {
+    "titulo": "La sombra antigua. Las cuentas claras.",
+    "cta": "Comprobar estancia"
+  },
+  "ticker": [
+    "110 parcelas bajo carrascas",
+    "40 bungalows y casas",
+    "abierto casi todo el año",
+    "impuesto regional desglosado",
+    "cancelación visible antes de pagar"
+  ],
+  "mostrador": {
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "huespedes": "Huéspedes",
+    "adultos": "adultos",
+    "ninos": "niños",
+    "adulto": "adulto",
+    "nino": "niño",
+    "buscar": "Ver disponibilidad",
+    "buscando": "Buscando…",
+    "desde": "desde",
+    "porEstancia": "por estancia",
+    "unidadesLibres": "libres",
+    "quedanPocas": "quedan pocas",
+    "agotado": "Sin disponibilidad para esas fechas",
+    "agotadoTipo": "Este alojamiento no queda libre en esas fechas.",
+    "verOtros": "Comparar otras opciones",
+    "cerrado": "Cerrado en esas fechas",
+    "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
+    "noEntra": "No disponible para ese grupo",
+    "error": "La demostración no ha podido calcular disponibilidad. Prueba de nuevo.",
+    "fechasInvalidas": "La salida debe ser posterior a la llegada.",
+    "reservar": "Reservar en la demo"
+  },
+  "tipos": {
+    "titulo": "Cuatro formas de quedarse en el carrascal",
+    "subtitulo": "Dos parcelas con distinta sombra, un bungalow compacto y una casa para seis. Compara estancia, impuesto y condiciones antes de reservar.",
+    "verTodo": "Comparar los cuatro alojamientos",
+    "nombres": {
+      "ut_encina": "Parcela Encina",
+      "ut_carrascal": "Parcela Carrascal",
+      "ut_bellota": "Bungalow Bellota",
+      "ut_umbria": "Casa Umbría"
+    },
+    "cards": [
+      {
+        "id": "encina",
+        "nombre": "Parcela Encina",
+        "desc": "Noventa metros cuadrados, 10 A y sombra densa de copa adulta.",
+        "foto": "parcela-encina"
+      },
+      {
+        "id": "carrascal",
+        "nombre": "Parcela Carrascal",
+        "desc": "Ciento diez metros cuadrados, 16 A y giro cómodo junto al bosque bajo.",
+        "foto": "parcela-carrascal"
+      },
+      {
+        "id": "bellota",
+        "nombre": "Bungalow Bellota",
+        "desc": "Dos dormitorios, porche y climatización para cuatro.",
+        "foto": "bungalow-bellota"
+      },
+      {
+        "id": "umbria",
+        "nombre": "Casa Umbría",
+        "desc": "Tres dormitorios, dos baños y patio protegido para seis.",
+        "foto": "casa-umbria"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "El encinar organiza la sombra y el silencio.",
+    "texto": "Las calles siguen la topografía suave, la piscina cabe en el claro central y las parcelas respetan los troncos adultos. Interior mediterráneo sin disfraz rural ni promesas de aislamiento."
+  },
+  "form": {
+    "titulo": "Diseñemos reglas que recepción pueda explicar",
+    "subtitulo": "Esta demostración no envía datos. Impuesto, depósito y cancelación son ejemplos ficticios para una conversación de alcance.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "mensaje": "¿Qué impuesto o política necesitas hacer visible?",
+    "enviar": "Preparar conversación",
+    "enviando": "Preparando…",
+    "ok": "Escenario preparado. No se ha enviado ningún dato.",
+    "error": "No se ha podido preparar la demostración. Reintenta con datos ficticios."
+  },
+  "footer": {
+    "aviso": "Camping de interior ficticio de 150 unidades · demostración Logic2B",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Reserva y gestión por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Alojamientos | Camping La Carrasca",
+      "description": "Compara parcelas, bungalow y casa en un camping ficticio de 150 unidades."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías y 150 unidades bajo el encinar. El total separa estancia e impuesto turístico ficticio antes de confirmar.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Ver disponibilidad",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Bungalow y casa",
+    "fichas": {
+      "ut_encina": "Parcela de unos 90 m² con electricidad de 10 A y sombra total de carrascas adultas.",
+      "ut_carrascal": "Parcela de unos 110 m² con 16 A, sombra parcial y acceso para conjuntos largos.",
+      "ut_bellota": "Dos dormitorios, baño, cocina, climatización y porche para cuatro.",
+      "ut_umbria": "Tres dormitorios, dos baños, cocina y patio de sombra para seis."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorios",
+      "banos": "Baños",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio ficticio con {n} personas. El impuesto regional de muestra se separa antes de confirmar.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Servicios del camping | La Carrasca",
+      "description": "Piscina naturalizada, era común, recepción y senderos en un camping de interior ficticio."
+    },
+    "titulo": "Servicios sobrios para un camping de interior",
+    "intro": "La piscina ocupa un claro controlado; recepción y la era común concentran la actividad sin colonizar el encinar.",
+    "items": [
+      {
+        "id": "piscina-natural",
+        "nombre": "Piscina del claro",
+        "desc": "Vaso proporcionado, zona infantil separada, pavimento seguro y sombra fuera del recinto."
+      },
+      {
+        "id": "era",
+        "nombre": "Era común",
+        "desc": "Pavimento mineral, mesas separadas y sombra textil para desayunos y lectura."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción y tienda",
+        "desc": "Dos puestos, productos básicos y explicación del desglose antes de cobrar."
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños y lavadero",
+        "desc": "Dos bloques, cabina accesible, duchas familiares y lavandería."
+      },
+      {
+        "id": "senderos",
+        "nombre": "Senderos señalizados",
+        "desc": "Dos recorridos propios cortos; las rutas externas se confirman cada mañana."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Taller de bicicletas",
+        "desc": "Punto de inflado, herramientas y resguardo nocturno sin alquiler automatizado."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Bosque y pueblos | La Carrasca",
+      "description": "Encinar, vía verde, pueblo y sierra desde Camping La Carrasca."
+    },
+    "titulo": "Del carrascal al pueblo, con distancias honestas",
+    "intro": "El bosque empieza en la linde y el pueblo resuelve compra, farmacia y mercado. Recepción distingue caminos propios de rutas de terceros.",
+    "secciones": [
+      {
+        "titulo": "El encinar",
+        "texto": "Un circuito corto recorre el bosque bajo sin salir de la finca y evita las zonas de regeneración."
+      },
+      {
+        "titulo": "La vía verde",
+        "texto": "Trazado de grava suave a nueve minutos en bicicleta; la sombra es irregular en verano."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Horno, farmacia, mercado de sábado y centro de salud quedan a once minutos en vehículo."
+      },
+      {
+        "titulo": "La sierra",
+        "texto": "Senderos de mayor desnivel a media hora; recepción no sustituye los avisos oficiales de acceso o incendio."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde recepción",
+      "items": [
+        {
+          "lugar": "Circuito del encinar",
+          "valor": "1 min a pie"
+        },
+        {
+          "lugar": "Vía verde",
+          "valor": "9 min en bici"
+        },
+        {
+          "lugar": "Pueblo y farmacia",
+          "valor": "11 min en coche"
+        },
+        {
+          "lugar": "Centro de salud",
+          "valor": "18 min en coche"
+        },
+        {
+          "lugar": "Sierra",
+          "valor": "30 min en coche"
+        },
+        {
+          "lugar": "Estación",
+          "valor": "42 min en coche"
+        }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas y condiciones de demostración | La Carrasca",
+      "description": "Precios ficticios, impuesto regional y cancelación para parcelas y alojamientos."
+    },
+    "titulo": "Tarifas de demostración",
+    "intro": "Importes ficticios con IVA. El total separa una tasa regional de muestra de 1,20 € por adulto y noche, máximo siete noches; no es asesoramiento fiscal.",
+    "tabla": {
+      "tipo": "Alojamiento",
+      "noche": "€/noche"
+    },
+    "temporadas": {
+      "sea_baja": "Invierno abierto · 1 enero – 1 abril",
+      "sea_primavera": "Primavera del carrascal · 1 abril – 15 junio",
+      "sea_verano": "Verano de interior · 15 junio – 15 septiembre",
+      "sea_otono": "Otoño · 15 septiembre – 31 diciembre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos por noche",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 16 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
+      "nombres": {
+        "ext_lena": "Saco de leña local",
+        "ext_cuna": "Cuna y trona",
+        "ext_cancelacion": "Cobertura de cancelación flexible",
+        "ext_mascota": "Mascota en parcela"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de reservar en la demo",
+      "items": [
+        "Los alojamientos piden cuatro noches en verano; las parcelas, una.",
+        "Tasa regional ficticia: 1,20 € por adulto y noche, máximo siete noches; menores de 16 exentos.",
+        "Cancelación demo: devolución total hasta 14 días, 50 % entre 7 y 13, y sin devolución después.",
+        "Pago, depósito y recibo son simulados: no se realiza ningún cargo ni se envían datos."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacto | Camping La Carrasca",
+      "description": "Datos ficticios y conversación de alcance para reglas regionales en Logic2B."
+    },
+    "titulo": "Hagamos legibles tus reglas",
+    "intro": "La Carrasca es una demostración. Una activación real validaría impuesto, exenciones, depósito y cancelación con el negocio y su asesoría.",
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 8:00–22:00 en verano y 9:00–20:00 el resto del año."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "Dirección, teléfono y email son ficticios y solo sostienen el recorrido comercial."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Cuaderno del carrascal | La Carrasca",
+      "description": "Información operativa ficticia sobre bosque, acceso y temporada."
+    },
+    "titulo": "Cuaderno del carrascal",
+    "intro": "La demo no publica artículos. La sección queda preparada para accesos, prevención y condiciones del entorno sin convertirlos en garantía.",
+    "leerMas": "Leer",
+    "volver": "Todo el cuaderno",
+    "vacio": "No hay publicaciones en esta demostración."
+  },
+  "noEncontrada": {
+    "titulo": "Este sendero no llega a esa parcela",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Reserva de demostración | La Carrasca",
+      "description": "Compara estancias, impuesto regional y cancelación en una reserva totalmente simulada."
+    },
+    "titulo": "Reserva de demostración",
+    "intro": "Elige fechas y grupo. Verás estancia, tasa regional ficticia, depósito y cancelación antes de un pago sin cargo.",
+    "elegir": "Elegir",
+    "noches": "{n} noches",
+    "detalle": {
+      "estancia": "Tu estancia demo",
+      "extras": "Añadir extras",
+      "incluido": "incluido",
+      "electricidad": "Electricidad",
+      "desglose": "Desglose del precio simulado",
+      "tasaNota": "Tasa regional ficticia: {importe}. Se muestra separada y no constituye asesoramiento fiscal.",
+      "depositoNota": "Señal simulada del 30 %: {importe}. No se realizará ningún cargo.",
+      "cancelacionNota": "Cancelación demo: devolución total hasta 14 días, 50 % entre 7 y 13, y sin devolución después.",
+      "total": "Total simulado",
+      "continuar": "Continuar en la demo",
+      "volver": "Volver a los resultados",
+      "error": "No se ha podido calcular el precio de muestra. Prueba de nuevo."
+    },
+    "titular": {
+      "titulo": "Datos ficticios del titular",
+      "hold": "Unidad demo guardada durante {min}",
+      "holdCaducado": "El bloqueo de muestra ha caducado; se comprobará otra vez al confirmar.",
+      "nombre": "Nombre ficticio",
+      "email": "Email de prueba",
+      "telefono": "Teléfono ficticio (opcional)",
+      "notas": "Nota de muestra (opcional)",
+      "condiciones": "Entiendo que es una demostración y que no se realizará ningún cargo.",
+      "confirmar": "Confirmar reserva demo",
+      "confirmando": "Confirmando la demo…",
+      "agotado": "La última unidad de muestra se acaba de ocupar. No se ha cobrado nada.",
+      "error": "No se ha podido confirmar la reserva demo. Prueba de nuevo."
+    },
+    "conceptos": {
+      "price.base": "Estancia",
+      "price.extra_person": "Personas adicionales",
+      "price.child": "Niños",
+      "price.pet": "Mascotas",
+      "price.electricity": "Electricidad",
+      "price.vehicle": "Vehículo adicional",
+      "discount.early_booking": "Descuento anticipado",
+      "discount.long_stay": "Descuento por estancia larga",
+      "discount.acsi": "Descuento asociado"
+    },
+    "errores": {
+      "stay.closed": "Cerrado en esas fechas.",
+      "stay.min_stay": "Estancia mínima de {minStay} noches.",
+      "stay.max_stay": "Estancia máxima de {maxStay} noches.",
+      "stay.arrival_day": "Llegada no permitida ese día.",
+      "stay.departure_day": "Salida no permitida ese día.",
+      "stay.capacity": "Ese alojamiento admite {capacityMax} personas como máximo.",
+      "stay.capacity_min": "Ocupación mínima de {capacityMin} personas.",
+      "stay.no_adults": "Hace falta al menos un adulto.",
+      "stay.no_pets": "Ese alojamiento no admite mascotas.",
+      "stay.no_electricity": "Esa parcela no tiene conexión eléctrica.",
+      "stay.no_rate": "No hay tarifa publicada para parte de la estancia.",
+      "stay.invalid_dates": "Revisa las fechas."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Recibo DEMO | La Carrasca",
+      "description": "Recibo de reserva ficticio con tasa y cancelación; no se ha realizado ningún cargo."
+    },
+    "titulo": "Tu reserva de demostración",
+    "nueva": "Reserva demo confirmada. Pago simulado · no se ha realizado ningún cargo.",
+    "buscar": {
+      "intro": "Introduce el código y email ficticios del escenario.",
+      "codigo": "Código demo",
+      "email": "Email de prueba",
+      "ver": "Ver recibo DEMO",
+      "buscando": "Buscando…",
+      "noEncontrada": "No existe una reserva demo con esos datos."
+    },
+    "estado": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada · DEMO",
+      "cancelled": "Cancelada",
+      "no_show": "No presentada",
+      "completed": "Completada"
+    },
+    "campos": {
+      "llegada": "Llegada",
+      "salida": "Salida",
+      "alojamiento": "Alojamiento",
+      "huespedes": "Huéspedes ficticios",
+      "noches": "Noches",
+      "total": "Total simulado",
+      "pagado": "Pago simulado",
+      "tasa": "Tasa turística de muestra"
+    },
+    "imprimir": "Imprimir recibo DEMO",
+    "cancelar": {
+      "boton": "Cancelar reserva demo",
+      "aviso": "Según la política ficticia visible al reservar, la devolución simulada sería del {pct} %: {importe}.",
+      "confirmar": "Sí, cancelar en la demo",
+      "volver": "Mantener la reserva",
+      "hecha": "Reserva demo cancelada.",
+      "error": "No se ha podido cancelar el escenario."
+    },
+    "modificar": {
+      "boton": "Cambiar fechas",
+      "titulo": "Nuevas fechas",
+      "nota": "El precio de muestra se recalcula con las tarifas del escenario.",
+      "aplicar": "Preparar cambio",
+      "aplicando": "Preparando…",
+      "hecho": "Fechas actualizadas. Nuevo total simulado: {importe}.",
+      "noDisponible": "No hay disponibilidad de muestra para esas fechas.",
+      "error": "No se ha podido preparar el cambio."
+    },
+    "pago": {
+      "esperando": "Confirmando el pago simulado… no se realizará ningún cargo.",
+      "cancelado": "Pago demo cancelado. No se ha realizado ningún cargo.",
+      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo."
+    }
+  }
+}

@@ -240,6 +240,16 @@ export default function FunnelDetalle({
                 importe: eur(breakdown.touristTaxCents, locale),
               })}
             </p>
+            {breakdown.depositCents !== undefined && labels.detalle.depositoNota && (
+              <p className="text-[12px] text-tinta-suave">
+                {fill(labels.detalle.depositoNota, {
+                  importe: eur(breakdown.depositCents, locale),
+                })}
+              </p>
+            )}
+            {labels.detalle.cancelacionNota && (
+              <p className="text-[12px] text-tinta-suave">{labels.detalle.cancelacionNota}</p>
+            )}
             <a
               href={`${titularPath}?${funnelQs(query)}`}
               className="rounded-(--lc-radius) bg-pino px-7 py-3 text-center text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"

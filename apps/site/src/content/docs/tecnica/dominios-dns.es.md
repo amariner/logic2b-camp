@@ -3,6 +3,7 @@ title: 'Dominios y DNS'
 description: 'Qué hay que tocar en tu DNS, qué NO hay que tocar y cómo se hace el cambio sin caída.'
 lang: es
 orden: 2
+updated: '2026-07-21'
 ---
 
 Tu web sigue en **tu dominio**, con tu registrador de siempre. No hay que transferir nada ni comprar dominio nuevo.

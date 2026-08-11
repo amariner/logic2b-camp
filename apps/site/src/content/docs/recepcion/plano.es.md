@@ -3,6 +3,7 @@ title: 'Encontrar una parcela en el plano'
 description: 'La vista de pájaro del camping: quién está en cada sitio, un día concreto.'
 lang: es
 orden: 8
+updated: '2026-08-10'
 ---
 
 Si el planning responde a **"¿cuándo?"**, el plano responde a **"¿dónde?"**.

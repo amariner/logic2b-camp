@@ -4,43 +4,59 @@ import { LOCALES, localePath } from '../lib/i18n';
 
 const site = 'https://camp.logic2b.com';
 
-/** Todas las rutas del sitio de producto, sin prefijo de idioma. */
-function rutas(): string[] {
+type SitemapRoute = { path: string; lastmod: string };
+
+/**
+ * Todas las rutas canónicas e indexables del sitio de producto.
+ * `lastmod` solo cambia cuando cambia sustancialmente la página: Google ignora
+ * `priority` y `changefreq`, y desconfía de fechas que se renuevan en cada build.
+ */
+function rutas(): SitemapRoute[] {
   return [
-    '/',
-    'precios/',
-    'temas/',
-    'aviso-legal/',
-    'privacidad/',
-    'cookies/',
-    'docs/',
-    ...GUIAS.map((g) => `docs/${g}/`),
+    { path: '/', lastmod: '2026-08-11' },
+    { path: 'precios/', lastmod: '2026-08-11' },
+    { path: 'temas/', lastmod: '2026-08-11' },
+    { path: 'aviso-legal/', lastmod: '2026-08-11' },
+    { path: 'privacidad/', lastmod: '2026-08-11' },
+    { path: 'cookies/', lastmod: '2026-08-11' },
+    { path: 'docs/', lastmod: '2026-08-11' },
+    ...GUIAS.map((g) => ({ path: `docs/${g}/`, lastmod: '2026-08-11' })),
     // Las guías son la superficie de búsqueda larga del producto ("cómo hacer
     // el check-in en un camping"): entran en el sitemap como todo lo demás.
-    ...todasLasRutas().map(({ guia, slug }) => `docs/${guia}/${slug}/`),
+    ...todasLasRutas().map(({ guia, slug, lastmod }) => ({
+      path: `docs/${guia}/${slug}/`,
+      lastmod,
+    })),
   ];
 }
 
+function escapeXml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
 export const GET: APIRoute = () => {
+  // Los alternates hreflang viven en el `<head>` de cada página. Duplicarlos
+  // aquí con `xhtml:link` hace que algunos visores de XML pinten solo el texto.
   const urls = rutas()
-    .flatMap((ruta) =>
+    .flatMap(({ path, lastmod }) =>
       LOCALES.map((l) => {
-        const loc = new URL(localePath(l, ruta), site).href;
-        const alts = LOCALES.map(
-          (a) =>
-            `    <xhtml:link rel="alternate" hreflang="${a}" href="${new URL(localePath(a, ruta), site).href}"/>`,
-        ).concat(
-          `    <xhtml:link rel="alternate" hreflang="x-default" href="${new URL(localePath('es', ruta), site).href}"/>`,
-        ).join('\n');
-        return `  <url>\n    <loc>${loc}</loc>\n${alts}\n  </url>`;
+        const loc = escapeXml(new URL(localePath(l, path), site).href);
+        return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
       }),
     )
     .join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 </urlset>`;
 
-  return new Response(xml, { headers: { 'content-type': 'application/xml' } });
+  return new Response(xml, {
+    headers: { 'content-type': 'application/xml; charset=utf-8' },
+  });
 };

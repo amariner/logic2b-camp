@@ -3,6 +3,7 @@ title: 'Entrar al programa'
 description: 'Cómo abrir el gestor, qué es cada cosa de la pantalla y cómo salir al terminar el turno.'
 lang: es
 orden: 1
+updated: '2026-07-21'
 ---
 
 El gestor vive en la misma dirección que la web del camping, añadiendo `/admin` al final. Si la web es `www.tucamping.com`, el gestor está en **`www.tucamping.com/admin`**.

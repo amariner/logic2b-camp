@@ -3,6 +3,7 @@ title: 'Cuando algo no sale como esperabas'
 description: 'Los apuros más habituales del mostrador y qué hacer en cada uno.'
 lang: es
 orden: 15
+updated: '2026-08-10'
 ---
 
 Lista de consulta rápida. Casi todo tiene arreglo, y casi nada es urgente.

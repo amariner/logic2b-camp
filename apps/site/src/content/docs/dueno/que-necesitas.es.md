@@ -3,6 +3,7 @@ title: 'Qué necesitas para empezar'
 description: 'Lo que tienes que aportar tú, lo que ponemos nosotros, y qué pasa con tus datos.'
 lang: es
 orden: 3
+updated: '2026-08-05'
 ---
 
 El plazo depende del nivel elegido y de que el material esté reunido antes de empezar. Cerramos por escrito el alcance, el contenido y la fecha de salida.

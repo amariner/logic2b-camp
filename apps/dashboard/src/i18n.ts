@@ -34,6 +34,8 @@ const es = {
     'Entre Vinyes es una demostración ficticia: Vendimia prevalece sobre Verano, las solicitudes son locales, no se envían mensajes y puedes restablecer el escenario.',
   'demo.tarongersBanner':
     'Els Tarongers es una demostración ficticia: edades, sombra y fechas quedan solo en este navegador, no se envían mensajes y puedes restablecer el escenario.',
+  'demo.carrascaBanner':
+    'La Carrasca es una demostración ficticia: tasa, señal, cancelación y reservas quedan solo en este navegador, no se cobra ni se envían mensajes.',
   'demo.mardefondoBanner':
     'Mar de Fondo es una demostración ficticia de 300 unidades: la reserva, el cobro y la operación son locales, no contactan con proveedores y puedes restablecerlo todo.',
   'demo.verWeb': 'Ver la web del camping',

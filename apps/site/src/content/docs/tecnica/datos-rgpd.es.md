@@ -3,6 +3,7 @@ title: 'Datos, aislamiento, RGPD y copias'
 description: 'Dónde están los datos, quién puede verlos, qué exige el RGPD y qué pasa si te quieres ir.'
 lang: es
 orden: 4
+updated: '2026-07-21'
 ---
 
 La página que probablemente te trajo aquí.

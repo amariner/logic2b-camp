@@ -3,6 +3,7 @@ title: 'Qué pasa cuando subes de nivel'
 description: 'Qué cambia exactamente, qué NO cambia, y cuánto tarda.'
 lang: es
 orden: 2
+updated: '2026-08-05'
 ---
 
 La pregunta importante antes de empezar por abajo es: **¿tendré que volver a empezar cuando necesite más?** No. La escalera está diseñada para conservar lo que ya funciona y añadir capacidades.

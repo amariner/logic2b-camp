@@ -134,6 +134,19 @@ for (const locale of locales) {
 }
 
 const sitemap = await readHtml('sitemap.xml');
+const sitemapUrls = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map(([, entry]) => entry);
+assert(sitemapUrls.length > 0, 'sitemap: no contiene URLs');
+for (const entry of sitemapUrls) {
+  assert(/<loc>https:\/\/camp\.logic2b\.com\//.test(entry), 'sitemap: `<loc>` no es absoluta');
+  assert(
+    /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(entry),
+    'sitemap: falta `<lastmod>` con fecha W3C',
+  );
+}
+assert(
+  !sitemap.includes('xmlns:xhtml') && !sitemap.includes('<xhtml:'),
+  'sitemap: el namespace XHTML impide que algunos navegadores muestren el árbol XML',
+);
 for (const pathName of ['aviso-legal', 'privacidad', 'cookies']) {
   assert(
     sitemap.includes(`https://camp.logic2b.com/${pathName}/`) &&

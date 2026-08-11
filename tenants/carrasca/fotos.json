@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-C producido para Logic2B con generación integrada y fallback controlado; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping La Carrasca.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-encinar", "hero-era"],
+    ["parcela-encina", "parcela-carrascal"],
+    ["bungalow-bellota", "casa-umbria"],
+    ["instalacion-recepcion", "instalacion-piscina-natural"],
+    ["entorno", "textura-carrasca"]
+  ],
+  "derivados": {
+    "fuente": "hero-encinar",
+    "titulo": "Camping La Carrasca",
+    "subtitulo": "150 unidades · interior mediterráneo"
+  },
+  "piezas": {
+    "hero-encinar": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para titular.",
+      "prompt": "Fotografía editorial documental panorámica de un camping de interior mediterráneo de tamaño medio al amanecer. Una calle de grava compactada serpentea bajo carrascas adultas de copa ancha; parcelas ordenadas y dos caravanas completamente genéricas muestran escala sin dominar. Al fondo, recepción baja de piedra clara y cal. Luz lateral suave, tonos mineral y verde seco, amplio espacio negativo a la derecha. Ninguna persona, texto, señal, logotipo, matrícula, ciervo, bellota gigante, fogata, glamping, resort, HDR ni saturación."
+    },
+    "hero-era": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica del mismo camping al final de la tarde. Una era común circular de piedra, vacía, queda bajo la sombra parcial de dos carrascas; bancos sencillos, un muro seco bajo y bungalows discretos se integran en el fondo. Composición horizontal silenciosa y creíble con espacio negativo. Ninguna persona, texto, rótulo, mesa de banquete, guirnalda, fuego, escenario, castillo, lujo, HDR ni postal folclórica."
+    },
+    "parcela-encina": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Encina.",
+      "prompt": "Fotografía editorial documental de una parcela de 90 metros cuadrados en el mismo camping. Grava firme, electricidad cerrada de 10 A y sombra real de una carrasca adulta conservada fuera del centro de maniobra. Una caravana compacta totalmente genérica sin texto, logo o matrícula visible; mesa vacía para escala. Ninguna persona, raíces dañadas, césped artificial, bellota gigante, piscina, glamping, HDR ni lujo."
+    },
+    "parcela-carrascal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Carrascal.",
+      "prompt": "Fotografía editorial documental de una parcela amplia de 110 metros cuadrados en el mismo camping de interior. Suelo firme, giro claro, toma cerrada de 16 A y una autocaravana mediana completamente genérica sin marca, texto o matrícula visible; el bosque bajo de carrascas queda detrás de un límite vegetal. Luz natural de tarde y escala creíble. Ninguna persona, precipicio, fuego, césped artificial, glamping, HDR o resort."
+    },
+    "bungalow-bellota": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Bungalow Bellota.",
+      "prompt": "Fotografía arquitectónica editorial de un bungalow compacto para cuatro en el mismo camping. Volumen bajo de cal color hueso y piedra local, cubierta cerámica, dos huecos proporcionados, porche profundo y rampa suave; una carrasca adulta da sombra sin tocar el edificio. Luz limpia, escala modesta y construcción viable. Ninguna persona, texto, logotipo, bellota decorativa, chimenea humeante, jacuzzi, cristal de lujo, HDR ni arquitectura imposible."
+    },
+    "casa-umbria": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Casa Umbría.",
+      "prompt": "Fotografía arquitectónica editorial de una casa baja para seis en el mismo camping. Piedra clara y mortero de cal, cubierta de teja, tres ventanas proporcionadas y patio mineral sombreado con mesa vacía; acceso llano y carrascas adultas alrededor. Rehabilitación sobria y creíble, no una villa. Ninguna persona, texto, logo, piscina privada, mansión, chimenea humeante, jacuzzi, HDR ni lujo."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción que explica tasas y cancelación.",
+      "prompt": "Fotografía editorial documental de la recepción vacía del mismo camping. Edificio pequeño de cal y piedra, porche profundo, mostrador sencillo visible por una puerta abierta, balda con llaves lisas sin etiquetas y terminal apagado. Acceso de grava, aparcabicis y carrascas al fondo. Ninguna persona, rostro, letra, número, palabra, rótulo, papel legible, logotipo, pantalla brillante, lujo, HDR ni sombras negras."
+    },
+    "instalacion-piscina-natural": {
+      "aspecto": "3:2",
+      "papel": "Piscina proporcionada en un claro del encinar.",
+      "prompt": "Fotografía editorial documental de una piscina pequeña y proporcionada en un claro del mismo camping, vacía antes de abrir. Vaso rectangular, zona infantil muy baja separada, piedra antideslizante, vallado discreto y tres sombrillas de lona lisa cerradas; las carrascas quedan fuera del recinto. Luz de mañana y escala para 150 unidades. Ninguna persona, texto, tobogán, parque acuático, borde infinito, césped tropical, resort, HDR ni lujo."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "Cabecera del entorno y bosque bajo.",
+      "prompt": "Fotografía documental panorámica de un camino público de grava entre carrascas y matorral mediterráneo del interior. Muros secos bajos, relieve suave y una bifurcación definida solo por el camino, sin postes ni señales. Luz templada de otoño, paisaje cotidiano y profundidad natural. Ninguna persona, bicicleta, palabra, logotipo, poste, cruz, fuego, ciervo, castillo, montaña alpina, saturación ni HDR."
+    },
+    "textura-carrasca": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de hojas reales de carrasca verde mate, una bellota pequeña y una pieza irregular de piedra caliza sobre tierra seca. Composición horizontal abstracta y luz lateral suave. Sin personas, manos, pies, texto, símbolos, logotipos, joyas, frutos gigantes, fuego, efectos digitales ni HDR."
+    }
+  }
+}

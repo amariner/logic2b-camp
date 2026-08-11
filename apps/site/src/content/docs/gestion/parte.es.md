@@ -3,6 +3,7 @@ title: 'El parte de viajeros'
 description: 'Revisar los datos de los viajeros que llegan y preparar un borrador local antes de completar la comunicación en la Sede de SES.Hospedajes.'
 lang: es
 orden: 4
+updated: '2026-08-10'
 ---
 
 Todo alojamiento en España tiene que comunicar al Ministerio del Interior los datos de las personas que se hospedan. Lo dice el **Real Decreto 933/2021** y se hace a través de la plataforma **SES.Hospedajes**. La pantalla **Parte de viajeros** reúne las llegadas de un día, avisa de lo que falta y prepara un borrador local para revisar los datos antes de completar el procedimiento oficial.

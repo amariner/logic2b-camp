@@ -37,6 +37,13 @@ describe('parseTenantWebConfig', () => {
     { enquiryTransport: 'demo-session', demoManagerPath: '/demos/camping/gestion/' },
     { demoThemes: ['mar'] },
     { demoTierSwitch: true },
+    {
+      demoBookingPolicy: {
+        touristTax: { adultCentsPerNight: 120, childCentsPerNight: 0, maxNights: 7 },
+        depositPercent: 30,
+        cancellation: { tiers: [{ minDaysBefore: 0, refundPct: 0 }] },
+      },
+    },
   ])('rechaza capacidad demo en un tenant normal: %o', (demoField) => {
     expect(() => parseTenantWebConfig({ ...base, ...demoField })).toThrow(
       'es exclusivo de una config con isDemo: true',
@@ -68,7 +75,22 @@ describe('parseTenantWebConfig', () => {
         isDemo: true,
         bookingTransport: 'demo-session',
         demoManagerPath: '/demos/camping-real/gestion/',
+        demoBookingPolicy: {
+          touristTax: { adultCentsPerNight: 120, childCentsPerNight: 0, maxNights: 7 },
+          depositPercent: 30,
+          cancellation: {
+            tiers: [
+              { minDaysBefore: 14, refundPct: 100 },
+              { minDaysBefore: 7, refundPct: 50 },
+              { minDaysBefore: 0, refundPct: 0 },
+            ],
+          },
+        },
       }),
-    ).toMatchObject({ bookingTransport: 'demo-session', isDemo: true });
+    ).toMatchObject({
+      bookingTransport: 'demo-session',
+      isDemo: true,
+      demoBookingPolicy: { depositPercent: 30 },
+    });
   });
 });

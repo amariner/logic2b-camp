@@ -3,6 +3,7 @@ title: 'Empezar el día: llegadas y salidas'
 description: 'La primera pantalla de la mañana: quién llega hoy, quién se va y qué queda por cobrar.'
 lang: es
 orden: 3
+updated: '2026-08-10'
 ---
 
 Es la hoja de trabajo de la mañana. Entra en **Llegadas** y tienes el día resuelto de un vistazo.

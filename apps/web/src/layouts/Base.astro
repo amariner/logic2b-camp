@@ -177,6 +177,12 @@ const demoBookingCatalog = config.bookingTransport === 'demo-session'
         priceCents: extra.price_cents,
         per: extra.per,
       })),
+      policy: config.demoBookingPolicy ?? {
+        bookingCodePrefix: 'MF',
+        touristTax: { adultCentsPerNight: 70, childCentsPerNight: 70, maxNights: 365 },
+        depositPercent: 100,
+        cancellation: { tiers: [{ minDaysBefore: 0, refundPct: 100 }] },
+      },
     }
   : null;
 
@@ -201,6 +207,16 @@ const demoBookingBootScript = demoBookingCatalog ? `
   }
   function seasonFor(date) {
     return catalog.seasons.find(function (season) { return season.open && date >= season.from && date < season.to; });
+  }
+  function cancellationFor(booking) {
+    var daysBefore = Math.max(0, Math.floor((Date.parse(booking.dateFrom + 'T00:00:00Z') - Date.now()) / 86400000));
+    var tiers = catalog.policy.cancellation.tiers.slice().sort(function (a, b) { return b.minDaysBefore - a.minDaysBefore; });
+    var tier = tiers.find(function (item) { return daysBefore >= item.minDaysBefore; }) || { refundPct: 0 };
+    return {
+      daysBefore: daysBefore,
+      appliedRefundPct: tier.refundPct,
+      refundCents: Math.round(booking.paidCents * tier.refundPct / 100)
+    };
   }
   function quote(input) {
     var type = catalog.unitTypes.find(function (item) { return item.id === input.unitTypeId; });
@@ -228,9 +244,20 @@ const demoBookingBootScript = demoBookingCatalog ? `
       lines.push({ concept: 'extra.' + id, detail: { quantity: multiplier }, amountCents: extra.priceCents * multiplier });
     });
     var total = lines.reduce(function (sum, line) { return sum + line.amountCents; }, 0);
+    var taxedNights = Math.min(count, catalog.policy.touristTax.maxNights);
+    var touristTax = taxedNights * (
+      adults * catalog.policy.touristTax.adultCentsPerNight +
+      children * catalog.policy.touristTax.childCentsPerNight
+    );
     return {
       nights: count,
-      breakdown: { lines: lines, totalCents: total, touristTaxCents: (adults + children) * count * 70, currency: 'EUR' }
+      breakdown: {
+        lines: lines,
+        totalCents: total,
+        touristTaxCents: touristTax,
+        depositCents: Math.round(total * catalog.policy.depositPercent / 100),
+        currency: 'EUR'
+      }
     };
   }
   function readBookings() {
@@ -274,7 +301,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
     }
     if (method === 'POST' && url.pathname === '/api/holds') {
       hold += 1;
-      return response({ holdId: 'hld_mf_demo_' + hold, expiresAt: new Date(Date.now() + 15 * 60000).toISOString() }, 201);
+      return response({ holdId: 'hld_' + catalog.slug + '_demo_' + hold, expiresAt: new Date(Date.now() + 15 * 60000).toISOString() }, 201);
     }
     if (method === 'DELETE' && /^\\/api\\/holds\\//.test(url.pathname)) return response(null, 204);
     if (method === 'POST' && url.pathname === '/api/bookings') {
@@ -282,13 +309,14 @@ const demoBookingBootScript = demoBookingCatalog ? `
       var bookingQuote = quote(bookingBody);
       if (!bookingQuote) return response({ error: 'invalid_stay' }, 409);
       var items = readBookings();
-      var code = 'MF-DEMO-' + String(items.length + 1).padStart(3, '0');
+      var codePrefix = catalog.policy.bookingCodePrefix || catalog.slug.slice(0, 2).toUpperCase();
+      var code = codePrefix + '-DEMO-' + String(items.length + 1).padStart(3, '0');
       var booking = {
         code: code, email: bookingBody.holder && bookingBody.holder.email,
         status: 'confirmed', dateFrom: bookingBody.dateFrom, dateTo: bookingBody.dateTo,
         unitTypeId: bookingBody.unitTypeId, occupancy: bookingBody.occupancy,
         extras: bookingBody.extraIds || [], totalCents: bookingQuote.breakdown.totalCents,
-        paidCents: bookingQuote.breakdown.totalCents, touristTaxCents: bookingQuote.breakdown.touristTaxCents,
+        paidCents: bookingQuote.breakdown.depositCents, touristTaxCents: bookingQuote.breakdown.touristTaxCents,
         breakdown: bookingQuote.breakdown
       };
       items.unshift(booking); saveBookings(items);
@@ -302,15 +330,16 @@ const demoBookingBootScript = demoBookingCatalog ? `
       var actionBody = bodyOf(init);
       var emailValue = method === 'GET' ? url.searchParams.get('email') : actionBody.email;
       if (!found || found.email !== emailValue) return response({ error: 'not_found' }, 404);
-      if (method === 'GET') return response(Object.assign({}, found, { cancellation: found.status === 'confirmed' ? { refundCents: found.paidCents, daysBefore: 30, appliedRefundPct: 100 } : null }));
+      if (method === 'GET') return response(Object.assign({}, found, { cancellation: found.status === 'confirmed' ? cancellationFor(found) : null }));
       if (method === 'POST' && match[2] === 'cancel') {
-        found.status = 'cancelled'; saveBookings(itemsNow); return response({ code: found.code, status: found.status, refundCents: found.paidCents });
+        var cancellation = cancellationFor(found);
+        found.status = 'cancelled'; saveBookings(itemsNow); return response({ code: found.code, status: found.status, refundCents: cancellation.refundCents });
       }
       if (method === 'POST' && match[2] === 'modify') {
         var changed = quote(Object.assign({}, found, { dateFrom: actionBody.dateFrom, dateTo: actionBody.dateTo, extraIds: found.extras }));
         if (!changed) return response({ error: 'no_availability' }, 409);
         found.dateFrom = actionBody.dateFrom; found.dateTo = actionBody.dateTo;
-        found.totalCents = changed.breakdown.totalCents; found.paidCents = changed.breakdown.totalCents;
+        found.totalCents = changed.breakdown.totalCents; found.paidCents = changed.breakdown.depositCents;
         found.touristTaxCents = changed.breakdown.touristTaxCents; found.breakdown = changed.breakdown;
         saveBookings(itemsNow); return response({ code: found.code, totalCents: found.totalCents });
       }

@@ -478,6 +478,22 @@ importers:
         specifier: ^5.8.0
         version: 5.9.3
 
+  tenants/carrasca:
+    dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+    devDependencies:
+      '@logic-camp/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/node':
+        specifier: ^26.1.1
+        version: 26.1.1
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
   tenants/delta:
     dependencies:
       '@logic-camp/config':

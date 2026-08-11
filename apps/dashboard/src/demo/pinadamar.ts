@@ -22,6 +22,7 @@ export const isPinadaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'pinadama
 export const isSerraltaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'serralta';
 export const isVinyesScenario = import.meta.env.VITE_DEMO_SCENARIO === 'vinyes';
 export const isTarongersScenario = import.meta.env.VITE_DEMO_SCENARIO === 'tarongers';
+export const isCarrascaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'carrasca';
 
 export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:v1';
 export const PINADA_WEB_ENQUIRY_KEY = 'logic2b-demo:pinadamar:submitted-enquiry:v1';
@@ -31,26 +32,58 @@ export const VINYES_STATE_KEY = 'logic2b-demo:vinyes:state:v1';
 export const VINYES_WEB_ENQUIRY_KEY = 'logic2b-demo:vinyes:submitted-enquiry:v1';
 export const TARONGERS_STATE_KEY = 'logic2b-demo:tarongers:state:v1';
 export const TARONGERS_WEB_ENQUIRY_KEY = 'logic2b-demo:tarongers:submitted-enquiry:v1';
+export const CARRASCA_STATE_KEY = 'logic2b-demo:carrasca:state:v1';
+export const CARRASCA_WEB_ENQUIRY_KEY = 'logic2b-demo:carrasca:submitted-enquiry:v1';
 
-const activeScenario = isTarongersScenario
+const activeScenario = isCarrascaScenario
   ? {
-      id: 'tarongers', stateKey: TARONGERS_STATE_KEY, enquiryKey: TARONGERS_WEB_ENQUIRY_KEY,
-      bookingPrefix: 'TG', tenantId: 'ten_tarongers', name: 'Camping Els Tarongers', locales: ['es'],
+      id: 'carrasca',
+      stateKey: CARRASCA_STATE_KEY,
+      enquiryKey: CARRASCA_WEB_ENQUIRY_KEY,
+      bookingPrefix: 'CR',
+      tenantId: 'ten_carrasca',
+      name: 'Camping La Carrasca',
+      locales: ['es'],
     }
-  : isVinyesScenario
-  ? {
-      id: 'vinyes', stateKey: VINYES_STATE_KEY, enquiryKey: VINYES_WEB_ENQUIRY_KEY,
-      bookingPrefix: 'VY', tenantId: 'ten_vinyes', name: 'Camping Entre Vinyes', locales: ['es'],
-    }
-  : isSerraltaScenario
+  : isTarongersScenario
     ? {
-        id: 'serralta', stateKey: SERRALTA_STATE_KEY, enquiryKey: SERRALTA_WEB_ENQUIRY_KEY,
-        bookingPrefix: 'SR', tenantId: 'ten_serralta', name: 'Camping Serralta', locales: ['es', 'fr', 'de', 'en'],
+        id: 'tarongers',
+        stateKey: TARONGERS_STATE_KEY,
+        enquiryKey: TARONGERS_WEB_ENQUIRY_KEY,
+        bookingPrefix: 'TG',
+        tenantId: 'ten_tarongers',
+        name: 'Camping Els Tarongers',
+        locales: ['es'],
       }
-    : {
-        id: 'pinadamar', stateKey: PINADA_STATE_KEY, enquiryKey: PINADA_WEB_ENQUIRY_KEY,
-        bookingPrefix: 'PM', tenantId: 'ten_pinadamar', name: 'Camping Pinada del Mar', locales: ['es', 'ca', 'fr', 'de'],
-      };
+    : isVinyesScenario
+      ? {
+          id: 'vinyes',
+          stateKey: VINYES_STATE_KEY,
+          enquiryKey: VINYES_WEB_ENQUIRY_KEY,
+          bookingPrefix: 'VY',
+          tenantId: 'ten_vinyes',
+          name: 'Camping Entre Vinyes',
+          locales: ['es'],
+        }
+      : isSerraltaScenario
+        ? {
+            id: 'serralta',
+            stateKey: SERRALTA_STATE_KEY,
+            enquiryKey: SERRALTA_WEB_ENQUIRY_KEY,
+            bookingPrefix: 'SR',
+            tenantId: 'ten_serralta',
+            name: 'Camping Serralta',
+            locales: ['es', 'fr', 'de', 'en'],
+          }
+        : {
+            id: 'pinadamar',
+            stateKey: PINADA_STATE_KEY,
+            enquiryKey: PINADA_WEB_ENQUIRY_KEY,
+            bookingPrefix: 'PM',
+            tenantId: 'ten_pinadamar',
+            name: 'Camping Pinada del Mar',
+            locales: ['es', 'ca', 'fr', 'de'],
+          };
 const activeScenarioId = activeScenario.id;
 const activeStateKey = activeScenario.stateKey;
 const activeWebEnquiryKey = activeScenario.enquiryKey;
@@ -99,13 +132,34 @@ export const tarongersTypeSpecs = [
   { id: 'ut_naranjal', kind: 'lodging' as const, name: 'Casa Naranjal', count: 6, prefix: 'NAR' },
 ] as const;
 
-const typeSpecs = isTarongersScenario
-  ? tarongersTypeSpecs
-  : isVinyesScenario
-  ? vinyesTypeSpecs
-  : isSerraltaScenario
-    ? serraltaTypeSpecs
-    : pinadaTypeSpecs;
+export const carrascaTypeSpecs = [
+  { id: 'ut_encina', kind: 'pitch' as const, name: 'Parcela Encina', count: 80, prefix: 'ENC' },
+  {
+    id: 'ut_carrascal',
+    kind: 'pitch' as const,
+    name: 'Parcela Carrascal',
+    count: 30,
+    prefix: 'CAR',
+  },
+  {
+    id: 'ut_bellota',
+    kind: 'lodging' as const,
+    name: 'Bungalow Bellota',
+    count: 24,
+    prefix: 'BEL',
+  },
+  { id: 'ut_umbria', kind: 'lodging' as const, name: 'Casa Umbría', count: 16, prefix: 'UMB' },
+] as const;
+
+const typeSpecs = isCarrascaScenario
+  ? carrascaTypeSpecs
+  : isTarongersScenario
+    ? tarongersTypeSpecs
+    : isVinyesScenario
+      ? vinyesTypeSpecs
+      : isSerraltaScenario
+        ? serraltaTypeSpecs
+        : pinadaTypeSpecs;
 
 const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
   id: spec.id,
@@ -117,15 +171,22 @@ const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
       ? 6
       : spec.id === 'ut_bungalow' || spec.id === 'ut_refugio'
         ? 6
-        : spec.id === 'ut_azahar'
-          ? 5
-          : spec.id === 'ut_naranjal'
-            ? 6
-        : spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
+        : spec.id === 'ut_bellota'
           ? 4
-          : 5,
+          : spec.id === 'ut_umbria'
+            ? 6
+            : spec.id === 'ut_azahar'
+              ? 5
+              : spec.id === 'ut_naranjal'
+                ? 6
+                : spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
+                  ? 4
+                  : 5,
   includedPersons:
-    spec.kind === 'pitch' || spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
+    spec.kind === 'pitch' ||
+    spec.id === 'ut_cabana' ||
+    spec.id === 'ut_cal' ||
+    spec.id === 'ut_caseta'
       ? 2
       : 4,
 }));
@@ -139,11 +200,35 @@ const units: PlanningUnit[] = typeSpecs.flatMap((spec) =>
       (spec.prefix === 'B' && index === 11) ||
       (spec.prefix === 'CAB' && index === 7) ||
       (spec.prefix === 'CAL' && index === 7) ||
-      (spec.prefix === 'AZA' && index === 7)
+      (spec.prefix === 'AZA' && index === 7) ||
+      (spec.prefix === 'BEL' && index === 7)
         ? 'inactive'
         : 'active',
   })),
 );
+
+const preferredCodeByType: Record<string, string> = {
+  ut_parcela_pino: 'P-08',
+  ut_parcela_mar: 'M-08',
+  ut_bungalow: 'B-08',
+  ut_mobil: 'MH-08',
+  ut_bosque: 'BOS-08',
+  ut_mirador: 'MIR-08',
+  ut_cabana: 'CAB-06',
+  ut_refugio: 'REF-02',
+  ut_cepa: 'CEP-08',
+  ut_bancal: 'BAN-08',
+  ut_cal: 'CAL-06',
+  ut_caseta: 'CSV-02',
+  ut_taronger: 'TAR-08',
+  ut_sequia: 'SEQ-08',
+  ut_azahar: 'AZA-06',
+  ut_naranjal: 'NAR-02',
+  ut_encina: 'ENC-08',
+  ut_carrascal: 'CAR-08',
+  ut_bellota: 'BEL-06',
+  ut_umbria: 'UMB-02',
+};
 
 const catalog: Catalog = {
   unitTypes,
@@ -196,11 +281,13 @@ const surnames = [
 const locales = activeScenario.locales;
 const statuses: EnquiryStatus[] = ['new', 'new', 'contacted', 'quoted', 'converted', 'lost'];
 const enquiryMessages: Record<string, string> = {
-  es: isTarongersScenario
-    ? 'Somos dos adultos con niños de 6 y 10 años; preferimos sombra de tarde y necesitamos confirmar el espacio del vehículo.'
-    : isVinyesScenario
-      ? 'Queremos venir durante la vendimia y saber qué temporada se aplica a nuestras fechas.'
-      : 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
+  es: isCarrascaScenario
+    ? 'Necesitamos ver la tasa regional, la señal y qué devolución se aplicaría si cancelamos antes de confirmar.'
+    : isTarongersScenario
+      ? 'Somos dos adultos con niños de 6 y 10 años; preferimos sombra de tarde y necesitamos confirmar el espacio del vehículo.'
+      : isVinyesScenario
+        ? 'Queremos venir durante la vendimia y saber qué temporada se aplica a nuestras fechas.'
+        : 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
   ca: 'Preferim ombra i una zona tranquil·la. No s’enviarà cap missatge.',
   fr: 'Nous prévoyons une randonnée et souhaitons connaître l’état du sentier.',
   de: 'Wir planen eine Wanderung und möchten den aktuellen Wegezustand wissen.',
@@ -265,7 +352,7 @@ function baseBookings(): DemoBooking[] {
         vehicles: 1,
       },
       totalCents,
-      paidCents: index % 5 === 0 ? 0 : Math.round(totalCents * 0.35),
+      paidCents: index % 5 === 0 ? 0 : Math.round(totalCents * (isCarrascaScenario ? 0.3 : 0.35)),
       notes: index % 8 === 0 ? 'Llegada prevista después de las 18:00.' : null,
       checkedInAt: inHouse ? `${iso(6)}T10:20:00.000Z` : null,
       checkedOutAt: null,
@@ -274,6 +361,56 @@ function baseBookings(): DemoBooking[] {
       guestEmail: `reserva${index + 1}@example.test`,
     };
   });
+}
+
+function readPublicBookings(): DemoBooking[] {
+  if (!isCarrascaScenario || typeof localStorage === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('logic2b-demo:carrasca:public-bookings:v1');
+    if (!raw) return [];
+    const items = JSON.parse(raw) as Array<{
+      code: string;
+      email?: string;
+      status: BookingListItem['status'];
+      dateFrom: string;
+      dateTo: string;
+      unitTypeId: string;
+      occupancy: BookingListItem['occupancy'];
+      totalCents: number;
+      paidCents: number;
+    }>;
+    return items.flatMap((item, index) => {
+      const unit = units.find(
+        (candidate) => candidate.code === preferredCodeByType[item.unitTypeId],
+      );
+      if (!unit || !item.code || !item.dateFrom || !item.dateTo) return [];
+      return [
+        {
+          id: `book_carrasca_public_${item.code.toLowerCase().replaceAll('-', '_')}`,
+          code: item.code,
+          status: item.status,
+          channel: 'web',
+          dateFrom: item.dateFrom,
+          dateTo: item.dateTo,
+          unitTypeId: item.unitTypeId,
+          unitId: unit.id,
+          unitCode: unit.code,
+          leadName: `Familia demo ${index + 1}`,
+          occupancy: item.occupancy,
+          totalCents: item.totalCents,
+          paidCents: item.paidCents,
+          notes: 'Reserva creada en la web demo con tasa, señal y cancelación ficticias.',
+          checkedInAt: null,
+          checkedOutAt: null,
+          createdAt: '2026-08-11T12:00:00.000Z',
+          locale: 'es',
+          guestEmail: item.email ?? 'reserva.carrasca@example.test',
+        },
+      ];
+    });
+  } catch {
+    return [];
+  }
 }
 
 type ScenarioState = { enquiries: EnquiryItem[]; bookings: DemoBooking[] };
@@ -292,7 +429,7 @@ function initialState(): ScenarioState {
   const enquiry = readWebEnquiry();
   return {
     enquiries: enquiry ? [enquiry, ...baseEnquiries] : [...baseEnquiries],
-    bookings: baseBookings(),
+    bookings: [...readPublicBookings(), ...baseBookings()],
   };
 }
 
@@ -318,11 +455,15 @@ export function resetPinadaScenario(): void {
   if (typeof localStorage === 'undefined') return;
   localStorage.removeItem(activeStateKey);
   localStorage.removeItem(activeWebEnquiryKey);
+  if (isCarrascaScenario) {
+    localStorage.removeItem('logic2b-demo:carrasca:public-bookings:v1');
+  }
 }
 
 export const resetSerraltaScenario = resetPinadaScenario;
 export const resetVinyesScenario = resetPinadaScenario;
 export const resetTarongersScenario = resetPinadaScenario;
+export const resetCarrascaScenario = resetPinadaScenario;
 
 export const pinadaPlano: PlanoDescriptor = {
   version: 1,
@@ -487,33 +628,71 @@ export const vinyesPlano: PlanoDescriptor = {
     { kind: 'road', x: 70, y: 372, w: 742, h: 18 },
     { kind: 'road', x: 430, y: 108, w: 18, h: 482 },
     {
-      kind: 'service', x: 66, y: 516, w: 152, h: 66,
-      label: 'Recepción y cosecha', icon: 'reception',
+      kind: 'service',
+      x: 66,
+      y: 516,
+      w: 152,
+      h: 66,
+      label: 'Recepción y cosecha',
+      icon: 'reception',
     },
-    { kind: 'service', x: 486, y: 236, w: 126, h: 68, label: 'Patio de sombra', icon: 'restaurant' },
+    {
+      kind: 'service',
+      x: 486,
+      y: 236,
+      w: 126,
+      h: 68,
+      label: 'Patio de sombra',
+      icon: 'restaurant',
+    },
     { kind: 'service', x: 638, y: 236, w: 100, h: 68, label: 'Baños', icon: 'wc' },
     { kind: 'service', x: 486, y: 432, w: 112, h: 56, label: 'Despensa', icon: 'shop' },
     { kind: 'label', x: 716, y: 132, text: 'Camino de bancales', size: 's' },
   ],
   blocks: [
     {
-      id: 'cepas_bajas', label: 'Cepas Bajas', cell: 'pitch', x: 70, y: 116, cols: 10,
+      id: 'cepas_bajas',
+      label: 'Cepas Bajas',
+      cell: 'pitch',
+      x: 70,
+      y: 116,
+      cols: 10,
       units: range('CEP', 20),
     },
     {
-      id: 'cepas_altas', label: 'Cepas Altas', cell: 'pitch', x: 70, y: 216, cols: 9,
+      id: 'cepas_altas',
+      label: 'Cepas Altas',
+      cell: 'pitch',
+      x: 70,
+      y: 216,
+      cols: 9,
       units: range('CEP', 38).slice(20),
     },
     {
-      id: 'bancal', label: 'Parcela Bancal', cell: 'pitch', x: 70, y: 410, cols: 9,
+      id: 'bancal',
+      label: 'Parcela Bancal',
+      cell: 'pitch',
+      x: 70,
+      y: 410,
+      cols: 9,
       units: range('BAN', 18),
     },
     {
-      id: 'cabanas_cal', label: 'Cabañas de Cal', cell: 'lodging', x: 486, y: 116, cols: 5,
+      id: 'cabanas_cal',
+      label: 'Cabañas de Cal',
+      cell: 'lodging',
+      x: 486,
+      y: 116,
+      cols: 5,
       units: range('CAL', 10),
     },
     {
-      id: 'casetas_vinya', label: 'Casetas de Viña', cell: 'lodging', x: 630, y: 430, cols: 4,
+      id: 'casetas_vinya',
+      label: 'Casetas de Viña',
+      cell: 'lodging',
+      x: 630,
+      y: 430,
+      cols: 4,
       units: range('CSV', 4),
     },
   ],
@@ -529,8 +708,13 @@ export const tarongersPlano: PlanoDescriptor = {
     { kind: 'road', x: 66, y: 382, w: 720, h: 18 },
     { kind: 'road', x: 442, y: 108, w: 18, h: 492 },
     {
-      kind: 'service', x: 66, y: 520, w: 150, h: 64,
-      label: 'Recepción y acceso', icon: 'reception',
+      kind: 'service',
+      x: 66,
+      y: 520,
+      w: 150,
+      h: 64,
+      label: 'Recepción y acceso',
+      icon: 'reception',
     },
     { kind: 'service', x: 492, y: 232, w: 130, h: 78, label: 'Piscina familiar', icon: 'pool' },
     { kind: 'service', x: 646, y: 232, w: 92, h: 62, label: 'Baños', icon: 'wc' },
@@ -540,51 +724,162 @@ export const tarongersPlano: PlanoDescriptor = {
   ],
   blocks: [
     {
-      id: 'tarongers_oest', label: 'Tarongers Oest', cell: 'pitch', x: 68, y: 116, cols: 10,
+      id: 'tarongers_oest',
+      label: 'Tarongers Oest',
+      cell: 'pitch',
+      x: 68,
+      y: 116,
+      cols: 10,
       units: range('TAR', 30),
     },
     {
-      id: 'tarongers_est', label: 'Tarongers Est', cell: 'pitch', x: 68, y: 222, cols: 10,
+      id: 'tarongers_est',
+      label: 'Tarongers Est',
+      cell: 'pitch',
+      x: 68,
+      y: 222,
+      cols: 10,
       units: range('TAR', 60).slice(30),
     },
     {
-      id: 'sequia', label: 'Parcelas Séquia', cell: 'pitch', x: 68, y: 418, cols: 10,
+      id: 'sequia',
+      label: 'Parcelas Séquia',
+      cell: 'pitch',
+      x: 68,
+      y: 418,
+      cols: 10,
       units: range('SEQ', 20),
     },
     {
-      id: 'bungalows_azahar', label: 'Bungalows Azahar', cell: 'lodging', x: 492, y: 116, cols: 7,
+      id: 'bungalows_azahar',
+      label: 'Bungalows Azahar',
+      cell: 'lodging',
+      x: 492,
+      y: 116,
+      cols: 7,
       units: range('AZA', 14),
     },
     {
-      id: 'casas_naranjal', label: 'Casas Naranjal', cell: 'lodging', x: 620, y: 510, cols: 6,
+      id: 'casas_naranjal',
+      label: 'Casas Naranjal',
+      cell: 'lodging',
+      x: 620,
+      y: 510,
+      cols: 6,
       units: range('NAR', 6),
     },
   ],
 };
 
-const activePlano = isTarongersScenario
-  ? tarongersPlano
-  : isVinyesScenario
-    ? vinyesPlano
-  : isSerraltaScenario
-    ? serraltaPlano
-    : pinadaPlano;
+export const carrascaPlano: PlanoDescriptor = {
+  version: 1,
+  decor: [
+    { kind: 'enclosure', x: 20, y: 20, w: 900, h: 650 },
+    { kind: 'green', x: 36, y: 36, w: 848, h: 74, label: 'Encinar adulto · linde norte' },
+    { kind: 'road', x: 64, y: 194, w: 730, h: 18 },
+    { kind: 'road', x: 64, y: 398, w: 730, h: 18 },
+    { kind: 'road', x: 454, y: 108, w: 18, h: 500 },
+    {
+      kind: 'service',
+      x: 64,
+      y: 530,
+      w: 152,
+      h: 64,
+      label: 'Recepción y reglas',
+      icon: 'reception',
+    },
+    { kind: 'service', x: 508, y: 236, w: 134, h: 76, label: 'Piscina del claro', icon: 'pool' },
+    { kind: 'service', x: 664, y: 236, w: 112, h: 66, label: 'Era común', icon: 'restaurant' },
+    { kind: 'service', x: 508, y: 426, w: 104, h: 58, label: 'Baños', icon: 'wc' },
+    { kind: 'service', x: 638, y: 426, w: 138, h: 58, label: 'Taller de bicis', icon: 'shop' },
+    { kind: 'label', x: 704, y: 130, text: 'Camino del carrascal', size: 's' },
+  ],
+  blocks: [
+    {
+      id: 'encinas_oeste',
+      label: 'Encinas Oeste',
+      cell: 'pitch',
+      x: 66,
+      y: 116,
+      cols: 10,
+      units: range('ENC', 40),
+    },
+    {
+      id: 'encinas_este',
+      label: 'Encinas Este',
+      cell: 'pitch',
+      x: 66,
+      y: 228,
+      cols: 10,
+      units: range('ENC', 80).slice(40),
+    },
+    {
+      id: 'carrascal',
+      label: 'Parcelas Carrascal',
+      cell: 'pitch',
+      x: 66,
+      y: 432,
+      cols: 10,
+      units: range('CAR', 30),
+    },
+    {
+      id: 'bungalows_bellota',
+      label: 'Bungalows Bellota',
+      cell: 'lodging',
+      x: 508,
+      y: 116,
+      cols: 8,
+      units: range('BEL', 24),
+    },
+    {
+      id: 'casas_umbria',
+      label: 'Casas Umbría',
+      cell: 'lodging',
+      x: 638,
+      y: 506,
+      cols: 8,
+      units: range('UMB', 16),
+    },
+  ],
+};
+
+const activePlano = isCarrascaScenario
+  ? carrascaPlano
+  : isTarongersScenario
+    ? tarongersPlano
+    : isVinyesScenario
+      ? vinyesPlano
+      : isSerraltaScenario
+        ? serraltaPlano
+        : pinadaPlano;
 
 function overlaps(booking: DemoBooking, from: string, to: string): boolean {
   return booking.dateFrom < to && booking.dateTo > from && booking.status !== 'cancelled';
 }
 
 function bookingDetail(booking: DemoBooking): BookingDetail {
+  const nights = Math.max(
+    1,
+    Math.round(
+      (Date.parse(`${booking.dateTo}T00:00:00Z`) - Date.parse(`${booking.dateFrom}T00:00:00Z`)) /
+        DAY_MS,
+    ),
+  );
+  const touristTaxCents = isCarrascaScenario
+    ? Math.min(nights, 7) * booking.occupancy.adults * 120
+    : 420;
   return {
     ...booking,
     priceBreakdown: {
-      lines: [{ concept: 'stay', detail: { nights: 6 }, amountCents: booking.totalCents - 420 }],
+      lines: [
+        { concept: 'stay', detail: { nights }, amountCents: booking.totalCents - touristTaxCents },
+      ],
       totalCents: booking.totalCents,
-      touristTaxCents: 420,
+      touristTaxCents,
       currency: 'EUR',
     },
-    touristTaxCents: 420,
-    depositCents: Math.round(booking.totalCents * 0.35),
+    touristTaxCents,
+    depositCents: Math.round(booking.totalCents * (isCarrascaScenario ? 0.3 : 0.35)),
     paymentKind: booking.paidCents > 0 ? 'card' : null,
     locale: booking.locale,
     guests: [
@@ -652,17 +947,7 @@ function convertEnquiry(state: ScenarioState, enquiry: EnquiryItem): DemoBooking
   const requestedType = unitTypes.some((type) => type.id === enquiry.unitTypeId)
     ? enquiry.unitTypeId!
     : lodgingFallback;
-  const preferredCode: Record<string, string> = {
-    ut_parcela_pino: 'P-08',
-    ut_parcela_mar: 'M-08',
-    ut_bungalow: 'B-08',
-    ut_mobil: 'MH-08',
-    ut_bosque: 'BOS-08',
-    ut_mirador: 'MIR-08',
-    ut_cabana: 'CAB-06',
-    ut_refugio: 'REF-02',
-  };
-  const unit = units.find((candidate) => candidate.code === preferredCode[requestedType])!;
+  const unit = units.find((candidate) => candidate.code === preferredCodeByType[requestedType])!;
   const index = state.bookings.length + 1;
   const booking: DemoBooking = {
     id: `book_${activeScenarioId}_web_${enquiry.id}`,
@@ -731,7 +1016,7 @@ export async function demoScenarioRequest(
       id: activeScenario.tenantId,
       slug: activeScenarioId,
       name: activeScenario.name,
-      tier: 2,
+      tier: isCarrascaScenario ? 3 : 2,
       timezone: 'Europe/Madrid',
       currency: 'EUR',
       locales: [...activeScenario.locales],
@@ -752,31 +1037,54 @@ export async function demoScenarioRequest(
       to,
       unitTypes,
       units,
-      seasons: isTarongersScenario
+      seasons: isCarrascaScenario
         ? [
             {
-              id: 'sea_verano', name: 'Verano familiar · prioridad 1',
-              dateFrom: '2026-06-21', dateTo: '2026-09-15', priority: 1,
+              id: 'sea_verano',
+              name: 'Verano de interior · prioridad 1',
+              dateFrom: '2026-06-15',
+              dateTo: '2026-09-15',
+              priority: 1,
             },
           ]
-        : isVinyesScenario
-        ? [
-            {
-              id: 'sea_verano', name: 'Verano · prioridad 1',
-              dateFrom: '2026-06-01', dateTo: '2026-10-01', priority: 1,
-            },
-            {
-              id: 'sea_vendimia', name: 'Vendimia · prioridad 2',
-              dateFrom: '2026-08-25', dateTo: '2026-10-13', priority: 2,
-            },
-          ]
-        : [
-            {
-              id: isSerraltaScenario ? 'sea_cumbre' : 'sea_alta',
-              name: isSerraltaScenario ? 'Agosto · temporada Cumbre' : 'Agosto · temporada alta',
-              dateFrom: iso(1), dateTo: '2026-09-01', priority: 1,
-            },
-          ],
+        : isTarongersScenario
+          ? [
+              {
+                id: 'sea_verano',
+                name: 'Verano familiar · prioridad 1',
+                dateFrom: '2026-06-21',
+                dateTo: '2026-09-15',
+                priority: 1,
+              },
+            ]
+          : isVinyesScenario
+            ? [
+                {
+                  id: 'sea_verano',
+                  name: 'Verano · prioridad 1',
+                  dateFrom: '2026-06-01',
+                  dateTo: '2026-10-01',
+                  priority: 1,
+                },
+                {
+                  id: 'sea_vendimia',
+                  name: 'Vendimia · prioridad 2',
+                  dateFrom: '2026-08-25',
+                  dateTo: '2026-10-13',
+                  priority: 2,
+                },
+              ]
+            : [
+                {
+                  id: isSerraltaScenario ? 'sea_cumbre' : 'sea_alta',
+                  name: isSerraltaScenario
+                    ? 'Agosto · temporada Cumbre'
+                    : 'Agosto · temporada alta',
+                  dateFrom: iso(1),
+                  dateTo: '2026-09-01',
+                  priority: 1,
+                },
+              ],
       bookings: state.bookings
         .filter((booking) => overlaps(booking, from, to))
         .map((booking) => ({
@@ -798,21 +1106,25 @@ export async function demoScenarioRequest(
         {
           id: isTarongersScenario
             ? 'block_aza08'
-            : isVinyesScenario
-              ? 'block_cal08'
-              : isSerraltaScenario
-                ? 'block_cab08'
-                : 'block_b12',
-          unitId: units.find((unit) =>
-            unit.code === (
-              isTarongersScenario
+            : isCarrascaScenario
+              ? 'block_bel08'
+              : isVinyesScenario
+                ? 'block_cal08'
+                : isSerraltaScenario
+                  ? 'block_cab08'
+                  : 'block_b12',
+          unitId: units.find(
+            (unit) =>
+              unit.code ===
+              (isTarongersScenario
                 ? 'AZA-08'
-                : isVinyesScenario
-                  ? 'CAL-08'
-                  : isSerraltaScenario
-                    ? 'CAB-08'
-                    : 'B-12'
-            ),
+                : isCarrascaScenario
+                  ? 'BEL-08'
+                  : isVinyesScenario
+                    ? 'CAL-08'
+                    : isSerraltaScenario
+                      ? 'CAB-08'
+                      : 'B-12'),
           )!.id,
           unitTypeId: null,
           dateFrom: iso(1),
@@ -914,7 +1226,7 @@ export async function demoScenarioRequest(
       breakdown: {
         lines: [{ concept: 'stay', detail: { nights }, amountCents: totalCents }],
         totalCents,
-        touristTaxCents: nights * 70,
+        touristTaxCents: isCarrascaScenario ? Math.min(nights, 7) * 2 * 120 : nights * 70,
         currency: 'EUR',
       },
       unitId: body.unitId ?? booking.unitId,
@@ -954,4 +1266,13 @@ export const tarongersFixtureDefinition = {
   locales: ['es'] as const,
   inactiveUnit: 'AZA-08',
   enquiryFocus: ['edades', 'sombra'] as const,
+};
+
+export const carrascaFixtureDefinition = {
+  units: carrascaTypeSpecs.reduce((sum, type) => sum + type.count, 0),
+  typeCount: carrascaTypeSpecs.length,
+  locales: ['es'] as const,
+  inactiveUnit: 'BEL-08',
+  touristTax: { adultCents: 120, maxNights: 7 } as const,
+  cancellationDays: [14, 7, 0] as const,
 };

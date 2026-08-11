@@ -63,6 +63,7 @@ export type Breakdown = {
   lines: { concept: string; detail: Record<string, string | number>; amountCents: number }[];
   totalCents: number;
   touristTaxCents: number;
+  depositCents?: number;
   currency: string;
 };
 

@@ -3,6 +3,7 @@ title: 'Cómo está montado'
 description: 'La arquitectura en una página: dónde corre, con qué está hecho y por qué.'
 lang: es
 orden: 1
+updated: '2026-08-10'
 ---
 
 Esta guía está escrita para quien lleva la informática del camping y quiere saber dónde se mete antes de dar el visto bueno. Sin marketing.

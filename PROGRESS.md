@@ -1,5 +1,36 @@
 # PROGRESS — Logic Camp
 
+## Camping La Carrasca lleva D6-V a 10/12 · 2026-08-11 (sesión 136)
+
+- `tenants/carrasca/` entrega una demo Visión de interior con identidad y
+  contenido propios, 150 unidades en cuatro categorías, fotografía aprobada
+  10/10 y derivados locales. No crea un fork: web, reserva y gestor siguen
+  usando la fábrica y los puntos de extensión compartidos.
+- La configuración demo tipa una política reproducible y exclusiva de
+  `demo-session`: tasa ficticia de 1,20 € por adulto/noche limitada a siete
+  noches, señal del 30 % y cancelación 14/7/0. El recorrido conserva importes
+  en céntimos y hace visibles desglose, señal y condiciones sin activar pagos,
+  proveedores ni asesoramiento legal.
+- La reserva creada en `/demos/carrasca/` llega al escenario reversible del
+  gestor en `/demos/carrasca/gestion/`; catálogo, planning, plano, aviso de
+  simulación y prefijo `CR-26-` prueban la misma vertical. El bundle compuesto
+  acredita 14.912 enlaces internos en 472 HTML y el gestor queda en 178,90 kB
+  gzip con Planning y Plano bajo demanda.
+- El QA canónico pasa 22 superficies y 44 vistas a 375/1366 px, incluida home y
+  planning de Carrasca, sin desborde, consola, recursos rotos ni pérdida de
+  `noindex`. Al ampliar la galería se corrigió una espera frágil sobre imágenes
+  lazy ya decodificadas y el testigo de portada de Serralta se alineó con su
+  héroe real de nivel 2.
+- El sitemap comercial publica `lastmod` estable derivado del frontmatter de
+  las guías y deja los alternates en el `<head>` canónico, evitando el namespace
+  XHTML que impedía a algunos visores mostrar el árbol XML. Build comercial:
+  79 páginas; fábrica: 11 tenants válidos y 10 campings construibles.
+- Verificación aislada: config 74/74, dashboard 51/51, web 13/13 más fábrica y
+  portfolio, typecheck/lint del tenant y builds de web, gestor y sitio verdes.
+  `pnpm check` cierra 67/67 tareas. No hubo red de proveedores, infraestructura
+  remota ni deploy. El siguiente tema vertical es `ballena`; después queda
+  `soldhivern`.
+
 ## Auditoría R15 no visual y colecciones Astro · 2026-08-11 (sesión 133)
 
 - `docs/AUDITORIA-R15-NO-VISUAL.md` contrasta R0–R14 y las ocho lentes con
@@ -991,15 +1022,15 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Checkpoint activo: R1.** R0 está cerrado con `pnpm check` **53/53**, QA del
-  vídeo del planning a 1366/375 y `main` sincronizada. La entrega 104 está lista
-  para publicar, pero el deploy requiere autorización explícita.
-- **Producto visible:** D1-V L'Olivar, D2-V Pinada, D3-V Mar de Fondo y D4-V
-  escaparate están cerrados. La producción conserva la versión de la sesión
-  103; Montaña, Familiar y Parcela siguen siendo conceptos, no demos nuevas.
-- **Siguiente trabajo local:** reconciliar ROADMAP, BACKLOG, marca y guion de
-  demo. Después, R2 fijará la línea base reproducible. D5-V espera aprendizaje
-  comercial; cliente, proveedores e infraestructura esperan sus gates.
+- **Checkpoint activo: D6-V, portfolio 10/12.** R0–R15 han agotado su trabajo
+  local no visual; la fábrica común y D5-V están cerradas. D6-V incorpora
+  Serralta, Entre Vinyes, Els Tarongers y La Carrasca sobre el mismo código.
+- **Producto visible:** hay diez campings construibles y el escaparate comercial
+  los enlaza como demos navegables. La Carrasca acredita reserva, tasa, señal y
+  cancelación ficticias de extremo a extremo, siempre locales y reversibles.
+- **Siguiente trabajo local:** construir `ballena` en vertical y después
+  `soldhivern`. Cliente real, proveedores, credenciales, infraestructura remota,
+  publicación y Camp Motor conservan sus gates explícitos.
 
 ## Historial consolidado hasta la sesión 102 (no usar para elegir trabajo)
 

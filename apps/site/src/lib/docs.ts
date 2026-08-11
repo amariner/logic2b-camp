@@ -30,6 +30,8 @@ export type DocFrontmatter = {
   lang: Locale;
   /** Posición dentro de su guía. Sin él, el orden sería alfabético (frágil). */
   orden: number;
+  /** Último cambio sustancial del contenido, para `<lastmod>` en el sitemap. */
+  updated: string;
 };
 
 export type Doc = MarkdownInstance<DocFrontmatter> & { guia: Guia; slug: string };
@@ -82,14 +84,19 @@ export function esFallback(doc: Doc, locale: Locale): boolean {
 }
 
 /** Todos los pares {guia, slug} — para `getStaticPaths`. Independiente del idioma. */
-export function todasLasRutas(): { guia: Guia; slug: string }[] {
+export function todasLasRutas(): { guia: Guia; slug: string; lastmod: string }[] {
   const vistas = new Set<string>();
-  const rutas: { guia: Guia; slug: string }[] = [];
+  const rutas: { guia: Guia; slug: string; lastmod: string }[] = [];
   for (const d of allDocs) {
     const clave = `${d.guia}/${d.slug}`;
     if (vistas.has(clave)) continue;
     vistas.add(clave);
-    rutas.push({ guia: d.guia, slug: d.slug });
+    const lastmod = allDocs
+      .filter((version) => version.guia === d.guia && version.slug === d.slug)
+      .map((version) => version.frontmatter.updated)
+      .sort()
+      .at(-1)!;
+    rutas.push({ guia: d.guia, slug: d.slug, lastmod });
   }
   return rutas;
 }

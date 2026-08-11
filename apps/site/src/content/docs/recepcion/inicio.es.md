@@ -3,6 +3,7 @@ title: 'Orientarte desde la portada'
 description: 'Qué significan las cuatro cifras, cómo leer las listas del día y desde qué bloque empezar cada tarea.'
 lang: es
 orden: 2
+updated: '2026-08-10'
 ---
 
 La portada reúne lo que necesita atención **hoy** y da acceso al resto del gestor. No sustituye al planning ni a las listas completas: sirve para decidir dónde entrar primero sin recorrer el menú a ciegas.

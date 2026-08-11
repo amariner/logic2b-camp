@@ -3,6 +3,7 @@ title: 'Cambiar las tarifas'
 description: 'Editar los precios por temporada y tipo de alojamiento, la estancia mínima, y qué pasa con las reservas ya hechas.'
 lang: es
 orden: 2
+updated: '2026-07-22'
 ---
 
 En **Tarifas** están los precios del camping, ordenados por temporada. Cada temporada tiene su tabla, y en cada tabla hay una fila por tipo de alojamiento con todos sus importes editables.

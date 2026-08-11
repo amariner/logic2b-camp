@@ -3,6 +3,7 @@ title: 'Los números del negocio'
 description: 'Leer la ocupación, el valor de las reservas, sus cobros y la carga de llegadas y salidas de un periodo.'
 lang: es
 orden: 1
+updated: '2026-08-10'
 ---
 
 **Informes** es la pantalla que se mira el lunes por la mañana: cómo va el mes, cómo viene el que entra, y cuánto se ha llenado cada tipo de alojamiento. No se toca nada aquí; solo se lee. Los números salen en directo de las reservas, así que siempre están al día.

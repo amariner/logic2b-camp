@@ -119,7 +119,7 @@ const routes = [
     id: 'serralta-home',
     path: '/demos/serralta/',
     noindex: true,
-    texts: ['Bosque húmedo', 'Ochenta unidades'],
+    texts: ['Bosque húmedo', '80 unidades'],
   },
   {
     id: 'serralta-planning',
@@ -154,6 +154,20 @@ const routes = [
     path: '/demos/tarongers/gestion/#/planning',
     noindex: true,
     texts: ['TG-26-', 'Casa Naranjal'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
+    id: 'carrasca-home',
+    path: '/demos/carrasca/',
+    noindex: true,
+    texts: ['Ciento cincuenta unidades', 'Cuatro formas de quedarse en el carrascal'],
+  },
+  {
+    id: 'carrasca-planning',
+    path: '/demos/carrasca/gestion/#/planning',
+    noindex: true,
+    texts: ['CR-26-', 'Casa Umbría'],
     visibleSelector:
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
@@ -227,9 +241,26 @@ try {
         }
         window.scrollTo(0, 0);
       });
-      await page.waitForFunction(() =>
-        [...document.images].every((image) => image.complete && image.naturalWidth > 0),
-      );
+      try {
+        await page.waitForFunction(() =>
+          [...document.images].every((image) => image.naturalWidth > 0),
+        );
+      } catch (error) {
+        const pendingImages = await page.evaluate(() =>
+          [...document.images]
+            .filter((image) => image.naturalWidth === 0)
+            .map((image) => ({
+              src: image.currentSrc || image.src,
+              loading: image.loading,
+              complete: image.complete,
+              naturalWidth: image.naturalWidth,
+            })),
+        );
+        throw new Error(
+          `${route.id}/${viewport.width}: imágenes sin cargar ${JSON.stringify(pendingImages)}`,
+          { cause: error },
+        );
+      }
 
       const body = await page.locator('body').innerText();
       for (const text of route.texts) {

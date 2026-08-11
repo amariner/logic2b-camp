@@ -3,6 +3,7 @@ title: 'Correo saliente'
 description: 'Cómo envía el sistema los emails a tus clientes, y qué hay que configurar para que no caigan en spam.'
 lang: es
 orden: 3
+updated: '2026-08-10'
 ---
 
 El sistema envía emails automáticos: confirmación de reserva, aviso de solicitud, cancelación, recordatorio de llegada. Esos correos salen **con tu dominio como remitente**, para que tu cliente vea `reservas@tucamping.com` y no una dirección desconocida.
