@@ -1,0 +1,199 @@
+---
+interface Props {
+  copy: {
+    aria: string;
+    text: string;
+    policy: string;
+    reject: string;
+    accept: string;
+    configure: string;
+    preferences: string;
+    back: string;
+    essentialTitle: string;
+    essentialBadge: string;
+    essentialText: string;
+    analyticsTitle: string;
+    analyticsText: string;
+    rejectAll: string;
+    save: string;
+  };
+  policyHref: string;
+}
+
+const { copy, policyHref } = Astro.props;
+---
+
+<aside class="consent" role="dialog" aria-label={copy.aria} data-consent-banner hidden>
+  <div data-consent-main>
+    <p class="consent__copy">
+      {copy.text} <a href={policyHref}>{copy.policy}</a>.
+    </p>
+    <div class="consent__actions">
+      <button type="button" class="consent__button consent__button--secondary" data-consent-reject>
+        {copy.reject}
+      </button>
+      <button type="button" class="consent__button consent__button--primary" data-consent-accept>
+        {copy.accept}
+      </button>
+    </div>
+    <button type="button" class="consent__configure" data-consent-configure>{copy.configure}</button>
+  </div>
+
+  <div data-consent-preferences hidden>
+    <div class="consent__heading">
+      <h2>{copy.preferences}</h2>
+      <button type="button" class="consent__back" data-consent-back aria-label={copy.back}>←</button>
+    </div>
+    <section class="consent__category">
+      <div class="consent__category-heading">
+        <h3>{copy.essentialTitle}</h3>
+        <span>{copy.essentialBadge}</span>
+      </div>
+      <p>{copy.essentialText}</p>
+    </section>
+    <section class="consent__category">
+      <div class="consent__category-heading">
+        <h3>{copy.analyticsTitle}</h3>
+        <label class="consent__toggle">
+          <input type="checkbox" data-consent-analytics />
+          <span aria-hidden="true"></span>
+        </label>
+      </div>
+      <p>{copy.analyticsText}</p>
+    </section>
+    <div class="consent__actions">
+      <button type="button" class="consent__button consent__button--secondary" data-consent-reject>
+        {copy.rejectAll}
+      </button>
+      <button type="button" class="consent__button consent__button--primary" data-consent-save>
+        {copy.save}
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { clearConsent, getConsent, setConsent } from '../lib/analyticsConsent';
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+  const main = banner?.querySelector<HTMLElement>('[data-consent-main]');
+  const preferences = banner?.querySelector<HTMLElement>('[data-consent-preferences]');
+  const analytics = banner?.querySelector<HTMLInputElement>('[data-consent-analytics]');
+
+  const showBanner = () => {
+    if (!banner) return;
+    banner.hidden = false;
+    main?.removeAttribute('hidden');
+    preferences?.setAttribute('hidden', '');
+    if (analytics) analytics.checked = false;
+  };
+  const hideBanner = () => {
+    if (banner) banner.hidden = true;
+  };
+  const showPreferences = () => {
+    main?.setAttribute('hidden', '');
+    preferences?.removeAttribute('hidden');
+  };
+
+  if (!getConsent()) showBanner();
+  banner?.querySelectorAll('[data-consent-reject]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setConsent(false);
+      hideBanner();
+    });
+  });
+  banner?.querySelector('[data-consent-accept]')?.addEventListener('click', () => {
+    setConsent(true);
+    hideBanner();
+  });
+  banner?.querySelector('[data-consent-save]')?.addEventListener('click', () => {
+    setConsent(Boolean(analytics?.checked));
+    hideBanner();
+  });
+  banner?.querySelector('[data-consent-configure]')?.addEventListener('click', showPreferences);
+  banner?.querySelector('[data-consent-back]')?.addEventListener('click', () => {
+    preferences?.setAttribute('hidden', '');
+    main?.removeAttribute('hidden');
+  });
+  document.querySelectorAll('[data-consent-reset]').forEach((button) => {
+    button.addEventListener('click', () => {
+      clearConsent();
+      // Un tag ya ejecutado no puede descargarse de la página actual. Recargar
+      // garantiza que la revocación entra en vigor antes de otra interacción.
+      location.reload();
+    });
+  });
+  window.addEventListener('l2b:consent-cleared', showBanner);
+</script>
+
+<style>
+  .consent {
+    position: fixed;
+    z-index: 100;
+    bottom: clamp(16px, 4vw, 28px);
+    left: clamp(16px, 4vw, 28px);
+    width: min(430px, calc(100vw - 2 * clamp(16px, 4vw, 28px)));
+    max-height: calc(100vh - 2 * clamp(16px, 4vw, 28px));
+    overflow-y: auto;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 18%, transparent);
+    border-radius: 14px;
+    background: var(--botanical-paper);
+    padding: 24px;
+    color: var(--botanical-charcoal);
+    box-shadow: 0 24px 60px rgb(15 62 23 / 20%), 0 2px 8px rgb(15 62 23 / 12%);
+    animation: consent-in 240ms cubic-bezier(.16, 1, .3, 1);
+  }
+  .consent[hidden], [hidden] { display: none; }
+  .consent__copy, .consent__category p { margin: 0; line-height: 1.55; }
+  .consent__copy { color: color-mix(in srgb, var(--botanical-charcoal) 80%, white); }
+  .consent a { color: var(--botanical-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .consent__actions { display: flex; gap: 10px; margin-top: 18px; }
+  .consent__button {
+    flex: 1;
+    min-height: 44px;
+    border: 1px solid var(--botanical-ink);
+    border-radius: 10px;
+    padding: 11px 16px;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .consent__button--primary { background: var(--botanical-ink); color: var(--botanical-paper); }
+  .consent__button--secondary { background: transparent; color: var(--botanical-ink); }
+  .consent__button:hover { opacity: .86; }
+  .consent__configure {
+    display: block;
+    margin: 14px auto 0;
+    border: 0;
+    background: transparent;
+    color: color-mix(in srgb, var(--botanical-ink) 72%, white);
+    font: inherit;
+    font-size: .86rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .consent__heading, .consent__category-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .consent__heading { margin-bottom: 16px; }
+  .consent__heading h2, .consent__category h3 { margin: 0; color: var(--botanical-ink); }
+  .consent__heading h2 { font-size: 1.3rem; }
+  .consent__category h3 { font-size: 1.05rem; }
+  .consent__back {
+    width: 36px; height: 36px; flex: 0 0 auto; border: 1px solid var(--botanical-border);
+    border-radius: 10px; background: var(--botanical-keylime); color: var(--botanical-ink); cursor: pointer;
+  }
+  .consent__category { margin-top: 12px; border: 1px solid var(--botanical-border); border-radius: 12px; background: color-mix(in srgb, var(--botanical-keylime) 55%, white); padding: 15px; }
+  .consent__category-heading { margin-bottom: 7px; }
+  .consent__category-heading > span { border-radius: 999px; background: var(--botanical-mint); padding: 4px 9px; color: var(--botanical-ink); font-size: .72rem; font-weight: 650; }
+  .consent__category p { color: color-mix(in srgb, var(--botanical-charcoal) 72%, white); font-size: .86rem; }
+  .consent__toggle { position: relative; width: 48px; height: 28px; flex: 0 0 auto; }
+  .consent__toggle input { position: absolute; opacity: 0; }
+  .consent__toggle span { position: absolute; inset: 0; border-radius: 999px; background: #bcc6bd; cursor: pointer; transition: background 160ms ease; }
+  .consent__toggle span::before { content: ''; position: absolute; width: 22px; height: 22px; left: 3px; top: 3px; border-radius: 50%; background: white; box-shadow: 0 1px 3px rgb(0 0 0 / 25%); transition: transform 160ms ease; }
+  .consent__toggle input:checked + span { background: var(--botanical-ink); }
+  .consent__toggle input:checked + span::before { transform: translateX(20px); }
+  .consent__toggle input:focus-visible + span { outline: 2px solid var(--botanical-ink); outline-offset: 3px; }
+  @keyframes consent-in { from { opacity: 0; transform: translateY(12px); } }
+  @media (max-width: 480px) { .consent { padding: 20px; } .consent__actions { flex-direction: column-reverse; } }
+  @media (prefers-reduced-motion: reduce) { .consent { animation: none; } .consent__toggle span, .consent__toggle span::before { transition: none; } }
+</style>

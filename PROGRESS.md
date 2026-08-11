@@ -1,5 +1,28 @@
 # PROGRESS — Logic Camp
 
+## Analítica consentida y captación comercial real · 2026-08-11 (sesión 129)
+
+- ADR 0045 aceptado: `apps/site` reutiliza el GTM de Logic2B
+  (`GTM-TVDWZ9LC`) con consentimiento básico versionado. La carga remota no
+  existe antes de aceptar; rechazo y revocación impiden nuevas emisiones. Los
+  eventos comerciales no admiten PII.
+- Banner Astro sin runtime nuevo, adaptado a la identidad botánica, con
+  aceptar/rechazar/configurar al mismo nivel y control permanente en
+  `/cookies`. Las webs tenant, `/demo/`, `/demos/*` y `/admin/` siguen sin
+  tracker por contrato de build.
+- Aviso legal, privacidad y cookies propios de Camp publicados en es/en, con
+  Logic2b S.L. como titular, canonical, hreflang, sitemap y enlaces en todos los
+  footers. Los formularios inline y modal exigen privacidad y añaden honeypot.
+- El lead comercial usa `LEADS_RESEND_API_KEY`; `RESEND_API_KEY` permanece
+  ausente para no activar mensajes internos de reservas o solicitudes. El
+  Worker versiona `LEADS_TRANSPORT=resend` y conserva timeout, reintento
+  idempotente, cuota y errores sin PII.
+- `pnpm check` cerró 61/61 tareas; API 278/278, config 73/73 y siete campings
+  construidos. QA Playwright local y producción verde en es/en a 1366 y 375 px.
+- Despliegue activo: Worker `35f78f54-10cc-4f99-8c18-2ee39adef2d9`. Smoke
+  autorizado de `POST /api/leads`: 202 `outcome=delivered`; un único correo de
+  prueba técnica enviado a la bandeja Logic2B.
+
 ## Alta local recuperable R13 · 2026-08-10 (sesión 128)
 
 - La auditoría de migraciones, seed de `_template`, auth y ensayo de copias

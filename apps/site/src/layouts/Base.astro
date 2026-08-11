@@ -2,6 +2,8 @@
 import Wordmark from '../components/Wordmark.astro';
 import HeaderIcon from '../components/HeaderIcon.astro';
 import ProjectRequestDialog from '../components/ProjectRequestDialog.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { commercialSite } from '../config';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
 /* Después de global.css a propósito: el remapeo de tokens y los estilos de
@@ -14,6 +16,26 @@ interface Props {
     seo: { title: string; description: string };
     nav: Record<string, string>;
     footer: Record<string, string>;
+    cookieBanner: {
+      aria: string;
+      text: string;
+      policy: string;
+      reject: string;
+      accept: string;
+      configure: string;
+      preferences: string;
+      back: string;
+      essentialTitle: string;
+      essentialBadge: string;
+      essentialText: string;
+      analyticsTitle: string;
+      analyticsText: string;
+      rejectAll: string;
+      save: string;
+    };
+    legal: {
+      nav: { notice: string; privacy: string; cookies: string };
+    };
     contacto: {
       kicker: string;
       solicitudTitulo: string;
@@ -22,6 +44,9 @@ interface Props {
       planSeleccionado: string;
       cerrar: string;
       campos: { nombre: string; camping: string; email: string; telefono: string; mensaje: string };
+      privacidadAntes: string;
+      privacidadEnlace: string;
+      honeypot: string;
       enviando: string;
       ok: string;
       demo: string;
@@ -36,7 +61,7 @@ interface Props {
 const { locale, content, ruta = '/', seo } = Astro.props;
 const c = content;
 
-const site = 'https://camp.logic2b.com';
+const site = commercialSite.url;
 const meta = seo ?? c.seo;
 const canonical = new URL(localePath(locale, ruta), site).href;
 // Una tarjeta por idioma (`pnpm --filter @logic-camp/site og` las genera desde
@@ -152,6 +177,30 @@ const acciones = [
       is:inline
       set:html={JSON.stringify(datosEstructurados).replace(/</g, '\\u003c')}
     />
+    <!-- Consentimiento básico: el script remoto no existe hasta aceptar analítica. -->
+    <script is:inline define:vars={{ gtmId: commercialSite.gtmId }}>
+      window.l2bLoadGTM = function () {
+        if (window.l2bGtmLoaded || !gtmId) return;
+        window.l2bGtmLoaded = true;
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var first = d.getElementsByTagName(s)[0];
+          var script = d.createElement(s);
+          var layer = l !== 'dataLayer' ? '&l=' + l : '';
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(i) + layer;
+          first.parentNode.insertBefore(script, first);
+        })(window, document, 'script', 'dataLayer', gtmId);
+      };
+      try {
+        var raw = localStorage.getItem('l2b-consent');
+        var consent = raw ? JSON.parse(raw) : null;
+        if (consent && consent.version === '1.0.0' && consent.analytics === true) {
+          window.l2bLoadGTM();
+        }
+      } catch {}
+    </script>
     <slot name="head" />
   </head>
   <body class="theme-botanical min-h-screen bg-background text-foreground antialiased">
@@ -254,6 +303,11 @@ const acciones = [
                 ))
               }
             </div>
+            <div class="flex flex-col gap-2">
+              <a href={localePath(locale, 'aviso-legal/')} class="text-muted-foreground hover:text-foreground">{c.legal.nav.notice}</a>
+              <a href={localePath(locale, 'privacidad/')} class="text-muted-foreground hover:text-foreground">{c.legal.nav.privacy}</a>
+              <a href={localePath(locale, 'cookies/')} class="text-muted-foreground hover:text-foreground">{c.legal.nav.cookies}</a>
+            </div>
           </nav>
         </div>
         <p class="mt-10 border-t border-border pt-6 text-xs text-muted-foreground">
@@ -263,6 +317,7 @@ const acciones = [
     </footer>
 
     <ProjectRequestDialog contacto={c.contacto} locale={locale} />
+    <CookieBanner copy={c.cookieBanner} policyHref={localePath(locale, 'cookies/')} />
 
     {/* Reveal on scroll (ADR 0027), compartido por todas las páginas: cualquier
         .lc-reveal del slot funciona igual en home, temas, precios y guías. */}
@@ -286,6 +341,27 @@ const acciones = [
         );
         elements.forEach((element) => observer.observe(element));
       }
+    </script>
+    <script>
+      import { initializeConsent, trackAnalyticsEvent } from '../lib/analyticsConsent';
+
+      initializeConsent();
+      window.l2bTrackEvent = trackAnalyticsEvent;
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target.closest<HTMLElement>('a, button') : null;
+        if (!target) return;
+        if (target.matches('[data-project-request-open]')) {
+          trackAnalyticsEvent('camp_open_lead_form', { locale: document.documentElement.lang });
+          return;
+        }
+        if (!(target instanceof HTMLAnchorElement)) return;
+        const path = new URL(target.href, location.href).pathname;
+        if (path === '/admin/' || path.startsWith('/admin/')) {
+          trackAnalyticsEvent('camp_open_manager', { locale: document.documentElement.lang });
+        } else if (path === '/demo/' || path.startsWith('/demos/')) {
+          trackAnalyticsEvent('camp_view_demo', { locale: document.documentElement.lang });
+        }
+      });
     </script>
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');

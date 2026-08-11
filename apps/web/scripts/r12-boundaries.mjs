@@ -2,10 +2,9 @@
 /**
  * Contrato ejecutable de las cuatro fronteras locales que cierran R12.
  *
- * No acredita proveedores ni producción. Demuestra lo contrario: el código y
- * el artefacto público siguen sin analítica, modelos o conectores OTA; la
- * observabilidad termina en el log local redactado; y los prototipos de
- * Automatiza/Inteligente no pueden ejecutar una acción externa.
+ * No acredita proveedores ni producción. Las webs tenant y el gestor siguen
+ * sin analítica, modelos o conectores OTA. La analítica comercial autorizada
+ * por ADR 0045 vive en apps/site y tiene su contrato de artefacto propio.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve } from 'node:path';
@@ -122,7 +121,6 @@ function packageManifests(repo) {
 export function auditR12Repository(repo) {
   const sourceFiles = [
     join(repo, 'apps', 'web', 'src'),
-    join(repo, 'apps', 'site', 'src'),
     join(repo, 'apps', 'dashboard', 'src'),
   ].flatMap((root) =>
     filesUnder(root, (path) =>
@@ -229,7 +227,7 @@ function run() {
   console.log(
     `[r12] fronteras locales verificadas: ${source.sourceFiles} fuentes, ` +
       `${source.manifests} manifiestos y ${artifact.runtimeFiles} artefactos; ` +
-      'sin tracker, SDK externo, OTA ni ejecución de IA.',
+      'webs tenant y gestor sin tracker, SDK externo, OTA ni ejecución de IA.',
   );
 }
 

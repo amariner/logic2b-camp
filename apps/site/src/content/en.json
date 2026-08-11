@@ -33,7 +33,7 @@
     },
     "kicker": "Visual directions for campsites",
     "titulo": "Your campsite should not look like everyone else's.",
-    "texto": "Six fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
+    "texto": "Seven fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
     "verTodos": "See all themes",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
@@ -92,6 +92,15 @@
         "variante": "natural",
         "estado": "Browsable demo",
         "href": "/demos/delta/"
+      },
+      {
+        "slug": "serralta",
+        "nombre": "Serralta",
+        "estilo": "Management · mountains and trails",
+        "imagen": "/temas/montana.webp",
+        "variante": "natural",
+        "estado": "Browsable demo",
+        "href": "/demos/serralta/"
       },
       {
         "slug": "familiar",
@@ -453,8 +462,8 @@
         "para": "Save time every day",
         "resultado": "Reception responds sooner while the system handles what currently depends on someone remembering.",
         "texto": "Automation and supervised AI assistance reduce manual follow-up while people keep control of every decision.",
-        "precio": "€249/month",
-        "alta": "Setup from €3,900",
+        "precio": "On request",
+        "alta": "Setup on request",
         "estado": "In development",
         "estadoTipo": "desarrollo",
         "cta": "Request plan",
@@ -471,8 +480,8 @@
         "para": "Decide better with your data",
         "resultado": "Spot risks, understand profitability and prepare the next action with real context.",
         "texto": "Business intelligence, integrations and a copilot to query and prepare actions in natural language.",
-        "precio": "€399/month",
-        "alta": "Setup from €5,900",
+        "precio": "On request",
+        "alta": "Setup on request",
         "estado": "Roadmap",
         "estadoTipo": "vision",
         "cta": "Request plan",
@@ -552,8 +561,8 @@
         "nombre": "Automate",
         "para": "Save time",
         "resultado": "Less repetitive work and faster replies from reception.",
-        "alta": "from €3,900",
-        "cuota": "€249/month",
+        "alta": "On request",
+        "cuota": "On request",
         "estado": "In development",
         "estadoTipo": "desarrollo",
         "texto": "Adds automatic communication and supervised AI assistance without allowing the system to make sensitive decisions on its own.",
@@ -570,8 +579,8 @@
         "nombre": "Intelligence",
         "para": "Decide better",
         "resultado": "Turn campsite data into forecasts and recommended actions.",
-        "alta": "from €5,900",
-        "cuota": "€399/month",
+        "alta": "On request",
+        "cuota": "On request",
         "estado": "Roadmap",
         "estadoTipo": "vision",
         "texto": "Adds profitability, forecasting, integrations and a natural-language copilot with human confirmation before acting.",
@@ -697,6 +706,9 @@
     },
     "enviar": "Request demo",
     "solicitudEnviar": "Request project",
+    "privacidadAntes": "I have read and accept the",
+    "privacidadEnlace": "privacy policy",
+    "honeypot": "Do not fill in this field",
     "enviando": "Sending…",
     "ok": "Got it! We'll write to arrange the next step.",
     "demo": "Simulation completed: no message was sent.",
@@ -707,6 +719,202 @@
   "footer": {
     "tagline": "Software for campsites. Website + bookings + management, in one system.",
     "powered": "A Logic2B product · Spain"
+  },
+  "cookieBanner": {
+    "aria": "Cookie settings",
+    "text": "We use essential storage to remember your choice and, if you agree, analytics cookies to understand how Camp is used and improve it.",
+    "policy": "Cookie policy",
+    "reject": "Reject",
+    "accept": "Accept",
+    "configure": "Configure preferences",
+    "preferences": "Cookie preferences",
+    "back": "Back",
+    "essentialTitle": "Essential storage",
+    "essentialBadge": "Always active",
+    "essentialText": "Required to remember your choice. It is not used to track your browsing.",
+    "analyticsTitle": "Analytics cookies",
+    "analyticsText": "Google Tag Manager and Google Analytics help us measure the commercial Camp site in aggregate.",
+    "rejectAll": "Reject all",
+    "save": "Save preferences"
+  },
+  "legal": {
+    "nav": {
+      "notice": "Legal notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies"
+    },
+    "updated": "Last updated: August 2026",
+    "ownerLabels": {
+      "owner": "Owner",
+      "nif": "Tax ID",
+      "address": "Registered address",
+      "email": "Contact and rights"
+    },
+    "pages": {
+      "notice": {
+        "title": "Legal notice | Logic2B Campings",
+        "description": "Legal notice and owner details for camp.logic2b.com.",
+        "heading": "Legal notice",
+        "intro": "Owner information and terms of use for the Logic2B Campings commercial site.",
+        "showOwner": true,
+        "sections": [
+          {
+            "title": "Purpose of the site",
+            "paragraphs": [
+              "This site presents Logic2B Campings, its levels, themes, fictional demonstrations and documentation, and allows campsite owners or managers to request information or a demonstration."
+            ],
+            "items": []
+          },
+          {
+            "title": "Terms of use",
+            "paragraphs": [
+              "Access is free. Users agree to use the content in good faith and not to interfere with the operation, security or availability of the service."
+            ],
+            "items": []
+          },
+          {
+            "title": "Demonstrations and scope",
+            "paragraphs": [
+              "The campsites, inventory, bookings, metrics and brands shown in the demos are fictional and explain the product. They do not constitute availability, an offer or a booking for real accommodation."
+            ],
+            "items": []
+          },
+          {
+            "title": "Intellectual property and liability",
+            "paragraphs": [
+              "Texts, designs, brands, software and materials belong to Logic2b S.L. or are used with permission. Uninterrupted availability is not guaranteed and the owner is not liable for unlawful use or circumstances beyond its control."
+            ],
+            "items": []
+          },
+          {
+            "title": "Applicable law",
+            "paragraphs": [
+              "Spanish law applies. Any dispute will be submitted to the courts with jurisdiction under applicable law."
+            ],
+            "items": []
+          }
+        ],
+        "table": { "title": "", "headers": [], "rows": [] },
+        "action": { "description": "", "label": "" }
+      },
+      "privacy": {
+        "title": "Privacy policy | Logic2B Campings",
+        "description": "How Logic2B processes data submitted through the Camp commercial landing page.",
+        "heading": "Privacy policy",
+        "intro": "This policy applies to commercial enquiries on camp.logic2b.com, not to fictional demo data or future customer deployments.",
+        "showOwner": true,
+        "sections": [
+          {
+            "title": "Data, purpose and lawful basis",
+            "paragraphs": [
+              "We collect the details you provide in the form —name, campsite, email, optional phone, plan and optional message— to answer your enquiry, prepare a demo or assess a project."
+            ],
+            "items": [
+              "Consent given when submitting the form.",
+              "Pre-contractual steps requested by the interested person."
+            ]
+          },
+          {
+            "title": "Providers",
+            "paragraphs": [
+              "We only share data with providers required to operate the site and deliver the enquiry, under their respective contracts and safeguards."
+            ],
+            "items": [
+              "Cloudflare: hosting, security and delivery of the site.",
+              "Resend: transport of the enquiry email to Logic2B's inbox.",
+              "Google: analytics for the commercial site, only if you accept cookies."
+            ]
+          },
+          {
+            "title": "Retention and recipients",
+            "paragraphs": [
+              "We retain the enquiry for as long as needed to respond and, if a commercial relationship starts, for the applicable periods. We do not sell the data or use it for third-party advertising."
+            ],
+            "items": []
+          },
+          {
+            "title": "International transfers",
+            "paragraphs": [
+              "Some providers may process data outside the European Economic Area. Where this occurs, safeguards under the GDPR are used, such as adequacy decisions or standard contractual clauses."
+            ],
+            "items": []
+          },
+          {
+            "title": "Your rights",
+            "paragraphs": [
+              "You may request access, correction, erasure, objection, restriction or portability by writing to the email above. You may also lodge a complaint with the Spanish Data Protection Agency."
+            ],
+            "items": []
+          }
+        ],
+        "table": { "title": "", "headers": [], "rows": [] },
+        "action": { "description": "", "label": "" }
+      },
+      "cookies": {
+        "title": "Cookie policy | Logic2B Campings",
+        "description": "Cookies and storage used on the commercial camp.logic2b.com site.",
+        "heading": "Cookie policy",
+        "intro": "Analytics is limited to the Logic2B Campings commercial site. The campsite demos and manager do not include this measurement container.",
+        "showOwner": false,
+        "sections": [
+          {
+            "title": "What we use",
+            "paragraphs": [
+              "Essential local storage remembers your choice. Google Tag Manager and Google Analytics only load if you accept the analytics category; if you reject it, no Google resource is requested."
+            ],
+            "items": [
+              "Essential: the versioned l2b-consent choice in local storage.",
+              "Analytics: Google Analytics cookies measuring aggregate use and commercial conversions without sending form data."
+            ]
+          },
+          {
+            "title": "What we do not use",
+            "paragraphs": [
+              "Camp does not activate advertising cookies, remarketing, Google Ads or social pixels. Analytics events never include a name, email, phone, message or booking data."
+            ],
+            "items": []
+          },
+          {
+            "title": "How to withdraw consent",
+            "paragraphs": [
+              "You can change your choice at any time with the button on this page. Withdrawing analytics removes Google cookies accessible to the browser and prevents new emissions."
+            ],
+            "items": []
+          }
+        ],
+        "table": {
+          "title": "Storage and cookies",
+          "headers": ["Name", "Provider", "Purpose", "Duration", "Category"],
+          "rows": [
+            [
+              "l2b-consent",
+              "Logic2B",
+              "Remember the versioned choice",
+              "Persistent until deletion or a new version",
+              "Essential"
+            ],
+            [
+              "_ga, _ga_*",
+              "Google Analytics",
+              "Distinguish sessions and measure aggregate use",
+              "Up to 2 years",
+              "Analytics"
+            ],
+            [
+              "_gid, _gat (if set by the container)",
+              "Google Analytics",
+              "Measurement and request throttling",
+              "Up to 24 hours",
+              "Analytics"
+            ]
+          ]
+        },
+        "action": {
+          "description": "Deletes your choice, removes accessible analytics cookies and opens the panel again.",
+          "label": "Change my cookie choice"
+        }
+      }
+    }
   },
   "docs": {
     "seo": {

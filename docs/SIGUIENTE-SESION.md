@@ -1,6 +1,6 @@
 # Prompt para la siguiente sesión — tercer corte local R13
 
-> Reescrito tras la sesión 128 (2026-08-10). Migraciones, seed, owner y rollback
+> Reescrito tras la sesión 129 (2026-08-11). Migraciones, seed, owner y rollback
 > ya están acreditados en dos D1 locales desechables. La ejecución remota sigue
 > cerrada.
 
@@ -35,6 +35,12 @@ Cerrar el tercer corte de **R13 · candidato local fail-closed**:
    `packages/`.
 
 ## Ya verificado — no repetir sin cambio relevante
+
+- La captación comercial de `camp.logic2b.com` está activa según ADR 0045:
+  GTM consentido solo en `apps/site`, legales es/en y lead real mediante
+  `LEADS_RESEND_API_KEY`. Las webs tenant y el gestor siguen sin tracker;
+  `RESEND_API_KEY` continúa ausente para la mensajería interna. Worker activo
+  `35f78f54-10cc-4f99-8c18-2ee39adef2d9`.
 
 - CLI **48/48**, tipos/lint y `_template` verdes.
 - El ensayo 2026 produce 8/8 migraciones, huella de migración

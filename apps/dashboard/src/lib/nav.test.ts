@@ -29,6 +29,8 @@ describe('navGroupsForRole', () => {
     expect(routes()).not.toContain('/inteligente');
     expect(routes('pinadamar')).not.toContain('/automatiza');
     expect(routes('pinadamar')).not.toContain('/inteligente');
+    expect(routes('serralta')).not.toContain('/automatiza');
+    expect(routes('serralta')).not.toContain('/inteligente');
     expect(routes('mardefondo')).toContain('/automatiza');
     expect(routes('mardefondo')).toContain('/inteligente');
   });

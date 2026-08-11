@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping Serralta.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-bosque", "hero-anochecer"],
+    ["tipo-parcela-bosque", "tipo-parcela-mirador"],
+    ["tipo-cabana-pizarra", "tipo-refugio-familiar"],
+    ["instalacion-recepcion", "instalacion-fuego"],
+    ["entorno", "textura-lona"]
+  ],
+  "derivados": {
+    "fuente": "hero-bosque",
+    "titulo": "Camping Serralta",
+    "subtitulo": "80 unidades · sierra prepirenaica"
+  },
+  "piezas": {
+    "hero-bosque": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para el titular a 375 y 1366 px.",
+      "prompt": "Fotografía editorial documental panorámica de un camping mediano de montaña al amanecer tras una noche de lluvia. Una calle de grava oscura asciende suavemente entre hayas, abetos y helechos húmedos; a ambos lados se distinguen parcelas ordenadas con dos caravanas genéricas, discretas y sin logotipo, separadas por muretes bajos de pizarra. Niebla fina entre troncos, suelo drenante, canaletas reales y recepción de piedra apenas visible al fondo. Paleta verde profunda, gris pizarra y luz fría natural, con mucho espacio negativo a la derecha para titular. Ninguna persona, rostro, texto, señal legible, matrícula, hoguera, montaña alpina espectacular, nieve, piscina, resort, HDR ni saturación."
+    },
+    "hero-anochecer": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica del mismo camping de bosque húmedo al anochecer. Un pequeño edificio común de piedra oscura y madera tiene luz cálida tras dos ventanas; delante, un único hogar de fuego mineral controlado conserva brasas suaves bajo una cubierta alta e ignífuga, rodeado por bancos vacíos. El bosque mojado queda oscuro y sereno, sin fuego en parcelas. Contraste contenido entre azul pizarra y brasa, composición con espacio negativo. Ninguna persona, rostro, texto, rótulo, marca, llamarada alta, chispas, leña desordenada, guirnalda, fiesta, tienda glamping, resort ni HDR."
+    },
+    "tipo-parcela-bosque": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Bosque.",
+      "prompt": "Fotografía editorial documental de una Parcela Bosque de 75 metros cuadrados en el mismo camping de montaña. Rectángulo de grava drenante delimitado por madera y pizarra baja bajo hayas maduras, conexión eléctrica cerrada y canaleta lateral. Una furgoneta camper compacta, contemporánea y completamente genérica está bien estacionada sin logotipo, texto ni matrícula visible; mesa sencilla y botas bajo el toldo muestran escala. Helechos húmedos, luz tamizada y geometría creíble. Ninguna persona, barro profundo, fuego, glamping, césped artificial, precipicio, nieve, HDR ni lujo."
+    },
+    "tipo-parcela-mirador": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Mirador.",
+      "prompt": "Fotografía editorial documental de una Parcela Mirador de 90 metros cuadrados en el mismo camping de montaña. Suelo firme de grava clara, muro bajo de pizarra y electricidad discreta; una autocaravana mediana completamente genérica y sin logotipo, texto o matrícula visible deja un lateral amplio y radio de giro. Detrás se abre una vista modesta a laderas boscosas bajo nubes bajas, sin borde peligroso. Luz natural de tarde después de lluvia y escala real. Ninguna persona, fuego, montaña épica, precipicio, nieve, glamping, césped artificial, HDR o resort."
+    },
+    "tipo-cabana-pizarra": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Cabaña Pizarra.",
+      "prompt": "Fotografía arquitectónica editorial de una cabaña compacta para cuatro en el mismo bosque húmedo. Volumen sencillo con basamento de pizarra local, madera oscura vertical, tejado inclinado, porche cubierto y una ventana amplia sin cortinas abiertas; acceso firme con rampa suave y canalón visible. Helechos y troncos mojados alrededor, luz gris de mañana y escala modesta. Ninguna persona, texto, rótulo, humo, chimenea encendida, jacuzzi, cristal de lujo, arquitectura imposible, HDR ni resort."
+    },
+    "tipo-refugio-familiar": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Refugio Serralta.",
+      "prompt": "Fotografía arquitectónica editorial de un refugio familiar sobrio para seis en el mismo camping. Edificio bajo de piedra pizarra y madera, tres ventanas proporcionadas, porche profundo con mesa grande vacía, banco para quitar botas y pequeño espacio cubierto para secado. Sendero de grava húmeda y bosque denso detrás, luz natural suave. Ninguna persona, texto, marca, humo, fuego, trofeos, chalet alpino de lujo, jacuzzi, piscina, nieve, HDR ni arquitectura imposible."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción de rutas y acceso.",
+      "prompt": "Fotografía editorial documental de la recepción de un camping de montaña húmeda. Edificio pequeño de pizarra y madera con porche profundo, mostrador sencillo visible por una puerta abierta, banco para botas y dos impermeables completamente lisos colgados. No hay mapas, carteles, tablones, papeles ni señalética en ningún punto de la escena. Exterior de grava drenante con helechos y una barrera discreta al fondo. Luz natural gris, espacio funcional y cuidado. Ninguna persona, rostro, letra, número, palabra, logotipo, pantalla luminosa, decoración de esquí, lujo, HDR ni sombras negras."
+    },
+    "instalacion-fuego": {
+      "aspecto": "3:2",
+      "papel": "Fuego común controlado y cierre por riesgo forestal.",
+      "prompt": "Fotografía editorial documental de un hogar de fuego común, seguro y vacío en el mismo camping de bosque húmedo. La composición debe mostrar completa y claramente una gran cubierta alta de acero no combustible, abierta por los cuatro lados, ocupando el tercio superior y cubriendo todo el hogar. Debajo, un cuenco ancho de acero negro está encastrado en una plataforma mineral de pizarra limpia, con solo brasas rojas y una única llama diminuta; bancos de madera a mucha distancia y cubo metálico con tapa. El perímetro mineral está limpio, mojado y separado de árboles y parcelas. Luz de última hora, brasa contenida. Ninguna persona, texto, señal, marca, llama alta, chispas, troncos fuera del hogar, fiesta, alcohol, guirnalda, incendio forestal ni HDR."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno y senderos.",
+      "prompt": "Fotografía documental panorámica de un sendero de montaña de dificultad moderada que sale de un hayedo húmedo. Camino de tierra y piedra firme con raíces visibles, helechos, musgo y troncos altos; la niebla se abre hacia una ladera boscosa, sin cumbre épica. Un poste de madera liso sin texto marca el cruce. Luz fría de mañana y composición profunda. Ninguna persona, rostro, bicicleta, palabra, logo, puente imposible, precipicio, nieve, teleférico, saturación, postal alpina ni HDR."
+    },
+    "textura-lona": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de lajas de pizarra húmeda junto a hojas pequeñas de helecho y una línea fina de luz color brasa reflejada, textura mineral nítida y composición horizontal abstracta. Sin personas, manos, pies, texto, logos, fuego visible, basura, pintura, gemas, efectos digitales ni HDR."
+    }
+  }
+}

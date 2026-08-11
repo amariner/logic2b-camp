@@ -18,6 +18,9 @@ interface Props {
     ok: string;
     demo: string;
     error: string;
+    privacidadAntes: string;
+    privacidadEnlace: string;
+    honeypot: string;
   };
   locale: string;
 }
@@ -67,6 +70,14 @@ const { contacto, locale } = Astro.props;
         <span>{contacto.campos.mensaje}</span>
         <textarea name="message" rows="4"></textarea>
       </label>
+      <label class="botanical-honeypot" aria-hidden="true">
+        <span>{contacto.honeypot}</span>
+        <input name="website" tabindex="-1" autocomplete="off" />
+      </label>
+      <label class="botanical-consent span-two">
+        <input name="accept" type="checkbox" value="true" required />
+        <span>{contacto.privacidadAntes} <a href={locale === 'es' ? '/privacidad/' : `/${locale}/privacidad/`}>{contacto.privacidadEnlace}</a>.</span>
+      </label>
       <div class="botanical-form-actions span-two">
         <button
           type="submit"
@@ -113,6 +124,7 @@ const { contacto, locale } = Astro.props;
     event.preventDefault();
     if (!(form instanceof HTMLFormElement) || !form.reportValidity() || !(submit instanceof HTMLButtonElement)) return;
     const data = Object.fromEntries(new FormData(form).entries());
+    data.accept = data.accept === 'true';
     submit.disabled = true;
     if (submitLabel) submitLabel.textContent = submit.dataset.sending ?? '';
     if (message) message.textContent = '';
@@ -125,6 +137,13 @@ const { contacto, locale } = Astro.props;
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error('bad');
       if (message) message.textContent = result.outcome === 'demo' ? demo : ok;
+      if (result.outcome === 'delivered') {
+        window.l2bTrackEvent?.('camp_submit_lead', {
+          form: 'dialog',
+          locale: document.documentElement.lang,
+          has_plan: Boolean(data.plan),
+        });
+      }
       form.reset();
     } catch {
       if (message) message.textContent = err;

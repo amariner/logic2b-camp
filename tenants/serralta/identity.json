@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "serralta",
+  "name": "Camping Serralta",
+  "status": "approved-demo",
+  "icp": "Gerencia y recepción de un camping de montaña de unas 80 unidades, con rutas como principal motivo de viaje y clientela española, francesa y alemana.",
+  "objection": "Las consultas llegan en varios idiomas y se reparten entre correo, cuadernos y un calendario manual; el equipo pierde contexto al responder.",
+  "commercialLevel": "Gestión, sobre el carril técnico tier 2 y un escenario local reversible.",
+  "story": "Una pareja senderista envía una solicitud; recepción reconoce idioma, ruta y equipo, la contesta, la convierte y localiza la estancia en planning y plano.",
+  "tone": "Sobrio, hospitalario y preciso; habla de humedad, desnivel, fuego y partes de sendero sin épica artificial ni lenguaje de resort.",
+  "palette": {
+    "tinta": "#172124",
+    "hueso": "#f2efe6",
+    "pino": "#3f5d45",
+    "arena": "#b39b73",
+    "mar": "#7a3825"
+  },
+  "typography": "Barlow Condensed 700 para titulares verticales y Source Sans 3 para rutas, idiomas, fechas y ocupación; contraste de señal de refugio.",
+  "signatureScreens": [
+    "Solicitud en francés recién llegada a la bandeja",
+    "Planning de 80 unidades con la estancia enfocada",
+    "Plano de ladera con unidad, fecha y ruta conservadas"
+  ],
+  "photoInventory": [
+    "Bosque húmedo al amanecer y fuego común al anochecer",
+    "Parcelas Bosque y Mirador, cabaña y refugio de pizarra",
+    "Recepción, sendero húmedo y textura mineral con helecho"
+  ],
+  "successCriterion": "El recorrido web a gestor conserva idioma, ruta y solicitud sin red; una captura se reconoce como camping húmedo de montaña y no como Pinada del Mar con otra paleta."
+}

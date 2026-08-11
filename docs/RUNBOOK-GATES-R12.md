@@ -24,17 +24,21 @@ de retirar su estado «pendiente».
 
 ## 2. Analytics / atribución
 
-### Estado seguro actual
+### Estado actual por superficie
 
-- No hay tracker, beacon, píxel, cookie de analítica ni identificador de
-  dispositivo en fuente o artefacto.
-- `/cookies` declara esa ausencia y enumera el almacenamiento funcional local.
-- El producto funciona completo sin cuenta, token, CMP ni red de medición.
+- `apps/site` usa `GTM-TVDWZ9LC` con consentimiento básico: Google no se carga
+  antes de aceptar y la decisión se puede rechazar o retirar desde `/cookies`.
+- Los eventos comerciales son cerrados y no admiten nombre, camping, email,
+  teléfono, mensaje ni datos de reserva.
+- `apps/web`, `/demo/`, `/demos/*` y `/admin/` siguen sin tracker ni CMP. Un
+  cliente real no hereda el contenedor de Logic2B.
+- El producto y los formularios funcionan si la analítica se rechaza o falla.
 
 ### Disparador y responsables
 
-- **Disparador:** un cliente o la captación comercial aprueba una pregunta de
-  negocio concreta que necesite medición y elige herramienta.
+- **Disparador tenant:** un cliente aprueba una pregunta de negocio concreta,
+  responsable, cuenta y herramienta. La captación comercial ya fue autorizada
+  por ADR 0045.
 - **Owner Logic2B:** producto para definir eventos; responsable técnico para la
   integración y la retirada.
 - **Owner cliente:** responsable del tratamiento/marketing; asesoría o DPO para
@@ -51,17 +55,18 @@ de retirar su estado «pendiente».
 ### Aceptación
 
 1. La política de cookies coincide con el comportamiento real.
-2. Una captura de red demuestra cero medición antes del consentimiento cuando
-   este sea necesario y eventos exactos después de otorgarlo.
+2. Una captura de red demuestra cero solicitudes a Google antes del
+   consentimiento y eventos exactos después de otorgarlo.
 3. Revocar impide nuevas emisiones; navegación, reserva y formulario no fallan.
 4. Se prueban exclusión interna, UTM, retención y acceso a la cuenta.
 
 ### Degradación y desactivación
 
-El contrato futuro debe conservar `none` como valor fail-closed. Retirar
-configuración/token o seleccionar `none` elimina toda emisión sin impedir la web.
-Tras desactivar se reconstruye, se repite la captura de red y se actualiza
-`/cookies`; no se conserva un snippet «apagado» que siga contactando al proveedor.
+Rechazar o retirar consentimiento elimina nuevas emisiones sin impedir la web.
+Para un apagado global se vacía `commercialSite.gtmId`, se reconstruye, se
+repite la captura de red y se actualiza `/cookies`; no se conserva un snippet
+que siga contactando al proveedor. El gate tenant continúa siendo `none` por
+defecto y requiere un ADR/configuración propios.
 
 ## 3. Observabilidad externa — Sentry / Logpush
 

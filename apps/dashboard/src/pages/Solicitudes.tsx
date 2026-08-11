@@ -13,7 +13,9 @@ import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
-import { isPinadaScenario } from '../demo/pinadamar';
+import { isPinadaScenario, isSerraltaScenario } from '../demo/pinadamar';
+
+const isLitePortfolioScenario = isPinadaScenario || isSerraltaScenario;
 
 /** Siguientes pasos naturales por estado (el servidor admite cualquiera; la UI guía). */
 const NEXT: Record<EnquiryStatus, EnquiryStatus[]> = {
@@ -77,11 +79,11 @@ export default function Solicitudes() {
       }>(`/api/admin/enquiries/${input.id}`, { status: input.status }),
     onSuccess: (result, input) => {
       toast.success(
-        `${t('sol.cambiada', { estado: t(`sol.${input.status}`) })}${isPinadaScenario ? ` ${t('demo.cambioLocal')}` : ''}`,
+        `${t('sol.cambiada', { estado: t(`sol.${input.status}`) })}${isLitePortfolioScenario ? ` ${t('demo.cambioLocal')}` : ''}`,
       );
       void qc.invalidateQueries({ queryKey: ['enquiries'] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
-      if (isPinadaScenario && result.convertedBookingId && result.booking) {
+      if (isLitePortfolioScenario && result.convertedBookingId && result.booking) {
         void navigate({
           to: '/planning',
           search: { date: result.booking.dateFrom, unit: result.booking.unitId ?? undefined },
@@ -246,7 +248,7 @@ export default function Solicitudes() {
                     </div>
                     {puedeGestionar && NEXT[e.status].length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {(isPinadaScenario && e.status === 'contacted'
+                        {(isLitePortfolioScenario && e.status === 'contacted'
                           ? (['converted', 'lost'] as EnquiryStatus[])
                           : NEXT[e.status]
                         ).map((s) => (

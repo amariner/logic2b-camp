@@ -116,6 +116,20 @@ const routes = [
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
   {
+    id: 'serralta-home',
+    path: '/demos/serralta/',
+    noindex: true,
+    texts: ['Bosque húmedo', 'Ochenta unidades'],
+  },
+  {
+    id: 'serralta-planning',
+    path: '/demos/serralta/gestion/#/planning',
+    noindex: true,
+    texts: ['SR-26-'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,

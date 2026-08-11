@@ -353,6 +353,14 @@ const iconosProblema = [
             <span>{c.contacto.campos.mensaje}</span>
             <textarea name="message" rows="4"></textarea>
           </label>
+          <label class="botanical-honeypot" aria-hidden="true">
+            <span>{c.contacto.honeypot}</span>
+            <input name="website" tabindex="-1" autocomplete="off" />
+          </label>
+          <label class="botanical-consent span-two">
+            <input name="accept" type="checkbox" value="true" required />
+            <span>{c.contacto.privacidadAntes} <a href={localePath(locale, 'privacidad/')}>{c.contacto.privacidadEnlace}</a>.</span>
+          </label>
           <div class="botanical-form-actions">
             <button
               type="submit"
@@ -384,6 +392,7 @@ const iconosProblema = [
     event.preventDefault();
     if (!form.reportValidity()) return;
     const data = Object.fromEntries(new FormData(form).entries());
+    data.accept = data.accept === 'true';
     btn.disabled = true;
     btnLabel.textContent = btn.dataset.sending;
     msg.textContent = '';
@@ -396,6 +405,12 @@ const iconosProblema = [
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error('bad');
       msg.textContent = result.outcome === 'demo' ? demo : ok;
+      if (result.outcome === 'delivered') {
+        window.l2bTrackEvent?.('camp_submit_lead', {
+          form: 'inline',
+          locale: document.documentElement.lang,
+        });
+      }
       form.reset();
     } catch {
       msg.textContent = err;

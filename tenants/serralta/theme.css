@@ -1,0 +1,20 @@
+:root {
+  --lc-tinta: #172124;
+  --lc-hueso: #f2efe6;
+  --lc-pino: #3f5d45;
+  --lc-arena: #b39b73;
+  /* Brasa accesible también como texto de estado (AA sobre hueso). */
+  --lc-mar: #7a3825;
+
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 72%, var(--lc-tinta));
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 32%, var(--lc-hueso));
+
+  --lc-font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --lc-font-text: 'Source Sans 3', system-ui, sans-serif;
+
+  --lc-radius: 8px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 3px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 6px);
+}

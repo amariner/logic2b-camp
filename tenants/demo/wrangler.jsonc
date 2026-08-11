@@ -8,9 +8,9 @@
   "main": "./worker.ts",
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
-  // El formulario comercial simula entrega de forma explícita en el escaparate.
-  // No se infiere del slug y un tenant real nunca hereda este valor.
-  "vars": { "TENANT_SLUG": "demo", "LEADS_TRANSPORT": "demo" },
+  // Solo el lead comercial usa Resend. Su secreto es LEADS_RESEND_API_KEY;
+  // RESEND_API_KEY permanece ausente para no activar mensajería interna demo.
+  "vars": { "TENANT_SLUG": "demo", "LEADS_TRANSPORT": "resend" },
   // */15: purga de holds caducados del funnel (ADR 0007). 0 3 * * *: reset nocturno (ADR 0013)
   "triggers": { "crons": ["*/15 * * * *", "0 3 * * *"] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],

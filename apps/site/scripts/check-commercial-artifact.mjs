@@ -92,6 +92,7 @@ for (const locale of locales) {
 
   const home = await readHtml(`${locale.prefix}index.html`);
   const pricing = await readHtml(`${locale.prefix}precios/index.html`);
+  const legalPaths = ['aviso-legal', 'privacidad', 'cookies'];
   assert(
     JSON.stringify(planStatuses(home)) === JSON.stringify(expectedHome),
     `${locale.code}: la portada no muestra exactamente los cuatro estados comerciales`,
@@ -110,6 +111,35 @@ for (const locale of locales) {
   }
   assert(home.includes('href="/demo/"'), `${locale.code}: falta el salto a la web demo`);
   assert(home.includes('href="/admin/"'), `${locale.code}: falta el salto al gestor demo`);
+  assert(home.includes('GTM-TVDWZ9LC'), `${locale.code}: falta el contenedor GTM comercial`);
+  assert(home.includes('data-consent-banner'), `${locale.code}: falta el banner de consentimiento`);
+  assert(
+    !/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(home),
+    `${locale.code}: GTM se carga de forma inmediata antes del consentimiento`,
+  );
+  for (const legalPath of legalPaths) {
+    const href = `/${locale.prefix}${legalPath}/`;
+    assert(home.includes(`href="${href}"`), `${locale.code}: el footer no enlaza ${legalPath}`);
+    const legalHtml = await readHtml(`${locale.prefix}${legalPath}/index.html`);
+    assert(
+      legalHtml.includes('<link rel="canonical"'),
+      `${locale.code}/${legalPath}: falta canonical`,
+    );
+    assert(legalHtml.includes('hreflang="es"'), `${locale.code}/${legalPath}: falta hreflang es`);
+    assert(legalHtml.includes('hreflang="en"'), `${locale.code}/${legalPath}: falta hreflang en`);
+  }
+  const cookies = await readHtml(`${locale.prefix}cookies/index.html`);
+  assert(cookies.includes('data-consent-reset'), `${locale.code}: cookies no permite revocar`);
+  assert(cookies.includes('_ga'), `${locale.code}: cookies no declara Google Analytics`);
+}
+
+const sitemap = await readHtml('sitemap.xml');
+for (const pathName of ['aviso-legal', 'privacidad', 'cookies']) {
+  assert(
+    sitemap.includes(`https://camp.logic2b.com/${pathName}/`) &&
+      sitemap.includes(`https://camp.logic2b.com/en/${pathName}/`),
+    `sitemap: faltan rutas localizadas de ${pathName}`,
+  );
 }
 
 const allFiles = await walk(distDir);

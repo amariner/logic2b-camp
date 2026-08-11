@@ -1,4 +1,4 @@
-export type PortfolioScenarioId = 'pinadamar' | 'mardefondo';
+export type PortfolioScenarioId = 'pinadamar' | 'serralta' | 'mardefondo';
 
 export type ScenarioResult = { status: number; body: unknown };
 
@@ -8,7 +8,7 @@ export type PortfolioScenario = {
   email: string;
   name: string;
   webHref: string;
-  bannerKey: 'demo.pinadaBanner' | 'demo.mardefondoBanner';
+  bannerKey: 'demo.pinadaBanner' | 'demo.serraltaBanner' | 'demo.mardefondoBanner';
   request: (path: string, init?: RequestInit) => Promise<ScenarioResult>;
   reset: () => void;
 };

@@ -162,6 +162,29 @@ export function bookingMode(tier: TenantWebConfig['tier']): BookingMode {
 }
 
 export {
+  ACTIVATION_SECRET_NAMES,
+  auditTenantActivation,
+  notificationKinds,
+  notificationsConfigSchema,
+  parseNotificationsConfig,
+  parsePaymentsConfig,
+  paymentsConfigSchema,
+  type ActivationAdapter,
+  type ActivationAuditInput,
+  type ActivationAuditReport,
+  type ActivationBinding,
+  type ActivationComponentStatus,
+  type ActivationIssue,
+  type ActivationSecret,
+  type ActivationSecretName,
+  type ActivationSecretStatus,
+  type ActivationWebConfig,
+  type ActivationWorkerConfig,
+  type TenantNotificationsConfig,
+  type TenantPaymentsConfig,
+} from './activation';
+
+export {
   cancellationPolicySchema,
   DEFAULT_CANCELLATION_POLICY,
   loadTenantConfig,

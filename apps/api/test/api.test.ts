@@ -191,6 +191,7 @@ describe('POST /api/leads', () => {
     phone: '+34 600 000 000',
     message: 'Queremos renovar la web.',
     lang: 'es',
+    accept: true,
   };
 
   it('sin proveedor responde disabled y NO afirma que se entregó', async () => {
@@ -210,6 +211,36 @@ describe('POST /api/leads', () => {
     });
     expect(res.status).toBe(202);
     await expect(res.json()).resolves.toEqual({ ok: true, outcome: 'demo' });
+  });
+
+  it('exige consentimiento y el honeypot no llama al proveedor', async () => {
+    const withoutConsent = { ...lead } as Partial<typeof lead>;
+    delete withoutConsent.accept;
+    const rejected = await app.request(
+      '/api/leads',
+      json(withoutConsent, { 'cf-connecting-ip': '198.51.100.50' }),
+      {
+        ...envA,
+        LEADS_TRANSPORT: 'resend',
+        LEADS_RESEND_API_KEY: 're_test',
+      },
+    );
+    expect(rejected.status).toBe(400);
+
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const bot = await app.request(
+      '/api/leads',
+      json({ website: 'https://spam.example' }, { 'cf-connecting-ip': '198.51.100.51' }),
+      {
+        ...envA,
+        LEADS_TRANSPORT: 'resend',
+        LEADS_RESEND_API_KEY: 're_test',
+      },
+    );
+    expect(bot.status).toBe(202);
+    await expect(bot.json()).resolves.toEqual({ ok: true, outcome: 'received' });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('Resend reintenta con una clave estable; el fallo funcional no comparte éxito ni PII', async () => {
@@ -233,14 +264,14 @@ describe('POST /api/leads', () => {
 
     const delivered = await app.request('/api/leads', json(lead), {
       ...envA,
-      RESEND_API_KEY: 're_test',
+      LEADS_RESEND_API_KEY: 're_test',
     });
     expect(delivered.status).toBe(202);
     await expect(delivered.json()).resolves.toEqual({ ok: true, outcome: 'delivered' });
 
     const failed = await app.request('/api/leads', json(lead), {
       ...envA,
-      RESEND_API_KEY: 're_test',
+      LEADS_RESEND_API_KEY: 're_test',
     });
     expect(failed.status).toBe(502);
     const body = (await failed.json()) as Record<string, unknown>;
@@ -254,6 +285,16 @@ describe('POST /api/leads', () => {
     expect(keys[1]).toBe(keys[0]);
     expect(keys[2]).not.toBe(keys[0]);
     expect(errorSpy.mock.calls.flat().join(' ')).not.toContain(lead.email);
+  });
+
+  it('una key interna no activa la captación comercial', async () => {
+    const res = await app.request(
+      '/api/leads',
+      json(lead, { 'cf-connecting-ip': '198.51.100.52' }),
+      { ...envA, RESEND_API_KEY: 're_internal_only' },
+    );
+    expect(res.status).toBe(503);
+    await expect(res.json()).resolves.toMatchObject({ outcome: 'disabled' });
   });
 
   it('rechaza nombres de plan fuera del límite permitido', async () => {

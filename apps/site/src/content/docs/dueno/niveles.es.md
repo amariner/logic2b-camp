@@ -13,8 +13,8 @@ Logic2B Campings se ofrece como **una progresión de cuatro resultados**. Puedes
 | ---: | --------------- | -------------------------------------- | --------- | ------------- |
 |   00 | **Inicio**      | Consigue consultas                     | 49 €/mes  | Lanzamiento   |
 |   01 | **Gestión**     | Controla la operativa del camping      | 149 €/mes | Disponible    |
-|   02 | **Automatiza**  | Reduce trabajo repetitivo con ayuda IA | 249 €/mes | En desarrollo |
-|   03 | **Inteligente** | Decide mejor con datos y previsiones   | 399 €/mes | Roadmap       |
+|   02 | **Automatiza**  | Reduce trabajo repetitivo con ayuda IA | A consultar | En desarrollo |
+|   03 | **Inteligente** | Decide mejor con datos y previsiones   | A consultar | Roadmap       |
 
 ## Inicio — una web que empieza a trabajar
 
@@ -32,13 +32,13 @@ Es el nivel para dejar atrás hojas de cálculo y herramientas separadas. Está 
 
 Sobre Gestión incorpora comunicaciones automáticas, recordatorios, solicitud de reseñas y asistencia de IA para buscar, redactar, traducir, resumir y preparar respuestas o presupuestos.
 
-La IA prepara y propone; recepción revisa. Este nivel está **en desarrollo** y su precio objetivo de lanzamiento es **249 €/mes**.
+La IA prepara y propone; recepción revisa. Este nivel está **en desarrollo** y su precio es **a consultar**.
 
 ## Inteligente — mejores decisiones con tus datos
 
 Añade rentabilidad, comparativas, previsión, alertas, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.
 
-Precios, cobros, cancelaciones y campañas siempre requieren confirmación humana. Este nivel forma parte del **roadmap** y su precio objetivo es **399 €/mes**.
+Precios, cobros, cancelaciones y campañas siempre requieren confirmación humana. Este nivel forma parte del **roadmap** y su precio es **a consultar**.
 
 ---
 

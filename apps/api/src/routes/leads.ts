@@ -19,6 +19,8 @@ const leadSchema = z.object({
   message: z.string().trim().max(2000).optional(),
   lang: z.string().trim().max(5).optional(),
   plan: z.string().trim().max(100).optional(),
+  accept: z.literal(true),
+  website: z.string().trim().max(200).optional(),
 });
 
 /** Buzón comercial de Logic2B. Remitente de plataforma (dominio verificado en Resend). */
@@ -26,7 +28,13 @@ const LEADS_TO = 'marinerandreu@gmail.com';
 const LEADS_FROM = 'Logic2B Campings <leads@logic2b.com>';
 
 export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
-  const parsed = leadSchema.safeParse(await c.req.json().catch(() => null));
+  const raw = await c.req.json().catch(() => null);
+  const botCheck = z.object({ website: z.string().optional() }).passthrough().safeParse(raw);
+  // Honeypot: se responde de forma neutra y no se consume cuota de Resend.
+  if (botCheck.success && botCheck.data.website?.trim()) {
+    return c.json({ ok: true as const, outcome: 'received' as const }, 202);
+  }
+  const parsed = leadSchema.safeParse(raw);
   if (!parsed.success) return c.json({ error: 'invalid', issues: parsed.error.issues }, 400);
   const d = parsed.data;
 
@@ -37,6 +45,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     ['Teléfono', d.phone || '—'],
     ['Plan', d.plan || '—'],
     ['Idioma', d.lang || '—'],
+    ['Consentimiento', 'Aceptó la política de privacidad'],
   ];
   const requestTitle = d.plan ? `Nueva solicitud del plan ${d.plan}` : 'Nueva petición de demo';
   const text = `${requestTitle} — Logic2B Campings\n\n${rows
@@ -50,8 +59,8 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
   if (configured !== undefined && configured !== 'demo' && configured !== 'resend') {
     throw new Error(`LEADS_TRANSPORT inválido: ${configured}`);
   }
-  const transport = configured ?? (c.env.RESEND_API_KEY ? 'resend' : 'disabled');
-  if (transport === 'disabled' || (transport === 'resend' && !c.env.RESEND_API_KEY)) {
+  const transport = configured ?? (c.env.LEADS_RESEND_API_KEY ? 'resend' : 'disabled');
+  if (transport === 'disabled' || (transport === 'resend' && !c.env.LEADS_RESEND_API_KEY)) {
     return c.json(
       { ok: false as const, outcome: 'disabled' as const, error: 'lead_delivery_disabled' },
       503,
@@ -67,7 +76,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
   }
 
   const ref = uid('err');
-  const result = await resendSender(c.env.RESEND_API_KEY!)({
+  const result = await resendSender(c.env.LEADS_RESEND_API_KEY!)({
     from: LEADS_FROM,
     to: LEADS_TO,
     replyTo: d.email,

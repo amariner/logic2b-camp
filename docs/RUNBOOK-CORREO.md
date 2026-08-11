@@ -7,7 +7,8 @@
 ## 1. Contrato operativo actual
 
 El mismo driver HTTP de `@logic-camp/notifications` sirve al lead comercial y a
-las notificaciones de solicitudes/reservas. Cada entrega:
+las notificaciones de solicitudes/reservas, pero sus secretos se mantienen
+separados para que activar captación no active mensajería de un camping. Cada entrega:
 
 1. lleva `Idempotency-Key` sin PII;
 2. tiene 8 s de timeout por intento;
@@ -23,15 +24,16 @@ fallo definitivo.
 
 ## 2. Configuración y ownership
 
-| Entrada                          | Dónde vive        | Responsable                           | Regla                                                                      |
-| -------------------------------- | ----------------- | ------------------------------------- | -------------------------------------------------------------------------- |
-| cuenta y facturación Resend      | proveedor         | Logic2B; registrar titular y contacto | no compartir credenciales personales                                       |
-| dominio/subdominio remitente     | DNS + Resend      | titular del dominio + Logic2B         | debe estar verificado antes de usarlo                                      |
-| `RESEND_API_KEY`                 | secret del Worker | Logic2B                               | nunca config, `.env`, ticket, log o documentación                          |
-| `LEADS_TRANSPORT`                | var del Worker    | Logic2B                               | `demo` solo escaparate; `resend` exige key; ausente y sin key = `disabled` |
-| `modules.notifications.from`     | D1 del tenant     | cliente + Logic2B                     | dirección de dominio verificado                                            |
-| `modules.notifications.notifyTo` | D1 del tenant     | cliente                               | buzón interno válido y atendido                                            |
-| `modules.notifications.enabled`  | D1 del tenant     | cliente                               | interruptor por evento, sin deploy                                         |
+| Entrada                          | Dónde vive                  | Responsable                           | Regla                                                                      |
+| -------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------- |
+| cuenta y facturación Resend      | proveedor                   | Logic2B; registrar titular y contacto | no compartir credenciales personales                                       |
+| dominio/subdominio remitente     | DNS + Resend                | titular del dominio + Logic2B         | debe estar verificado antes de usarlo                                      |
+| `RESEND_API_KEY`                 | secret del Worker           | Logic2B                               | nunca config, `.env`, ticket, log o documentación                          |
+| `LEADS_RESEND_API_KEY`           | secret del Worker comercial | Logic2B                               | solo `POST /api/leads`; puede pertenecer a la misma cuenta Resend          |
+| `LEADS_TRANSPORT`                | var del Worker              | Logic2B                               | `demo` solo escaparate; `resend` exige key; ausente y sin key = `disabled` |
+| `modules.notifications.from`     | D1 del tenant               | cliente + Logic2B                     | dirección de dominio verificado                                            |
+| `modules.notifications.notifyTo` | D1 del tenant               | cliente                               | buzón interno válido y atendido                                            |
+| `modules.notifications.enabled`  | D1 del tenant               | cliente                               | interruptor por evento, sin deploy                                         |
 
 Antes de activar, registrar en la ficha del cliente: dueño de cuenta, contacto de
 soporte, límite/plan y coste vigente, fecha de renovación, dominio, remitentes,
@@ -57,8 +59,9 @@ La guía oficial exige un dominio verificado y describe SPF/DKIM y DMARC en
 ## 4. Activación autorizada
 
 1. Crear una API key de envío con el menor alcance disponible.
-2. Guardarla como `RESEND_API_KEY` mediante el mecanismo de secrets del Worker;
-   no imprimirla ni pasarla en línea de comandos que quede en historial.
+2. Guardarla como `LEADS_RESEND_API_KEY` para captación o como `RESEND_API_KEY`
+   para mensajería interna; no imprimirla ni pasarla en una línea de comandos
+   que quede en historial.
 3. En el lead comercial, declarar `LEADS_TRANSPORT=resend`; en notificaciones,
    confirmar `from`, `notifyTo` y eventos activos.
 4. Enviar un único caso controlado a cada tipo de destinatario aprobado.
@@ -88,8 +91,8 @@ reintentos ciegos ni revocar ambas claves.
   operación principal.
 - `resend_timeout`, `resend_network`, 408, 429 y 5xx consumen como máximo dos
   intentos idempotentes. Un 4xx o respuesta inválida termina en el primero.
-- Quitar `RESEND_API_KEY` deja notificaciones en `disabled`. Para el lead,
-  retirar también `LEADS_TRANSPORT=resend`; ausente y sin key responde 503
+- Quitar `RESEND_API_KEY` deja notificaciones internas en `disabled`. Para el
+  lead, retirar `LEADS_RESEND_API_KEY` o cambiar `LEADS_TRANSPORT`; sin key responde 503
   `lead_delivery_disabled` en vez de fingir éxito.
 - Cada evento de notificación se puede desactivar en
   `modules.notifications.enabled` sin deploy.

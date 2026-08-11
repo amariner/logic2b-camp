@@ -16,7 +16,9 @@ const variants = [
   { locale: 'en', prefix: '/en', width: 375, height: 812 },
 ];
 
-const browser = await chromium.launch(chromiumPath ? { executablePath: chromiumPath } : undefined);
+const launchOptions = chromiumPath ? { executablePath: chromiumPath } : {};
+if (process.env.COMMERCIAL_QA_NO_PROXY === '1') launchOptions.args = ['--no-proxy-server'];
+const browser = await chromium.launch(launchOptions);
 
 try {
   for (const variant of variants) {
@@ -25,6 +27,14 @@ try {
       reducedMotion: 'reduce',
       colorScheme: 'light',
     });
+    const googleRequests = [];
+    await context.route(
+      /https:\/\/(?:www\.googletagmanager\.com|www\.google-analytics\.com)\//,
+      async (route) => {
+        googleRequests.push(route.request().url());
+        await route.fulfill({ status: 200, contentType: 'application/javascript', body: '' });
+      },
+    );
     const page = await context.newPage();
     const failures = [];
     page.on('console', (message) => {
@@ -42,6 +52,29 @@ try {
 
     await page.goto(`${origin}${variant.prefix || '/'}`, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
+    assert.deepEqual(
+      googleRequests,
+      [],
+      `${variant.locale}/${variant.width}: Google cargó antes del consentimiento`,
+    );
+    const consentBanner = page.locator('[data-consent-banner]');
+    assert.ok(
+      await consentBanner.isVisible(),
+      `${variant.locale}/${variant.width}: banner visible`,
+    );
+    const acceptsAnalytics = variant.locale === 'es' && variant.width === 1366;
+    if (acceptsAnalytics) {
+      await consentBanner.locator('[data-consent-accept]').click();
+      await page.waitForFunction(() => window.l2bGtmLoaded === true);
+      assert.equal(googleRequests.length, 1, 'aceptar debe cargar GTM una sola vez');
+    } else {
+      await consentBanner.locator('[data-consent-reject]').first().click();
+      assert.deepEqual(
+        googleRequests,
+        [],
+        `${variant.locale}/${variant.width}: rechazar cargó Google`,
+      );
+    }
     const planSection = page.locator('#niveles');
     await planSection.scrollIntoViewIfNeeded();
     const statuses = planSection.locator('[data-plan-status]');
@@ -102,12 +135,12 @@ try {
     const leadForm = page.locator('#lead-form');
     assert.equal(
       await leadForm.locator('label').count(),
-      5,
+      7,
       `${variant.locale}/${variant.width}: campos del formulario`,
     );
     assert.equal(
       await leadForm.locator('[required]').count(),
-      3,
+      4,
       `${variant.locale}/${variant.width}: campos obligatorios`,
     );
     const requestedPlan = await planSection
@@ -202,6 +235,23 @@ try {
       fullPage: true,
       animations: 'disabled',
     });
+
+    await page.goto(`${origin}${variant.prefix}/cookies/`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    assert.ok(
+      await page.locator('[data-consent-reset]').isVisible(),
+      `${variant.locale}/${variant.width}: control de revocación`,
+    );
+    if (acceptsAnalytics) {
+      await page.locator('[data-consent-reset]').click();
+      await page.waitForLoadState('networkidle');
+      assert.ok(
+        await page.locator('[data-consent-banner]').isVisible(),
+        'revocar debe reabrir el banner',
+      );
+      await page.locator('[data-consent-reject]').first().click();
+    }
+    await assertNoOverflow(page, `${variant.locale}/${variant.width}: cookies`);
 
     assert.deepEqual(failures, [], `${variant.locale}/${variant.width}: errores de navegador`);
     console.log(

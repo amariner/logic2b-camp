@@ -1,0 +1,112 @@
+---
+import { commercialSite } from '../config';
+import Base from '../layouts/Base.astro';
+import { getContent, type Locale } from '../lib/i18n';
+
+export type LegalKind = 'notice' | 'privacy' | 'cookies';
+
+interface Props {
+  locale: Locale;
+  kind: LegalKind;
+}
+
+const { locale, kind } = Astro.props;
+const content = getContent(locale);
+const legal = content.legal;
+const page = legal.pages[kind];
+const routes: Record<LegalKind, string> = {
+  notice: 'aviso-legal/',
+  privacy: 'privacidad/',
+  cookies: 'cookies/',
+};
+---
+
+<Base locale={locale} content={content} ruta={routes[kind]} seo={{ title: page.title, description: page.description }}>
+  <article class="legal-shell">
+    <header class="legal-header">
+      <p class="botanical-eyebrow">{commercialSite.domain}</p>
+      <h1>{page.heading}</h1>
+      <p class="legal-intro">{page.intro}</p>
+      <p class="legal-updated">{legal.updated}</p>
+    </header>
+
+    {
+      page.showOwner && (
+        <section class="legal-section">
+          <h2>{legal.ownerLabels.owner}</h2>
+          <dl class="legal-owner">
+            <div><dt>{legal.ownerLabels.owner}</dt><dd>{commercialSite.legal.owner}</dd></div>
+            <div><dt>{legal.ownerLabels.nif}</dt><dd>{commercialSite.legal.nif}</dd></div>
+            <div><dt>{legal.ownerLabels.address}</dt><dd>{commercialSite.legal.address}</dd></div>
+            <div><dt>{legal.ownerLabels.email}</dt><dd><a href={`mailto:${commercialSite.email}`}>{commercialSite.email}</a></dd></div>
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      page.sections.map((section) => (
+        <section class="legal-section">
+          <h2>{section.title}</h2>
+          {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          {section.items.length > 0 && <ul>{section.items.map((item) => <li>{item}</li>)}</ul>}
+        </section>
+      ))
+    }
+
+    {
+      page.table.rows.length > 0 && (
+        <section class="legal-section">
+          <h2>{page.table.title}</h2>
+          <div class="legal-table-scroll">
+            <table>
+              <thead><tr>{page.table.headers.map((header) => <th scope="col">{header}</th>)}</tr></thead>
+              <tbody>
+                {page.table.rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      page.action.label && (
+        <section class="legal-section legal-action">
+          <p>{page.action.description}</p>
+          <button type="button" data-consent-reset>{page.action.label}</button>
+        </section>
+      )
+    }
+  </article>
+</Base>
+
+<style>
+  .legal-shell { width: min(820px, calc(100% - 40px)); margin: 0 auto; padding: clamp(64px, 9vw, 112px) 0; }
+  .legal-header { padding-bottom: 36px; border-bottom: 1px solid var(--botanical-border); }
+  .legal-header h1 { margin: 10px 0 16px; color: var(--botanical-ink); font-family: var(--botanical-serif); font-size: clamp(2.5rem, 6vw, 4.8rem); font-weight: 400; letter-spacing: -.04em; line-height: .98; }
+  .legal-intro { max-width: 680px; margin: 0; color: color-mix(in srgb, var(--botanical-charcoal) 78%, white); font-size: 1.1rem; line-height: 1.65; }
+  .legal-updated { margin: 18px 0 0; color: color-mix(in srgb, var(--botanical-ink) 65%, white); font-size: .86rem; }
+  .legal-section { padding-top: 34px; }
+  .legal-section h2 { margin: 0 0 14px; color: var(--botanical-ink); font-family: var(--botanical-serif); font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 400; }
+  .legal-section p, .legal-section li, .legal-owner { color: color-mix(in srgb, var(--botanical-charcoal) 82%, white); line-height: 1.72; }
+  .legal-section p { margin: 0; }
+  .legal-section p + p { margin-top: 12px; }
+  .legal-section ul { margin: 14px 0 0; padding-left: 1.25rem; }
+  .legal-section li + li { margin-top: 7px; }
+  .legal-owner { margin: 0; border: 1px solid var(--botanical-border); border-radius: 14px; overflow: hidden; }
+  .legal-owner div { display: grid; grid-template-columns: minmax(140px, .55fr) 1.45fr; gap: 20px; padding: 13px 16px; }
+  .legal-owner div + div { border-top: 1px solid var(--botanical-border); }
+  .legal-owner dt { color: var(--botanical-ink); font-weight: 650; }
+  .legal-owner dd { margin: 0; }
+  .legal-owner a { color: var(--botanical-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .legal-table-scroll { overflow-x: auto; border: 1px solid var(--botanical-border); border-radius: 14px; }
+  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: .9rem; }
+  th, td { padding: 12px 13px; border-bottom: 1px solid var(--botanical-border); text-align: left; vertical-align: top; }
+  th { background: var(--botanical-keylime); color: var(--botanical-ink); font-weight: 650; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .legal-action { margin-top: 34px; border-top: 1px solid var(--botanical-border); }
+  .legal-action button { margin-top: 16px; min-height: 44px; border: 1px solid var(--botanical-ink); border-radius: 10px; background: var(--botanical-ink); padding: 11px 17px; color: var(--botanical-paper); font: inherit; font-weight: 650; cursor: pointer; }
+  .legal-action button:hover { opacity: .86; }
+  @media (max-width: 560px) { .legal-owner div { grid-template-columns: 1fr; gap: 2px; } }
+</style>

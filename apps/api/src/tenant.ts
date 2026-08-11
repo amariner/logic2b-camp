@@ -12,7 +12,9 @@ export type Bindings = {
   AUTH_SECRET?: string;
   /** wrangler secret; sin él las notificaciones quedan 'disabled' (ADR 0010) */
   RESEND_API_KEY?: string;
-  /** Captación Logic2B: `demo` simula de forma explícita; sin valor se usa Resend solo si hay key. */
+  /** Secret exclusivo de la captación comercial; no activa notificaciones del camping. */
+  LEADS_RESEND_API_KEY?: string;
+  /** Captación Logic2B: `demo` simula; `resend` exige LEADS_RESEND_API_KEY. */
   LEADS_TRANSPORT?: string;
   /** wrangler secrets de pago (ADR 0011). Sin ellos, un provider≠none da 500 payment_not_configured. */
   STRIPE_SECRET_KEY?: string;
