@@ -3,6 +3,10 @@ import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import {
+  runLocalActivationRehearsal,
+  type LocalActivationRehearsalResult,
+} from './activation-rehearsal';
 import { assertValidRestoration, parseD1Rows, type BackupSnapshot } from './backup-rehearsal';
 import { sqlDumpArgs } from './export';
 import { scaffoldTenant, validateTenantIdentity, type TenantIdentity } from './scaffold';
@@ -37,6 +41,23 @@ export type LocalOnboardingRehearsalOptions = {
   seedYear: number;
 };
 
+export type OnboardingPhaseName =
+  'scaffold' | 'migrations' | 'seed' | 'backup' | 'restore' | 'activation';
+
+export type OnboardingTimingReport = {
+  /** Incluye la limpieza final del temporal; no es una estimación de producción. */
+  totalMs: number;
+  phases: Array<{ name: OnboardingPhaseName; durationMs: number }>;
+};
+
+export type OnboardingOperationalCost = {
+  automatedDurationMs: number;
+  /** No se afirma «una tarde» mientras estos bloques no tengan evidencia real. */
+  verdict: 'not_proven';
+  unmeasuredHumanBlocks: Array<'content_and_identity' | 'inventory_and_tariffs' | 'acceptance'>;
+  externalGates: Array<'cloudflare_resources' | 'dns' | 'providers' | 'deploy'>;
+};
+
 export type LocalOnboardingRehearsalResult = {
   temporaryDirectory: string;
   migrationNames: string[];
@@ -48,6 +69,9 @@ export type LocalOnboardingRehearsalResult = {
   mutated: OnboardingSnapshot;
   restored: OnboardingSnapshot;
   commands: LocalD1Command[];
+  activation: LocalActivationRehearsalResult;
+  timings: OnboardingTimingReport;
+  operationalCost: OnboardingOperationalCost;
 };
 
 const ONBOARDING_SNAPSHOT_SQL = `
@@ -108,6 +132,14 @@ SELECT
 
 function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
+}
+
+function monotonicNow(): bigint {
+  return process.hrtime.bigint();
+}
+
+function elapsedMs(startedAt: bigint): number {
+  return Math.round((Number(process.hrtime.bigint() - startedAt) / 1_000_000) * 100) / 100;
 }
 
 function numberCell(row: Record<string, unknown>, key: string): number {
@@ -216,21 +248,18 @@ function assertRestored(source: OnboardingSnapshot, restored: OnboardingSnapshot
   }
 }
 
-function localOnlyEnvironment(seedYear?: number): NodeJS.ProcessEnv {
-  const environment = { ...process.env };
-  for (const key of [
-    'CLOUDFLARE_API_TOKEN',
-    'CLOUDFLARE_API_KEY',
-    'CLOUDFLARE_EMAIL',
-    'CLOUDFLARE_ACCOUNT_ID',
-    'CF_API_TOKEN',
-    'CF_API_KEY',
-    'CF_EMAIL',
-  ]) {
-    delete environment[key];
+function localOnlyEnvironment(scratchHome: string, seedYear?: number): NodeJS.ProcessEnv {
+  const environment: NodeJS.ProcessEnv = {
+    CI: '1',
+    HOME: scratchHome,
+    XDG_CONFIG_HOME: join(scratchHome, '.config'),
+    XDG_CACHE_HOME: join(scratchHome, '.cache'),
+    WRANGLER_SEND_METRICS: 'false',
+  };
+  for (const name of ['PATH', 'TMPDIR', 'TEMP', 'TMP'] as const) {
+    const value = process.env[name];
+    if (value) environment[name] = value;
   }
-  environment.CI = '1';
-  environment.WRANGLER_SEND_METRICS = 'false';
   if (seedYear !== undefined) environment.SEED_YEAR = String(seedYear);
   return environment;
 }
@@ -273,8 +302,10 @@ export function runLocalOnboardingRehearsal(
   }
 
   const repoRoot = resolve(options.repoRoot);
+  const totalStartedAt = monotonicNow();
   const temporaryDirectory = mkdtempSync(join(tmpdir(), TEMPORARY_PREFIX));
   const commands: LocalD1Command[] = [];
+  const phases: OnboardingTimingReport['phases'] = [];
   const wranglerExecutable = join(repoRoot, 'node_modules', '.bin', 'wrangler');
   const tsxExecutable = join(repoRoot, 'packages', 'cli', 'node_modules', '.bin', 'tsx');
   if (!existsSync(wranglerExecutable) || !existsSync(tsxExecutable)) {
@@ -296,7 +327,7 @@ export function runLocalOnboardingRehearsal(
       return execFileSync(wranglerExecutable, args, {
         cwd: temporaryDirectory,
         encoding: 'utf8',
-        env: localOnlyEnvironment(),
+        env: localOnlyEnvironment(temporaryDirectory),
         maxBuffer: 512 * 1024 * 1024,
       });
     } catch (error) {
@@ -330,6 +361,7 @@ export function runLocalOnboardingRehearsal(
 
   let result!: LocalOnboardingRehearsalResult;
   try {
+    let phaseStartedAt = monotonicNow();
     cpSync(join(repoRoot, 'packages', 'db', 'migrations'), migrationsPath, {
       recursive: true,
       dereference: false,
@@ -340,7 +372,9 @@ export function runLocalOnboardingRehearsal(
     });
     const seedPath = join(scaffold.targetDir, 'seed.sql');
     const writeSeedPath = join(scaffold.targetDir, 'write-seed.ts');
+    phases.push({ name: 'scaffold', durationMs: elapsedMs(phaseStartedAt) });
 
+    phaseStartedAt = monotonicNow();
     runD1(['d1', 'migrations', 'apply', SOURCE_DATABASE, '--local', '--config', configPath]);
     const firstMigrations = snapshot(SOURCE_DATABASE);
     runD1(['d1', 'migrations', 'apply', SOURCE_DATABASE, '--local', '--config', configPath]);
@@ -350,18 +384,20 @@ export function runLocalOnboardingRehearsal(
     if (firstMigrationFingerprint !== secondMigrationFingerprint) {
       throw new Error('Aplicar migraciones por segunda vez cambió su huella');
     }
+    phases.push({ name: 'migrations', durationMs: elapsedMs(phaseStartedAt) });
 
+    phaseStartedAt = monotonicNow();
     execFileSync(tsxExecutable, [writeSeedPath], {
       cwd: scaffold.targetDir,
       encoding: 'utf8',
-      env: localOnlyEnvironment(options.seedYear),
+      env: localOnlyEnvironment(temporaryDirectory, options.seedYear),
     });
     const firstSeedSqlFingerprint = sha256(readFileSync(seedPath, 'utf8'));
     rmSync(seedPath);
     execFileSync(tsxExecutable, [writeSeedPath], {
       cwd: scaffold.targetDir,
       encoding: 'utf8',
-      env: localOnlyEnvironment(options.seedYear),
+      env: localOnlyEnvironment(temporaryDirectory, options.seedYear),
     });
     const secondSeedSqlFingerprint = sha256(readFileSync(seedPath, 'utf8'));
     if (firstSeedSqlFingerprint !== secondSeedSqlFingerprint) {
@@ -381,7 +417,9 @@ export function runLocalOnboardingRehearsal(
     ]);
     const source = snapshot(SOURCE_DATABASE);
     assertInitialState(source, identity);
+    phases.push({ name: 'seed', durationMs: elapsedMs(phaseStartedAt) });
 
+    phaseStartedAt = monotonicNow();
     runD1(sqlDumpArgs(SOURCE_DATABASE, configPath, dumpSchemaPath, true, 'schema'));
     runD1(sqlDumpArgs(SOURCE_DATABASE, configPath, dumpDataPath, true, 'data'));
     writeFileSync(
@@ -389,7 +427,9 @@ export function runLocalOnboardingRehearsal(
       `${readFileSync(dumpSchemaPath, 'utf8')}\n${readFileSync(dumpDataPath, 'utf8')}`,
       'utf8',
     );
+    phases.push({ name: 'backup', durationMs: elapsedMs(phaseStartedAt) });
 
+    phaseStartedAt = monotonicNow();
     runD1([
       'd1',
       'execute',
@@ -419,6 +459,15 @@ export function runLocalOnboardingRehearsal(
     ]);
     const restored = snapshot(RESTORED_DATABASE);
     assertRestored(source, restored);
+    phases.push({ name: 'restore', durationMs: elapsedMs(phaseStartedAt) });
+
+    phaseStartedAt = monotonicNow();
+    const activation = runLocalActivationRehearsal({
+      repoRoot,
+      identity,
+      tiers: [1, 2, 3],
+    });
+    phases.push({ name: 'activation', durationMs: elapsedMs(phaseStartedAt) });
 
     result = {
       temporaryDirectory,
@@ -431,6 +480,14 @@ export function runLocalOnboardingRehearsal(
       mutated,
       restored,
       commands,
+      activation,
+      timings: { totalMs: 0, phases },
+      operationalCost: {
+        automatedDurationMs: 0,
+        verdict: 'not_proven',
+        unmeasuredHumanBlocks: ['content_and_identity', 'inventory_and_tariffs', 'acceptance'],
+        externalGates: ['cloudflare_resources', 'dns', 'providers', 'deploy'],
+      },
     };
   } finally {
     const allowedPrefix = join(tmpdir(), TEMPORARY_PREFIX);
@@ -438,5 +495,7 @@ export function runLocalOnboardingRehearsal(
       rmSync(temporaryDirectory, { recursive: true, force: true });
     }
   }
+  result.timings.totalMs = elapsedMs(totalStartedAt);
+  result.operationalCost.automatedDurationMs = result.timings.totalMs;
   return result;
 }

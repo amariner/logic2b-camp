@@ -1,5 +1,29 @@
 # PROGRESS — Logic Camp
 
+## Coste automático y write-set del alta R13 · 2026-08-11 (sesión 131)
+
+- `onboarding:rehearse` reutiliza ahora el ensayo de activación tras
+  scaffold→migraciones→seed→backup→restauración; no existe un tercer carril ni
+  una segunda matriz. El resultado tipado conserva evidencia y duración por
+  bloque, además del total con limpieza.
+- Medida local reproducida dos veces: **7,61 s** y **7,13 s** totales. La última
+  ejecución desglosa scaffold 6,54 ms, migraciones 2.913,93 ms, seed 1.126,79 ms,
+  backup 928,73 ms, restauración 1.938,84 ms y activación 209,75 ms. Ocho
+  migraciones, seed, owner y huellas lógicas permanecen idénticos.
+- El informe no convierte esos segundos en la promesa «una tarde»:
+  contenido/identidad, inventario/tarifas y aceptación figuran como trabajo
+  humano **no medido**; recursos Cloudflare, DNS, proveedores y deploy figuran
+  como gates externos. `verdict: not_proven` impide cerrar el coste total sin un
+  onboarding real.
+- Los procesos hijos usan `HOME`, config y caché dentro del temporal y heredan
+  solo PATH/variables temporales, nunca perfiles ni secrets del shell. Toda orden
+  D1 conserva `--local`, el plan remoto sigue fuera del recorrido y el candidato
+  de activación verifica la huella de `apps/`/`packages/` antes/después.
+- CLI **51/51**, tipos/lint y el comando reproducible verdes. `pnpm check`
+  cerró **63/63** tareas, incluido el workspace paralelo ya visible. No quedó
+  `tenants/{slug}`, D1, dump ni temporal. `tenants/vinyes/` apareció como trabajo
+  paralelo ajeno durante la sesión y se preservó sin leerlo ni modificarlo.
+
 ## Candidato local fail-closed R13 · 2026-08-11 (sesión 130)
 
 - La matriz común de activación inventaría `WORKER`, `TENANT_SLUG`, `DB` y

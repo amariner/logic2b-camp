@@ -91,6 +91,30 @@ describe('frontera local del ensayo de onboarding', () => {
       expect(result.commands.length).toBeGreaterThan(0);
       expect(result.commands.every((command) => command.args.includes('--local'))).toBe(true);
       expect(result.commands.some((command) => command.args.includes('--remote'))).toBe(false);
+      expect(result.timings.totalMs).toBeGreaterThan(0);
+      expect(result.timings.phases.map((phase) => phase.name)).toEqual([
+        'scaffold',
+        'migrations',
+        'seed',
+        'backup',
+        'restore',
+        'activation',
+      ]);
+      expect(result.timings.phases.every((phase) => phase.durationMs >= 0)).toBe(true);
+      expect(result.activation.profiles.map((profile) => profile.tier)).toEqual([1, 2, 3]);
+      expect(result.activation.protectedSourcesFingerprintBefore).toBe(
+        result.activation.protectedSourcesFingerprintAfter,
+      );
+      expect(result.operationalCost).toMatchObject({
+        verdict: 'not_proven',
+        automatedDurationMs: result.timings.totalMs,
+      });
+      expect(result.operationalCost.unmeasuredHumanBlocks).toEqual(
+        expect.arrayContaining(['content_and_identity', 'inventory_and_tariffs', 'acceptance']),
+      );
+      expect(result.operationalCost.externalGates).toEqual(
+        expect.arrayContaining(['cloudflare_resources', 'dns', 'providers', 'deploy']),
+      );
     },
   );
 });

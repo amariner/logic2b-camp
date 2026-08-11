@@ -30,6 +30,15 @@ try {
   console.log(`  esquema: ${result.source.schemaFingerprint}`);
   console.log(`  datos: ${result.source.dataFingerprint}`);
   console.log('✓ mutación detectada y rollback restaurado con la huella lógica exacta');
+  console.log('✓ contrato de activación temporal: tiers 1/2/3, sin proveedor');
+  for (const phase of result.timings.phases) {
+    console.log(`  ${phase.name}: ${phase.durationMs.toFixed(2)} ms`);
+  }
+  console.log(`  total automático con limpieza: ${result.timings.totalMs.toFixed(2)} ms`);
+  console.log(
+    `△ coste de una tarde no acreditado; trabajo humano sin medir: ${result.operationalCost.unmeasuredHumanBlocks.join(', ')}`,
+  );
+  console.log(`  gates externos: ${result.operationalCost.externalGates.join(', ')}`);
   console.log('✓ temporal eliminado; cero tenants y cero D1 persistentes');
 } catch (error) {
   console.error(`✗ ${error instanceof Error ? error.message : String(error)}`);

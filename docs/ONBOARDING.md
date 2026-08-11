@@ -78,7 +78,10 @@ Checklist dentro del propio dashboard para que el camping se sienta dueño del a
 
 - `pnpm onboarding:rehearse {año}` debe cerrar migración → seed → owner →
   exportación → restauración con huellas coincidentes. Es un gate local del
-  carril común; no acredita dominio, binding, secrets ni proveedor reales.
+  carril común; imprime duración por bloque y encadena la auditoría de activación.
+  El total automático no acredita el coste humano ni dominio, binding, secrets o
+  proveedor reales. Mientras falten medidas de contenido, inventario y
+  aceptación, el veredicto debe seguir siendo `not_proven`.
 - `pnpm activation:rehearse` debe cerrar los tres perfiles con adaptadores
   `none`/apagados, solo nombres de secrets y huellas iguales de `apps/` y
   `packages/`. Su UUID sintético y el estado `configured` por nombre no

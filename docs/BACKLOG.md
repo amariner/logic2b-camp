@@ -9,12 +9,13 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
 - **Local ahora, por checkpoint:** R13 aprovisionamiento y onboarding. Scaffold,
   dry-run, migraciones, seed, owner, rollback, bindings, nombres de secrets y
-  adaptadores `none` ya están acreditados sobre temporales. Sigue medir el coste
-  del alta y cerrar la garantía de escritura limitada al candidato; el build y
-  QA completos esperan contenido/identidad aprobados y no autorizan `--apply`,
-  proveedor, dominio ni deploy. Los ensayos que necesiten un entorno real
-  permanecen en su gate. La porción local de R12 está agotada. En paralelo, la
-  decisión de Andreu abre el portfolio
+  adaptadores `none` ya están acreditados sobre temporales. El carril automático
+  medido tarda 7,13 s y no escribe `apps/`/`packages/`; contenido, inventario y
+  aceptación siguen sin medida real, por lo que «una tarde» no se declara aún.
+  Sigue un preflight completo que enumere los bloqueos funcionales del candidato
+  antes de build, sin producir temas ni activos. `--apply`, proveedor, dominio y
+  deploy permanecen cerrados. La porción local de R12 está agotada. En paralelo,
+  la decisión de Andreu abre el portfolio
   completo: Riu Clar, La Duna y El Delta cierran D5-V en 6/6; `serralta` abre
   D6-V y después continúan las cinco restantes. Los temas se entregan
   verticalmente, uno por uno.
@@ -77,6 +78,14 @@ es un gate de producción, no un pendiente local de implementación.
   recurso: binding, valor de auth y DNS permanecen como verificación externa.
   El preflight no admite comandos, el hijo no hereda credenciales y las huellas
   prueban cero cambios en `apps/`/`packages/`.
+- ~~[R13/coste-automatico] Medir el carril local y separar su write-set~~ →
+  **hecho 2026-08-11 (sesión 131)**: el mismo `onboarding:rehearse` encadena la
+  auditoría de activación y entrega tiempos por scaffold, migraciones, seed,
+  backup, restauración y activación. Último total: 7,13 s con limpieza. El
+  informe fija `not_proven` porque contenido/identidad, inventario/tarifas y
+  aceptación no tienen todavía medida de cliente; Cloudflare, DNS, proveedores
+  y deploy permanecen externos. Los hijos usan HOME/config/caché temporales y
+  no heredan secretos ni perfiles.
 - ~~[8.x] Cron de purga/aviso de reservas `pending` colgadas~~ → hecho 2026-07-19 (sesión 26, ADR 0014): SOLO avisa (email interno + `notifications_log`, una vez por reserva), no cancela ni libera inventario — riesgo de cancelar una venta real por lag del webhook. Mismo cron de la purga de holds de la Fase 5 (`apps/api`, genérico). **Purgar de verdad (auto-cancelar) queda declarado para cuando el volumen real lo justifique**, no antes.
 - [8.x] Botón "reintentar el pago" en `/reserva` cuando `pago=cancelado`/queda `pending` mucho tiempo (hoy solo se informa y se remite a recepción) — 2026-07-19
 - ~~[8.x] Pantalla de log de pagos en el dashboard~~ → hecho 2026-07-19 (sesión 24: `GET /api/admin/payments` — `payments` ya era el log completo desde ADR 0011, esta pantalla solo lo hace visible — filtro por proveedor y estado, `/admin/#/pagos`)

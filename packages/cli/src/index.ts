@@ -24,7 +24,10 @@ export {
   type LocalD1Command,
   type LocalOnboardingRehearsalOptions,
   type LocalOnboardingRehearsalResult,
+  type OnboardingOperationalCost,
+  type OnboardingPhaseName,
   type OnboardingSnapshot,
+  type OnboardingTimingReport,
 } from './onboarding-rehearsal';
 export {
   dryRunTenant,

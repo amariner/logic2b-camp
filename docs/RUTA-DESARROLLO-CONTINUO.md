@@ -480,8 +480,10 @@ mentir sobre su estado.
       cabe en el coste operativo definido por CLAUDE.md.
   - [x] Huella antes/después del candidato sintético acredita cero cambios en
         `apps/` y `packages/`, sin dejar tenant ni temporal.
-  - [ ] Medir el carril completo y registrar su coste por bloque antes de afirmar
-        que cabe en una tarde.
+  - [x] El carril automático registra coste por bloque y total con limpieza
+        (7,13 s en la sesión 131) sin duplicar ensayos.
+  - [ ] Medir contenido/identidad, inventario/tarifas y aceptación durante un
+        onboarding real antes de afirmar que el total cabe en una tarde.
 - [ ] Construir el candidato completo, ejecutar verificador de enlaces, tests,
       E2E y QA 1366/375 antes de cualquier publicación.
 - [ ] Publicar la demo cuando haya cambios verificados y autorización; registrar
