@@ -33,7 +33,7 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Ocho campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
+    "texto": "Nueve campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
@@ -112,13 +112,13 @@
         "href": "/demos/vinyes/"
       },
       {
-        "slug": "familiar",
-        "nombre": "Familiar",
-        "estilo": "Cálido y cercano",
+        "slug": "tarongers",
+        "nombre": "Els Tarongers",
+        "estilo": "Gestión · familiar, azahar y sombra",
         "imagen": "/temas/familiar.webp",
         "variante": "family",
-        "estado": "Concepto visual",
-        "href": ""
+        "estado": "Demo navegable",
+        "href": "/demos/tarongers/"
       },
       {
         "slug": "parcela",

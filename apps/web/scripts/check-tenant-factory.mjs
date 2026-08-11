@@ -311,7 +311,8 @@ for (const slug of conceptSlugs) {
     fail(`theme-briefs/${slug}.json: identidad/estado incoherente`);
 }
 const catalog = json(join(repo, 'apps/site/src/content/es.json')).temas.items;
-for (const slug of conceptSlugs) {
+const catalogConceptSlugs = ['parcela'];
+for (const slug of catalogConceptSlugs) {
   const item = catalog.find((candidate) => candidate.slug === slug);
   if (!item || item.href !== '')
     fail(`catálogo ES: el concepto ${slug} debe existir sin enlace navegable`);
@@ -327,5 +328,5 @@ for (const leaked of ['logic2b-demo:pinadamar', 'enq_pinada_web', "'ut_bungalow'
 }
 
 console.log(
-  `[factory] ✓ ${tenantSlugs.length} tenants + plantilla + ${conceptSlugs.length} conceptos cumplen el contrato R8`,
+  `[factory] ✓ ${tenantSlugs.length} tenants + plantilla + ${conceptSlugs.length} briefs (${catalogConceptSlugs.length} en catálogo) cumplen el contrato R8`,
 );

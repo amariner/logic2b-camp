@@ -21,6 +21,7 @@ import type {
 export const isPinadaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'pinadamar';
 export const isSerraltaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'serralta';
 export const isVinyesScenario = import.meta.env.VITE_DEMO_SCENARIO === 'vinyes';
+export const isTarongersScenario = import.meta.env.VITE_DEMO_SCENARIO === 'tarongers';
 
 export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:v1';
 export const PINADA_WEB_ENQUIRY_KEY = 'logic2b-demo:pinadamar:submitted-enquiry:v1';
@@ -28,8 +29,15 @@ export const SERRALTA_STATE_KEY = 'logic2b-demo:serralta:state:v1';
 export const SERRALTA_WEB_ENQUIRY_KEY = 'logic2b-demo:serralta:submitted-enquiry:v1';
 export const VINYES_STATE_KEY = 'logic2b-demo:vinyes:state:v1';
 export const VINYES_WEB_ENQUIRY_KEY = 'logic2b-demo:vinyes:submitted-enquiry:v1';
+export const TARONGERS_STATE_KEY = 'logic2b-demo:tarongers:state:v1';
+export const TARONGERS_WEB_ENQUIRY_KEY = 'logic2b-demo:tarongers:submitted-enquiry:v1';
 
-const activeScenario = isVinyesScenario
+const activeScenario = isTarongersScenario
+  ? {
+      id: 'tarongers', stateKey: TARONGERS_STATE_KEY, enquiryKey: TARONGERS_WEB_ENQUIRY_KEY,
+      bookingPrefix: 'TG', tenantId: 'ten_tarongers', name: 'Camping Els Tarongers', locales: ['es'],
+    }
+  : isVinyesScenario
   ? {
       id: 'vinyes', stateKey: VINYES_STATE_KEY, enquiryKey: VINYES_WEB_ENQUIRY_KEY,
       bookingPrefix: 'VY', tenantId: 'ten_vinyes', name: 'Camping Entre Vinyes', locales: ['es'],
@@ -84,7 +92,16 @@ export const vinyesTypeSpecs = [
   { id: 'ut_caseta', kind: 'lodging' as const, name: 'Caseta de Viña', count: 4, prefix: 'CSV' },
 ] as const;
 
-const typeSpecs = isVinyesScenario
+export const tarongersTypeSpecs = [
+  { id: 'ut_taronger', kind: 'pitch' as const, name: 'Parcela Taronger', count: 60, prefix: 'TAR' },
+  { id: 'ut_sequia', kind: 'pitch' as const, name: 'Parcela Séquia', count: 20, prefix: 'SEQ' },
+  { id: 'ut_azahar', kind: 'lodging' as const, name: 'Bungalow Azahar', count: 14, prefix: 'AZA' },
+  { id: 'ut_naranjal', kind: 'lodging' as const, name: 'Casa Naranjal', count: 6, prefix: 'NAR' },
+] as const;
+
+const typeSpecs = isTarongersScenario
+  ? tarongersTypeSpecs
+  : isVinyesScenario
   ? vinyesTypeSpecs
   : isSerraltaScenario
     ? serraltaTypeSpecs
@@ -100,6 +117,10 @@ const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
       ? 6
       : spec.id === 'ut_bungalow' || spec.id === 'ut_refugio'
         ? 6
+        : spec.id === 'ut_azahar'
+          ? 5
+          : spec.id === 'ut_naranjal'
+            ? 6
         : spec.id === 'ut_cabana' || spec.id === 'ut_cal' || spec.id === 'ut_caseta'
           ? 4
           : 5,
@@ -117,7 +138,8 @@ const units: PlanningUnit[] = typeSpecs.flatMap((spec) =>
     status:
       (spec.prefix === 'B' && index === 11) ||
       (spec.prefix === 'CAB' && index === 7) ||
-      (spec.prefix === 'CAL' && index === 7)
+      (spec.prefix === 'CAL' && index === 7) ||
+      (spec.prefix === 'AZA' && index === 7)
         ? 'inactive'
         : 'active',
   })),
@@ -127,7 +149,6 @@ const catalog: Catalog = {
   unitTypes,
   units,
   extras: [
-    { id: 'ext_cuna', nameI18n: { es: 'Cuna' }, priceCents: 0, per: 'stay', required: false },
     {
       id: 'ext_mascota',
       nameI18n: { es: 'Mascota' },
@@ -175,9 +196,11 @@ const surnames = [
 const locales = activeScenario.locales;
 const statuses: EnquiryStatus[] = ['new', 'new', 'contacted', 'quoted', 'converted', 'lost'];
 const enquiryMessages: Record<string, string> = {
-  es: isVinyesScenario
-    ? 'Queremos venir durante la vendimia y saber qué temporada se aplica a nuestras fechas.'
-    : 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
+  es: isTarongersScenario
+    ? 'Somos dos adultos con niños de 6 y 10 años; preferimos sombra de tarde y necesitamos confirmar el espacio del vehículo.'
+    : isVinyesScenario
+      ? 'Queremos venir durante la vendimia y saber qué temporada se aplica a nuestras fechas.'
+      : 'Nos interesa una ruta de bosque y necesitamos saber cómo está el firme.',
   ca: 'Preferim ombra i una zona tranquil·la. No s’enviarà cap missatge.',
   fr: 'Nous prévoyons une randonnée et souhaitons connaître l’état du sentier.',
   de: 'Wir planen eine Wanderung und möchten den aktuellen Wegezustand wissen.',
@@ -299,6 +322,7 @@ export function resetPinadaScenario(): void {
 
 export const resetSerraltaScenario = resetPinadaScenario;
 export const resetVinyesScenario = resetPinadaScenario;
+export const resetTarongersScenario = resetPinadaScenario;
 
 export const pinadaPlano: PlanoDescriptor = {
   version: 1,
@@ -495,8 +519,53 @@ export const vinyesPlano: PlanoDescriptor = {
   ],
 };
 
-const activePlano = isVinyesScenario
-  ? vinyesPlano
+export const tarongersPlano: PlanoDescriptor = {
+  version: 1,
+  decor: [
+    { kind: 'enclosure', x: 20, y: 20, w: 900, h: 650 },
+    { kind: 'green', x: 36, y: 36, w: 848, h: 72, label: 'Naranjal adulto · sombra norte' },
+    { kind: 'water', x: 824, y: 112, w: 34, h: 470, label: 'Acequia protegida' },
+    { kind: 'road', x: 66, y: 184, w: 720, h: 18 },
+    { kind: 'road', x: 66, y: 382, w: 720, h: 18 },
+    { kind: 'road', x: 442, y: 108, w: 18, h: 492 },
+    {
+      kind: 'service', x: 66, y: 520, w: 150, h: 64,
+      label: 'Recepción y acceso', icon: 'reception',
+    },
+    { kind: 'service', x: 492, y: 232, w: 130, h: 78, label: 'Piscina familiar', icon: 'pool' },
+    { kind: 'service', x: 646, y: 232, w: 92, h: 62, label: 'Baños', icon: 'wc' },
+    { kind: 'service', x: 492, y: 438, w: 110, h: 56, label: 'Tienda y pan', icon: 'shop' },
+    { kind: 'service', x: 624, y: 438, w: 114, h: 56, label: 'Patio de agua', icon: 'playground' },
+    { kind: 'label', x: 696, y: 130, text: 'Linde de la huerta', size: 's' },
+  ],
+  blocks: [
+    {
+      id: 'tarongers_oest', label: 'Tarongers Oest', cell: 'pitch', x: 68, y: 116, cols: 10,
+      units: range('TAR', 30),
+    },
+    {
+      id: 'tarongers_est', label: 'Tarongers Est', cell: 'pitch', x: 68, y: 222, cols: 10,
+      units: range('TAR', 60).slice(30),
+    },
+    {
+      id: 'sequia', label: 'Parcelas Séquia', cell: 'pitch', x: 68, y: 418, cols: 10,
+      units: range('SEQ', 20),
+    },
+    {
+      id: 'bungalows_azahar', label: 'Bungalows Azahar', cell: 'lodging', x: 492, y: 116, cols: 7,
+      units: range('AZA', 14),
+    },
+    {
+      id: 'casas_naranjal', label: 'Casas Naranjal', cell: 'lodging', x: 620, y: 510, cols: 6,
+      units: range('NAR', 6),
+    },
+  ],
+};
+
+const activePlano = isTarongersScenario
+  ? tarongersPlano
+  : isVinyesScenario
+    ? vinyesPlano
   : isSerraltaScenario
     ? serraltaPlano
     : pinadaPlano;
@@ -683,7 +752,14 @@ export async function demoScenarioRequest(
       to,
       unitTypes,
       units,
-      seasons: isVinyesScenario
+      seasons: isTarongersScenario
+        ? [
+            {
+              id: 'sea_verano', name: 'Verano familiar · prioridad 1',
+              dateFrom: '2026-06-21', dateTo: '2026-09-15', priority: 1,
+            },
+          ]
+        : isVinyesScenario
         ? [
             {
               id: 'sea_verano', name: 'Verano · prioridad 1',
@@ -720,9 +796,23 @@ export async function demoScenarioRequest(
         })),
       blocks: [
         {
-          id: isVinyesScenario ? 'block_cal08' : isSerraltaScenario ? 'block_cab08' : 'block_b12',
+          id: isTarongersScenario
+            ? 'block_aza08'
+            : isVinyesScenario
+              ? 'block_cal08'
+              : isSerraltaScenario
+                ? 'block_cab08'
+                : 'block_b12',
           unitId: units.find((unit) =>
-            unit.code === (isVinyesScenario ? 'CAL-08' : isSerraltaScenario ? 'CAB-08' : 'B-12'),
+            unit.code === (
+              isTarongersScenario
+                ? 'AZA-08'
+                : isVinyesScenario
+                  ? 'CAL-08'
+                  : isSerraltaScenario
+                    ? 'CAB-08'
+                    : 'B-12'
+            ),
           )!.id,
           unitTypeId: null,
           dateFrom: iso(1),
@@ -856,4 +946,12 @@ export const vinyesFixtureDefinition = {
   locales: ['es'] as const,
   inactiveUnit: 'CAL-08',
   overlappingSeasons: ['sea_verano', 'sea_vendimia'] as const,
+};
+
+export const tarongersFixtureDefinition = {
+  units: tarongersTypeSpecs.reduce((sum, type) => sum + type.count, 0),
+  typeCount: tarongersTypeSpecs.length,
+  locales: ['es'] as const,
+  inactiveUnit: 'AZA-08',
+  enquiryFocus: ['edades', 'sombra'] as const,
 };

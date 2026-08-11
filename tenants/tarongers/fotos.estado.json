@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-azahar": [
+      {
+        "at": "2026-08-11T10:17:16.645Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": ""
+      },
+      {
+        "at": "2026-08-11T10:17:50.514Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b81369f9-800d-4e7e-8841-4a1944974459",
+        "reusedJob": false,
+        "promptSha256": "6b6fae5b4f9cb552f0be69dabc6cb607e73a9a2ca97423f069e2ab929a35dc05",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:19:06.309Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "87cc4fa5-8378-468a-8f1e-4e3c0383071e",
+        "reusedJob": false,
+        "promptSha256": "6b6fae5b4f9cb552f0be69dabc6cb607e73a9a2ca97423f069e2ab929a35dc05",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:21:45.901Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "2e95ae02-d410-4722-9b29-38ffe1f66da2",
+        "reusedJob": false,
+        "promptSha256": "6b6fae5b4f9cb552f0be69dabc6cb607e73a9a2ca97423f069e2ab929a35dc05",
+        "sourceExtension": ".png",
+        "dimensions": "2688x1520"
+      }
+    ],
+    "hero-acequia": [
+      {
+        "at": "2026-08-11T10:17:16.864Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": ""
+      },
+      {
+        "at": "2026-08-11T10:18:21.938Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "beead8d9-e4f5-497f-93d5-2dbfb10d29f6",
+        "reusedJob": false,
+        "promptSha256": "d0b59e0103227ec11bcc999b7d001f1420687ae70fdac0018648e9316f4f8adb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:19:28.513Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "4edbd196-dee3-4c98-b292-97ec0f832c7e",
+        "reusedJob": false,
+        "promptSha256": "d0b59e0103227ec11bcc999b7d001f1420687ae70fdac0018648e9316f4f8adb",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "tipo-parcela-taronger": [
+      {
+        "at": "2026-08-11T10:22:19.946Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f8f9b424-1215-433d-8ebe-a3d1462c954d",
+        "reusedJob": false,
+        "promptSha256": "2a477163befef7ac292f95fa364c9015ce2bdd10f98c6aa2f421a0085d52536a",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "tipo-parcela-sequia": [
+      {
+        "at": "2026-08-11T10:22:51.230Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "51398b77-e624-4246-a8c1-7664ac7514dd",
+        "reusedJob": false,
+        "promptSha256": "1a56254fc0647d34f1b2e361dbe0f6d9d2288d2eb6c8ce1510da577667e10a5a",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "tipo-bungalow-azahar": [
+      {
+        "at": "2026-08-11T10:23:32.380Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "f2285113-2dae-4edf-a626-3300fe58bad5",
+        "reusedJob": false,
+        "promptSha256": "760baf0313dd31dc88589f31d2d3ed78332ecdc66e199d71c58c77d5fc7c9b10",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:24:49.995Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "5a2c0091-43c1-47b5-b107-d5e6b173350e",
+        "reusedJob": false,
+        "promptSha256": "760baf0313dd31dc88589f31d2d3ed78332ecdc66e199d71c58c77d5fc7c9b10",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:28:15.266Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "0754c791-8e52-4af4-8f6d-330cae96def8",
+        "reusedJob": false,
+        "promptSha256": "760baf0313dd31dc88589f31d2d3ed78332ecdc66e199d71c58c77d5fc7c9b10",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "tipo-casa-naranjal": [
+      {
+        "at": "2026-08-11T10:23:57.809Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "d123ef18-7e98-4bfa-abd9-012a9971c5d8",
+        "reusedJob": false,
+        "promptSha256": "38fda99e12b6e1b5c1b7a6cb5fea2aa598d78637d29193bbc8e125904f55257a",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:25:33.230Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "69956d64-58e9-4661-a08b-da027b9ea915",
+        "reusedJob": false,
+        "promptSha256": "38fda99e12b6e1b5c1b7a6cb5fea2aa598d78637d29193bbc8e125904f55257a",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:30:34.815Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "fe1736c9-1edc-41d1-9488-3c8ba9958eae",
+        "reusedJob": false,
+        "promptSha256": "38fda99e12b6e1b5c1b7a6cb5fea2aa598d78637d29193bbc8e125904f55257a",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T10:31:22.540Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "3a2ce42e-4263-448c-b353-4b364b239013",
+        "reusedJob": false,
+        "promptSha256": "ad2ae68884ff0a7ee9be958e68d653ddc4d2ba13434aa57a8ea8b5fa0a1f4cf3",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:33:20.251Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "1f818dbb-df57-487f-a3c7-29943aa1b580",
+        "reusedJob": false,
+        "promptSha256": "ad2ae68884ff0a7ee9be958e68d653ddc4d2ba13434aa57a8ea8b5fa0a1f4cf3",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      },
+      {
+        "at": "2026-08-11T10:35:35.285Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "jobId": "1e7dc288-95a6-4dab-aa9d-345b1a653d71",
+        "reusedJob": false,
+        "promptSha256": "ad2ae68884ff0a7ee9be958e68d653ddc4d2ba13434aa57a8ea8b5fa0a1f4cf3",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "instalacion-piscina": [
+      {
+        "at": "2026-08-11T10:31:47.932Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "b5ce2a8d-060b-474a-9e48-23a96db975a0",
+        "reusedJob": false,
+        "promptSha256": "af0de6d4efd4a5c12dbf525b82a04b1819034bd810f37db3f4c28b416ef3e372",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-11T10:36:17.121Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "fe2ab96e-fba8-42de-a706-35447b071aac",
+        "reusedJob": false,
+        "promptSha256": "9df69bb0999bc95f87c76bcc8e7f8ff2b4075527f19b2c78cde69f8a1146fb95",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      },
+      {
+        "at": "2026-08-11T10:37:58.723Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "a339e927-f2ad-4576-bf4d-72df30013412",
+        "reusedJob": false,
+        "promptSha256": "9df69bb0999bc95f87c76bcc8e7f8ff2b4075527f19b2c78cde69f8a1146fb95",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "textura-citrico": [
+      {
+        "at": "2026-08-11T10:37:18.484Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "jobId": "4f333e20-a2c9-4968-9904-f9dbc0c6bf5c",
+        "reusedJob": false,
+        "promptSha256": "14d2fcb6c53130ae15ad7ead8290800f81536dfe078dbd1a750dfeddb1fa18ff",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-acequia": {
+      "at": "2026-08-11T10:19:43.064Z",
+      "gate": "visual-inspection"
+    },
+    "hero-azahar": {
+      "at": "2026-08-11T10:21:54.121Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-taronger": {
+      "at": "2026-08-11T10:23:06.430Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela-sequia": {
+      "at": "2026-08-11T10:23:06.430Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-bungalow-azahar": {
+      "at": "2026-08-11T10:30:50.558Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-casa-naranjal": {
+      "at": "2026-08-11T10:30:50.562Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-piscina": {
+      "at": "2026-08-11T10:32:48.207Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-11T10:35:45.102Z",
+      "gate": "visual-inspection"
+    },
+    "textura-citrico": {
+      "at": "2026-08-11T10:37:32.890Z",
+      "gate": "visual-inspection"
+    },
+    "entorno": {
+      "at": "2026-08-11T10:38:10.062Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {
+    "hero-azahar": [
+      {
+        "at": "2026-08-11T10:18:37.074Z",
+        "reason": "Texto pseudo-legible en el césped y señalética ambigua; incumple el contrato sin texto.",
+        "jobId": "b81369f9-800d-4e7e-8841-4a1944974459"
+      },
+      {
+        "at": "2026-08-11T10:19:42.827Z",
+        "reason": "Bloque tipográfico inventado dominante, vehículos con matrículas y exceso de fruta; no sirve como hero sin texto.",
+        "jobId": "87cc4fa5-8378-468a-8f1e-4e3c0383071e"
+      }
+    ],
+    "hero-acequia": [
+      {
+        "at": "2026-08-11T10:18:37.297Z",
+        "reason": "Aparecen una persona y varios vehículos identificables; incumple la escena vacía y sin matrículas.",
+        "jobId": "beead8d9-e4f5-497f-93d5-2dbfb10d29f6"
+      }
+    ],
+    "tipo-bungalow-azahar": [
+      {
+        "at": "2026-08-11T10:24:14.756Z",
+        "reason": "Incluye dos personas y el edificio es grande, de dos plantas, no un bungalow compacto de camping.",
+        "jobId": "f2285113-2dae-4edf-a626-3300fe58bad5"
+      },
+      {
+        "at": "2026-08-11T10:25:45.961Z",
+        "reason": "Hay una persona oculta tras el naranjo y el acceso no tiene la rampa solicitada.",
+        "jobId": "5a2c0091-43c1-47b5-b107-d5e6b173350e"
+      }
+    ],
+    "tipo-casa-naranjal": [
+      {
+        "at": "2026-08-11T10:24:14.988Z",
+        "reason": "Arquitectura incompleta e imposible, sin escala de casa familiar y con altas luces quemadas.",
+        "jobId": "d123ef18-7e98-4bfa-abd9-012a9971c5d8"
+      },
+      {
+        "at": "2026-08-11T10:25:46.192Z",
+        "reason": "Incluye una persona y señalética pseudo-legible; la composición no muestra una casa aislada completa.",
+        "jobId": "69956d64-58e9-4661-a08b-da027b9ea915"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T10:32:47.978Z",
+        "reason": "Incluye una persona y el rótulo legible Recepción, ambos prohibidos por el contrato visual.",
+        "jobId": "3a2ce42e-4263-448c-b353-4b364b239013"
+      },
+      {
+        "at": "2026-08-11T10:33:33.178Z",
+        "reason": "Sigue apareciendo una persona tras la puerta y la imagen está sobreexpuesta; no representa una recepción vacía y cuidada.",
+        "jobId": "1f818dbb-df57-487f-a3c7-29943aa1b580"
+      }
+    ],
+    "entorno": [
+      {
+        "at": "2026-08-11T10:37:32.668Z",
+        "reason": "Hay una señal con texto pseudo-legible a la izquierda; el contrato exige camino sin señalética.",
+        "jobId": "fe2ab96e-fba8-42de-a706-35447b071aac"
+      }
+    ]
+  }
+}

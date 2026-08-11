@@ -62,6 +62,7 @@ const scenarioMarkers = {
   pinadamar: ['usr_demo_pinadamar', 'logic2b-demo:pinadamar'],
   serralta: ['usr_demo_serralta', 'logic2b-demo:serralta'],
   vinyes: ['usr_demo_vinyes', 'logic2b-demo:vinyes'],
+  tarongers: ['usr_demo_tarongers', 'logic2b-demo:tarongers'],
   mardefondo: ['usr_demo_mardefondo', 'MF-DEMO-001'],
 };
 for (const [id, markers] of Object.entries(scenarioMarkers)) {

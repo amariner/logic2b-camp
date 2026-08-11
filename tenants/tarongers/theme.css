@@ -1,0 +1,20 @@
+:root {
+  --lc-tinta: #17312b;
+  --lc-hueso: #fff8e8;
+  --lc-pino: #39704a;
+  --lc-arena: #e7c987;
+  /* Naranja maduro accesible como texto de estado sobre hueso. */
+  --lc-mar: #a34516;
+
+  --lc-pino-oscuro: color-mix(in srgb, var(--lc-pino) 72%, var(--lc-tinta));
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 32%, var(--lc-hueso));
+
+  --lc-font-display: 'DM Serif Display', Georgia, serif;
+  --lc-font-text: 'Nunito Sans', system-ui, sans-serif;
+
+  --lc-radius: 18px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 3px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 6px);
+}

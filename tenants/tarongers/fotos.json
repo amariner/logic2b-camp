@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-T producido para Logic2B con generación integrada y fallback controlado; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping Els Tarongers.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+  },
+  "lotes": [
+    ["hero-azahar", "hero-acequia"],
+    ["tipo-parcela-taronger", "tipo-parcela-sequia"],
+    ["tipo-bungalow-azahar", "tipo-casa-naranjal"],
+    ["instalacion-recepcion", "instalacion-piscina"],
+    ["entorno", "textura-citrico"]
+  ],
+  "derivados": {
+    "fuente": "hero-azahar",
+    "titulo": "Camping Els Tarongers",
+    "subtitulo": "100 unidades · llanura litoral valenciana"
+  },
+  "piezas": {
+    "hero-azahar": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para el titular a 375 y 1366 px.",
+      "prompt": "Fotografía editorial documental panorámica de un camping familiar mediano en una llanura litoral valenciana, al amanecer de primavera. Una calle de grava clara pasa bajo naranjos adultos en flor, con copas verdes reales y azahar blanco discreto; dos parcelas ordenadas y una caravana totalmente genérica muestran escala. Al fondo aparece una recepción baja encalada con cubierta cerámica. Luz suave, atmósfera fresca y amplio espacio negativo a la izquierda para titular. Ninguna persona, rostro, texto, señal legible, matrícula, logotipo, fruta gigantesca, palmera tropical, mar visible, resort, HDR ni saturación naranja."
+    },
+    "hero-acequia": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica del mismo camping entre naranjos a última hora de la tarde. Una acequia histórica estrecha, limpia y creíble discurre fuera de las parcelas, protegida por una barandilla sencilla de madera; al otro lado hay sombra de cítrico, caminos llanos y bungalows bajos encalados. Composición horizontal tranquila con espacio negativo. Ninguna persona, texto, señal, logotipo, puente ornamental, agua azul de piscina, fruta sobredimensionada, arquitectura de lujo, resort, HDR ni saturación."
+    },
+    "tipo-parcela-taronger": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Taronger.",
+      "prompt": "Fotografía editorial documental de una parcela familiar de 78 metros cuadrados en el mismo camping valenciano. Suelo firme de grava fina bajo la copa realista de dos naranjos adultos, conexión eléctrica cerrada y separación vegetal baja. Una caravana compacta totalmente genérica está estacionada sin texto, logotipo o matrícula visible; una mesa vacía y cuatro sillas muestran escala. Luz natural de mañana y sombra moteada. Ninguna persona, fruto gigante, césped artificial, piscina, glamping, HDR ni lujo."
+    },
+    "tipo-parcela-sequia": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Séquia.",
+      "prompt": "Fotografía editorial documental de una parcela amplia de 92 metros cuadrados en el mismo camping. Suelo firme, radio de giro claro y una autocaravana mediana completamente genérica sin texto, marca o matrícula visible. La acequia estrecha queda fuera del perímetro y detrás de una protección continua de madera; naranjos adultos dan sombra parcial. Luz natural de tarde y geometría segura. Ninguna persona, caída peligrosa, agua de piscina, fruta gigante, glamping, HDR o resort."
+    },
+    "tipo-bungalow-azahar": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Bungalow Azahar.",
+      "prompt": "Fotografía arquitectónica editorial de un bungalow familiar compacto para cinco en el mismo camping. Volumen sencillo encalado, cubierta cerámica de poca pendiente, porche profundo, persianas de madera y rampa suave; dos naranjos adultos se integran sin tocar la fachada. Luz clara de mañana, escala modesta y conservación creíble. Ninguna persona, texto, logotipo, jacuzzi, cristal de lujo, porche imposible, fruto gigante, HDR ni resort."
+    },
+    "tipo-casa-naranjal": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Casa Naranjal.",
+      "prompt": "Fotografía arquitectónica editorial de una casa familiar baja para seis en el mismo camping. Tres huecos proporcionados, acabado de cal color hueso, cubierta cerámica y patio sombreado con mesa vacía; varios naranjos adultos rodean el volumen sin convertirlo en una villa privada. Acceso llano, luz suave y escala cotidiana. Ninguna persona, texto, logo, piscina privada, mansión, jacuzzi, arquitectura imposible, HDR ni lujo."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción y acceso del camping.",
+      "prompt": "Fotografía editorial documental de la recepción del mismo camping familiar. Edificio pequeño encalado, zócalo cerámico, porche profundo y mostrador sencillo visible por una puerta abierta, sin papeles ni carteles. Exterior llano de grava con una barrera discreta, aparcabicis y naranjos al fondo. Luz natural cálida y funcionamiento cotidiano. Ninguna persona, rostro, letra, número, palabra, logotipo, pantalla brillante, lujo, HDR ni sombras negras."
+    },
+    "instalacion-piscina": {
+      "aspecto": "3:2",
+      "papel": "Piscina familiar proporcionada y segura.",
+      "prompt": "Fotografía editorial documental de una piscina familiar pequeña y proporcionada dentro del mismo camping, vacía y preparada antes de abrir. Vaso rectangular principal y zona infantil muy baja separada, pavimento antideslizante, vallado discreto, cuatro sombrillas lisas cerradas y naranjos fuera del recinto. Luz limpia de mañana y escala real para un camping de cien unidades. Ninguna persona, texto, logotipo, tobogán gigante, parque acuático, borde infinito, palmera tropical, resort, HDR ni lujo."
+    },
+    "entorno": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno entre huerta y costa.",
+      "prompt": "Fotografía documental panorámica de un camino público llano entre naranjales de la costa valenciana. Acequias estrechas protegidas, lindes bajas, arbolado adulto irregular y una vía verde modesta avanzan hacia una franja luminosa de cielo costero, sin mostrar el mar ni edificios turísticos. Luz suave de primavera, profundidad natural y paisaje agrícola cotidiano. Ninguna persona, bicicleta, texto, señal, logotipo, fruto gigante, postal monumental, saturación ni HDR."
+    },
+    "textura-citrico": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental de hojas de naranjo verde oscuro, dos flores blancas pequeñas de azahar y un fragmento de azulejo valenciano color arena sobre grava clara. Composición horizontal abstracta, botánica realista y luz lateral suave. Sin fruta protagonista, personas, manos, texto, símbolos, logotipos, mosaico legible, gemas, efectos digitales, saturación naranja ni HDR."
+    }
+  }
+}

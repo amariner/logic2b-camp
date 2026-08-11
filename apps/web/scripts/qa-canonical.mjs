@@ -144,6 +144,20 @@ const routes = [
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
   {
+    id: 'tarongers-home',
+    path: '/demos/tarongers/',
+    noindex: true,
+    texts: ['Azahar por la mañana', '80 PARCELAS ENTRE NARANJOS'],
+  },
+  {
+    id: 'tarongers-planning',
+    path: '/demos/tarongers/gestion/#/planning',
+    noindex: true,
+    texts: ['TG-26-', 'Casa Naranjal'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,

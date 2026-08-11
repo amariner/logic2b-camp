@@ -33,7 +33,7 @@
     },
     "kicker": "Visual directions for campsites",
     "titulo": "Your campsite should not look like everyone else's.",
-    "texto": "Eight fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
+    "texto": "Nine fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
     "verTodos": "See all themes",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
@@ -112,13 +112,13 @@
         "href": "/demos/vinyes/"
       },
       {
-        "slug": "familiar",
-        "nombre": "Family",
-        "estilo": "Warm and friendly",
+        "slug": "tarongers",
+        "nombre": "Els Tarongers",
+        "estilo": "Management · families, blossom and shade",
         "imagen": "/temas/familiar.webp",
         "variante": "family",
-        "estado": "Visual concept",
-        "href": ""
+        "estado": "Browsable demo",
+        "href": "/demos/tarongers/"
       },
       {
         "slug": "parcela",

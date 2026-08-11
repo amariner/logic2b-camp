@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "tarongers",
+  "name": "Camping Els Tarongers",
+  "status": "approved-demo",
+  "icp": "Familia propietaria y recepción de un camping costero medio de unas 100 unidades, con parcelas, bungalows y alta demanda de familias con niños.",
+  "objection": "La recepción recibe muchas peticiones parecidas por email y teléfono; necesita responder por fechas y tamaño familiar sin perder el tono cercano del camping.",
+  "commercialLevel": "Gestión, sobre el carril técnico tier 2 y un escenario local reversible.",
+  "story": "Una familia consulta una semana de verano; recepción reconoce edades, sombra y tipo de alojamiento, responde, convierte la solicitud y localiza la estancia en el plano.",
+  "tone": "Luminoso, familiar y práctico; habla de sombra, agua, siesta y distancias reales sin infantilizar ni vender un parque temático.",
+  "palette": {
+    "tinta": "#17312b",
+    "hueso": "#fff8e8",
+    "pino": "#39704a",
+    "arena": "#e7c987",
+    "mar": "#a34516"
+  },
+  "typography": "DM Serif Display para titulares amplios y Nunito Sans para fechas, edades y operación; formas amables sin estética infantil.",
+  "signatureScreens": [
+    "Solicitud familiar con edades y preferencia de sombra visibles",
+    "Planning de 100 unidades con la semana enfocada",
+    "Plano de acequias con parcela y contexto familiar conservados"
+  ],
+  "photoInventory": [
+    "Naranjal en flor al amanecer y acequia al final de la tarde",
+    "Parcelas Taronger y Séquia, bungalow Azahar y casa Naranjal",
+    "Recepción, patio de agua y textura de hoja de cítrico"
+  ],
+  "successCriterion": "El recorrido web a gestor conserva fechas, edades y necesidad de sombra sin red; una captura se reconoce como camping familiar entre naranjos y no como Pinada del Mar con color naranja."
+}
