@@ -10,6 +10,14 @@ export {
   type TechnicalTier,
 } from './activation-rehearsal';
 export {
+  candidateReadinessReport,
+  READINESS_CATEGORIES,
+  type CandidateReadinessBlocker,
+  type CandidateReadinessCategory,
+  type CandidateReadinessInput,
+  type CandidateReadinessReport,
+} from './candidate-readiness';
+export {
   InfraManualStepError,
   InfraNotConfirmedError,
   runInfraPlan,

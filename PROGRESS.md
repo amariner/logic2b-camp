@@ -1,5 +1,26 @@
 # PROGRESS — Logic Camp
 
+## Preflight completo de candidato R13 · 2026-08-11 (sesión 132)
+
+- `candidateReadinessReport` clasifica el scaffold real en cinco categorías
+  tipadas: identidad/legal, contenido, inventario/tarifas, media/tema e
+  infraestructura. Cada bloqueo declara código, ruta y si impide build,
+  publicación o ambos.
+- `pnpm activation:rehearse` devuelve ahora `buildReady=false` y
+  `publishReady=false`: 31 bloqueos de identidad/legal, 1.938 de contenido, 7
+  de inventario/tarifas y 13 de media/tema impiden construir; 4 verificaciones
+  externas de infraestructura impiden publicar. El informe conserva los rojos
+  legítimos sin inventar material para volverlos verdes.
+- D1, el valor de auth y DNS quedan como gates exclusivos de publicación. Una
+  incoherencia entre config, seed y Wrangler bloquea tanto build como publish;
+  las pruebas fijan ambos casos y un candidato estructuralmente listo.
+- El preflight reutiliza `ScaffoldResult` y `ActivationAuditReport`, termina
+  antes de Astro, Wrangler o proveedores, no muestra valores sensibles y vuelve
+  a acreditar huella y limpieza del temporal.
+- Verificación: CLI 54/54 y `pnpm check` 63/63. Se preservaron los cambios
+  concurrentes en `tenants/vinyes/`, `pnpm-lock.yaml` y `tmp/`; no hubo cambios
+  en temas/activos, red, deploy ni infraestructura remota.
+
 ## Coste automático y write-set del alta R13 · 2026-08-11 (sesión 131)
 
 - `onboarding:rehearse` reutiliza ahora el ensayo de activación tras

@@ -38,6 +38,16 @@ describe('ensayo local del candidato de activación', () => {
     expect(temporaries()).toEqual(before);
     expect(result.scaffoldFiles).toBeGreaterThan(0);
     expect(result.scaffoldMarkers).toBeGreaterThan(0);
+    expect(result.readiness).toMatchObject({ buildReady: false, publishReady: false });
+    expect(result.readiness.summary).toMatchObject({
+      identity_legal: expect.any(Number),
+      content: expect.any(Number),
+      inventory_tariffs: expect.any(Number),
+      media_theme: expect.any(Number),
+      infrastructure: expect.any(Number),
+    });
+    expect(result.readiness.blockers.some((blocker) => blocker.path === 'seed.ts')).toBe(true);
+    expect(result.readiness.blockers.some((blocker) => blocker.path === 'theme.css')).toBe(true);
     expect(result.profiles.map((profile) => profile.tier)).toEqual([1, 2, 3]);
     expect(result.protectedSourcesFingerprintAfter).toBe(result.protectedSourcesFingerprintBefore);
     expect(result.candidateFingerprint).toMatch(/^[a-f0-9]{64}$/);

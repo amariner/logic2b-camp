@@ -30,7 +30,11 @@ Necesitas (§5 del super prompt):
    bindings, nombres de secrets y adaptadores esperados. Pagos, correo y
    Hospedajes permanecen en `none`/apagado; `AUTH_SECRET` es solo un nombre y el
    identificador D1 solo una forma sintética dentro de `/tmp`. El informe
-   conserva binding, valor de auth y DNS como verificaciones externas.
+   conserva binding, valor de auth y DNS como verificaciones externas. También
+   clasifica todos los pendientes por identidad/legal, contenido,
+   inventario/tarifas, media/tema e infraestructura, y separa `buildReady` de
+   `publishReady`: los gates externos no impiden por sí solos un build local,
+   pero una incoherencia config↔seed↔Wrangler sí bloquea ambos estados.
 3. Ensaya la identidad concreta sin persistir nada:
    `pnpm new:camping {slug} --name "Nombre real" --domain dominio.com [--zone zona.com] [--address "..."] --dry-run`.
    La CLI valida y normaliza la identidad, genera el conjunto completo en un temporal,
@@ -85,7 +89,10 @@ Checklist dentro del propio dashboard para que el camping se sienta dueño del a
 - `pnpm activation:rehearse` debe cerrar los tres perfiles con adaptadores
   `none`/apagados, solo nombres de secrets y huellas iguales de `apps/` y
   `packages/`. Su UUID sintético y el estado `configured` por nombre no
-  acreditan binding, valor, DNS ni proveedor reales.
+  acreditan binding, valor, DNS ni proveedor reales. El informe de readiness
+  debe mantener separados los bloqueos locales de build y esas verificaciones
+  externas de publicación; no se corrige sustituyendo marcadores con datos
+  inventados.
 - Repite `--dry-run`: misma identidad y fecha deben producir la misma huella y
   `tenants/{slug}` debe seguir inexistente hasta aprobar la creación local.
 - `grep -rn '__[A-Z_]*__' tenants/{slug}/` no debe devolver nada — ni los `__TODO__` de `content/{lang}.json` ni los marcadores de `config.ts`, **incluido el bloque `legal`**: sin él las páginas de aviso legal, privacidad y cookies salen publicadas con huecos.

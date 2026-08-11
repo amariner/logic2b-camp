@@ -20,6 +20,14 @@ try {
     `✓ candidato temporal: ${result.scaffoldFiles} ficheros; huella ${result.candidateFingerprint}`,
   );
   console.log(`  marcadores de alta aún pendientes: ${result.scaffoldMarkers}`);
+  console.log(
+    `${result.readiness.buildReady ? '✓' : '△'} buildReady=${result.readiness.buildReady} · publishReady=${result.readiness.publishReady}`,
+  );
+  console.log(
+    `  bloqueos: ${Object.entries(result.readiness.summary)
+      .map(([category, count]) => `${category}=${count}`)
+      .join(' · ')}`,
+  );
   for (const profile of result.profiles) {
     const adapters = profile.report.adapters
       .map((adapter) => `${adapter.name}=${adapter.adapter}/${adapter.status}`)

@@ -486,6 +486,10 @@ mentir sobre su estado.
         onboarding real antes de afirmar que el total cabe en una tarde.
 - [ ] Construir el candidato completo, ejecutar verificador de enlaces, tests,
       E2E y QA 1366/375 antes de cualquier publicación.
+  - [x] El preflight tipado separa `buildReady` de `publishReady`, clasifica cada
+        bloqueo con código/ruta y falla antes de runners externos.
+  - [ ] Resolver identidad, contenido, inventario/tarifas y media con material
+        real aprobado; después construir y ejecutar enlaces, E2E y QA.
 - [ ] Publicar la demo cuando haya cambios verificados y autorización; registrar
       versión, migraciones, bundle, smoke test y rollback.
 - [ ] Ejecutar `new:camping --apply` y el deploy de cliente únicamente con slug,

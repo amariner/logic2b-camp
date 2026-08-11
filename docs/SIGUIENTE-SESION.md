@@ -1,56 +1,53 @@
-# Prompt para la siguiente sesión — preflight completo R13
+# Prompt para la siguiente sesión — auditoría no visual R15
 
-> Reescrito tras la sesión 131 (2026-08-11). El carril automático y su write-set
-> están medidos; el coste humano y los destinos reales siguen detrás de sus gates.
+> Reescrito tras la sesión 132 (2026-08-11). El preflight R13 ya distingue qué
+> impide construir y qué solo impide publicar; completar un candidato exige
+> material real aprobado.
 
 ## Estado en una línea
 
-`pnpm onboarding:rehearse 2026` completa datos, rollback y activación en 7,13 s
-locales, con procesos aislados en temporales. El siguiente corte debe decir con
-precisión por qué un candidato todavía no puede construir/publicar, sin producir
-temas ni activos para ocultar los bloqueos.
+La plantilla conserva 1.989 bloqueos locales de build —identidad/legal,
+contenido, inventario/tarifas y media/tema— y 4 verificaciones externas de
+publicación. No deben resolverse inventando datos. R14 Camp Motor sigue cerrado.
 
 ## Objetivo prioritario
 
-Cerrar el quinto corte de **R13 · preflight completo de candidato**:
+Abrir el corte no visual de **R15 · integración y cierre del objetivo**:
 
-1. Derivar un informe único desde el scaffold real que clasifique cada marcador
-   pendiente en identidad/legal, contenido, inventario/tarifas, media/tema e
-   infraestructura; no limitarse a contar `__TODO__`.
-2. Crear primero pruebas para un candidato incompleto, uno con incoherencia
-   config↔seed↔Wrangler y uno estructuralmente listo. El preflight debe fallar
-   antes de Astro, Wrangler o cualquier runner externo y dar rutas/códigos
-   accionables sin mostrar valores sensibles.
-3. Reutilizar las validaciones de scaffold y activación. No duplicar esquemas ni
-   resolver automáticamente contenido, precios, temas, fotografía o secrets.
-4. Separar `buildReady` de `publishReady`: un candidato puede estar listo para
-   build local y seguir bloqueado por D1, DNS, auth o proveedor real.
-5. Acreditar el write-set otra vez y documentar qué parte del build/E2E/QA puede
-   ensayarse sin material visual aprobado. No crear ni modificar temas o activos.
+1. Auditar R0–R14 contra evidencia ejecutable y documentos actuales, excluyendo
+   cualquier producción o modificación de temas y activos.
+2. Clasificar cada resto como trabajo local ejecutable, material/decisión de
+   cliente, credencial/proveedor, autorización de producción o gate comercial.
+3. Ejecutar suites dirigidas, `pnpm check`, bundle compuesto y verificadores de
+   enlaces/recursos que no dependan de completar material visual pendiente.
+4. Reconciliar ROADMAP, BACKLOG, PROGRESS y esta guía con los hallazgos, sin
+   reabrir trabajo acreditado ni presentar gates externos como completados.
+5. Si aparece trabajo funcional local de alto valor fuera de temas, resolver el
+   primero con pruebas y volver a auditar. Si no aparece, dejar explícito qué
+   señal o material desbloquea cada resto.
 
 ## Ya verificado — no repetir sin cambio relevante
 
-- Carril automático: 7,13 s total; scaffold 6,54 ms, migraciones 2,91 s, seed
-  1,13 s, backup 0,93 s, restauración 1,94 s y activación 0,21 s.
-- CLI 51/51, config 73/73; ocho migraciones y huellas de seed/datos idénticas.
-- Activación tiers técnicos 1/2/3 con pagos/correo/Hospedajes apagados y solo
-  nombres de secrets.
-- Hijos con HOME/config/caché temporales; cero perfiles, secrets, red, Wrangler
-  remoto, DNS, deploy o residuos.
-- El coste de una tarde sigue `not_proven` hasta medir trabajo humano real.
+- CLI 54/54 y `pnpm check` 63/63 tras el preflight.
+- `pnpm activation:rehearse`: `buildReady=false`, `publishReady=false`; 31 +
+  1.938 + 7 + 13 bloqueos locales y 4 verificaciones externas.
+- Los perfiles técnicos 1/2/3, el carril D1 local, rollback, activación y
+  write-set ya están acreditados en temporales.
+- El preflight termina antes de Astro, Wrangler, red, proveedor o deploy y no
+  expone valores sensibles.
 
 ## Límites de autoridad
 
-- No pasar `--apply`, invocar `--remote`, deploy, DNS, secrets, cuentas ni
+- No tocar `tenants/vinyes/`, `pnpm-lock.yaml`, `tmp/`, temas, fotografía ni
+  activos; son trabajo concurrente o quedan fuera del encargo.
+- No pasar `--apply`, usar `--remote`, deploy, DNS, secrets, cuentas ni
   proveedores.
-- No usar demos existentes como fixture ni tocar `tenants/vinyes/`, temas,
-  fotografía o activos.
-- No inventar contenido legal, inventario, tarifas o IDs para convertir un rojo
-  legítimo en verde.
-- Camp Motor continúa vetado hasta una decisión/pago explícito.
+- No inventar identidad legal, contenido, inventario, tarifas, IDs o material
+  visual para convertir el readiness en verde.
+- No abrir R14 Camp Motor sin decisión/pago explícito.
 
 ## Prompt
 
 ```text
-continúa con el desarrollo de este proyecto
+continúa con el desarrollo de este proyecto, excepto temas
 ```

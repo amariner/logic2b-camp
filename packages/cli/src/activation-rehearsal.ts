@@ -20,6 +20,7 @@ import {
 import { tmpdir } from 'node:os';
 import { join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { candidateReadinessReport, type CandidateReadinessReport } from './candidate-readiness';
 import type { PlanStep } from './plan';
 import { scaffoldTenant, validateTenantIdentity, type TenantIdentity } from './scaffold';
 
@@ -57,6 +58,7 @@ export type LocalActivationRehearsalResult = {
   /** Alias descriptivo conservado para consumidores del primer corte. */
   profiles: ActivationProfileResult[];
   unavailableProfiles: Array<{ name: 'automatiza'; reason: string }>;
+  readiness: CandidateReadinessReport;
 };
 
 export type LocalInspectorRunner = (executable: string, args: string[], cwd: string) => string;
@@ -248,6 +250,18 @@ function candidateFingerprint(profiles: ActivationProfileResult[]): string {
   );
 }
 
+function unresolvedTodos(
+  targetDir: string,
+  setupTodos: Array<{ file: string; todoCount: number }>,
+) {
+  const reports = new Map(setupTodos.map((report) => [report.file, { ...report }]));
+  for (const file of ['config.ts', 'seed.ts', 'theme.css']) {
+    const todoCount = (readFileSync(join(targetDir, file), 'utf8').match(/\bTODO\b/g) ?? []).length;
+    if (todoCount > 0) reports.set(file, { file, todoCount });
+  }
+  return [...reports.values()].sort((left, right) => left.file.localeCompare(right.file));
+}
+
 /**
  * Tercer corte R13: monta un scaffold bajo /tmp, audita tiers 1–3 con
  * pagos/correo apagados y borra el candidato. No invoca Wrangler, DNS,
@@ -317,6 +331,14 @@ export function runLocalActivationRehearsal(
       }
       return { tier, report };
     });
+    const readiness = candidateReadinessReport({
+      placeholders: scaffold.placeholders,
+      todoFiles: unresolvedTodos(scaffold.targetDir, scaffold.setupTodos),
+      activation: {
+        issues: profiles.flatMap((profile) => profile.report.issues),
+        externalVerification: profiles.flatMap((profile) => profile.report.externalVerification),
+      },
+    });
 
     const manifest = {
       identity: { slug: identity.slug, domain: identity.domain, zone: identity.zone },
@@ -355,6 +377,7 @@ export function runLocalActivationRehearsal(
             'No existe un contrato de activación distinto del tier 3: R12 conserva ejecución externa en none/manual.',
         },
       ],
+      readiness,
     };
   } finally {
     if (
