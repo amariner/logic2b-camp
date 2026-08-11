@@ -10,11 +10,12 @@ const portfolioScenarios = [
   'vinyes',
   'tarongers',
   'carrasca',
+  'ballena',
   'mardefondo',
 ] as const;
 if (scenario && !(portfolioScenarios as readonly string[]).includes(scenario)) {
   throw new Error(
-    `VITE_DEMO_SCENARIO inválido: "${scenario}". Usa pinadamar, serralta, vinyes, tarongers, carrasca o mardefondo.`,
+    `VITE_DEMO_SCENARIO inválido: "${scenario}". Usa pinadamar, serralta, vinyes, tarongers, carrasca, ballena o mardefondo.`,
   );
 }
 const basePath = process.env.BASE_PATH?.replace(/\/$/, '');

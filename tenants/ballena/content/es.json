@@ -1,0 +1,437 @@
+{
+  "seo": {
+    "title": "Camping La Ballena — semanas de verano en familia",
+    "description": "Camping familiar ficticio de 250 unidades, parque de agua y estancias semanales de sábado a sábado en verano."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Salinas y costa",
+    "tarifas": "Tarifas",
+    "blog": "Guía de verano",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: reserva, señal, pago y el cambio de turno de sábado son simulados y se restablecen.",
+    "mostrador": "Abrir la reserva en el gestor",
+    "nivel": "Visión",
+    "nivel1": "Inicio",
+    "nivel3": "Visión"
+  },
+  "hero3": {
+    "titulo": "Doscientas cincuenta unidades. El sábado bajo control.",
+    "prueba": "250 unidades · verano de sábado a sábado · parque de agua familiar"
+  },
+  "hero1": {
+    "titulo": "Una semana de agua. Una llegada sencilla.",
+    "cta": "Buscar una semana"
+  },
+  "ticker": [
+    "160 parcelas familiares",
+    "90 bungalows y mobil-homes",
+    "verano con llegada en sábado",
+    "parque de agua incluido",
+    "cambio de turno visible en el gestor"
+  ],
+  "mostrador": {
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "huespedes": "Huéspedes",
+    "adultos": "adultos",
+    "ninos": "niños",
+    "adulto": "adulto",
+    "nino": "niño",
+    "buscar": "Ver semanas disponibles",
+    "buscando": "Buscando…",
+    "desde": "desde",
+    "porEstancia": "por estancia",
+    "unidadesLibres": "libres",
+    "quedanPocas": "quedan pocas",
+    "agotado": "Sin disponibilidad para esas fechas",
+    "agotadoTipo": "Este alojamiento no queda libre en esas fechas.",
+    "verOtros": "Comparar otras opciones",
+    "cerrado": "Cerrado en esas fechas",
+    "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
+    "noEntra": "No disponible para ese grupo",
+    "error": "La demostración no ha podido calcular disponibilidad. Prueba de nuevo.",
+    "fechasInvalidas": "La salida debe ser posterior a la llegada.",
+    "reservar": "Reservar en la demo"
+  },
+  "tipos": {
+    "titulo": "Cuatro formas de vivir la semana",
+    "subtitulo": "Dos parcelas y dos alojamientos para una operación familiar de 250 unidades. En verano, las cuatro categorías entran y salen en sábado.",
+    "verTodo": "Comparar los cuatro alojamientos",
+    "nombres": {
+      "ut_orilla": "Parcela Orilla",
+      "ut_brisa": "Parcela Brisa",
+      "ut_ola": "Bungalow Ola",
+      "ut_marea": "Mobil-home Marea"
+    },
+    "cards": [
+      {
+        "id": "orilla",
+        "nombre": "Parcela Orilla",
+        "desc": "Ochenta y cinco metros cuadrados, 10 A y pino joven de sombra parcial.",
+        "foto": "parcela-orilla"
+      },
+      {
+        "id": "brisa",
+        "nombre": "Parcela Brisa",
+        "desc": "Cien metros cuadrados, 16 A y espacio cómodo para conjuntos largos.",
+        "foto": "parcela-brisa"
+      },
+      {
+        "id": "ola",
+        "nombre": "Bungalow Ola",
+        "desc": "Tres dormitorios, porche y climatización para cinco.",
+        "foto": "bungalow-ola"
+      },
+      {
+        "id": "marea",
+        "nombre": "Mobil-home Marea",
+        "desc": "Tres dormitorios, dos baños y porche cubierto para seis.",
+        "foto": "mobil-marea"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Agua, movimiento y una semana bien organizada.",
+    "texto": "El parque de agua queda en el centro, los alojamientos se distribuyen por anillos tranquilos y recepción convierte el sábado de mayor rotación en una secuencia clara. Costa familiar sin decorado de resort."
+  },
+  "form": {
+    "titulo": "Diseñemos tu cambio de turno sin fricción",
+    "subtitulo": "Esta demostración no envía datos. La semana, la señal y la entrada de sábado son ejemplos ficticios para una conversación de alcance.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "mensaje": "¿Cómo organizas tus llegadas de verano?",
+    "enviar": "Preparar conversación",
+    "enviando": "Preparando…",
+    "ok": "Escenario preparado. No se ha enviado ningún dato.",
+    "error": "No se ha podido preparar la demostración. Reintenta con datos ficticios."
+  },
+  "footer": {
+    "aviso": "Camping familiar ficticio de 250 unidades · demostración Logic2B",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Reserva y gestión por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Alojamientos | Camping La Ballena",
+      "description": "Compara parcelas, bungalow y mobil-home en un camping familiar ficticio de 250 unidades."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías para 250 unidades. Durante el verano, las estancias se reservan por semanas de sábado a sábado antes de confirmar.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Ver disponibilidad",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Bungalows y mobil-homes",
+    "fichas": {
+      "ut_orilla": "Parcela de unos 85 m² con 10 A, sombra parcial y acceso familiar.",
+      "ut_brisa": "Parcela de unos 100 m² con 16 A, maniobra amplia y vegetación baja.",
+      "ut_ola": "Tres dormitorios, baño, cocina, climatización y porche para cinco.",
+      "ut_marea": "Tres dormitorios, dos baños, cocina, climatización y porche para seis."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorios",
+      "banos": "Baños",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada y salida en sábado",
+      "notaPrecios": "Precio ficticio con {n} personas. En verano, el recorrido aplica la semana completa de sábado a sábado.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Servicios del camping | La Ballena",
+      "description": "Parque de agua, club familiar y servicios de cambio de turno en un camping costero ficticio."
+    },
+    "titulo": "Servicios para una semana entera",
+    "intro": "Cada espacio absorbe una parte del ritmo familiar: agua por la mañana, club al mediodía y llegada ordenada en el acceso. Ningún servicio se activa fuera de esta demo.",
+    "items": [
+      {
+        "id": "agua",
+        "nombre": "Parque de agua",
+        "desc": "Piscina baja, dos toboganes moderados, sombra y cerramiento; es un parque acuático de camping, no un resort."
+      },
+      {
+        "id": "club",
+        "nombre": "Club familiar",
+        "desc": "Talleres de mañana y tarde por edades; la reserva real de plazas se confirmaría con recepción."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción de sábado",
+        "desc": "Cuatro puestos, cita de llegada, carros y circuitos separados de entrada y salida."
+      },
+      {
+        "id": "baños",
+        "nombre": "Baños y lavandería",
+        "desc": "Tres bloques, cabinas familiares, cambiador y lavandería de autoservicio."
+      },
+      {
+        "id": "mercado",
+        "nombre": "Mercado y pan",
+        "desc": "Compra cotidiana, pan de mañana y recogida de encargos dentro de la demostración."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Carril y bicicletas",
+        "desc": "Carril interior, inflado y alquiler de prueba; los horarios reales se definirían al activar el camping."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Salinas y costa | La Ballena",
+      "description": "Carril salinero, playa y pueblo desde Camping La Ballena."
+    },
+    "titulo": "La costa se recorre mejor sin promesas infladas",
+    "intro": "Salinas, carril litoral y playa cercana organizan la semana. Recepción separa los trayectos propios de los servicios y accesos que pertenecen a terceros.",
+    "secciones": [
+      {
+        "titulo": "Las salinas",
+        "texto": "Un tramo llano de carril permite pasear al atardecer; la fauna y las restricciones se consultan antes de salir."
+      },
+      {
+        "titulo": "La playa",
+        "texto": "Acceso por camino compartido a quince minutos a pie; la ocupación y las condiciones del mar no dependen del camping."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Mercado, farmacia y estación de bus se concentran en el centro, a ocho minutos en vehículo."
+      },
+      {
+        "titulo": "La marjal",
+        "texto": "Un itinerario en bicicleta pasa por paisaje abierto y sin sombra continua; es conveniente llevar agua."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde recepción",
+      "items": [
+        { "lugar": "Carril de las salinas", "valor": "2 min en bici" },
+        { "lugar": "Playa", "valor": "15 min a pie" },
+        { "lugar": "Pueblo y farmacia", "valor": "8 min en coche" },
+        { "lugar": "Mercado", "valor": "10 min en coche" },
+        { "lugar": "Estación de bus", "valor": "12 min en coche" },
+        { "lugar": "Centro de salud", "valor": "18 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas y condiciones de demostración | La Ballena",
+      "description": "Precios ficticios y estancias semanales de sábado a sábado para parcelas y alojamientos familiares."
+    },
+    "titulo": "Tarifas de demostración",
+    "intro": "Importes ficticios con IVA. Durante el verano se reserva una semana completa de sábado a sábado para que disponibilidad, llegada y operación usen la misma regla.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_previa": "Primavera de agua · 27 marzo – 20 junio",
+      "sea_semanal": "Verano por semanas · 20 junio – 12 septiembre",
+      "sea_final": "Septiembre familiar · 12 septiembre – 25 octubre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos por noche",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 16 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_pulsera": "Pulsera de actividades",
+        "ext_bicicleta": "Alquiler de bicicleta infantil",
+        "ext_cuna": "Cuna de viaje",
+        "ext_mascota": "Mascota en parcela"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de reservar en la demo",
+      "items": [
+        "En verano, las cuatro categorías exigen siete noches con llegada y salida en sábado; antes y después de esa temporada, el mínimo es de dos noches.",
+        "El parque de agua y el club de actividades son descripciones ficticias de una demo; su aforo o programación no se reservan aquí.",
+        "La señal simulada es del 25 %; se devuelve el 100 % hasta 21 días, el 50 % entre 8 y 20 y nada después.",
+        "Pago, depósito y recibo son simulados: no se realiza ningún cargo ni se envían datos."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacto | Camping La Ballena",
+      "description": "Datos ficticios y conversación de alcance para cambios de turno en Logic2B."
+    },
+    "titulo": "Hagamos que el sábado llegue ordenado",
+    "intro": "La Ballena es una demostración. Una activación real definiría calendario, check-in, limpieza, llaves, extras y aforo con la operación del camping.",
+    "datos": { "titulo": "Datos ficticios", "direccion": "Dirección", "telefono": "Teléfono", "email": "Email" },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 8:00–22:00 en verano; las entradas de sábado se escalonan en franjas ficticias."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "Dirección, teléfono y email son ficticios y solo sostienen el recorrido comercial."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Guía de verano | La Ballena",
+      "description": "Información operativa ficticia sobre llegada, agua y costa familiar."
+    },
+    "titulo": "Guía de verano",
+    "intro": "La demo no publica artículos. La sección queda preparada para llegada, actividades y condiciones de costa sin convertirlas en garantías.",
+    "leerMas": "Leer",
+    "volver": "Toda la guía",
+    "vacio": "No hay publicaciones en esta demostración."
+  },
+  "noEncontrada": {
+    "titulo": "Esa ola no llega a esta parcela",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Reserva de demostración | La Ballena",
+      "description": "Compara una estancia semanal familiar y sus reglas antes de un pago totalmente simulado."
+    },
+    "titulo": "Reserva de demostración",
+    "intro": "Elige fechas y grupo. En verano, verás la semana completa de sábado a sábado, la señal y las condiciones antes de un pago sin cargo.",
+    "elegir": "Elegir",
+    "noches": "{n} noches",
+    "detalle": {
+      "estancia": "Tu estancia demo",
+      "extras": "Añadir extras",
+      "incluido": "incluido",
+      "electricidad": "Electricidad",
+      "desglose": "Desglose del precio simulado",
+      "tasaNota": "La reserva de verano se organiza por una semana completa de sábado a sábado.",
+      "depositoNota": "Señal simulada del 25 %: {importe}. No se realizará ningún cargo.",
+      "cancelacionNota": "Cancelación demo: devolución total hasta 21 días, 50 % entre 8 y 20, y sin devolución después.",
+      "total": "Total simulado",
+      "continuar": "Continuar en la demo",
+      "volver": "Volver a los resultados",
+      "error": "No se ha podido calcular el precio de muestra. Prueba de nuevo."
+    },
+    "titular": {
+      "titulo": "Datos ficticios del titular",
+      "hold": "Unidad demo guardada durante {min}",
+      "holdCaducado": "El bloqueo de muestra ha caducado; se comprobará otra vez al confirmar.",
+      "nombre": "Nombre ficticio",
+      "email": "Email de prueba",
+      "telefono": "Teléfono ficticio (opcional)",
+      "notas": "Nota de muestra (opcional)",
+      "condiciones": "Entiendo que es una demostración y que no se realizará ningún cargo.",
+      "confirmar": "Confirmar reserva demo",
+      "confirmando": "Confirmando la demo…",
+      "agotado": "La última unidad de muestra se acaba de ocupar. No se ha cobrado nada.",
+      "error": "No se ha podido confirmar la reserva demo. Prueba de nuevo."
+    },
+    "conceptos": {
+      "price.base": "Estancia",
+      "price.extra_person": "Personas adicionales",
+      "price.child": "Niños",
+      "price.pet": "Mascotas",
+      "price.electricity": "Electricidad",
+      "price.vehicle": "Vehículo adicional",
+      "discount.early_booking": "Descuento anticipado",
+      "discount.long_stay": "Descuento por estancia larga",
+      "discount.acsi": "Descuento asociado"
+    },
+    "errores": {
+      "stay.closed": "Cerrado en esas fechas.",
+      "stay.min_stay": "Estancia mínima de {minStay} noches.",
+      "stay.max_stay": "Estancia máxima de {maxStay} noches.",
+      "stay.arrival_day": "En verano, la llegada debe ser en sábado.",
+      "stay.departure_day": "En verano, la salida debe ser en sábado.",
+      "stay.capacity": "Ese alojamiento admite {capacityMax} personas como máximo.",
+      "stay.capacity_min": "Ocupación mínima de {capacityMin} personas.",
+      "stay.no_adults": "Hace falta al menos un adulto.",
+      "stay.no_pets": "Ese alojamiento no admite mascotas.",
+      "stay.no_electricity": "Esa parcela no tiene conexión eléctrica.",
+      "stay.no_rate": "No hay tarifa publicada para parte de la estancia.",
+      "stay.invalid_dates": "Revisa las fechas."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Recibo DEMO | La Ballena",
+      "description": "Recibo de reserva ficticio de una semana familiar; no se ha realizado ningún cargo."
+    },
+    "titulo": "Tu reserva de demostración",
+    "nueva": "Reserva demo confirmada. Pago simulado · no se ha realizado ningún cargo.",
+    "buscar": {
+      "intro": "Introduce el código y email ficticios del escenario.",
+      "codigo": "Código demo",
+      "email": "Email de prueba",
+      "ver": "Ver recibo DEMO",
+      "buscando": "Buscando…",
+      "noEncontrada": "No existe una reserva demo con esos datos."
+    },
+    "estado": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada · DEMO",
+      "cancelled": "Cancelada",
+      "no_show": "No presentada",
+      "completed": "Completada"
+    },
+    "campos": {
+      "llegada": "Llegada",
+      "salida": "Salida",
+      "alojamiento": "Alojamiento",
+      "huespedes": "Huéspedes ficticios",
+      "noches": "Noches",
+      "total": "Total simulado",
+      "pagado": "Pago simulado",
+      "tasa": "Semana de verano"
+    },
+    "imprimir": "Imprimir recibo DEMO",
+    "cancelar": {
+      "boton": "Cancelar reserva demo",
+      "aviso": "Según la política ficticia visible al reservar, la devolución simulada sería del {pct} %: {importe}.",
+      "confirmar": "Sí, cancelar en la demo",
+      "volver": "Mantener la reserva",
+      "hecha": "Reserva demo cancelada.",
+      "error": "No se ha podido cancelar el escenario."
+    },
+    "modificar": {
+      "boton": "Cambiar fechas",
+      "titulo": "Nuevas fechas",
+      "nota": "En verano, solo se aceptan semanas completas que empiezan y terminan en sábado.",
+      "aplicar": "Preparar cambio",
+      "aplicando": "Preparando…",
+      "hecho": "Fechas actualizadas. Nuevo total simulado: {importe}.",
+      "noDisponible": "No hay disponibilidad de muestra para esas fechas.",
+      "error": "No se ha podido preparar el cambio."
+    },
+    "pago": {
+      "esperando": "Confirmando el pago simulado… no se realizará ningún cargo.",
+      "cancelado": "Pago demo cancelado. No se ha realizado ningún cargo.",
+      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo."
+    }
+  }
+}

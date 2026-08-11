@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-olas": [
+      {
+        "at": "2026-08-11T20:26:19.775Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "a69a16c4e7484ec1a9c4809a7013f100e91259753ac96269ba8fe64a902f6c5d",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
+      }
+    ],
+    "hero-sabado": [
+      {
+        "at": "2026-08-11T20:27:45.225Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "2ba3123ec1e4ace7460598ca6e5967286ecf375a0518c75a39a96a54b33ef156",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
+      }
+    ],
+    "parcela-orilla": [
+      {
+        "at": "2026-08-11T20:30:05.595Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "a3680b26e8c04f0491a4f79f13d23c8978420be384e0139eafb340c773f6508e",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "parcela-brisa": [
+      {
+        "at": "2026-08-11T20:30:13.055Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "682ab57ca14249857ae0cac63078dd38a6be96efa21833d8fbaf90279f064f5a",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "bungalow-ola": [
+      {
+        "at": "2026-08-11T20:31:50.662Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "58887b6b6946b38d1b1241e3d211104002cadaf308dd3e49915609a571d14c9c",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "mobil-marea": [
+      {
+        "at": "2026-08-11T20:31:57.314Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "8659ba6de5781fb474534ffc6dc3fc78da9d2f7094656b4fde7b7c38c4d5f64d",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-11T20:33:32.684Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "e03b59ccfecc072bb9aaf4f1b8886f789a69f22a4b3233e171f429970a5ab142",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "instalacion-agua": [
+      {
+        "at": "2026-08-11T20:33:40.018Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "89b98c61aeede88012997c8b9362c19e9e9193cadc25820a2267c02328dc2a72",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "entorno-salinas": [
+      {
+        "at": "2026-08-11T20:35:26.551Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "8e27b68b6c6cb0c068db29470384aed998bf08061227ffa8759f5b4f69769814",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
+      }
+    ],
+    "textura-azulejo": [
+      {
+        "at": "2026-08-11T20:35:38.232Z",
+        "provider": "codex-integrated",
+        "model": "gpt-image-2",
+        "status": "staged",
+        "promptSha256": "2b9e30c34e9b28ed0ce7f31f2fac18e42ede1255b2419b6191be61e728771fa7",
+        "sourceExtension": ".png",
+        "dimensions": "2100x900"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-olas": {
+      "at": "2026-08-11T20:27:49.123Z",
+      "gate": "visual-inspection"
+    },
+    "hero-sabado": {
+      "at": "2026-08-11T20:27:49.125Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-orilla": {
+      "at": "2026-08-11T20:30:23.454Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-brisa": {
+      "at": "2026-08-11T20:30:23.470Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-ola": {
+      "at": "2026-08-11T20:32:02.271Z",
+      "gate": "visual-inspection"
+    },
+    "mobil-marea": {
+      "at": "2026-08-11T20:32:02.278Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-11T20:33:45.186Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-agua": {
+      "at": "2026-08-11T20:33:45.189Z",
+      "gate": "visual-inspection"
+    },
+    "entorno-salinas": {
+      "at": "2026-08-11T20:36:45.873Z",
+      "gate": "visual-inspection"
+    },
+    "textura-azulejo": {
+      "at": "2026-08-11T20:36:45.875Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {}
+}

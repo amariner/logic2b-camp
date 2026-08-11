@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "ballena",
+  "name": "Camping La Ballena",
+  "status": "approved-demo",
+  "icp": "Dirección y recepción de un gran camping familiar costero de unas 250 unidades, con picos de agosto, animación propia y muchas llegadas coordinadas.",
+  "objection": "La familia ve ocio y disponibilidad, pero recepción necesita que una rotación de sábado no se convierta en mensajes dispersos, errores de estancia ni una mañana imposible.",
+  "commercialLevel": "Visión, sobre el carril técnico tier 3 con reserva y operación locales.",
+  "story": "Una familia compara una semana de agua y animación, entiende que la llegada de verano es en sábado y abre en el gestor un planning preparado para el cambio de turno.",
+  "tone": "Ágil, luminoso y familiar; ordena una operación intensa sin prometer un resort ni infantilizar a quien reserva.",
+  "palette": {
+    "tinta": "#152c3d",
+    "hueso": "#f5f2e9",
+    "pino": "#006875",
+    "arena": "#e7b75f",
+    "mar": "#9b3d2a"
+  },
+  "typography": "DM Serif Display para titulares de vacaciones y IBM Plex Sans para horarios, capacidades y el cambio de turno.",
+  "signatureScreens": [
+    "Portada de parque acuático compacto con disponibilidad de semana completa",
+    "Resultado de reserva que explica la llegada de sábado y siete noches",
+    "Planning de 250 unidades con ocupación alta y entrada agrupada"
+  ],
+  "photoInventory": [
+    "Héroes de agua, calle familiar y costa salinera",
+    "Parcelas, bungalow Ola y mobil-home Marea",
+    "Recepción de sábado, parque de agua, club y textura de baldosa azul"
+  ],
+  "successCriterion": "Una captura se reconoce como un camping familiar de agua y rotación semanal; la reserva y el gestor hacen legible un sábado intenso sin usar la estética de Mar de Fondo ni La Carrasca."
+}

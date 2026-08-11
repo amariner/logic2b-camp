@@ -33,7 +33,7 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Nueve campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
+    "texto": "Once campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
@@ -128,6 +128,15 @@
         "variante": "natural",
         "estado": "Demo navegable",
         "href": "/demos/carrasca/"
+      },
+      {
+        "slug": "ballena",
+        "nombre": "La Ballena",
+        "estilo": "Visión · familiar, agua y cambio de turno",
+        "imagen": "/temas/familiar.webp",
+        "variante": "family",
+        "estado": "Demo navegable",
+        "href": "/demos/ballena/"
       },
       {
         "slug": "parcela",

@@ -18,9 +18,10 @@ web_demos=(
   "vinyes:2"
   "tarongers:2"
   "carrasca:3"
+  "ballena:3"
   "mardefondo:3"
 )
-manager_demos=(pinadamar serralta vinyes tarongers carrasca mardefondo)
+manager_demos=(pinadamar serralta vinyes tarongers carrasca ballena mardefondo)
 
 pnpm --filter @logic-camp/site build
 BASE_PATH=/demo pnpm --filter @logic-camp/web build

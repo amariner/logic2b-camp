@@ -33,7 +33,7 @@
     },
     "kicker": "Visual directions for campsites",
     "titulo": "Your campsite should not look like everyone else's.",
-    "texto": "Nine fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
+    "texto": "Eleven fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
     "verTodos": "See all themes",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
@@ -128,6 +128,15 @@
         "variante": "natural",
         "estado": "Browsable demo",
         "href": "/demos/carrasca/"
+      },
+      {
+        "slug": "ballena",
+        "nombre": "La Ballena",
+        "estilo": "Vision · family, water and changeover",
+        "imagen": "/temas/familiar.webp",
+        "variante": "family",
+        "estado": "Browsable demo",
+        "href": "/demos/ballena/"
       },
       {
         "slug": "parcela",

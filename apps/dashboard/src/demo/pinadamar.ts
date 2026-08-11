@@ -23,6 +23,7 @@ export const isSerraltaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'serral
 export const isVinyesScenario = import.meta.env.VITE_DEMO_SCENARIO === 'vinyes';
 export const isTarongersScenario = import.meta.env.VITE_DEMO_SCENARIO === 'tarongers';
 export const isCarrascaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'carrasca';
+export const isBallenaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'ballena';
 
 export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:v1';
 export const PINADA_WEB_ENQUIRY_KEY = 'logic2b-demo:pinadamar:submitted-enquiry:v1';
@@ -34,8 +35,20 @@ export const TARONGERS_STATE_KEY = 'logic2b-demo:tarongers:state:v1';
 export const TARONGERS_WEB_ENQUIRY_KEY = 'logic2b-demo:tarongers:submitted-enquiry:v1';
 export const CARRASCA_STATE_KEY = 'logic2b-demo:carrasca:state:v1';
 export const CARRASCA_WEB_ENQUIRY_KEY = 'logic2b-demo:carrasca:submitted-enquiry:v1';
+export const BALLENA_STATE_KEY = 'logic2b-demo:ballena:state:v1';
+export const BALLENA_WEB_ENQUIRY_KEY = 'logic2b-demo:ballena:submitted-enquiry:v1';
 
-const activeScenario = isCarrascaScenario
+const activeScenario = isBallenaScenario
+  ? {
+      id: 'ballena',
+      stateKey: BALLENA_STATE_KEY,
+      enquiryKey: BALLENA_WEB_ENQUIRY_KEY,
+      bookingPrefix: 'BL',
+      tenantId: 'ten_ballena',
+      name: 'Camping La Ballena',
+      locales: ['es'],
+    }
+  : isCarrascaScenario
   ? {
       id: 'carrasca',
       stateKey: CARRASCA_STATE_KEY,
@@ -151,7 +164,16 @@ export const carrascaTypeSpecs = [
   { id: 'ut_umbria', kind: 'lodging' as const, name: 'Casa Umbría', count: 16, prefix: 'UMB' },
 ] as const;
 
-const typeSpecs = isCarrascaScenario
+export const ballenaTypeSpecs = [
+  { id: 'ut_orilla', kind: 'pitch' as const, name: 'Parcela Orilla', count: 110, prefix: 'ORI' },
+  { id: 'ut_brisa', kind: 'pitch' as const, name: 'Parcela Brisa', count: 50, prefix: 'BRI' },
+  { id: 'ut_ola', kind: 'lodging' as const, name: 'Bungalow Ola', count: 54, prefix: 'OLA' },
+  { id: 'ut_marea', kind: 'lodging' as const, name: 'Mobil-home Marea', count: 36, prefix: 'MAR' },
+] as const;
+
+const typeSpecs = isBallenaScenario
+  ? ballenaTypeSpecs
+  : isCarrascaScenario
   ? carrascaTypeSpecs
   : isTarongersScenario
     ? tarongersTypeSpecs
@@ -169,6 +191,8 @@ const unitTypes: Catalog['unitTypes'] = typeSpecs.map((spec) => ({
   capacityMax:
     spec.kind === 'pitch'
       ? 6
+      : spec.id === 'ut_marea'
+        ? 6
       : spec.id === 'ut_bungalow' || spec.id === 'ut_refugio'
         ? 6
         : spec.id === 'ut_bellota'
@@ -201,7 +225,8 @@ const units: PlanningUnit[] = typeSpecs.flatMap((spec) =>
       (spec.prefix === 'CAB' && index === 7) ||
       (spec.prefix === 'CAL' && index === 7) ||
       (spec.prefix === 'AZA' && index === 7) ||
-      (spec.prefix === 'BEL' && index === 7)
+      (spec.prefix === 'BEL' && index === 7) ||
+      (spec.prefix === 'OLA' && index === 17)
         ? 'inactive'
         : 'active',
   })),
@@ -228,6 +253,10 @@ const preferredCodeByType: Record<string, string> = {
   ut_carrascal: 'CAR-08',
   ut_bellota: 'BEL-06',
   ut_umbria: 'UMB-02',
+  ut_orilla: 'ORI-08',
+  ut_brisa: 'BRI-08',
+  ut_ola: 'OLA-06',
+  ut_marea: 'MAR-06',
 };
 
 const catalog: Catalog = {
@@ -281,7 +310,9 @@ const surnames = [
 const locales = activeScenario.locales;
 const statuses: EnquiryStatus[] = ['new', 'new', 'contacted', 'quoted', 'converted', 'lost'];
 const enquiryMessages: Record<string, string> = {
-  es: isCarrascaScenario
+  es: isBallenaScenario
+    ? 'Queremos una semana completa en agosto y necesitamos saber si toda la familia puede llegar el sábado en la misma franja.'
+    : isCarrascaScenario
     ? 'Necesitamos ver la tasa regional, la señal y qué devolución se aplicaría si cancelamos antes de confirmar.'
     : isTarongersScenario
       ? 'Somos dos adultos con niños de 6 y 10 años; preferimos sombra de tarde y necesitamos confirmar el espacio del vehículo.'
@@ -326,6 +357,42 @@ export const baseEnquiries: EnquiryItem[] = Array.from({ length: 42 }, (_, index
 type DemoBooking = BookingListItem & { locale: string; guestEmail: string };
 
 function baseBookings(): DemoBooking[] {
+  if (isBallenaScenario) {
+    const weeklyUnits = units.filter((unit) => unit.status === 'active');
+    return weeklyUnits.map((unit, index) => {
+      // Tres olas de sábados consecutivos: la ocupación del planning se acerca
+      // al límite y recepción puede filtrar una llegada masiva sin datos reales.
+      const dateFrom = iso(1 + (index % 3) * 7);
+      const dateTo = addDays(dateFrom, 7);
+      const totalCents = 108000 + (index % 12) * 7600;
+      return {
+        id: `book_ballena_${String(index + 1).padStart(3, '0')}`,
+        code: `BL-26-${String(index + 1).padStart(4, '0')}`,
+        status: index % 17 === 0 ? 'pending' : 'confirmed',
+        channel: index % 3 === 0 ? 'phone' : 'web',
+        dateFrom,
+        dateTo,
+        unitTypeId: unit.unitTypeId,
+        unitId: unit.id,
+        unitCode: unit.code,
+        leadName: `${firstNames[(index + 4) % firstNames.length]} ${surnames[(index + 3) % surnames.length]}`,
+        occupancy: {
+          adults: 2,
+          childrenAges: index % 2 === 0 ? [5, 9] : [7],
+          pets: unit.unitTypeId.startsWith('ut_') && index % 11 === 0 ? 1 : 0,
+          vehicles: 1,
+        },
+        totalCents,
+        paidCents: index % 5 === 0 ? 0 : Math.round(totalCents * 0.25),
+        notes: index % 8 === 0 ? 'Llegada de sábado: franja de acceso asignada en la demo.' : null,
+        checkedInAt: null,
+        checkedOutAt: null,
+        createdAt: `2026-07-${String(1 + (index % 28)).padStart(2, '0')}T10:00:00.000Z`,
+        locale: 'es',
+        guestEmail: `semana${index + 1}@example.test`,
+      };
+    });
+  }
   return Array.from({ length: 84 }, (_, index) => {
     const unit = units[(index * 13) % units.length]!;
     const start = 1 + ((index * 5) % 27);
@@ -352,7 +419,10 @@ function baseBookings(): DemoBooking[] {
         vehicles: 1,
       },
       totalCents,
-      paidCents: index % 5 === 0 ? 0 : Math.round(totalCents * (isCarrascaScenario ? 0.3 : 0.35)),
+      paidCents:
+        index % 5 === 0
+          ? 0
+          : Math.round(totalCents * (isCarrascaScenario ? 0.3 : isBallenaScenario ? 0.25 : 0.35)),
       notes: index % 8 === 0 ? 'Llegada prevista después de las 18:00.' : null,
       checkedInAt: inHouse ? `${iso(6)}T10:20:00.000Z` : null,
       checkedOutAt: null,
@@ -364,9 +434,10 @@ function baseBookings(): DemoBooking[] {
 }
 
 function readPublicBookings(): DemoBooking[] {
-  if (!isCarrascaScenario || typeof localStorage === 'undefined') return [];
+  if ((!isCarrascaScenario && !isBallenaScenario) || typeof localStorage === 'undefined') return [];
   try {
-    const raw = localStorage.getItem('logic2b-demo:carrasca:public-bookings:v1');
+    const slug = isBallenaScenario ? 'ballena' : 'carrasca';
+    const raw = localStorage.getItem(`logic2b-demo:${slug}:public-bookings:v1`);
     if (!raw) return [];
     const items = JSON.parse(raw) as Array<{
       code: string;
@@ -386,7 +457,7 @@ function readPublicBookings(): DemoBooking[] {
       if (!unit || !item.code || !item.dateFrom || !item.dateTo) return [];
       return [
         {
-          id: `book_carrasca_public_${item.code.toLowerCase().replaceAll('-', '_')}`,
+          id: `book_${slug}_public_${item.code.toLowerCase().replaceAll('-', '_')}`,
           code: item.code,
           status: item.status,
           channel: 'web',
@@ -399,12 +470,14 @@ function readPublicBookings(): DemoBooking[] {
           occupancy: item.occupancy,
           totalCents: item.totalCents,
           paidCents: item.paidCents,
-          notes: 'Reserva creada en la web demo con tasa, señal y cancelación ficticias.',
+          notes: isBallenaScenario
+            ? 'Reserva creada en la web demo con semana, sábado y señal ficticios.'
+            : 'Reserva creada en la web demo con tasa, señal y cancelación ficticias.',
           checkedInAt: null,
           checkedOutAt: null,
           createdAt: '2026-08-11T12:00:00.000Z',
           locale: 'es',
-          guestEmail: item.email ?? 'reserva.carrasca@example.test',
+          guestEmail: item.email ?? `reserva.${slug}@example.test`,
         },
       ];
     });
@@ -458,12 +531,14 @@ export function resetPinadaScenario(): void {
   if (isCarrascaScenario) {
     localStorage.removeItem('logic2b-demo:carrasca:public-bookings:v1');
   }
+  if (isBallenaScenario) localStorage.removeItem('logic2b-demo:ballena:public-bookings:v1');
 }
 
 export const resetSerraltaScenario = resetPinadaScenario;
 export const resetVinyesScenario = resetPinadaScenario;
 export const resetTarongersScenario = resetPinadaScenario;
 export const resetCarrascaScenario = resetPinadaScenario;
+export const resetBallenaScenario = resetPinadaScenario;
 
 export const pinadaPlano: PlanoDescriptor = {
   version: 1,
@@ -843,7 +918,81 @@ export const carrascaPlano: PlanoDescriptor = {
   ],
 };
 
-const activePlano = isCarrascaScenario
+export const ballenaPlano: PlanoDescriptor = {
+  version: 1,
+  decor: [
+    { kind: 'enclosure', x: 20, y: 20, w: 900, h: 650 },
+    { kind: 'green', x: 36, y: 36, w: 848, h: 74, label: 'Pinar joven · linde norte' },
+    { kind: 'road', x: 66, y: 184, w: 726, h: 18 },
+    { kind: 'road', x: 66, y: 382, w: 726, h: 18 },
+    { kind: 'road', x: 454, y: 108, w: 18, h: 492 },
+    {
+      kind: 'service',
+      x: 64,
+      y: 526,
+      w: 156,
+      h: 68,
+      label: 'Recepción de sábado',
+      icon: 'reception',
+    },
+    { kind: 'service', x: 506, y: 224, w: 146, h: 86, label: 'Parque de agua', icon: 'pool' },
+    { kind: 'service', x: 674, y: 224, w: 100, h: 64, label: 'Club familiar', icon: 'playground' },
+    { kind: 'service', x: 506, y: 426, w: 108, h: 58, label: 'Baños', icon: 'wc' },
+    { kind: 'service', x: 638, y: 426, w: 136, h: 58, label: 'Mercado y pan', icon: 'shop' },
+    { kind: 'label', x: 690, y: 130, text: 'Entrada escalonada', size: 's' },
+  ],
+  blocks: [
+    {
+      id: 'orilla_oeste',
+      label: 'Parcelas Orilla Oeste',
+      cell: 'pitch',
+      x: 66,
+      y: 116,
+      cols: 11,
+      units: range('ORI', 55),
+    },
+    {
+      id: 'orilla_este',
+      label: 'Parcelas Orilla Este',
+      cell: 'pitch',
+      x: 66,
+      y: 220,
+      cols: 11,
+      units: range('ORI', 110).slice(55),
+    },
+    {
+      id: 'brisa',
+      label: 'Parcelas Brisa',
+      cell: 'pitch',
+      x: 66,
+      y: 416,
+      cols: 10,
+      units: range('BRI', 50),
+    },
+    {
+      id: 'olas',
+      label: 'Bungalows Ola',
+      cell: 'lodging',
+      x: 506,
+      y: 116,
+      cols: 9,
+      units: range('OLA', 54),
+    },
+    {
+      id: 'mareas',
+      label: 'Mobil-homes Marea',
+      cell: 'lodging',
+      x: 638,
+      y: 510,
+      cols: 9,
+      units: range('MAR', 36),
+    },
+  ],
+};
+
+const activePlano = isBallenaScenario
+  ? ballenaPlano
+  : isCarrascaScenario
   ? carrascaPlano
   : isTarongersScenario
     ? tarongersPlano
@@ -867,7 +1016,9 @@ function bookingDetail(booking: DemoBooking): BookingDetail {
   );
   const touristTaxCents = isCarrascaScenario
     ? Math.min(nights, 7) * booking.occupancy.adults * 120
-    : 420;
+    : isBallenaScenario
+      ? 0
+      : 420;
   return {
     ...booking,
     priceBreakdown: {
@@ -879,7 +1030,9 @@ function bookingDetail(booking: DemoBooking): BookingDetail {
       currency: 'EUR',
     },
     touristTaxCents,
-    depositCents: Math.round(booking.totalCents * (isCarrascaScenario ? 0.3 : 0.35)),
+    depositCents: Math.round(
+      booking.totalCents * (isCarrascaScenario ? 0.3 : isBallenaScenario ? 0.25 : 0.35),
+    ),
     paymentKind: booking.paidCents > 0 ? 'card' : null,
     locale: booking.locale,
     guests: [
@@ -954,8 +1107,8 @@ function convertEnquiry(state: ScenarioState, enquiry: EnquiryItem): DemoBooking
     code: `${activeBookingPrefix}-26-${String(index).padStart(4, '0')}`,
     status: 'confirmed',
     channel: 'web',
-    dateFrom: enquiry.dateFrom ?? iso(18),
-    dateTo: enquiry.dateTo ?? iso(24),
+    dateFrom: enquiry.dateFrom ?? (isBallenaScenario ? iso(15) : iso(18)),
+    dateTo: enquiry.dateTo ?? (isBallenaScenario ? iso(22) : iso(24)),
     unitTypeId: requestedType,
     unitId: unit.id,
     unitCode: unit.code,
@@ -1016,7 +1169,7 @@ export async function demoScenarioRequest(
       id: activeScenario.tenantId,
       slug: activeScenarioId,
       name: activeScenario.name,
-      tier: isCarrascaScenario ? 3 : 2,
+      tier: isCarrascaScenario || isBallenaScenario ? 3 : 2,
       timezone: 'Europe/Madrid',
       currency: 'EUR',
       locales: [...activeScenario.locales],
@@ -1037,7 +1190,17 @@ export async function demoScenarioRequest(
       to,
       unitTypes,
       units,
-      seasons: isCarrascaScenario
+      seasons: isBallenaScenario
+        ? [
+            {
+              id: 'sea_semanal',
+              name: 'Verano por semanas · sábado a sábado · prioridad 2',
+              dateFrom: '2026-06-20',
+              dateTo: '2026-09-12',
+              priority: 2,
+            },
+          ]
+        : isCarrascaScenario
         ? [
             {
               id: 'sea_verano',
@@ -1104,7 +1267,9 @@ export async function demoScenarioRequest(
         })),
       blocks: [
         {
-          id: isTarongersScenario
+          id: isBallenaScenario
+            ? 'block_ola18'
+            : isTarongersScenario
             ? 'block_aza08'
             : isCarrascaScenario
               ? 'block_bel08'
@@ -1116,7 +1281,9 @@ export async function demoScenarioRequest(
           unitId: units.find(
             (unit) =>
               unit.code ===
-              (isTarongersScenario
+              (isBallenaScenario
+                ? 'OLA-18'
+                : isTarongersScenario
                 ? 'AZA-08'
                 : isCarrascaScenario
                   ? 'BEL-08'
@@ -1226,7 +1393,11 @@ export async function demoScenarioRequest(
       breakdown: {
         lines: [{ concept: 'stay', detail: { nights }, amountCents: totalCents }],
         totalCents,
-        touristTaxCents: isCarrascaScenario ? Math.min(nights, 7) * 2 * 120 : nights * 70,
+        touristTaxCents: isCarrascaScenario
+          ? Math.min(nights, 7) * 2 * 120
+          : isBallenaScenario
+            ? 0
+            : nights * 70,
         currency: 'EUR',
       },
       unitId: body.unitId ?? booking.unitId,
@@ -1275,4 +1446,12 @@ export const carrascaFixtureDefinition = {
   inactiveUnit: 'BEL-08',
   touristTax: { adultCents: 120, maxNights: 7 } as const,
   cancellationDays: [14, 7, 0] as const,
+};
+
+export const ballenaFixtureDefinition = {
+  units: ballenaTypeSpecs.reduce((sum, type) => sum + type.count, 0),
+  typeCount: ballenaTypeSpecs.length,
+  locales: ['es'] as const,
+  inactiveUnit: 'OLA-18',
+  weeklyRotation: { minStay: 7, arrivalDays: [6] as const },
 };

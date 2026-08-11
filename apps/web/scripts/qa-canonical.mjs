@@ -172,6 +172,20 @@ const routes = [
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
   {
+    id: 'ballena-home',
+    path: '/demos/ballena/',
+    noindex: true,
+    texts: ['Doscientas cincuenta unidades', 'Cuatro formas de vivir la semana'],
+  },
+  {
+    id: 'ballena-planning',
+    path: '/demos/ballena/gestion/#/planning',
+    noindex: true,
+    texts: ['BL-26-', 'Mobil-home Marea'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,

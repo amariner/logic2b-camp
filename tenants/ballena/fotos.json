@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-B producido para Logic2B con generación integrada; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping La Ballena.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de publicar cada lote. No se reutilizan activos de otros tenants."
+  },
+  "lotes": [
+    ["hero-olas", "hero-sabado"],
+    ["parcela-orilla", "parcela-brisa"],
+    ["bungalow-ola", "mobil-marea"],
+    ["instalacion-recepcion", "instalacion-agua"],
+    ["entorno-salinas", "textura-azulejo"]
+  ],
+  "derivados": {
+    "fuente": "hero-olas",
+    "titulo": "Camping La Ballena",
+    "subtitulo": "250 unidades · verano familiar"
+  },
+  "piezas": {
+    "hero-olas": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para la disponibilidad.",
+      "prompt": "Fotografía editorial documental panorámica de un camping familiar costero mediterráneo grande al comienzo de una mañana de verano. Un parque acuático compacto y realista tiene una piscina poco profunda, dos toboganes bajos rectos y sombrillas lisas cerradas; detrás se ven calles ordenadas con pinos jóvenes y bungalows discretos. Agua azul clara, pavimento seguro y espacio negativo amplio a la izquierda para texto. Ninguna persona, texto, logotipo, matrícula, marca, resort de lujo, palmeras tropicales, piscina infinita, barco, ballena decorativa, HDR ni saturación excesiva."
+    },
+    "hero-sabado": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica de la avenida central de un camping familiar mediterráneo en una mañana de sábado de verano. Recepción de una planta al fondo, carros de equipaje vacíos ordenados, señalética sin texto legible y filas de árboles jóvenes; se intuye una operación preparada sin mostrar personas. Composición luminosa con espacio negativo y escala de 250 unidades. Ninguna persona, palabra, número, logotipo, maleta con marca, caravana visible con matrícula, cola, resort, lujo, fuego artificial, HDR ni colores neón."
+    },
+    "parcela-orilla": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Orilla.",
+      "prompt": "Fotografía editorial documental de una parcela familiar de 85 metros cuadrados en un camping costero mediterráneo. Suelo de grava clara, toma cerrada de 10 A, sombra parcial de pinos jóvenes y una caravana compacta completamente genérica sin texto ni matrícula; mesa plegable vacía y calle amplia para maniobra. Luz limpia de mañana, escala práctica. Ninguna persona, logotipo, piscina, sombrilla de marca, glamping, resort, HDR ni césped artificial."
+    },
+    "parcela-brisa": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Brisa.",
+      "prompt": "Fotografía editorial documental de una parcela amplia de 100 metros cuadrados en el mismo camping familiar de costa. Suelo firme, acometida cerrada de 16 A, vegetación baja resistente a la sal y una autocaravana mediana totalmente genérica sin marca, texto o matrícula visible. Perspectiva clara de giro y sombra parcial; luz cálida de tarde. Ninguna persona, mar directo, lujo, césped artificial, fogata, glamping, resort o HDR."
+    },
+    "bungalow-ola": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Bungalow Ola.",
+      "prompt": "Fotografía arquitectónica editorial de un bungalow familiar para cinco en un camping mediterráneo de agua. Volumen de una planta con fachada crema, carpinterías azul petróleo, porche profundo y rampa suave; tres ventanas proporcionadas, maceteros de gramínea y una calle de uso compartido. Construcción modular creíble y escala doméstica. Ninguna persona, texto, logo, ballena, piscina privada, jacuzzi, villa de lujo, HDR ni arquitectura imposible."
+    },
+    "mobil-marea": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Mobil-home Marea.",
+      "prompt": "Fotografía arquitectónica editorial de un mobil-home familiar para seis en el mismo camping costero. Revestimiento de madera clara y azul profundo, porche cubierto, acceso de madera antideslizante y dos módulos de ventanas proporcionados; vegetación mediterránea baja y luz de final de tarde. Diseño realista y compacto, no una villa. Ninguna persona, texto, logotipo, jacuzzi, piscina privada, resort, glamping de lujo, HDR ni neón."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción preparada para el cambio de turno semanal.",
+      "prompt": "Fotografía editorial documental de la recepción vacía de un gran camping familiar mediterráneo antes de abrir un sábado. Mostrador largo y ordenado, tablero de llegadas abstracto sin letras ni números legibles, carros de equipaje lisos, puerta abierta a una plaza de acceso y tonos azul petróleo con arena. Espacio de trabajo realista, luz natural. Ninguna persona, rostro, texto, palabra, papel legible, logotipo, pantalla encendida, lujo, filas ni HDR."
+    },
+    "instalacion-agua": {
+      "aspecto": "3:2",
+      "papel": "Parque acuático familiar compacto.",
+      "prompt": "Fotografía editorial documental de un parque de agua familiar dentro del mismo camping, vacío antes de abrir. Piscina baja rectangular, dos toboganes infantiles modestos, chorros apagados, suelo antideslizante, zona de sombra y vallado discreto; bungalows y pinos jóvenes al fondo. Proporcionado para un camping de 250 unidades, no un parque temático. Ninguna persona, texto, logotipo, piscina infinita, toboganes gigantes, palmeras tropicales, resort, HDR ni saturación."
+    },
+    "entorno-salinas": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno entre salinas y carril litoral.",
+      "prompt": "Fotografía documental panorámica de un carril ciclista junto a salinas costeras mediterráneas. Agua tranquila, vegetación baja, pinos dispersos y un horizonte llano sin edificios dominantes; una curva clara del camino invita a recorrerlo. Luz de tarde suave y colores naturales. Ninguna persona, bicicleta, texto, logotipo, flamenco, barco, playa abarrotada, rascacielos, resort, HDR ni postal turística."
+    },
+    "textura-azulejo": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental horizontal de baldosas hidráulicas azul petróleo y blanco ligeramente gastadas, una pulsera lisa de papel sin texto y gotas de agua secas. Textura real, luz lateral suave y composición abstracta. Sin personas, manos, pies, letras, símbolos, logotipos, ballena, brillo plástico, efectos digitales ni HDR."
+    }
+  }
+}

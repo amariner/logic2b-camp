@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="La Ballena">
+  <rect width="64" height="64" rx="14" fill="#006875"/>
+  <path d="M13 37c8 0 12-7 19-7 7 0 10 7 19 7" fill="none" stroke="#f5f2e9" stroke-linecap="round" stroke-width="5"/>
+  <path d="M17 45c6 0 10-4 15-4s9 4 15 4" fill="none" stroke="#e7b75f" stroke-linecap="round" stroke-width="4"/>
+  <circle cx="42" cy="19" r="3" fill="#f5f2e9"/>
+</svg>

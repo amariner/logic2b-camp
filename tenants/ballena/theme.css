@@ -1,0 +1,19 @@
+:root {
+  --lc-tinta: #152c3d;
+  --lc-hueso: #f5f2e9;
+  --lc-pino: #006875;
+  --lc-arena: #e7b75f;
+  --lc-mar: #9b3d2a;
+
+  --lc-pino-oscuro: #004b55;
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 31%, var(--lc-hueso));
+
+  --lc-font-display: 'DM Serif Display', Georgia, serif;
+  --lc-font-text: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --lc-radius: 16px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 4px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 8px);
+}
