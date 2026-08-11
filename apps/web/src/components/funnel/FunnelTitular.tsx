@@ -103,7 +103,7 @@ export default function FunnelTitular({
 
   if (!query) return null;
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (!form.reportValidity()) return;

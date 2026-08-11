@@ -351,7 +351,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
     {media['og'] && <meta property="og:image:alt" content={pageTitle} />}
     {media['og'] && <meta name="twitter:card" content="summary_large_image" />}
     {media['og'] && <meta name="twitter:image:alt" content={pageTitle} />}
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {demoThemes.length > 0 && <script is:inline set:html={themeBootScript} />}
     {showTierSwitch && <script is:inline set:html={tierBootScript} />}
     {demoBookingBootScript && <script is:inline set:html={demoBookingBootScript} />}

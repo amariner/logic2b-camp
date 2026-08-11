@@ -147,7 +147,7 @@ export default function ReservaGestion({
     }
   };
 
-  const doModify = async (e: React.FormEvent<HTMLFormElement>) => {
+  const doModify = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!booking) return;
     const data = new FormData(e.currentTarget);

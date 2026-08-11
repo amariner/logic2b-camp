@@ -7,15 +7,14 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** R13 aprovisionamiento y onboarding. Scaffold,
-  dry-run, migraciones, seed, owner, rollback, bindings, nombres de secrets y
-  adaptadores `none` ya están acreditados sobre temporales. El carril automático
-  medido tarda 7,13 s y no escribe `apps/`/`packages/`. El preflight completo
-  enumera 1.989 bloqueos locales de build y 4 gates externos adicionales de
-  publicación; completar el candidato requiere material real aprobado, por lo
-  que «una tarde» no se declara aún. El siguiente corte no visual es la auditoría
-  R15 de restos y evidencias. `--apply`, proveedor, dominio y deploy permanecen
-  cerrados. La porción local de R12 está agotada. En paralelo,
+- **Local ahora, por checkpoint:** el corte no visual R15 está auditado. No queda
+  trabajo funcional local honesto fuera de temas: R0–R8 y R10–R11 están
+  acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
+  candidato sigue con 1.989 bloqueos de build que requieren material real y 4
+  gates externos de publicación. `--apply`, proveedor, dominio y deploy
+  permanecen cerrados. El check global debe repetirse cuando el JSON concurrente
+  de `vinyes` vuelva a ser válido; los builds aislados y el bundle están verdes.
+  En paralelo,
   la decisión de Andreu abre el portfolio
   completo: Riu Clar, La Duna y El Delta cierran D5-V en 6/6; `serralta` abre
   D6-V y después continúan las cinco restantes. Los temas se entregan
@@ -96,6 +95,15 @@ es un gate de producción, no un pendiente local de implementación.
   externas de publicación. Las incoherencias config↔seed↔Wrangler bloquean
   ambos estados. El análisis termina antes de Astro/Wrangler/proveedores, no
   muestra valores y no fabrica contenido, precios, temas, fotos ni secrets.
+- ~~[R15/auditoría-no-visual] Contrastar R0–R14, ocho lentes, bundle, enlaces y
+  restos condicionados sin tocar temas~~ → **hecho 2026-08-11 (sesión 133)**:
+  `docs/AUDITORIA-R15-NO-VISUAL.md` clasifica cada resto por su disparador. El
+  bundle cierra 13.539 enlaces/417 HTML y los presupuestos M6 permanecen bajo
+  184 kB gzip. Se eliminó la autogeneración obsoleta de las colecciones Astro
+  `docs`/`legal` y el chequeo web pasó de cinco diagnósticos a cero al explicitar
+  scripts inline y usar `SubmitEvent`. `pnpm check` llegó a 54/63 y fue cancelado
+  por el JSON inválido del tenant visual concurrente `vinyes`; no se tocó ni se
+  ocultó ese rojo.
 - ~~[8.x] Cron de purga/aviso de reservas `pending` colgadas~~ → hecho 2026-07-19 (sesión 26, ADR 0014): SOLO avisa (email interno + `notifications_log`, una vez por reserva), no cancela ni libera inventario — riesgo de cancelar una venta real por lag del webhook. Mismo cron de la purga de holds de la Fase 5 (`apps/api`, genérico). **Purgar de verdad (auto-cancelar) queda declarado para cuando el volumen real lo justifique**, no antes.
 - [8.x] Botón "reintentar el pago" en `/reserva` cuando `pago=cancelado`/queda `pending` mucho tiempo (hoy solo se informa y se remite a recepción) — 2026-07-19
 - ~~[8.x] Pantalla de log de pagos en el dashboard~~ → hecho 2026-07-19 (sesión 24: `GET /api/admin/payments` — `payments` ya era el log completo desde ADR 0011, esta pantalla solo lo hace visible — filtro por proveedor y estado, `/admin/#/pagos`)

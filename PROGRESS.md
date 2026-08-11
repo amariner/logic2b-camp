@@ -1,5 +1,27 @@
 # PROGRESS — Logic Camp
 
+## Auditoría R15 no visual y colecciones Astro · 2026-08-11 (sesión 133)
+
+- `docs/AUDITORIA-R15-NO-VISUAL.md` contrasta R0–R14 y las ocho lentes con
+  evidencia ejecutable. No queda trabajo funcional local no visual oculto: los
+  restos son portfolio/temas, material/decisión de cliente,
+  credencial/proveedor, producción o el gate comercial de Camp Motor.
+- Los hallazgos ejecutables eran la autogeneración obsoleta de colecciones en
+  Astro 5 y cinco diagnósticos del chequeo web. `apps/site/src/content.config.ts`
+  declara `docs`, `apps/web/src/content.config.ts` declara `legal`, tres scripts
+  quedan explícitamente inline y dos handlers migran de `FormEvent` deprecado a
+  `SubmitEvent`; no cambian prosa, rutas, estilos ni activos.
+- Bundle compuesto verde: 13.539 enlaces internos en 417 HTML. Presupuesto M6:
+  173,13 kB gzip normal; 178,09 Pinadamar; 177,97 Serralta; 183,39 Mar de Fondo.
+  Builds aislados: sitio 79 páginas y web 235, sin el aviso de colecciones; el
+  typecheck web queda en cero errores, warnings y hints.
+- El primer `pnpm check` dejó 54/63 tareas verdes y Turbo canceló el resto porque
+  el `content/es.json` del tenant concurrente `vinyes` estaba temporalmente mal
+  formado. Se preservaron `tenants/vinyes/`, `pnpm-lock.yaml` y `tmp/`; no se
+  atribuye ese rojo al diff ni se corrige desde este frente.
+- No se ejecutó QA visual, red, proveedores, infraestructura remota ni deploy.
+  Los avisos de fuentes de CSS tenant quedan en el frente visual excluido.
+
 ## Preflight completo de candidato R13 · 2026-08-11 (sesión 132)
 
 - `candidateReadinessReport` clasifica el scaffold real en cinco categorías

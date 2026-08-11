@@ -521,11 +521,18 @@ el modelo común; las que aún no tienen señal conservan diseño y disparador c
 ### R15 · Integración y cierre del objetivo
 
 - [ ] Revisar diff completo por las ocho lentes de `docs/EQUIPO.md`.
+  - [x] Corte no visual R0–R14 documentado en
+        `docs/AUDITORIA-R15-NO-VISUAL.md`; la lente UI y el portfolio continúan
+        en su frente separado.
 - [ ] Ejecutar suites aisladas, `pnpm check` y bundle compuesto.
+  - [x] Bundle compuesto: 13.539 enlaces en 417 HTML y presupuestos M6 verdes.
+  - [ ] Repetir `pnpm check` cuando el JSON del tenant concurrente `vinyes` sea
+        válido; el primer intento cerró 54/63 antes de la cancelación.
 - [ ] Ejecutar QA final 1366/375 de landing, docs, web y gestor.
 - [ ] Confirmar cero enlaces/recursos rotos y presupuestos dentro de límites.
-- [ ] Actualizar ROADMAP, BACKLOG, PROGRESS y SIGUIENTE con evidencia final.
-- [ ] Clasificar cada resto condicionado con su disparador real.
+- [x] Actualizar ROADMAP, BACKLOG, PROGRESS y SIGUIENTE con evidencia del corte
+      no visual.
+- [x] Clasificar cada resto condicionado con su disparador real.
 - [ ] Dejar commits coherentes y comparar con origin.
 - [ ] Preparar candidato de deploy; publicar únicamente con autorización expresa.
 

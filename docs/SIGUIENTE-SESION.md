@@ -1,53 +1,57 @@
-# Prompt para la siguiente sesión — auditoría no visual R15
+# Prompt para la siguiente sesión — revalidación condicionada R15
 
-> Reescrito tras la sesión 132 (2026-08-11). El preflight R13 ya distingue qué
-> impide construir y qué solo impide publicar; completar un candidato exige
-> material real aprobado.
+> Reescrito tras la sesión 133 (2026-08-11). La auditoría no visual no encuentra
+> más trabajo funcional local honesto; no debe fabricarse actividad para ocultar
+> gates externos o invadir el frente de temas.
 
 ## Estado en una línea
 
-La plantilla conserva 1.989 bloqueos locales de build —identidad/legal,
-contenido, inventario/tarifas y media/tema— y 4 verificaciones externas de
-publicación. No deben resolverse inventando datos. R14 Camp Motor sigue cerrado.
+R0–R8 y R10–R11 están acreditados; R12–R13 agotaron su parte local y R14 sigue
+vetado. Lo abierto requiere temas, material real, credencial/proveedor,
+autorización de producción o una decisión comercial.
 
-## Objetivo prioritario
+## Próxima acción válida
 
-Abrir el corte no visual de **R15 · integración y cierre del objetivo**:
+Antes de implementar nada, comprobar qué estado externo cambió:
 
-1. Auditar R0–R14 contra evidencia ejecutable y documentos actuales, excluyendo
-   cualquier producción o modificación de temas y activos.
-2. Clasificar cada resto como trabajo local ejecutable, material/decisión de
-   cliente, credencial/proveedor, autorización de producción o gate comercial.
-3. Ejecutar suites dirigidas, `pnpm check`, bundle compuesto y verificadores de
-   enlaces/recursos que no dependan de completar material visual pendiente.
-4. Reconciliar ROADMAP, BACKLOG, PROGRESS y esta guía con los hallazgos, sin
-   reabrir trabajo acreditado ni presentar gates externos como completados.
-5. Si aparece trabajo funcional local de alto valor fuera de temas, resolver el
-   primero con pruebas y volver a auditar. Si no aparece, dejar explícito qué
-   señal o material desbloquea cada resto.
+1. Si `tenants/vinyes/` ya está estable, repetir `pnpm check` sin modificarlo y
+   registrar el cierre global. El intento de la sesión 133 llegó a 54/63 antes
+   de fallar por su `content/es.json` temporalmente inválido.
+2. Si el usuario aporta material real de cliente, usar el readiness R13 para
+   completar identidad/legal, contenido, inventario/tarifas o media sin inventar
+   datos y respetando el alcance expresamente autorizado.
+3. Si aporta cuenta, sandbox, credenciales y módulo contratado, seguir el gate
+   correspondiente de `RUNBOOK-GATES-R12.md` y su runbook específico.
+4. Si autoriza un destino, ejecutar primero el plan supervisado de R13; nunca
+   inferir permiso para DNS, secrets, `--remote`, `--apply` o deploy.
+5. Si existe decisión/pago explícito para Camp Motor, abrir R14 con ADR. Sin esa
+   señal, el veto permanece.
 
-## Ya verificado — no repetir sin cambio relevante
+Si ninguna condición ha cambiado, no abrir una funcionalidad especulativa:
+informar que el trabajo local no visual está agotado y mantener los gates
+visibles.
 
-- CLI 54/54 y `pnpm check` 63/63 tras el preflight.
-- `pnpm activation:rehearse`: `buildReady=false`, `publishReady=false`; 31 +
-  1.938 + 7 + 13 bloqueos locales y 4 verificaciones externas.
-- Los perfiles técnicos 1/2/3, el carril D1 local, rollback, activación y
-  write-set ya están acreditados en temporales.
-- El preflight termina antes de Astro, Wrangler, red, proveedor o deploy y no
-  expone valores sensibles.
+## Evidencia vigente
+
+- Auditoría: `docs/AUDITORIA-R15-NO-VISUAL.md`.
+- Bundle: 13.539 enlaces internos en 417 HTML; entradas M6 entre 173,13 y 183,39
+  kB gzip.
+- Sitio: 79 páginas; web base: 235; colecciones Astro explícitas y sin aviso
+  deprecado; typecheck web con cero diagnósticos.
+- Readiness: 1.989 bloqueos locales de build y 4 gates externos de publicación.
+- CLI 54/54; último `pnpm check` completo anterior al cambio concurrente: 63/63.
 
 ## Límites de autoridad
 
 - No tocar `tenants/vinyes/`, `pnpm-lock.yaml`, `tmp/`, temas, fotografía ni
-  activos; son trabajo concurrente o quedan fuera del encargo.
-- No pasar `--apply`, usar `--remote`, deploy, DNS, secrets, cuentas ni
-  proveedores.
-- No inventar identidad legal, contenido, inventario, tarifas, IDs o material
-  visual para convertir el readiness en verde.
-- No abrir R14 Camp Motor sin decisión/pago explícito.
+  activos desde el frente no visual.
+- No inventar identidad, contenido, inventario, tarifas, IDs o aceptación.
+- No usar `--apply`, `--remote`, deploy, DNS, secrets, cuentas ni proveedores sin
+  entradas y autorización explícitas.
+- No abrir Camp Motor por iniciativa técnica.
 
 ## Prompt
 
 ```text
-continúa con el desarrollo de este proyecto, excepto temas
+continúa con el desarrollo del proyecto, excepto temas
 ```

@@ -108,7 +108,7 @@ const defaultStayId = stays[0]?.id ?? '';
   )}
 </form>
 
-<script define:vars={{ locale, uid, transport, tenantSlug, defaultStayId }}>
+<script is:inline define:vars={{ locale, uid, transport, tenantSlug, defaultStayId }}>
   const form = document.getElementById(uid);
   const btn = form.querySelector('button[type=submit]');
   const status = form.querySelector('[data-status]');

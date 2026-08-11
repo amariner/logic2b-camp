@@ -65,7 +65,7 @@ const showTierSwitch = demoTierSwitch;
 ---
 
 <Base locale={locale} path={path} title={`${nombre} | ${config.name}`} description={a.fichas[tipo.id]}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <PageIntro titulo={nombre} intro={a.fichas[tipo.id]} />
 
