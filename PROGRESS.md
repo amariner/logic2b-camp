@@ -1,5 +1,33 @@
 # PROGRESS — Logic Camp
 
+## Candidato local fail-closed R13 · 2026-08-11 (sesión 130)
+
+- La matriz común de activación inventaría `WORKER`, `TENANT_SLUG`, `DB` y
+  dominio; nombres de secrets; y adaptadores de auth, notificaciones, pagos y
+  Hospedajes. Binding/base incoherentes, valores secretos persistidos, proveedor
+  sin secret, flags demo y tier 4 producen bloqueos explícitos sin devolver el
+  valor sensible.
+- `pnpm activation:rehearse` crea un scaffold sintético solo bajo un temporal,
+  inspecciona sus `config.ts`, `seed.ts` y `wrangler.jsonc` con un proceso local
+  que no hereda credenciales, y proyecta los tiers técnicos 1/2/3 desde esos
+  artefactos. El proceso y el plan no tienen acceso a Wrangler, `--remote`, DNS,
+  secrets ni proveedores.
+- Los tres perfiles conservan pagos `none`, correo totalmente desactivado y
+  Hospedajes manual/apagado. Solo se inventaría el nombre `AUTH_SECRET`; el UUID
+  estructural de D1 vive únicamente en `/tmp` y tanto binding, valor de auth como
+  DNS continúan en `externalVerification`, nunca acreditados como destino real.
+  Automatiza no gana un perfil ficticio: R12 mantiene su ejecución externa en
+  `none/manual`.
+- El preflight rechaza cualquier plan ejecutable antes de crear el candidato,
+  el runner de inspección es inyectable y el `finally` elimina el temporal en
+  éxito o error. Una huella antes/después demuestra que el ensayo no modifica
+  `apps/` ni `packages/`; tampoco deja `tenants/{slug}`.
+- CLI queda en **51/51**, configuración en **73/73**, tipos/lint y el comando
+  reproducible verdes. Huella del candidato: `998debf6…`; 18 ficheros y 14
+  marcadores pendientes inventariados. `pnpm check` cerró **61/61** tareas con
+  los siete campings construidos. No hubo deploy, red, credenciales ni escritura
+  externa.
+
 ## Analítica consentida y captación comercial real · 2026-08-11 (sesión 129)
 
 - ADR 0045 aceptado: `apps/site` reutiliza el GTM de Logic2B

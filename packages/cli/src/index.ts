@@ -1,4 +1,15 @@
 export {
+  assertLocalActivationPlan,
+  parseWorkerJsonc,
+  protectedSourcesFingerprint,
+  runLocalActivationRehearsal,
+  type ActivationProfileResult,
+  type LocalActivationRehearsalOptions,
+  type LocalActivationRehearsalResult,
+  type LocalInspectorRunner,
+  type TechnicalTier,
+} from './activation-rehearsal';
+export {
   InfraManualStepError,
   InfraNotConfirmedError,
   runInfraPlan,

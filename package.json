@@ -21,6 +21,7 @@
     "fotos": "node apps/web/scripts/foto-pipeline.mjs",
     "new:camping": "pnpm --filter @logic-camp/cli run new:camping --",
     "onboarding:rehearse": "pnpm --filter @logic-camp/cli run onboarding:rehearse --",
+    "activation:rehearse": "pnpm --filter @logic-camp/cli run activation:rehearse",
     "export:tenant": "pnpm --filter @logic-camp/cli run export:tenant",
     "backup:rehearse": "pnpm --filter @logic-camp/cli run backup:rehearse"
   },

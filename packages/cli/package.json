@@ -15,8 +15,12 @@
     "test": "vitest run",
     "new:camping": "tsx src/cli.ts",
     "onboarding:rehearse": "tsx src/onboarding-rehearsal-cli.ts",
+    "activation:rehearse": "tsx src/activation-rehearsal-cli.ts",
     "export:tenant": "tsx src/export-cli.ts",
     "backup:rehearse": "tsx src/backup-rehearsal-cli.ts"
+  },
+  "dependencies": {
+    "@logic-camp/config": "workspace:*"
   },
   "devDependencies": {
     "@logic-camp/tsconfig": "workspace:*",

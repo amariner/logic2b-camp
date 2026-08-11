@@ -472,12 +472,16 @@ mentir sobre su estado.
       correo, pagos, backup, restauración y rollback en entorno no productivo.
   - [x] Migraciones idempotentes, seed determinista, owner coherente,
         exportación, mutación y restauración íntegra en D1 locales desechables.
-  - [ ] Binding, nombres de secrets y adaptadores `none` sobre un candidato
+  - [x] Binding, nombres de secrets y adaptadores `none` sobre un candidato
         sintético local, sin valores, proveedor, dominio ni publicación.
   - [ ] Dominio, correo, pagos y restauración remotos solo en sandbox/destino
         autorizado con sus credenciales y criterios de aceptación.
 - [ ] Confirmar que dar de alta un camping no modifica `apps/` ni `packages/` y
       cabe en el coste operativo definido por CLAUDE.md.
+  - [x] Huella antes/después del candidato sintético acredita cero cambios en
+        `apps/` y `packages/`, sin dejar tenant ni temporal.
+  - [ ] Medir el carril completo y registrar su coste por bloque antes de afirmar
+        que cabe en una tarde.
 - [ ] Construir el candidato completo, ejecutar verificador de enlaces, tests,
       E2E y QA 1366/375 antes de cualquier publicación.
 - [ ] Publicar la demo cuando haya cambios verificados y autorización; registrar

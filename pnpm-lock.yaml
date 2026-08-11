@@ -227,6 +227,10 @@ importers:
         version: 5.9.3
 
   packages/cli:
+    dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../config
     devDependencies:
       '@logic-camp/tsconfig':
         specifier: workspace:*

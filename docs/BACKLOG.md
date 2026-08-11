@@ -2,18 +2,19 @@
 
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
-## Índice operativo de pendientes vivos (R13 · 2026-08-10)
+## Índice operativo de pendientes vivos (R13 · 2026-08-11)
 
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
 - **Local ahora, por checkpoint:** R13 aprovisionamiento y onboarding. Scaffold,
-  dry-run, migraciones, seed, owner y rollback local desechable ya están
-  acreditados; sigue un candidato sintético para bindings, nombres de secrets y
-  adaptadores `none`, todavía sin `--apply`, proveedor, dominio ni deploy. Los
-  ensayos que necesiten un entorno real permanecen en su gate. La porción local
-  de R12 está agotada. En paralelo, la decisión de Andreu abre el
-  portfolio
+  dry-run, migraciones, seed, owner, rollback, bindings, nombres de secrets y
+  adaptadores `none` ya están acreditados sobre temporales. Sigue medir el coste
+  del alta y cerrar la garantía de escritura limitada al candidato; el build y
+  QA completos esperan contenido/identidad aprobados y no autorizan `--apply`,
+  proveedor, dominio ni deploy. Los ensayos que necesiten un entorno real
+  permanecen en su gate. La porción local de R12 está agotada. En paralelo, la
+  decisión de Andreu abre el portfolio
   completo: Riu Clar, La Duna y El Delta cierran D5-V en 6/6; `serralta` abre
   D6-V y después continúan las cinco restantes. Los temas se entregan
   verticalmente, uno por uno.
@@ -67,6 +68,15 @@ es un gate de producción, no un pendiente local de implementación.
   altera la credential sintética y restaura la huella exacta en otra D1 local.
   Limpia en éxito/error y rechaza cualquier orden D1 sin `--local` o con
   `--remote`.
+- ~~[R13/candidato-local] Acreditar bindings, nombres de secrets y adaptadores
+  `none` sin proveedor~~ → **hecho 2026-08-11 (sesión 130)**:
+  `pnpm activation:rehearse` inspecciona config, seed y Wrangler generados bajo
+  `/tmp`, cruza tiers técnicos 1/2/3 con una matriz común y devuelve solo
+  nombres/estados. Auth usa únicamente el nombre esperado; notificaciones,
+  pagos y Hospedajes quedan apagados. El binding D1 sintético no acredita un
+  recurso: binding, valor de auth y DNS permanecen como verificación externa.
+  El preflight no admite comandos, el hijo no hereda credenciales y las huellas
+  prueban cero cambios en `apps/`/`packages/`.
 - ~~[8.x] Cron de purga/aviso de reservas `pending` colgadas~~ → hecho 2026-07-19 (sesión 26, ADR 0014): SOLO avisa (email interno + `notifications_log`, una vez por reserva), no cancela ni libera inventario — riesgo de cancelar una venta real por lag del webhook. Mismo cron de la purga de holds de la Fase 5 (`apps/api`, genérico). **Purgar de verdad (auto-cancelar) queda declarado para cuando el volumen real lo justifique**, no antes.
 - [8.x] Botón "reintentar el pago" en `/reserva` cuando `pago=cancelado`/queda `pending` mucho tiempo (hoy solo se informa y se remite a recepción) — 2026-07-19
 - ~~[8.x] Pantalla de log de pagos en el dashboard~~ → hecho 2026-07-19 (sesión 24: `GET /api/admin/payments` — `payments` ya era el log completo desde ADR 0011, esta pantalla solo lo hace visible — filtro por proveedor y estado, `/admin/#/pagos`)
