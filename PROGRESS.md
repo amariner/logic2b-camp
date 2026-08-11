@@ -1,5 +1,27 @@
 # PROGRESS — Logic Camp
 
+## Camping La Ballena lleva D6-V a 11/12 · 2026-08-11 (sesión 137)
+
+- `tenants/ballena/` entrega una demo Visión de camping familiar costero con
+  identidad, contenido, inventario y fotografía propios: 250 unidades en
+  cuatro categorías, parque de agua compacto y una operación de verano que no
+  reutiliza la voz de Mar de Fondo ni La Carrasca.
+- La tarifa de `sea_semanal` exige siete noches con llegada y salida en sábado
+  para las cuatro categorías. La reserva local muestra la semana completa,
+  señal simulada del 25 % y cancelación por tramos 21/8/0 sin cobro, proveedor
+  ni asesoramiento legal.
+- El gestor reversible en `/demos/ballena/gestion/` conserva el prefijo
+  `BL-26-`, plano de acceso/agua/club y 249 reservas ficticias repartidas en
+  tres olas de sábados; con ello planning, llegadas y ocupación demuestran el
+  cambio de turno intenso sin datos personales ni sistema propio.
+- Diez fotografías exclusivas, inspeccionadas por lotes de dos y sin texto o
+  marcas, quedan aprobadas junto con miniatura, OG y favicon. El catálogo ES/EN
+  publica la nueva demo y el bundle incorpora web y gestor.
+- Verificación: factory 12 tenants, dashboard 54/54, typecheck del tenant,
+  build aislado de Ballena, bundle compuesto con 15.541 enlaces internos en
+  497 HTML y QA canónico de portada y planning a 375/1366 px verdes. No hubo
+  deploy, DNS, secretos, proveedores ni pagos reales. Solo queda `soldhivern`.
+
 ## Camping La Carrasca lleva D6-V a 10/12 · 2026-08-11 (sesión 136)
 
 - `tenants/carrasca/` entrega una demo Visión de interior con identidad y
