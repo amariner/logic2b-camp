@@ -3,6 +3,7 @@ import Wordmark from '../components/Wordmark.astro';
 import HeaderIcon from '../components/HeaderIcon.astro';
 import ProjectRequestDialog from '../components/ProjectRequestDialog.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import Logic2BContact from '../components/Logic2BContact.astro';
 import { commercialSite } from '../config';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
@@ -104,6 +105,7 @@ const datosEstructurados = {
 // Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
+const contactContext = ruta === 'docs/' || ruta.startsWith('docs/') ? 'docs' : 'commercial';
 // En producción el Worker monta el gestor en /admin/. En desarrollo se sirve
 // como aplicación Vite independiente, para que los enlaces de la landing sean
 // comprobables sin montar todo el Worker local.
@@ -318,6 +320,7 @@ const acciones = [
 
     <ProjectRequestDialog contacto={c.contacto} locale={locale} />
     <CookieBanner copy={c.cookieBanner} policyHref={localePath(locale, 'cookies/')} />
+    <Logic2BContact locale={locale} context={contactContext} />
 
     {/* Reveal on scroll (ADR 0027), compartido por todas las páginas: cualquier
         .lc-reveal del slot funciona igual en home, temas, precios y guías. */}

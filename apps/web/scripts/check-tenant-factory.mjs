@@ -326,6 +326,15 @@ for (const leaked of ['logic2b-demo:pinadamar', 'enq_pinada_web', "'ut_bungalow'
   if (enquirySource.includes(leaked))
     fail(`EnquiryForm.astro conserva identidad concreta: ${leaked}`);
 }
+
+const baseSource = read(join(repo, 'apps/web/src/layouts/Base.astro'));
+for (const required of ['logic2bContactEnabled(config)', '<Logic2BContact locale={locale}']) {
+  if (!baseSource.includes(required)) fail(`Base.astro pierde el interruptor B5: ${required}`);
+}
+for (const forbidden of ['626 432 316', '34626432316', 'wa.me/']) {
+  if (baseSource.includes(forbidden))
+    fail(`Base.astro duplica el destino de plataforma en vez de usar config/contact: ${forbidden}`);
+}
 for (const required of [
   'fixedStayId',
   "unitTypeId: data.get('stay') || defaultStayId",

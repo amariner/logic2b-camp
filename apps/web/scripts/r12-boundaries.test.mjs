@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
-import { dirname, resolve } from 'node:path';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import {
   auditR12Repository,
+  auditPublicArtifact,
   assertNoExternalRuntime,
   assertNoForbiddenDependency,
   assertNoTrackingSource,
@@ -54,6 +57,25 @@ describe('fronteras locales R12', () => {
       () => assertNoExternalRuntime("fetch('https://collector.example/event')", 'app.js'),
       /fetch remoto/,
     );
+  });
+
+  it('permite retirar el contacto cuando el contrato del tenant lo desactiva', () => {
+    const fixture = mkdtempSync(join(tmpdir(), 'logic-camp-r12-contact-'));
+    try {
+      writeFileSync(join(fixture, 'index.html'), '<!doctype html><title>Tenant</title>');
+      assert.doesNotThrow(() =>
+        auditPublicArtifact(fixture, {
+          requireCookies: false,
+          requireLogic2BContact: false,
+        }),
+      );
+      assert.throws(
+        () => auditPublicArtifact(fixture, { requireCookies: false }),
+        /data-logic2b-contact/,
+      );
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
   });
 
   it('mantiene cerradas las cuatro fronteras en el repositorio real', () => {

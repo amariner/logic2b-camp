@@ -26,6 +26,12 @@ describe('parseTenantWebConfig', () => {
     expect(parseTenantWebConfig(base)).toMatchObject({ slug: 'camping-real', tier: 1 });
   });
 
+  it('permite desactivar explícitamente el contacto de plataforma', () => {
+    expect(parseTenantWebConfig({ ...base, logic2bContact: false })).toMatchObject({
+      logic2bContact: false,
+    });
+  });
+
   it('rechaza un locale por defecto que no se publica', () => {
     expect(() => parseTenantWebConfig({ ...base, defaultLocale: 'en' })).toThrow(
       'defaultLocale: debe estar incluido en locales',

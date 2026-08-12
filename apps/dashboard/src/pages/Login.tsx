@@ -8,6 +8,7 @@
 import { Button, Card, CardContent, Input, Label, Spinner, Wordmark } from '@logic-camp/ui';
 import { useState } from 'react';
 import { useDemoDisponible, useEntrarDemo, useSignIn } from '../auth';
+import Logic2BContactLink from '../components/Logic2BContactLink';
 import { t } from '../i18n';
 
 export default function Login() {
@@ -107,6 +108,7 @@ export default function Login() {
             )}
           </CardContent>
         </Card>
+        <Logic2BContactLink className="self-center border-0 bg-transparent" />
       </div>
     </main>
   );

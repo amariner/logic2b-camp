@@ -1,7 +1,9 @@
 ---
 import { config, data, demoTierSwitch, getContent, localePath, media } from '../lib/content';
+import { logic2bContactEnabled } from '@logic-camp/config/contact';
 import { getLegalUi } from '../lib/legal';
 import LogoMark from '../components/LogoMark.astro';
+import Logic2BContact from '../components/Logic2BContact.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -582,6 +584,8 @@ const demoBookingBootScript = demoBookingCatalog ? `
         </div>
       </div>
     </footer>
+
+    {logic2bContactEnabled(config) && <Logic2BContact locale={locale} />}
 
     {demoThemes.length > 0 && <script is:inline set:html={themeMenuScript} />}
     {showTierSwitch && <script is:inline set:html={tierMenuScript} />}

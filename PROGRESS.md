@@ -1,17 +1,22 @@
 # PROGRESS — Logic Camp
 
-## B5 queda diseñado y espera validación · 2026-08-12 (sesión 139)
+## B5 lleva el contacto Logic2B a todo el escaparate · 2026-08-12 (sesión 140)
 
-- ADR 0046 propone un contrato único para número, enlaces, seis idiomas y cuatro
-  contextos sin PII. Sitio y webs tenant usarían píldora tras 280 px, retirada
-  ante pie/overlays; el gestor la adapta a login/sidebar/drawer para no competir
-  con toasts, paneles ni controles del planning.
-- La política tenant sería activa por defecto y desactivable con
-  `logic2bContact: false`; nunca configura el WhatsApp de recepción. El primer
-  corte no mediría el clic ni cargaría widget, píxel, iframe o script de Meta.
-- No se ha escrito código B5: el roadmap exigía revisar aparición, posición,
-  copy y política con Andreu. La implementación queda bloqueada únicamente por
-  `OK ADR 0046`; no por credenciales, proveedor o infraestructura.
+- Andreu aceptó ADR 0046. `@logic-camp/config/contact` fija teléfono, URL,
+  umbral, seis idiomas y cuatro contextos sin PII; sitio, tenants y gestor ya no
+  repiten número, copy ni decisiones comerciales.
+- Sitio y webs tenant muestran una píldora accesible tras 280 px y la retiran
+  ante el pie; el sitio prioriza además consentimiento y diálogo comercial. La
+  política tenant queda activa por defecto y `logic2bContact: false` la desactiva
+  sin admitir un número alternativo de recepción.
+- El gestor adapta el contacto a login, pie de sidebar, estado plegado y drawer
+  móvil. Mantiene 44 px, foco y nombre accesible sin ocupar el plano de Sonner ni
+  tapar planning, navegación o paneles.
+- Las guardias inspeccionan artefactos comerciales, once tenants, escenarios de
+  dashboard y frontera R12. QA comercial es/en, QA canónico de 24 superficies y
+  E2E contra Worker pasan a 375/1366 px; el bundle conserva 497 HTML y 15.557
+  enlaces internos. `pnpm check` cierra 69/69 tareas. No hubo tracker, proveedor,
+  infraestructura remota, deploy ni creación de temas.
 
 ## La ficha de Solicitudes conserva la estancia elegida · 2026-08-12 (sesión 138)
 

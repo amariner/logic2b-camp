@@ -7,18 +7,23 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** el corte no visual R15 está auditado y ADR
-  0044 ya cierra la solicitud contextual de tier 2. B5 abre un único bloque
-  funcional no temático: contacto transversal con Logic2B por WhatsApp, con ADR
-  0046 pendiente de validación antes de escribir código. R0–R8 y R10–R11 están
+- **Local ahora, por checkpoint:** el corte no visual R15 está auditado, ADR
+  0044 cierra la solicitud contextual de tier 2 y B5/ADR 0046 cierra el contacto
+  transversal con Logic2B por WhatsApp. No queda otro bloque funcional local no
+  temático autorizado. R0–R8 y R10–R11 están
   acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
   candidato sigue con 1.989 bloqueos de build que requieren material real y 4
   gates externos de publicación. `--apply`, proveedor, dominio y deploy
   permanecen cerrados. Los builds aislados y el bundle están verdes. En
   paralelo, la decisión de Andreu abre el portfolio completo: Riu Clar, La Duna
   y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
-  Carrasca llevan D6-V hasta 10/12. Quedan Ballena y Sol d'Hivern, siempre en
-  vertical y una por una.
+  Carrasca y La Ballena llevan D6-V hasta 11/12. Solo queda Sol d'Hivern,
+  siempre en vertical y separado de este carril.
+- ~~[B5] Contacto transversal con Logic2B por WhatsApp~~ → **hecho 2026-08-12
+  (sesión 140, ADR 0046)**: contrato compartido es/ca/en/fr/de/nl, píldora
+  pública tras scroll, salida configurable en tenant y ayuda integrada en
+  login/sidebar/drawer. QA 375/1366, E2E Worker y bundle compuesto verdes; sin
+  tracker ni deploy.
 - ~~[4.x/web] Conservar el tipo elegido al solicitar desde una ficha tier 2~~ →
   **hecho 2026-08-12 (sesión 138, ADR 0044)**: formulario dentro de la ficha,
   tipo visible y fijo, `unitTypeId` en demo/API y frontera de build exacta. La

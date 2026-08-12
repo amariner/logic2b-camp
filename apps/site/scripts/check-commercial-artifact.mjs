@@ -50,6 +50,20 @@ function structuredData(fragment) {
   ].map(([, json]) => JSON.parse(json));
 }
 
+function assertContact(html, context, label) {
+  assert(html.includes('data-logic2b-contact'), `${label}: falta contacto Logic2B`);
+  assert(
+    html.includes(`data-contact-context="${context}"`),
+    `${label}: contexto de contacto incorrecto`,
+  );
+  assert(html.includes('https://wa.me/34626432316?text='), `${label}: destino WhatsApp incorrecto`);
+  assert(html.includes('target="_blank"'), `${label}: el contacto no abre fuera de la operación`);
+  assert(
+    html.includes('rel="noopener noreferrer"'),
+    `${label}: faltan garantías del enlace externo`,
+  );
+}
+
 async function walk(directory, base = directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
@@ -92,6 +106,7 @@ for (const locale of locales) {
 
   const home = await readHtml(`${locale.prefix}index.html`);
   const pricing = await readHtml(`${locale.prefix}precios/index.html`);
+  const themes = await readHtml(`${locale.prefix}temas/index.html`);
   const legalPaths = ['aviso-legal', 'privacidad', 'cookies'];
   assert(
     JSON.stringify(planStatuses(home)) === JSON.stringify(expectedHome),
@@ -113,6 +128,9 @@ for (const locale of locales) {
   assert(home.includes('href="/admin/"'), `${locale.code}: falta el salto al gestor demo`);
   assert(home.includes('GTM-TVDWZ9LC'), `${locale.code}: falta el contenedor GTM comercial`);
   assert(home.includes('data-consent-banner'), `${locale.code}: falta el banner de consentimiento`);
+  assertContact(home, 'commercial', `${locale.code}: portada`);
+  assertContact(pricing, 'commercial', `${locale.code}: precios`);
+  assertContact(themes, 'commercial', `${locale.code}: temas`);
   assert(
     !/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(home),
     `${locale.code}: GTM se carga de forma inmediata antes del consentimiento`,
@@ -121,6 +139,7 @@ for (const locale of locales) {
     const href = `/${locale.prefix}${legalPath}/`;
     assert(home.includes(`href="${href}"`), `${locale.code}: el footer no enlaza ${legalPath}`);
     const legalHtml = await readHtml(`${locale.prefix}${legalPath}/index.html`);
+    assertContact(legalHtml, 'commercial', `${locale.code}/${legalPath}`);
     assert(
       legalHtml.includes('<link rel="canonical"'),
       `${locale.code}/${legalPath}: falta canonical`,
@@ -165,6 +184,7 @@ const coveredGuides = new Set();
 const coveredIndexes = new Set();
 for (const file of guidePages) {
   const html = await readHtml(file);
+  assertContact(html, 'docs', file);
   const headMatch = html.match(/<head(?:\s[^>]*)?>([\s\S]*?)<\/head>/i);
   assert(headMatch, `${file}: falta <head>`);
   const head = headMatch[1];

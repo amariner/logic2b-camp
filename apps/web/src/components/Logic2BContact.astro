@@ -1,0 +1,79 @@
+---
+import { LOGIC2B_CONTACT_SCROLL_PX, logic2bContact } from '@logic-camp/config/contact';
+
+interface Props { locale: string }
+const { locale } = Astro.props;
+const contact = logic2bContact(locale, 'tenant');
+---
+
+<a
+  href={contact.href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="lc-logic2b-contact"
+  aria-label={contact.ariaLabel}
+  title={`${contact.ariaLabel} · ${contact.phone}`}
+  data-logic2b-contact
+  data-contact-context="tenant"
+  data-visible="false"
+  tabindex="-1"
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.3-4.7a8.5 8.5 0 1 1 16.2-4Zm-8.4-6.9a6.8 6.8 0 0 0-5.8 10.4l.2.3-.8 2.5 2.6-.7.3.2a6.8 6.8 0 1 0 3.5-12.7Zm-2.2 3.3c.2 0 .3 0 .5.4l.7 1.7c.1.2.1.4 0 .5l-.5.7c-.1.1-.2.3 0 .6.2.3.8 1.3 1.8 2 .7.7 1.4.9 1.7 1 .2.1.4.1.5-.1l.8-1c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.1.1.7-.1 1.3-.2.6-1.2 1.1-1.7 1.2-.5.1-1.2.2-2-.1-.5-.2-1.2-.4-2-1-3.4-1.5-5.6-5-5.8-5.2-.2-.3-1.4-1.9-1.4-3.6 0-1.7.9-2.5 1.2-2.9.3-.3.7-.4 1-.4Z" />
+  </svg>
+  <span>{contact.label}</span>
+</a>
+
+<script is:inline define:vars={{ threshold: LOGIC2B_CONTACT_SCROLL_PX }}>
+  (() => {
+    const contact = document.querySelector('[data-logic2b-contact]');
+    const footer = document.querySelector('footer');
+    if (!(contact instanceof HTMLAnchorElement)) return;
+    let footerVisible = false;
+    const update = () => {
+      const visible = window.scrollY > threshold && !footerVisible;
+      contact.dataset.visible = String(visible);
+      contact.tabIndex = visible ? 0 : -1;
+    };
+    if (footer && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        footerVisible = entries.some((entry) => entry.isIntersecting);
+        update();
+      }).observe(footer);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
+
+<style>
+  .lc-logic2b-contact {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 45;
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid color-mix(in srgb, var(--lc-hueso) 18%, transparent);
+    border-radius: 999px;
+    background: var(--lc-tinta);
+    padding: 10px 15px 10px 11px;
+    color: var(--lc-hueso);
+    font-size: 13px;
+    font-weight: 650;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--lc-tinta) 24%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+  .lc-logic2b-contact[data-visible='true'] { opacity: 1; pointer-events: auto; transform: none; }
+  .lc-logic2b-contact svg { width: 24px; height: 24px; flex: none; fill: #61d36f; }
+  .lc-logic2b-contact:hover { background: var(--lc-pino-oscuro); }
+  .lc-logic2b-contact:focus-visible { outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    .lc-logic2b-contact { transition: none; transform: none; }
+  }
+</style>

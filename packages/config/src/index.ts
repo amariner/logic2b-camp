@@ -43,6 +43,8 @@ export const tenantWebConfigSchema = z
       phone: z.string().trim().min(1),
       address: z.string().trim().min(1),
     }),
+    /** Contacto de soporte Logic2B transversal (ADR 0046). Ausente = activo. */
+    logic2bContact: z.boolean().optional(),
     /**
      * Destino del formulario público. Ausente equivale a `persisted` para no
      * cambiar tenants existentes. `demo` nunca hace red ni conserva datos;

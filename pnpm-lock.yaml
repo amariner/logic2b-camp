@@ -148,6 +148,9 @@ importers:
 
   apps/site:
     dependencies:
+      '@logic-camp/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@logic-camp/ui':
         specifier: workspace:*
         version: link:../../packages/ui

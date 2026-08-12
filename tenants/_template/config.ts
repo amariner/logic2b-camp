@@ -17,6 +17,8 @@ export const config: TenantWebConfig = {
     phone: '+34 000 000 000', // TODO
     address: '__DIRECCION__', // TODO
   },
+  // Soporte Logic2B transversal. Ponlo a false solo si el contrato lo excluye.
+  logic2bContact: true,
   // Identidad legal (ADR 0026 §2.5). El texto de las páginas legales (aviso legal,
   // privacidad, cookies) es de PRODUCTO y no se toca: solo se rellenan estos campos.
   legal: {

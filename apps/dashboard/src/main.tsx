@@ -35,6 +35,7 @@ import { createRoot } from 'react-dom/client';
 import { useRol, useSession, useSignOut } from './auth';
 import CommandPalette from './components/CommandPalette';
 import DemoBanner from './components/DemoBanner';
+import Logic2BContactLink from './components/Logic2BContactLink';
 import { RouteError, RouteNotFound } from './components/RouteError';
 import ThemeToggle from './components/ThemeToggle';
 import { t } from './i18n';
@@ -176,6 +177,10 @@ function SidebarInner({
             {email}
           </p>
         )}
+        <Logic2BContactLink
+          compact={collapsed}
+          className={cn('mb-1', collapsed ? 'mx-auto flex' : 'w-full')}
+        />
         <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
           <ThemeToggle />
           {onToggleCollapse && (

@@ -19,6 +19,7 @@
     "video:planning": "node scripts/video-gestos-planning.mjs"
   },
   "dependencies": {
+    "@logic-camp/config": "workspace:*",
     "@logic-camp/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^5.12.0",

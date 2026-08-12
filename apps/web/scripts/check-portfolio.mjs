@@ -45,6 +45,11 @@ function configuredTier(slug) {
   return Number(matches[0][1]);
 }
 
+function contactEnabled(slug) {
+  const source = readFileSync(join(tenantsDir, slug, 'config.ts'), 'utf8');
+  return !/^\s*logic2bContact\s*:\s*false\s*,/gim.test(source);
+}
+
 function checkTierBoundary(slug, outDir) {
   const tier = configuredTier(slug);
   const files = filesUnder(outDir);
@@ -56,6 +61,21 @@ function checkTierBoundary(slug, outDir) {
   const bookingChunks = js.filter((file) =>
     /(?:Mostrador|FunnelDetalle|FunnelTitular|ReservaGestion)\.[^.]+\.js$/.test(file),
   );
+  const pagesWithoutContact = html.filter((file) => {
+    const source = readFileSync(join(outDir, file), 'utf8');
+    return !(
+      source.includes('data-logic2b-contact') &&
+      source.includes('data-contact-context="tenant"') &&
+      source.includes('https://wa.me/34626432316?text=') &&
+      source.includes('Logic2B')
+    );
+  });
+  if (contactEnabled(slug) && pagesWithoutContact.length > 0) {
+    throw new Error(`${slug}: pierde contacto Logic2B (${pagesWithoutContact.join(', ')})`);
+  }
+  if (!contactEnabled(slug) && pagesWithoutContact.length !== html.length) {
+    throw new Error(`${slug}: logic2bContact false todavía emite el contacto`);
+  }
 
   if (tier < 3 && (bookingRoutes.length > 0 || bookingChunks.length > 0)) {
     throw new Error(
@@ -76,9 +96,10 @@ function checkTierBoundary(slug, outDir) {
         source.includes(`name="stay" value="${unitTypeId}"`)
       );
     });
-    const invalidPages = tier === 2
-      ? accommodationPages.filter((file) => !pagesWithSpecificEnquiry.includes(file))
-      : pagesWithSpecificEnquiry;
+    const invalidPages =
+      tier === 2
+        ? accommodationPages.filter((file) => !pagesWithSpecificEnquiry.includes(file))
+        : pagesWithSpecificEnquiry;
     if (accommodationPages.length === 0 || invalidPages.length > 0) {
       throw new Error(
         `${slug}: tier ${tier} rompe la frontera de solicitud contextual (${[

@@ -313,6 +313,53 @@ try {
       );
       assert.deepEqual([...new Set(failures)], [], `${route.id}/${viewport.width}: errores`);
 
+      const contact = page.locator('[data-logic2b-contact]');
+      assert.equal(await contact.count(), 1, `${route.id}/${viewport.width}: contacto único`);
+      assert.match(
+        (await contact.getAttribute('href')) ?? '',
+        /^https:\/\/wa\.me\/34626432316\?text=/,
+        `${route.id}/${viewport.width}: destino de contacto`,
+      );
+      if (route.path.includes('/gestion/')) {
+        assert.equal(
+          await contact.getAttribute('data-contact-context'),
+          'dashboard',
+          `${route.id}/${viewport.width}: contexto gestor`,
+        );
+        if (viewport.width < 768) {
+          await page.getByRole('button', { name: 'Abrir el menú' }).click();
+          assert.ok(
+            await contact.last().isVisible(),
+            `${route.id}/${viewport.width}: contacto drawer`,
+          );
+          await page.keyboard.press('Escape');
+        } else {
+          assert.ok(await contact.isVisible(), `${route.id}/${viewport.width}: contacto sidebar`);
+        }
+      } else if (route.path === '/' || route.path === '/en/' || route.path.startsWith('/docs/')) {
+        assert.equal(
+          await contact.getAttribute('data-contact-context'),
+          route.path.startsWith('/docs/') ? 'docs' : 'commercial',
+          `${route.id}/${viewport.width}: contexto comercial`,
+        );
+      } else {
+        assert.equal(
+          await contact.getAttribute('data-contact-context'),
+          'tenant',
+          `${route.id}/${viewport.width}: contexto tenant`,
+        );
+        await page.evaluate(() => window.scrollTo(0, 360));
+        await page.waitForFunction(
+          () =>
+            document.querySelector('[data-logic2b-contact]')?.getAttribute('data-visible') ===
+            'true',
+        );
+        assert.ok(
+          await contact.isVisible(),
+          `${route.id}/${viewport.width}: contacto tenant visible`,
+        );
+      }
+
       if (route.id !== 'landing-en' && route.id !== 'cala-detail') {
         await page.screenshot({
           path: join(captures, `${route.id}-${viewport.width}.png`),

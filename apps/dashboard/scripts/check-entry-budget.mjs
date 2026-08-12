@@ -57,6 +57,16 @@ const jsFiles = [
 const emittedSource = (
   await Promise.all(jsFiles.map((file) => readFile(join(dist, file), 'utf8')))
 ).join('\n');
+for (const marker of [
+  'data-logic2b-contact',
+  'data-contact-context',
+  'wa.me/34626432316',
+  'Ayuda Logic2B',
+]) {
+  if (!emittedSource.includes(marker)) {
+    throw new Error(`B5: el gestor pierde el contrato de contacto «${marker}».`);
+  }
+}
 const scenario = process.env.VITE_DEMO_SCENARIO?.trim();
 const scenarioMarkers = {
   pinadamar: ['usr_demo_pinadamar', 'logic2b-demo:pinadamar'],

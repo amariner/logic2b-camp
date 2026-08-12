@@ -20,6 +20,30 @@ const launchOptions = chromiumPath ? { executablePath: chromiumPath } : {};
 if (process.env.COMMERCIAL_QA_NO_PROXY === '1') launchOptions.args = ['--no-proxy-server'];
 const browser = await chromium.launch(launchOptions);
 
+async function assertContact(page, { context, visible, label }) {
+  const contact = page.locator('[data-logic2b-contact]');
+  assert.equal(await contact.count(), 1, `${label}: debe existir un único contacto`);
+  assert.equal(await contact.getAttribute('data-contact-context'), context, `${label}: contexto`);
+  assert.match(
+    await contact.getAttribute('href'),
+    /^https:\/\/wa\.me\/34626432316\?text=/,
+    `${label}: destino`,
+  );
+  assert.equal(await contact.getAttribute('target'), '_blank', `${label}: target`);
+  assert.equal(await contact.getAttribute('rel'), 'noopener noreferrer', `${label}: rel`);
+  await page.waitForFunction(
+    ({ expected }) =>
+      document.querySelector('[data-logic2b-contact]')?.getAttribute('data-visible') === expected,
+    { expected: String(visible) },
+  );
+  assert.equal(await contact.getAttribute('tabindex'), visible ? '0' : '-1', `${label}: foco`);
+  if (visible) {
+    assert.ok(await contact.isVisible(), `${label}: visible`);
+    const box = await contact.boundingBox();
+    assert.ok((box?.width ?? 0) >= 44 && (box?.height ?? 0) >= 44, `${label}: objetivo 44px`);
+  }
+}
+
 try {
   for (const variant of variants) {
     const context = await browser.newContext({
@@ -75,8 +99,18 @@ try {
         `${variant.locale}/${variant.width}: rechazar cargó Google`,
       );
     }
+    await assertContact(page, {
+      context: 'commercial',
+      visible: false,
+      label: `${variant.locale}/${variant.width}: contacto inicial`,
+    });
     const planSection = page.locator('#niveles');
     await planSection.scrollIntoViewIfNeeded();
+    await assertContact(page, {
+      context: 'commercial',
+      visible: true,
+      label: `${variant.locale}/${variant.width}: contacto tras scroll`,
+    });
     const statuses = planSection.locator('[data-plan-status]');
     assert.equal(
       await statuses.count(),
@@ -153,6 +187,11 @@ try {
       await dialog.evaluate((item) => item.open),
       `${variant.locale}/${variant.width}: diálogo de solicitud`,
     );
+    await assertContact(page, {
+      context: 'commercial',
+      visible: false,
+      label: `${variant.locale}/${variant.width}: contacto bajo modal`,
+    });
     assert.equal(
       await dialog.locator('[data-project-request-plan-input]').inputValue(),
       requestedPlan,
@@ -163,6 +202,15 @@ try {
       !(await dialog.evaluate((item) => item.open)),
       `${variant.locale}/${variant.width}: cierre del diálogo`,
     );
+    await assertContact(page, {
+      context: 'commercial',
+      visible: true,
+      label: `${variant.locale}/${variant.width}: contacto tras modal`,
+    });
+    await page.screenshot({
+      path: `${output}/logic-camp-commercial-contact-${variant.locale}-${variant.width}.png`,
+      animations: 'disabled',
+    });
 
     await assertNoOverflow(page, `${variant.locale}/${variant.width}: portada`);
     await page.screenshot({
@@ -179,11 +227,27 @@ try {
       `${variant.locale}/${variant.width}: estados en precios`,
     );
     await assertNoOverflow(page, `${variant.locale}/${variant.width}: precios`);
+    await page.evaluate(() => window.scrollTo(0, 320));
+    await assertContact(page, {
+      context: 'commercial',
+      visible: true,
+      label: `${variant.locale}/${variant.width}: contacto en precios`,
+    });
 
     await page.goto(`${origin}${variant.prefix}/docs/recepcion/check-in/`, {
       waitUntil: 'networkidle',
     });
     await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => window.scrollTo(0, 320));
+    await assertContact(page, {
+      context: 'docs',
+      visible: true,
+      label: `${variant.locale}/${variant.width}: contacto en guía`,
+    });
+    await page.screenshot({
+      path: `${output}/logic-camp-doc-contact-${variant.locale}-${variant.width}.png`,
+      animations: 'disabled',
+    });
     const breadcrumb = await page.evaluate(() => {
       const scripts = [...document.head.querySelectorAll('script[type="application/ld+json"]')];
       return scripts
@@ -234,6 +298,13 @@ try {
       path: `${output}/logic-camp-commercial-doc-${variant.locale}-${variant.width}.png`,
       fullPage: true,
       animations: 'disabled',
+    });
+
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await assertContact(page, {
+      context: 'docs',
+      visible: false,
+      label: `${variant.locale}/${variant.width}: contacto retirado ante pie`,
     });
 
     await page.goto(`${origin}${variant.prefix}/cookies/`, { waitUntil: 'networkidle' });

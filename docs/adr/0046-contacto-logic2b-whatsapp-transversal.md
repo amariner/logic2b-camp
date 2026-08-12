@@ -1,6 +1,6 @@
 # 0046 — Contacto transversal con Logic2B por WhatsApp
 
-- **Estado**: propuesto; requiere validación de Andreu antes de escribir código
+- **Estado**: aceptado por Andreu (2026-08-12, «ok confirmo continuemos»)
 - **Fecha**: 2026-08-12
 - **Ámbito**: sitio comercial y documentación (`apps/site`), webs tenant
   (`apps/web`) y gestor (`apps/dashboard`)
@@ -19,7 +19,7 @@ inferior derecha para toasts y tiene controles de operación y paneles móviles.
 Además, dentro de una demo ficticia el enlace no puede parecer el WhatsApp de
 recepción del camping.
 
-## Decisión propuesta
+## Decisión
 
 ### 1. Un contrato de plataforma, tres adaptadores de presentación
 
@@ -187,12 +187,21 @@ Revisada contra el árbol real el 2026-08-12:
 - **Cargar un widget oficial de WhatsApp:** introduce runtime y seguimiento de
   Meta donde un enlace accesible ya resuelve el contacto.
 
-## Validación que se solicita
+## Validación
 
-Andreu puede desbloquear la implementación con `OK ADR 0046`. Esa validación
-confirma conjuntamente:
+Andreu desbloqueó la implementación el 2026-08-12 con «ok confirmo continuemos».
+La validación confirma conjuntamente:
 
 1. aparición pública tras 280 px y retirada ante pie/modal/consentimiento;
 2. mensajes genéricos por superficie, sin datos del visitante ni de reserva;
 3. acceso del gestor en login/sidebar/drawer en vez de flotante;
 4. activo por defecto en tenant y desactivable con `logic2bContact: false`.
+
+## Resultado
+
+Implementado en `@logic-camp/config/contact` y en los adaptadores de
+`apps/site`, `apps/web` y `apps/dashboard`. Las guardias de artefacto, fábrica,
+portfolio, presupuesto M6 y frontera R12 fijan el contrato. El QA comercial
+es/en, el recorrido canónico de 24 superficies y el E2E contra Worker cubren
+375/1366 px, consentimiento, modal, pie, login, drawer y sidebar; `pnpm check`
+cierra 69/69 tareas. No se añade tracker, widget, proveedor ni despliegue.

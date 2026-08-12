@@ -199,10 +199,23 @@ export function auditR12Repository(repo) {
   assertIncludes(cookies, 'no utiliza cookies de analítica', 'política de cookies');
   assertIncludes(cookies, 'no incorpora píxeles de seguimiento', 'política de cookies');
 
+  const contactPath = join(repo, 'packages', 'config', 'src', 'contact.ts');
+  const contact = readFileSync(contactPath, 'utf8');
+  assertIncludes(contact, "'https://wa.me/34626432316'", 'contacto Logic2B');
+  assertExcludes(
+    contact,
+    /\b(?:fetch|sendBeacon)\s*\(/,
+    'contacto Logic2B',
+    'transporte o tracking activo',
+  );
+
   return { sourceFiles: sourceFiles.length, manifests: manifests.length };
 }
 
-export function auditPublicArtifact(dist, { requireCookies = true } = {}) {
+export function auditPublicArtifact(
+  dist,
+  { requireCookies = true, requireLogic2BContact = true } = {},
+) {
   const runtimeFiles = filesUnder(dist, (path) =>
     ['.css', '.html', '.js', '.mjs'].includes(extname(path)),
   );
@@ -216,6 +229,11 @@ export function auditPublicArtifact(dist, { requireCookies = true } = {}) {
     assertIncludes(cookies, 'no utiliza cookies de analítica', 'artefacto /cookies');
     assertIncludes(cookies, 'no incorpora píxeles de seguimiento', 'artefacto /cookies');
   }
+  if (requireLogic2BContact) {
+    const home = readFileSync(join(dist, 'index.html'), 'utf8');
+    assertIncludes(home, 'data-logic2b-contact', 'artefacto web pública');
+    assertIncludes(home, 'https://wa.me/34626432316?text=', 'artefacto web pública');
+  }
   return { runtimeFiles: runtimeFiles.length };
 }
 
@@ -223,7 +241,10 @@ function run() {
   const web = resolve(dirname(fileURLToPath(import.meta.url)), '..');
   const repo = resolve(web, '..', '..');
   const source = auditR12Repository(repo);
-  const artifact = auditPublicArtifact(join(web, 'dist'));
+  const tenant = process.env.TENANT?.trim() || 'demo';
+  const tenantConfig = readFileSync(join(repo, 'tenants', tenant, 'config.ts'), 'utf8');
+  const requireLogic2BContact = !/^\s*logic2bContact\s*:\s*false\s*,/im.test(tenantConfig);
+  const artifact = auditPublicArtifact(join(web, 'dist'), { requireLogic2BContact });
   console.log(
     `[r12] fronteras locales verificadas: ${source.sourceFiles} fuentes, ` +
       `${source.manifests} manifiestos y ${artifact.runtimeFiles} artefactos; ` +

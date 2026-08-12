@@ -1,39 +1,36 @@
-# Prompt para la siguiente sesión — validar e implementar B5
+# Prompt para la siguiente sesión — elegir alcance no temático
 
-> Reescrito el 2026-08-12 tras cerrar la solicitud contextual de tier 2 y
-> revisar el último cambio no temático del roadmap.
+> Reescrito el 2026-08-12 tras aceptar e implementar B5/ADR 0046.
 
 ## Estado en una línea
 
-La sesión 138 cerró ADR 0044 en local y `main`: cada ficha tier 2 conserva el
-tipo en la solicitud, mientras tier 1 y tier 3 mantienen sus fronteras. El único
-bloque funcional local abierto fuera de creación de temas es **B5**, contacto
-transversal con Logic2B por WhatsApp.
+ADR 0044 cierra la solicitud contextual de tier 2 y ADR 0046 cierra el contacto
+transversal con Logic2B en sitio, documentación, tenants y gestor. No queda otro
+bloque funcional local no temático autorizado por el roadmap.
 
-## Decisión preparada
+## Evidencia de cierre B5
 
-[`adr/0046-contacto-logic2b-whatsapp-transversal.md`](adr/0046-contacto-logic2b-whatsapp-transversal.md)
-propone:
+- contrato compartido con teléfono, URL, seis idiomas y cuatro contextos sin PII;
+- píldora pública tras 280 px, retirada ante pie y, en sitio, consentimiento o modal;
+- tenant activo por defecto y desactivable con `logic2bContact: false`;
+- ayuda del gestor en login, sidebar expandida/plegada y drawer móvil;
+- guardias de artefacto, portfolio, R12 y presupuesto M6;
+- QA comercial es/en y QA canónico a 375/1366 px, E2E contra Worker y bundle
+  compuesto verdes.
 
-- contrato único con `+34 626 432 316`, URL, seis idiomas y mensajes por
-  superficie sin PII;
-- píldora pública tras 280 px, oculta ante pie, consentimiento o modal;
-- gestor en login/sidebar/drawer, no flotante, para no tapar operación;
-- contacto Logic2B activo por defecto en webs tenant y desactivable por config.
+No hubo deploy, infraestructura remota, proveedor, tracker ni creación de temas.
 
-## Gate
+## Cómo continuar
 
-No escribir código B5 hasta que Andreu valide el ADR. La respuesta mínima es:
+No inventar un nuevo frente para mantener actividad. Antes de escribir código,
+Andreu debe seleccionar de forma explícita uno de estos ámbitos:
 
-```text
-OK ADR 0046
-```
+1. un gate de cliente real o producción con sus datos/credenciales/autorización;
+2. un alcance comercial nuevo que merezca ADR;
+3. volver al portfolio temático (`soldhivern`), que esta sesión excluyó.
 
-Tras ese OK: implementar contrato + tres adaptadores, pruebas, QA 375/1366,
-`pnpm check`, bundle, documentación, commit y push. No desplegar sin autorización
-separada.
-
-## Trabajo temático separado
-
-El portfolio sigue en 11/12 y `soldhivern` continúa pendiente, pero no forma
-parte de este carril por instrucción expresa de Andreu.
+Si la instrucción sigue siendo «continuar sin crear temas», revisar primero
+`docs/BACKLOG.md` y `docs/AUDITORIA-R15-NO-VISUAL.md`: los pendientes restantes
+dependen de material real, proveedor, infraestructura, aprendizaje comercial o
+autorización de despliegue. Presentar esa frontera y pedir dirección; no convertir
+un gate externo en una implementación local ficticia.
