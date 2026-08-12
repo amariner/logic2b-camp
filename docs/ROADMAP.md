@@ -73,8 +73,8 @@ visual no modifica ese trabajo ni presenta 54/63 tareas como un check completo.
 | **B4** | Documentación de producto → **absorbida en C6** (2026-07-20) | Docs de Logic Camp con layout del DS: guía de la recepcionista (operar el gestor), guía del dueño (niveles, qué incluye cada uno), y ficha técnica para el "informático de confianza". Reutiliza/alinea con `FUNCIONALIDADES.md` y `ONBOARDING.md`.                                               | Un cliente resuelve dudas de uso sin escribir a soporte; enlazada desde landing y dashboard                           |
 | **B5** | Contacto directo transversal por WhatsApp                    | Un CTA de contacto con Logic2B, inspirado en el banner flotante de `logic2b.com`, disponible en el sitio comercial, documentación, webs tenant/demos y gestor, sin confundirse con el canal de recepción del camping.                                                                                 | El contacto llega a WhatsApp con contexto de la superficie; no tapa navegación ni operación y pasa QA a 375/1366 px  |
 
-**Estado del Frente B** (actualizado 2026-08-11): **B0, B1, B2, B3 y B4
-HECHOS; B5 PROGRAMADO.** `packages/ui` es el DS real (tema, tokens, fuentes,
+**Estado del Frente B** (actualizado 2026-08-12): **B0, B1, B2, B3 y B4
+HECHOS; B5 CON ADR 0046 PROPUESTO.** `packages/ui` es el DS real (tema, tokens, fuentes,
 wordmark y primitivos); `apps/site` sirve landing y documentación en la raíz;
 la web del tenant vive en `/demo/`; el dashboard consume Logic2B UI y la web
 firma «powered by Logic2B». B5 abre un único remate transversal de captación y
@@ -124,7 +124,7 @@ soporte; no reabre las decisiones visuales ya cerradas del resto del frente.
 - [x] Layout de documentación con marca Logic2B compartido con la landing.
 - [x] Enlaces desde landing y ayuda contextual de las pantallas cubiertas.
 
-**B5 · Contacto directo transversal por WhatsApp — PROGRAMADO 2026-08-11**
+**B5 · Contacto directo transversal por WhatsApp — ADR 0046 PROPUESTO 2026-08-12**
 
 Mandato de Andreu: incorporar en todo el proyecto un acceso de contacto por
 WhatsApp al **626 432 316**, incluido el gestor de la demo. La referencia es el
@@ -169,6 +169,11 @@ con Andreu.
       interno; texto visible y mensaje precargado por contexto; y si en un
       cliente real actúa siempre como soporte Logic2B o puede desactivarse por
       contrato.
+
+ADR 0046 recomienda aparición pública tras 280 px y retirada ante pie/overlays,
+mensajes genéricos sin PII, adaptación del gestor a login/sidebar/drawer y
+activación tenant por defecto con `logic2bContact: false` como salida contractual.
+Requiere `OK ADR 0046` antes de escribir código.
 
 ### Decisiones pendientes del Frente B (bloquean sus ADR)
 

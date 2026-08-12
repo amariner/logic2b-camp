@@ -1,43 +1,39 @@
-# Prompt para la siguiente sesión — continuar D6-V con Soldhivern
+# Prompt para la siguiente sesión — validar e implementar B5
 
-> Reescrito tras completar Camping La Ballena el 2026-08-11. El mandato
-> vigente es terminar los temas pendientes por el orden del Frente D.
+> Reescrito el 2026-08-12 tras cerrar la solicitud contextual de tier 2 y
+> revisar el último cambio no temático del roadmap.
 
 ## Estado en una línea
 
-El portfolio está en **11/12**: D5-V cerró en seis y D6-V ya aporta Serralta,
-Entre Vinyes, Els Tarongers, La Carrasca y La Ballena. El único tema pendiente
-es `soldhivern`.
+La sesión 138 cerró ADR 0044 en local y `main`: cada ficha tier 2 conserva el
+tipo en la solicitud, mientras tier 1 y tier 3 mantienen sus fronteras. El único
+bloque funcional local abierto fuera de creación de temas es **B5**, contacto
+transversal con Logic2B por WhatsApp.
 
-## Evidencia de La Ballena
+## Decisión preparada
 
-- Tenant tier 3 de 250 unidades y ruta `/demos/ballena/`.
-- Verano por semanas con mínimo de siete noches y llegada/salida en sábado;
-  señal simulada del 25 % y cancelación por tramos 21/8/0 días.
-- Gestor reversible en `/demos/ballena/gestion/`, con prefijo `BL-26-`,
-  planning y plano propios; tres olas de llegadas de sábado prueban ocupación
-  al límite sin crear una integración real.
-- Inventario de parcelas Orilla y Brisa, bungalow Ola y mobil-home Marea.
-- Fotografía propia aprobada 10/10 más miniatura, OG y favicon.
-- QA canónico de home y planning a 375/1366 px, `noindex` y consola limpia.
+[`adr/0046-contacto-logic2b-whatsapp-transversal.md`](adr/0046-contacto-logic2b-whatsapp-transversal.md)
+propone:
 
-## Última vertical
+- contrato único con `+34 626 432 316`, URL, seis idiomas y mensajes por
+  superficie sin PII;
+- píldora pública tras 280 px, oculta ante pie, consentimiento o modal;
+- gestor en login/sidebar/drawer, no flotante, para no tapar operación;
+- contacto Logic2B activo por defecto en webs tenant y desactivable por config.
 
-Construir **Camping Soldhivern** con una identidad aún no cubierta por las once
-demos ya navegables. Debe mantener el contrato de fábrica: brief, contenido,
-fotografía propia, inventario/tarifas, escenario si el nivel lo requiere,
-catálogo, bundle y QA, sin reutilizar activos ni abrir infraestructura nueva.
+## Gate
 
-## Límites
-
-- Una marca nueva no obtiene rama, backend, D1, Worker ni servicio propio.
-- Fotos en lotes máximos de dos, inspección visual antes de avanzar y sin reutilizar
-  activos entre tenants.
-- Nada de deploy, DNS, secretos, proveedores de comunicación o cobro reales.
-- `tmp/` pertenece al usuario y queda fuera del trabajo.
-
-## Prompt
+No escribir código B5 hasta que Andreu valide el ADR. La respuesta mínima es:
 
 ```text
-terminar los temas pendientes
+OK ADR 0046
 ```
+
+Tras ese OK: implementar contrato + tres adaptadores, pruebas, QA 375/1366,
+`pnpm check`, bundle, documentación, commit y push. No desplegar sin autorización
+separada.
+
+## Trabajo temático separado
+
+El portfolio sigue en 11/12 y `soldhivern` continúa pendiente, pero no forma
+parte de este carril por instrucción expresa de Andreu.

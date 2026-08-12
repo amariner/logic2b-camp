@@ -1,5 +1,18 @@
 # PROGRESS — Logic Camp
 
+## B5 queda diseñado y espera validación · 2026-08-12 (sesión 139)
+
+- ADR 0046 propone un contrato único para número, enlaces, seis idiomas y cuatro
+  contextos sin PII. Sitio y webs tenant usarían píldora tras 280 px, retirada
+  ante pie/overlays; el gestor la adapta a login/sidebar/drawer para no competir
+  con toasts, paneles ni controles del planning.
+- La política tenant sería activa por defecto y desactivable con
+  `logic2bContact: false`; nunca configura el WhatsApp de recepción. El primer
+  corte no mediría el clic ni cargaría widget, píxel, iframe o script de Meta.
+- No se ha escrito código B5: el roadmap exigía revisar aparición, posición,
+  copy y política con Andreu. La implementación queda bloqueada únicamente por
+  `OK ADR 0046`; no por credenciales, proveedor o infraestructura.
+
 ## La ficha de Solicitudes conserva la estancia elegida · 2026-08-12 (sesión 138)
 
 - La revisión del diff local encontró una divergencia con ADR 0044: el primer
