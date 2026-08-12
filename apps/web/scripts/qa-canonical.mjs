@@ -65,6 +65,13 @@ const routes = [
   { id: 'landing-es', path: '/', noindex: false, texts: ['Logic2B', 'camping'] },
   { id: 'landing-en', path: '/en/', noindex: false, texts: ['Logic2B', 'campsite'] },
   {
+    id: 'themes-es',
+    path: '/temas/',
+    noindex: false,
+    texts: ["Sol d'Hivern", 'Doce campings ficticios'],
+    absentTexts: ['Concepto visual'],
+  },
+  {
     id: 'docs',
     path: '/docs/recepcion/check-in/',
     noindex: false,
@@ -186,6 +193,20 @@ const routes = [
       '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
   },
   {
+    id: 'soldhivern-home',
+    path: '/demos/soldhivern/',
+    noindex: true,
+    texts: ['Doscientas unidades', 'Cuatro formas de quedarse más tiempo'],
+  },
+  {
+    id: 'soldhivern-planning',
+    path: '/demos/soldhivern/gestion/#/planning',
+    noindex: true,
+    texts: ['SH-26-', 'Estudio Garbí'],
+    visibleSelector:
+      '[role="region"][aria-label="Agenda del planning"], [role="region"][aria-label="Calendario completo del planning"]',
+  },
+  {
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,
@@ -283,6 +304,12 @@ try {
           `${route.id}/${viewport.width}: falta «${text}»; visible=${JSON.stringify(body.slice(0, 500))}`,
         );
       }
+      for (const text of route.absentTexts ?? []) {
+        assert.ok(
+          !body.includes(text),
+          `${route.id}/${viewport.width}: todavía aparece «${text}»`,
+        );
+      }
       assert.ok(
         await page
           .locator(route.visibleSelector ?? 'h1')
@@ -336,7 +363,12 @@ try {
         } else {
           assert.ok(await contact.isVisible(), `${route.id}/${viewport.width}: contacto sidebar`);
         }
-      } else if (route.path === '/' || route.path === '/en/' || route.path.startsWith('/docs/')) {
+      } else if (
+        route.path === '/' ||
+        route.path === '/en/' ||
+        route.path === '/temas/' ||
+        route.path.startsWith('/docs/')
+      ) {
         assert.equal(
           await contact.getAttribute('data-contact-context'),
           route.path.startsWith('/docs/') ? 'docs' : 'commercial',

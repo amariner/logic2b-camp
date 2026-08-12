@@ -9,6 +9,7 @@ import vinyes from '../../../../tenants/vinyes/content/media/miniatura.webp?url'
 import tarongers from '../../../../tenants/tarongers/content/media/miniatura.webp?url';
 import carrasca from '../../../../tenants/carrasca/content/media/miniatura.webp?url';
 import ballena from '../../../../tenants/ballena/content/media/miniatura.webp?url';
+import soldhivern from '../../../../tenants/soldhivern/content/media/miniatura.webp?url';
 
 /**
  * Una sola fuente para las miniaturas comerciales: el derivado aprobado de
@@ -27,6 +28,7 @@ export const portfolioImages = {
   tarongers,
   carrasca,
   ballena,
+  soldhivern,
 } as const;
 
 export type PortfolioSlug = keyof typeof portfolioImages;

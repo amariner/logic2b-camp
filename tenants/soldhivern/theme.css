@@ -1,0 +1,19 @@
+:root {
+  --lc-tinta: #26342f;
+  --lc-hueso: #f2efe5;
+  --lc-pino: #536f62;
+  --lc-arena: #d6b58c;
+  --lc-mar: #9e593f;
+
+  --lc-pino-oscuro: #344c42;
+  --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
+  --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 32%, var(--lc-hueso));
+
+  --lc-font-display: 'Fraunces', Georgia, serif;
+  --lc-font-text: 'Source Sans 3', system-ui, sans-serif;
+
+  --lc-radius: 10px;
+  --lc-radius-sm: max(0px, calc(var(--lc-radius) - 4px));
+  --lc-radius-md: var(--lc-radius);
+  --lc-radius-lg: calc(var(--lc-radius) + 8px);
+}

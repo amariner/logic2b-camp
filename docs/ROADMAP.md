@@ -266,7 +266,7 @@ bases por marca, integraciones y producción real no son dependencias.
 | **D3-V ✅** | Demo Visión          | Resort: reserva + operación + automatización/IA representadas                            | El futuro se entiende y cada simulación está etiquetada |
 | **D4-V ✅** | Escaparate comercial | Galería, comparador, capturas/vídeo, fichas y campaña de muestra                         | Recorrido comercial completo y reproducible             |
 | **D5-V ✅** | Ola 2                | Extender la fábrica a seis demos con El Delta como cierre                                | La variedad no crea código ni backend por marca         |
-| **D6-V**    | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto             |
+| **D6-V ✅** | Ola 3                | Completar doce solo con evidencia comercial                                              | Cada demo cubre una objeción o ICP distinto             |
 
 **Estado (2026-08-10): la primera ola D0-V–D4-V está cerrada.** Mar de
 Fondo tiene identidad, catálogo de 300 unidades, reserva pública hasta el
@@ -288,7 +288,7 @@ siguiente demo programada: **Càmping Riu Clar** sustituye el concepto Montaña
 con una identidad completa de microcamping fluvial. La instrucción posterior de
 desarrollar todos los temas programados amplía el mandato al portfolio completo:
 **Camping La Duna** añade el caso camper y **Camping El Delta** cierra D5-V en
-**6/6** con el microcamping estacional de humedal. D6-V queda abierto y continúa
+**6/6** con el microcamping estacional de humedal. D6-V continuó
 por `serralta`, `vinyes`, `tarongers`, `carrasca`, `ballena` y `soldhivern`,
 siempre demo a demo y sin infraestructura propia.
 **Avance 2026-08-11:** `carrasca` eleva el portfolio a **10/12** tras Entre
@@ -297,7 +297,12 @@ propia 10/10 y gestor reversible. Su evidencia funcional es una política demo
 configurable: tasa de 1,20 € por adulto y noche limitada a siete noches, señal
 del 30 % y cancelación por tramos 14/7/0 días, visibles desde la reserva hasta
 el mostrador. Home y planning pasan QA canónico a 375/1366 px; el siguiente
-tema es `ballena`.
+tema era `ballena`.
+**Cierre 2026-08-12:** `ballena` y `soldhivern` completan el portfolio en
+**12/12**. Sol d'Hivern añade 200 unidades, fotografía propia, reserva con
+mínimo invernal de 45 noches y gestor reversible con ocupaciones prolongadas.
+La landing retira el concepto «Parcela»: las doce tarjetas enlazan ya a demos
+navegables. D6-V queda cerrado sin crear infraestructura por marca.
 Evidencia y matriz de no duplicación inicial:
 [`AUDITORIA-PORTFOLIO-R9.md`](AUDITORIA-PORTFOLIO-R9.md).
 

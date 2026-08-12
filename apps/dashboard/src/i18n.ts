@@ -38,6 +38,8 @@ const es = {
     'La Carrasca es una demostración ficticia: tasa, señal, cancelación y reservas quedan solo en este navegador, no se cobra ni se envían mensajes.',
   'demo.ballenaBanner':
     'La Ballena es una demostración ficticia: las semanas, llegadas de sábado y reservas quedan solo en este navegador, no se cobra ni se envían mensajes.',
+  'demo.soldhivernBanner':
+    "Sol d'Hivern es una demostración ficticia: estancias, consumos, prórrogas y reservas quedan solo en este navegador, no se cobra ni se envían mensajes.",
   'demo.mardefondoBanner':
     'Mar de Fondo es una demostración ficticia de 300 unidades: la reserva, el cobro y la operación son locales, no contactan con proveedores y puedes restablecerlo todo.',
   'demo.verWeb': 'Ver la web del camping',

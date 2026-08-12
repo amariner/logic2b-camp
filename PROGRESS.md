@@ -1,5 +1,23 @@
 # PROGRESS — Logic Camp
 
+## Sol d'Hivern completa el portfolio D6-V en 12/12 · 2026-08-12 (sesión 141)
+
+- `tenants/soldhivern/` entrega la última demo Visión: un camping mediterráneo
+  ficticio abierto todo el año, con 200 unidades y una operación centrada en
+  estancias de 45 noches o más, consumos cotidianos y prórrogas.
+- Web, reserva local y gestor reversible comparten prefijo `SH-26-`, señal
+  simulada del 15 %, cuatro categorías, plano propio y 199 ocupaciones largas
+  de 60/75/90 noches. No existe cobro, proveedor ni envío real.
+- Diez fotografías exclusivas y sus derivados quedan aprobados en el pipeline.
+  La landing sustituye el concepto genérico «Parcela» por Sol d'Hivern y pasa de
+  once a doce demos navegables, todas sostenidas por un tenant real.
+- El bundle y el QA canónico incorporan la portada y el planning de Sol
+  d'Hivern: 16.186 enlaces internos en 522 HTML y tres superficies nuevas
+  verificadas a 375/1366 px. La fábrica construye 12/12 campings y el dashboard
+  pasa 56/56 pruebas. `pnpm check` cierra 71/71 tareas y el QA canónico, 27
+  superficies y 54 vistas. D6-V queda cerrado; no hubo deploy, DNS ni
+  infraestructura remota.
+
 ## B5 lleva el contacto Logic2B a todo el escaparate · 2026-08-12 (sesión 140)
 
 - Andreu aceptó ADR 0046. `@logic-camp/config/contact` fija teléfono, URL,

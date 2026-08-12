@@ -1,0 +1,72 @@
+{
+  "procedencia": {
+    "tipo": "generada",
+    "fuente": "Lote D6-SH producido para Logic2B con generación integrada; los másteres *-source.png se conservan junto a los finales.",
+    "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping Sol d'Hivern.",
+    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de publicar cada lote. No se reutilizan activos de otros tenants."
+  },
+  "lotes": [
+    ["hero-invierno", "hero-comunidad"],
+    ["parcela-llevant", "parcela-migdia"],
+    ["bungalow-olivera", "estudio-garbi"],
+    ["instalacion-recepcion", "instalacion-salon"],
+    ["entorno-almendros", "textura-lona"]
+  ],
+  "derivados": {
+    "fuente": "hero-invierno",
+    "titulo": "Camping Sol d'Hivern",
+    "subtitulo": "200 unidades · abierto todo el año"
+  },
+  "piezas": {
+    "hero-invierno": {
+      "aspecto": "21:9",
+      "papel": "Héroe principal con espacio negativo para la disponibilidad.",
+      "prompt": "Fotografía editorial documental panorámica de un camping mediterráneo de larga estancia en una mañana luminosa de enero. Una avenida tranquila reúne autocaravanas europeas genéricas en parcelas amplias, setos bajos, pinos maduros y un almendro en flor; se percibe vida cotidiana sin mostrar personas. Suelo firme, luz baja cálida, cielo azul pálido y espacio negativo amplio a la izquierda para texto. Ninguna persona, texto, logotipo, bandera, matrícula legible, nieve, piscina, playa, lujo, palmera tropical, HDR ni saturación excesiva."
+    },
+    "hero-comunidad": {
+      "aspecto": "21:9",
+      "papel": "Héroe secundario y página no encontrada.",
+      "prompt": "Fotografía editorial documental panorámica de la plaza común de un camping de larga estancia mediterráneo a media mañana de invierno. Mesas de madera vacías bajo una pérgola sencilla, bicicletas genéricas aparcadas, macetas de romero y una recepción baja al fondo; autocaravanas discretas sugieren una comunidad estable. Composición serena con espacio negativo. Ninguna persona, palabra, número, logotipo, bandera, matrícula legible, decoración navideña, resort, lujo, HDR ni colores neón."
+    },
+    "parcela-llevant": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Llevant.",
+      "prompt": "Fotografía editorial documental de una parcela de 90 metros cuadrados para larga estancia en un camping mediterráneo en invierno. Autocaravana compacta totalmente genérica sin texto ni matrícula, suelo de grava fina, toma eléctrica cerrada de 10 A, seto bajo y sol de mañana; una mesa y dos sillas vacías hacen creíble una estancia prolongada. Ninguna persona, logotipo, toldo con marca, césped artificial, piscina, nieve, glamping, resort o HDR."
+    },
+    "parcela-migdia": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Parcela Migdia.",
+      "prompt": "Fotografía editorial documental de una parcela amplia de 120 metros cuadrados en el mismo camping mediterráneo de invierno. Autocaravana mediana completamente genérica sin marca, texto o matrícula, suelo firme, conexión cerrada de 16 A y agua, pequeño avance neutro y un almendro joven en flor; orientación soleada y maniobra clara. Ninguna persona, bandera, lujo, césped artificial, fogata, nieve, piscina, glamping, resort o HDR."
+    },
+    "bungalow-olivera": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Bungalow Olivera.",
+      "prompt": "Fotografía arquitectónica editorial de un bungalow compacto para cuatro en un camping mediterráneo abierto todo el año. Volumen de una planta encalado, carpintería verde gris, porche protegido del viento, rampa suave y un olivo adulto; luz limpia de invierno y escala doméstica realista. Ninguna persona, texto, logo, piscina privada, jacuzzi, villa de lujo, decoración costera, HDR ni arquitectura imposible."
+    },
+    "estudio-garbi": {
+      "aspecto": "3:2",
+      "papel": "Tarjeta y ficha de Estudio Garbí.",
+      "prompt": "Fotografía arquitectónica editorial de un estudio modular para dos en el mismo camping mediterráneo de larga estancia. Fachada de madera termotratada y estuco claro, una gran ventana proporcionada, porche pequeño resguardado y banco exterior; romero, grava y luz de final de tarde invernal. Diseño realista y compacto, no una villa. Ninguna persona, texto, logotipo, jacuzzi, piscina privada, resort, glamping de lujo, HDR ni neón."
+    },
+    "instalacion-recepcion": {
+      "aspecto": "3:2",
+      "papel": "Recepción preparada para estancias de varios meses.",
+      "prompt": "Fotografía editorial documental de la recepción vacía de un camping mediterráneo de larga estancia en invierno. Mostrador de madera ordenado, casilleros abstractos sin letras ni números legibles, plano sin texto, una cesta para correo y ventanas abiertas a una avenida de autocaravanas; tonos verde gris, terracota y crema. Espacio de trabajo realista, luz natural. Ninguna persona, rostro, texto, papel legible, logotipo, pantalla encendida, lujo, cola ni HDR."
+    },
+    "instalacion-salon": {
+      "aspecto": "3:2",
+      "papel": "Salón común de la comunidad invernal.",
+      "prompt": "Fotografía editorial documental de un salón común sencillo en un camping mediterráneo de invierno, vacío antes de una actividad. Mesas móviles, sillas cómodas sin aspecto institucional, estantería con juegos sin texto legible, cafetera doméstica apagada y puertas de vidrio hacia una terraza soleada. Materiales honestos y uso cotidiano. Ninguna persona, letras, logotipos, televisión encendida, decoración navideña, hotel, lujo, fiesta, HDR ni saturación."
+    },
+    "entorno-almendros": {
+      "aspecto": "21:9",
+      "papel": "Cabecera de entorno entre almendros y caminos llanos.",
+      "prompt": "Fotografía documental panorámica de un camino rural mediterráneo entre almendros en flor y bancales bajos a finales de enero. Una curva suave atraviesa tierra clara, muros de piedra seca y vegetación aromática; al fondo, una sierra baja bajo luz templada. Ninguna persona, bicicleta, texto, logotipo, casa dominante, nieve, playa, resort, HDR ni postal turística saturada."
+    },
+    "textura-lona": {
+      "aspecto": "21:9",
+      "papel": "Firma material transversal.",
+      "prompt": "Primer plano editorial documental horizontal de lona de avance color verde gris ligeramente gastada, cuerda trenzada, una pinza de madera y flores de almendro caídas sobre una mesa de madera clara. Textura real, luz lateral suave y composición abstracta. Sin personas, manos, letras, símbolos, logotipos, estampado de marca, brillo plástico, efectos digitales ni HDR."
+    }
+  }
+}

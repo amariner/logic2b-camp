@@ -1,0 +1,442 @@
+{
+  "seo": {
+    "title": "Camping Sol d'Hivern — larga estancia junto al Mediterráneo",
+    "description": "Camping ficticio de 200 unidades abierto todo el año, con parcelas para autocaravanas y estancias de invierno de 45 noches o más."
+  },
+  "nav": {
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Almendros y caminos",
+    "tarifas": "Tarifas",
+    "blog": "Guía de invierno",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: reserva, señal, pago y ocupación de larga estancia son simulados y se restablecen.",
+    "mostrador": "Abrir la reserva en el gestor",
+    "nivel": "Visión",
+    "nivel1": "Inicio",
+    "nivel3": "Visión"
+  },
+  "hero3": {
+    "titulo": "Doscientas unidades. Todo el invierno por delante.",
+    "prueba": "200 unidades · abierto todo el año · estancias de 45 noches o más"
+  },
+  "hero1": {
+    "titulo": "El Mediterráneo también se vive en enero.",
+    "cta": "Buscar una estancia larga"
+  },
+  "ticker": [
+    "170 parcelas para autocaravana",
+    "30 bungalows y estudios",
+    "abierto los doce meses",
+    "45 noches mínimas en invierno",
+    "ocupación prolongada visible en el gestor"
+  ],
+  "mostrador": {
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "huespedes": "Huéspedes",
+    "adultos": "adultos",
+    "ninos": "niños",
+    "adulto": "adulto",
+    "nino": "niño",
+    "buscar": "Ver estancias disponibles",
+    "buscando": "Buscando…",
+    "desde": "desde",
+    "porEstancia": "por estancia",
+    "unidadesLibres": "libres",
+    "quedanPocas": "quedan pocas",
+    "agotado": "Sin disponibilidad para esas fechas",
+    "agotadoTipo": "Este alojamiento no queda libre en esas fechas.",
+    "verOtros": "Comparar otras opciones",
+    "cerrado": "Cerrado en esas fechas",
+    "cerradoEl": "Cerrado en esas fechas — abrimos el {fecha}",
+    "noEntra": "No disponible para ese grupo",
+    "error": "La demostración no ha podido calcular disponibilidad. Prueba de nuevo.",
+    "fechasInvalidas": "La salida debe ser posterior a la llegada.",
+    "reservar": "Reservar en la demo"
+  },
+  "tipos": {
+    "titulo": "Cuatro formas de quedarse más tiempo",
+    "subtitulo": "Dos parcelas soleadas y dos alojamientos compactos para un camping de 200 unidades que sigue vivo cuando termina agosto.",
+    "verTodo": "Comparar los cuatro alojamientos",
+    "nombres": {
+      "ut_llevant": "Parcela Llevant",
+      "ut_migdia": "Parcela Migdia",
+      "ut_olivera": "Bungalow Olivera",
+      "ut_garbi": "Estudio Garbí"
+    },
+    "cards": [
+      {
+        "id": "llevant",
+        "nombre": "Parcela Llevant",
+        "desc": "Noventa metros cuadrados, 10 A y sol suave de mañana para una estancia larga.",
+        "foto": "parcela-llevant"
+      },
+      {
+        "id": "migdia",
+        "nombre": "Parcela Migdia",
+        "desc": "Ciento veinte metros cuadrados, 16 A, agua y maniobra para conjuntos largos.",
+        "foto": "parcela-migdia"
+      },
+      {
+        "id": "olivera",
+        "nombre": "Bungalow Olivera",
+        "desc": "Dos dormitorios, porche resguardado y climatización para cuatro.",
+        "foto": "bungalow-olivera"
+      },
+      {
+        "id": "garbi",
+        "nombre": "Estudio Garbí",
+        "desc": "Un dormitorio, baño y porche pequeño para dos personas.",
+        "foto": "estudio-garbi"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Sol bajo, días largos y una comunidad que se queda.",
+    "texto": "Las parcelas miran al mediodía, el salón común ocupa el centro y recepción organiza correo, suministros y estancias de varios meses. Invierno mediterráneo sin decorado de resort."
+  },
+  "form": {
+    "titulo": "Diseñemos una temporada larga sin fricción",
+    "subtitulo": "Esta demostración no envía datos. La estancia mínima, la señal y los servicios son ejemplos ficticios para una conversación de alcance.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "mensaje": "¿Cómo organizas hoy tus estancias de varias semanas?",
+    "enviar": "Preparar conversación",
+    "enviando": "Preparando…",
+    "ok": "Escenario preparado. No se ha enviado ningún dato.",
+    "error": "No se ha podido preparar la demostración. Reintenta con datos ficticios."
+  },
+  "footer": {
+    "aviso": "Camping ficticio de larga estancia y 200 unidades · demostración Logic2B",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Reserva y gestión por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Alojamientos | Camping Sol d'Hivern",
+      "description": "Compara parcelas, bungalow y estudio en un camping ficticio de larga estancia y 200 unidades."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías para 200 unidades. En invierno, la demo aplica una estancia mínima de 45 noches antes de confirmar.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Ver disponibilidad",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Bungalow y estudio",
+    "fichas": {
+      "ut_llevant": "Parcela de unos 90 m² con 10 A, sol de mañana y seto bajo.",
+      "ut_migdia": "Parcela de unos 120 m² con 16 A, agua y maniobra amplia.",
+      "ut_olivera": "Dos dormitorios, baño, cocina, climatización y porche para cuatro.",
+      "ut_garbi": "Un dormitorio, baño, cocina y porche para dos."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Dormitorios",
+      "banos": "Baños",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada flexible",
+      "notaPrecios": "Precio ficticio con {n} personas. En invierno, el recorrido aplica el mínimo completo de 45 noches.",
+      "disponibilidadTitulo": "¿Libre para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "Servicios del camping | Sol d'Hivern",
+      "description": "Salón común, lavandería y servicios cotidianos en un camping mediterráneo ficticio de larga estancia."
+    },
+    "titulo": "Servicios para vivir aquí unas semanas",
+    "intro": "Correo, lavandería, suministros y vida común sostienen el día a día de una estancia larga. Ningún servicio se activa fuera de esta demo.",
+    "items": [
+      {
+        "id": "salon",
+        "nombre": "Salón común",
+        "desc": "Mesas móviles, biblioteca de intercambio y terraza soleada para actividades de la comunidad."
+      },
+      {
+        "id": "correo",
+        "nombre": "Correo y paquetería",
+        "desc": "Casilleros y aviso de recogida para quienes mantienen el camping como dirección temporal."
+      },
+      {
+        "id": "recepcion",
+        "nombre": "Recepción todo el año",
+        "desc": "Altas, consumos, prórrogas y cambios de parcela en un mostrador preparado para estancias largas."
+      },
+      {
+        "id": "baños",
+        "nombre": "Baños y lavandería",
+        "desc": "Tres bloques calefactados y lavandería de autoservicio con tarjeta de demostración."
+      },
+      {
+        "id": "mercado",
+        "nombre": "Gas y suministros",
+        "desc": "Entrega ficticia de bombonas y material básico; una activación real definiría proveedor y horarios."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Taller y bicicletas",
+        "desc": "Punto de inflado, banco de herramientas y aparcamiento cubierto para desplazamientos cotidianos."
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Almendros y caminos | Sol d'Hivern",
+      "description": "Almendros, caminos llanos y servicios cotidianos desde Camping Sol d'Hivern."
+    },
+    "titulo": "Un invierno para caminar sin prisa",
+    "intro": "Almendros, caminos llanos y un pueblo cercano organizan la vida cotidiana. Recepción distingue rutas propias de servicios que pertenecen a terceros.",
+    "secciones": [
+      {
+        "titulo": "Los almendros",
+        "texto": "Los bancales florecen a finales de enero; el camino es público y sus condiciones se consultan antes de salir."
+      },
+      {
+        "titulo": "La vía verde",
+        "texto": "Un recorrido llano enlaza huerta y costa; la apertura y el mantenimiento no dependen del camping."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Mercado, farmacia y estación de bus se concentran en el centro, a ocho minutos en vehículo."
+      },
+      {
+        "titulo": "La sierra baja",
+        "texto": "Senderos cortos alcanzan miradores resguardados; el estado de cada ruta se comprueba antes de salir."
+      }
+    ],
+    "distancias": {
+      "titulo": "Desde recepción",
+      "items": [
+        { "lugar": "Camino de los almendros", "valor": "2 min a pie" },
+        { "lugar": "Vía verde", "valor": "8 min en bici" },
+        { "lugar": "Pueblo y farmacia", "valor": "8 min en coche" },
+        { "lugar": "Mercado", "valor": "10 min en coche" },
+        { "lugar": "Estación de bus", "valor": "12 min en coche" },
+        { "lugar": "Centro de salud", "valor": "18 min en coche" }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas y condiciones de demostración | Sol d'Hivern",
+      "description": "Precios ficticios y estancias de invierno de 45 noches o más para parcelas y alojamientos."
+    },
+    "titulo": "Tarifas de demostración",
+    "intro": "Importes ficticios con IVA. En invierno se reservan al menos 45 noches para que disponibilidad, precio y operación usen la misma regla.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_hivern": "Invierno suave · 1 enero – 1 abril",
+      "sea_entretemps": "Primavera y otoño · 1 abril – 1 noviembre",
+      "sea_tornada": "Regreso de invierno · 1 noviembre – 1 enero"
+    },
+    "suplementos": {
+      "titulo": "Suplementos por noche",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 16 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_bombona": "Entrega de bombona de gas",
+        "ext_lavanderia": "Tarjeta de lavandería",
+        "ext_trastero": "Taquilla para estancia larga",
+        "ext_mascota": "Mascota en parcela"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de reservar en la demo",
+      "items": [
+        "Entre noviembre y marzo, las cuatro categorías exigen al menos 45 noches; el resto del año, el mínimo de demostración es de siete.",
+        "Los consumos, suministros y servicios comunes son descripciones ficticias; una activación real fijaría lectura, periodicidad y proveedor.",
+        "La señal simulada es del 15 %; se devuelve el 100 % hasta 30 días, el 50 % entre 15 y 29 y nada después.",
+        "Pago, depósito y recibo son simulados: no se realiza ningún cargo ni se envían datos."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Contacto | Camping Sol d'Hivern",
+      "description": "Datos ficticios y conversación de alcance para larga estancia en Logic2B."
+    },
+    "titulo": "Hagamos que el invierno se gestione con calma",
+    "intro": "Sol d'Hivern es una demostración. Una activación real definiría prórrogas, consumos, suministros, correo y servicios con la operación del camping.",
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 8:30–19:00 en invierno; las entradas y prórrogas se coordinan en franjas ficticias."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "Dirección, teléfono y email son ficticios y solo sostienen el recorrido comercial."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Guía de invierno | Sol d'Hivern",
+      "description": "Información operativa ficticia sobre llegada, suministros y vida cotidiana."
+    },
+    "titulo": "Guía de invierno",
+    "intro": "La demo no publica artículos. La sección queda preparada para llegada, suministros y rutas sin convertir servicios de terceros en garantías.",
+    "leerMas": "Leer",
+    "volver": "Toda la guía",
+    "vacio": "No hay publicaciones en esta demostración."
+  },
+  "noEncontrada": {
+    "titulo": "Ese camino no llega a esta parcela",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  },
+  "reservar": {
+    "seo": {
+      "title": "Reserva de demostración | Sol d'Hivern",
+      "description": "Compara una estancia larga y sus reglas antes de un pago totalmente simulado."
+    },
+    "titulo": "Reserva de demostración",
+    "intro": "Elige fechas y grupo. En invierno, verás el mínimo completo de 45 noches, la señal y las condiciones antes de un pago sin cargo.",
+    "elegir": "Elegir",
+    "noches": "{n} noches",
+    "detalle": {
+      "estancia": "Tu estancia demo",
+      "extras": "Añadir extras",
+      "incluido": "incluido",
+      "electricidad": "Electricidad",
+      "desglose": "Desglose del precio simulado",
+      "tasaNota": "La reserva de invierno se organiza con una estancia mínima de 45 noches.",
+      "depositoNota": "Señal simulada del 15 %: {importe}. No se realizará ningún cargo.",
+      "cancelacionNota": "Cancelación demo: devolución total hasta 30 días, 50 % entre 15 y 29, y sin devolución después.",
+      "total": "Total simulado",
+      "continuar": "Continuar en la demo",
+      "volver": "Volver a los resultados",
+      "error": "No se ha podido calcular el precio de muestra. Prueba de nuevo."
+    },
+    "titular": {
+      "titulo": "Datos ficticios del titular",
+      "hold": "Unidad demo guardada durante {min}",
+      "holdCaducado": "El bloqueo de muestra ha caducado; se comprobará otra vez al confirmar.",
+      "nombre": "Nombre ficticio",
+      "email": "Email de prueba",
+      "telefono": "Teléfono ficticio (opcional)",
+      "notas": "Nota de muestra (opcional)",
+      "condiciones": "Entiendo que es una demostración y que no se realizará ningún cargo.",
+      "confirmar": "Confirmar reserva demo",
+      "confirmando": "Confirmando la demo…",
+      "agotado": "La última unidad de muestra se acaba de ocupar. No se ha cobrado nada.",
+      "error": "No se ha podido confirmar la reserva demo. Prueba de nuevo."
+    },
+    "conceptos": {
+      "price.base": "Estancia",
+      "price.extra_person": "Personas adicionales",
+      "price.child": "Niños",
+      "price.pet": "Mascotas",
+      "price.electricity": "Electricidad",
+      "price.vehicle": "Vehículo adicional",
+      "discount.early_booking": "Descuento anticipado",
+      "discount.long_stay": "Descuento por estancia larga",
+      "discount.acsi": "Descuento asociado"
+    },
+    "errores": {
+      "stay.closed": "Cerrado en esas fechas.",
+      "stay.min_stay": "Estancia mínima de {minStay} noches.",
+      "stay.max_stay": "Estancia máxima de {maxStay} noches.",
+      "stay.arrival_day": "La llegada no está disponible ese día.",
+      "stay.departure_day": "La salida no está disponible ese día.",
+      "stay.capacity": "Ese alojamiento admite {capacityMax} personas como máximo.",
+      "stay.capacity_min": "Ocupación mínima de {capacityMin} personas.",
+      "stay.no_adults": "Hace falta al menos un adulto.",
+      "stay.no_pets": "Ese alojamiento no admite mascotas.",
+      "stay.no_electricity": "Esa parcela no tiene conexión eléctrica.",
+      "stay.no_rate": "No hay tarifa publicada para parte de la estancia.",
+      "stay.invalid_dates": "Revisa las fechas."
+    }
+  },
+  "reserva": {
+    "seo": {
+      "title": "Recibo DEMO | Sol d'Hivern",
+      "description": "Recibo de reserva ficticio de una estancia larga; no se ha realizado ningún cargo."
+    },
+    "titulo": "Tu reserva de demostración",
+    "nueva": "Reserva demo confirmada. Pago simulado · no se ha realizado ningún cargo.",
+    "buscar": {
+      "intro": "Introduce el código y email ficticios del escenario.",
+      "codigo": "Código demo",
+      "email": "Email de prueba",
+      "ver": "Ver recibo DEMO",
+      "buscando": "Buscando…",
+      "noEncontrada": "No existe una reserva demo con esos datos."
+    },
+    "estado": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada · DEMO",
+      "cancelled": "Cancelada",
+      "no_show": "No presentada",
+      "completed": "Completada"
+    },
+    "campos": {
+      "llegada": "Llegada",
+      "salida": "Salida",
+      "alojamiento": "Alojamiento",
+      "huespedes": "Huéspedes ficticios",
+      "noches": "Noches",
+      "total": "Total simulado",
+      "pagado": "Pago simulado",
+      "tasa": "Estancia larga"
+    },
+    "imprimir": "Imprimir recibo DEMO",
+    "cancelar": {
+      "boton": "Cancelar reserva demo",
+      "aviso": "Según la política ficticia visible al reservar, la devolución simulada sería del {pct} %: {importe}.",
+      "confirmar": "Sí, cancelar en la demo",
+      "volver": "Mantener la reserva",
+      "hecha": "Reserva demo cancelada.",
+      "error": "No se ha podido cancelar el escenario."
+    },
+    "modificar": {
+      "boton": "Cambiar fechas",
+      "titulo": "Nuevas fechas",
+      "nota": "En invierno, las nuevas fechas deben mantener un mínimo de 45 noches.",
+      "aplicar": "Preparar cambio",
+      "aplicando": "Preparando…",
+      "hecho": "Fechas actualizadas. Nuevo total simulado: {importe}.",
+      "noDisponible": "No hay disponibilidad de muestra para esas fechas.",
+      "error": "No se ha podido preparar el cambio."
+    },
+    "pago": {
+      "esperando": "Confirmando el pago simulado… no se realizará ningún cargo.",
+      "cancelado": "Pago demo cancelado. No se ha realizado ningún cargo.",
+      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo."
+    }
+  }
+}

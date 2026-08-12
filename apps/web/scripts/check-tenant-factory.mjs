@@ -311,12 +311,12 @@ for (const slug of conceptSlugs) {
     fail(`theme-briefs/${slug}.json: identidad/estado incoherente`);
 }
 const catalog = json(join(repo, 'apps/site/src/content/es.json')).temas.items;
-const catalogConceptSlugs = ['parcela'];
-for (const slug of catalogConceptSlugs) {
-  const item = catalog.find((candidate) => candidate.slug === slug);
-  if (!item || item.href !== '')
-    fail(`catálogo ES: el concepto ${slug} debe existir sin enlace navegable`);
-}
+const nonNavigableItems = catalog.filter((item) => !item.href);
+if (nonNavigableItems.length > 0)
+  fail(`catálogo ES: quedan conceptos sin demo (${nonNavigableItems.map((item) => item.slug).join(', ')})`);
+const soldhivernItem = catalog.find((item) => item.slug === 'soldhivern');
+if (!soldhivernItem || soldhivernItem.href !== '/demos/soldhivern/')
+  fail("catálogo ES: Sol d'Hivern debe enlazar a su demo navegable");
 
 // Regresión del escape hallado en R8: el formulario común llegó a escribir el
 // slug, id de solicitud y tipo de unidad de una demo concreta. La clave se
@@ -345,5 +345,5 @@ for (const required of [
 }
 
 console.log(
-  `[factory] ✓ ${tenantSlugs.length} tenants + plantilla + ${conceptSlugs.length} briefs (${catalogConceptSlugs.length} en catálogo) cumplen el contrato R8`,
+  `[factory] ✓ ${tenantSlugs.length} tenants + plantilla + ${conceptSlugs.length} briefs (${catalog.length} demos en catálogo) cumplen el contrato R8`,
 );

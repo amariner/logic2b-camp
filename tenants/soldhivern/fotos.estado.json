@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "higgsfield",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "hero-invierno": [
+      {
+        "at": "2026-08-12T10:50:01.735Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "first_pair"
+      },
+      {
+        "at": "2026-08-12T10:50:02.450Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "718be56cb036c6fc20e44d9283ba84fb338b782d2ee901d7fc161421fac3c9dd",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "hero-comunidad": [
+      {
+        "at": "2026-08-12T10:50:01.826Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "retry"
+      },
+      {
+        "at": "2026-08-12T10:50:03.057Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "c2695dcf8d7ca64fcdc6d16be1ed6f00c990c10d77a03f1aac4f56e63be5bdb7",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "parcela-llevant": [
+      {
+        "at": "2026-08-12T10:50:03.819Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "55684cb7151dd7a0f97b94e616664d7b69b1756d0dda9a5b600a91d2d7b5aa7b",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "parcela-migdia": [
+      {
+        "at": "2026-08-12T10:50:04.386Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "9aa120f6ff8d5cd6bcbe00540d95e5b40f963e3e924cc54c1739d34b583b3aef",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "bungalow-olivera": [
+      {
+        "at": "2026-08-12T10:50:05.265Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "990c3ada19e1ad3f2cd275f566289dbcd836ff6d5f4df5f2a91c1b39eea02c2d",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "estudio-garbi": [
+      {
+        "at": "2026-08-12T10:50:05.886Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "2293df41c820dd348cac021262c030f0114514091733cbc088ac9d03eba47980",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "instalacion-recepcion": [
+      {
+        "at": "2026-08-12T10:50:06.613Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "8bca39f92dba0dee68d08bb20b05c4695251d9be448b2d177d6b92e92501d628",
+        "sourceExtension": ".png",
+        "dimensions": "2016x1344"
+      }
+    ],
+    "instalacion-salon": [
+      {
+        "at": "2026-08-12T10:50:07.345Z",
+        "provider": "higgsfield",
+        "model": "gpt_image_2",
+        "status": "staged",
+        "promptSha256": "5711f8df4af6a381db64341cc0af7db40aca7a908a51ae22f7e4bce203737313",
+        "sourceExtension": ".png",
+        "dimensions": "2048x1360"
+      }
+    ],
+    "entorno-almendros": [
+      {
+        "at": "2026-08-12T10:50:08.100Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "65b35c292bc01c10903b71e58a6942798ec59f92b9a0f4ded647a198fe54d05b",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ],
+    "textura-lona": [
+      {
+        "at": "2026-08-12T10:50:08.651Z",
+        "provider": "higgsfield",
+        "model": "soul_location",
+        "status": "staged",
+        "promptSha256": "2125d556dd75791609af64908559b1d16ffbd0a7d56f1b87e5c7683ad9a5057a",
+        "sourceExtension": ".png",
+        "dimensions": "2560x1072"
+      }
+    ]
+  },
+  "approvals": {
+    "hero-invierno": {
+      "at": "2026-08-12T10:50:03.170Z",
+      "gate": "visual-inspection"
+    },
+    "hero-comunidad": {
+      "at": "2026-08-12T10:50:03.172Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-llevant": {
+      "at": "2026-08-12T10:50:04.498Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-migdia": {
+      "at": "2026-08-12T10:50:04.500Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-olivera": {
+      "at": "2026-08-12T10:50:05.995Z",
+      "gate": "visual-inspection"
+    },
+    "estudio-garbi": {
+      "at": "2026-08-12T10:50:05.997Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-recepcion": {
+      "at": "2026-08-12T10:50:07.494Z",
+      "gate": "visual-inspection"
+    },
+    "instalacion-salon": {
+      "at": "2026-08-12T10:50:07.496Z",
+      "gate": "visual-inspection"
+    },
+    "entorno-almendros": {
+      "at": "2026-08-12T10:50:08.765Z",
+      "gate": "visual-inspection"
+    },
+    "textura-lona": {
+      "at": "2026-08-12T10:50:08.767Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {}
+}

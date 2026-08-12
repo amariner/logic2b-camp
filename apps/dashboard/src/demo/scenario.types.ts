@@ -1,5 +1,12 @@
 export type PortfolioScenarioId =
-  'pinadamar' | 'serralta' | 'vinyes' | 'tarongers' | 'carrasca' | 'ballena' | 'mardefondo';
+  | 'pinadamar'
+  | 'serralta'
+  | 'vinyes'
+  | 'tarongers'
+  | 'carrasca'
+  | 'ballena'
+  | 'soldhivern'
+  | 'mardefondo';
 
 export type ScenarioResult = { status: number; body: unknown };
 
@@ -16,6 +23,7 @@ export type PortfolioScenario = {
     | 'demo.tarongersBanner'
     | 'demo.carrascaBanner'
     | 'demo.ballenaBanner'
+    | 'demo.soldhivernBanner'
     | 'demo.mardefondoBanner';
   request: (path: string, init?: RequestInit) => Promise<ScenarioResult>;
   reset: () => void;

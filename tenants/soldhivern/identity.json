@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "soldhivern",
+  "name": "Camping Sol d'Hivern",
+  "status": "approved-demo",
+  "icp": "Dirección y recepción de un camping de larga estancia abierto todo el año, con unas 200 unidades y una comunidad internacional de autocaravanas que pasa el invierno en la costa mediterránea.",
+  "objection": "El negocio no vive de agosto: necesita vender y operar estancias de 45 noches o más, explicar qué incluye cada parcela y mantener una ocupación estable durante meses sin convertir el planning en una pared ilegible.",
+  "commercialLevel": "Visión, sobre el carril técnico tier 3 con reserva y operación locales.",
+  "story": "Una pareja que viaja hacia el sur compara una estancia de invierno, entiende servicios y precio mensual, y abre en el gestor un planning de ocupación larga y plana.",
+  "tone": "Sereno, luminoso y adulto; habla de comunidad, clima suave y vida cotidiana sin folclore nórdico ni estética de jubilación.",
+  "palette": {
+    "tinta": "#26342f",
+    "hueso": "#f2efe5",
+    "pino": "#536f62",
+    "arena": "#d6b58c",
+    "mar": "#9e593f"
+  },
+  "typography": "Fraunces para titulares pausados y Source Sans 3 para tarifas, suministros y estancias largas.",
+  "signatureScreens": [
+    "Portada de invierno suave entre autocaravanas y almendros en flor",
+    "Reserva que hace visible un mínimo de 45 noches y el precio de estancia",
+    "Planning de 200 unidades con ocupación prolongada y estable"
+  ],
+  "photoInventory": [
+    "Héroes de avenida invernal, comunidad y almendros",
+    "Parcelas Llevant y Migdia, bungalow Olivera y estudio Garbí",
+    "Recepción de larga estancia, zona común, paseo agrícola y textura de lona"
+  ],
+  "successCriterion": "Una captura se reconoce como un camping mediterráneo vivo en enero; la reserva y el gestor explican 45+ noches y ocupación plana sin parecerse al verano semanal de La Ballena ni al resort Mar de Fondo."
+}

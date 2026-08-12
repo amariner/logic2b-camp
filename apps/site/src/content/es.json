@@ -33,7 +33,7 @@
     },
     "kicker": "Direcciones visuales para campings",
     "titulo": "Tu camping no tiene que parecerse a ningún otro.",
-    "texto": "Once campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
+    "texto": "Doce campings ficticios convierten identidades y niveles distintos en recorridos navegables sobre el mismo producto.",
     "verTodos": "Ver todos los temas",
     "volver": "Volver a la landing",
     "estado": "Portfolio visual",
@@ -139,13 +139,13 @@
         "href": "/demos/ballena/"
       },
       {
-        "slug": "parcela",
-        "nombre": "Parcela",
-        "estilo": "Directo y funcional",
+        "slug": "soldhivern",
+        "nombre": "Sol d'Hivern",
+        "estilo": "Visión · larga estancia e invierno suave",
         "imagen": "/temas/parcela.webp",
-        "variante": "pitch",
-        "estado": "Concepto visual",
-        "href": ""
+        "variante": "natural",
+        "estado": "Demo navegable",
+        "href": "/demos/soldhivern/"
       }
     ]
   },
