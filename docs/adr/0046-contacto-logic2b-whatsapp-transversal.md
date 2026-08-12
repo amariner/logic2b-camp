@@ -133,6 +133,47 @@ WhatsApp está integrado: es un enlace externo iniciado por la persona.
 8. `pnpm check` y el bundle compuesto quedan verdes. No se despliega sin una
    autorización separada.
 
+## Auditoría de encaje previa a implementación
+
+Revisada contra el árbol real el 2026-08-12:
+
+- El contrato puede vivir en un subpath dedicado
+  `@logic-camp/config/contact`, siguiendo el precedente de `./roles`. Web y
+  dashboard ya dependen de `@logic-camp/config`; `apps/site` será el único
+  workspace que deba declarar esa dependencia. Importar el subpath evita
+  arrastrar el barrel completo al bundle del gestor.
+- `apps/site/src/layouts/Base.astro` cubre landing, precios, temas,
+  documentación y legales. Es un único punto de montaje. Sus bloqueadores
+  reales son `[data-consent-banner]:not([hidden])` y
+  `#project-request-dialog[open]`; no hace falta repartir condiciones por
+  página.
+- `apps/web/src/layouts/Base.astro` cubre `/demo/` y todas las rutas
+  `/demos/{slug}/`. `parseTenantWebConfig` ya es la frontera estricta donde debe
+  vivir el interruptor, y `_template/config.ts` es el lugar donde documentarlo.
+- El dashboard tiene dos puntos deliberados: `Login.tsx` antes de sesión y el
+  pie común de `SidebarInner` después de sesión. Ese mismo pie alimenta sidebar
+  expandida, plegada y drawer móvil; no se añadirá un cuarto montaje flotante.
+- El contrato R12 rechaza scripts, iframes, imágenes, CSS y `fetch` remotos,
+  pero permite enlaces externos normales. Un `<a href="https://wa.me/…">` no
+  debilita la guardia; las pruebas deben fijar que no aparezca recurso ejecutable
+  de Meta.
+- `check-commercial-artifact.mjs` puede acreditar presencia en las rutas del
+  sitio. `qa-commercial.mjs` ya recorre landing, precios, guía y cookies en
+  es/en a 375/1366, incluidos consentimiento y modal: ahí se comprobarán los
+  estados oculto/visible/retirado.
+- `check-portfolio.mjs` ya construye los once tenants y conoce su tier; puede
+  exigir el contacto en cada artefacto y probar una configuración sintética con
+  salida desactivada. `qa-canonical.mjs` ya recorre Inicio, Gestión y Visión,
+  además de los planning de portfolio, a ambos anchos.
+- Los escenarios de portfolio entran al gestor con sesión demo sintética y no
+  muestran login. Por eso el enlace del login se verificará en un E2E contra el
+  Worker principal; el enlace de shell se comprobará tanto allí como en el QA
+  canónico de planning. Una sola evidencia no cubriría ambas superficies.
+- `bundle-demo.sh` recompone sitio, doce webs públicas y ocho gestores desde el
+  mismo código. Es el gate correcto para demostrar que el contrato compartido
+  no introduce números o adaptadores por marca; el presupuesto M6 del dashboard
+  sigue siendo obligatorio.
+
 ## Alternativas descartadas
 
 - **Píldora flotante también en el gestor:** colisiona con toasts y controles
