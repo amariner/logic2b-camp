@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import { config, data, demoTierSwitch, eur, fecha, fill, getContent, localePath, mode } from '../../lib/content';
 import HeroMostrador from '@booking/hero';
 import { galeriaTipo } from '../../lib/fotos';
+import EnquiryForm from '../EnquiryForm.astro';
 import Materia from '../Materia.astro';
 import PageIntro from '../PageIntro.astro';
 
@@ -57,6 +58,7 @@ const jsonLd = {
 };
 
 const instant = mode === 'instant';
+const enquiry = mode === 'enquiry';
 // conmutador de nivel de demo (ADR 0013): mismo patrón que Home — con el switch
 // se generan LAS DOS variantes y el CSS decide, sin recargar ni pedir nada.
 const showTierSwitch = demoTierSwitch;
@@ -143,10 +145,13 @@ const showTierSwitch = demoTierSwitch;
           </ul>
         </div>
 
-        {/* Nivel 1: sin motor no hay nada que consultar — se pregunta. */}
+        {/* Solicitudes cierra el recorrido en la propia ficha. Inicio conserva
+            el contacto general: no finge un tercer nivel en el conmutador. */}
         {(!instant || showTierSwitch) && (
           <a
-            href={`${localePath(locale, '/contacto')}?stay=${encodeURIComponent(tipo.id)}#consulta`}
+            href={enquiry
+              ? '#consulta'
+              : `${localePath(locale, '/contacto')}?stay=${encodeURIComponent(tipo.id)}#consulta`}
             data-hero-nivel={showTierSwitch ? '1' : undefined}
             class="self-start rounded-(--lc-radius) bg-pino px-7 py-3 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro"
           >
@@ -155,6 +160,35 @@ const showTierSwitch = demoTierSwitch;
         )}
       </div>
     </div>
+
+    {/* Solicitudes: la consulta sucede en la propia ficha y conserva el tipo
+        tanto en la confirmación demo como en enquiries. */}
+    {enquiry && (
+      <div
+        id="consulta"
+        class="mt-14 scroll-mt-28 border-t border-arena/50 pt-10"
+        data-hero-nivel={showTierSwitch ? '1' : undefined}
+      >
+        <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <div>
+            <h2 class="font-display text-[clamp(1.6rem,3vw,2.25rem)] leading-tight font-semibold tracking-tight">
+              {fill(f.solicitudTitulo ?? f.disponibilidadTitulo, { tipo: nombre })}
+            </h2>
+            <p class="mt-3 text-[15px] leading-relaxed text-tinta-suave">
+              {fill(f.solicitudTexto ?? c.form.subtitulo, { tipo: nombre })}
+            </p>
+          </div>
+          <div class="rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 md:p-8">
+            <EnquiryForm
+              locale={locale}
+              form={c.form}
+              id={`lc-enquiry-${tipo.id}`}
+              fixedStayId={tipo.id}
+            />
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* Nivel 3: el mostrador AQUÍ, contestando por este tipo. Antes el CTA
        devolvía al visitante a la home y perdía por el camino lo único que

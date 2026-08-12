@@ -77,7 +77,9 @@
       "unidades": "{n} unidades de este tipo", "tarifasTitulo": "Tarifa orientativa por noche",
       "estanciaMin": "estancia mínima {n} noches", "estanciaMin1": "sin estancia mínima", "llegadaSabado": "llegada en sábado",
       "notaPrecios": "Precio ficticio con {n} personas. Recepción confirmaría disponibilidad y condiciones antes de reservar.",
-      "disponibilidadTitulo": "¿Libre para tus fechas?"
+      "disponibilidadTitulo": "¿Libre para tus fechas?",
+      "solicitudTitulo": "Consulta {tipo}",
+      "solicitudTexto": "Dinos las fechas y quién viene. Esta solicitud ficticia conserva {tipo} y se puede abrir después en el gestor Logic2B; no confirma una reserva ni envía tus datos."
     }
   },
   "instalaciones": {

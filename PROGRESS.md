@@ -1,5 +1,25 @@
 # PROGRESS — Logic Camp
 
+## La ficha de Solicitudes conserva la estancia elegida · 2026-08-12 (sesión 138)
+
+- La revisión del diff local encontró una divergencia con ADR 0044: el primer
+  corte añadía el formulario contextual también a Inicio y al lado nivel 1 del
+  conmutador comercial. Se corrigió la frontera: solo tier técnico 2 cierra la
+  solicitud dentro de la ficha; tier 1 sigue llevando a Contacto y tier 3
+  conserva mostrador y funnel.
+- `EnquiryForm.astro` acepta `fixedStayId`, valida el catálogo y presenta el
+  nombre elegido como dato fijo. El mismo identificador llega a la confirmación
+  demo, la solicitud reversible de `demo-session` y `POST /api/enquiries`; no se
+  crea una reserva provisional.
+- Pinada del Mar, Serralta, Els Tarongers y Entre Vinyes explican que se trata de
+  una solicitud y que recepción debe responder, sin afirmar disponibilidad ni
+  confirmación. La guardia del portfolio comprueba ancla, sección, campo oculto
+  y frontera exacta tier 1/2.
+- Verificación: web Astro 0 errores/warnings/hints; 13/13 pruebas locales;
+  fábrica de 12 tenants válida; portfolio 11/11; captura de la ficha Bungalow
+  Familiar de Pinada a 375/1366 px sin consola, recursos rotos ni desborde. No
+  hubo deploy, infraestructura, proveedores ni creación de temas.
+
 ## Camping La Ballena lleva D6-V a 11/12 · 2026-08-11 (sesión 137)
 
 - `tenants/ballena/` entrega una demo Visión de camping familiar costero con

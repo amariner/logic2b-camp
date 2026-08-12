@@ -103,3 +103,19 @@ abierta. La ficha añade el cierre específico, no elimina esos puntos de entrad
   bloquea inventario ni es una reserva en borrador.
 - **Ocultar completamente el tipo**: técnicamente lo enviaría, pero el visitante
   no tendría confirmación visible de qué está solicitando.
+
+## Resultado local
+
+- Implementado el 2026-08-12 tras revisar el trabajo local incompleto. La
+  revisión corrigió una desviación importante: la primera versión extendía el
+  formulario también a tier 1 y al lado Inicio del conmutador 1/3, aunque este
+  ADR los deja expresamente fuera.
+- Solo tier 2 genera ahora la sección contextual. Tier 1 conserva el enlace a
+  Contacto y tier 3 conserva el mostrador; la guardia del portfolio falla si una
+  de esas fronteras cambia.
+- `fixedStayId` valida, muestra y transporta el tipo en el resumen demo,
+  `localStorage` y `POST /api/enquiries`. Los cuatro tenants tier 2 incorporan
+  copia de solicitud que evita prometer disponibilidad o reserva confirmada.
+- Verificación: Astro sin diagnósticos, fábrica válida, 11/11 tenants
+  construidos y QA de Pinada del Mar a 375/1366 px sin errores. El ADR conserva
+  estado propuesto hasta la revisión posterior de Andreu.

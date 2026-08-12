@@ -62,6 +62,32 @@ function checkTierBoundary(slug, outDir) {
       `${slug}: tier ${tier} arrastra motor (${[...bookingRoutes, ...bookingChunks].join(', ')})`,
     );
   }
+  if (tier <= 2) {
+    const accommodationPages = html.filter((file) =>
+      /^alojamientos\/[^/]+\/index\.html$/.test(file),
+    );
+    const pagesWithSpecificEnquiry = accommodationPages.filter((file) => {
+      const unitTypeId = file.split('/')[1];
+      const source = readFileSync(join(outDir, file), 'utf8');
+      return (
+        source.includes('href="#consulta"') &&
+        source.includes('id="consulta"') &&
+        source.includes(`data-enquiry-unit-type="${unitTypeId}"`) &&
+        source.includes(`name="stay" value="${unitTypeId}"`)
+      );
+    });
+    const invalidPages = tier === 2
+      ? accommodationPages.filter((file) => !pagesWithSpecificEnquiry.includes(file))
+      : pagesWithSpecificEnquiry;
+    if (accommodationPages.length === 0 || invalidPages.length > 0) {
+      throw new Error(
+        `${slug}: tier ${tier} rompe la frontera de solicitud contextual (${[
+          ...(accommodationPages.length === 0 ? ['sin fichas de alojamiento'] : []),
+          ...invalidPages,
+        ].join(', ')})`,
+      );
+    }
+  }
   if (tier >= 3) {
     const requiredRoutes = ['reserva/index.html', 'reservar/index.html'];
     const missingRoutes = requiredRoutes.filter((file) => !html.includes(file));

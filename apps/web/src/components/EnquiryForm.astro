@@ -7,15 +7,20 @@ interface Props {
   form: Record<string, string>;
   /** id único si hubiera dos formularios en la misma página */
   id?: string;
+  /** Fija la estancia cuando el formulario vive dentro de su ficha. */
+  fixedStayId?: string;
 }
-const { locale, form: f, id: uid = 'lc-enquiry' } = Astro.props;
+const { locale, form: f, id: uid = 'lc-enquiry', fixedStayId } = Astro.props;
 const transport = config.enquiryTransport ?? 'persisted';
 const isDemoTransport = transport === 'demo' || transport === 'demo-session';
 const managerPath = config.demoManagerPath;
 const tenantSlug = config.slug;
 const nombres = getContent(locale).tipos.nombres;
 const stays = data.unitTypes.map((tipo) => ({ id: tipo.id, name: nombres[tipo.id] ?? tipo.id }));
-const defaultStayId = stays[0]?.id ?? '';
+const fixedStay = fixedStayId ? stays.find((stay) => stay.id === fixedStayId) : undefined;
+if (fixedStayId && !fixedStay) throw new Error(`Tipo desconocido en formulario: ${fixedStayId}`);
+const defaultStayId = fixedStay?.id ?? stays[0]?.id ?? '';
+const fixedStayName = fixedStay?.name ?? '';
 ---
 
 <form
@@ -28,6 +33,7 @@ const defaultStayId = stays[0]?.id ?? '';
   data-summary-party={f.demoResumenGrupo}
   data-summary-message={f.demoResumenMensaje}
   data-summary-open={f.demoSinConcretar}
+  data-enquiry-unit-type={fixedStay?.id}
 >
   {isDemoTransport && (
     <p class="rounded-(--lc-radius) border border-pino/25 bg-pino/5 px-3.5 py-3 text-[13px] leading-relaxed text-tinta">
@@ -69,7 +75,15 @@ const defaultStayId = stays[0]?.id ?? '';
       </label>
     )}
   </div>
-  {f.estancia && (
+  {fixedStay ? (
+    <div class="rounded-(--lc-radius) border border-pino/20 bg-pino/5 px-3.5 py-3">
+      {f.estancia && (
+        <span class="block text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.estancia}</span>
+      )}
+      <strong class="mt-0.5 block text-[15px] text-tinta">{fixedStay.name}</strong>
+      <input type="hidden" name="stay" value={fixedStay.id} />
+    </div>
+  ) : f.estancia && (
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.estancia}</span>
       <select name="stay" required class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]">
@@ -108,7 +122,7 @@ const defaultStayId = stays[0]?.id ?? '';
   )}
 </form>
 
-<script is:inline define:vars={{ locale, uid, transport, tenantSlug, defaultStayId }}>
+<script is:inline define:vars={{ locale, uid, transport, tenantSlug, defaultStayId, fixedStayName }}>
   const form = document.getElementById(uid);
   const btn = form.querySelector('button[type=submit]');
   const status = form.querySelector('[data-status]');
@@ -143,7 +157,7 @@ const defaultStayId = stays[0]?.id ?? '';
         const state = new URLSearchParams(window.location.search).get('demoState');
         if (state === 'error') throw new Error('demo-error');
         if (state === 'spam') throw new Error('demo-spam');
-        const stay = form.querySelector('select[name=stay]')?.selectedOptions[0]?.textContent;
+        const stay = fixedStayName || form.querySelector('select[name=stay]')?.selectedOptions[0]?.textContent;
         const dateFrom = data.get('dateFrom');
         const dateTo = data.get('dateTo');
         if (dateFrom && dateTo && String(dateFrom) >= String(dateTo)) throw new Error('demo-error');
@@ -189,6 +203,7 @@ const defaultStayId = stays[0]?.id ?? '';
           message: dates ? `${data.get('message')}\n\n[${dates}]` : data.get('message'),
           contact: { name: data.get('name'), email: data.get('email') },
           locale,
+          unitTypeId: data.get('stay') || undefined,
           source: 'web',
         }),
       });

@@ -7,8 +7,10 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** el corte no visual R15 está auditado. No queda
-  trabajo funcional local honesto fuera de temas: R0–R8 y R10–R11 están
+- **Local ahora, por checkpoint:** el corte no visual R15 está auditado y ADR
+  0044 ya cierra la solicitud contextual de tier 2. B5 abre un único bloque
+  funcional no temático: contacto transversal con Logic2B por WhatsApp, con ADR
+  0046 pendiente de validación antes de escribir código. R0–R8 y R10–R11 están
   acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
   candidato sigue con 1.989 bloqueos de build que requieren material real y 4
   gates externos de publicación. `--apply`, proveedor, dominio y deploy
@@ -17,6 +19,11 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
   Carrasca llevan D6-V hasta 10/12. Quedan Ballena y Sol d'Hivern, siempre en
   vertical y una por una.
+- ~~[4.x/web] Conservar el tipo elegido al solicitar desde una ficha tier 2~~ →
+  **hecho 2026-08-12 (sesión 138, ADR 0044)**: formulario dentro de la ficha,
+  tipo visible y fijo, `unitTypeId` en demo/API y frontera de build exacta. La
+  revisión retiró el formulario que el primer diff había añadido por error a
+  tier 1 y al conmutador 1/3.
 - **Cliente real:** extensiones `custom/`, cache KV por tráfico, fianza,
   reintento de pago, mover entre tipos, traducción de guías, auditoría
   encadenada, parte de viajeros y cualquier bloque `[CLIENTE-REAL]`.

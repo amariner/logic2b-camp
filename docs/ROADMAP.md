@@ -388,6 +388,8 @@ producto real se activa módulo a módulo cuando exista un cliente.
 
 **Fase 4 (sesión 3 = lo no tachado):**
 
+- [x] Las fichas de tier 2 cierran la solicitud sin perder el tipo elegido
+  (ADR 0044, sesión 138); tier 1 conserva Contacto y tier 3 el mostrador.
 - [x] Servir la web Astro desde `camp.logic2b.com/` con **Workers Assets en el mismo Worker del API**. Un deploy = web + API. _(config y CI listos; falta el redeploy con credenciales)_
 - [x] Páginas restantes: alojamientos (+detalle por tipo con galería y ficha técnica desde la DB), instalaciones, entorno, tarifas (tabla por temporada desde `rate_plans`), contacto, blog cableado.
 - [x] 2ª tanda de fotos: seis activos descargados y optimizados en la sesión 40;

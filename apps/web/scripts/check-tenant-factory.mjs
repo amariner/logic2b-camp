@@ -326,6 +326,14 @@ for (const leaked of ['logic2b-demo:pinadamar', 'enq_pinada_web', "'ut_bungalow'
   if (enquirySource.includes(leaked))
     fail(`EnquiryForm.astro conserva identidad concreta: ${leaked}`);
 }
+for (const required of [
+  'fixedStayId',
+  "unitTypeId: data.get('stay') || defaultStayId",
+  "unitTypeId: data.get('stay') || undefined",
+]) {
+  if (!enquirySource.includes(required))
+    fail(`EnquiryForm.astro pierde el contrato de solicitud contextual: ${required}`);
+}
 
 console.log(
   `[factory] ✓ ${tenantSlugs.length} tenants + plantilla + ${conceptSlugs.length} briefs (${catalogConceptSlugs.length} en catálogo) cumplen el contrato R8`,
