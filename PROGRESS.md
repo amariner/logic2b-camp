@@ -1,5 +1,20 @@
 # PROGRESS — Logic Camp
 
+## GitHub y producción incorporan B5 y el portfolio 12/12 · 2026-08-12 (sesión 142)
+
+- `main` integra el contacto transversal B5 y Sol d'Hivern mediante los commits
+  `d4c54a7` y `8712a7e`; ambos están publicados en GitHub.
+- `pnpm --filter @logic-camp/api deploy:demo` despliega el artefacto compuesto en
+  `camp.logic2b.com` con la versión Cloudflare
+  `c2f8188b-37d9-48d3-bedb-b12d6f0719ed`. D1 no tenía migraciones pendientes y
+  no se ejecutó reseed, borrado de datos ni cambio DNS.
+- El smoke remoto devuelve 200 en portada, precios, temas, guía, demo general,
+  Sol d'Hivern, su reserva, su gestor, `/admin/` y `/api/health`. WhatsApp queda
+  verificado en esas superficies públicas, en el login del gestor y en la barra
+  lateral de Sol d'Hivern.
+- El QA comercial remoto pasa portada, precios y guía en ES/EN a 375/1366 px,
+  sin errores, desbordes ni carga de Google antes del consentimiento.
+
 ## Sol d'Hivern completa el portfolio D6-V en 12/12 · 2026-08-12 (sesión 141)
 
 - `tenants/soldhivern/` entrega la última demo Visión: un camping mediterráneo
