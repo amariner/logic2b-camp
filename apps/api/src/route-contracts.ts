@@ -56,6 +56,10 @@ export const ROUTE_CONTRACTS: Record<string, RouteContract> = {
   'POST /api/enquiries': write('none', 'none'),
   'POST /api/bookings': write('none', 'key'),
   'GET /api/bookings/:code': read('none'),
+  'POST /api/bookings/:code/payment': {
+    ...write('none', 'natural'),
+    rateLimit: 'booking-management',
+  },
   'POST /api/bookings/:code/cancel': {
     ...write('none', 'natural'),
     rateLimit: 'booking-management',

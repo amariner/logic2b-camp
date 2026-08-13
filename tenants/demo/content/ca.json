@@ -477,8 +477,11 @@
     },
     "pago": {
       "esperando": "Estem confirmant el teu pagament amb el banc… trigarà només uns segons.",
-      "cancelado": "Has cancel·lat el pagament. La reserva queda pendent — contacta amb nosaltres si vols completar-la.",
-      "pendiente": "El pagament encara no s'ha completat. Si has tancat la passarel·la per error, contacta amb nosaltres per acabar-lo."
+      "cancelado": "Has cancel·lat el pagament. La reserva queda pendent i no s'ha fet cap càrrec.",
+      "pendiente": "El pagament encara no s'ha completat. Pots tornar a la passarel·la sense repetir la reserva.",
+      "reintentar": "Reintentar el pagament",
+      "reintentando": "Obrint el pagament…",
+      "error": "No hem pogut tornar a obrir el pagament. Contacta amb recepció per completar la reserva."
     }
   },
   "temas": {

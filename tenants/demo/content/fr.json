@@ -477,8 +477,11 @@
     },
     "pago": {
       "esperando": "Nous confirmons votre paiement auprès de la banque… cela ne prend que quelques secondes.",
-      "cancelado": "Vous avez annulé le paiement. La réservation reste en attente — contactez-nous si vous souhaitez la finaliser.",
-      "pendiente": "Le paiement n'a pas encore abouti. Si vous avez fermé la page de paiement par erreur, contactez-nous pour le terminer."
+      "cancelado": "Vous avez annulé le paiement. La réservation reste en attente et aucun débit n'a été effectué.",
+      "pendiente": "Le paiement n'a pas encore abouti. Vous pouvez retourner au paiement sans recommencer la réservation.",
+      "reintentar": "Réessayer le paiement",
+      "reintentando": "Ouverture du paiement…",
+      "error": "Impossible de rouvrir le paiement. Contactez la réception pour finaliser la réservation."
     }
   },
   "temas": {

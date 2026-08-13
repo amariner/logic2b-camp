@@ -85,7 +85,7 @@ export default defineConfig({
     },
     server: {
       // dev: el API corre en wrangler dev (8787); misma-origen en producción
-      proxy: { '/api': 'http://localhost:8787' },
+      proxy: { '/api': process.env.API_PROXY ?? 'http://localhost:8787' },
     },
   },
 });

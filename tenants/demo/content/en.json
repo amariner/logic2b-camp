@@ -477,8 +477,11 @@
     },
     "pago": {
       "esperando": "We're confirming your payment with the bank… this only takes a few seconds.",
-      "cancelado": "You cancelled the payment. The booking stays pending — contact us if you'd like to complete it.",
-      "pendiente": "The payment hasn't gone through yet. If you closed the payment page by mistake, contact us to finish it."
+      "cancelado": "You cancelled the payment. The booking remains pending and no charge has been made.",
+      "pendiente": "The payment hasn't gone through yet. You can return to the payment page without repeating the booking.",
+      "reintentar": "Retry payment",
+      "reintentando": "Opening payment…",
+      "error": "We couldn't reopen the payment. Contact reception to complete the booking."
     }
   },
   "temas": {

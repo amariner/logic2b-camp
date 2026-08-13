@@ -463,7 +463,10 @@
     "pago": {
       "esperando": "__TODO__",
       "cancelado": "__TODO__",
-      "pendiente": "__TODO__"
+      "pendiente": "__TODO__",
+      "reintentar": "__TODO__",
+      "reintentando": "__TODO__",
+      "error": "__TODO__"
     }
   },
   "temas": {

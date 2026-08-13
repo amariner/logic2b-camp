@@ -1,5 +1,24 @@
 # PROGRESS — Logic Camp
 
+## La reserva pendiente puede retomar el mismo pago · 2026-08-13 (sesión 143)
+
+- `POST /api/bookings/:code/payment` verifica código, email y estado `pending`
+  antes de devolver las instrucciones de pago ya persistidas. No crea otro
+  intento ni llama al proveedor: una identidad incorrecta responde 404, una
+  reserva ya confirmada responde 409 y la renovación por caducidad sigue
+  reservada al gate externo R12.
+- `/reserva` ofrece «Reintentar el pago» tanto al volver de una cancelación como
+  durante una espera prolongada. Redirect y formulario comparten una sola
+  continuación; el copy queda localizado en seis idiomas, cuatro fixtures tier
+  3 y la plantilla, sin alterar temas ni media.
+- El QA local levantó D1 y Worker desechables con Redsys de prueba, pero no envió
+  el formulario ni contactó con el TPV. La reserva sintética se recuperó a 375 y
+  1366 px sin desborde ni consola; la revisión corrigió el control de 41 a 44 px.
+  `API_PROXY` permite aislar ese Worker conservando `8787` como valor por defecto.
+- La regresión dirigida pasa 21/21 y `pnpm check` cierra 71/71 tareas, incluidas
+  281 pruebas de API, 235 páginas Astro y el portfolio 12/12. No hubo deploy,
+  infraestructura remota, proveedor real ni creación de temas.
+
 ## GitHub y producción incorporan B5 y el portfolio 12/12 · 2026-08-12 (sesión 142)
 
 - `main` integra el contacto transversal B5 y Sol d'Hivern mediante los commits

@@ -477,8 +477,11 @@
     },
     "pago": {
       "esperando": "Estamos confirmando tu pago con el banco… tardará solo unos segundos.",
-      "cancelado": "Has cancelado el pago. La reserva queda pendiente — contacta con nosotros si quieres completarla.",
-      "pendiente": "El pago todavía no se ha completado. Si has cerrado la pasarela por error, contacta con nosotros para terminarlo."
+      "cancelado": "Has cancelado el pago. La reserva queda pendiente y no se ha realizado ningún cargo.",
+      "pendiente": "El pago todavía no se ha completado. Puedes volver a la pasarela sin repetir la reserva.",
+      "reintentar": "Reintentar el pago",
+      "reintentando": "Abriendo el pago…",
+      "error": "No hemos podido volver a abrir el pago. Contacta con recepción para completar la reserva."
     }
   },
   "temas": {

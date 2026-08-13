@@ -247,6 +247,81 @@ describe('reserva web con pago (redsys deposit)', () => {
     expect(retryBody.payment).toEqual(firstBody.payment);
   });
 
+  it('el titular recupera el mismo intento pendiente sin crear otro cobro', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-07-01', '2026-07-04', 'continue-payment@example.com')),
+      REDSYS_ENV,
+    );
+    expect(create.status).toBe(201);
+    const created = (await create.json()) as {
+      id: string;
+      code: string;
+      payment: Record<string, unknown>;
+    };
+
+    const retry = await app.request(
+      `/api/bookings/${created.code}/payment`,
+      json({ email: 'continue-payment@example.com' }),
+      REDSYS_ENV,
+    );
+
+    expect(retry.status).toBe(200);
+    await expect(retry.json()).resolves.toEqual({ payment: created.payment });
+    const intents = await createDb(env.DB)
+      .select()
+      .from(schema.meta)
+      .where(eq(schema.meta.key, `payment_intent:${created.id}`));
+    expect(intents).toHaveLength(1);
+  });
+
+  it('el reintento de pago falla cerrado para otro email o una reserva no pendiente', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-07-05', '2026-07-08', 'closed-retry@example.com')),
+      REDSYS_ENV,
+    );
+    const created = (await create.json()) as {
+      id: string;
+      code: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+
+    const stranger = await app.request(
+      `/api/bookings/${created.code}/payment`,
+      json({ email: 'other@example.com' }),
+      REDSYS_ENV,
+    );
+    expect(stranger.status).toBe(404);
+
+    const amountCents = Math.round(created.totalCents * 0.3);
+    const notification = await buildNotification(created.payment.providerRef, '0000', amountCents);
+    const hook = await app.request(
+      '/api/payments/webhook/redsys',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
+      REDSYS_ENV,
+    );
+    expect(hook.status).toBe(200);
+
+    const confirmed = await app.request(
+      `/api/bookings/${created.code}/payment`,
+      json({ email: 'closed-retry@example.com' }),
+      REDSYS_ENV,
+    );
+    expect(confirmed.status).toBe(409);
+    await expect(confirmed.json()).resolves.toEqual({
+      error: 'payment_not_pending',
+      status: 'confirmed',
+    });
+  });
+
   it('el webhook confirma la reserva, registra el pago y dispara booking_confirmed', async () => {
     await setPaymentsConfig(REDSYS_CONFIG);
     const create = await app.request(

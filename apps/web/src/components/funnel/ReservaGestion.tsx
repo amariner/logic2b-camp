@@ -4,7 +4,14 @@
  * Sin cuentas: /reserva?code=…&email=… es recuperable y compartible.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { conceptLabel, eur, fill, type Breakdown } from './lib';
+import {
+  conceptLabel,
+  eur,
+  fill,
+  submitPaymentContinuation,
+  type Breakdown,
+  type PaymentContinuation,
+} from './lib';
 
 type BookingView = {
   code: string;
@@ -55,6 +62,7 @@ export default function ReservaGestion({
   const [flash, setFlash] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [paymentBusy, setPaymentBusy] = useState(false);
   const [pagoParam, setPagoParam] = useState<'ok' | 'cancelado' | null>(null);
   const [polling, setPolling] = useState(false);
 
@@ -178,6 +186,26 @@ export default function ReservaGestion({
     }
   };
 
+  const retryPayment = async () => {
+    if (!booking) return;
+    setPaymentBusy(true);
+    setActionError(null);
+    try {
+      const res = await fetch(`/api/bookings/${encodeURIComponent(booking.code)}/payment`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const body = (await res.json()) as { payment: PaymentContinuation };
+      if (!submitPaymentContinuation(body.payment)) throw new Error('payment_unavailable');
+    } catch {
+      setActionError(labels.pago.error ?? null);
+    } finally {
+      setPaymentBusy(false);
+    }
+  };
+
   // ---------- formulario de acceso ----------
   if (state !== 'ok' || !booking) {
     return (
@@ -261,9 +289,24 @@ export default function ReservaGestion({
           {labels.pago.pendiente}
         </p>
       )}
+      {booking.status === 'pending' && !polling && (
+        <button
+          type="button"
+          onClick={retryPayment}
+          disabled={paymentBusy}
+          className="no-print min-h-11 self-start rounded-(--lc-radius) bg-pino px-5 py-2.5 text-[14px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro disabled:opacity-60"
+        >
+          {paymentBusy ? labels.pago.reintentando : labels.pago.reintentar}
+        </button>
+      )}
       {flash && (
         <p className="rounded-(--lc-radius) border border-pino/30 bg-pino/10 px-4 py-3 text-[14px] font-medium text-pino">
           {flash}
+        </p>
+      )}
+      {actionError && panel === 'none' && (
+        <p role="alert" className="text-[14px] font-medium text-mar">
+          {actionError}
         </p>
       )}
 

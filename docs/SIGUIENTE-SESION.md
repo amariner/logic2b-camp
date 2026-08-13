@@ -1,27 +1,29 @@
-# Prompt para la siguiente sesión — portfolio completo
+# Prompt para la siguiente sesión — frente funcional no visual
 
-> Reescrito el 2026-08-12 tras completar Sol d'Hivern y cerrar D6-V.
+> Reescrito el 2026-08-13 tras cerrar el reintento seguro de pagos pendientes.
 
 ## Estado en una línea
 
-El portfolio temático está completo en **12/12**: cada tarjeta de `/temas/`
-enlaza a una demo real y el antiguo concepto «Parcela» ha sido sustituido por
-Sol d'Hivern.
+Una reserva `pending` ya puede recuperar su intento de pago persistido desde
+`/reserva`, sin crear otro cobro ni llamar al proveedor. El portfolio continúa
+cerrado en 12/12 y no necesita más temas.
 
 ## Último cierre
 
-- `soldhivern`: tier 3, 200 unidades, abierto todo el año;
-- reserva demo con mínimo de 45 noches en invierno y señal ficticia del 15 %;
-- gestor reversible con prefijo `SH-26-`, plano propio y ocupación de 60/75/90 noches;
-- fotografía propia 10/10, miniatura, OG y favicon;
-- portada y planning incorporados al bundle compuesto y al QA canónico;
-- D6-V cerrado en 12/12, sin deploy ni infraestructura remota.
+- endpoint público protegido por código + email y por estado `pending`;
+- mismo intento persistido para redirect/form, con 404 de identidad y 409 de estado;
+- copy localizado en seis idiomas, fixtures tier 3 y plantilla;
+- QA D1 + Worker local a 375/1366 px, sin enviar el formulario externo;
+- `pnpm check` 71/71; sin deploy ni infraestructura remota.
 
-## Cómo continuar
+## Siguiente corte recomendado
 
-No crear un tema decimotercero por inercia. Antes de escribir código, seleccionar
-un alcance nuevo explícito: aprendizaje comercial sobre las doce demos, un gate
-de cliente/producción con sus datos y autorización, o un frente funcional que
-merezca ADR. Para revisar el escaparate local, levantar el bundle compuesto y
-recorrer `/temas/`, `/demos/soldhivern/` y
-`/demos/soldhivern/gestion/#/planning`.
+Resolver el resto funcional `[C1]` del diálogo de cambio de precio en el gestor:
+si una reserva ya cobrada queda con `paidCents > totalCents`, mostrar dentro del
+diálogo un aviso explícito con el exceso antes de confirmar. El servidor seguirá
+siendo la autoridad y no se registrará devolución, ajuste contable ni movimiento
+automático. Cubrir cálculo, copy, foco/lector de pantalla y estados móvil/escritorio
+con pruebas del dashboard.
+
+No crear un tema decimotercero, no tocar fotografía y no activar proveedores,
+credenciales, datos remotos o producción sin un gate y autorización explícitos.

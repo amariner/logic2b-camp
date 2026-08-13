@@ -18,6 +18,7 @@ import { logEvent } from '../errors';
 import { notifyBookingCancelled, notifyBookingConfirmed, notifyEnquiry } from '../notify';
 import {
   executeRefund,
+  loadStoredPaymentIntent,
   loadPaymentsConfig,
   recordPaymentEvent,
   resolveProvider,
@@ -344,6 +345,26 @@ export const publicRoutes = new Hono<Env>()
       breakdown: booking.priceBreakdown,
       cancellation,
     });
+  })
+
+  .post('/bookings/:code/payment', async (c) => {
+    const parsed = bookingCancelSchema.safeParse(await c.req.json().catch(() => null));
+    if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
+    const db = c.get('tenant').db;
+    const booking = await findBookingByCodeEmail(db, c.req.param('code'), parsed.data.email);
+    if (!booking) return c.json({ error: 'not_found' }, 404);
+    if (booking.status !== 'pending') {
+      return c.json({ error: 'payment_not_pending', status: booking.status }, 409);
+    }
+
+    // ADR 0042: el reintento local no crea otro cobro ni recalcula el importe.
+    // Devuelve únicamente las instrucciones ya persistidas del intento vigente;
+    // expiración y renovación real se verifican con el proveedor en R12.
+    const payment = await loadStoredPaymentIntent(db, booking.id);
+    if (!payment || payment.method === 'immediate') {
+      return c.json({ error: 'payment_unavailable' }, 409);
+    }
+    return c.json({ payment });
   })
 
   // ---------- gestión por código + email (ADR 0007) ----------

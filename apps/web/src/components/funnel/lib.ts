@@ -69,6 +69,35 @@ export type Breakdown = {
 
 export type Issue = { code: string; params?: Record<string, string | number> };
 
+export type PaymentContinuation =
+  | { method: 'redirect'; redirectUrl: string }
+  | { method: 'form'; action: string; fields: Record<string, string> }
+  | { method: 'immediate' };
+
+/** Continúa un intento ya creado sin reconstruir importes ni datos de pasarela en cliente. */
+export function submitPaymentContinuation(payment: PaymentContinuation): boolean {
+  if (payment.method === 'redirect') {
+    window.location.href = payment.redirectUrl;
+    return true;
+  }
+  if (payment.method === 'form') {
+    const autoForm = document.createElement('form');
+    autoForm.method = 'POST';
+    autoForm.action = payment.action;
+    for (const [name, value] of Object.entries(payment.fields)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      autoForm.appendChild(input);
+    }
+    document.body.appendChild(autoForm);
+    autoForm.submit();
+    return true;
+  }
+  return false;
+}
+
 /** concepto del desglose → texto: mapa del funnel, nombres de extras o el código tal cual */
 export const conceptLabel = (
   concept: string,

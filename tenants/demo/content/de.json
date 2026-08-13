@@ -477,8 +477,11 @@
     },
     "pago": {
       "esperando": "Wir bestätigen Ihre Zahlung bei der Bank… das dauert nur wenige Sekunden.",
-      "cancelado": "Sie haben die Zahlung abgebrochen. Die Buchung bleibt ausstehend — kontaktieren Sie uns, wenn Sie sie abschließen möchten.",
-      "pendiente": "Die Zahlung ist noch nicht abgeschlossen. Falls Sie die Zahlungsseite versehentlich geschlossen haben, kontaktieren Sie uns, um sie abzuschließen."
+      "cancelado": "Sie haben die Zahlung abgebrochen. Die Buchung bleibt ausstehend und es wurde nichts belastet.",
+      "pendiente": "Die Zahlung ist noch nicht abgeschlossen. Sie können zur Zahlungsseite zurückkehren, ohne die Buchung zu wiederholen.",
+      "reintentar": "Zahlung erneut versuchen",
+      "reintentando": "Zahlung wird geöffnet…",
+      "error": "Die Zahlung konnte nicht erneut geöffnet werden. Wenden Sie sich an die Rezeption, um die Buchung abzuschließen."
     }
   },
   "temas": {

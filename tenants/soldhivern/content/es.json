@@ -436,7 +436,10 @@
     "pago": {
       "esperando": "Confirmando el pago simulado… no se realizará ningún cargo.",
       "cancelado": "Pago demo cancelado. No se ha realizado ningún cargo.",
-      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo."
+      "pendiente": "Pago simulado pendiente. No se ha realizado ningún cargo.",
+      "reintentar": "Reintentar el pago demo",
+      "reintentando": "Abriendo el pago demo…",
+      "error": "No se ha podido volver a abrir el pago de demostración."
     }
   }
 }
