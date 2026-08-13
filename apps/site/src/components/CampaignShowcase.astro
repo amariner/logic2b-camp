@@ -12,6 +12,21 @@ interface CampaignContent {
   texto: string;
   ejemplo: string;
   alcance: string;
+  ocasiones: {
+    etiqueta: string;
+    items: string[];
+  };
+  estudio: {
+    kicker: string;
+    titulo: string;
+    estado: string;
+    objetivoEtiqueta: string;
+    objetivo: string;
+    ofertaEtiqueta: string;
+    oferta: string;
+    canalesEtiqueta: string;
+    canales: string[];
+  };
   recorrido: {
     aria: string;
     items: CampaignStep[];
@@ -64,11 +79,101 @@ const links = {
 <section id="campanas" class="campaign-section botanical-section" aria-labelledby="campaign-title">
   <div class="botanical-shell">
     <header class="campaign-heading lc-reveal">
-      <div>
-        <p class="botanical-eyebrow">{c.kicker}</p>
-        <h2 id="campaign-title" class="botanical-heading-sm">{c.titulo}</h2>
-        <p class="botanical-copy">{c.texto}</p>
+      <div class="campaign-heading-copy">
+        <p class="campaign-eyebrow">{c.kicker}</p>
+        <h2 id="campaign-title">{c.titulo}</h2>
+        <p>{c.texto}</p>
       </div>
+
+      <aside class="campaign-occasions" aria-label={c.ocasiones.etiqueta}>
+        <p>{c.ocasiones.etiqueta}</p>
+        <ul>
+          {c.ocasiones.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+    </header>
+
+    <div class="campaign-studio lc-reveal">
+      <div class="campaign-studio-bar">
+        <div>
+          <span class="campaign-live-dot" aria-hidden="true"></span>
+          <p>{c.estudio.kicker}</p>
+          <strong>{c.estudio.titulo}</strong>
+        </div>
+        <span class="campaign-status">{c.estudio.estado}</span>
+      </div>
+
+      <div class="campaign-workspace">
+        <aside class="campaign-brief">
+          <div class="campaign-brief-lead">
+            <p>{c.estudio.objetivoEtiqueta}</p>
+            <strong>{c.estudio.objetivo}</strong>
+          </div>
+          <div class="campaign-brief-offer">
+            <p>{c.estudio.ofertaEtiqueta}</p>
+            <strong>{c.estudio.oferta}</strong>
+          </div>
+          <div class="campaign-channels">
+            <p>{c.estudio.canalesEtiqueta}</p>
+            <ul>
+              {c.estudio.canales.map((channel) => <li><span aria-hidden="true">✓</span>{channel}</li>)}
+            </ul>
+          </div>
+        </aside>
+
+        <div class="campaign-previews" aria-label={c.recorrido.aria}>
+          <article class="campaign-card campaign-card-search">
+            <p class="campaign-format">{c.search.formato}</p>
+            <a href={links.search} aria-label={c.search.aria}>
+              <div class="campaign-search-topline">
+                <span class="campaign-example">{c.ejemplo}</span>
+                <span class="campaign-search-url">{c.search.url}</span>
+              </div>
+              <div class="campaign-search-body">
+                <div>
+                  <h3>{c.search.titulo}</h3>
+                  <p>{c.search.texto}</p>
+                </div>
+                <span class="campaign-search-cta">{c.search.cta} <i aria-hidden="true">→</i></span>
+              </div>
+            </a>
+          </article>
+
+          <article class="campaign-card campaign-card-display">
+            <p class="campaign-format">{c.display.formato}</p>
+            <a href={links.display} aria-label={c.display.aria}>
+              <img src={campaignPhoto} alt={c.display.alt} width="1536" height="1024" loading="lazy" />
+              <div class="campaign-photo-shade"></div>
+              <span class="campaign-example campaign-example-photo">{c.ejemplo}</span>
+              <p class="campaign-tenant-brand">{c.display.marca}</p>
+              <div class="campaign-display-copy">
+                <h3>{c.display.titulo}</h3>
+                <p>{c.display.texto}</p>
+                <span>{c.display.cta} <i aria-hidden="true">→</i></span>
+              </div>
+            </a>
+          </article>
+
+          <article class="campaign-card campaign-card-feed">
+            <p class="campaign-format">{c.feed.formato}</p>
+            <a href={links.feed} aria-label={c.feed.aria}>
+              <div class="campaign-feed-photo">
+                <img src={campaignPhoto} alt={c.feed.alt} width="1536" height="1024" loading="lazy" />
+                <span class="campaign-example campaign-example-photo">{c.ejemplo}</span>
+                <p class="campaign-tenant-brand">{c.feed.marca}</p>
+              </div>
+              <div class="campaign-feed-copy">
+                <div>
+                  <h3>{c.feed.titulo}</h3>
+                  <p>{c.feed.texto}</p>
+                </div>
+                <span>{c.feed.cta} <i aria-hidden="true">→</i></span>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+
       <ol class="campaign-route" aria-label={c.recorrido.aria}>
         {
           c.recorrido.items.map((step, index) => (
@@ -79,50 +184,6 @@ const links = {
           ))
         }
       </ol>
-    </header>
-
-    <div class="campaign-grid lc-reveal">
-      <article class="campaign-card campaign-card-search">
-        <p class="campaign-format">{c.search.formato}</p>
-        <a href={links.search} aria-label={c.search.aria}>
-          <span class="campaign-example">{c.ejemplo}</span>
-          <p class="campaign-search-url">{c.search.url}</p>
-          <h3>{c.search.titulo}</h3>
-          <p class="campaign-search-copy">{c.search.texto}</p>
-          <span class="campaign-search-cta">{c.search.cta} <i aria-hidden="true">→</i></span>
-        </a>
-      </article>
-
-      <article class="campaign-card campaign-card-display">
-        <p class="campaign-format">{c.display.formato}</p>
-        <a href={links.display} aria-label={c.display.aria}>
-          <img src={campaignPhoto} alt={c.display.alt} width="1536" height="1024" loading="lazy" />
-          <div class="campaign-photo-shade"></div>
-          <span class="campaign-example campaign-example-photo">{c.ejemplo}</span>
-          <p class="campaign-tenant-brand">{c.display.marca}</p>
-          <div class="campaign-display-copy">
-            <h3>{c.display.titulo}</h3>
-            <p>{c.display.texto}</p>
-            <span>{c.display.cta} <i aria-hidden="true">→</i></span>
-          </div>
-        </a>
-      </article>
-
-      <article class="campaign-card campaign-card-feed">
-        <p class="campaign-format">{c.feed.formato}</p>
-        <a href={links.feed} aria-label={c.feed.aria}>
-          <div class="campaign-feed-photo">
-            <img src={campaignPhoto} alt={c.feed.alt} width="1536" height="1024" loading="lazy" />
-            <span class="campaign-example campaign-example-photo">{c.ejemplo}</span>
-            <p class="campaign-tenant-brand">{c.feed.marca}</p>
-          </div>
-          <div class="campaign-feed-copy">
-            <h3>{c.feed.titulo}</h3>
-            <p>{c.feed.texto}</p>
-            <span>{c.feed.cta} <i aria-hidden="true">→</i></span>
-          </div>
-        </a>
-      </article>
     </div>
 
     <p class="campaign-scope lc-reveal">{c.alcance}</p>
@@ -131,99 +192,268 @@ const links = {
 
 <style>
   .campaign-section {
-    background: var(--botanical-paper);
+    --campaign-deep: #0b3427;
+    --campaign-ink: #15352d;
+    --campaign-paper: #fbfaf5;
+    --campaign-mint: #dff4df;
+    --campaign-lime: #c9f36d;
+    --campaign-sand: #eadfca;
+    --campaign-water: #176b73;
+    --campaign-coral: #d85f45;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 91% 3%, rgb(201 243 109 / 15%), transparent 26rem),
+      linear-gradient(145deg, #0f402f 0%, var(--campaign-deep) 60%, #082a21 100%);
+    color: var(--campaign-paper);
+  }
+  .campaign-section::before {
+    position: absolute;
+    top: -180px;
+    right: -140px;
+    width: 460px;
+    height: 460px;
+    border: 1px solid rgb(223 244 223 / 15%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 64px rgb(223 244 223 / 4%), 0 0 0 128px rgb(223 244 223 / 3%);
+    content: '';
+    pointer-events: none;
   }
   .campaign-heading {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(390px, .8fr);
-    gap: clamp(44px, 8vw, 120px);
+    grid-template-columns: minmax(0, 1.2fr) minmax(360px, .8fr);
+    gap: clamp(48px, 8vw, 128px);
     align-items: end;
   }
+  .campaign-heading-copy {
+    max-width: 850px;
+  }
+  .campaign-eyebrow {
+    color: var(--campaign-lime);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
   .campaign-heading h2 {
-    max-width: 780px;
+    max-width: 850px;
     margin-top: 18px;
+    color: var(--campaign-paper);
+    font-family: var(--botanical-serif);
+    font-size: clamp(40px, 5vw, 68px);
+    line-height: 1.01;
+    letter-spacing: -.035em;
   }
-  .campaign-heading .botanical-copy {
+  .campaign-heading-copy > p:last-child {
     max-width: 720px;
-    margin-top: 20px;
+    margin-top: 22px;
+    color: rgb(251 250 245 / 74%);
+    font-size: clamp(16px, 1.7vw, 19px);
+    line-height: 1.55;
   }
-  .campaign-route {
-    border-top: 1px solid var(--botanical-border);
+  .campaign-occasions {
+    border-top: 1px solid rgb(251 250 245 / 20%);
+    padding-top: 18px;
   }
-  .campaign-route li {
+  .campaign-occasions > p {
+    color: rgb(251 250 245 / 58%);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+  .campaign-occasions ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 15px;
+  }
+  .campaign-occasions li {
+    border: 1px solid rgb(223 244 223 / 22%);
+    border-radius: 999px;
+    background: rgb(223 244 223 / 8%);
+    padding: 9px 12px;
+    color: var(--campaign-mint);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .campaign-studio {
+    position: relative;
+    margin-top: clamp(48px, 7vw, 84px);
+    overflow: hidden;
+    border: 1px solid rgb(223 244 223 / 24%);
+    border-radius: clamp(20px, 3vw, 32px);
+    background: #f3f4ec;
+    box-shadow: 0 32px 90px rgb(0 0 0 / 28%);
+    color: var(--campaign-ink);
+  }
+  .campaign-studio-bar {
+    display: flex;
+    min-height: 78px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid rgb(21 53 45 / 13%);
+    background: var(--campaign-paper);
+    padding: 16px clamp(20px, 3vw, 38px);
+  }
+  .campaign-studio-bar > div {
     display: grid;
-    grid-template-columns: 30px 1fr;
-    gap: 12px;
-    border-bottom: 1px solid var(--botanical-border);
-    padding: 13px 0;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    align-items: center;
   }
-  .campaign-route > li > span {
-    padding-top: 2px;
-    color: color-mix(in srgb, var(--botanical-ink) 48%, white);
+  .campaign-studio-bar p {
+    color: rgb(21 53 45 / 56%);
     font-size: 9px;
     font-weight: 800;
-    letter-spacing: .06em;
+    letter-spacing: .08em;
+    text-transform: uppercase;
   }
-  .campaign-route strong {
-    color: var(--botanical-ink);
-    font-size: 12px;
+  .campaign-studio-bar strong {
+    grid-column: 2;
+    margin-top: 2px;
+    font-size: 14px;
   }
-  .campaign-route p {
-    margin-top: 3px;
-    color: color-mix(in srgb, var(--botanical-ink) 68%, white);
-    font-size: 11px;
-    line-height: 1.45;
+  .campaign-live-dot {
+    grid-row: 1 / 3;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #56a665;
+    box-shadow: 0 0 0 5px rgb(86 166 101 / 13%);
   }
-  .campaign-grid {
-    --campaign-ink: #172a2d;
-    --campaign-paper: #f6f4ee;
-    --campaign-sand: #d8c7a5;
-    --campaign-water: #176b73;
-    --campaign-coral: #d0644b;
+  .campaign-status {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: var(--campaign-mint);
+    padding: 8px 11px;
+    color: var(--campaign-deep);
+    font-size: 10px;
+    font-weight: 800;
+  }
+  .campaign-workspace {
     display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(250px, .78fr) minmax(300px, 1fr);
-    gap: 14px;
-    align-items: start;
-    margin-top: clamp(48px, 7vw, 82px);
+    grid-template-columns: minmax(230px, .31fr) minmax(0, 1fr);
+  }
+  .campaign-brief {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgb(21 53 45 / 13%);
+    background: #e8eddf;
+    padding: clamp(24px, 3vw, 40px);
+  }
+  .campaign-brief p,
+  .campaign-channels > p {
+    color: rgb(21 53 45 / 56%);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+  .campaign-brief-lead strong {
+    display: block;
+    max-width: 290px;
+    margin-top: 12px;
+    color: var(--campaign-deep);
+    font-family: var(--botanical-serif);
+    font-size: clamp(27px, 2.55vw, 38px);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -.025em;
+  }
+  .campaign-brief-offer {
+    margin-top: 34px;
+    border-top: 1px solid rgb(21 53 45 / 13%);
+    padding-top: 22px;
+  }
+  .campaign-brief-offer strong {
+    display: block;
+    margin-top: 9px;
+    color: var(--campaign-water);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .campaign-channels {
+    margin-top: auto;
+    padding-top: 40px;
+  }
+  .campaign-channels ul {
+    display: grid;
+    gap: 9px;
+    margin-top: 13px;
+  }
+  .campaign-channels li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: rgb(21 53 45 / 78%);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .campaign-channels li span {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--campaign-deep);
+    color: var(--campaign-lime);
+    font-size: 9px;
+  }
+  .campaign-previews {
+    display: grid;
+    grid-template-columns: minmax(240px, .8fr) minmax(300px, 1.2fr);
+    gap: clamp(18px, 2.4vw, 30px);
+    padding: clamp(24px, 3.2vw, 44px);
   }
   .campaign-card {
     min-width: 0;
   }
+  .campaign-card-search {
+    grid-column: 1 / -1;
+  }
   .campaign-format {
-    margin-bottom: 10px;
-    color: color-mix(in srgb, var(--botanical-ink) 58%, white);
+    margin-bottom: 9px;
+    color: rgb(21 53 45 / 54%);
     font-size: 9px;
     font-weight: 800;
-    letter-spacing: .07em;
+    letter-spacing: .08em;
     text-transform: uppercase;
   }
   .campaign-card > a {
     position: relative;
     display: block;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--campaign-ink) 18%, transparent);
-    border-radius: 12px;
+    border: 1px solid rgb(21 53 45 / 17%);
+    border-radius: 14px;
     background: var(--campaign-paper);
-    box-shadow: 0 20px 56px color-mix(in srgb, var(--campaign-ink) 13%, transparent);
+    box-shadow: 0 18px 44px rgb(21 53 45 / 10%);
     color: var(--campaign-ink);
     font-family: 'Inter Variable', system-ui, sans-serif;
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   }
   .campaign-card > a:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 24px 64px color-mix(in srgb, var(--campaign-ink) 19%, transparent);
+    transform: translateY(-4px);
+    border-color: rgb(21 53 45 / 30%);
+    box-shadow: 0 22px 54px rgb(21 53 45 / 17%);
+  }
+  .campaign-card > a:focus-visible {
+    outline: 3px solid var(--campaign-water);
+    outline-offset: 3px;
   }
   .campaign-card h3 {
     color: inherit;
     font-family: inherit;
-    font-weight: 700;
+    font-weight: 750;
     letter-spacing: -.025em;
   }
   .campaign-example {
     display: inline-flex;
     width: fit-content;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--campaign-sand) 58%, white);
+    background: var(--campaign-sand);
     padding: 6px 8px;
     color: var(--campaign-ink);
     font-size: 8px;
@@ -233,43 +463,56 @@ const links = {
     text-transform: uppercase;
   }
   .campaign-card-search > a {
-    min-height: 310px;
-    padding: clamp(24px, 3vw, 38px);
+    padding: clamp(20px, 2.4vw, 30px);
+  }
+  .campaign-search-topline,
+  .campaign-search-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
   }
   .campaign-search-url {
-    margin-top: 32px;
-    color: color-mix(in srgb, var(--campaign-ink) 74%, white);
-    font-size: 11px;
+    overflow: hidden;
+    color: rgb(21 53 45 / 60%);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .campaign-card-search h3 {
-    max-width: 430px;
-    margin-top: 12px;
+  .campaign-search-body {
+    margin-top: 20px;
+  }
+  .campaign-search-body h3 {
     color: var(--campaign-water);
-    font-size: clamp(24px, 2.35vw, 34px);
+    font-size: clamp(21px, 2vw, 30px);
     line-height: 1.08;
   }
-  .campaign-search-copy {
-    max-width: 470px;
-    margin-top: 14px;
-    color: color-mix(in srgb, var(--campaign-ink) 78%, white);
-    font-size: 13px;
-    line-height: 1.55;
+  .campaign-search-body p {
+    max-width: 680px;
+    margin-top: 7px;
+    color: rgb(21 53 45 / 72%);
+    font-size: 11px;
+    line-height: 1.45;
   }
   .campaign-search-cta {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
-    gap: 8px;
-    margin-top: 24px;
-    color: var(--campaign-water);
-    font-size: 11px;
+    gap: 10px;
+    border-radius: 999px;
+    background: var(--campaign-deep);
+    padding: 10px 13px;
+    color: var(--campaign-paper);
+    font-size: 10px;
     font-weight: 800;
+    white-space: nowrap;
   }
   .campaign-card i {
     font-style: normal;
   }
   .campaign-card-display > a {
     aspect-ratio: 6 / 5;
-    min-height: 250px;
+    min-height: 270px;
   }
   .campaign-card-display img,
   .campaign-feed-photo img {
@@ -284,21 +527,21 @@ const links = {
   .campaign-photo-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--campaign-ink) 12%, transparent) 20%, color-mix(in srgb, var(--campaign-ink) 88%, transparent) 100%);
+    background: linear-gradient(180deg, rgb(9 35 31 / 9%) 12%, rgb(9 35 31 / 90%) 100%);
   }
   .campaign-example-photo {
     position: absolute;
     z-index: 2;
     top: 14px;
     right: 14px;
-    background: color-mix(in srgb, var(--campaign-paper) 92%, transparent);
+    background: rgb(251 250 245 / 91%);
   }
   .campaign-tenant-brand {
     position: absolute;
     z-index: 2;
     top: 18px;
     left: 18px;
-    max-width: 45%;
+    max-width: 48%;
     color: var(--campaign-paper);
     font-size: 9px;
     font-weight: 800;
@@ -315,11 +558,11 @@ const links = {
   }
   .campaign-display-copy h3 {
     color: var(--campaign-paper);
-    font-size: clamp(24px, 2.35vw, 34px);
+    font-size: clamp(24px, 2.4vw, 36px);
     line-height: .98;
   }
   .campaign-display-copy p {
-    max-width: 220px;
+    max-width: 230px;
     margin-top: 8px;
     font-size: 10px;
     line-height: 1.4;
@@ -333,15 +576,15 @@ const links = {
     margin-top: 14px;
     border-radius: 999px;
     background: var(--campaign-coral);
-    padding: 8px 10px 8px 12px;
+    padding: 9px 11px 9px 13px;
     color: white;
     font-size: 9px;
     font-weight: 800;
   }
   .campaign-card-feed > a {
-    aspect-ratio: 1;
+    aspect-ratio: 1.18 / 1;
     display: grid;
-    grid-template-rows: minmax(0, 1.3fr) minmax(0, .7fr);
+    grid-template-rows: minmax(0, 1.2fr) minmax(116px, .8fr);
   }
   .campaign-feed-photo {
     position: relative;
@@ -351,40 +594,88 @@ const links = {
   .campaign-feed-photo::after {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--campaign-ink) 14%, transparent), transparent 44%);
+    background: linear-gradient(180deg, rgb(9 35 31 / 18%), transparent 46%);
     content: '';
   }
   .campaign-feed-copy {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 16px;
-    align-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
     background: var(--campaign-paper);
-    padding: clamp(18px, 2.2vw, 28px);
+    padding: clamp(18px, 2vw, 26px);
   }
   .campaign-feed-copy h3 {
-    font-size: clamp(19px, 1.8vw, 27px);
+    font-size: clamp(18px, 1.65vw, 25px);
     line-height: 1.04;
   }
   .campaign-feed-copy p {
-    margin-top: 7px;
-    color: color-mix(in srgb, var(--campaign-ink) 72%, white);
+    margin-top: 6px;
+    color: rgb(21 53 45 / 66%);
     font-size: 10px;
     line-height: 1.4;
   }
   .campaign-feed-copy > span {
-    grid-row: 1 / 3;
-    grid-column: 2;
-    align-self: center;
+    flex: 0 0 auto;
     margin-top: 0;
     white-space: nowrap;
   }
+  .campaign-route {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgb(21 53 45 / 13%);
+    background: var(--campaign-paper);
+  }
+  .campaign-route li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    padding: 22px clamp(20px, 3vw, 38px);
+  }
+  .campaign-route li + li {
+    border-left: 1px solid rgb(21 53 45 / 13%);
+  }
+  .campaign-route li:not(:last-child)::after {
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    z-index: 2;
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border: 1px solid rgb(21 53 45 / 13%);
+    border-radius: 50%;
+    background: var(--campaign-paper);
+    color: rgb(21 53 45 / 45%);
+    content: '→';
+    font-size: 11px;
+    transform: translateY(-50%);
+  }
+  .campaign-route > li > span {
+    padding-top: 2px;
+    color: var(--campaign-water);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: .06em;
+  }
+  .campaign-route strong {
+    color: var(--campaign-deep);
+    font-size: 12px;
+  }
+  .campaign-route p {
+    margin-top: 4px;
+    color: rgb(21 53 45 / 64%);
+    font-size: 10px;
+    line-height: 1.45;
+  }
   .campaign-scope {
-    max-width: 920px;
-    margin-top: 24px;
-    border-left: 2px solid var(--botanical-ink);
+    max-width: 980px;
+    margin-top: 22px;
+    border-left: 2px solid var(--campaign-lime);
     padding-left: 14px;
-    color: color-mix(in srgb, var(--botanical-ink) 70%, white);
+    color: rgb(251 250 245 / 56%);
     font-size: 11px;
     line-height: 1.55;
   }
@@ -392,24 +683,93 @@ const links = {
     .campaign-card > a { transition: none; }
     .campaign-card > a:hover { transform: none; }
   }
-  @media (max-width: 1120px) {
-    .campaign-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 1080px) {
+    .campaign-heading {
+      grid-template-columns: 1fr;
+      gap: 36px;
     }
-    .campaign-card-search {
-      grid-column: 1 / -1;
+    .campaign-occasions {
+      max-width: 680px;
+    }
+    .campaign-workspace {
+      grid-template-columns: 1fr;
+    }
+    .campaign-brief {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 28px;
+      border-right: 0;
+      border-bottom: 1px solid rgb(21 53 45 / 13%);
+    }
+    .campaign-brief-offer,
+    .campaign-channels {
+      margin-top: 0;
+      border-top: 0;
+      padding-top: 0;
+    }
+    .campaign-brief-lead strong {
+      font-size: 30px;
     }
   }
   @media (max-width: 767px) {
-    .campaign-heading,
-    .campaign-grid {
+    .campaign-heading h2 {
+      font-size: clamp(38px, 12vw, 52px);
+    }
+    .campaign-studio-bar {
+      align-items: flex-start;
+    }
+    .campaign-status {
+      max-width: 120px;
+      text-align: center;
+    }
+    .campaign-brief {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    .campaign-brief-offer,
+    .campaign-channels {
+      border-top: 1px solid rgb(21 53 45 / 13%);
+      padding-top: 22px;
+    }
+    .campaign-previews,
+    .campaign-route {
       grid-template-columns: 1fr;
     }
-    .campaign-heading { gap: 32px; }
-    .campaign-card-search { grid-column: auto; }
-    .campaign-card-search > a { min-height: 0; }
-    .campaign-card-feed > a { aspect-ratio: auto; grid-template-rows: minmax(250px, 1.2fr) auto; }
-    .campaign-feed-copy { grid-template-columns: 1fr; }
-    .campaign-feed-copy > span { grid-row: auto; grid-column: auto; justify-self: start; margin-top: 16px; }
+    .campaign-card-search {
+      grid-column: auto;
+    }
+    .campaign-search-topline,
+    .campaign-search-body {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .campaign-search-url {
+      max-width: 100%;
+      order: -1;
+    }
+    .campaign-card-display > a {
+      min-height: 300px;
+    }
+    .campaign-card-feed > a {
+      aspect-ratio: auto;
+      grid-template-rows: minmax(250px, 1.2fr) auto;
+    }
+    .campaign-feed-copy {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .campaign-route li + li {
+      border-top: 1px solid rgb(21 53 45 / 13%);
+      border-left: 0;
+    }
+    .campaign-route li:not(:last-child)::after {
+      top: auto;
+      right: auto;
+      bottom: -12px;
+      left: 27px;
+      content: '↓';
+      transform: none;
+    }
   }
 </style>

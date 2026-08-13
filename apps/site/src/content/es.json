@@ -265,41 +265,56 @@
     ]
   },
   "campana": {
-    "kicker": "Campaña propia · muestra estática",
-    "titulo": "Del anuncio a una reserva directa, sin salir de tu canal.",
-    "texto": "Tres formatos ficticios cuentan la misma estancia y desembocan en la web de Mar de Fondo con UTM de muestra. El argumento no es una métrica inventada: es poder enseñar el recorrido completo, de la creatividad a la disponibilidad.",
+    "kicker": "Promociones conectadas · de la idea a la reserva",
+    "titulo": "Lanza la promoción que tu camping necesita. Llena las fechas que tú eliges.",
+    "texto": "Prepara una oferta una sola vez, llévala a búsqueda, display y redes, y recibe al huésped en tu propia web con disponibilidad real. Menos piezas desconectadas y un recorrido directo hasta la reserva.",
     "ejemplo": "Creatividad de ejemplo",
-    "alcance": "Creatividad de ejemplo · sin cuenta publicitaria ni medición real. El recorrido termina en una reserva de demostración con pago simulado; no se realiza ningún cargo.",
+    "alcance": "Logic2B puede gestionar tus campañas como servicio adicional a la suscripción. Esta demostración visual no utiliza una cuenta publicitaria ni muestra resultados inventados; los tres formatos abren una reserva de muestra con disponibilidad y pago simulado, sin realizar ningún cargo.",
+    "ocasiones": {
+      "etiqueta": "Úsalo cuando quieras impulsar",
+      "items": ["Temporada baja", "Últimas parcelas", "Puentes y festivos", "Estancias largas"]
+    },
+    "estudio": {
+      "kicker": "Promoción preparada",
+      "titulo": "Mar de Fondo · Agosto",
+      "estado": "Lista para publicar",
+      "objetivoEtiqueta": "Objetivo de ocupación",
+      "objetivo": "Dar salida a las últimas parcelas de agosto",
+      "ofertaEtiqueta": "Una sola oferta",
+      "oferta": "7 noches junto al Mediterráneo · reserva directa",
+      "canalesEtiqueta": "Adaptada para",
+      "canales": ["Tu web", "Google", "Redes sociales"]
+    },
     "recorrido": {
-      "aria": "Recorrido de la campaña de muestra",
+      "aria": "Recorrido de una promoción conectada",
       "items": [
         {
-          "titulo": "Creatividad",
-          "texto": "Búsqueda, display o feed con una historia común."
+          "titulo": "Elige qué quieres llenar",
+          "texto": "Fechas, tipo de alojamiento y condiciones bajo tu control."
         },
         {
-          "titulo": "Web y disponibilidad",
-          "texto": "Cada formato abre el mostrador de Mar de Fondo."
+          "titulo": "Publica una oferta coherente",
+          "texto": "El mismo mensaje adaptado a cada canal de captación."
         },
         {
-          "titulo": "Reserva demo",
-          "texto": "Confirmación y pago simulado, sin ningún cargo."
+          "titulo": "Convierte en tu propia web",
+          "texto": "El viajero llega a disponibilidad y reserva sin desvíos."
         }
       ]
     },
     "search": {
       "formato": "Búsqueda · muestra",
       "url": "camp.logic2b.com › demos › mardefondo",
-      "titulo": "Resort Mar de Fondo | Reserva directa",
-      "texto": "Compara parcelas y alojamientos junto al Mediterráneo. Consulta disponibilidad y completa una reserva de demostración.",
+      "titulo": "Últimas parcelas de agosto | Mar de Fondo",
+      "texto": "7 noches junto al Mediterráneo. Consulta disponibilidad y reserva directamente en la web del camping.",
       "cta": "Ver disponibilidad",
       "aria": "Abrir la creatividad de búsqueda de ejemplo y consultar disponibilidad en Mar de Fondo"
     },
     "display": {
       "formato": "Display · 300 × 250",
       "marca": "MAR DE FONDO",
-      "titulo": "Agosto junto al mar.",
-      "texto": "Tu parcela, reservada directamente.",
+      "titulo": "Tu última escapada de agosto.",
+      "texto": "7 noches junto al mar. Reserva directa.",
       "cta": "Ver fechas",
       "alt": "Piscina laguna del resort ficticio Mar de Fondo al atardecer",
       "aria": "Abrir la creatividad display 300 por 250 de ejemplo y consultar fechas en Mar de Fondo"
@@ -307,39 +322,39 @@
     "feed": {
       "formato": "Feed · 1080 × 1080",
       "marca": "MAR DE FONDO · MEDITERRÁNEO",
-      "titulo": "Un horizonte amplio. Tu agosto, reservado.",
-      "texto": "Reserva directa en nuestra web.",
-      "cta": "Consultar",
+      "titulo": "Alarga el verano junto al mar.",
+      "texto": "Últimas parcelas de agosto. Reserva directa.",
+      "cta": "Ver fechas",
       "alt": "Piscina laguna del resort ficticio Mar de Fondo al atardecer",
       "aria": "Abrir la creatividad de feed 1080 por 1080 de ejemplo y consultar disponibilidad en Mar de Fondo"
     }
   },
   "video": {
-    "kicker": "Captura guiada · menos de un minuto",
-    "titulo": "De una campaña propia a una decisión explicable.",
-    "texto": "Una sola pieza recorre la parte que ya se puede enseñar sin preparar una demo en directo: disponibilidad, reserva y recibo ficticios, operación a escala y una recomendación que muestra de dónde sale.",
-    "aria": "Captura guiada de la primera ola de demos Logic2B",
-    "alcance": "Demostración ficticia grabada sobre datos y recorridos locales. El pago es simulado, no existe cuenta publicitaria ni medición real y el prototipo inteligente no ejecuta cambios.",
-    "transcriptTitle": "Qué muestra la captura",
-    "fallback": "Descargar la captura guiada en MP4",
+    "kicker": "El flujo completo · menos de un minuto",
+    "titulo": "De la campaña a la operación diaria, todo queda conectado.",
+    "texto": "Tu campaña lleva al viajero a tu propia web, donde consulta disponibilidad, conoce el precio y confirma su estancia. La reserva entra directamente en el gestor para que recepción controle cobros y llegadas, mientras gerencia dispone de información actualizada para decidir qué impulsar después.",
+    "aria": "Recorrido completo de una reserva conectada con Logic2B",
+    "alcance": "Un único flujo conecta captación, disponibilidad, reserva, cobro, recepción y análisis. La información se registra una vez y acompaña al equipo durante toda la estancia.",
+    "transcriptTitle": "Así avanza cada reserva",
+    "fallback": "Descargar el recorrido completo en MP4",
     "trackEs": "Español",
     "trackEn": "English",
     "items": [
       {
-        "titulo": "Creatividad y web propia",
-        "texto": "Una pieza marcada como ejemplo desemboca en el mostrador de Mar de Fondo."
+        "titulo": "La campaña lleva a tu web",
+        "texto": "Cada creatividad dirige al viajero a una oferta concreta dentro de tu propio canal."
       },
       {
-        "titulo": "Disponibilidad y precio",
-        "texto": "La estancia y un extra se reflejan en un desglose visible antes de continuar."
+        "titulo": "Disponibilidad y precio al momento",
+        "texto": "El viajero elige fechas, compara opciones y ve el desglose completo antes de confirmar."
       },
       {
-        "titulo": "Reserva y recibo demo",
-        "texto": "El formulario usa datos ficticios y termina con pago simulado, sin cargo."
+        "titulo": "Reserva y cobro conectados",
+        "texto": "Los datos, extras y estado del pago quedan registrados en el gestor sin volver a introducirlos."
       },
       {
-        "titulo": "Operación y decisión",
-        "texto": "El planning enseña la escala y la recomendación declara fuentes, rango y confianza."
+        "titulo": "Operación y decisiones",
+        "texto": "Recepción la ve en planning y plano; gerencia sigue la ocupación y detecta nuevas oportunidades de promoción."
       }
     ]
   },

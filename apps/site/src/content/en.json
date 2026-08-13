@@ -265,41 +265,56 @@
     ]
   },
   "campana": {
-    "kicker": "Owned campaign · static example",
-    "titulo": "From an advert to a direct booking, all within your own channel.",
-    "texto": "Three fictional formats tell the same stay story and lead to the Mar de Fondo website with sample UTM parameters. The argument is not a made-up metric: it is the ability to show the full journey, from creative to availability.",
+    "kicker": "Connected promotions · from idea to booking",
+    "titulo": "Launch the promotion your campsite needs. Fill the dates you choose.",
+    "texto": "Prepare one offer, take it to search, display and social, and welcome guests on your own website with live availability. Fewer disconnected pieces and a direct path to booking.",
     "ejemplo": "Example creative",
-    "alcance": "Example creative · no advertising account or real measurement. The journey ends in a demonstration booking with simulated payment; no charge is made.",
+    "alcance": "Logic2B can manage your campaigns as an additional service to your subscription. This visual demonstration does not use an advertising account or show invented performance data; all three formats open a sample booking with availability and simulated payment, without making any charge.",
+    "ocasiones": {
+      "etiqueta": "Use it when you want to boost",
+      "items": ["Low season", "Last pitches", "Holiday weekends", "Long stays"]
+    },
+    "estudio": {
+      "kicker": "Promotion prepared",
+      "titulo": "Mar de Fondo · August",
+      "estado": "Ready to publish",
+      "objetivoEtiqueta": "Occupancy goal",
+      "objetivo": "Fill the last available pitches in August",
+      "ofertaEtiqueta": "One offer",
+      "oferta": "7 nights by the Mediterranean · book direct",
+      "canalesEtiqueta": "Adapted for",
+      "canales": ["Your website", "Google", "Social media"]
+    },
     "recorrido": {
-      "aria": "Sample campaign journey",
+      "aria": "Connected promotion journey",
       "items": [
         {
-          "titulo": "Creative",
-          "texto": "Search, display or feed with one shared story."
+          "titulo": "Choose what to fill",
+          "texto": "Dates, accommodation type and conditions stay under your control."
         },
         {
-          "titulo": "Website and availability",
-          "texto": "Every format opens the Mar de Fondo booking panel."
+          "titulo": "Publish one coherent offer",
+          "texto": "The same message, adapted to every acquisition channel."
         },
         {
-          "titulo": "Demo booking",
-          "texto": "Confirmation and simulated payment, with no charge."
+          "titulo": "Convert on your own website",
+          "texto": "Guests reach availability and booking without detours."
         }
       ]
     },
     "search": {
       "formato": "Search · example",
       "url": "camp.logic2b.com › demos › mardefondo",
-      "titulo": "Mar de Fondo Resort | Book direct",
-      "texto": "Compare pitches and accommodation beside the Mediterranean. Check availability and complete a demonstration booking.",
+      "titulo": "Last August pitches | Mar de Fondo",
+      "texto": "7 nights by the Mediterranean. Check availability and book directly on the campsite website.",
       "cta": "Check availability",
       "aria": "Open the example search creative and check availability at Mar de Fondo"
     },
     "display": {
       "formato": "Display · 300 × 250",
       "marca": "MAR DE FONDO",
-      "titulo": "August by the sea.",
-      "texto": "Your pitch, booked direct.",
+      "titulo": "Your last August escape.",
+      "texto": "7 nights by the sea. Book direct.",
       "cta": "View dates",
       "alt": "Lagoon pool at the fictional Mar de Fondo resort at sunset",
       "aria": "Open the example 300 by 250 display creative and view dates at Mar de Fondo"
@@ -307,39 +322,39 @@
     "feed": {
       "formato": "Feed · 1080 × 1080",
       "marca": "MAR DE FONDO · MEDITERRANEAN",
-      "titulo": "A broad horizon. Your August, booked.",
-      "texto": "Book direct on our website.",
-      "cta": "Check dates",
+      "titulo": "Make summer last by the sea.",
+      "texto": "Last August pitches. Book direct.",
+      "cta": "View dates",
       "alt": "Lagoon pool at the fictional Mar de Fondo resort at sunset",
       "aria": "Open the example 1080 by 1080 feed creative and check availability at Mar de Fondo"
     }
   },
   "video": {
-    "kicker": "Guided capture · under one minute",
-    "titulo": "From an owned campaign to an explainable decision.",
-    "texto": "One short piece covers what can already be shown without preparing a live demo: fictional availability, booking and receipt, large-scale operations and a recommendation that reveals where it came from.",
-    "aria": "Guided capture of the first wave of Logic2B demos",
-    "alcance": "Fictional demonstration recorded with local data and journeys. Payment is simulated, there is no advertising account or real measurement, and the intelligent prototype makes no changes.",
-    "transcriptTitle": "What the capture shows",
-    "fallback": "Download the guided capture as MP4",
+    "kicker": "The complete flow · under one minute",
+    "titulo": "From campaign to daily operations, everything stays connected.",
+    "texto": "Your campaign brings travellers to your own website, where they check availability, see the price and confirm their stay. The booking goes straight into the manager so reception can track payments and arrivals, while management gets up-to-date information to decide what to promote next.",
+    "aria": "Complete journey of a booking connected through Logic2B",
+    "alcance": "One flow connects acquisition, availability, booking, payment, reception and analysis. Information is entered once and stays with the team throughout the guest's stay.",
+    "transcriptTitle": "How every booking moves forward",
+    "fallback": "Download the complete journey as MP4",
     "trackEs": "Español",
     "trackEn": "English",
     "items": [
       {
-        "titulo": "Creative and owned website",
-        "texto": "A piece labelled as an example leads into the Mar de Fondo booking panel."
+        "titulo": "The campaign leads to your website",
+        "texto": "Every creative directs travellers to a specific offer within your own channel."
       },
       {
-        "titulo": "Availability and price",
-        "texto": "The stay and an extra appear in a visible breakdown before continuing."
+        "titulo": "Live availability and pricing",
+        "texto": "Travellers choose dates, compare options and see the full breakdown before confirming."
       },
       {
-        "titulo": "Demo booking and receipt",
-        "texto": "The form uses fictional details and ends with simulated payment and no charge."
+        "titulo": "Connected booking and payment",
+        "texto": "Guest details, extras and payment status are recorded in the manager without being entered again."
       },
       {
-        "titulo": "Operations and decision",
-        "texto": "The planner shows scale and the recommendation declares sources, range and confidence."
+        "titulo": "Operations and decisions",
+        "texto": "Reception sees it in the planner and map; management tracks occupancy and spots new promotion opportunities."
       }
     ]
   },
