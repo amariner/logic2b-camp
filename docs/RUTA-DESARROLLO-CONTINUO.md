@@ -341,13 +341,13 @@ sin modificar el core, improvisar activos ni duplicar infraestructura.
       criterio por el que no duplica una existente.
 - [x] Elegir primero entre conceptos ya creados cuando cubran el gap; crear una
       dirección nueva solo si ninguno lo cubre.
-- [ ] Ejecutar cada demo como una entrega vertical: contrato visual → contenido →
+- [x] Ejecutar cada demo como una entrega vertical: contrato visual → contenido →
       fotografía → config/tema → recorrido web/gestor → capturas → ficha → QA.
 - [x] Completar D5-V de tres a seis demos antes de abrir D6-V.
-- [ ] Completar D6-V de seis a doce solo con evidencia propia por demo.
-- [ ] Mantener un único core, un único sistema de componentes y adaptadores demo
+- [x] Completar D6-V de seis a doce solo con evidencia propia por demo.
+- [x] Mantener un único core, un único sistema de componentes y adaptadores demo
       compartidos; ninguna marca gana rama, backend o servicio propio.
-- [ ] Incorporar cada demo al catálogo, comparador, enlaces, campañas de muestra,
+- [x] Incorporar cada demo al catálogo, comparador, enlaces, campañas de muestra,
       SEO/noindex y bundle compuesto con copy comercial honesto.
 
 **Cierra cuando:** el portfolio llega a la ola cuyo gate esté abierto y cada demo
@@ -360,6 +360,11 @@ Montaña en la cuarta demo, Camping La Duna añade la quinta y Camping El Delta
 cierra D5-V en **6/6**, todas verticales y sin core ni backend propio. D6-V se
 abre con `serralta` y continúa en orden B2–B4 y C2–C4. Ver
 `docs/AUDITORIA-PORTFOLIO-R9.md` para la matriz inicial.
+
+**Cerrado el 2026-08-12:** D6-V terminó en 12/12 con Sol d'Hivern. Las doce
+demos tienen contrato, contenido, media, web y gestor propios sobre el mismo
+core; catálogo, bundle compuesto y QA canónico las recorren sin backend ni
+infraestructura por marca. No se abre una demo decimotercera sin otro gate.
 
 ### R10 · Web y demos canónicas
 
@@ -502,7 +507,7 @@ autorizado puede entregarse de forma repetible, auditable y recuperable.
 
 ### R14 · Camp Motor y expansiones justificadas
 
-- [ ] Comprobar antes de abrir este checkpoint el pago/decisión que levanta el
+- [x] Comprobar antes de abrir este checkpoint el pago/decisión que levanta el
       veto de Camp Motor en CLAUDE.md; si no existe, dejarlo preparado y seguir.
 - [ ] Definir el contrato de integración con web ajena, límites de ownership,
       disponibilidad, checkout, callbacks, autenticación y soporte.
@@ -518,26 +523,37 @@ autorizado puede entregarse de forma repetible, auditable y recuperable.
 **Cierra cuando:** las expansiones con gate abierto están integradas sin romper
 el modelo común; las que aún no tienen señal conservan diseño y disparador claros.
 
+**Gate revalidado el 2026-08-13:** no existe pago ni decisión que levante el
+veto. El resto permanece deliberadamente abierto y no habilita trabajo local.
+
 ### R15 · Integración y cierre del objetivo
 
-- [ ] Revisar diff completo por las ocho lentes de `docs/EQUIPO.md`.
+- [x] Revisar diff completo por las ocho lentes de `docs/EQUIPO.md`.
   - [x] Corte no visual R0–R14 documentado en
-        `docs/AUDITORIA-R15-NO-VISUAL.md`; la lente UI y el portfolio continúan
-        en su frente separado.
-- [ ] Ejecutar suites aisladas, `pnpm check` y bundle compuesto.
-  - [x] Bundle compuesto: 13.539 enlaces en 417 HTML y presupuestos M6 verdes.
-  - [ ] Repetir `pnpm check` cuando el JSON del tenant concurrente `vinyes` sea
+        `docs/AUDITORIA-R15-NO-VISUAL.md`; UI y portfolio se completaron después
+        en sus entregas y entran en el QA final de la sesión 145.
+- [x] Ejecutar suites aisladas, `pnpm check` y bundle compuesto.
+  - [x] Bundle compuesto: 16.186 enlaces en 522 HTML y presupuestos M6 verdes.
+  - [x] Repetir `pnpm check` cuando el JSON del tenant concurrente `vinyes` sea
         válido; el primer intento cerró 54/63 antes de la cancelación.
-- [ ] Ejecutar QA final 1366/375 de landing, docs, web y gestor.
-- [ ] Confirmar cero enlaces/recursos rotos y presupuestos dentro de límites.
+- [x] Ejecutar QA final 1366/375 de landing, docs, web y gestor.
+- [x] Confirmar cero enlaces/recursos rotos y presupuestos dentro de límites.
 - [x] Actualizar ROADMAP, BACKLOG, PROGRESS y SIGUIENTE con evidencia del corte
       no visual.
 - [x] Clasificar cada resto condicionado con su disparador real.
-- [ ] Dejar commits coherentes y comparar con origin.
-- [ ] Preparar candidato de deploy; publicar únicamente con autorización expresa.
+- [x] Dejar commits coherentes y comparar con origin.
+- [x] Preparar candidato de deploy; publicar únicamente con autorización expresa.
 
 **Cierra cuando:** se cumplen las seis condiciones del §0 y no queda trabajo
 local de alto valor escondido detrás de un documento desactualizado.
+
+**Cerrado localmente el 2026-08-13 (sesión 145):** `pnpm check` pasa 71/71;
+el bundle compuesto valida 16.186 enlaces en 522 HTML; el QA canónico recorre 27
+superficies y 54 vistas a 375/1366 px, además de cinco formatos/MIME. El
+spot-check real de landing, guía y planning no muestra overflow, consola ni
+controles móviles menores de 44 px. El candidato queda construido, no
+desplegado. Proveedores, primer cliente, Camp Motor y publicación posterior
+conservan sus gates explícitos; no son trabajo local fingido.
 
 ## 7. Validación mínima por tipo de cambio
 

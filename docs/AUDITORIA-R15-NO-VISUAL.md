@@ -1,5 +1,12 @@
 # Auditoría R15 no visual
 
+> **Cierre final, 2026-08-13 · sesión 145.** El corte histórico de abajo queda
+> conservado como evidencia de la sesión 133. Desde entonces el portfolio llegó
+> a 12/12, `pnpm check` pasó 71/71 y el QA canónico recorrió 27 superficies / 54
+> vistas a 375/1366 px. El bundle actual verifica 16.186 enlaces en 522 HTML y
+> cinco formatos/MIME. R15 queda cerrado localmente; el candidato no se
+> desplegó y los gates externos continúan clasificados en R12–R14.
+
 > Corte: 2026-08-11 · sesión 133. Alcance autorizado: producto común,
 > contratos, build y documentación; se excluyen temas, fotografía y activos.
 

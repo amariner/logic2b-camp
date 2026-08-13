@@ -163,7 +163,7 @@ es un gate de producción, no un pendiente local de implementación.
   y `tinta-suave`; ADR 0020 ya había eliminado los puentes de `styles.css`.
   `.lc-bar`, `.lc-chip` y `.lc-receipt` permanecen porque nombran componentes
   de dominio, no colores del tenant. No se ejecutó un rename sin objetivos.
-- [C2] **AVISO antes de tocar este ítem (sesión 52)**: siete de las claves que el detector marcaba como huérfanas —`pagl.fecha/reserva/proveedor/importe` y `ntf.fecha/evento/destino/canal`— **no lo eran**: eran las cabeceras de columna de Pagos y Notificaciones, que nunca se pintaron. Ya se usan. La lección para el resto de la lista: una clave sin usar puede significar "falta la UI", no "sobra la clave" — mirar qué describe antes de borrarla.
+- **[C2 · aviso, no tarea]** Siete de las claves que el detector marcaba como huérfanas en la sesión 52 —`pagl.fecha/reserva/proveedor/importe` y `ntf.fecha/evento/destino/canal`— **no lo eran**: eran las cabeceras de columna de Pagos y Notificaciones, que nunca se pintaron. Ya se usan. La lección para el resto de la lista: una clave sin usar puede significar "falta la UI", no "sobra la clave" — mirar qué describe antes de borrarla.
 - ~~[C2] Limpiar claves i18n huérfanas del dashboard tras ADR 0020~~ → **hecho
   2026-08-10 (sesión 110/R6)**: comprobadas por literal y por familia antes de
   borrar. Se retiraron `planning.error`, `ficha.error`, `res.error`,

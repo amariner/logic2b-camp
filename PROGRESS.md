@@ -1,5 +1,22 @@
 # PROGRESS — Logic Camp
 
+## R15 cierra el trabajo local no temático · 2026-08-13 (sesión 145)
+
+- La ruta continua deja de arrastrar estados históricos: R9 refleja el portfolio
+  ya completado en 12/12, el veto de Camp Motor queda revalidado y R15 cierra
+  únicamente su porción local. Proveedores, cliente, infraestructura y una
+  publicación posterior conservan dueño, entradas y autorización explícitos.
+- `pnpm --filter @logic-camp/web qa:canonical` reconstruye el candidato completo
+  y verifica 16.186 enlaces internos en 522 HTML, 27 superficies, 54 vistas a
+  375/1366 px y cinco formatos/MIME. Los presupuestos M6 permanecen verdes; la
+  entrada más amplia, Mar de Fondo, mide 185,10 kB gzip.
+- La inspección real de landing, guía «Leer el planning» y gestor Mar de Fondo
+  confirma cero overflow y consola limpia. En móvil, navegación, selector de
+  periodo y acciones de agenda conservan objetivos de 44 px o más.
+- `pnpm check` pasa 71/71 sobre el mismo `main`. El candidato queda construido y
+  no desplegado; no se tocaron temas, fotografía, proveedores, datos remotos ni
+  `tmp/`.
+
 ## El cambio de estancia avisa si deja dinero por devolver · 2026-08-13 (sesión 144)
 
 - El dry-run de `requote` devuelve también `paidCents`, leído por el servidor de
