@@ -1303,14 +1303,32 @@ describe('mover y estirar fechas — requote/move (ADR 0023)', () => {
       nights: number;
       totalCents: number;
       previousTotalCents: number;
+      paidCents: number;
       breakdown: { lines: unknown[]; totalCents: number };
     };
     expect(q.nights).toBe(3);
     expect(q.totalCents).toBe(7500);
     expect(q.previousTotalCents).toBe(7500);
+    expect(q.paidCents).toBe(0);
     expect(q.breakdown.lines.length).toBeGreaterThan(0);
     // dry-run: la reserva sigue donde estaba
     expect((await row(b.id)).dateFrom).toBe('2026-03-20');
+  });
+
+  it('requote: informa lo ya cobrado sin modificarlo al previsualizar una bajada', async () => {
+    const b = await crear('2026-06-10', '2026-06-15');
+    await db.update(schema.bookings).set({ paidCents: 12500 }).where(eq(schema.bookings.id, b.id));
+
+    const res = await app.request(
+      `/api/admin/bookings/${b.id}/requote`,
+      json({ dateFrom: '2026-06-10', dateTo: '2026-06-12' }, { cookie: reception, ...IP }),
+      envA,
+    );
+    expect(res.status).toBe(200);
+    const q = (await res.json()) as { totalCents: number; paidCents: number };
+    expect(q.totalCents).toBe(5500);
+    expect(q.paidCents).toBe(12500);
+    expect((await row(b.id)).paidCents).toBe(12500);
   });
 
   it('move: cambia las fechas, re-cotiza en servidor y audita', async () => {

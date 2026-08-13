@@ -1,29 +1,29 @@
-# Prompt para la siguiente sesión — frente funcional no visual
+# Prompt para la siguiente sesión — funcional, sin temas
 
-> Reescrito el 2026-08-13 tras cerrar el reintento seguro de pagos pendientes.
+> Reescrito el 2026-08-13 tras cerrar dos restos funcionales de pago y planning.
 
 ## Estado en una línea
 
-Una reserva `pending` ya puede recuperar su intento de pago persistido desde
-`/reserva`, sin crear otro cobro ni llamar al proveedor. El portfolio continúa
-cerrado en 12/12 y no necesita más temas.
+La reserva pendiente recupera su intento persistido y el cambio de estancia
+advierte cualquier exceso cobrado antes de confirmar. Ninguno de los dos flujos
+crea un cobro o reembolso automático.
 
 ## Último cierre
 
-- endpoint público protegido por código + email y por estado `pending`;
-- mismo intento persistido para redirect/form, con 404 de identidad y 409 de estado;
-- copy localizado en seis idiomas, fixtures tier 3 y plantilla;
-- QA D1 + Worker local a 375/1366 px, sin enviar el formulario externo;
-- `pnpm check` 71/71; sin deploy ni infraestructura remota.
+- `requote` expone `paidCents` desde la reserva vigente;
+- el diálogo muestra cobrado, total nuevo y exceso a devolver manualmente;
+- las acciones son de 44 px en móvil, sin desborde ni consola a 375/1280 px;
+- las demos re-cotizan y persisten el total al mover, igual que el API real;
+- regresión dirigida 15/15 y `pnpm check` 71/71, sin deploy ni datos remotos.
 
-## Siguiente corte recomendado
+## Cómo continuar
 
-Resolver el resto funcional `[C1]` del diálogo de cambio de precio en el gestor:
-si una reserva ya cobrada queda con `paidCents > totalCents`, mostrar dentro del
-diálogo un aviso explícito con el exceso antes de confirmar. El servidor seguirá
-siendo la autoridad y no se registrará devolución, ajuste contable ni movimiento
-automático. Cubrir cálculo, copy, foco/lector de pantalla y estados móvil/escritorio
-con pruebas del dashboard.
+Revisar el backlog no visual por disparador, no por antigüedad. Los restos
+abiertos actuales dependen en su mayoría de demanda real, credenciales o un
+contrato externo (SES.Hospedajes, observabilidad, colas, pasarelas, tenant real).
+No simular esos gates ni abrir optimizaciones prematuras.
 
-No crear un tema decimotercero, no tocar fotografía y no activar proveedores,
-credenciales, datos remotos o producción sin un gate y autorización explícitos.
+El siguiente corte local debe nacer de una incoherencia funcional reproducible
+en reserva, operación o gestor. Si no aparece una con evidencia, preparar el
+gate de cliente más cercano indicando exactamente datos, autorización y criterio
+de aceptación, sin ejecutarlo. No crear un tema decimotercero ni tocar fotografía.

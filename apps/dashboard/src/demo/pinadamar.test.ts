@@ -1,10 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import {
-  baseEnquiries,
-  demoScenarioRequest,
-  pinadaFixtureCounts,
-  pinadaPlano,
-} from './pinadamar';
+import { describe, expect, it, vi } from 'vitest';
+import { baseEnquiries, demoScenarioRequest, pinadaFixtureCounts, pinadaPlano } from './pinadamar';
 
 describe('escenario Pinada del Mar', () => {
   it('representa un camping mediano y agosto operativo', () => {
@@ -46,5 +41,40 @@ describe('escenario Pinada del Mar', () => {
       dateTo: source.dateTo,
       unitCode: 'P-08',
     });
+  });
+
+  it('re-cotiza el total local al mover y conserva la nueva base para otro cambio', async () => {
+    const stored = new Map<string, string>();
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => stored.get(key) ?? null,
+      setItem: (key: string, value: string) => stored.set(key, value),
+      removeItem: (key: string) => stored.delete(key),
+    });
+    try {
+      const planning = await demoScenarioRequest(
+        '/api/admin/planning?from=2026-08-01&to=2026-09-01',
+      );
+      const booking = (planning.body as { bookings: { id: string }[] }).bookings[0]!;
+      const moved = await demoScenarioRequest(`/api/admin/bookings/${booking.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          action: 'move',
+          dateFrom: '2026-08-10',
+          dateTo: '2026-08-12',
+          expectedTotalCents: 28800,
+        }),
+      });
+      expect(moved.status).toBe(200);
+
+      const detail = await demoScenarioRequest(`/api/admin/bookings/${booking.id}`);
+      expect(detail.body).toMatchObject({ totalCents: 28800 });
+      const nextQuote = await demoScenarioRequest(`/api/admin/bookings/${booking.id}/requote`, {
+        method: 'POST',
+        body: JSON.stringify({ dateFrom: '2026-08-10', dateTo: '2026-08-13' }),
+      });
+      expect(nextQuote.body).toMatchObject({ previousTotalCents: 28800, totalCents: 43200 });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });

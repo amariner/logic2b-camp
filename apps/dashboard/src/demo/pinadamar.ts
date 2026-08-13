@@ -1540,8 +1540,16 @@ export async function demoScenarioRequest(
       typeof body.dateFrom === 'string' &&
       typeof body.dateTo === 'string'
     ) {
+      const nights = Math.max(
+        1,
+        Math.round(
+          (Date.parse(`${body.dateTo}T00:00:00Z`) - Date.parse(`${body.dateFrom}T00:00:00Z`)) /
+            DAY_MS,
+        ),
+      );
       booking.dateFrom = body.dateFrom;
       booking.dateTo = body.dateTo;
+      booking.totalCents = nights * 14400;
     }
     if (body.action === 'note' && typeof body.notes === 'string') booking.notes = body.notes;
     if (body.action === 'confirm') booking.status = 'confirmed';
@@ -1574,6 +1582,7 @@ export async function demoScenarioRequest(
       nights,
       totalCents,
       previousTotalCents: booking.totalCents,
+      paidCents: booking.paidCents,
       breakdown: {
         lines: [{ concept: 'stay', detail: { nights }, amountCents: totalCents }],
         totalCents,

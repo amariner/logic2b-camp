@@ -64,6 +64,7 @@ import PlanningAgenda, { type AgendaMode } from '../components/PlanningAgenda';
 import { QueryError } from '../components/QueryError';
 import { t, tDyn } from '../i18n';
 import { conceptLabel, eur, stayError } from '../lib/format';
+import { overpaymentCents } from '../lib/payment-balance';
 import { BotonAyuda } from '../components/BotonAyuda';
 
 /** "en casa" (ADR 0022): huésped presente. Se DERIVA, no es un status. */
@@ -1484,28 +1485,53 @@ export default function Planning() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           {pendingMove && (
-            <dl className="max-h-56 overflow-y-auto text-[13px]">
-              {pendingMove.quote.breakdown.lines.map((line, i) => (
-                <div key={i} className="flex justify-between gap-2 py-0.5">
-                  <dt className={line.amountCents < 0 ? 'text-primary' : ''}>
-                    {conceptLabel(line.concept)}
-                  </dt>
-                  <dd className={`tnum ${line.amountCents < 0 ? 'text-primary' : ''}`}>
-                    {eur(line.amountCents, pendingMove.quote.breakdown.currency)}
+            <div className="space-y-3">
+              {overpaymentCents(pendingMove.quote.paidCents, pendingMove.quote.totalCents) > 0 && (
+                <div
+                  role="alert"
+                  className="rounded-(--lc-radius) border border-status-pending/45 bg-status-pending/10 p-3 text-[13px] text-foreground"
+                >
+                  <p className="font-semibold">{t('planning.precio.excesoTitulo')}</p>
+                  <p className="mt-1 text-muted-foreground">
+                    {t('planning.precio.excesoDesc', {
+                      pagado: eur(
+                        pendingMove.quote.paidCents,
+                        pendingMove.quote.breakdown.currency,
+                      ),
+                      exceso: eur(
+                        overpaymentCents(pendingMove.quote.paidCents, pendingMove.quote.totalCents),
+                        pendingMove.quote.breakdown.currency,
+                      ),
+                    })}
+                  </p>
+                </div>
+              )}
+              <dl className="max-h-56 overflow-y-auto text-[13px]">
+                {pendingMove.quote.breakdown.lines.map((line, i) => (
+                  <div key={i} className="flex justify-between gap-2 py-0.5">
+                    <dt className={line.amountCents < 0 ? 'text-primary' : ''}>
+                      {conceptLabel(line.concept)}
+                    </dt>
+                    <dd className={`tnum ${line.amountCents < 0 ? 'text-primary' : ''}`}>
+                      {eur(line.amountCents, pendingMove.quote.breakdown.currency)}
+                    </dd>
+                  </div>
+                ))}
+                <div className="mt-1 flex justify-between gap-2 border-t border-border/60 pt-1 font-semibold">
+                  <dt>{t('alta.total')}</dt>
+                  <dd className="tnum">
+                    {eur(pendingMove.quote.totalCents, pendingMove.quote.breakdown.currency)}
                   </dd>
                 </div>
-              ))}
-              <div className="mt-1 flex justify-between gap-2 border-t border-border/60 pt-1 font-semibold">
-                <dt>{t('alta.total')}</dt>
-                <dd className="tnum">
-                  {eur(pendingMove.quote.totalCents, pendingMove.quote.breakdown.currency)}
-                </dd>
-              </div>
-            </dl>
+              </dl>
+            </div>
           )}
           <AlertDialogFooter>
-            <AlertDialogCancel>{t('planning.precio.cancelar')}</AlertDialogCancel>
+            <AlertDialogCancel className="min-h-11">
+              {t('planning.precio.cancelar')}
+            </AlertDialogCancel>
             <AlertDialogAction
+              className="min-h-11"
               onClick={() => {
                 if (pendingMove) mover.mutate(pendingMove.intent);
                 setPendingMove(null);

@@ -102,6 +102,8 @@ export type RequoteResponse = {
   nights: number;
   totalCents: number;
   previousTotalCents: number;
+  /** Importe ya cobrado; el cambio de estancia nunca lo modifica. */
+  paidCents: number;
   breakdown: {
     lines: PriceLine[];
     totalCents: number;

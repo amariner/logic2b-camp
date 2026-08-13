@@ -458,6 +458,9 @@ export const adminRoutes = new Hono<AuthEnv>()
       nights: q.nights,
       totalCents: q.totalCents,
       previousTotalCents: booking.totalCents,
+      // El cliente necesita explicar el exceso antes de confirmar una bajada.
+      // Es informativo: mover nunca toca paidCents ni inicia un reembolso.
+      paidCents: booking.paidCents,
       breakdown: q.breakdown,
       unitId: q.targetUnitId,
     });

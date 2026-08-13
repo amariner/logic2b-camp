@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { demoScenarioRequest, mardefondoFixtureCounts, mardefondoPlano } from './mardefondo';
 
 describe('escenario Mar de Fondo', () => {
@@ -69,6 +69,37 @@ describe('escenario Mar de Fondo', () => {
     expect(labels).toContain('Playa y Mediterráneo');
     expect(labels).toContain('Recepción y acceso');
     expect(labels).toContain('Glamping Duna');
+  });
+
+  it('re-cotiza el total local al mover y usa ese valor en la revisión siguiente', async () => {
+    const stored = new Map<string, string>();
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => stored.get(key) ?? null,
+      setItem: (key: string, value: string) => stored.set(key, value),
+      removeItem: (key: string) => stored.delete(key),
+    });
+    try {
+      const moved = await demoScenarioRequest('/api/admin/bookings/book_mf_demo_001', {
+        method: 'PATCH',
+        body: JSON.stringify({
+          action: 'move',
+          dateFrom: '2026-08-18',
+          dateTo: '2026-08-20',
+          expectedTotalCents: 43800,
+        }),
+      });
+      expect(moved.status).toBe(200);
+
+      const detail = await demoScenarioRequest('/api/admin/bookings/book_mf_demo_001');
+      expect(detail.body).toMatchObject({ totalCents: 43800, touristTaxCents: 420 });
+      const nextQuote = await demoScenarioRequest('/api/admin/bookings/book_mf_demo_001/requote', {
+        method: 'POST',
+        body: JSON.stringify({ dateFrom: '2026-08-18', dateTo: '2026-08-21' }),
+      });
+      expect(nextQuote.body).toMatchObject({ previousTotalCents: 43800, totalCents: 65700 });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('registra un cobro local reversible en la ficha', async () => {

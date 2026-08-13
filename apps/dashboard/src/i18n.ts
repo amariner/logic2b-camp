@@ -262,6 +262,9 @@ const es = {
   'planning.moverError.generic': 'No se ha podido mover la reserva: se ha restaurado.',
   'planning.precio.titulo': 'El precio cambia con las fechas nuevas',
   'planning.precio.desc': '{code}: de {antes} a {ahora}. El desglose nuevo sustituye al anterior.',
+  'planning.precio.excesoTitulo': 'Quedará un importe a devolver',
+  'planning.precio.excesoDesc':
+    'Ya se han cobrado {pagado}. El nuevo total deja {exceso} a devolver manualmente desde la ficha. Confirmar este cambio no registra el reembolso.',
   'planning.precio.confirmar': 'Confirmar por {importe}',
   'planning.precio.cancelar': 'Dejarlo como estaba',
   'planning.asignada': 'Reserva {code} asignada a {unit}.',

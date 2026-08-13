@@ -1,5 +1,23 @@
 # PROGRESS — Logic Camp
 
+## El cambio de estancia avisa si deja dinero por devolver · 2026-08-13 (sesión 144)
+
+- El dry-run de `requote` devuelve también `paidCents`, leído por el servidor de
+  la reserva vigente. Si el nuevo total queda por debajo, el diálogo explica el
+  importe cobrado y el exceso antes de confirmar; mover sigue sin tocar cobros,
+  registrar devoluciones ni fabricar movimientos contables.
+- El cálculo del exceso vive en una función pura con casos de exceso, saldo y
+  pendiente. API, tipos del gestor y los ocho escenarios tier 3 comparten el
+  nuevo contrato; una previsualización no modifica `paidCents`.
+- El QA de Mar de Fondo reprodujo 459 € cobrados frente a 438 € de total nuevo.
+  El aviso, foco inicial, ausencia de desborde y consola limpia quedaron
+  verificados a 1280 y 375 px. La revisión elevó las dos acciones móviles de 32
+  a 44 px y restableció el estado de la demo al terminar.
+- El mismo recorrido descubrió y corrigió que las demos persistían las fechas
+  movidas pero no su total re-cotizado: una segunda revisión ya parte del último
+  total confirmado. La regresión dirigida pasa 15/15, API 59/59 y `pnpm check`
+  71/71; no hubo deploy, proveedor, datos remotos, temas ni fotografía.
+
 ## La reserva pendiente puede retomar el mismo pago · 2026-08-13 (sesión 143)
 
 - `POST /api/bookings/:code/payment` verifica código, email y estado `pending`
