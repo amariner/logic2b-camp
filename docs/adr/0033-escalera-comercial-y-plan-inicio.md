@@ -5,6 +5,10 @@
 - **Decisor:** Andreu
 - **Frente:** E · Escalera comercial
 
+> **Actualización 2026-08-14:** Frente F sustituye únicamente el precio de
+> Inteligente por **precio a medida**. Los 399 €/mes que aparecen debajo se
+> conservan como registro de la decisión original, no como oferta vigente.
+
 ## Contexto
 
 La oferta pública vigente tiene Camp Web (69 €/mes + 1.490 € de alta), Camp

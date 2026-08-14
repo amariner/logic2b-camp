@@ -35,6 +35,15 @@ const MAPA: Record<string, string | null> = {
   // Prototipo de portfolio: todavía no forma parte de la guía operativa.
   '/automatiza': null,
   '/inteligente': null,
+  '/control-total': 'direccion/abrir-el-dia',
+  '/control-total/centro': 'direccion/abrir-el-dia',
+  '/control-total/limpieza': 'direccion/coordinar-salidas',
+  '/control-total/mantenimiento': 'direccion/resolver-incidencias',
+  '/control-total/equipo': 'direccion/entregar-turno',
+  '/control-total/huesped': 'direccion/cuidar-huespedes-grupos',
+  '/control-total/reservas-grupos': 'direccion/cuidar-huespedes-grupos',
+  '/control-total/ingresos': 'direccion/controlar-ingresos',
+  '/control-total/inteligencia': 'direccion/preparar-manana',
 };
 
 /**

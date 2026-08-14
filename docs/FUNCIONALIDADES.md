@@ -2,13 +2,28 @@
 
 > Documento de cara al cliente. Describe todo lo que Logic Camp hace hoy, cómo lo hace y qué está en camino. La demo en vivo está en **camp.logic2b.com** (Camping Cala Sereno, un camping ficticio con datos realistas).
 >
-> Última actualización: julio 2026.
+> Última actualización: 14 de agosto de 2026.
 
 > Nota comercial: los nombres Camp Web/Solicitudes/Reservas/Motor de este
 > inventario describen los **tiers técnicos actuales**. La oferta pública
 > aprobada en el ADR 0033 es Inicio/Gestión/Automatiza/Inteligente. Inicio,
 > Gestión y la primera interacción supervisada de Automatiza ya tienen una demo
 > propia; los carriles técnicos se conservan para no renombrar el motor a ciegas.
+
+### Inteligente · Control total
+
+Inteligente es el último plan, con **precio a medida**. Su roadmap se organiza
+en ocho familias: Centro de operaciones, Limpieza, Mantenimiento y activos,
+Equipo y turnos, Huésped y comunicación, Reservas y grupos, Ingresos y control
+económico e Inteligencia e integraciones. El catálogo interno contiene 56
+capacidades; la página pública selecciona 18.
+
+Mar de Fondo incluye una visión local reversible con tres recorridos:
+preparación/validación de limpieza, avería con llegada próxima y relevo de
+turno. Sus datos son fixtures, sobreviven a recarga en el navegador y se borran
+con el reset general. No existe backend, proveedor ni efecto externo detrás de
+esas pantallas. Ver `FRENTE-F-CONTROL-TOTAL.md` y
+`CATALOGO-INTELIGENTE.md`.
 
 ---
 

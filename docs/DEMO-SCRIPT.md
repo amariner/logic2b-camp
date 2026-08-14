@@ -120,6 +120,39 @@ Cerrar con la pregunta abierta: qué nivel encaja con lo que tienen hoy, y qué 
 
 ## Variantes según el interlocutor
 
+### CEO o gerencia · recorrido Control total (8 minutos)
+
+Abrir directamente
+`/demos/mardefondo/gestion/#/control-total/centro`. Antes de tocar nada, señalar
+el banner: fecha fija, datos ficticios, estado local y cero efectos externos.
+
+1. **Centro (1 min):** leer ocupación, 47 entradas, 39 salidas, preparaciones,
+   bloqueos y relevo. Explicar que las cifras de escenario sirven para evaluar
+   decisiones, no para prometer un forecast.
+2. **Limpieza (2 min):** abrir BL-018, asignar Equipo 2, mostrar la vista real
+   de trabajo a 390 px, marcar lista y validar como gerente. Volver al Centro y
+   comprobar que baja la alerta.
+3. **Incidencia (2 min):** BL-042, climatización y llegada a las 17:30. Reportar,
+   evaluar, simular el bloqueo y preparar MH-018. Repetir que no se ha movido la
+   reserva ni contactado al huésped.
+4. **Relevo (2 min):** agrupar tres riesgos, revisar el resumen, prepararlo y
+   simular el reconocimiento del turno de tarde. El Centro debe dejar de mostrar
+   el relevo pendiente.
+5. **Profundidad (1 min):** recorrer las cuatro pantallas de escenario restantes
+   y cerrar en Inteligencia, desde donde se conservan los enlaces históricos a
+   `/automatiza` y `/inteligente`.
+
+Frase de cierre:
+
+> «Esto documenta la dirección del plan Inteligente, con precio a medida. Los
+> tres recorridos son una demo funcional reversible; el resto son escenarios.
+> Antes de activar producción validamos sus roles, datos, proveedores y límites
+> de autonomía. Precios, cobros, reservas, bloqueos sensibles y comunicaciones
+> siempre conservan control humano.»
+
+Restablecer Mar de Fondo al terminar para que el siguiente recorrido empiece en
+el fixture canónico del 7 de agosto de 2026.
+
 - **Camping pequeño, escéptico de pagar por software**: empezar por el minuto 0
   (web) y el 11 (niveles), saltarse el planning entero — Inicio es su puerta de
   entrada; Gestión es la progresión, no la obligación inicial.

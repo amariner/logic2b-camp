@@ -27,7 +27,7 @@ La progresión comercial sería:
    una única plataforma.
 3. **Automatiza — 249 €/mes:** comunicaciones, recordatorios, reseñas,
    estadísticas y asistencia de IA para recepción.
-4. **Inteligente — 399 €/mes:** rentabilidad, comparativas, previsiones,
+4. **Inteligente — precio a medida:** Control total, rentabilidad, comparativas, previsiones,
    integraciones y un copiloto que permite consultar y operar el camping con
    lenguaje natural.
 
@@ -52,7 +52,7 @@ preparado.
 Inicio           Gestión           Automatiza          Inteligente
 Consigue         Pon orden         Ahorra tiempo       Decide mejor
 consultas        en el camping     cada día            con tus datos
-49 €/mes         149 €/mes         249 €/mes           399 €/mes
+49 €/mes         149 €/mes         249 €/mes           A medida
 ```
 
 Subir de nivel conserva el dominio, la web, la marca y los datos disponibles.
@@ -151,7 +151,8 @@ Incluye todo Automatiza, más:
 - Integraciones con contabilidad, accesos y channel managers.
 - Copiloto para consultar y preparar acciones con lenguaje natural.
 
-**Precio objetivo:** 399 €/mes · **alta desde 5.900 €**.
+**Precio:** a medida, incluida el alta. Esta decisión del 2026-08-14 sustituye
+el precio objetivo de lanzamiento fijado inicialmente por ADR 0033.
 
 Resultado: el sistema no solo muestra información; ayuda a encontrar problemas,
 explicar causas y preparar la siguiente acción.

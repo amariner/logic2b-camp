@@ -527,7 +527,7 @@
         "estado": "Roadmap",
         "estadoTipo": "vision",
         "cta": "Request plan",
-        "href": "/en/#contacto",
+        "href": "/en/inteligente/",
         "incluye": [
           "Profitability and comparisons",
           "Occupancy and revenue forecasting",
@@ -633,7 +633,7 @@
           "Integrations and copilot"
         ],
         "cta": "Request plan",
-        "href": "/en/#contacto"
+        "href": "/en/inteligente/"
       }
     ],
     "incluyeTitulo": "The subscription includes real maintenance",
@@ -958,13 +958,57 @@
       }
     }
   },
+  "inteligente": {
+    "seo": {
+      "title": "Intelligence · Total control for campsites — Logic2B",
+      "description": "Logic2B Campings' vision for coordinating operations, teams, guests, revenue and intelligence with human control. Tailored pricing."
+    },
+    "kicker": "Intelligence · tailored pricing",
+    "titulo": "Total control without giving up human control.",
+    "intro": "One view to open the day, coordinate departures, resolve incidents and prepare the next shift. It starts as a local demo and is activated in phases only after each decision has been validated.",
+    "precio": "Tailored pricing",
+    "demo": "Explore Total control in Mar de Fondo",
+    "contacto": "Discuss my operation",
+    "aviso": "Interactive vision using fictional data. It does not represent a backend, integration or contracted capability.",
+    "familiasTitulo": "Eight families, one shared view",
+    "familiasIntro": "These 18 capabilities are a public selection from the internal catalogue. The status explains what can be explored today and what still needs validation.",
+    "familias": [
+      { "nombre": "Operations centre", "estado": "Demo funcional", "texto": "The daily pulse and risks that need a decision.", "capacidades": ["Daily pulse", "Prioritised alerts", "Seven-day horizon"] },
+      { "nombre": "Housekeeping", "estado": "Demo funcional", "texto": "Turnarounds, teams and validation before arrival.", "capacidades": ["Turnaround priority", "Assignment and status", "Inspection and reopening"] },
+      { "nombre": "Maintenance and assets", "estado": "Demo funcional", "texto": "Incidents connected to inventory and upcoming arrivals.", "capacidades": ["Operational triage", "Inventory impact"] },
+      { "nombre": "Team and shifts", "estado": "Demo funcional", "texto": "Workload, pending items and a traceable handover.", "capacidades": ["Handover preparation", "Workload"] },
+      { "nombre": "Guest and communication", "estado": "Siguiente por validar", "texto": "Context before replying, with consent and language visible.", "capacidades": ["Guest timeline", "Coordinated requests"] },
+      { "nombre": "Bookings and groups", "estado": "Siguiente por validar", "texto": "Multi-unit files without fragmenting the conversation.", "capacidades": ["Rooming list", "Multiple payers"] },
+      { "nombre": "Revenue and financial control", "estado": "Visión futura", "texto": "An operational view, not statutory accounting.", "capacidades": ["Value, collected and balance", "Due dates"] },
+      { "nombre": "Intelligence and integrations", "estado": "Visión futura", "texto": "Explainable forecasts and proposals that wait for confirmation.", "capacidades": ["Daily summary", "Anomalies and copilot"] }
+    ],
+    "estadosTitulo": "Maturity is always visible",
+    "estados": [
+      { "nombre": "Available", "texto": "A product capability that can be activated with an agreed scope." },
+      { "nombre": "Functional demo", "texto": "A reversible local flow for evaluating the experience." },
+      { "nombre": "Next to validate", "texto": "A scenario screen that needs customer learning." },
+      { "nombre": "Future vision", "texto": "Product direction; architecture and date are not committed." }
+    ],
+    "jornadaTitulo": "The manager's day, one decision after another",
+    "jornada": ["Open the day", "Coordinate departures", "Resolve incidents", "Look after guests and groups", "Control revenue", "Hand over the shift", "Prepare tomorrow"],
+    "flujosTitulo": "Three flows you can already explore",
+    "flujos": [
+      { "nombre": "Housekeeping", "pasos": ["Detect arrival", "Assign", "Mark ready", "Validate"] },
+      { "nombre": "Incident", "pasos": ["Report fault", "Assess impact", "Block in demo", "Prepare alternative"] },
+      { "nombre": "Handover", "pasos": ["Gather risks", "Review", "Prepare", "Acknowledge"] }
+    ],
+    "autonomiaTitulo": "Automate according to risk",
+    "autonomiaTexto": "Reversible work can be automated with audit. Pricing, payments, bookings, sensitive blocks and communications require human review or confirmation. The demo never triggers external effects.",
+    "cierreTitulo": "First we understand how your campsite works.",
+    "cierreTexto": "Intelligence is not a closed package: it is shaped by scale, team, channels, integrations and the decisions worth improving."
+  },
   "docs": {
     "seo": {
-      "title": "Logic2B Campings guides — front desk, management, owner and technical sheet",
-      "description": "How Logic2B Campings is used: the step-by-step front desk guide, the day-to-day management guide, the owner's guide to the four plans, and the technical sheet for your IT person."
+      "title": "Logic2B Campings guides — front desk, management, direction, owner and technical",
+      "description": "How Logic2B Campings is used: guides for front desk, management, direction, ownership and technical support."
     },
     "titulo": "Logic2B Campings guides",
-    "subtitulo": "Four guides, four different people. Each one written for whoever will actually read it.",
+    "subtitulo": "Five guides, five different responsibilities. Each one written for whoever will actually read it.",
     "indice": "In this guide",
     "empezar": "Start",
     "anterior": "Previous",
@@ -984,6 +1028,11 @@
         "nombre": "Management guide",
         "para": "For whoever runs the campsite",
         "texto": "The management screens: read your business numbers in Reports, change the rates by season, file the guest register with SES.Hospedajes, and configure the campsite and its email alerts."
+      },
+      "direccion": {
+        "nombre": "Direction guide",
+        "para": "For CEOs, managers and shift leads",
+        "texto": "Seven decisions cover the complete day: open, coordinate departures, resolve incidents, care for guests and groups, control revenue, hand over and prepare tomorrow."
       },
       "dueno": {
         "nombre": "Owner's guide",

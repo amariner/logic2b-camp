@@ -1,6 +1,7 @@
 # TARIFAS LOGIC2B CAMPINGS — modelo comercial v2
 
-> Modelo aceptado el 2026-08-05 para publicar precios transparentes sin
+> Modelo aceptado el 2026-08-05 y actualizado el 2026-08-14 para que
+> Inteligente sea precio a medida. Publica precios transparentes sin
 > confundir producto, puesta en marcha y trabajo a medida. Revisar después de
 > los tres primeros clientes. Importes sin IVA. Contrato completo en el
 > ADR 0033 y ejecución en `docs/FRENTE-E-ESCALERA-COMERCIAL.md`.
@@ -30,7 +31,7 @@
 |   00 | Inicio      |        0 € |  49 €/mes | Lanzamiento   | Web atractiva + formulario directo al email de recepción                |
 |   01 | Gestión     |    2.900 € | 149 €/mes | Disponible    | Reservas, clientes, planning, pagos, web y motor en una sola plataforma |
 |   02 | Automatiza  |    3.900 € | 249 €/mes | En desarrollo | Comunicaciones, tareas repetitivas e IA supervisada                     |
-|   03 | Inteligente |    5.900 € | 399 €/mes | Roadmap       | BI, previsiones, integraciones y copiloto con confirmación humana       |
+|   03 | Inteligente | A medida | A medida | Roadmap · Control total | Operaciones, BI, previsiones, integraciones y copiloto con confirmación humana |
 
 Las cifras «desde» presuponen material utilizable entregado por el camping, un
 catálogo razonable y adaptación dentro de los puntos de configuración actuales.

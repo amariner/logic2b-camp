@@ -1,30 +1,35 @@
-# Prompt para la siguiente sesión — límite local alcanzado
+# Prompt para la siguiente sesión — carril no temático agotado
 
-> Reescrito el 2026-08-13 tras cerrar R15 sin desarrollar temas.
+> Reescrito el 2026-08-14 tras cerrar Control total sin desarrollar temas.
 
 ## Estado en una línea
 
-El trabajo seguro, verificable y no temático permitido por los gates actuales
-está agotado. `main` tiene el candidato compuesto verde y no desplegado.
+El frente F reabrió y volvió a cerrar el trabajo local no temático: el candidato
+compuesto está verde, verificado y no desplegado. Los frentes H1–H3 de temas y
+media quedan deliberadamente fuera del encargo actual.
 
 ## Evidencia de cierre
 
 - `pnpm check`: 71/71 tareas;
-- bundle: 16.186 enlaces internos en 522 HTML;
-- QA canónico: 27 superficies, 54 vistas a 375/1366 px y 5 formatos/MIME;
-- spot-check real de landing, documentación y planning sin overflow ni consola;
-- portfolio existente: 12/12, sin abrir un tema nuevo;
+- dashboard: 67/67 y builds normal/Mar de Fondo verdes;
+- bundle: 17.012 enlaces internos en 540 HTML;
+- Control total real: 320/375/430/1366, sin desborde ni consola; controles
+  móviles ≥44×44; tres flujos y pulso compartido comprobados;
+- QA canónico: nueva superficie `marde-control-total` preparada;
+- entrada Mar de Fondo: 188,69 kB gzip de un presupuesto <200 kB;
 - candidato construido, no desplegado.
 
-## Qué puede reabrir trabajo
+## Qué puede reabrir trabajo no temático
 
-- **Cliente real:** identidad, inventario, precios, aceptación, dominio y destino;
+- **Cliente real:** proceso observado, roles, retención, identidad, inventario,
+  precios, aceptación, dominio y destino;
 - **Proveedor:** cuenta/sandbox y credenciales autorizadas para correo, pagos,
   observabilidad, Analytics, OTA, fiscal/SES o IA;
 - **Producción:** destino, diff, rollback y autorización explícita para publicar;
 - **Camp Motor:** pago o decisión comercial que levante el veto de `CLAUDE.md`;
 - **Producto local:** un defecto reproducible, una métrica o una decisión nueva.
 
-Hasta que aparezca uno de esos disparadores, no inventar datos, integraciones,
-optimizaciones ni una demo decimotercera. Antes de cualquier activación, releer
-el gate correspondiente en R12–R14 y su runbook.
+No convertir las fichas provisionales de Control total en tablas, API o permisos
+sin el gate de cliente del ADR 0048. No abrir temas, fotografía ni media mientras
+el encargo los excluya. Antes de cualquier activación, releer R12–R14 y su
+runbook.

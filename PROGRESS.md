@@ -1,5 +1,28 @@
 # PROGRESS — Logic Camp
 
+## Control total cierra su contrato no temático · 2026-08-14 (sesión 146)
+
+- El nuevo frente F queda integrado sin convertir la visión en producto real:
+  ocho módulos exclusivos de Mar de Fondo, tres flujos reversibles, Centro
+  compartido, página Inteligente y guía Dirección. Esta sesión no desarrolla
+  temas, fotografía ni media del frente H.
+- `ControlTotal.tsx` deja de inferir madurez comparando el texto «Demo
+  funcional»: los estados son tipados, el segmento de ruta se valida en el
+  módulo puro y toda la interfaz nueva pasa por el diccionario i18n. La
+  subnavegación declara además `aria-current="page"`.
+- La QA real encontró un defecto que las capturas anteriores no veían: a 320 px
+  el enlace de ayuda se comprimía a 25 px. El grupo de acciones ahora envuelve y
+  ayuda/reset no encogen; a 320/375/430 no hay desborde y todos los controles
+  visibles miden al menos 44×44. A 1366 conserva la densidad de escritorio.
+- Limpieza, incidencia y relevo se completaron desde el bundle real. El Centro
+  terminó con 6 preparaciones, 2 unidades bloqueadas, 2 riesgos y turno
+  reconocido; consola limpia y estado restablecido. El QA canónico incorpora
+  desde ahora `marde-control-total` como superficie reproducible.
+- Verificación: dashboard 67/67, tipos, lint y builds normal/Mar de Fondo verdes;
+  entrada Mar de Fondo 188,69 kB gzip (<200 kB), bundle compuesto con 17.012
+  enlaces en 540 HTML y `pnpm check` 71/71. No hubo deploy, proveedor, datos
+  remotos ni cambios de tema.
+
 ## R15 cierra el trabajo local no temático · 2026-08-13 (sesión 145)
 
 - La ruta continua deja de arrastrar estados históricos: R9 refleja el portfolio

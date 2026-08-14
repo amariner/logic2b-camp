@@ -22,6 +22,7 @@ import {
   DoorOpen,
   Inbox,
   Map,
+  PanelTop,
   Settings,
   Sparkles,
   Tag,
@@ -62,6 +63,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'nav.grupo.asistencia',
     items: [
+      ['/control-total', 'nav.controlTotal', PanelTop, 'mod.controlTotal', undefined, 'mardefondo'],
       ['/automatiza', 'nav.automatiza', Sparkles, 'mod.automatiza', undefined, 'mardefondo'],
       ['/inteligente', 'nav.inteligente', BrainCircuit, 'mod.inteligente', undefined, 'mardefondo'],
     ],

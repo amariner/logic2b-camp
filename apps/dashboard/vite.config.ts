@@ -31,7 +31,7 @@ if (scenario) {
   throw new Error(`BASE_PATH=${basePath} exige declarar el VITE_DEMO_SCENARIO correspondiente.`);
 }
 const scenarioModule = scenario ? `./src/demo/scenario.${scenario}.ts` : './src/demo/scenario.ts';
-const scenarioOnlyPage = (name: 'Automatiza' | 'Inteligente') =>
+const scenarioOnlyPage = (name: 'Automatiza' | 'Inteligente' | 'ControlTotal') =>
   scenario === 'mardefondo' ? `./src/pages/${name}.tsx` : './src/pages/ScenarioUnavailable.tsx';
 
 // El dashboard vive en /admin/ del MISMO Worker del tenant (ADR 0008):
@@ -49,6 +49,9 @@ export default defineConfig({
       ),
       '@scenario-inteligente': fileURLToPath(
         new URL(scenarioOnlyPage('Inteligente'), import.meta.url),
+      ),
+      '@scenario-control-total': fileURLToPath(
+        new URL(scenarioOnlyPage('ControlTotal'), import.meta.url),
       ),
     },
   },

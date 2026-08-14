@@ -224,6 +224,13 @@ const routes = [
     noindex: true,
     texts: ['Prototipo · no ejecuta cambios', 'no toca precios ni reservas'],
   },
+  {
+    id: 'marde-control-total',
+    path: '/demos/mardefondo/gestion/#/control-total/centro',
+    noindex: true,
+    texts: ['Visión interactiva.', 'Centro de operaciones', 'Pulso operativo'],
+    visibleSelector: 'nav[aria-label="Módulos de Control total"] [aria-current="page"]',
+  },
 ];
 const routeFilter = process.env.QA_CANONICAL_ROUTE;
 const selectedRoutes = routeFilter ? routes.filter((route) => route.id === routeFilter) : routes;
@@ -305,10 +312,7 @@ try {
         );
       }
       for (const text of route.absentTexts ?? []) {
-        assert.ok(
-          !body.includes(text),
-          `${route.id}/${viewport.width}: todavía aparece «${text}»`,
-        );
+        assert.ok(!body.includes(text), `${route.id}/${viewport.width}: todavía aparece «${text}»`);
       }
       assert.ok(
         await page

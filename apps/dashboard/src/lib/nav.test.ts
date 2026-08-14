@@ -33,5 +33,7 @@ describe('navGroupsForRole', () => {
     expect(routes('serralta')).not.toContain('/inteligente');
     expect(routes('mardefondo')).toContain('/automatiza');
     expect(routes('mardefondo')).toContain('/inteligente');
+    expect(routes('mardefondo')).toContain('/control-total');
+    expect(routes('pinadamar')).not.toContain('/control-total');
   });
 });

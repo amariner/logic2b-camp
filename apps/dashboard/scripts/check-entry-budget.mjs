@@ -86,6 +86,14 @@ for (const [id, markers] of Object.entries(scenarioMarkers)) {
   }
 }
 
+const controlTotalMarker = 'logic2b-demo:mardefondo:control-total:v1';
+if (scenario === 'mardefondo' && !emittedSource.includes(controlTotalMarker)) {
+  throw new Error('F2: Mar de Fondo ha perdido el estado local de Control total.');
+}
+if (scenario !== 'mardefondo' && emittedSource.includes(controlTotalMarker)) {
+  throw new Error(`F2: el build ${scenario ?? 'normal'} arrastra la suite Control total.`);
+}
+
 console.log(
   `M6: entrada JS ${(initialGzipBytes / 1000).toFixed(2)} kB gzip; ` +
     `Planning y Plano bajo demanda; frontera ${scenario ?? 'normal'} limpia.`,

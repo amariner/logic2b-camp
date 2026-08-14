@@ -18,7 +18,7 @@ import { DEFAULT_LOCALE, type Locale } from './i18n';
  * mostrador → llevar el negocio → decidir → informático. `gestion` (informes,
  * tarifas, ajustes) se añadió como remate de BACKLOG tras C6.
  */
-export const GUIAS = ['recepcion', 'gestion', 'dueno', 'tecnica'] as const;
+export const GUIAS = ['recepcion', 'gestion', 'direccion', 'dueno', 'tecnica'] as const;
 export type Guia = (typeof GUIAS)[number];
 
 export type DocFrontmatter = {
@@ -31,7 +31,7 @@ export type DocFrontmatter = {
   /** Posición dentro de su guía. Sin él, el orden sería alfabético (frágil). */
   orden: number;
   /** Último cambio sustancial del contenido, para `<lastmod>` en el sitemap. */
-  updated: string;
+  updated: string | Date;
 };
 
 export type Doc = MarkdownInstance<DocFrontmatter> & { guia: Guia; slug: string };
@@ -93,7 +93,12 @@ export function todasLasRutas(): { guia: Guia; slug: string; lastmod: string }[]
     vistas.add(clave);
     const lastmod = allDocs
       .filter((version) => version.guia === d.guia && version.slug === d.slug)
-      .map((version) => version.frontmatter.updated)
+      .map((version) => {
+        const updated = version.frontmatter.updated;
+        return updated instanceof Date
+          ? updated.toISOString().slice(0, 10)
+          : String(updated).slice(0, 10);
+      })
       .sort()
       .at(-1)!;
     rutas.push({ guia: d.guia, slug: d.slug, lastmod });

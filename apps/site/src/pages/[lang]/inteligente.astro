@@ -1,0 +1,7 @@
+---
+import Inteligente from '../../components/Inteligente.astro';
+import { LOCALES, type Locale } from '../../lib/i18n';
+export function getStaticPaths() { return LOCALES.filter((locale) => locale !== 'es').map((lang) => ({ params: { lang } })); }
+const { lang } = Astro.params;
+---
+<Inteligente locale={lang as Locale} />

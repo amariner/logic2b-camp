@@ -13,6 +13,7 @@ import type {
 } from '../api';
 import { automatizaIncidentDraft, resetAutomatizaScenario } from './automatiza';
 import { resetInteligenteScenario } from './inteligente';
+import { resetControlTotalScenario } from './control-total';
 
 export const isMardefondoScenario = import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo';
 export const MARDEFONDO_STATE_KEY = 'logic2b-demo:mardefondo:manager-state:v1';
@@ -277,6 +278,7 @@ export function resetMardefondoScenario(): void {
   localStorage.removeItem(MARDEFONDO_PUBLIC_BOOKINGS_KEY);
   resetAutomatizaScenario();
   resetInteligenteScenario();
+  resetControlTotalScenario();
 }
 
 export const mardefondoPlano: PlanoDescriptor = {

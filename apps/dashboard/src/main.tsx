@@ -62,6 +62,7 @@ const Pagos = lazyRouteComponent(() => import('./pages/Pagos'));
 const Ajustes = lazyRouteComponent(() => import('./pages/Ajustes'));
 const Automatiza = lazyRouteComponent(() => import('@scenario-automatiza'));
 const Inteligente = lazyRouteComponent(() => import('@scenario-inteligente'));
+const ControlTotal = lazyRouteComponent(() => import('@scenario-control-total'));
 
 function RoutePending() {
   return (
@@ -382,6 +383,16 @@ const scenarioRoutes =
           getParentRoute: () => rootRoute,
           path: '/inteligente',
           component: Inteligente,
+        }),
+        createRoute({
+          getParentRoute: () => rootRoute,
+          path: '/control-total',
+          component: ControlTotal,
+        }),
+        createRoute({
+          getParentRoute: () => rootRoute,
+          path: '/control-total/$section',
+          component: ControlTotal,
         }),
       ]
     : [];

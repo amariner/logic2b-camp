@@ -527,7 +527,7 @@
         "estado": "Roadmap",
         "estadoTipo": "vision",
         "cta": "Solicitar plan",
-        "href": "#contacto",
+        "href": "/inteligente/",
         "incluye": [
           "Rentabilidad y comparativas",
           "Previsión de ocupación e ingresos",
@@ -633,7 +633,7 @@
           "Copiloto supervisado"
         ],
         "cta": "Solicitar plan",
-        "href": "/#contacto"
+        "href": "/inteligente/"
       }
     ],
     "incluyeTitulo": "La cuota incluye mantenimiento de verdad",
@@ -958,13 +958,57 @@
       }
     }
   },
+  "inteligente": {
+    "seo": {
+      "title": "Inteligente · Control total para campings — Logic2B",
+      "description": "La visión de Logic2B Campings para coordinar operaciones, equipo, huéspedes, ingresos e inteligencia con control humano. Precio a medida."
+    },
+    "kicker": "Inteligente · precio a medida",
+    "titulo": "Control total sin perder el control humano.",
+    "intro": "Una visión unificada para abrir el día, coordinar salidas, resolver incidencias y preparar el siguiente turno. Empieza como demo local y se activa por fases solo cuando cada decisión esté validada.",
+    "precio": "Precio a medida",
+    "demo": "Explorar Control total en Mar de Fondo",
+    "contacto": "Hablar de mi operación",
+    "aviso": "Visión interactiva con datos ficticios. No representa un backend, una integración ni una funcionalidad contratada.",
+    "familiasTitulo": "Ocho familias, una lectura compartida",
+    "familiasIntro": "Estas 18 capacidades son una selección pública del catálogo interno. El estado explica qué se puede tocar hoy y qué necesita validación.",
+    "familias": [
+      { "nombre": "Centro de operaciones", "estado": "Demo funcional", "texto": "El pulso diario y los riesgos que necesitan decisión.", "capacidades": ["Pulso diario", "Alertas priorizadas", "Horizonte de siete días"] },
+      { "nombre": "Limpieza", "estado": "Demo funcional", "texto": "Rotaciones, equipos y validación antes de la llegada.", "capacidades": ["Prioridad de rotación", "Asignación y estados", "Inspección y reapertura"] },
+      { "nombre": "Mantenimiento y activos", "estado": "Demo funcional", "texto": "Incidencias conectadas con inventario y próximas entradas.", "capacidades": ["Triage operativo", "Impacto en inventario"] },
+      { "nombre": "Equipo y turnos", "estado": "Demo funcional", "texto": "Carga, pendientes y un relevo que deja rastro.", "capacidades": ["Preparación del relevo", "Carga de trabajo"] },
+      { "nombre": "Huésped y comunicación", "estado": "Siguiente por validar", "texto": "Contexto antes de responder, con consentimiento e idioma visibles.", "capacidades": ["Cronología del huésped", "Peticiones coordinadas"] },
+      { "nombre": "Reservas y grupos", "estado": "Siguiente por validar", "texto": "Expedientes multiunidad sin fragmentar la conversación.", "capacidades": ["Rooming list", "Varios pagadores"] },
+      { "nombre": "Ingresos y control económico", "estado": "Visión futura", "texto": "Una lectura operativa, no contabilidad oficial.", "capacidades": ["Valor, cobrado y saldo", "Vencimientos"] },
+      { "nombre": "Inteligencia e integraciones", "estado": "Visión futura", "texto": "Previsiones explicables y propuestas que esperan confirmación.", "capacidades": ["Resumen diario", "Anomalías y copiloto"] }
+    ],
+    "estadosTitulo": "La madurez siempre queda visible",
+    "estados": [
+      { "nombre": "Disponible", "texto": "Capacidad de producto activable con alcance acordado." },
+      { "nombre": "Demo funcional", "texto": "Flujo local reversible para evaluar la experiencia." },
+      { "nombre": "Siguiente por validar", "texto": "Pantalla de escenario que necesita aprendizaje con clientes." },
+      { "nombre": "Visión futura", "texto": "Dirección de producto; arquitectura y fecha no comprometidas." }
+    ],
+    "jornadaTitulo": "La jornada del gerente, de una decisión a la siguiente",
+    "jornada": ["Abrir el día", "Coordinar salidas", "Resolver incidencias", "Cuidar huéspedes y grupos", "Controlar ingresos", "Entregar turno", "Preparar mañana"],
+    "flujosTitulo": "Tres flujos que ya se pueden recorrer",
+    "flujos": [
+      { "nombre": "Limpieza", "pasos": ["Detectar entrada", "Asignar", "Marcar lista", "Validar"] },
+      { "nombre": "Incidencia", "pasos": ["Reportar avería", "Evaluar impacto", "Bloquear en demo", "Preparar alternativa"] },
+      { "nombre": "Relevo", "pasos": ["Agrupar riesgos", "Revisar", "Preparar", "Reconocer"] }
+    ],
+    "autonomiaTitulo": "Automatizar según el riesgo",
+    "autonomiaTexto": "Lo reversible puede automatizarse con auditoría. Precios, cobros, reservas, bloqueos sensibles y comunicaciones requieren revisión o confirmación humana. La demo nunca ejecuta efectos externos.",
+    "cierreTitulo": "Primero entendemos cómo funciona tu camping.",
+    "cierreTexto": "Inteligente no es un paquete cerrado: se define por tamaño, equipo, canales, integraciones y decisiones que merece la pena mejorar."
+  },
   "docs": {
     "seo": {
-      "title": "Guías de Logic2B Campings — recepción, gestión, dueño y ficha técnica",
-      "description": "Cómo se usa Logic2B Campings: la guía de recepción paso a paso, la de gestión del día a día, la guía del dueño con los cuatro niveles, y la ficha técnica para tu informático."
+      "title": "Guías de Logic2B Campings — recepción, gestión, dirección, dueño y técnica",
+      "description": "Cómo se usa Logic2B Campings: guías para recepción, gestión, dirección, propiedad y soporte técnico."
     },
     "titulo": "Guías de Logic2B Campings",
-    "subtitulo": "Cuatro guías, cuatro personas distintas. Cada una escrita para quien la va a leer.",
+    "subtitulo": "Cinco guías, cinco responsabilidades distintas. Cada una escrita para quien la va a leer.",
     "indice": "En esta guía",
     "empezar": "Empezar",
     "anterior": "Anterior",
@@ -984,6 +1028,11 @@
         "nombre": "Guía de gestión",
         "para": "Para quien lleva el camping",
         "texto": "Las pantallas de gerencia: leer los números del negocio en Informes, cambiar las tarifas por temporada, comunicar el parte de viajeros a SES.Hospedajes y configurar el camping y sus avisos por correo."
+      },
+      "direccion": {
+        "nombre": "Guía de Dirección",
+        "para": "Para CEO, gerencia y responsables de turno",
+        "texto": "Siete decisiones recorren el día completo: abrir, coordinar salidas, resolver incidencias, cuidar huéspedes y grupos, controlar ingresos, entregar turno y preparar mañana."
       },
       "dueno": {
         "nombre": "Guía del dueño",
