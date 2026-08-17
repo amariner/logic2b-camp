@@ -14,4 +14,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm check
+      - name: Check types, lint and builds
+        run: pnpm exec turbo run typecheck lint build
+      # API, demo and onboarding start local workerd runtimes. Running their
+      # test tasks concurrently can crash workerd on the two-core hosted runner.
+      - name: Run tests without competing workerd runtimes
+        run: pnpm exec turbo run test --concurrency=1
