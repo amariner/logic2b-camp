@@ -1,5 +1,20 @@
 # PROGRESS — Logic Camp
 
+## El carril no temático queda revalidado en su límite local · 2026-08-17 (sesión 148)
+
+- La revisión posterior a la conversión de solicitudes no encuentra otro bloque
+  funcional local autorizado: R0–R11 y R15 están cerrados, la porción local de
+  R12–R13 está agotada y R14 conserva el veto de Camp Motor. Los siguientes
+  pasos requieren cliente, proveedor/credenciales, autorización de publicación
+  o una nueva señal de producto; no se fabrica alcance para mantener actividad.
+- `pnpm check` vuelve a pasar 71/71 tareas. El QA canónico reconstruye el
+  candidato, valida 17.012 enlaces internos en 540 HTML y recorre 28 superficies
+  / 56 vistas a 375 y 1366 px, además de cinco formatos/MIME. La entrada mayor,
+  Mar de Fondo, queda en 188,75 kB gzip, dentro del presupuesto M6.
+- El árbol termina limpio y sincronizado con `origin/main`. Esta revalidación no
+  crea ni modifica temas, media o fotografía y no despliega ni toca datos,
+  proveedores o infraestructura remota.
+
 ## Solicitud y reserva vuelven a ser la misma conversión · 2026-08-17 (sesión 147)
 
 - «Marcar convertida» ya no cambia una etiqueta sin crear inventario: abre el

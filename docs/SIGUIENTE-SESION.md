@@ -1,13 +1,14 @@
 # Prompt para la siguiente sesión — carril no temático cerrado
 
-> Reescrito el 2026-08-17 tras cerrar la conversión real de solicitudes sin
+> Revalidado el 2026-08-17 tras cerrar la conversión real de solicitudes sin
 > desarrollar temas.
 
 ## Estado en una línea
 
 El defecto reproducible de solicitudes queda cerrado: convertir una solicitud
 presupuestada crea y enlaza una reserva real. El candidato sigue local, sin
-desplegar, y H1–H3 de temas/media continúan fuera del encargo.
+desplegar, y H1–H3 de temas/media continúan fuera del encargo. Una nueva pasada
+global no encuentra otro bloque funcional local no temático autorizado.
 
 ## Evidencia de cierre
 
@@ -17,6 +18,8 @@ desplegar, y H1–H3 de temas/media continúan fuera del encargo.
 - el cambio de estado aislado a `converted` responde 409;
 - QA Worker+D1 a 375/1366: precarga, cotización en servidor, foco, objetivos
   táctiles, overflow y consola verificados;
+- QA canónico: 17.012 enlaces internos en 540 HTML, 28 superficies / 56 vistas
+  a 375/1366 y cinco formatos/MIME; máximo M6 de 188,75 kB gzip;
 - candidato local, sin deploy ni datos remotos.
 
 ## Qué puede reabrir trabajo no temático

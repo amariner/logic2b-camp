@@ -19,6 +19,8 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   paralelo, la decisión de Andreu abre el portfolio completo: Riu Clar, La Duna
   y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
   Carrasca, La Ballena y Sol d'Hivern cierran D6-V en 12/12.
+  La sesión 148 revalida el límite con `pnpm check` 71/71 y QA canónico de
+  17.012 enlaces, 28 superficies / 56 vistas y cinco formatos/MIME.
 - ~~[B5] Contacto transversal con Logic2B por WhatsApp~~ → **hecho 2026-08-12
   (sesión 140, ADR 0046)**: contrato compartido es/ca/en/fr/de/nl, píldora
   pública tras scroll, salida configurable en tenant y ayuda integrada en
