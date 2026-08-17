@@ -12,13 +12,12 @@ import {
   existsSync,
   lstatSync,
   mkdtempSync,
-  readdirSync,
   readFileSync,
   rmSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, relative, resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { candidateReadinessReport, type CandidateReadinessReport } from './candidate-readiness';
 import type { PlanStep } from './plan';
@@ -26,7 +25,6 @@ import { scaffoldTenant, validateTenantIdentity, type TenantIdentity } from './s
 
 const TEMPORARY_PREFIX = 'logic-camp-activation-';
 const SYNTHETIC_DATABASE_ID = '00000000-0000-4000-8000-000000000130';
-const SKIP_FINGERPRINT_DIRS = new Set(['node_modules', 'dist', '.turbo', '.wrangler']);
 
 export type TechnicalTier = 1 | 2 | 3;
 
@@ -125,35 +123,36 @@ export function parseWorkerJsonc(source: string): ActivationWorkerConfig {
   return JSON.parse(withoutTrailingCommas) as ActivationWorkerConfig;
 }
 
-function fingerprintFiles(root: string): string {
-  const hash = createHash('sha256');
-
-  function walk(directory: string): void {
-    for (const entry of readdirSync(directory).sort()) {
-      if (SKIP_FINGERPRINT_DIRS.has(entry)) continue;
-      const path = join(directory, entry);
-      const stat = lstatSync(path);
-      if (stat.isSymbolicLink()) continue;
-      if (stat.isDirectory()) walk(path);
-      else if (stat.isFile()) {
-        hash.update(relative(root, path));
-        hash.update('\0');
-        hash.update(readFileSync(path));
-        hash.update('\0');
-      }
-    }
-  }
-
-  walk(root);
-  return hash.digest('hex');
-}
-
 export function protectedSourcesFingerprint(repoRoot: string): string {
   const hash = createHash('sha256');
-  for (const directory of ['apps', 'packages']) {
-    const path = join(repoRoot, directory);
-    hash.update(directory);
-    hash.update(fingerprintFiles(path));
+  const sourceFiles = execFileSync(
+    'git',
+    [
+      'ls-files',
+      '-z',
+      '--cached',
+      '--others',
+      '--exclude-standard',
+      '--',
+      'apps',
+      'packages',
+    ],
+    { cwd: repoRoot, encoding: 'utf8' },
+  )
+    .split('\0')
+    .filter(Boolean)
+    .sort();
+
+  for (const sourceFile of sourceFiles) {
+    const path = join(repoRoot, sourceFile);
+    hash.update(sourceFile);
+    hash.update('\0');
+    if (!existsSync(path)) {
+      hash.update('<missing>');
+    } else if (!lstatSync(path).isSymbolicLink()) {
+      hash.update(readFileSync(path));
+    }
+    hash.update('\0');
   }
   return hash.digest('hex');
 }

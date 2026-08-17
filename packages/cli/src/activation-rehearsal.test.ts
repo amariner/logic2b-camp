@@ -1,9 +1,14 @@
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { assertLocalActivationPlan, runLocalActivationRehearsal } from './activation-rehearsal';
+import {
+  assertLocalActivationPlan,
+  protectedSourcesFingerprint,
+  runLocalActivationRehearsal,
+} from './activation-rehearsal';
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 
@@ -19,6 +24,29 @@ const temporaries = (): string[] =>
     .sort();
 
 describe('ensayo local del candidato de activación', () => {
+  it('ignora artefactos generados pero detecta fuentes nuevas o modificadas', () => {
+    const fakeRepo = mkdtempSync(join(tmpdir(), 'logic-camp-fingerprint-'));
+    try {
+      mkdirSync(join(fakeRepo, 'apps', 'site'), { recursive: true });
+      mkdirSync(join(fakeRepo, 'packages', 'config'), { recursive: true });
+      writeFileSync(join(fakeRepo, '.gitignore'), 'dist/\n', 'utf8');
+      writeFileSync(join(fakeRepo, 'apps', 'site', 'source.ts'), 'export const value = 1;\n', 'utf8');
+      writeFileSync(join(fakeRepo, 'packages', 'config', 'index.ts'), 'export {};\n', 'utf8');
+      execFileSync('git', ['init', '--quiet'], { cwd: fakeRepo });
+      execFileSync('git', ['add', '.gitignore', 'apps', 'packages'], { cwd: fakeRepo });
+
+      const initial = protectedSourcesFingerprint(fakeRepo);
+      mkdirSync(join(fakeRepo, 'apps', 'site', 'dist'));
+      writeFileSync(join(fakeRepo, 'apps', 'site', 'dist', 'bundle.js'), 'generated\n', 'utf8');
+      expect(protectedSourcesFingerprint(fakeRepo)).toBe(initial);
+
+      writeFileSync(join(fakeRepo, 'apps', 'site', 'new-source.ts'), 'export {};\n', 'utf8');
+      expect(protectedSourcesFingerprint(fakeRepo)).not.toBe(initial);
+    } finally {
+      rmSync(fakeRepo, { recursive: true, force: true });
+    }
+  });
+
   it('audita tiers 1/2/3 bajo un temporal con adaptadores none y solo nombres', () => {
     const before = temporaries();
     const slug = 'r13-candidate';
