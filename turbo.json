@@ -9,7 +9,7 @@
       "dependsOn": ["^build"]
     },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "typecheck"],
       "outputs": ["dist/**", ".astro/**"]
     }
   }
