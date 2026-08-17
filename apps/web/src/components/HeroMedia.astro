@@ -1,0 +1,74 @@
+---
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image: ImageMetadata;
+  src: string;
+  srcset: string;
+  desktopVideo?: string;
+  mobileVideo?: string;
+  position?: string;
+  class?: string;
+}
+
+const {
+  image,
+  src,
+  srcset,
+  desktopVideo,
+  mobileVideo,
+  position = 'center',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`absolute inset-0 ${className}`} data-hero-media>
+  <img
+    src={src}
+    srcset={srcset}
+    sizes="100vw"
+    width={image.width}
+    height={image.height}
+    alt=""
+    class="lc-settle absolute inset-0 h-full w-full object-cover"
+    style={`object-position: ${position}`}
+    fetchpriority="high"
+  />
+  {desktopVideo && (
+    <video
+      class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 data-[ready]:opacity-100"
+      style={`object-position: ${position}`}
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+      data-progressive-hero
+    >
+      {mobileVideo && <source data-src={mobileVideo} media="(max-width: 639px)" type="video/mp4" />}
+      <source data-src={desktopVideo} type="video/mp4" />
+    </video>
+  )}
+</div>
+
+{desktopVideo && (
+  <script>
+    const canLoadMotion = () => {
+      const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+      return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !connection?.saveData;
+    };
+
+    document.querySelectorAll('[data-progressive-hero]').forEach((node) => {
+      if (!(node instanceof HTMLVideoElement) || node.dataset.initialized || !canLoadMotion()) return;
+      node.dataset.initialized = 'true';
+      node.querySelectorAll('source[data-src]').forEach((source) => {
+        if (!(source instanceof HTMLSourceElement)) return;
+        source.src = source.dataset.src ?? '';
+      });
+      node.addEventListener('playing', () => node.setAttribute('data-ready', ''), { once: true });
+      node.addEventListener('error', () => node.removeAttribute('data-ready'), { once: true });
+      node.load();
+      void node.play().catch(() => node.removeAttribute('data-ready'));
+    });
+  </script>
+)}

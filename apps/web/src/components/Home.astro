@@ -2,10 +2,12 @@
 import { getImage, Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
-import { config, demoTierSwitch, getContent, images, localePath, mode } from '../lib/content';
+import { config, demoTierSwitch, getContent, images, localePath, mode, videos } from '../lib/content';
 import HeroMostrador from '@booking/hero';
 import EnquiryForm from './EnquiryForm.astro';
 import Materia from './Materia.astro';
+import HeroMedia from './HeroMedia.astro';
+import Vida from './Vida.astro';
 
 interface Props {
   locale: string;
@@ -63,15 +65,13 @@ const lona = fotoLona
         {/* sin foto NO se cae el héroe entero: en nivel 3 el héroe es el
             mostrador, y ese sigue montándose sobre la materia del tenant */}
         {heroDia && fotoDia ? (
-          <img
+          <HeroMedia
+            image={fotoDia}
             src={heroDia.src}
             srcset={heroDia.srcSet.attribute}
-            sizes="100vw"
-            width={fotoDia.width}
-            height={fotoDia.height}
-            alt=""
-            class="lc-settle absolute inset-0 h-full w-full object-cover"
-            fetchpriority="high"
+            desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined}
+            mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined}
+            position={config.heroMotion?.position}
           />
         ) : (
           <Materia class="absolute inset-0 h-full w-full" tono="clara" />
@@ -106,15 +106,13 @@ const lona = fotoLona
     <section class="relative" data-hero-nivel={showTierSwitch ? '1' : undefined}>
       <div class="relative h-[88svh] min-h-130 overflow-hidden">
         {heroAnochecer && fotoStatic ? (
-          <img
+          <HeroMedia
+            image={fotoStatic}
             src={heroAnochecer.src}
             srcset={heroAnochecer.srcSet.attribute}
-            sizes="100vw"
-            width={fotoStatic.width}
-            height={fotoStatic.height}
-            alt=""
-            class="lc-settle absolute inset-0 h-full w-full object-cover"
-            fetchpriority="high"
+            desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined}
+            mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined}
+            position={config.heroMotion?.position}
           />
         ) : (
           <Materia class="absolute inset-0 h-full w-full" tono="oscura" />
@@ -186,6 +184,8 @@ const lona = fotoLona
       </a>
     </p>
   </section>
+
+  {c.vida && <Vida vida={c.vida} />}
 
   <!-- ───────── firma: sombra de pino (materia, no vector) ───────── -->
   <div class="h-24 w-full overflow-hidden" role="presentation">

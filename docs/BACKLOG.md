@@ -430,6 +430,40 @@ es un gate de producción, no un pendiente local de implementación.
 - [CLIENTE-REAL] IA/forecast/copiloto: proveedor, costes, permisos, evaluación,
   límites, auditoría y supervisión humana.
 
+## Frentes H y F — humanidad y Control total
+
+> Aceptados el 2026-08-14. Fuentes de verdad: `ROADMAP-MEJORA-TEMAS.md` y
+> `FRENTE-F-CONTROL-TOTAL.md`.
+
+- ~~[F0] Catálogo interno de 56 capacidades, arquitectura provisional, cuatro
+  estados y ADR de demo reversible~~ → **hecho local 2026-08-14**.
+- ~~[F1] `/inteligente/` ES/EN y quinta guía pública Dirección~~ → **hecho
+  local 2026-08-14**: 18 capacidades, matriz, jornada, tres diagramas y 14
+  páginas de decisión (7 por idioma). Se corrigieron además las rutas profundas
+  `/en/docs/...`, que antes no se generaban.
+- ~~[F2–F6] Suite Control total exclusiva de Mar de Fondo~~ → **hecho local
+  2026-08-14**: ocho módulos, tres reducers/flujos compartidos, móvil 390 px,
+  parser fail-safe, persistencia y reset. El build normal no emite el fixture ni
+  el chunk; el build `mardefondo` sí y lo verifica como frontera.
+- ~~[F7] Capturas canónicas a 320/375/430/1366, QA de teclado/foco/contraste y
+  candidato compuesto~~ → **hecho local 2026-08-14**. `pnpm check` 71/71,
+  build Mar de Fondo 188,69 kB gzip con Control total y build normal 177,34 kB
+  gzip sin fixture/chunk. La revisión final tipó madurez/rutas, llevó todo el
+  copy nuevo a i18n, añadió la superficie al QA canónico y corrigió el objetivo
+  de ayuda de 25 a 44 px en el suelo móvil. No desplegar sin autorización
+  explícita.
+- ~~[H0] Contrato compartido de humanidad/rutas/vídeo~~ → **hecho local
+  2026-08-14**: opcional y retrocompatible, póster LCP, ahorro de datos,
+  movimiento reducido, error de vídeo y ausencia de campos conservan fallback.
+- [H1] Generar e inspeccionar las cuatro escenas y el vídeo de L'Olivar,
+  Pinada del Mar y Mar de Fondo. **Bloqueo externo 2026-08-14:** el generador
+  integrado devolvió error de red en la primera pieza. La política `imagegen`
+  impide saltar al CLI con API key sin confirmación; no se crean placeholders.
+- [H2] Cinco demos de costa/humedal/río, solo tras aprobar H1.
+- [H3] Cinco demos de interior/montaña/larga estancia, solo tras aprobar H1.
+- [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs
+  provisionales con un cliente antes de crear tablas o integraciones.
+
 ## Frente M — Dashboard móvil
 
 > Prioridad de producto declarada por Andreu (2026-08-03). No se pretende meter

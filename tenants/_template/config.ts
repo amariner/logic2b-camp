@@ -19,6 +19,9 @@ export const config: TenantWebConfig = {
   },
   // Soporte Logic2B transversal. Ponlo a false solo si el contrato lo excluye.
   logic2bContact: true,
+  // Movimiento opcional (ADR 0047): claves de MP4 locales, nunca URLs. El
+  // póster continúa siendo staticHeroImage y debe construir sin este bloque.
+  // heroMotion: { desktop: 'hero-motion', mobile: 'hero-motion-mobile', position: 'center' },
   // Identidad legal (ADR 0026 §2.5). El texto de las páginas legales (aviso legal,
   // privacidad, cookies) es de PRODUCTO y no se toca: solo se rellenan estos campos.
   legal: {

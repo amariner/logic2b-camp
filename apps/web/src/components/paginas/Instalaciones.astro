@@ -11,9 +11,14 @@ const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.instalaciones;
 
-// si el tenant tiene foto de la instalación (instalacion-{id}.webp), se enseña
-const fotos = p.items.filter((i) => images[`instalacion-${i.id}`]);
-const sinFoto = p.items.filter((i) => !images[`instalacion-${i.id}`]);
+const photoFor = (id: string) => {
+  if (id === 'recepcion' && images['vida-recepcion']) return 'vida-recepcion';
+  if (images[`vida-servicio-${id}`]) return `vida-servicio-${id}`;
+  if (images[`instalacion-${id}`]) return `instalacion-${id}`;
+  return null;
+};
+const fotos = p.items.filter((i) => photoFor(i.id));
+const sinFoto = p.items.filter((i) => !photoFor(i.id));
 ---
 
 <Base locale={locale} path="/instalaciones" title={p.seo.title} description={p.seo.description}>
@@ -25,7 +30,7 @@ const sinFoto = p.items.filter((i) => !images[`instalacion-${i.id}`]);
         {fotos.map((item) => (
           <article class="flex flex-col gap-4">
             <Picture
-              src={images[`instalacion-${item.id}`]!}
+              src={images[photoFor(item.id)!]!}
               alt={item.nombre}
               widths={[640, 1024, 1600]}
               sizes="(min-width: 768px) 50vw, 100vw"

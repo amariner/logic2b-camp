@@ -10,6 +10,7 @@ tenants/*/seed.sql
 *.local
 .DS_Store
 coverage/
+tmp/
 
 # Másteres fotográficos de producción: se conservan localmente; Git publica
 # solo los derivados WebP/AVIF/JPG que consume el tenant.

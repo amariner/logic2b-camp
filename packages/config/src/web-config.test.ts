@@ -32,6 +32,28 @@ describe('parseTenantWebConfig', () => {
     });
   });
 
+  it('acepta vídeo ambiental local y encuadre opcional', () => {
+    expect(
+      parseTenantWebConfig({
+        ...base,
+        heroMotion: {
+          desktop: 'hero-motion',
+          mobile: 'hero-motion-mobile',
+          position: '52% center',
+        },
+      }),
+    ).toMatchObject({ heroMotion: { desktop: 'hero-motion', mobile: 'hero-motion-mobile' } });
+  });
+
+  it.each(['https://media.example/hero.mp4', '../hero', '/hero']) (
+    'rechaza una fuente de vídeo no local: %s',
+    (desktop) => {
+      expect(() => parseTenantWebConfig({ ...base, heroMotion: { desktop } })).toThrow(
+        'heroMotion.desktop: debe ser una clave de medio segura',
+      );
+    },
+  );
+
   it('rechaza un locale por defecto que no se publica', () => {
     expect(() => parseTenantWebConfig({ ...base, defaultLocale: 'en' })).toThrow(
       'defaultLocale: debe estar incluido en locales',

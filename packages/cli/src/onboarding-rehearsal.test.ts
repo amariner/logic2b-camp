@@ -43,7 +43,9 @@ describe('frontera local del ensayo de onboarding', () => {
 
   it(
     'migra, siembra, rompe y restaura una D1 desechable sin tocar tenants/',
-    { timeout: 60_000 },
+    // El ensayo levanta varias instancias locales de Wrangler. En GitHub Actions
+    // puede superar un minuto aunque en desarrollo termine bastante antes.
+    { timeout: 120_000 },
     () => {
       const slug = 'r13-local';
       const result = runLocalOnboardingRehearsal({

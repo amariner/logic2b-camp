@@ -70,6 +70,22 @@ export const tenantWebConfigSchema = z
       .regex(/^[a-z0-9][a-z0-9-]*$/)
       .optional(),
     /**
+     * Bucle ambiental opcional del héroe (ADR 0047). Las claves resuelven
+     * archivos locales del tenant; nunca se admiten URLs ni rutas. El póster
+     * continúa siendo `staticHeroImage` y conserva la responsabilidad de LCP.
+     */
+    heroMotion: z
+      .object({
+        desktop: z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'debe ser una clave de medio segura'),
+        mobile: z
+          .string()
+          .regex(/^[a-z0-9][a-z0-9-]*$/, 'debe ser una clave de medio segura')
+          .optional(),
+        position: z.string().trim().min(1).max(80).optional(),
+      })
+      .strict()
+      .optional(),
+    /**
      * Identidad legal del titular (ADR 0026 §2.5). Obligatorio: un camping español
      * no puede publicar sin aviso legal, y sin estos datos las páginas legales no
      * se pueden generar. El texto es de producto; esto es lo único que varía.

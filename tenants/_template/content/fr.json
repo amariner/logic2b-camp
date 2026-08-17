@@ -84,6 +84,15 @@
     "titulo": "__TODO__",
     "texto": "__TODO__"
   },
+  "vida": {
+    "titulo": "__TODO__",
+    "intro": "__TODO__",
+    "escenas": [
+      { "foto": "vida-llegada", "titulo": "__TODO__", "texto": "__TODO__" },
+      { "foto": "vida-recepcion", "titulo": "__TODO__", "texto": "__TODO__" },
+      { "foto": "vida-servicio", "titulo": "__TODO__", "texto": "__TODO__" }
+    ]
+  },
   "form": {
     "titulo": "__TODO__",
     "subtitulo": "__TODO__",
@@ -229,6 +238,16 @@
         "texto": "__TODO__"
       }
     ],
+    "rutas": {
+      "titulo": "__TODO__",
+      "intro": "__TODO__",
+      "aviso": "__TODO__",
+      "items": [
+        { "nombre": "__TODO__", "resumen": "__TODO__", "tipo": "__TODO__", "duracion": "__TODO__", "dificultad": "__TODO__", "salida": "__TODO__", "momento": "__TODO__", "recomendacion": "__TODO__", "foto": "vida-entorno" },
+        { "nombre": "__TODO__", "resumen": "__TODO__", "tipo": "__TODO__", "duracion": "__TODO__", "dificultad": "__TODO__", "salida": "__TODO__", "momento": "__TODO__", "recomendacion": "__TODO__", "foto": "__TODO__" },
+        { "nombre": "__TODO__", "resumen": "__TODO__", "tipo": "__TODO__", "duracion": "__TODO__", "dificultad": "__TODO__", "salida": "__TODO__", "momento": "__TODO__", "recomendacion": "__TODO__", "foto": "__TODO__" }
+      ]
+    },
     "distancias": {
       "titulo": "__TODO__",
       "items": [

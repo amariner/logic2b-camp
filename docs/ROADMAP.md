@@ -317,8 +317,9 @@ Evidencia y matriz de no duplicación inicial:
 
 La oferta se explica como una progresión de resultados, no como una lista
 técnica: **Inicio 49 €** (consigue consultas) → **Gestión 149 €** (controla el
-camping) → **Automatiza 249 €** (ahorra tiempo) → **Inteligente 399 €** (decide
-mejor). El nivel 0 no es el Camp Web actual rebajado: la demo enseña una web
+camping) → **Automatiza 249 €** (ahorra tiempo) → **Inteligente, precio a
+medida** (Control total). Esta última condición sustituye el precio de
+lanzamiento de ADR 0033 desde el 2026-08-14. El nivel 0 no es el Camp Web actual rebajado: la demo enseña una web
 estática y su consulta con estados creíbles. El receptor real, antispam y la
 operación de producción se activarán al contratarse; hasta entonces quedan
 especificados. Alta 0 € exige plantilla cerrada, contenido aportado y 12 meses
@@ -337,6 +338,45 @@ o pago anual equivalente.
 **Orden visual:** E0 ✅ → E1 ✅ → E2 ✅ → D0-V → E3-V/E4-V → E5-V/E6-V. La
 oferta futura se enseña solo como «demo», «en desarrollo» o «roadmap». El
 producto real se activa módulo a módulo cuando exista un cliente.
+
+## Frente H — Humanidad, rutas y movimiento
+
+> **Aceptado por Andreu el 2026-08-14.** Contrato, olas y gates en
+> [`ROADMAP-MEJORA-TEMAS.md`](ROADMAP-MEJORA-TEMAS.md); decisión en
+> [ADR 0047](adr/0047-humanidad-rutas-y-movimiento-en-temas.md).
+
+| Fase                                    | Estado             | Resultado                                                                                                                                         |
+| --------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| H0 · contrato común                     | ✅ Candidato local | `heroMotion` seguro, póster LCP, carga progresiva, ahorro de datos/movimiento reducido, `vida`, rutas e instalaciones humanas con fallback        |
+| H1 · tres anclas                        | ⛔ Medio externo   | Brief, copy y gates cerrados; generación detenida al fallar el servicio integrado el 2026-08-14. No se sustituyen por fotografía sin trazabilidad |
+| H2 · costa, humedal y río               | ⬜ Pendiente de H1 | Cinco identidades, tandas máximas de dos y revisión por manifiesto                                                                                |
+| H3 · interior, montaña y larga estancia | ⬜ Pendiente de H1 | Cinco identidades sin repetir edad, grupo, arquitectura ni paisaje                                                                                |
+
+El fallo de generación no bloquea la web: los campos son opcionales, el póster
+continúa como LCP y los 13 tenants existentes construyen sin medios nuevos.
+
+## Frente F — Inteligente · Control total
+
+> **Aceptado por Andreu el 2026-08-14.** Fuente de verdad:
+> [`FRENTE-F-CONTROL-TOTAL.md`](FRENTE-F-CONTROL-TOTAL.md), catálogo de
+> [56 capacidades](CATALOGO-INTELIGENTE.md), arquitectura
+> [provisional](ARQUITECTURA-INTELIGENTE-PROVISIONAL.md) y
+> [ADR 0048](adr/0048-control-total-como-vision-local-reversible.md).
+
+| Fase                                  | Estado local       | Evidencia                                                                                                                                                                 |
+| ------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F0 · catálogo, arquitectura y estados | ✅                 | 8 familias × 7 capacidades; cuatro estados y gates                                                                                                                        |
+| F1 · página y guía Dirección          | ✅                 | `/inteligente/` ES/EN, 18 capacidades públicas, 7 decisiones ES/EN, matriz, jornada y diagramas                                                                           |
+| F2 · Centro y soporte compartido      | ✅                 | Fixture 2026-08-07, reducer/parser, `localStorage`, reset y pulso cruzado                                                                                                 |
+| F3 · limpieza                         | ✅                 | Detectar → asignar → vista móvil → lista → validación                                                                                                                     |
+| F4 · incidencia                       | ✅                 | Reportar → evaluar → bloquear localmente → preparar alternativa                                                                                                           |
+| F5 · relevo                           | ✅                 | Agrupar → revisar → preparar → reconocer                                                                                                                                  |
+| F6 · escenarios e integración         | ✅                 | Ocho módulos; Automatiza/Inteligente conservan URL; suite solo emitida para Mar de Fondo                                                                                  |
+| F7 · reconciliación y QA              | ✅ Candidato local | i18n y madurez/rutas tipadas; QA real 320/375/430/1366, objetivo táctil ≥44 px en móvil, flujos y consola inspeccionados; build normal aislado y `pnpm check` 71/71 verde |
+
+Nada de F acredita producción: no hay nuevas tablas, API, usuarios, proveedor,
+OTA, mensajería ni efecto externo. El banner persistente lo declara en todas
+las pantallas y cualquier arquitectura de activación continúa provisional.
 
 ## Decisiones tomadas
 
@@ -364,9 +404,13 @@ producto real se activa módulo a módulo cuando exista un cliente.
   tres experiencias visibles (Inicio/Gestión/Visión), luego seis y doce si el
   aprendizaje comercial lo justifica. CLI, integraciones y producción real se
   documentan en el dossier de activación hasta que exista cliente.
+- 2026-08-14: **Frentes H y F aceptados.** Inteligente pasa a precio a medida y
+  recibe la suite exclusiva Control total. La demo es local, reversible y
+  exclusiva de Mar de Fondo; la producción futura queda provisional.
 - 2026-08-05: **Frente E aprobado; E1/E2 implementados** — cuatro niveles
   comerciales (Inicio/Gestión/Automatiza/Inteligente) con cuotas de lanzamiento
-  49/149/249/399 €. Inicio se presenta sin alta, gestor, motor, D1 ni histórico,
+  49/149/249/399 € en aquel corte; Inteligente pasa a precio a medida el
+  2026-08-14. Inicio se presenta sin alta, gestor, motor, D1 ni histórico,
   con 12 meses/pago anual. ADR 0033 aceptado; landing, `/precios/`, FAQ y guía
   del dueño ya usan la nueva escalera. _La previsión original de construir E3
   real queda sustituida el 2026-08-06 por E3-V demo-first._

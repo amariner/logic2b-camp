@@ -1,0 +1,43 @@
+---
+import { Picture } from 'astro:assets';
+import type { Content } from '../lib/content';
+import { images } from '../lib/content';
+
+interface Props {
+  vida: NonNullable<Content['vida']>;
+}
+const { vida } = Astro.props;
+---
+
+<section class="border-y border-arena/60 bg-arena-suave/35" aria-labelledby="vida-titulo">
+  <div class="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
+    <header class="mb-12 grid gap-4 md:grid-cols-2 md:items-end">
+      <h2 id="vida-titulo" class="font-display text-[clamp(1.9rem,3.5vw,3rem)] leading-tight font-semibold tracking-tight">
+        {vida.titulo}
+      </h2>
+      <p class="max-w-xl text-[15px] leading-relaxed text-tinta-suave">{vida.intro}</p>
+    </header>
+    <div class="grid gap-8 md:grid-cols-12">
+      {vida.escenas.slice(0, 3).map((escena, index) => (
+        <article class:list={['group flex flex-col gap-4', index === 0 ? 'md:col-span-7' : 'md:col-span-5']}>
+          {images[escena.foto] && (
+            <Picture
+              src={images[escena.foto]!}
+              alt={escena.titulo}
+              widths={[560, 960, 1440]}
+              sizes={index === 0 ? '(min-width: 768px) 58vw, 100vw' : '(min-width: 768px) 42vw, 100vw'}
+              formats={['avif', 'webp']}
+              fallbackFormat="webp"
+              loading="lazy"
+              class="aspect-3/2 w-full rounded-(--lc-radius-lg) object-cover transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+            />
+          )}
+          <div class="max-w-xl">
+            <h3 class="font-display text-[19px] font-semibold">{escena.titulo}</h3>
+            <p class="mt-1.5 text-[14px] leading-relaxed text-tinta-suave">{escena.texto}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

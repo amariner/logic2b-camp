@@ -16,6 +16,19 @@ import type { ImageMetadata, MarkdownInstance } from 'astro';
 export type TipoCard = { id: string; nombre: string; desc: string; foto: string };
 export type Seo = { title: string; description: string };
 export type NamedItem = { id: string; nombre: string; desc: string };
+export type VidaScene = { foto: string; titulo: string; texto: string };
+export type RoutePlan = {
+  nombre: string;
+  resumen: string;
+  tipo: string;
+  duracion: string;
+  dificultad: string;
+  salida: string;
+  momento: string;
+  recomendacion: string;
+  foto: string;
+  mapaUrl?: string;
+};
 
 export type Content = {
   seo: Seo;
@@ -36,6 +49,8 @@ export type Content = {
     cards: TipoCard[];
   };
   entorno: { titulo: string; texto: string };
+  /** Capa editorial opcional de hospitalidad realista (ADR 0047). */
+  vida?: { titulo: string; intro: string; escenas: VidaScene[] };
   form: Record<string, string>;
   footer: Record<string, string>;
   alojamientos: {
@@ -58,6 +73,12 @@ export type Content = {
     intro: string;
     secciones: { titulo: string; texto: string }[];
     distancias: { titulo: string; items: { lugar: string; valor: string }[] };
+    rutas?: {
+      titulo: string;
+      intro: string;
+      aviso: string;
+      items: RoutePlan[];
+    };
   };
   tarifas: {
     seo: Seo;
@@ -165,6 +186,22 @@ export const images: Record<string, ImageMetadata> = Object.fromEntries(
       .pop()!
       .replace(/\.(webp|jpg)$/, ''),
     mod.default,
+  ]),
+);
+
+/** Vídeos ambientales locales. Se hidratan de forma progresiva en HeroMedia. */
+const videoModules = import.meta.glob<string>('@tenant/content/media/*.{mp4,webm}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+export const videos: Record<string, string> = Object.fromEntries(
+  Object.entries(videoModules).map(([path, url]) => [
+    path
+      .split('/')
+      .pop()!
+      .replace(/\.(mp4|webm)$/, ''),
+    url,
   ]),
 );
 
