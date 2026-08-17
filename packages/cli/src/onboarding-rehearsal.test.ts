@@ -1,11 +1,18 @@
+import { execFile } from 'node:child_process';
 import { existsSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
+import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { assertLocalD1Args, runLocalOnboardingRehearsal } from './onboarding-rehearsal';
+import {
+  assertLocalD1Args,
+  runLocalOnboardingRehearsal,
+  type LocalOnboardingRehearsalResult,
+} from './onboarding-rehearsal';
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
+const execFileAsync = promisify(execFile);
 
 describe('frontera local del ensayo de onboarding', () => {
   it('rechaza cualquier orden D1 que no fuerce local o que pueda resolver remoto', () => {
@@ -43,22 +50,25 @@ describe('frontera local del ensayo de onboarding', () => {
 
   it(
     'migra, siembra, rompe y restaura una D1 desechable sin tocar tenants/',
-    // El ensayo levanta varias instancias locales de Wrangler. En GitHub Actions
-    // puede superar un minuto aunque en desarrollo termine bastante antes.
-    { timeout: 120_000 },
-    () => {
+    // El ensayo levanta varias instancias locales de Wrangler. Se ejecuta en un
+    // hijo para que sus llamadas síncronas no bloqueen el RPC interno de Vitest
+    // cuando GitHub Actions tarda más de un minuto.
+    { timeout: 180_000 },
+    async () => {
       const slug = 'r13-local';
-      const result = runLocalOnboardingRehearsal({
-        repoRoot: REPO_ROOT,
-        identity: {
-          slug,
-          name: 'Camping R13 Local',
-          domain: `${slug}.example.test`,
-          zone: 'example.test',
+      const { stdout } = await execFileAsync(
+        join(REPO_ROOT, 'packages', 'cli', 'node_modules', '.bin', 'tsx'),
+        [join(REPO_ROOT, 'packages', 'cli', 'src', 'onboarding-rehearsal.child.ts')],
+        {
+          cwd: REPO_ROOT,
+          encoding: 'utf8',
+          maxBuffer: 16 * 1024 * 1024,
+          timeout: 180_000,
         },
-        seedYear: 2026,
-      });
+      );
+      const result = JSON.parse(stdout) as LocalOnboardingRehearsalResult;
 
+      expect(result.source.ownerEmail).toBe(`owner@${slug}.example.test`);
       expect(existsSync(result.temporaryDirectory)).toBe(false);
       expect(existsSync(join(REPO_ROOT, 'tenants', slug))).toBe(false);
       expect(result.migrationNames).toEqual([
