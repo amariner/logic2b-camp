@@ -7,6 +7,9 @@ export default defineWorkersConfig(async () => {
       setupFiles: ['./test/apply-migrations.ts'],
       poolOptions: {
         workers: {
+          // El pool de Cloudflare no usa fileParallelism: singleWorker agrupa
+          // los ficheros y evita el fallo HashIndex/segfault del runtime en CI.
+          singleWorker: true,
           // config de test con DOS D1 (fuga cruzada entre tenants)
           wrangler: { configPath: './test/wrangler.test.jsonc' },
           miniflare: {
