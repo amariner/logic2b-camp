@@ -137,6 +137,12 @@ export const bookingsListQuerySchema = z.object({
 export const adminBookingCreateSchema = bookingBaseSchema.extend({
   channel: z.enum(['phone', 'walkin']).default('phone'),
   /**
+   * Solicitud presupuestada que origina el alta. El servidor la valida y la
+   * enlaza dentro del mismo batch que crea la reserva; enviar el ID nunca basta
+   * para forzar una conversión.
+   */
+  enquiryId: z.string().min(1).max(80).optional(),
+  /**
    * En mostrador el consentimiento se recoge en el momento y se registra en la
    * ficha del huésped; no bloquea el alta. Por defecto `false` — sin marcar NO se
    * inventa una fecha de consentimiento, que es justo el bug que arregla el ADR 0026.

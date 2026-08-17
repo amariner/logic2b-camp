@@ -9,16 +9,16 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
 - **Local ahora, por checkpoint:** el corte no visual R15 está auditado, ADR
   0044 cierra la solicitud contextual de tier 2 y B5/ADR 0046 cierra el contacto
-  transversal con Logic2B por WhatsApp. No queda otro bloque funcional local no
-  temático autorizado. R0–R8 y R10–R11 están
+  transversal con Logic2B por WhatsApp. La sesión 147 cierra además la
+  conversión real de solicitud a reserva. No queda otro bloque funcional local
+  no temático autorizado. R0–R8 y R10–R11 están
   acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
   candidato sigue con 1.989 bloqueos de build que requieren material real y 4
   gates externos de publicación. `--apply`, proveedor, dominio y deploy
   permanecen cerrados. Los builds aislados y el bundle están verdes. En
   paralelo, la decisión de Andreu abre el portfolio completo: Riu Clar, La Duna
   y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
-  Carrasca y La Ballena llevan D6-V hasta 11/12. Solo queda Sol d'Hivern,
-  siempre en vertical y separado de este carril.
+  Carrasca, La Ballena y Sol d'Hivern cierran D6-V en 12/12.
 - ~~[B5] Contacto transversal con Logic2B por WhatsApp~~ → **hecho 2026-08-12
   (sesión 140, ADR 0046)**: contrato compartido es/ca/en/fr/de/nl, píldora
   pública tras scroll, salida configurable en tenant y ayuda integrada en
@@ -217,12 +217,13 @@ es un gate de producción, no un pendiente local de implementación.
   temporadas exige nombre↔idioma, unicidad y determinismo; mensaje y prefijo ya
   tenían su propia garantía desde la sesión 55. La relación nombre↔nacionalidad
   de huéspedes continúa diferida por la razón explícita de su entrada propia.
-- [seed] `enquiries.converted_booking_id` apunta a `bkg_0NN` por número de orden:
+- [seed] Los fixtures históricos de `enquiries.converted_booking_id` apuntan a
+  `bkg_0NN` por número de orden:
   la reserva enlazada no tiene nada que ver con la solicitud (ni titular, ni
-  fechas, ni tipo). R5 confirmó que el gestor no pinta ni enlaza este campo; se
-  conserva hasta que exista un recorrido de conversión real, porque corregir un
-  dato invisible violaría el alcance del checkpoint — 2026-07-25, revalidado
-  2026-08-10
+  fechas, ni tipo). Las conversiones nuevas ya son reales, atómicas e
+  idempotentes desde la sesión 147; este pendiente queda reducido a sanear el
+  material sintético si vuelve a hacerse visible o a usarse en una demo —
+  2026-07-25, actualizado 2026-08-17
 - ~~[C7→C1.2] Crear reserva arrastrando sobre una celda LIBRE del plano~~ → cerrado con C1.2 (ADR 0023, 2026-07-21): arrastrar sobre celdas libres del planning abre el alta con tipo+fechas+unidad precargadas (`preferredUnitId`), y el plano ya salta al planning conservando unidad+fecha — esa fila es ahora un lienzo donde crear. (Si algún día se quiere el gesto DENTRO del `<svg>` del plano, es pulido aparte.)
 - ~~[C7→C4.4] Crear bloqueos (avería, larga estancia) desde el plano~~ → **hecho 2026-07-24 (sesión 47)**: panel contextual de unidad en el plano (`UnitPanel.tsx`) — click en unidad libre → "Bloquear esta unidad" (diálogo precargado con unidad+fecha, "hasta" = una noche); click en bloqueada → motivo/rango + "Levantar el bloqueo" con confirmación (`DELETE /blocks/:id`, que existía testeado pero SIN UI que lo llamara). De paso, fix real: `BlockDialog` captaba `defaultUnitId`/`defaultDate` solo en el primer render (siempre montado) y perdía la selección en silencio — ahora resincroniza al abrir. Verificado con Playwright contra el Worker real, ciclo completo, claro y oscuro — 2026-07-21, cerrado 2026-07-24
 - ~~[C1] Levantar un bloqueo desde el PLANNING (click en la barra rayada → confirmar)~~ → **hecho 2026-07-25 (sesión 48)**: la barra `lc-block` es ahora un `role="button"` con `tabIndex=0`, `aria-label` con motivo+rango+unidad y afordancia visible (cursor, realce al pasar por encima, anillo de foco del DS). Click o Enter → `AlertDialog` con el detalle del bloqueo (y el aviso de "cubre todas las unidades del tipo" si es un bloqueo de tipo) → `DELETE /blocks/:id` + toast + invalidación. El foco vuelve a la barra al cancelar (`onCloseAutoFocus`), y no vuelve si el bloqueo ha desaparecido. No hay arrastre: un bloqueo no se mueve, se levanta y se vuelve a crear. Verificado con Playwright contra el Worker real, claro y oscuro — 2026-07-24, cerrado 2026-07-25

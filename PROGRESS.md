@@ -1,5 +1,22 @@
 # PROGRESS — Logic Camp
 
+## Solicitud y reserva vuelven a ser la misma conversión · 2026-08-17 (sesión 147)
+
+- «Marcar convertida» ya no cambia una etiqueta sin crear inventario: abre el
+  alta manual con tipo, fechas, ocupación, idioma y titular precargados, conserva
+  la cotización en servidor y solo termina al crear la reserva real.
+- API y D1 enlazan reserva y solicitud en el mismo batch idempotente. El segundo
+  intento con otra clave no puede duplicar la reserva; el `PATCH` de estado solo
+  responde `409 conversion_requires_booking` y cada conversión deja su asiento
+  de auditoría con el ID de reserva.
+- El panel compartido queda corregido también en móvil: ocupa el viewport sin
+  desbordar, mantiene campos a 16 px y objetivos táctiles de 44 px; al cerrar
+  con Escape devuelve el foco a la acción de origen. QA real con Worker+D1 a
+  375/1366 px, cotización de 213 €, consola y overflow limpios.
+- Regresión: dashboard 69/69, API 284/284 y `pnpm check` 71/71. El trabajo no
+  crea ni modifica temas, media o fotografía; tampoco despliega ni toca datos
+  remotos.
+
 ## Control total cierra su contrato no temático · 2026-08-14 (sesión 146)
 
 - El nuevo frente F queda integrado sin convertir la visión en producto real:
@@ -1192,15 +1209,15 @@ Diario de sesiones. Se actualiza al cerrar cada sesión con `/session-close`. La
 
 ## Estado actual
 
-- **Checkpoint activo: D6-V, portfolio 10/12.** R0–R15 han agotado su trabajo
-  local no visual; la fábrica común y D5-V están cerradas. D6-V incorpora
-  Serralta, Entre Vinyes, Els Tarongers y La Carrasca sobre el mismo código.
-- **Producto visible:** hay diez campings construibles y el escaparate comercial
-  los enlaza como demos navegables. La Carrasca acredita reserva, tasa, señal y
-  cancelación ficticias de extremo a extremo, siempre locales y reversibles.
-- **Siguiente trabajo local:** construir `ballena` en vertical y después
-  `soldhivern`. Cliente real, proveedores, credenciales, infraestructura remota,
-  publicación y Camp Motor conservan sus gates explícitos.
+- **Checkpoint activo: carril local no temático cerrado.** R0–R15, el portfolio
+  12/12 y el frente F están completados; la conversión de una solicitud
+  presupuestada vuelve a crear y enlazar una reserva real de forma idempotente.
+- **Producto visible:** candidato compuesto construido y no desplegado. El
+  gestor conserva datos, recorridos y accesibilidad verificados sin tematizarlo.
+- **Siguiente trabajo autorizado:** solo un defecto o una decisión nueva y
+  reproducible. Cliente, proveedor, credenciales, infraestructura, publicación
+  y Camp Motor mantienen sus gates; temas, fotografía y media quedan fuera del
+  encargo actual.
 
 ## Historial consolidado hasta la sesión 102 (no usar para elegir trabajo)
 

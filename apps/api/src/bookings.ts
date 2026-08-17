@@ -11,7 +11,7 @@ import {
 } from '@logic-camp/core';
 import { schema } from '@logic-camp/db';
 import { computeChargeAmount, type PaymentIntentResult } from '@logic-camp/payments';
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { CONSENT_VERSION } from './consent';
 import { loadEngineData, loadExtras, loadLiveHolds, loadRequiredExtraIds } from './data';
 import { errorDetail, logEvent } from './errors';
@@ -55,6 +55,8 @@ export async function createBooking(
     webOrigin?: string;
     /** unidad preferida (ADR 0023 §2, crear desde el planning): si está libre se usa */
     preferredUnitId?: string;
+    /** solicitud presupuestada que se convierte atómicamente con esta reserva */
+    convertEnquiryId?: string;
   },
 ): Promise<CreateBookingResult> {
   const db = tenant.db;
@@ -90,6 +92,29 @@ export async function createBooking(
           },
         };
       }
+    }
+  }
+
+  if (opts.convertEnquiryId) {
+    const [enquiry] = await db
+      .select({
+        status: schema.enquiries.status,
+        convertedBookingId: schema.enquiries.convertedBookingId,
+      })
+      .from(schema.enquiries)
+      .where(eq(schema.enquiries.id, opts.convertEnquiryId));
+    if (!enquiry) {
+      return { ok: false, status: 404, body: { error: 'unknown_enquiry' } };
+    }
+    if (enquiry.status !== 'quoted' || enquiry.convertedBookingId) {
+      return {
+        ok: false,
+        status: 409,
+        body: {
+          error: enquiry.convertedBookingId ? 'enquiry_already_converted' : 'enquiry_not_quoted',
+          ...(enquiry.convertedBookingId ? { bookingId: enquiry.convertedBookingId } : {}),
+        },
+      };
     }
   }
 
@@ -251,10 +276,51 @@ export async function createBooking(
     ...(body.holdId
       ? [db.delete(schema.inventoryHolds).where(eq(schema.inventoryHolds.id, body.holdId))]
       : []),
+    ...(opts.convertEnquiryId
+      ? [
+          // La clave reclama la solicitud dentro del mismo batch. Dos altas con
+          // claves idempotentes distintas no pueden crear dos reservas: la PK de
+          // meta hace fallar y revertir por completo el segundo batch.
+          db.insert(schema.meta).values({
+            key: `enquiry-booking:${opts.convertEnquiryId}`,
+            value: id,
+          }),
+          db
+            .update(schema.enquiries)
+            .set({ status: 'converted', convertedBookingId: id })
+            .where(
+              and(
+                eq(schema.enquiries.id, opts.convertEnquiryId),
+                eq(schema.enquiries.status, 'quoted'),
+                isNull(schema.enquiries.convertedBookingId),
+              ),
+            ),
+        ]
+      : []),
   ];
 
   // batch atómico: reserva + titular (+ clave de idempotencia + hold consumido) juntos o nada
-  await db.batch(inserts as unknown as Parameters<typeof db.batch>[0]);
+  try {
+    await db.batch(inserts as unknown as Parameters<typeof db.batch>[0]);
+  } catch (error) {
+    if (opts.convertEnquiryId) {
+      const [enquiry] = await db
+        .select({ convertedBookingId: schema.enquiries.convertedBookingId })
+        .from(schema.enquiries)
+        .where(eq(schema.enquiries.id, opts.convertEnquiryId));
+      if (enquiry?.convertedBookingId) {
+        return {
+          ok: false,
+          status: 409,
+          body: {
+            error: 'enquiry_already_converted',
+            bookingId: enquiry.convertedBookingId,
+          },
+        };
+      }
+    }
+    throw error;
+  }
 
   const baseBody = {
     id,

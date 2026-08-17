@@ -9,7 +9,7 @@ Hacen falta **dos procesos**, porque el dashboard no tiene backend propio:
 ```bash
 # 1) API + D1 local (Worker)
 pnpm exec wrangler dev --config tenants/demo/wrangler.jsonc \
-  --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1
+  --port 8787 --var LOGIC_CAMP_DEV_ORIGINS:1 --var LOGIC_CAMP_DEV_AUTH:1
 
 # 2) dashboard con HMR
 pnpm --filter @logic-camp/dashboard exec vite --port 5173
@@ -30,13 +30,20 @@ Luego `http://localhost:5173`. Vite hace de proxy de `/api` → `:8787` (ver `vi
 
 Si la base está vacía: `pnpm db:reset && pnpm db:seed`.
 
-### `--var LOGIC_CAMP_DEV_ORIGINS:1` — por qué hace falta
+### Los dos interruptores locales — por qué hacen falta
 
-**Sin ese flag el login falla con 403 y las credenciales correctas** (ADR 0019).
+`LOGIC_CAMP_DEV_AUTH:1` habilita el secreto de autenticación reservado al
+entorno local; sin él el Worker falla cerrado. `LOGIC_CAMP_DEV_ORIGINS:1`
+autoriza el origen fijo de Vite: sin este segundo flag el login falla con 403
+aunque las credenciales sean correctas (ADR 0019).
 
 Better Auth rechaza el origen cruzado: el proxy de Vite manda `Origin: http://localhost:5173` mientras la API responde en `:8787`. En producción no ocurre porque el dashboard vive en `/admin/` del **mismo** Worker.
 
-El flag es un **interruptor, no un valor**: habilita una lista **constante** (`localhost:5173`) definida en `apps/api/src/auth.ts`. No se puede usar para autorizar un dominio arbitrario, y se pasa por `--var` en la línea de comandos precisamente para que **no exista en `tenants/*/wrangler.jsonc`**, que es el fichero que despliega a producción.
+Ambos flags son **interruptores, no valores de configuración**. El de orígenes
+habilita una lista **constante** (`localhost:5173`) definida en
+`apps/api/src/auth.ts`. No se puede usar para autorizar un dominio arbitrario, y
+se pasan por `--var` en la línea de comandos precisamente para que **no existan
+en `tenants/*/wrangler.jsonc`**, el fichero que despliega a producción.
 
 El contrato está fijado por tests en `apps/api/test/admin.test.ts` (`describe('trustedOrigins de desarrollo')`): sin el flag el 403 se mantiene, y con él solo entra localhost.
 

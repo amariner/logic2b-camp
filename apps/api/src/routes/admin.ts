@@ -410,7 +410,10 @@ export const adminRoutes = new Hono<AuthEnv>()
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const idem = idempotencyKeySchema.safeParse(c.req.header('Idempotency-Key'));
     if (!idem.success) return c.json({ error: 'invalid_idempotency_key' }, 400);
-    const { channel, preferredUnitId, ...body } = parsed.data;
+    const { channel, preferredUnitId, enquiryId, ...body } = parsed.data;
+    if (enquiryId && !idem.data) {
+      return c.json({ error: 'idempotency_required' }, 400);
+    }
 
     const tenant = c.get('tenant');
     const tenantConfig = await loadTenantConfig(tenant.db);
@@ -419,6 +422,7 @@ export const adminRoutes = new Hono<AuthEnv>()
       idemKey: idem.data,
       taxPolicy: TAX_POLICIES[tenantConfig.taxPolicy]!,
       preferredUnitId,
+      convertEnquiryId: enquiryId,
     });
     if (result.ok && result.status === 201) {
       await audit(
@@ -432,6 +436,13 @@ export const adminRoutes = new Hono<AuthEnv>()
           channel,
         },
       );
+      if (enquiryId) {
+        await audit(tenant.db, tenant.slug, c.get('user').id, 'enquiry', enquiryId, 'status', {
+          from: 'quoted',
+          to: 'converted',
+          bookingId: String(result.body.id),
+        });
+      }
       await notifyBookingConfirmed(
         c,
         body,
@@ -1152,6 +1163,13 @@ export const adminRoutes = new Hono<AuthEnv>()
 
     const row = (await db.select().from(schema.enquiries).where(eq(schema.enquiries.id, id)))[0];
     if (!row) return c.json({ error: 'not_found' }, 404);
+
+    // «Convertida» no es una etiqueta: exige crear una reserva real y enlazarla
+    // mediante POST /bookings. Así nunca se consume una solicitud sin inventario,
+    // precio ni titular confirmados.
+    if (parsed.data.status === 'converted') {
+      return c.json({ error: 'conversion_requires_booking' }, 409);
+    }
 
     await db
       .update(schema.enquiries)

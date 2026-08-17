@@ -1054,6 +1054,114 @@ describe('solicitudes', () => {
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toMatchObject({ error: 'invalid_query' });
   });
+
+  it('no permite fingir una conversión cambiando solo el estado', async () => {
+    const created = await app.request(
+      '/api/enquiries',
+      json({
+        message: 'Quiero confirmar la parcela que hemos presupuestado.',
+        contact: { name: 'Nora', email: 'nora@example.com' },
+        locale: 'es',
+      }),
+      envA,
+    );
+    const { id } = (await created.json()) as { id: string };
+
+    const converted = await app.request(
+      `/api/admin/enquiries/${id}`,
+      patch({ status: 'converted' }, reception),
+      envA,
+    );
+
+    expect(converted.status).toBe(409);
+    await expect(converted.json()).resolves.toMatchObject({ error: 'conversion_requires_booking' });
+
+    const db = createDb(env.DB);
+    const [row] = await db
+      .select({
+        status: schema.enquiries.status,
+        convertedBookingId: schema.enquiries.convertedBookingId,
+      })
+      .from(schema.enquiries)
+      .where(eq(schema.enquiries.id, id));
+    expect(row).toEqual({ status: 'new', convertedBookingId: null });
+  });
+
+  it('crea y enlaza la reserva de una solicitud presupuestada en el mismo batch', async () => {
+    const created = await app.request(
+      '/api/enquiries',
+      json({
+        message: 'Aceptamos el presupuesto.',
+        contact: { name: 'Lea', email: 'lea.convertida@example.com', phone: '+34 600 000 001' },
+        locale: 'es',
+        dateFrom: '2026-06-20',
+        dateTo: '2026-06-23',
+        occupancy: { adults: 2, childrenAges: [7], pets: 0, vehicles: 1 },
+        unitTypeId: 'ut_std',
+      }),
+      envA,
+    );
+    const { id: enquiryId } = (await created.json()) as { id: string };
+    const quoted = await app.request(
+      `/api/admin/enquiries/${enquiryId}`,
+      patch({ status: 'quoted' }, reception),
+      envA,
+    );
+    expect(quoted.status).toBe(200);
+
+    const conversionBody = {
+      ...bookingBody('2026-06-20', '2026-06-23'),
+      occupancy: { adults: 2, childrenAges: [7], pets: 0, vehicles: 1 },
+      holder: { name: 'Lea', email: 'lea.convertida@example.com', phone: '+34 600 000 001' },
+      enquiryId,
+    };
+    const conversion = await app.request(
+      '/api/admin/bookings',
+      json(conversionBody, { cookie: reception, 'Idempotency-Key': `convert-${enquiryId}` }),
+      envA,
+    );
+
+    expect(conversion.status).toBe(201);
+    const booking = (await conversion.json()) as { id: string; code: string };
+    const db = createDb(env.DB);
+    const [enquiry] = await db
+      .select({
+        status: schema.enquiries.status,
+        convertedBookingId: schema.enquiries.convertedBookingId,
+      })
+      .from(schema.enquiries)
+      .where(eq(schema.enquiries.id, enquiryId));
+    expect(enquiry).toEqual({ status: 'converted', convertedBookingId: booking.id });
+    const conversionAudit = await db
+      .select()
+      .from(schema.auditLog)
+      .where(and(eq(schema.auditLog.entityId, enquiryId), eq(schema.auditLog.action, 'status')));
+    expect(conversionAudit).toHaveLength(2);
+    expect(
+      conversionAudit.find((entry) => (entry.diff as { to?: string } | null)?.to === 'converted')
+        ?.diff,
+    ).toMatchObject({
+      from: 'quoted',
+      to: 'converted',
+      bookingId: booking.id,
+    });
+
+    const retry = await app.request(
+      '/api/admin/bookings',
+      json(conversionBody, { cookie: reception, 'Idempotency-Key': `convert-${enquiryId}` }),
+      envA,
+    );
+    expect(retry.status).toBe(200);
+    await expect(retry.json()).resolves.toMatchObject({ id: booking.id, idempotent: true });
+
+    const duplicate = await app.request(
+      '/api/admin/bookings',
+      json(conversionBody, { cookie: reception, 'Idempotency-Key': `convert-again-${enquiryId}` }),
+      envA,
+    );
+    expect(duplicate.status).toBe(409);
+    await expect(duplicate.json()).resolves.toMatchObject({ error: 'enquiry_already_converted' });
+  });
 });
 
 describe('notificaciones (log)', () => {

@@ -586,6 +586,10 @@ const es = {
   'res.total': 'Total',
   'res.pendiente': 'Pendiente',
   'alta.titulo': 'Nueva reserva',
+  'alta.convertirTitulo': 'Convertir solicitud',
+  'alta.desdeSolicitud':
+    'Revisa la estancia, el precio y el titular. La solicitud se marcará convertida solo al crear la reserva.',
+  'alta.convertirCrear': 'Crear y enlazar la reserva',
   'alta.cerrar': 'Cerrar el alta',
   'alta.tipo': 'Tipo de unidad',
   'alta.fechas': 'Llegada y salida',

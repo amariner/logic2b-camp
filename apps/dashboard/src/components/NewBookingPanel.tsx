@@ -20,11 +20,20 @@ type StayIssue = { code: string; params?: Record<string, string | number> };
  * fechas y unidad preferida ya elegidos con el gesto. `{}` = alta en blanco.
  */
 export type NewBookingInitial = {
+  enquiryId?: string;
   unitTypeId?: string;
   dateFrom?: string;
   dateTo?: string;
   unitId?: string;
   unitCode?: string;
+  occupancy?: {
+    adults: number;
+    childrenAges: number[];
+    pets: number;
+    vehicles: number;
+  };
+  holder?: { name: string; email: string; phone?: string };
+  locale?: string;
 };
 
 export default function NewBookingPanel({
@@ -44,16 +53,16 @@ export default function NewBookingPanel({
   const [unitTypeId, setUnitTypeId] = useState(initial?.unitTypeId ?? '');
   const [dateFrom, setDateFrom] = useState(initial?.dateFrom ?? '');
   const [dateTo, setDateTo] = useState(initial?.dateTo ?? '');
-  const [adults, setAdults] = useState(2);
-  const [childrenRaw, setChildrenRaw] = useState('');
-  const [pets, setPets] = useState(0);
-  const [vehicles, setVehicles] = useState(1);
+  const [adults, setAdults] = useState(initial?.occupancy?.adults ?? 2);
+  const [childrenRaw, setChildrenRaw] = useState(initial?.occupancy?.childrenAges.join(', ') ?? '');
+  const [pets, setPets] = useState(initial?.occupancy?.pets ?? 0);
+  const [vehicles, setVehicles] = useState(initial?.occupancy?.vehicles ?? 1);
   const [withElectricity, setWithElectricity] = useState(false);
   const [extraIds, setExtraIds] = useState<string[]>([]);
   const [channel, setChannel] = useState<'phone' | 'walkin'>('phone');
-  const [holderName, setHolderName] = useState('');
-  const [holderEmail, setHolderEmail] = useState('');
-  const [holderPhone, setHolderPhone] = useState('');
+  const [holderName, setHolderName] = useState(initial?.holder?.name ?? '');
+  const [holderEmail, setHolderEmail] = useState(initial?.holder?.email ?? '');
+  const [holderPhone, setHolderPhone] = useState(initial?.holder?.phone ?? '');
   const [notes, setNotes] = useState('');
 
   const catalogQuery = useQuery({
@@ -126,9 +135,10 @@ export default function NewBookingPanel({
           withElectricity,
           needsElectricity: withElectricity,
           holder: { name: holderName, email: holderEmail, phone: holderPhone || undefined },
-          locale: 'es',
+          locale: initial?.locale ?? 'es',
           notes: notes || undefined,
           channel,
+          enquiryId: initial?.enquiryId,
           // preferencia, no garantía: si al crear ya está ocupada, asigna el motor
           preferredUnitId: initial?.unitId,
         },
@@ -138,6 +148,7 @@ export default function NewBookingPanel({
       toast.success(t('alta.creada', { code: res.code }));
       void qc.invalidateQueries({ queryKey: ['bookings'] });
       void qc.invalidateQueries({ queryKey: ['planning'] });
+      if (initial?.enquiryId) void qc.invalidateQueries({ queryKey: ['enquiries'] });
       onCreated(res.id);
     },
     onError: (e) => {
@@ -155,25 +166,27 @@ export default function NewBookingPanel({
   const errorCotizacionInesperado = cotizacion.isError && stayIssues.length === 0;
 
   const input =
-    'w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[13px]';
+    'min-h-11 w-full rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-[16px] md:min-h-0 md:text-[13px]';
   const label = 'text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase';
 
   return (
     <aside
       ref={panelRef}
       role="dialog"
-      aria-label={t('alta.titulo')}
-      className="flex w-[380px] shrink-0 flex-col overflow-y-auto border-l border-border/60 bg-background"
+      aria-label={t(initial?.enquiryId ? 'alta.convertirTitulo' : 'alta.titulo')}
+      className="fixed inset-0 z-50 flex w-full flex-col overflow-y-auto bg-background md:static md:z-auto md:w-[380px] md:shrink-0 md:border-l md:border-border/60"
     >
       <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background px-4 py-2.5">
-        <span className="text-[14px] font-semibold">{t('alta.titulo')}</span>
+        <span className="text-[14px] font-semibold">
+          {t(initial?.enquiryId ? 'alta.convertirTitulo' : 'alta.titulo')}
+        </span>
         <Button
           type="button"
           variant="ghost"
           size="iconSm"
           onClick={onClose}
           aria-label={t('alta.cerrar')}
-          className="ml-auto"
+          className="ml-auto size-11 md:size-7"
         >
           ✕
         </Button>
@@ -198,6 +211,11 @@ export default function NewBookingPanel({
           if (puedeCrear && !crear.isPending) crear.mutate();
         }}
       >
+        {initial?.enquiryId && (
+          <p className="rounded-(--lc-radius) bg-accent/50 px-2 py-1.5 text-[12px] text-muted-foreground">
+            {t('alta.desdeSolicitud')}
+          </p>
+        )}
         <div>
           <label htmlFor="alta-tipo" className={label}>
             {t('alta.tipo')}
@@ -303,7 +321,7 @@ export default function NewBookingPanel({
           />
         </div>
 
-        <label className="flex items-center gap-2">
+        <label className="flex min-h-11 items-center gap-2 md:min-h-0">
           <input
             type="checkbox"
             checked={withElectricity}
@@ -317,7 +335,7 @@ export default function NewBookingPanel({
             <legend className={label}>{t('alta.extras')}</legend>
             <div className="mt-1 flex flex-col gap-1">
               {catalog!.extras.map((ex) => (
-                <label key={ex.id} className="flex items-center gap-2">
+                <label key={ex.id} className="flex min-h-11 items-center gap-2 md:min-h-0">
                   <input
                     type="checkbox"
                     checked={ex.required || extraIds.includes(ex.id)}
@@ -409,7 +427,7 @@ export default function NewBookingPanel({
                 variant={channel === ch ? 'primary' : 'outline'}
                 onClick={() => setChannel(ch)}
                 aria-pressed={channel === ch}
-                className="flex-1"
+                className="h-11 flex-1 md:h-7"
               >
                 {t(`canal.${ch}`)}
               </Button>
@@ -461,8 +479,15 @@ export default function NewBookingPanel({
           />
         </div>
 
-        <Button type="submit" size="sm" disabled={!puedeCrear || crear.isPending}>
-          {crear.isPending ? t('alta.creando') : t('alta.crear')}
+        <Button
+          type="submit"
+          size="sm"
+          disabled={!puedeCrear || crear.isPending}
+          className="min-h-11 md:min-h-8"
+        >
+          {crear.isPending
+            ? t('alta.creando')
+            : t(initial?.enquiryId ? 'alta.convertirCrear' : 'alta.crear')}
         </Button>
       </form>
     </aside>

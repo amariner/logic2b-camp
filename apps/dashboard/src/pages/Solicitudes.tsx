@@ -5,7 +5,7 @@
  */
 import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
 import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
@@ -14,6 +14,8 @@ import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
 import { isPinadaScenario, isSerraltaScenario } from '../demo/pinadamar';
+import NewBookingPanel from '../components/NewBookingPanel';
+import { bookingInitialFromEnquiry } from '../lib/enquiry-conversion';
 
 const isLitePortfolioScenario = isPinadaScenario || isSerraltaScenario;
 
@@ -57,6 +59,8 @@ export default function Solicitudes() {
   const navigate = useNavigate();
   const [filtro, setFiltro] = useState<EnquiryStatus | 'todas'>('todas');
   const [abierta, setAbierta] = useState<string | null>(null);
+  const [convirtiendo, setConvirtiendo] = useState<EnquiryItem | null>(null);
+  const conversionOpenerRef = useRef<HTMLElement | null>(null);
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['enquiries'],
@@ -104,61 +108,62 @@ export default function Solicitudes() {
       : t('sol.cualquierTipo');
 
   return (
-    <div className="flex h-full flex-col">
-      {/* filtros por estado, con recuento — la bandeja se lee de un vistazo */}
-      <div className="flex items-center gap-2 border-b border-border/60 px-2 py-2 md:px-4 md:py-2.5">
-        <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1 overflow-x-auto md:flex-wrap md:overflow-visible">
-          <Button
-            variant={filtro === 'todas' ? 'primary' : 'outline'}
-            size="xs"
-            onClick={() => setFiltro('todas')}
-            aria-pressed={filtro === 'todas'}
-            className="h-11 shrink-0 md:h-7"
-          >
-            {t('sol.todas')} · {items.length}
-          </Button>
-          {ESTADOS.map((s) => (
+    <div className="flex h-full">
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* filtros por estado, con recuento — la bandeja se lee de un vistazo */}
+        <div className="flex items-center gap-2 border-b border-border/60 px-2 py-2 md:px-4 md:py-2.5">
+          <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1 overflow-x-auto md:flex-wrap md:overflow-visible">
             <Button
-              key={s}
-              variant={filtro === s ? 'primary' : 'outline'}
+              variant={filtro === 'todas' ? 'primary' : 'outline'}
               size="xs"
-              onClick={() => setFiltro(s)}
-              aria-pressed={filtro === s}
+              onClick={() => setFiltro('todas')}
+              aria-pressed={filtro === 'todas'}
               className="h-11 shrink-0 md:h-7"
             >
-              {t(`sol.${s}`)} · {porEstado.get(s) ?? 0}
+              {t('sol.todas')} · {items.length}
             </Button>
-          ))}
-        </div>
-        <p className="tnum ml-auto hidden text-[12px] text-muted-foreground md:block">
-          {t('sol.n', { n: visibles.length })}
-        </p>
-        <BotonAyuda className="size-11 shrink-0 md:size-7" />
-      </div>
-
-      {isPending && (
-        /* Misma rejilla que la fila real: fecha · nombre · fechas · tipo · estado. */
-        <div aria-busy="true" aria-label={t('sol.cargando')}>
-          <SkeletonRows rows={7} cols={['w-14', 'w-32', 'w-44', 'w-28', 'w-16']} />
-        </div>
-      )}
-      {isError && <QueryError error={error} onRetry={() => refetch()} />}
-      {!isPending && !isError && visibles.length === 0 && (
-        <EmptyState
-          art="inbox"
-          title={t('sol.vacio')}
-          /* Salida: si el vacío lo ha causado el filtro, se puede quitar. */
-          action={
-            filtro !== 'todas' ? (
-              <Button variant="outline" size="sm" onClick={() => setFiltro('todas')}>
-                {t('sol.verTodas')}
+            {ESTADOS.map((s) => (
+              <Button
+                key={s}
+                variant={filtro === s ? 'primary' : 'outline'}
+                size="xs"
+                onClick={() => setFiltro(s)}
+                aria-pressed={filtro === s}
+                className="h-11 shrink-0 md:h-7"
+              >
+                {t(`sol.${s}`)} · {porEstado.get(s) ?? 0}
               </Button>
-            ) : undefined
-          }
-        />
-      )}
+            ))}
+          </div>
+          <p className="tnum ml-auto hidden text-[12px] text-muted-foreground md:block">
+            {t('sol.n', { n: visibles.length })}
+          </p>
+          <BotonAyuda className="size-11 shrink-0 md:size-7" />
+        </div>
 
-      {/*
+        {isPending && (
+          /* Misma rejilla que la fila real: fecha · nombre · fechas · tipo · estado. */
+          <div aria-busy="true" aria-label={t('sol.cargando')}>
+            <SkeletonRows rows={7} cols={['w-14', 'w-32', 'w-44', 'w-28', 'w-16']} />
+          </div>
+        )}
+        {isError && <QueryError error={error} onRetry={() => refetch()} />}
+        {!isPending && !isError && visibles.length === 0 && (
+          <EmptyState
+            art="inbox"
+            title={t('sol.vacio')}
+            /* Salida: si el vacío lo ha causado el filtro, se puede quitar. */
+            action={
+              filtro !== 'todas' ? (
+                <Button variant="outline" size="sm" onClick={() => setFiltro('todas')}>
+                  {t('sol.verTodas')}
+                </Button>
+              ) : undefined
+            }
+          />
+        )}
+
+        {/*
         Cabecera de columnas. Las claves `sol.recibida`/`sol.fechas`/`sol.tipo`
         llevaban desde la sesión 18 en el diccionario sin que las usara nadie: no
         sobraba la clave, faltaba la UI (el mismo hallazgo que Pagos y
@@ -166,112 +171,137 @@ export default function Solicitudes() {
         `<button>`, no celdas, así que el lector de pantalla ya lee cada valor
         dentro de su fila y esto solo añadiría una hilera suelta de palabras.
       */}
-      {!isPending && !isError && visibles.length > 0 && (
-        <div aria-hidden="true" className={cn(REJILLA, CABECERA, 'border-b border-border/60 py-2')}>
-          <span>{t('sol.recibida')}</span>
-          <span>{t('sol.contacto')}</span>
-          <span className="hidden sm:block">{t('sol.fechas')}</span>
-          <span className="hidden sm:block">{t('sol.tipo')}</span>
-          <span className="justify-self-end">{t('res.estado')}</span>
-        </div>
-      )}
+        {!isPending && !isError && visibles.length > 0 && (
+          <div
+            aria-hidden="true"
+            className={cn(REJILLA, CABECERA, 'border-b border-border/60 py-2')}
+          >
+            <span>{t('sol.recibida')}</span>
+            <span>{t('sol.contacto')}</span>
+            <span className="hidden sm:block">{t('sol.fechas')}</span>
+            <span className="hidden sm:block">{t('sol.tipo')}</span>
+            <span className="justify-self-end">{t('res.estado')}</span>
+          </div>
+        )}
 
-      <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
-        {visibles.map((e) => {
-          const pax = e.occupancy ? e.occupancy.adults + e.occupancy.childrenAges.length : null;
-          const abiertaEsta = abierta === e.id;
-          return (
-            <li key={e.id}>
-              {/*
+        <ul className="min-h-0 flex-1 divide-y divide-border/40 overflow-y-auto">
+          {visibles.map((e) => {
+            const pax = e.occupancy ? e.occupancy.adults + e.occupancy.childrenAges.length : null;
+            const abiertaEsta = abierta === e.id;
+            return (
+              <li key={e.id}>
+                {/*
                 Fila resumen clicable para expandir el detalle. Se queda como
                 <button> nativo: la fila ES la rejilla de 5 columnas y <Button>
                 del DS es `inline-flex`, así que convertirla rompería la
                 maquetación (ADR 0020, C2 — excepción de "fila entera clicable").
                 Lleva el mismo anillo de foco que `buttonVariants`.
               */}
-              <button
-                type="button"
-                onClick={() => setAbierta(abiertaEsta ? null : e.id)}
-                aria-expanded={abiertaEsta}
-                className={cn(
-                  REJILLA,
-                  'min-h-11 rounded-md py-2.5 text-left text-[13px] hover:bg-accent/50',
-                  focusRing,
-                )}
-              >
-                <span className="tnum text-muted-foreground">{fecha(e.createdAt)}</span>
-                <span className="truncate font-medium">{e.contact.name}</span>
-                <span className="tnum hidden truncate text-muted-foreground sm:block">
-                  {e.dateFrom && e.dateTo
-                    ? `${fecha(e.dateFrom)} → ${fecha(e.dateTo)}${pax ? ` · ${t('planning.pax', { n: pax })}` : ''}`
-                    : t('sol.sinFechas')}
-                </span>
-                <span className="hidden truncate text-muted-foreground sm:block">
-                  {tipoNombre(e.unitTypeId)}
-                </span>
-                <span className={`lc-chip sol-${e.status} justify-self-end`}>
-                  {t(`sol.${e.status}`)}
-                </span>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setAbierta(abiertaEsta ? null : e.id)}
+                  aria-expanded={abiertaEsta}
+                  className={cn(
+                    REJILLA,
+                    'min-h-11 rounded-md py-2.5 text-left text-[13px] hover:bg-accent/50',
+                    focusRing,
+                  )}
+                >
+                  <span className="tnum text-muted-foreground">{fecha(e.createdAt)}</span>
+                  <span className="truncate font-medium">{e.contact.name}</span>
+                  <span className="tnum hidden truncate text-muted-foreground sm:block">
+                    {e.dateFrom && e.dateTo
+                      ? `${fecha(e.dateFrom)} → ${fecha(e.dateTo)}${pax ? ` · ${t('planning.pax', { n: pax })}` : ''}`
+                      : t('sol.sinFechas')}
+                  </span>
+                  <span className="hidden truncate text-muted-foreground sm:block">
+                    {tipoNombre(e.unitTypeId)}
+                  </span>
+                  <span className={`lc-chip sol-${e.status} justify-self-end`}>
+                    {t(`sol.${e.status}`)}
+                  </span>
+                </button>
 
-              {abiertaEsta && (
-                <div className="grid gap-3 bg-accent/40 px-4 py-3 text-[13px] sm:grid-cols-2">
-                  <div>
-                    <h3 className="lc-panel-h">{t('sol.mensaje')}</h3>
-                    <p className="whitespace-pre-line">{e.message}</p>
-                  </div>
-                  <div className="flex flex-col gap-2">
+                {abiertaEsta && (
+                  <div className="grid gap-3 bg-accent/40 px-4 py-3 text-[13px] sm:grid-cols-2">
                     <div>
-                      <h3 className="lc-panel-h">{t('sol.contacto')}</h3>
-                      <p className="font-medium">{e.contact.name}</p>
-                      <p>
-                        <a
-                          href={`mailto:${e.contact.email}`}
-                          className="inline-flex min-h-11 items-center text-link underline md:min-h-0"
-                        >
-                          {e.contact.email}
-                        </a>
-                      </p>
-                      {e.contact.phone && (
+                      <h3 className="lc-panel-h">{t('sol.mensaje')}</h3>
+                      <p className="whitespace-pre-line">{e.message}</p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div>
+                        <h3 className="lc-panel-h">{t('sol.contacto')}</h3>
+                        <p className="font-medium">{e.contact.name}</p>
                         <p>
                           <a
-                            href={`tel:${e.contact.phone}`}
-                            className="tnum inline-flex min-h-11 items-center text-link underline md:min-h-0"
+                            href={`mailto:${e.contact.email}`}
+                            className="inline-flex min-h-11 items-center text-link underline md:min-h-0"
                           >
-                            {e.contact.phone}
+                            {e.contact.email}
                           </a>
                         </p>
-                      )}
-                      <p className="mt-1 text-muted-foreground">
-                        {t('sol.idioma')}: {e.locale.toUpperCase()} · {t('sol.origen')}: {e.source}
-                      </p>
-                    </div>
-                    {puedeGestionar && NEXT[e.status].length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {(isLitePortfolioScenario && e.status === 'contacted'
-                          ? (['converted', 'lost'] as EnquiryStatus[])
-                          : NEXT[e.status]
-                        ).map((s) => (
-                          <Button
-                            key={s}
-                            size="xs"
-                            variant={s === 'lost' ? 'destructiveOutline' : 'primary'}
-                            disabled={cambiar.isPending}
-                            onClick={() => cambiar.mutate({ id: e.id, status: s })}
-                            className="min-h-11 md:min-h-7"
-                          >
-                            {t(`accionSol.${s}`)}
-                          </Button>
-                        ))}
+                        {e.contact.phone && (
+                          <p>
+                            <a
+                              href={`tel:${e.contact.phone}`}
+                              className="tnum inline-flex min-h-11 items-center text-link underline md:min-h-0"
+                            >
+                              {e.contact.phone}
+                            </a>
+                          </p>
+                        )}
+                        <p className="mt-1 text-muted-foreground">
+                          {t('sol.idioma')}: {e.locale.toUpperCase()} · {t('sol.origen')}:{' '}
+                          {e.source}
+                        </p>
                       </div>
-                    )}
+                      {puedeGestionar && NEXT[e.status].length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {(isLitePortfolioScenario && e.status === 'contacted'
+                            ? (['converted', 'lost'] as EnquiryStatus[])
+                            : NEXT[e.status]
+                          ).map((s) => (
+                            <Button
+                              key={s}
+                              size="xs"
+                              variant={s === 'lost' ? 'destructiveOutline' : 'primary'}
+                              disabled={cambiar.isPending}
+                              onClick={(event) => {
+                                if (s === 'converted' && !isLitePortfolioScenario) {
+                                  conversionOpenerRef.current = event.currentTarget;
+                                  setConvirtiendo(e);
+                                  return;
+                                }
+                                cambiar.mutate({ id: e.id, status: s });
+                              }}
+                              className="min-h-11 md:min-h-7"
+                            >
+                              {t(`accionSol.${s}`)}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      {puedeGestionar && convirtiendo && (
+        <NewBookingPanel
+          initial={bookingInitialFromEnquiry(convirtiendo)}
+          onClose={() => {
+            setConvirtiendo(null);
+            requestAnimationFrame(() => conversionOpenerRef.current?.focus());
+          }}
+          onCreated={(id) => {
+            setConvirtiendo(null);
+            void navigate({ to: '/reservas/$id', params: { id } });
+          }}
+        />
+      )}
     </div>
   );
 }

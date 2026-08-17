@@ -257,7 +257,7 @@ Las peticiones de la web, trabajables por estados:
 
 - Filtros con recuento: **nueva → contactada → presupuestada → convertida / perdida**. De un vistazo se ve cuántas piden atención.
 - Cada solicitud se expande para leer el **mensaje completo** y contactar con un clic (email y teléfono son enlaces directos), con su idioma y origen.
-- Los botones ofrecen solo el **siguiente paso natural** del flujo (una nueva se marca contactada o perdida; una presupuestada, convertida o perdida; una perdida puede reabrirse). Cada cambio queda auditado.
+- Los botones ofrecen solo el **siguiente paso natural** del flujo (una nueva se marca contactada o perdida; una presupuestada, convertida o perdida; una perdida puede reabrirse). Al convertir, se abre el alta con tipo, fechas, ocupación, idioma y titular precargados: recepción revisa la cotización del servidor y la solicitud solo cambia a convertida cuando la reserva queda creada y enlazada. Cada cambio queda auditado.
 
 ### 6.9 Inventario
 
@@ -333,7 +333,7 @@ Con fecha en el plan de trabajo, no humo:
 | Módulo                    | Qué añade                                                                                                                                                             |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Fianza cobrada online** | Hoy la señal/pago completo ya se cobran online (§4.4); retener la fianza con la misma pasarela (pre-autorización, sin mezclarla con el ingreso) es el siguiente paso  |
-| **Gestión ampliada**      | Series temporales en informes, conversión directa de solicitud a reserva con datos precargados                                                                        |
+| **Gestión ampliada**      | Series temporales en informes; la conversión directa de solicitud a reserva ya está operativa (§6.8)                                                                  |
 | **Automatiza**            | Prototipo supervisado en Mar de Fondo: explica las fuentes de una respuesta propuesta y exige revisión humana; aprobar solo la deja preparada, no la publica ni envía |
 | **Inteligente**           | Próximo prototipo: recomendación de ocupación con origen, incertidumbre y cambio preparado; no ejecutará cambios                                                      |
 | **Alta exprés**           | Proceso interno para poner un camping nuevo en marcha en una tarde con su material real                                                                               |
