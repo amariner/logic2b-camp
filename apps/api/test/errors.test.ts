@@ -19,6 +19,7 @@ import {
   notFoundHandler,
   resetAlertBuckets,
   shouldAlert,
+  type LogEntry,
   type SystemAlert,
 } from '../src/errors';
 import { sendSystemErrorAlert } from '../src/notify';
@@ -32,6 +33,7 @@ const envA = { DB: env.DB, TENANT_SLUG: 'errs' };
 const SECRETO = 'DATOS-INTERNOS-QUE-NO-DEBEN-SALIR-4711';
 
 const alerts: SystemAlert[] = [];
+const serverLogs: LogEntry[] = [];
 const alertSpy = (_c: unknown, a: SystemAlert) => {
   alerts.push(a);
 };
@@ -52,7 +54,7 @@ const boom = new Hono<Env>()
   .get('/api/prohibido-sin-mensaje', () => {
     throw new HTTPException(409);
   })
-  .onError(createOnError(alertSpy))
+  .onError(createOnError(alertSpy, (entry) => serverLogs.push(entry)))
   .notFound(notFoundHandler);
 
 /** Igual, pero el canal de aviso está roto: la respuesta debe sobrevivir igual. */
@@ -73,6 +75,7 @@ beforeAll(async () => {
 
 beforeEach(() => {
   alerts.length = 0;
+  serverLogs.length = 0;
   resetAlertBuckets();
 });
 
@@ -101,26 +104,22 @@ describe('onError: el cliente no ve nunca el detalle interno', () => {
   });
 
   it('tampoco filtra cuando lo lanzado no es un Error (Hono se lo saltaría)', async () => {
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const res = await boom.request('/api/boom-no-error', {}, envA);
     expect(res.status).toBe(500);
     const texto = await res.clone().text();
     expect(texto).not.toContain(SECRETO);
     expect((await res.json()) as unknown).toMatchObject({ error: 'internal_error' });
     // el valor lanzado no se pierde: acaba en el log del servidor
-    expect(spy.mock.calls.map((c) => String(c[0])).join('\n')).toContain(SECRETO);
+    expect(serverLogs.map((entry) => entry.detail).join('\n')).toContain(SECRETO);
   });
 
   it('registra el detalle completo en servidor con la MISMA referencia del cliente', async () => {
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const res = await boom.request('/api/boom', {}, envA);
     const { ref } = (await res.json()) as { ref: string };
 
-    const linea = spy.mock.calls.map((c) => String(c[0])).find((l) => l.includes(ref));
-    expect(linea).toBeDefined();
-    // una sola línea, JSON parseable — es lo que hace útil el log de Cloudflare
-    expect(linea).not.toContain('\n');
-    const entrada = JSON.parse(linea as string) as Record<string, unknown>;
+    const entrada = serverLogs.find((entry) => entry.requestId === ref);
+    expect(entrada).toBeDefined();
+    if (!entrada) throw new Error('No se capturó el log correlacionado');
     expect(entrada.level).toBe('error');
     expect(entrada.event).toBe('unhandled_error');
     expect(entrada.tenant).toBe('errs');

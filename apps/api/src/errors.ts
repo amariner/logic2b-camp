@@ -46,6 +46,8 @@ export type LogEntry = {
   [key: string]: LogValue;
 };
 
+export type LogFn = (entry: LogEntry) => void;
+
 /** Redacción defensiva para los formatos de PII/credencial que más llegan de proveedores. */
 export function redactSensitiveText(value: string): string {
   return value
@@ -188,7 +190,7 @@ export const normalizeThrown: MiddlewareHandler<Env> = async (c, next) => {
   }
 };
 
-export function createOnError(alert: AlertFn): ErrorHandler<Env> {
+export function createOnError(alert: AlertFn, logger: LogFn = logEvent): ErrorHandler<Env> {
   return (err, c) => {
     // Un 4xx lanzado A PROPÓSITO por un handler no es un fallo del sistema: se
     // devuelve tal cual, sin referencia y sin despertar a nadie. Convertirlo en
@@ -206,7 +208,7 @@ export function createOnError(alert: AlertFn): ErrorHandler<Env> {
     const route = `${c.req.method} ${safeRoutePath(c)}`;
     const tenant = safeTenantSlug(c);
 
-    logEvent({
+    logger({
       level: 'error',
       event: 'unhandled_error',
       tenant,
@@ -230,7 +232,7 @@ export function createOnError(alert: AlertFn): ErrorHandler<Env> {
           suppressed: decision.suppressed,
         });
     } catch (alertErr) {
-      logEvent({
+      logger({
         level: 'warn',
         event: 'system_alert_failed',
         tenant,
