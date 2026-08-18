@@ -459,17 +459,19 @@ es un gate de producción, no un pendiente local de implementación.
   2026-08-14**: opcional y retrocompatible, póster LCP, ahorro de datos,
   movimiento reducido, error de vídeo y ausencia de campos conservan fallback.
 - [H1] Generar e inspeccionar las cuatro escenas y el vídeo de L'Olivar,
-  Pinada del Mar y Mar de Fondo. **Avance 2026-08-18: fotografía 1/3.**
+  Pinada del Mar y Mar de Fondo. **Avance 2026-08-18: fotografía 2/3.**
   L'Olivar queda completo con cuatro másteres humanos propios y aprobados
   (`vida-recepcion`, `vida-servicio-cocina`, `vida-servicio-balsa` y
   `vida-entorno`), bloque «La vida aquí», tres planes, recepción y dos
-  servicios en uso. Se generaron con OpenAI integrado de una en una y con
-  pausas de 20 s, sin Higgsfield ni CLI/API; un rechazo de moderación antes de
-  bytes quedó trazado y se resolvió haciendo explícita la ropa completa. La
-  revisión 375/1366 corrigió además el ancho del contacto Logic2B en móvil y
-  la tercera escena huérfana en escritorio. Pendientes: fotografía de
-  Pinada del Mar y Mar de Fondo, comparación de las tres anclas y los vídeos;
-  no abrir H2 hasta aprobar el gate completo.
+  servicios en uso. Pinada del Mar añade llegada familiar, recepción activa,
+  piscina supervisada y salida en bicicleta, además de tres planes prudentes
+  de costa. Las ocho piezas se generaron con OpenAI integrado de una en una y
+  con pausas de 20 s, sin Higgsfield ni CLI/API; un rechazo de moderación antes
+  de bytes en L'Olivar quedó trazado y se resolvió haciendo explícita la ropa
+  completa. La revisión 375/1366 deja ambos temas sin desborde, imágenes rotas
+  ni errores de consola y conserva el contacto Logic2B a 48 px. Pendientes:
+  fotografía de Mar de Fondo, comparación de las tres anclas y los vídeos; no
+  abrir H2 hasta aprobar el gate completo.
 - [H2] Cinco demos de costa/humedal/río, solo tras aprobar H1.
 - [H3] Cinco demos de interior/montaña/larga estancia, solo tras aprobar H1.
 - [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs

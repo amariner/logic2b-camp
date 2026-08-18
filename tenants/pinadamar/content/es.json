@@ -38,6 +38,27 @@
     "titulo": "La pinada organiza el día.",
     "texto": "Las calles siguen la sombra, la piscina queda en el centro y el camino de arena sale hacia una playa larga. Todo está cerca, pero cada zona conserva su ritmo."
   },
+  "vida": {
+    "titulo": "Aquí el día empieza en movimiento",
+    "intro": "Llegar, orientarse y decidir entre agua o bicicleta. Pinada del Mar tiene ritmo familiar, pero cada gesto sigue siendo sencillo y reconocible.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Instalarse sin perder la mañana",
+        "texto": "La sombra, el porche y las conexiones están donde hacen falta para dejar las bolsas y entender el alojamiento a la primera."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Recepción explica el recinto",
+        "texto": "La calle, la piscina y la salida al mar se sitúan antes de entregar la llave; una conversación breve evita vueltas después."
+      },
+      {
+        "foto": "vida-servicio-piscina",
+        "titulo": "La piscina mantiene una escala tranquila",
+        "texto": "Hay zona poco profunda, sombra cercana y supervisión visible, sin convertir el centro del camping en un parque acuático."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta una estancia de seis noches",
     "subtitulo": "Rellena esta solicitud ficticia y ábrela después en el gestor Logic2B. No se enviará ningún mensaje.",
@@ -104,6 +125,46 @@
       { "titulo": "El mercado", "texto": "Los martes y sábados hay fruta, pescado y producto local a quince minutos en bici." },
       { "titulo": "Cuando baja el sol", "texto": "La brisa entra desde el este y las calles quedan en calma a partir de las once. La circulación nocturna se limita a llegadas acordadas." }
     ],
+    "rutas": {
+      "titulo": "Tres planes para salir desde la pinada",
+      "intro": "Recepción ayuda a elegir según el calor, el estado del mar y si el grupo quiere caminar o pedalear. Son propuestas orientativas, no excursiones organizadas.",
+      "aviso": "Los tiempos y condiciones son orientativos. El mar, los accesos, las obras y los horarios de terceros pueden cambiar; confírmalos en recepción o en la fuente oficial antes de salir.",
+      "items": [
+        {
+          "nombre": "Pasarela de la playa",
+          "resumen": "Un paseo corto bajo pinos termina en la pasarela y permite reconocer la playa antes de cargar con todo el día.",
+          "tipo": "Paseo familiar",
+          "duracion": "45 min · 2,6 km",
+          "dificultad": "Fácil",
+          "salida": "Acceso este",
+          "momento": "Primera hora o tarde",
+          "recomendacion": "Consulta la bandera y el estado del mar. El camping no reserva zonas ni garantiza servicios en la playa.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vía verde de las dos calas",
+          "resumen": "Un recorrido llano combina pinada, tramos de costa y dos paradas donde decidir si continuar o volver.",
+          "tipo": "Bicicleta",
+          "duracion": "1 h 30 min · 18 km",
+          "dificultad": "Fácil",
+          "salida": "Aparcabicis de recepción",
+          "momento": "Por la mañana",
+          "recomendacion": "Antes de salir con menores, pregunta por obras y tramos compartidos; recepción presta bomba y herramienta básica.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mercado y puerto",
+          "resumen": "Un trayecto corto para comprar producto fresco y pasear junto al puerto sin depender del coche.",
+          "tipo": "Bicicleta y paseo",
+          "duracion": "55 min en bici · 9 km",
+          "dificultad": "Fácil",
+          "salida": "Salida principal",
+          "momento": "Martes o sábado",
+          "recomendacion": "El mercado y los comercios son de terceros. Comprueba el calendario, el acceso y los horarios antes de ir.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [

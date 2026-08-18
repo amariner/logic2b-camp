@@ -1,12 +1,12 @@
 # Prompt para la siguiente sesión — H1 por temas
 
-> Actualizado el 2026-08-18 tras completar la fotografía humana de L'Olivar.
+> Actualizado el 2026-08-18 tras completar la fotografía humana de Pinada del Mar.
 
 ## Estado en una línea
 
-H1 queda en fotografía 1/3: L'Olivar ya tiene cuatro escenas humanas aprobadas,
-contenido de vida y rutas e integración en instalaciones. El siguiente tema es
-Pinada del Mar. Todo continúa local, sin desplegar.
+H1 queda en fotografía 2/3: L'Olivar y Pinada del Mar ya tienen cuatro escenas
+humanas aprobadas, contenido de vida y rutas e integración en instalaciones.
+El siguiente tema es Mar de Fondo. Todo continúa local, sin desplegar.
 
 ## Decisión operativa vigente
 
@@ -19,30 +19,33 @@ Pinada del Mar. Todo continúa local, sin desplegar.
   pieza;
 - registrar los fallos, pero no cambiar de proveedor de forma automática.
 
-## Evidencia de L'Olivar
+## Evidencia de Pinada del Mar
 
-- manifiesto y estado: 12/12 finales locales, cuatro lotes H1 unitarios;
-- escenas: bienvenida/recepción, desayuno, balsa y paseo de piedra seca;
-- home: tres escenas en «La vida aquí», pila móvil y cierre editorial 7/5
-  en escritorio;
-- instalaciones: balsa, cocina y recepción usan fotografía humana;
-- entorno: tres planes prudentes con tiempos, dificultad, salida y aviso;
+- manifiesto y estado: 15/15 finales locales, cuatro lotes H1 unitarios;
+- escenas: llegada al bungalow, orientación en recepción, piscina supervisada
+  y preparación de bicicletas;
+- home: tres escenas en «La vida aquí», pila móvil y composición editorial
+  asimétrica en escritorio;
+- instalaciones: recepción y piscina prefieren las escenas humanas aprobadas;
+- entorno: tres planes prudentes de playa, vía verde y mercado, sin mapas ni
+  garantías operativas inventadas;
 - QA local a 375/1366: cero desborde, imágenes rotas o errores de consola;
-- contacto Logic2B: 48 px de alto y 112 px de ancho en móvil, etiqueta completa
-  conservada para accesibilidad;
-- build aislado y fábrica de 12 demos en verde antes del `pnpm check` final.
+- contacto Logic2B: 48 px de alto, 112 px en móvil y sin solapar tarjetas;
+- build aislado y verificadores de fábrica/portfolio en verde antes del
+  `pnpm check` final.
 
 ## Siguiente objetivo
 
-Completar **Pinada del Mar** como segundo tema ancla de H1:
+Completar **Mar de Fondo** como tercer tema ancla de H1:
 
-1. fijar en `tenants/pinadamar/fotos.json` cuatro papeles humanos propios:
-   llegada familiar, recepción activa, piscina usada con calma y salida en bici;
+1. fijar en `tenants/mardefondo/fotos.json` cuatro papeles humanos propios:
+   llegada al alojamiento, check-in de resort, servicio de terraza/restaurante
+   y paseo familiar junto a la laguna o la playa;
 2. generar, inspeccionar e integrar las cuatro piezas con el flujo unitario;
 3. escribir su bloque de vida y tres planes/rutas sin inventar mapas ni horarios;
 4. verificar home, instalaciones y entorno a 375/1366, incluido el contacto
    Logic2B;
-5. no iniciar Mar de Fondo ni vídeo hasta cerrar el tema Pinada.
+5. comparar las tres anclas antes de decidir si se producen los vídeos H1.
 
 No abrir H2/H3, no desplegar y no configurar servicios externos. El gate de H1
 solo se cierra cuando las tres anclas se comparen y los bucles de vídeo alcancen

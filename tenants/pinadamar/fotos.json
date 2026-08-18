@@ -1,9 +1,9 @@
 {
   "procedencia": {
     "tipo": "generada",
-    "fuente": "Modelo integrado de imagen de Codex, sesión 85 del 2026-08-06.",
+    "fuente": "Modelo integrado de imagen de Codex, sesión 85 del 2026-08-06, y ampliación humana H1 con el generador integrado de OpenAI.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Pinada del Mar.",
-    "nota": "Once másteres inspeccionados antes de optimizar; sin URLs externas ni material de otros tenants."
+    "nota": "Once másteres iniciales inspeccionados antes de optimizar; sin URLs externas ni material de otros tenants. Por instrucción del 2026-08-18, las piezas H1 se generan de una en una, con pausa entre solicitudes y sin fallback a Higgsfield."
   },
   "_": [
     "Encargo de arte y manifiesto de descarga de Camping Pinada del Mar.",
@@ -30,7 +30,11 @@
     ["bungalow-exterior", "bungalow-interior"],
     ["mobil-home", "instalacion-recepcion"],
     ["instalacion-piscina", "textura-lona"],
-    ["entorno"]
+    ["entorno"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-piscina"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-calle",
@@ -92,6 +96,26 @@
       "prompt": "Editorial documentary photograph of a sandy footpath opening from a pine grove onto a long Mediterranean beach, early evening. Compacted sand path framed by Aleppo pine trunks and dry scrub in the foreground, dunes with marram grass, then a wide calm sea and a low horizon. Warm low light, long shadows. Natural light, no HDR, no brochure saturation, subtle 35mm film grain. No people, no text, no logos, no watermarks.",
       "aspecto": "21:9",
       "nota": "cabecera de la página 'Mar y alrededores'"
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-llegada: una familia se instala en un bungalow bajo la pinada.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Pinada del Mar demo website\nPrimary request: Photoreal editorial documentary photograph of a practical family arrival at a sober bungalow in the same Mediterranean pine campsite as the approved Pinada del Mar assets.\nInput images: bungalow-exterior.webp is the architecture and material reference; hero-calle.webp is the light, vegetation and campsite-scale reference.\nScene/backdrop: Pale rendered single-storey bungalow, dark timber deck and porch, compacted sand and tall Aleppo pines at mid-morning.\nSubject: Two adults and one child aged roughly 7–11 arrive without posing; one adult places a soft travel bag on the shaded deck, the other checks the pitch utility connection, and the child carries a rolled plain towel.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, restrained Mediterranean colour and subtle film grain.\nComposition/framing: Horizontal 3:2, full bodies and action inside the central 60 percent for a safe mobile crop; people occupy about 25 percent of the frame and the campsite remains the subject.\nLighting/mood: Dappled mid-morning pine shade, practical and calm.\nConstraints: Anonymous secondary figures; no one looking at camera; plausible anatomy and physical contact; preserve the approved pale render, dark timber, compacted sand and Aleppo-pine identity.\nAvoid: staged smiles, airport luggage, hotel trolley, recognizable vehicle or number plate, readable text, logos, luxury resort, tropical lawn, extra people, malformed hands, HDR, brochure saturation, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-recepcion: orientación práctica en el mostrador de la recepción existente.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Pinada del Mar demo website\nPrimary request: Photoreal editorial documentary scene of a practical welcome at the same small reception building shown in the approved Pinada del Mar reference.\nInput images: instalacion-recepcion.webp is the architecture, counter, rosemary, bicycle, light and framing reference.\nScene/backdrop: Small pale rendered reception, deep dark-timber porch, open counter, potted rosemary and the same simple bicycle, under Aleppo-pine shade.\nSubject: A receptionist aged 45–60 stands behind the open counter and points to a plain paper map with no readable detail; one adult guest listens in profile while a child waits naturally beside the bicycle.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained green and sand palette, subtle 35 mm grain.\nComposition/framing: Horizontal 3:2, action central and comfortably inside all edges for mobile crop; the modest reception remains more prominent than the people.\nLighting/mood: Quiet operational mid-morning under pine shade.\nConstraints: Maintain the approved building geometry, porch, counter, rosemary and bicycle; anonymous figures, non-frontal faces, believable hands and contact.\nAvoid: posing, hotel uniforms, readable brochures or screens, logos, invented glass lobby, check-in queue, airport counter, malformed hands, HDR, saturation, watermark."
+    },
+    "vida-servicio-piscina": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-servicio: uso familiar sereno de la piscina, con supervisión visible.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Pinada del Mar demo website\nPrimary request: Photoreal editorial documentary photograph of the same modest rectangular family pool at Pinada del Mar being used calmly and safely.\nInput images: instalacion-piscina.webp is the pool geometry, Aleppo-pine setting, concrete surround, sea distance, light and colour reference.\nScene/backdrop: Rectangular pool with a real shallow section and steps, simple concrete surround and tall Aleppo pines in late-morning light.\nSubject: One child aged roughly 7–11 enters only the shallow section using the steps while an attentive adult sits nearby in open shade with a plain towel; at most two distant guests may be softly out of focus for scale.\nStyle/medium: Natural editorial documentary photography, 70 mm framing, realistic water and skin, restrained warm stone and muted green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; supervised action remains central with clear space around complete limbs; people are secondary to the pool.\nLighting/mood: Calm late morning, lived-in but not crowded.\nConstraints: Safe visible supervision, anonymous non-frontal faces, plausible anatomy and pool contact; preserve the reference pool as modest rather than resort-like.\nAvoid: staged splashing, inflatables, water park, infinity pool, tropical palms, crowds, lifeguard fiction, revealing fashion pose, logos, text, distorted limbs, glossy skin, HDR, brochure saturation, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-entorno: preparación familiar de bicicletas antes de salir por la vía verde.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Pinada del Mar demo website\nPrimary request: Photoreal editorial documentary photograph of a family preparing simple bicycles before leaving the same Mediterranean pine campsite for a coastal greenway.\nInput images: hero-calle.webp is the Aleppo-pine, compacted-sand and morning-light reference; entorno.webp is the restrained coastal landscape reference.\nScene/backdrop: Sandy entrance under tall pines with a modest unmarked greenway disappearing between trees and only a restrained hint of the Mediterranean coast.\nSubject: One adult crouches to check the tyre pressure of an unbranded bicycle while another adult correctly adjusts a child's helmet; the child stands calmly beside a smaller bicycle.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, believable physical contact, restrained coastal colour and subtle film grain.\nComposition/framing: Horizontal 3:2, complete bodies and bicycles within the central 70 percent for mobile crop; people occupy no more than 30 percent.\nLighting/mood: Clear pine shade and calm practical anticipation.\nConstraints: Anonymous family, non-frontal faces, correct helmet fit, physically plausible bicycles and hands, coherent light and terrain with Pinada del Mar.\nAvoid: racing kits, professional cycling, beach postcard, posing, readable signs, road traffic, logos, floating wheels, malformed hands, HDR, tourism-poster saturation, watermark."
     }
   }
 }
