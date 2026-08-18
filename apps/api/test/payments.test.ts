@@ -276,6 +276,110 @@ describe('reserva web con pago (redsys deposit)', () => {
     expect(intents).toHaveLength(1);
   });
 
+  it('un intent pendiente bloquea cambios de total pero permite mover al mismo precio y conserva el contrato original', async () => {
+    await setPaymentsConfig(REDSYS_CONFIG);
+    const email = 'locked-intent@example.com';
+    const create = await app.request(
+      '/api/bookings',
+      json(bookingBody('2026-09-01', '2026-09-04', email)),
+      REDSYS_ENV,
+    );
+    expect(create.status).toBe(201);
+    const created = (await create.json()) as {
+      id: string;
+      code: string;
+      totalCents: number;
+      payment: { providerRef: string };
+    };
+    const db = createDb(env.DB);
+    const originalBooking = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    const originalIntent = (
+      await db
+        .select()
+        .from(schema.meta)
+        .where(eq(schema.meta.key, `payment_intent:${created.id}`))
+    )[0]!;
+
+    for (const dates of [
+      { dateFrom: '2026-09-01', dateTo: '2026-09-05' },
+      { dateFrom: '2026-09-01', dateTo: '2026-09-03' },
+    ]) {
+      const modify = await app.request(
+        `/api/bookings/${created.code}/modify`,
+        json({ email, ...dates }),
+        REDSYS_ENV,
+      );
+      expect(modify.status).toBe(409);
+      await expect(modify.json()).resolves.toMatchObject({
+        error: 'payment_intent_replacement_required',
+        previousTotalCents: created.totalCents,
+      });
+
+      const unchanged = (
+        await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+      )[0]!;
+      expect(unchanged).toMatchObject({
+        dateFrom: originalBooking.dateFrom,
+        dateTo: originalBooking.dateTo,
+        totalCents: originalBooking.totalCents,
+        priceBreakdown: originalBooking.priceBreakdown,
+      });
+      const intent = (
+        await db
+          .select()
+          .from(schema.meta)
+          .where(eq(schema.meta.key, `payment_intent:${created.id}`))
+      )[0]!;
+      expect(intent).toEqual(originalIntent);
+    }
+
+    const sameTotal = await app.request(
+      `/api/bookings/${created.code}/modify`,
+      json({ email, dateFrom: '2026-09-08', dateTo: '2026-09-11' }),
+      REDSYS_ENV,
+    );
+    expect(sameTotal.status).toBe(200);
+    await expect(sameTotal.json()).resolves.toMatchObject({ totalCents: created.totalCents });
+
+    const amountCents = Math.round(created.totalCents * 0.3);
+    const notification = await buildNotification(
+      created.payment.providerRef,
+      '0000',
+      amountCents,
+      'LOCKED-INTENT',
+    );
+    const hook = await app.request(
+      '/api/payments/webhook/redsys',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: notification,
+      },
+      REDSYS_ENV,
+    );
+    expect(hook.status).toBe(200);
+
+    const confirmed = (
+      await db.select().from(schema.bookings).where(eq(schema.bookings.id, created.id))
+    )[0]!;
+    expect(confirmed).toMatchObject({
+      status: 'confirmed',
+      dateFrom: '2026-09-08',
+      dateTo: '2026-09-11',
+      totalCents: created.totalCents,
+      paidCents: amountCents,
+    });
+    const intentAfterWebhook = (
+      await db
+        .select()
+        .from(schema.meta)
+        .where(eq(schema.meta.key, `payment_intent:${created.id}`))
+    )[0]!;
+    expect(intentAfterWebhook).toEqual(originalIntent);
+  });
+
   it('el reintento de pago falla cerrado para otro email o una reserva no pendiente', async () => {
     await setPaymentsConfig(REDSYS_CONFIG);
     const create = await app.request(

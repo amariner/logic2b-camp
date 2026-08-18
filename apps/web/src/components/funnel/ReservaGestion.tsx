@@ -171,7 +171,12 @@ export default function ReservaGestion({
         body: JSON.stringify({ email, dateFrom: from, dateTo: to }),
       });
       if (res.status === 409) {
-        setActionError(labels.modificar.noDisponible ?? null);
+        const conflict = (await res.json().catch(() => null)) as { error?: string } | null;
+        setActionError(
+          conflict?.error === 'payment_intent_replacement_required'
+            ? [labels.pago.pendiente, labels.modificar.error].filter(Boolean).join(' ')
+            : (labels.modificar.noDisponible ?? null),
+        );
         return;
       }
       if (!res.ok) throw new Error(String(res.status));

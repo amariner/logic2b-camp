@@ -352,13 +352,17 @@ producto real se activa módulo a módulo cuando exista un cliente.
 
 | Fase                                    | Estado         | Resultado                                                                                                                                |
 | --------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| H0 · contrato común                     | ✅ Producción | `heroMotion` seguro, póster LCP responsive, preferencias reactivas y gate de trazabilidad/formato/peso; `vida` y rutas con fallback      |
-| H1 · tres anclas                        | ✅ Foto 3/3   | Doce escenas aprobadas, tres bloques de vida, nueve rutas y gate comparativo; H1-V queda diferido con fallback estático completo         |
+| H0 · contrato común                     | ✅ Producción | `heroMotion` seguro, aceptación Chromium y gate final que exige humanidad/rutas/servicios en las 13 demos aprobadas                      |
+| H1 · tres anclas                        | ✅ Foto 3/3   | Doce escenas, tres bloques, nueve rutas, miniaturas responsive y movimiento comercial controlable; H1-V conserva fallback completo      |
 | H2 · costa, humedal y río               | ✅ Producción | Veinte escenas, cinco bloques de vida, quince rutas, recepción y servicio humano por tema                                                |
 | H3 · interior, montaña y larga estancia | ✅ Producción | Veinte escenas, cinco bloques de vida y quince rutas sin repetir grupo, conflicto operativo, servicio central ni relación con el paisaje |
 
 H1-V continúa diferido sin bloquear el cierre fotográfico: los campos son
 opcionales, el póster continúa como LCP y los 13 tenants construyen con fallback.
+Desde la sesión 151, un fixture de navegador prueba sin activar ningún tenant
+la petición cero bajo preferencias restrictivas, la fuente correcta por
+viewport, reproducción y fallback. El preflight real cifra L'Olivar en 21
+créditos frente a 1,38 disponibles; no se lanzó un trabajo inviable.
 El cierre está publicado desde el 2026-08-18 en la versión Cloudflare
 `bf56617c-c499-4a92-87d1-388c0165f382`.
 

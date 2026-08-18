@@ -26,7 +26,12 @@ import { createBooking, nowIso, uid } from '../bookings';
 import { loadEngineData, loadExtras, loadRequiredExtraIds } from '../data';
 import { notifyBookingCancelled, notifyBookingConfirmed } from '../notify';
 import { CONSENT_VERSION } from '../consent';
-import { executeRefund, paymentView, recordManualPayment } from '../payments';
+import {
+  executeRefund,
+  paymentIntentRequiresReplacement,
+  paymentView,
+  recordManualPayment,
+} from '../payments';
 import { buildParteForDate, resolveTransport } from '../hospedajes';
 import { anonymizeGuest, exportGuest, sweepRetention } from '../rgpd';
 import {
@@ -604,6 +609,16 @@ export const adminRoutes = new Hono<AuthEnv>()
             totalCents: q.totalCents,
             previousTotalCents: booking.totalCents,
             breakdown: q.breakdown,
+          },
+          409,
+        );
+      }
+      if (await paymentIntentRequiresReplacement(db, id, booking.totalCents, q.totalCents)) {
+        return c.json(
+          {
+            error: 'payment_intent_replacement_required',
+            previousTotalCents: booking.totalCents,
+            totalCents: q.totalCents,
           },
           409,
         );

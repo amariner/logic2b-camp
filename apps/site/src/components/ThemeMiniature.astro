@@ -1,17 +1,53 @@
 ---
+import { Image } from 'astro:assets';
+import {
+  PORTFOLIO_IMAGE_QUALITY,
+  PORTFOLIO_IMAGE_WIDTHS,
+  type PortfolioImage,
+} from '../lib/portfolio';
+
 interface Props {
   name: string;
   style: string;
-  image: string;
+  image: PortfolioImage;
   variant: string;
   eager?: boolean;
 }
 
 const { name, style, image, variant, eager = false } = Astro.props;
+const optimized = typeof image !== 'string';
+// El componente vive en dos geometrías distintas sin pedir contexto a sus
+// consumidores: una columna del catálogo y media columna del carril del héroe.
+const catalog = /\/temas\/?$/.test(Astro.url.pathname);
+const sizes = catalog
+  ? '(max-width: 760px) calc(100vw - 24px), (max-width: 1600px) calc(50vw - 43px), 793px'
+  : '(max-width: 767px) calc(50vw - 42px), (max-width: 1023px) calc(50vw - 60px), (max-width: 1600px) 24vw, 420px';
 ---
 
 <div class="theme-miniature" data-theme-variant={variant}>
-  <img src={image} alt="" width="720" height="520" loading={eager ? 'eager' : 'lazy'} />
+  {optimized ? (
+    <Image
+      src={image}
+      alt=""
+      widths={PORTFOLIO_IMAGE_WIDTHS}
+      sizes={sizes}
+      quality={PORTFOLIO_IMAGE_QUALITY}
+      format="webp"
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      data-theme-thumbnail={name}
+    />
+  ) : (
+    <img
+      src={image}
+      alt=""
+      width="720"
+      height="520"
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      data-theme-thumbnail-fallback={name}
+    />
+  )}
   <div class="theme-miniature-wash"></div>
   <div class="theme-miniature-site">
     <div class="theme-miniature-nav">

@@ -133,6 +133,22 @@ export async function loadStoredPaymentIntent(
   return row ? (parseStoredIntent(row.value)?.payment ?? null) : null;
 }
 
+/**
+ * Un intent ya emitido fija el importe que el proveedor aceptará. Mientras no
+ * exista un flujo explícito para reemplazarlo/cancelarlo, cambiar el total de
+ * la reserva debe fallar cerrado; moverla conservando exactamente el precio no
+ * invalida el contrato de pago.
+ */
+export async function paymentIntentRequiresReplacement(
+  db: Db,
+  bookingId: string,
+  previousTotalCents: number,
+  nextTotalCents: number,
+): Promise<boolean> {
+  if (previousTotalCents === nextTotalCents) return false;
+  return (await loadStoredPaymentIntent(db, bookingId)) !== null;
+}
+
 /** Forma pública de un asiento: `raw` es legado interno y jamás sale de la API. */
 export function paymentView(payment: typeof schema.payments.$inferSelect) {
   const { raw: _raw, ...safe } = payment;

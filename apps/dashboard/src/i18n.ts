@@ -420,6 +420,8 @@ const es = {
   'planning.moverError.unit_type_mismatch': 'Esa fila es de otro tipo de alojamiento.',
   'planning.moverError.price_changed':
     'El precio acaba de cambiar en el servidor: revisa el desglose e inténtalo de nuevo.',
+  'planning.moverError.payment_intent_replacement_required':
+    'La reserva tiene un pago iniciado. Para no cobrar un importe obsoleto, sus fechas y precio se mantienen intactos.',
   'planning.moverError.generic': 'No se ha podido mover la reserva: se ha restaurado.',
   'planning.precio.titulo': 'El precio cambia con las fechas nuevas',
   'planning.precio.desc': '{code}: de {antes} a {ahora}. El desglose nuevo sustituye al anterior.',

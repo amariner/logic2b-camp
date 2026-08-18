@@ -243,3 +243,22 @@ sale con póster humano y se reintenta el vídeo como subfase posterior.
 
 El primer hito vendible no exige terminar las trece demos: H1 completa debe
 estar lista para enseñar y aprender antes de consumir el coste de H2 y H3.
+
+## 9. Estado verificable · 2026-08-19
+
+- H1-FOTO 3/3, H2 5/5 y H3 5/5 están cerrados y publicados.
+- La fábrica rechaza una demo aprobada si pierde `vida`, sus tres rutas, cuatro
+  piezas humanas trazadas, recepción o un segundo servicio en uso. La plantilla
+  mantiene los campos opcionales y el fallback retrocompatible.
+- El carril comercial se puede pausar con ratón, teclado o toque; el foco lo
+  detiene y movimiento reducido lo inmoviliza sin ofrecer un control redundante.
+  La matriz ES/EN 375/1366 fija estado, objetivo de 44 px, doce temas y overflow.
+- Carril, catálogo y tres anclas comparten seis derivados responsive. El build
+  limita las doce miniaturas a 450 KiB en 360w y 900 KiB en 800w; la evidencia
+  actual queda muy por debajo, en 119,4 y 512,2 KiB respectivamente.
+- H1-V no tiene todavía un clip aprobado, pero su aceptación ya no es teórica:
+  seis pruebas Chromium cubren bloqueo de red por preferencia, selección móvil y
+  escritorio, reproducción, autoplay rechazado y medio inválido.
+- L'Olivar sigue siendo el único siguiente vídeo. Seedance 2.0 cuesta 21
+  créditos para el brief aprobado y el saldo verificado es 1,38; generar con
+  menos calidad o lanzar una petición fallida no cuenta como progreso.

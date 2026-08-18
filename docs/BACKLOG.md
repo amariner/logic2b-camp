@@ -7,20 +7,15 @@ Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato
 Este índice manda para elegir trabajo; las entradas extensas de debajo conservan
 la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
 
-- **Local ahora, por checkpoint:** el corte no visual R15 está auditado, ADR
-  0044 cierra la solicitud contextual de tier 2 y B5/ADR 0046 cierra el contacto
-  transversal con Logic2B por WhatsApp. La sesión 147 cierra además la
-  conversión real de solicitud a reserva. No queda otro bloque funcional local
-  no temático autorizado. R0–R8 y R10–R11 están
-  acreditados; R12–R13 agotaron su porción local y R14 conserva su veto. El
-  candidato sigue con 1.989 bloqueos de build que requieren material real y 4
-  gates externos de publicación. `--apply`, proveedor, dominio y deploy
-  permanecen cerrados. Los builds aislados y el bundle están verdes. En
-  paralelo, la decisión de Andreu abre el portfolio completo: Riu Clar, La Duna
-  y El Delta cierran D5-V en 6/6; Serralta, Entre Vinyes, Els Tarongers y La
-  Carrasca, La Ballena y Sol d'Hivern cierran D6-V en 12/12.
-  La sesión 148 revalida el límite con `pnpm check` 71/71 y QA canónico de
-  17.012 enlaces, 28 superficies / 56 vistas y cinco formatos/MIME.
+- **Local ahora, por checkpoint:** portfolio D5-V/D6-V y fotografía H1/H2/H3
+  están cerrados; la sesión 151 blinda accesibilidad, peso, contrato humano,
+  aceptación H1-V y el intent de pago obsoleto. La auditoría abre como siguiente
+  P0 la autogestión pública: sustituir el código de seis dígitos + email en URL
+  por una capacidad ≥80 bits, lookup POST JSON y respuestas `no-store`. Después,
+  ledger/idempotencia manual se trata como objetivo separado. R14 conserva su
+  veto y H1-V necesita saldo/proveedor. `new:camping --apply`, reseed remoto,
+  servicios reales y cliente continúan bajo sus gates específicos; el deploy
+  de este candidato sí ha sido autorizado expresamente por Andreu.
 - ~~[B5] Contacto transversal con Logic2B por WhatsApp~~ → **hecho 2026-08-12
   (sesión 140, ADR 0046)**: contrato compartido es/ca/en/fr/de/nl, píldora
   pública tras scroll, salida configurable en tenant y ayuda integrada en
@@ -62,6 +57,23 @@ es un gate de producción, no un pendiente local de implementación.
 - [8.x] Fianza (`deposit_cents`) cobrada vía pasarela: pre-autorización (Stripe `capture_method:manual`, Redsys autorización tipo 1 + confirmación tipo 2) sin mezclarla con `paidCents` — declarado fuera de v1 en ADR 0011 §2 — 2026-07-19
 - [8.x] Verificar el adaptador Redsys contra su sandbox real con las credenciales de comercio de Andreu (clave, FUC, terminal) antes del primer cobro real — la firma está verificada por construcción (3DES cruzado contra `node:crypto`, HMAC nativo) pero no contra el TPV real — ADR 0011 §7 — 2026-07-19
 - ~~[R12/pagos] Cerrar fronteras locales Stripe y Redsys~~ → **hecho 2026-08-10 (sesiones 117, 119 y 121)**: Stripe tiene antirreplay, timeout, identidad, Zod y reintento seguro. Redsys exige versión explícita, records string, campos, firma e importe en callback; el refund requiere `0900`+pedido+importe y no reintenta ambigüedades. Sigue pendiente confirmar en sandbox la versión del terminal y migrar a SHA-512 si corresponde. Nada de esto acredita proveedor.
+- ~~[R12/pagos] Evitar que una modificación deje obsoleto un intent ya emitido~~
+  → **hecho 2026-08-19 (sesión 151)**: público y admin comparan el total
+  re-cotizado antes de escribir; si cambia y existe intent, responden 409 y
+  conservan fechas, total, desglose y metadata. Igual importe sigue permitido y
+  el webhook posterior solo confirma el contrato original. Reemplazar/cancelar
+  un intent en el proveedor sigue siendo una integración posterior, no se
+  simula desde este corte fail-closed.
+- [R12/seguridad] **Autogestión pública con capacidad fuerte y sin PII en URL**:
+  el código actual tiene seis dígitos y se combina con email en query/historial.
+  Migrar a ≥80 bits, lookup POST JSON y `Cache-Control: no-store`, con estrategia
+  explícita para reservas existentes y tests de entropía/URL/logs — detectado
+  2026-08-19, siguiente P0 local.
+- [R12/pagos] **Ledger manual idempotente y seguro ante concurrencia**:
+  `recordManualPayment`/`executeRefund` leen `paidCents` y escriben un cálculo
+  previo; dos peticiones simultáneas pueden desalinear asientos y saldo. Añadir
+  `Idempotency-Key`/claim único y actualización derivada del ledger o guarda DB,
+  con `Promise.all` y una sola llamada externa — detectado 2026-08-19.
 - ~~[R12/gates] Auditar Analytics, observabilidad, OTA e IA~~ → **hecho
   2026-08-10 (sesión 126)**: el contrato de build inspecciona fuente,
   dependencias y artefacto; prueba ausencia de trackers/SDKs/conectores, conserva
@@ -462,6 +474,16 @@ es un gate de producción, no un pendiente local de implementación.
   preferencias después de cargar y nueve pruebas nuevas. El gate ejecutable
   exige `movimiento.json`, trazabilidad y SHA-256, 6–10 s, cero audio, una pista,
   códec/píxeles compatibles, recorte por dispositivo, presupuesto y `faststart`.
+  Endurecido de nuevo el 2026-08-19: las 13 demos aprobadas ya no pueden perder
+  silenciosamente vida, tres rutas, cuatro piezas humanas, recepción o servicio;
+  cinco fixtures negativos y el chequeo de fábrica lo bloquean. Un fixture
+  Chromium activa `HeroMedia` sin tocar tenants reales y verifica petición cero,
+  selección móvil/escritorio, reproducción y los dos fallbacks de error.
+- ~~[H0-COMERCIAL] Detener el movimiento automático y reducir el coste de las
+  miniaturas del portfolio~~ → **hecho local 2026-08-19 (sesión 151)**: control
+  ES/EN de 44 px, teclado/foco/movimiento reducido y QA 375/1366. Seis anchos
+  responsive compartidos bajan el carril completo a 119,4 KiB en 360w y el
+  catálogo 2× a 512,2 KiB, con presupuestos ejecutables en cada build.
 - ~~[H1-FOTO] Generar, inspeccionar y comparar las cuatro escenas de L'Olivar,
   Pinada del Mar y Mar de Fondo~~ → **hecho local 2026-08-18: fotografía 3/3.**
   L'Olivar queda completo con cuatro másteres humanos propios y aprobados
@@ -505,6 +527,9 @@ es un gate de producción, no un pendiente local de implementación.
   con FFmpeg, bloquea audio/formato/orientación/peso inválidos, mantiene el clip
   fuera del runtime hasta inspección y solo al aprobar publica bytes y evidencia
   SHA-256 en `movimiento.json`; los rechazos se conservan aparte.
+  **Preflight 2026-08-19:** el saldo real es 1,38 créditos y Seedance 2.0 exige
+  21 para el clip aprobado de 6 s/720p/sin audio; tampoco hay una alternativa
+  compatible por debajo del saldo. No se creó trabajo ni se degradó el brief.
 - ~~[H2] Cinco demos de costa/humedal/río~~ → **hecho local 2026-08-18: 5/5.**
   Cala Sereno, La Duna, El Delta, Riu Clar y La Ballena suman veinte escenas
   humanas nuevas, cinco bloques de vida, quince rutas prudentes y recepción

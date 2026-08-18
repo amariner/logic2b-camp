@@ -35,6 +35,8 @@
     "titulo": "Your campsite should not look like everyone else's.",
     "texto": "Twelve fictional campsites turn distinct identities and levels into browsable journeys on the same product.",
     "verTodos": "See all themes",
+    "pausar": "Pause theme motion",
+    "reanudar": "Resume theme motion",
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
     "nota": "One technical base, distinct identities. Each demo changes light, voice, inventory and rhythm without duplicating the product.",

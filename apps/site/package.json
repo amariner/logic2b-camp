@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "typecheck": "astro check",
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
-    "build": "astro build && node scripts/check-commercial-artifact.mjs",
+    "build": "astro build && node scripts/check-commercial-artifact.mjs && node scripts/check-theme-images.mjs",
     "qa:commercial": "node scripts/qa-commercial.mjs",
     "qa:campana": "node scripts/qa-campaign.mjs",
     "qa:video": "node scripts/qa-video.mjs",

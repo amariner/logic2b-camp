@@ -16,15 +16,41 @@ interface Props {
   items: ThemeItem[];
   status: string;
   button: string;
+  pauseLabel: string;
+  resumeLabel: string;
   href: string;
 }
 
-const { items, status, button, href } = Astro.props;
+const { items, status, button, pauseLabel, resumeLabel, href } = Astro.props;
 const left = items.filter((_, index) => index % 2 === 0);
 const right = items.filter((_, index) => index % 2 === 1);
 ---
 
-<div class="camp-theme-rail" aria-label={button}>
+<div
+  class="camp-theme-rail"
+  aria-label={button}
+  data-theme-motion
+  data-paused="false"
+  data-focus-paused="false"
+>
+  <button
+    class="camp-theme-motion-toggle"
+    type="button"
+    aria-label={pauseLabel}
+    aria-pressed="false"
+    title={pauseLabel}
+    data-theme-motion-toggle
+    data-pause-label={pauseLabel}
+    data-resume-label={resumeLabel}
+    hidden
+  >
+    <svg class="camp-theme-pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8 6v12M16 6v12" />
+    </svg>
+    <svg class="camp-theme-play-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m9 6 9 6-9 6Z" />
+    </svg>
+  </button>
   <div class="camp-theme-column camp-theme-column-left">
     <div class="camp-theme-track">
       {[...left, ...left].map((theme, index) => (
@@ -66,6 +92,38 @@ const right = items.filter((_, index) => index % 2 === 1);
   <a class="camp-theme-link" href={href}>{button}<span aria-hidden="true">→</span></a>
 </div>
 
+<script>
+  const rails = document.querySelectorAll<HTMLElement>('[data-theme-motion]');
+
+  rails.forEach((rail) => {
+    if (rail.dataset.motionReady === 'true') return;
+    const toggle = rail.querySelector<HTMLButtonElement>('[data-theme-motion-toggle]');
+    if (!toggle) return;
+
+    const setPaused = (paused: boolean) => {
+      rail.dataset.paused = String(paused);
+      toggle.setAttribute('aria-pressed', String(paused));
+      const label = paused ? toggle.dataset.resumeLabel : toggle.dataset.pauseLabel;
+      if (label) {
+        toggle.setAttribute('aria-label', label);
+        toggle.title = label;
+      }
+    };
+    const syncFocusPause = () => {
+      const active = document.activeElement;
+      rail.dataset.focusPaused = String(
+        Boolean(active && active !== toggle && rail.contains(active)),
+      );
+    };
+
+    toggle.addEventListener('click', () => setPaused(rail.dataset.paused !== 'true'));
+    rail.addEventListener('focusin', syncFocusPause);
+    rail.addEventListener('focusout', () => requestAnimationFrame(syncFocusPause));
+    toggle.hidden = false;
+    rail.dataset.motionReady = 'true';
+  });
+</script>
+
 <style>
   .camp-theme-rail {
     position: relative;
@@ -76,6 +134,36 @@ const right = items.filter((_, index) => index % 2 === 1);
     min-height: 520px;
     overflow: hidden;
   }
+  .camp-theme-motion-toggle {
+    position: absolute;
+    z-index: 6;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 14%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--botanical-paper) 94%, transparent);
+    color: var(--botanical-ink);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--botanical-ink) 14%, transparent);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+  .camp-theme-motion-toggle[hidden] { display: none; }
+  .camp-theme-motion-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .camp-theme-play-icon { display: none; }
+  .camp-theme-motion-toggle[aria-pressed='true'] .camp-theme-pause-icon { display: none; }
+  .camp-theme-motion-toggle[aria-pressed='true'] .camp-theme-play-icon { display: block; }
   .camp-theme-rail::before,
   .camp-theme-rail::after {
     position: absolute;
@@ -96,7 +184,11 @@ const right = items.filter((_, index) => index % 2 === 1);
   }
   .camp-theme-column-left .camp-theme-track { animation: camp-themes-down 48s linear infinite; }
   .camp-theme-column-right .camp-theme-track { animation: camp-themes-up 54s linear infinite; }
+  .camp-theme-rail .camp-theme-track { animation-play-state: paused; }
+  .camp-theme-rail[data-motion-ready='true'] .camp-theme-track { animation-play-state: running; }
   .camp-theme-rail:hover .camp-theme-track { animation-play-state: paused; }
+  .camp-theme-rail[data-paused='true'] .camp-theme-track,
+  .camp-theme-rail[data-focus-paused='true'] .camp-theme-track { animation-play-state: paused; }
   .camp-theme-card {
     overflow: hidden;
     border-radius: 14px;
@@ -162,6 +254,7 @@ const right = items.filter((_, index) => index % 2 === 1);
   }
   @media (prefers-reduced-motion: reduce) {
     .camp-theme-track { animation-play-state: paused !important; }
+    .camp-theme-motion-toggle { display: none; }
   }
   @media (max-width: 560px) {
     .camp-theme-rail { height: 520px; min-height: 0; gap: 8px; }

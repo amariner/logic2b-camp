@@ -5,6 +5,10 @@ import { fileURLToPath } from 'node:url';
 const siteDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const distDir = path.join(siteDir, 'dist');
 const contentDir = path.join(siteDir, 'src', 'content');
+const themeRailSource = await readFile(
+  path.join(siteDir, 'src', 'components', 'ThemeRail.astro'),
+  'utf8',
+);
 const locales = [
   { code: 'es', prefix: '' },
   { code: 'en', prefix: 'en/' },
@@ -63,6 +67,36 @@ function assertContact(html, context, label) {
     `${label}: faltan garantías del enlace externo`,
   );
 }
+
+function assertThemeMotion(html, content, label) {
+  assert(html.includes('data-theme-motion'), `${label}: falta el carril de temas`);
+  assert(html.includes('data-theme-motion-toggle'), `${label}: falta el control de movimiento`);
+  assert(html.includes('aria-pressed="false"'), `${label}: el control no declara su estado`);
+  assert(
+    html.includes(`data-pause-label="${content.temas.pausar}"`),
+    `${label}: falta la etiqueta localizada para pausar`,
+  );
+  assert(
+    html.includes(`data-resume-label="${content.temas.reanudar}"`),
+    `${label}: falta la etiqueta localizada para reanudar`,
+  );
+  assert(
+    (html.match(/class="camp-theme-card"/g) ?? []).length === content.temas.items.length * 2,
+    `${label}: el carril no representa exactamente dos ciclos de los temas`,
+  );
+  assert(
+    (html.match(/aria-hidden="true"/g) ?? []).length >= content.temas.items.length,
+    `${label}: el ciclo duplicado debe quedar fuera del árbol accesible`,
+  );
+}
+
+assert(
+  themeRailSource.includes('animation-play-state: paused;') &&
+    themeRailSource.includes("[data-motion-ready='true'] .camp-theme-track") &&
+    themeRailSource.indexOf("rail.dataset.motionReady = 'true'") >
+      themeRailSource.indexOf("toggle.addEventListener('click'"),
+  'temas: el carril debe quedar pausado hasta completar la inicialización del control',
+);
 
 async function walk(directory, base = directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -129,6 +163,7 @@ for (const locale of locales) {
   assert(home.includes('GTM-TVDWZ9LC'), `${locale.code}: falta el contenedor GTM comercial`);
   assert(home.includes('data-consent-banner'), `${locale.code}: falta el banner de consentimiento`);
   assertContact(home, 'commercial', `${locale.code}: portada`);
+  assertThemeMotion(home, content, `${locale.code}: portada`);
   assertContact(pricing, 'commercial', `${locale.code}: precios`);
   assertContact(themes, 'commercial', `${locale.code}: temas`);
   assert(

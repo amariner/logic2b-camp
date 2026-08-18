@@ -11,6 +11,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { validateApprovedHumanContract } from './theme-human-contract.mjs';
 
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 const tenantsDir = join(repo, 'tenants');
@@ -370,13 +371,25 @@ for (const slug of tenantSlugs) {
       fail(`${slug}/config.ts: staticHeroMobileImage debe declarar un aspecto vertical`);
     }
   }
+  const localizedContent = new Map();
   for (const locale of locales) {
     const content = join(dir, 'content', `${locale}.json`);
     if (!existsSync(content)) fail(`${slug}: falta content/${locale}.json`);
-    validateHumanContent(slug, locale, json(content));
+    const parsedContent = json(content);
+    validateHumanContent(slug, locale, parsedContent);
+    localizedContent.set(locale, parsedContent);
   }
   const brief = validateBrief(json(join(dir, 'identity.json')), `${slug}/identity.json`);
   if (brief.id !== slug) fail(`${slug}/identity.json: id incoherente`);
+  const photoManifest = json(join(dir, 'fotos.json'));
+  if (brief.status === 'approved-demo') {
+    validateApprovedHumanContract({
+      slug,
+      defaultLocale,
+      content: localizedContent.get(defaultLocale),
+      pieces: photoManifest.piezas,
+    });
+  }
   validateTheme(slug, read(join(dir, 'theme.css')), configArray(config, 'demoThemes'), brief);
   await validateManifest(slug, join(dir, 'fotos.json'));
 }

@@ -1,5 +1,10 @@
 ---
-import { requiredPortfolioImage } from '../lib/portfolio';
+import { Image } from 'astro:assets';
+import {
+  PORTFOLIO_IMAGE_QUALITY,
+  PORTFOLIO_IMAGE_WIDTHS,
+  requiredPortfolioImage,
+} from '../lib/portfolio';
 
 interface PortfolioItem {
   slug: string;
@@ -71,12 +76,16 @@ const comparisonKeys = ['captacion', 'operacion', 'automatizacion', 'decision'] 
         c.items.map((item, index) => (
           <article class="portfolio-card lc-reveal" style={`--lc-delay:${index * 70}ms`}>
             <a class="portfolio-image" href={item.href} aria-label={`${c.demo}: ${item.nombre}`}>
-              <img
+              <Image
                 src={requiredPortfolioImage(item.slug)}
                 alt={item.imagenAlt}
-                width="1600"
-                height="1000"
+                widths={PORTFOLIO_IMAGE_WIDTHS}
+                sizes="(max-width: 767px) calc(100vw - 24px), (max-width: 1023px) 44vw, 32vw"
+                quality={PORTFOLIO_IMAGE_QUALITY}
+                format="webp"
                 loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                data-portfolio-thumbnail={item.slug}
               />
               <span>{item.nivel}</span>
             </a>

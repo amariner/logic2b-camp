@@ -6,7 +6,7 @@
 import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
 import { and, eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { app } from '../src/app';
 import {
   authRateLimitEnabled,
@@ -14,6 +14,7 @@ import {
   provisionUser,
   resolveAuthSecret,
 } from '../src/auth';
+import { rememberIntent } from '../src/payments';
 import { seedTenant } from './fixtures';
 
 const envA = { DB: env.DB, TENANT_SLUG: 'alfa', LOGIC_CAMP_DEV_AUTH: '1' };
@@ -1456,6 +1457,66 @@ describe('mover y estirar fechas — requote/move (ADR 0023)', () => {
     const diff = audits[0]!.diff as { from: { dateFrom: string }; to: { dateFrom: string } };
     expect(diff.from.dateFrom).toBe('2026-05-11');
     expect(diff.to.dateFrom).toBe('2026-05-18');
+  });
+
+  it('move: un intent almacenado bloquea cambiar el total pero permite conservarlo', async () => {
+    const b = await crear('2026-10-24', '2026-10-27');
+    await db.update(schema.bookings).set({ status: 'pending' }).where(eq(schema.bookings.id, b.id));
+    await rememberIntent(
+      db,
+      'redsys',
+      {
+        method: 'form',
+        action: 'https://sis-t.redsys.es:25443/sis/realizarPago',
+        fields: { Ds_MerchantParameters: 'fixture' },
+        providerRef: 'ADMINLOCK001',
+      },
+      b.id,
+      Math.round(b.totalCents * 0.3),
+    );
+    const originalIntent = (
+      await db
+        .select()
+        .from(schema.meta)
+        .where(eq(schema.meta.key, `payment_intent:${b.id}`))
+    )[0]!;
+
+    const changed = await move(b.id, {
+      dateFrom: '2026-10-24',
+      dateTo: '2026-10-28',
+      expectedTotalCents: 9500,
+    });
+    expect(changed.status).toBe(409);
+    await expect(changed.json()).resolves.toEqual({
+      error: 'payment_intent_replacement_required',
+      previousTotalCents: b.totalCents,
+      totalCents: 9500,
+    });
+    expect(await row(b.id)).toMatchObject({
+      dateFrom: '2026-10-24',
+      dateTo: '2026-10-27',
+      totalCents: b.totalCents,
+    });
+    expect(
+      (
+        await db
+          .select()
+          .from(schema.meta)
+          .where(eq(schema.meta.key, `payment_intent:${b.id}`))
+      )[0],
+    ).toEqual(originalIntent);
+
+    const sameTotal = await move(b.id, {
+      dateFrom: '2026-10-27',
+      dateTo: '2026-10-30',
+      expectedTotalCents: b.totalCents,
+    });
+    expect(sameTotal.status).toBe(200);
+    expect(await row(b.id)).toMatchObject({
+      dateFrom: '2026-10-27',
+      dateTo: '2026-10-30',
+      totalCents: b.totalCents,
+    });
   });
 
   it('candado de precio: cruzar a temporada alta con el total viejo → 409 price_changed con el desglose fresco', async () => {

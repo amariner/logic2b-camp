@@ -1,5 +1,36 @@
 # PROGRESS — Logic Camp
 
+## Temas accesibles, ligeros y protegidos de extremo a extremo · 2026-08-19 (sesión 151)
+
+- El carril comercial de doce temas incorpora un control localizado de 44 px
+  para pausar/reanudar, expone `aria-pressed`, se detiene al entrar el foco y
+  conserva el límite superior de `prefers-reduced-motion`. La QA de producción
+  recorre ES/EN a 375/1366 px con movimiento normal y reducido, teclado, foco,
+  estados computados, doce tarjetas accesibles, consola y overflow limpios.
+- Las miniaturas dejan de servir originales únicos de 1,51 MiB: Astro genera
+  seis anchos WebP compartidos por carril, catálogo y portfolio. El contrato de
+  build fija 119,4 KiB para las doce salidas a 360w y 512,2 KiB a 800w, además
+  de impedir que el ciclo duplicado cree otras URLs o caiga al activo original.
+- El cierre humano deja de depender de campos opcionales: las trece demos
+  aprobadas exigen vida, tres rutas, cuatro piezas `vida-*` trazadas y recepción
+  más otro servicio fotografiados. Cinco fixtures negativos y la fábrica real
+  fijan el contrato sin endurecer la plantilla ni inventar traducciones.
+- H1-V gana una aceptación real antes de activar bytes: seis escenarios en
+  Chromium prueban petición cero con movimiento reducido/ahorro de datos,
+  selección H.264 escritorio/VP9 móvil, reproducción y fallback ante autoplay
+  o medio fallido. El proveedor conserva solo 1,38 créditos frente a los 21 que
+  cuesta L'Olivar 6 s/720p/sin audio; no se envió un trabajo condenado a fallar.
+- Pagos falla ahora cerrado antes de mutar D1: una modificación pública o
+  movimiento admin que cambie el total y tenga un intent persistido responde
+  `409 payment_intent_replacement_required`. Ampliar y acortar conservan reserva
+  y metadata, mover al mismo importe sigue permitido y el webhook solo confirma
+  el contrato económico original; web y gestor explican el bloqueo sin llamar
+  «falta de disponibilidad» a un conflicto de pago.
+- Verificación focal: sitio comercial 97 páginas, typecheck/lint y QA real
+  verdes; web 39/39 pruebas iniciales, contrato de fábrica 13+plantilla y gate
+  H1-V con cero vídeos activos. El portfolio completo, API y gate global se
+  ejecutan sobre este mismo candidato antes del commit y despliegue solicitados.
+
 ## Producción incorpora el cierre de mejora de temas · 2026-08-18 (sesión 150)
 
 - `main` no tenía ramas sin fusionar ni cambios locales pendientes y coincidía

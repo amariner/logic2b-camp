@@ -20,6 +20,7 @@ import {
   executeRefund,
   loadStoredPaymentIntent,
   loadPaymentsConfig,
+  paymentIntentRequiresReplacement,
   recordPaymentEvent,
   resolveProvider,
 } from '../payments';
@@ -502,6 +503,24 @@ export const publicRoutes = new Hono<Env>()
       result.nights,
       TAX_POLICIES[tenantConfig.taxPolicy]!,
     );
+
+    if (
+      await paymentIntentRequiresReplacement(
+        db,
+        booking.id,
+        booking.totalCents,
+        result.breakdown.totalCents,
+      )
+    ) {
+      return c.json(
+        {
+          error: 'payment_intent_replacement_required',
+          previousTotalCents: booking.totalCents,
+          totalCents: result.breakdown.totalCents,
+        },
+        409,
+      );
+    }
 
     const assignment = assignUnit({
       unitTypeId: unitType.id,

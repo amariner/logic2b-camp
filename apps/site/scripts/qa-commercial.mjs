@@ -15,10 +15,114 @@ const variants = [
   { locale: 'en', prefix: '/en', width: 1366, height: 900 },
   { locale: 'en', prefix: '/en', width: 375, height: 812 },
 ];
+const motionLabels = {
+  es: {
+    pause: 'Pausar el movimiento de los temas',
+    resume: 'Reanudar el movimiento de los temas',
+  },
+  en: { pause: 'Pause theme motion', resume: 'Resume theme motion' },
+};
 
 const launchOptions = chromiumPath ? { executablePath: chromiumPath } : {};
 if (process.env.COMMERCIAL_QA_NO_PROXY === '1') launchOptions.args = ['--no-proxy-server'];
 const browser = await chromium.launch(launchOptions);
+
+async function assertThemeMotionControls(variant) {
+  const context = await browser.newContext({
+    viewport: { width: variant.width, height: variant.height },
+    reducedMotion: 'no-preference',
+    colorScheme: 'light',
+  });
+  const page = await context.newPage();
+  const failures = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') failures.push(`console: ${message.text()}`);
+  });
+  page.on('pageerror', (error) => failures.push(`page: ${error.message}`));
+  page.on('requestfailed', (request) => {
+    const reason = request.failure()?.errorText ?? 'unknown';
+    if (!reason.includes('ERR_ABORTED')) failures.push(`request: ${request.url()} (${reason})`);
+  });
+  page.on('response', (response) => {
+    if (response.status() >= 400) failures.push(`response: ${response.status()} ${response.url()}`);
+  });
+
+  try {
+    await page.goto(`${origin}${variant.prefix || '/'}`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    const rail = page.locator('[data-theme-motion]');
+    const toggle = rail.locator('[data-theme-motion-toggle]');
+    const tracks = rail.locator('.camp-theme-track');
+    const labels = motionLabels[variant.locale];
+
+    assert.equal(await rail.count(), 1, `${variant.locale}/${variant.width}: carril único`);
+    assert.equal(
+      await rail.locator('.camp-theme-card:not([aria-hidden="true"])').count(),
+      12,
+      `${variant.locale}/${variant.width}: doce temas accesibles`,
+    );
+    assert.ok(await toggle.isVisible(), `${variant.locale}/${variant.width}: control visible`);
+    const toggleBox = await toggle.boundingBox();
+    assert.ok(
+      (toggleBox?.width ?? 0) >= 44 && (toggleBox?.height ?? 0) >= 44,
+      `${variant.locale}/${variant.width}: objetivo táctil del control`,
+    );
+    assert.equal(
+      await toggle.getAttribute('aria-label'),
+      labels.pause,
+      `${variant.locale}/${variant.width}: etiqueta inicial`,
+    );
+    assert.deepEqual(
+      await tracks.evaluateAll((items) =>
+        items.map((item) => getComputedStyle(item).animationPlayState),
+      ),
+      ['running', 'running'],
+      `${variant.locale}/${variant.width}: movimiento inicial`,
+    );
+
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'true');
+    assert.equal(await toggle.getAttribute('aria-label'), labels.resume);
+    assert.deepEqual(
+      await tracks.evaluateAll((items) =>
+        items.map((item) => getComputedStyle(item).animationPlayState),
+      ),
+      ['paused', 'paused'],
+      `${variant.locale}/${variant.width}: pausa manual`,
+    );
+    await rail.screenshot({
+      path: `${output}/logic-camp-theme-motion-${variant.locale}-${variant.width}.png`,
+    });
+
+    await page.keyboard.press('Space');
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'false');
+    assert.equal(await toggle.getAttribute('aria-label'), labels.pause);
+    assert.deepEqual(
+      await tracks.evaluateAll((items) =>
+        items.map((item) => getComputedStyle(item).animationPlayState),
+      ),
+      ['running', 'running'],
+      `${variant.locale}/${variant.width}: reanudación manual`,
+    );
+
+    await rail.locator('.camp-theme-link').focus();
+    assert.equal(await rail.getAttribute('data-focus-paused'), 'true');
+    assert.deepEqual(
+      await tracks.evaluateAll((items) =>
+        items.map((item) => getComputedStyle(item).animationPlayState),
+      ),
+      ['paused', 'paused'],
+      `${variant.locale}/${variant.width}: pausa durante el foco`,
+    );
+    await toggle.focus();
+    assert.equal(await rail.getAttribute('data-focus-paused'), 'false');
+    await assertNoOverflow(page, `${variant.locale}/${variant.width}: carril de temas`);
+    assert.deepEqual(failures, [], `${variant.locale}/${variant.width}: errores del carril`);
+  } finally {
+    await context.close();
+  }
+}
 
 async function assertContact(page, { context, visible, label }) {
   const contact = page.locator('[data-logic2b-contact]');
@@ -46,6 +150,7 @@ async function assertContact(page, { context, visible, label }) {
 
 try {
   for (const variant of variants) {
+    await assertThemeMotionControls(variant);
     const context = await browser.newContext({
       viewport: { width: variant.width, height: variant.height },
       reducedMotion: 'reduce',
@@ -76,6 +181,19 @@ try {
 
     await page.goto(`${origin}${variant.prefix || '/'}`, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
+    const reducedThemeTracks = page.locator('[data-theme-motion] .camp-theme-track');
+    assert.deepEqual(
+      await reducedThemeTracks.evaluateAll((items) =>
+        items.map((item) => getComputedStyle(item).animationPlayState),
+      ),
+      ['paused', 'paused'],
+      `${variant.locale}/${variant.width}: movimiento reducido`,
+    );
+    assert.equal(
+      await page.locator('[data-theme-motion-toggle]').isVisible(),
+      false,
+      `${variant.locale}/${variant.width}: control redundante con movimiento reducido`,
+    );
     assert.deepEqual(
       googleRequests,
       [],
@@ -136,8 +254,8 @@ try {
     const guides = page.locator('.botanical-guide-grid a');
     assert.equal(
       await guides.count(),
-      4,
-      `${variant.locale}/${variant.width}: cuatro guías en portada`,
+      5,
+      `${variant.locale}/${variant.width}: cinco guías en portada`,
     );
 
     const faq = page.locator('.botanical-faq-list details');
