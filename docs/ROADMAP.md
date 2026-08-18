@@ -352,13 +352,15 @@ producto real se activa módulo a módulo cuando exista un cliente.
 
 | Fase                                    | Estado         | Resultado                                                                                                                                |
 | --------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| H0 · contrato común                     | ✅ Hecho local | `heroMotion` seguro, póster LCP responsive, preferencias reactivas y gate de trazabilidad/formato/peso; `vida` y rutas con fallback      |
-| H1 · tres anclas                        | ✅ Foto 3/3    | Doce escenas aprobadas, tres bloques de vida, nueve rutas y gate comparativo; H1-V queda diferido con fallback estático completo         |
-| H2 · costa, humedal y río               | ✅ Hecho 5/5   | Veinte escenas, cinco bloques de vida, quince rutas, recepción y servicio humano por tema                                                |
-| H3 · interior, montaña y larga estancia | ✅ Hecho 5/5   | Veinte escenas, cinco bloques de vida y quince rutas sin repetir grupo, conflicto operativo, servicio central ni relación con el paisaje |
+| H0 · contrato común                     | ✅ Producción | `heroMotion` seguro, póster LCP responsive, preferencias reactivas y gate de trazabilidad/formato/peso; `vida` y rutas con fallback      |
+| H1 · tres anclas                        | ✅ Foto 3/3   | Doce escenas aprobadas, tres bloques de vida, nueve rutas y gate comparativo; H1-V queda diferido con fallback estático completo         |
+| H2 · costa, humedal y río               | ✅ Producción | Veinte escenas, cinco bloques de vida, quince rutas, recepción y servicio humano por tema                                                |
+| H3 · interior, montaña y larga estancia | ✅ Producción | Veinte escenas, cinco bloques de vida y quince rutas sin repetir grupo, conflicto operativo, servicio central ni relación con el paisaje |
 
 H1-V continúa diferido sin bloquear el cierre fotográfico: los campos son
 opcionales, el póster continúa como LCP y los 13 tenants construyen con fallback.
+El cierre está publicado desde el 2026-08-18 en la versión Cloudflare
+`bf56617c-c499-4a92-87d1-388c0165f382`.
 
 ## Frente F — Inteligente · Control total
 

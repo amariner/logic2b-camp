@@ -1,15 +1,16 @@
-# Prompt para la siguiente sesión — cierre de mejora de temas
+# Prompt para la siguiente sesión — vídeo H1-V tras publicación de temas
 
-> Actualizado el 2026-08-18 tras completar Sol d'Hivern y cerrar H3.
+> Actualizado el 2026-08-18 tras publicar el cierre de H1/H2/H3.
 
 ## Estado en una línea
 
 H3 queda 5/5: La Carrasca, Serralta, Els Tarongers, Entre Vinyes y Sol d'Hivern
 tienen cuatro papeles humanos aprobados, bloque de vida, recepción y servicio en
 uso, tres planes prudentes y QA real 375/1366. H1 permanece 3/3 y H2, 5/5. Todo
-continúa local, sin desplegar. H1-V se ha abierto con un prototipo de L'Olivar,
-pero el proveedor lo rechazó dos veces antes de generar bytes por saldo
-insuficiente; el fallback estático continúa completo.
+está publicado en producción en la versión Cloudflare
+`bf56617c-c499-4a92-87d1-388c0165f382`. H1-V se ha abierto con un prototipo de
+L'Olivar, pero el proveedor lo rechazó dos veces antes de generar bytes por
+saldo insuficiente; el fallback estático continúa completo.
 
 ## Evidencia cerrada
 
@@ -44,6 +45,8 @@ insuficiente; el fallback estático continúa completo.
   L'Olivar, Pinada del Mar y Mar de Fondo confirma la fuente vertical a 375 px,
   el regreso al apaisado en escritorio, cero desborde y cero avisos de consola;
   el build del portfolio fija también ese contrato en el HTML final.
+- producción responde 200 en landing, catálogo, las tres anclas, Sol d'Hivern,
+  Cala Sereno, gestor y API; el HTML remoto contiene los nuevos activos.
 
 ## La Carrasca cerrada
 
@@ -154,7 +157,7 @@ normalizar H.264/WebM local con `faststart`, medir ≤3 MB y validar reducción 
 movimiento/ahorro de datos antes de producir Pinada del Mar o Mar de Fondo. No
 hay otro tenant fotográfico pendiente; los tres pósteres verticales ya están
 aprobados y deben ser la referencia de encuadre para las futuras salidas móviles.
-No se despliega sin autorización.
+No se vuelve a desplegar sin una nueva autorización.
 Los seis prompts, referencias, rechazos específicos y orden de producción están
 cerrados en `BRIEF-H1-VIDEO.md`; no hay que rediseñarlos al reanudar.
 La incorporación se hace con `pnpm motion -- stage/approve/reject`; no copiar el

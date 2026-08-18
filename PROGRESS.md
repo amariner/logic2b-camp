@@ -1,5 +1,21 @@
 # PROGRESS — Logic Camp
 
+## Producción incorpora el cierre de mejora de temas · 2026-08-18 (sesión 150)
+
+- `main` no tenía ramas sin fusionar ni cambios locales pendientes y coincidía
+  con `origin/main` en `e59d9a2`; no se creó un merge vacío. Ese commit ya estaba
+  publicado en GitHub antes de iniciar producción.
+- `pnpm --filter @logic-camp/api deploy:demo` recompuso landing, documentación,
+  doce demos y gestores, verificó 17.030 enlaces internos en 540 HTML y mantuvo
+  los presupuestos M6. D1 no tenía migraciones pendientes y no se ejecutó reseed.
+- Cloudflare subió 310 activos nuevos o modificados y publicó el Worker
+  `logic-camp-demo` con versión `bf56617c-c499-4a92-87d1-388c0165f382` sobre
+  `camp.logic2b.com/*`; los dos cron existentes permanecen activos.
+- El smoke remoto devuelve 200 en landing, temas, Cala Sereno, gestor, API y las
+  cuatro superficies revisadas del portfolio. El HTML de L'Olivar referencia el
+  nuevo héroe móvil y Sol d'Hivern sirve el bloque «Quedarse también es ordenar
+  lo cotidiano» y la fotografía del salón. No se cambiaron secrets, DNS ni datos.
+
 ## La mejora de temas cierra fotografía y deja el vídeo preparado · 2026-08-18 (sesión 149)
 
 - H3 queda cerrado en 5/5 con Sol d'Hivern: llegada de larga estancia,
