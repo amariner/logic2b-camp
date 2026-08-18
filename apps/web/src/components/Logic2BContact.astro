@@ -4,6 +4,7 @@ import { LOGIC2B_CONTACT_SCROLL_PX, logic2bContact } from '@logic-camp/config/co
 interface Props { locale: string }
 const { locale } = Astro.props;
 const contact = logic2bContact(locale, 'tenant');
+const [brandLabel, actionLabel] = contact.label.split(' · ');
 ---
 
 <a
@@ -21,7 +22,10 @@ const contact = logic2bContact(locale, 'tenant');
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.3-4.7a8.5 8.5 0 1 1 16.2-4Zm-8.4-6.9a6.8 6.8 0 0 0-5.8 10.4l.2.3-.8 2.5 2.6-.7.3.2a6.8 6.8 0 1 0 3.5-12.7Zm-2.2 3.3c.2 0 .3 0 .5.4l.7 1.7c.1.2.1.4 0 .5l-.5.7c-.1.1-.2.3 0 .6.2.3.8 1.3 1.8 2 .7.7 1.4.9 1.7 1 .2.1.4.1.5-.1l.8-1c.2-.2.3-.2.5-.1l1.7.8c.2.1.4.2.4.3.1.1.1.7-.1 1.3-.2.6-1.2 1.1-1.7 1.2-.5.1-1.2.2-2-.1-.5-.2-1.2-.4-2-1-3.4-1.5-5.6-5-5.8-5.2-.2-.3-1.4-1.9-1.4-3.6 0-1.7.9-2.5 1.2-2.9.3-.3.7-.4 1-.4Z" />
   </svg>
-  <span>{contact.label}</span>
+  <span>
+    {brandLabel}
+    {actionLabel && <span class="lc-logic2b-contact-action"> · {actionLabel}</span>}
+  </span>
 </a>
 
 <script is:inline define:vars={{ threshold: LOGIC2B_CONTACT_SCROLL_PX }}>
@@ -73,6 +77,9 @@ const contact = logic2bContact(locale, 'tenant');
   .lc-logic2b-contact svg { width: 24px; height: 24px; flex: none; fill: #61d36f; }
   .lc-logic2b-contact:hover { background: var(--lc-pino-oscuro); }
   .lc-logic2b-contact:focus-visible { outline-offset: 4px; }
+  @media (max-width: 479px) {
+    .lc-logic2b-contact-action { display: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .lc-logic2b-contact { transition: none; transform: none; }
   }

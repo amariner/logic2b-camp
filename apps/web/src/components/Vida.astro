@@ -19,13 +19,21 @@ const { vida } = Astro.props;
     </header>
     <div class="grid gap-8 md:grid-cols-12">
       {vida.escenas.slice(0, 3).map((escena, index) => (
-        <article class:list={['group flex flex-col gap-4', index === 0 ? 'md:col-span-7' : 'md:col-span-5']}>
+        <article
+          class:list={[
+            'group flex flex-col gap-4',
+            index === 0 && 'md:col-span-7',
+            index === 1 && 'md:col-span-5',
+            index === 2 &&
+              'md:col-span-12 md:grid md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-center md:gap-8',
+          ]}
+        >
           {images[escena.foto] && (
             <Picture
               src={images[escena.foto]!}
               alt={escena.titulo}
               widths={[560, 960, 1440]}
-              sizes={index === 0 ? '(min-width: 768px) 58vw, 100vw' : '(min-width: 768px) 42vw, 100vw'}
+              sizes={index === 1 ? '(min-width: 768px) 42vw, 100vw' : '(min-width: 768px) 58vw, 100vw'}
               formats={['avif', 'webp']}
               fallbackFormat="webp"
               loading="lazy"

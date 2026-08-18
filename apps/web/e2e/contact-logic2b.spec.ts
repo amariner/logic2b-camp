@@ -26,6 +26,7 @@ test('la web tenant ofrece Logic2B tras scroll y lo retira ante el pie', async (
   expect(href.searchParams.get('text')).not.toMatch(/@|\b\d{3,}\b|reserva|booking|https?:/i);
   const box = await link.boundingBox();
   expect(box?.width).toBeGreaterThanOrEqual(44);
+  expect(box?.width).toBeLessThanOrEqual(128);
   expect(box?.height).toBeGreaterThanOrEqual(44);
   expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(375 - 15);
 

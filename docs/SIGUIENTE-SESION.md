@@ -1,40 +1,50 @@
-# Prompt para la siguiente sesión — carril no temático cerrado
+# Prompt para la siguiente sesión — H1 por temas
 
-> Revalidado el 2026-08-17 tras cerrar la conversión real de solicitudes sin
-> desarrollar temas.
+> Actualizado el 2026-08-18 tras completar la fotografía humana de L'Olivar.
 
 ## Estado en una línea
 
-El defecto reproducible de solicitudes queda cerrado: convertir una solicitud
-presupuestada crea y enlaza una reserva real. El candidato sigue local, sin
-desplegar, y H1–H3 de temas/media continúan fuera del encargo. Una nueva pasada
-global no encuentra otro bloque funcional local no temático autorizado.
+H1 queda en fotografía 1/3: L'Olivar ya tiene cuatro escenas humanas aprobadas,
+contenido de vida y rutas e integración en instalaciones. El siguiente tema es
+Pinada del Mar. Todo continúa local, sin desplegar.
 
-## Evidencia de cierre
+## Decisión operativa vigente
 
-- `pnpm check`: 71/71; dashboard: 69/69; API: 284/284;
-- reserva + enlace + estado se escriben en un batch idempotente y una segunda
-  clave responde 409 sin duplicar;
-- el cambio de estado aislado a `converted` responde 409;
-- QA Worker+D1 a 375/1366: precarga, cotización en servidor, foco, objetivos
-  táctiles, overflow y consola verificados;
-- QA canónico: 17.012 enlaces internos en 540 HTML, 28 superficies / 56 vistas
-  a 375/1366 y cinco formatos/MIME; máximo M6 de 188,75 kB gzip;
-- candidato local, sin deploy ni datos remotos.
+- trabajar un tema completo cada vez;
+- generar imágenes solo con el integrado de OpenAI, sin Higgsfield ni CLI/API;
+- una solicitud cada vez, inspección individual y pausa de 20 s antes de la
+  siguiente;
+- declarar nombre, papel, proporción y prompt en `fotos.json` antes de generar;
+- ingerir a `.staging`, inspeccionar y aprobar antes de que la web consuma la
+  pieza;
+- registrar los fallos, pero no cambiar de proveedor de forma automática.
 
-## Qué puede reabrir trabajo no temático
+## Evidencia de L'Olivar
 
-- **Cliente real:** proceso observado, roles, retención, identidad, inventario,
-  precios, aceptación, dominio y destino;
-- **Proveedor:** cuenta/sandbox y credenciales autorizadas para correo, pagos,
-  observabilidad, Analytics, OTA, fiscal/SES o IA;
-- **Producción:** destino, diff, rollback y autorización explícita para publicar;
-- **Camp Motor:** pago o decisión comercial que levante el veto de `CLAUDE.md`;
-- **Producto local:** un defecto reproducible, una métrica o una decisión nueva.
+- manifiesto y estado: 12/12 finales locales, cuatro lotes H1 unitarios;
+- escenas: bienvenida/recepción, desayuno, balsa y paseo de piedra seca;
+- home: tres escenas en «La vida aquí», pila móvil y cierre editorial 7/5
+  en escritorio;
+- instalaciones: balsa, cocina y recepción usan fotografía humana;
+- entorno: tres planes prudentes con tiempos, dificultad, salida y aviso;
+- QA local a 375/1366: cero desborde, imágenes rotas o errores de consola;
+- contacto Logic2B: 48 px de alto y 112 px de ancho en móvil, etiqueta completa
+  conservada para accesibilidad;
+- build aislado y fábrica de 12 demos en verde antes del `pnpm check` final.
 
-No convertir las fichas provisionales de Control total en tablas, API o permisos
-sin el gate de cliente del ADR 0048. Los `converted_booking_id` heredados del
-seed son fixtures antiguas y siguen sin acreditar correspondencia comercial; no
-confundirlos con conversiones nuevas. No abrir temas, fotografía ni media
-mientras el encargo los excluya. Antes de cualquier activación, releer R12–R14
-y su runbook.
+## Siguiente objetivo
+
+Completar **Pinada del Mar** como segundo tema ancla de H1:
+
+1. fijar en `tenants/pinadamar/fotos.json` cuatro papeles humanos propios:
+   llegada familiar, recepción activa, piscina usada con calma y salida en bici;
+2. generar, inspeccionar e integrar las cuatro piezas con el flujo unitario;
+3. escribir su bloque de vida y tres planes/rutas sin inventar mapas ni horarios;
+4. verificar home, instalaciones y entorno a 375/1366, incluido el contacto
+   Logic2B;
+5. no iniciar Mar de Fondo ni vídeo hasta cerrar el tema Pinada.
+
+No abrir H2/H3, no desplegar y no configurar servicios externos. El gate de H1
+solo se cierra cuando las tres anclas se comparen y los bucles de vídeo alcancen
+realismo, accesibilidad y presupuesto; si el vídeo no llega, se conserva el
+póster sin bloquear la fotografía.

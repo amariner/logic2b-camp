@@ -1,15 +1,19 @@
 {
   "procedencia": {
     "tipo": "generada",
-    "fuente": "Lote D1-V producido para Logic2B en la sesión 82; se conservan los másteres *-source.png.",
+    "fuente": "Lote D1-V producido para Logic2B en la sesión 82 y ampliación humana H1 con el generador integrado de OpenAI; se conservan los másteres *-source.png.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia L'Olivar.",
-    "nota": "El contrato de arte y los ocho papeles están en docs/CONTRATO-VISUAL-OLA-1.md §3.4."
+    "nota": "El contrato de arte inicial está en docs/CONTRATO-VISUAL-OLA-1.md §3.4 y la ampliación humana en docs/ROADMAP-MEJORA-TEMAS.md §5 H1. Por instrucción del 2026-08-18, las piezas H1 se generan de una en una con pausa y sin fallback a Higgsfield."
   },
   "lotes": [
     ["hero-dia", "hero-anochecer"],
     ["tipo-parcela", "tipo-tienda"],
     ["detalle-tienda-interior", "instalacion-balsa"],
-    ["entorno-piedra-seca", "textura-lona"]
+    ["entorno-piedra-seca", "textura-lona"],
+    ["vida-recepcion"],
+    ["vida-servicio-cocina"],
+    ["vida-servicio-balsa"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-dia",
@@ -56,6 +60,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano documental de sombra de hoja de olivo sobre cal o lona cruda, textura visible, luz lateral natural, sin personas, texto, logos ni efectos digitales."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-llegada + vida-recepcion: bienvenida práctica en la masía y fotografía humana de recepción.",
+      "prompt": "Fotografía documental editorial, horizontal 3:2, de una llegada tranquila a un microcamping real del Maestrat. En el porche en sombra de una masía pequeña encalada, un anfitrión de mediana edad explica un plano impreso a una pareja adulta que acaba de dejar una mochila y un bolso de viaje; gesto práctico de bienvenida, nadie mira a cámara y los rostros quedan de perfil o parcialmente ocultos. Al fondo se intuyen olivos maduros, muro de piedra seca y una tienda de lona cruda, coherentes con L'Olivar. Las personas ocupan aproximadamente el 25 % del encuadre; la arquitectura humilde, la sombra y el paisaje siguen siendo protagonistas. Luz mediterránea seca de mañana, color natural contenido, textura analógica y grano de 35 mm sutil. Sin pose publicitaria, lujo, multitudes, texto legible, marcas, logos, matrículas, HDR, manos deformes ni arquitectura imposible."
+    },
+    "vida-servicio-cocina": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-servicio: desayuno preparado en la cocina común.",
+      "prompt": "Fotografía documental editorial, horizontal 3:2, de la pequeña cocina común de un microcamping entre olivos del Maestrat. Una pareja adulta prepara un desayuno sencillo sin posar: una persona corta pan junto a un cuenco de tomates y la otra sirve café en una mesa larga bajo cubierta; aceite local en una botella sin etiqueta, utensilios modestos y orden realista. Encuadre lateral y ligeramente abierto, rostros no protagonistas y parcialmente ocultos, personas entre el 20 % y el 30 % de la imagen. Madera sencilla, cal, sombra de hojas y una abertura hacia olivos y piedra seca; continuidad material con tiendas de lona cruda y la masía de L'Olivar. Luz natural de primera hora, paleta seca y contenida, textura analógica con grano de 35 mm sutil. Sin estilismo de revista, poses, sonrisas a cámara, lujo, texto legible, marcas, logos, HDR, manos deformes ni arquitectura imposible."
+    },
+    "vida-servicio-balsa": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-servicio: uso sereno de la balsa restaurada.",
+      "prompt": "Fotografía documental editorial, horizontal 3:2, de la balsa pequeña y restaurada de un microcamping del Maestrat, entre olivos maduros y bancales de tierra seca. Dos huéspedes adultos, con ropa ligera completa y calzado a un lado, se refrescan con calma en el borde: una persona está sentada mojándose solo los pies y la otra se agacha para mojarse las manos, ambas de perfil o de espaldas. La balsa rectangular de cal, el agua tranquila, la piedra y la sombra ocupan la mayor parte del encuadre; las personas no superan el 25 %, sin rostros reconocibles ni mirada a cámara. Luz mediterránea natural de media mañana, color contenido, textura analógica y grano de 35 mm sutil. Debe sentirse como una balsa rural segura y modesta, no una piscina de resort. Sin bañadores, desnudez, personas dentro del agua, inflables, poses, multitudes, lujo, texto, marcas, logos, HDR, anatomía extraña ni arquitectura imposible."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-entorno: paseo por bancales y piedra seca.",
+      "prompt": "Fotografía documental editorial, horizontal 3:2, de un sendero estrecho del Maestrat que baja entre olivos viejos, bancales y muros de piedra seca. Dos caminantes adultos avanzan de espaldas a cierta distancia, uno se detiene un instante para mirar el muro y el otro sigue despacio; ropa sencilla de entretiempo, mochila pequeña y calzado realista, sin pose deportiva. Las personas ocupan entre el 12 % y el 18 % del encuadre y el paisaje material es protagonista. Mantener la misma tierra seca, olivos retorcidos, piedra clara y luz lateral contenida de las fotografías aprobadas de L'Olivar. Estética documental mediterránea, color natural poco saturado y grano de 35 mm sutil. Sin postal turística, cima dramática, multitudes, rostros reconocibles, texto, señales legibles, marcas, logos, HDR, anatomía extraña ni paisaje imposible."
     }
   }
 }

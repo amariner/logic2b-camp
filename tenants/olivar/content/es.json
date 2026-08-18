@@ -69,6 +69,27 @@
     "titulo": "Aquí el paisaje no está delante: duermes dentro.",
     "texto": "Los caminos siguen los bancales, las paredes son de piedra colocada sin cemento y los olivos llevan aquí mucho más que nosotros. A pie se llega al horno, al obrador de aceite y a dos rutas cortas."
   },
+  "vida": {
+    "titulo": "La vida aquí cabe en gestos pequeños",
+    "intro": "Llegar con tiempo, preparar algo sencillo y encontrar el bancal fresco cuando aprieta el sol. L'Olivar no organiza el día: te ayuda a empezarlo.",
+    "escenas": [
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Primero, saber dónde estás",
+        "texto": "La bienvenida ocurre en el porche de la masía: parcela, baños y dos caminos se explican antes de entregar la llave."
+      },
+      {
+        "foto": "vida-servicio-cocina",
+        "titulo": "Desayuno sin prisa",
+        "texto": "La cocina común pone los fuegos y la mesa; el pan, el tomate y el aceite llegan de muy cerca."
+      },
+      {
+        "foto": "vida-servicio-balsa",
+        "titulo": "El agua justa para bajar el ritmo",
+        "texto": "La balsa restaurada es pequeña y tranquila: un lugar para refrescarse, no una piscina con programa."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta tus fechas",
     "subtitulo": "Cuéntanos cuándo vienes y cómo quieres quedarte. Esta demostración te enseñará la respuesta sin enviar tus datos.",
@@ -206,6 +227,46 @@
         "texto": "A partir de las once apagamos la iluminación de paso que no hace falta. En verano refresca después de medianoche; una capa fina siempre encuentra uso."
       }
     ],
+    "rutas": {
+      "titulo": "Tres planes que empiezan en la puerta",
+      "intro": "No hace falta llenar el día. En recepción ajustamos estas propuestas a la luz, el calor y las ganas de caminar.",
+      "aviso": "Los tiempos son orientativos. El estado de caminos, visitas y horarios puede variar; confirma las condiciones en recepción antes de salir.",
+      "items": [
+        {
+          "nombre": "Vuelta corta de piedra seca",
+          "resumen": "Un bucle entre bancales, casetas y muros levantados sin cemento, con regreso por el camino del horno.",
+          "tipo": "Paseo a pie",
+          "duracion": "40 min",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Primera hora",
+          "recomendacion": "Después de lluvia hay dos tramos que resbalan. Pregunta por la variante corta si vienes con niños.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Bancales hasta el collado",
+          "resumen": "La senda larga gana altura despacio y abre vistas sobre el mosaico de olivos del Maestrat.",
+          "tipo": "Sendero",
+          "duracion": "1 h 50 min",
+          "dificultad": "Media",
+          "salida": "Masía de recepción",
+          "momento": "Mañana fresca",
+          "recomendacion": "Lleva agua y evita el tramo abierto en las horas centrales de verano; te señalamos el desvío de vuelta.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Horno y aceite del pueblo",
+          "resumen": "Un plan corto para recoger pan y conocer el obrador de aceite con cita, sin convertirlo en una excursión organizada.",
+          "tipo": "Producto local",
+          "duracion": "2–3 h",
+          "dificultad": "Fácil",
+          "salida": "12 min en coche",
+          "momento": "Viernes por la mañana",
+          "recomendacion": "La visita al obrador depende de temporada y aforo. Pregunta antes de ir y reserva si quieres una cata.",
+          "foto": "vida-servicio-cocina"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde el bancal",
       "items": [

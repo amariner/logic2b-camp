@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "codex-integrated",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T06:41:37.394Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "badd31b15def344dcf398472894cec7561c52939f582039ff2044b5910d67960",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-cocina": [
+      {
+        "at": "2026-08-18T06:43:40.240Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "9349395c7fea5af34bffb24c925473fe6985fa787851763940b013083941ad95",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-balsa": [
+      {
+        "at": "2026-08-18T06:46:02.021Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "moderation_output_safety",
+        "detail": "OpenAI integrado rechazó la salida antes de entregar bytes; request 741f31cf-f9e3-4ea0-8d94-672f1ce903f8"
+      },
+      {
+        "at": "2026-08-18T06:47:33.704Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "c7e7d67cfcca443d5a473af4eec1338771e64f65deac1e9e474805cdfb188443",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T06:49:43.477Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "5f08448380ea0e00364d7e54b0f2ef5e8e04247163ae1e89963a423ed0409081",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ]
+  },
+  "approvals": {
+    "vida-recepcion": {
+      "at": "2026-08-18T06:41:59.490Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-cocina": {
+      "at": "2026-08-18T06:44:01.706Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-balsa": {
+      "at": "2026-08-18T06:47:55.125Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T06:50:08.053Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {}
+}

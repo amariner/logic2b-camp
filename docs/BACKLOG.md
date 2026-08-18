@@ -459,9 +459,17 @@ es un gate de producción, no un pendiente local de implementación.
   2026-08-14**: opcional y retrocompatible, póster LCP, ahorro de datos,
   movimiento reducido, error de vídeo y ausencia de campos conservan fallback.
 - [H1] Generar e inspeccionar las cuatro escenas y el vídeo de L'Olivar,
-  Pinada del Mar y Mar de Fondo. **Bloqueo externo 2026-08-14:** el generador
-  integrado devolvió error de red en la primera pieza. La política `imagegen`
-  impide saltar al CLI con API key sin confirmación; no se crean placeholders.
+  Pinada del Mar y Mar de Fondo. **Avance 2026-08-18: fotografía 1/3.**
+  L'Olivar queda completo con cuatro másteres humanos propios y aprobados
+  (`vida-recepcion`, `vida-servicio-cocina`, `vida-servicio-balsa` y
+  `vida-entorno`), bloque «La vida aquí», tres planes, recepción y dos
+  servicios en uso. Se generaron con OpenAI integrado de una en una y con
+  pausas de 20 s, sin Higgsfield ni CLI/API; un rechazo de moderación antes de
+  bytes quedó trazado y se resolvió haciendo explícita la ropa completa. La
+  revisión 375/1366 corrigió además el ancho del contacto Logic2B en móvil y
+  la tercera escena huérfana en escritorio. Pendientes: fotografía de
+  Pinada del Mar y Mar de Fondo, comparación de las tres anclas y los vídeos;
+  no abrir H2 hasta aprobar el gate completo.
 - [H2] Cinco demos de costa/humedal/río, solo tras aprobar H1.
 - [H3] Cinco demos de interior/montaña/larga estancia, solo tras aprobar H1.
 - [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs
