@@ -458,21 +458,30 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[H0] Contrato compartido de humanidad/rutas/vídeo~~ → **hecho local
   2026-08-14**: opcional y retrocompatible, póster LCP, ahorro de datos,
   movimiento reducido, error de vídeo y ausencia de campos conservan fallback.
-- [H1] Generar e inspeccionar las cuatro escenas y el vídeo de L'Olivar,
-  Pinada del Mar y Mar de Fondo. **Avance 2026-08-18: fotografía 2/3.**
+- ~~[H1-FOTO] Generar, inspeccionar y comparar las cuatro escenas de L'Olivar,
+  Pinada del Mar y Mar de Fondo~~ → **hecho local 2026-08-18: fotografía 3/3.**
   L'Olivar queda completo con cuatro másteres humanos propios y aprobados
   (`vida-recepcion`, `vida-servicio-cocina`, `vida-servicio-balsa` y
   `vida-entorno`), bloque «La vida aquí», tres planes, recepción y dos
   servicios en uso. Pinada del Mar añade llegada familiar, recepción activa,
   piscina supervisada y salida en bicicleta, además de tres planes prudentes
-  de costa. Las ocho piezas se generaron con OpenAI integrado de una en una y
-  con pausas de 20 s, sin Higgsfield ni CLI/API; un rechazo de moderación antes
-  de bytes en L'Olivar quedó trazado y se resolvió haciendo explícita la ropa
-  completa. La revisión 375/1366 deja ambos temas sin desborde, imágenes rotas
-  ni errores de consola y conserva el contacto Logic2B a 48 px. Pendientes:
-  fotografía de Mar de Fondo, comparación de las tres anclas y los vídeos; no
-  abrir H2 hasta aprobar el gate completo.
-- [H2] Cinco demos de costa/humedal/río, solo tras aprobar H1.
+  de costa. Mar de Fondo completa la serie con llegada con equipaje, check-in
+  asistido, servicio de restaurante y paseo familiar por la pasarela litoral,
+  integrados también en instalaciones y tres rutas responsables. Las doce
+  piezas se generaron con OpenAI integrado de una en una y con pausas de 20 s,
+  sin Higgsfield ni CLI/API; un rechazo de moderación antes de bytes en
+  L'Olivar y una primera recepción de Mar de Fondo con una marca falsa en el
+  monitor quedaron trazados y se resolvieron antes de aprobar. La revisión
+  375/1366 deja los tres temas sin desborde, imágenes rotas ni errores de
+  consola y conserva el contacto Logic2B a 48 px. La comparación aprueba el
+  gate: L'Olivar es íntimo, adulto y cálido; Pinada del Mar es familiar,
+  luminoso y verde-azul; Mar de Fondo es amplio, operativo y de última hora.
+  No comparten composición, figurantes ni temperatura de color.
+- [H1-V] Prototipar los bucles de vídeo de las tres anclas como subfase
+  posterior. Se difiere sin bloquear H2, tal como permite el roadmap: los
+  pósteres humanos y los fallbacks de ahorro de datos, movimiento reducido y
+  error ya están implementados.
+- [H2] Cinco demos de costa/humedal/río. Gate fotográfico de H1 aprobado.
 - [H3] Cinco demos de interior/montaña/larga estancia, solo tras aprobar H1.
 - [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs
   provisionales con un cliente antes de crear tablas o integraciones.

@@ -3,12 +3,12 @@
     "tipo": "generada",
     "fuente": "Codex integrado como principal y Higgsfield según el registro verificable fotos.estado.json.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Mar de Fondo.",
-    "nota": "La procedencia por pieza, modelo, trabajo, prompt y aprobación permanece en fotos.estado.json."
+    "nota": "La procedencia histórica por pieza, modelo, trabajo, prompt y aprobación permanece en fotos.estado.json. Por instrucción del 2026-08-18, las piezas humanas H1 se generan de una en una con OpenAI integrado, pausa entre solicitudes y sin fallback a Higgsfield."
   },
   "_": [
     "Encargo visual de Camping Resort Mar de Fondo · D3-V.",
-    "Codex integrado es el proveedor principal; tras dos fallos técnicos sin bytes, usar el fallback Higgsfield declarado en fotos.estado.json.",
-    "Tandas máximas de 2 piezas; inspeccionar cada pareja antes de continuar.",
+    "La fotografía original conserva su procedencia histórica mixta; la ampliación H1 usa exclusivamente OpenAI integrado.",
+    "Las piezas H1 se generan de una en una, se inspeccionan individualmente y mantienen pausa entre solicitudes.",
     "Una sola geografía y luz: resort mediterráneo de Costa Blanca, última hora limpia, agua profunda, arquitectura clara.",
     "Premium por orden y servicio, nunca por dorados. Fotografía editorial documental, color natural, grano 35 mm sutil.",
     "Sin rostros reconocibles, texto, logos, matrículas, HDR, saturación de folleto ni arquitectura imposible.",
@@ -22,7 +22,11 @@
     ["mobil-horizonte-interior", "glamping-duna"],
     ["glamping-duna-interior", "instalacion-laguna"],
     ["instalacion-restaurante", "instalacion-recepcion"],
-    ["entorno", "textura-agua"]
+    ["entorno", "textura-agua"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-restaurante"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-laguna",
@@ -99,6 +103,26 @@
       "aspecto": "21:9",
       "papel": "firma material transversal",
       "prompt": "Editorial documentary close-up of deep teal lagoon water casting moving reflected light onto pale salt-white lime plaster and a narrow sand-coloured stone edge. Abstract but photographic, fine surface texture, clean late-afternoon light, subtle film grain. No people, objects, text, logos or HDR."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-llegada: una familia llega a un bungalow con el equipaje organizado.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Mar de Fondo demo website\nPrimary request: Photoreal editorial documentary photograph of a practical family arrival at a low bungalow in the same large Mediterranean campsite resort as the approved Mar de Fondo assets.\nInput images: bungalow-laguna.webp is the architecture and material reference; hero-laguna.webp is the light, water and resort-scale reference.\nScene/backdrop: Plausible single-storey salt-white bungalow, timber shade screen and deep covered terrace beside native grasses and a pale path at clean late-afternoon light.\nSubject: Two adults and two children aged roughly 8–14 arrive without posing; one adult moves a simple campsite luggage trolley with soft bags, the other checks a plain reservation slip with no readable detail, and the children step onto the shaded terrace.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, restrained salt-white, sand and deep-teal palette, subtle 35 mm grain.\nComposition/framing: Horizontal 3:2, full bodies and action inside the central 70 percent for mobile crop; people remain secondary to the campsite.\nLighting/mood: Clean late-afternoon Mediterranean light, organised and calm.\nConstraints: Preserve plausible campsite proportions, the approved pale render, timber, native planting and lagoon identity; anonymous non-frontal figures and believable hands.\nAvoid: posing, fashion styling, bellhop, hotel lobby, branded or luxury luggage, readable numbers, logos, marble, gold, luxury cars, malformed hands, HDR, resort-ad saturation, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-recepcion: un check-in claro sin teatralizar una cola.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Mar de Fondo demo website\nPrimary request: Photoreal editorial documentary scene of an efficient check-in inside the same ordered Mar de Fondo reception hall.\nInput images: instalacion-recepcion.webp is the exact pale-stone floor, salt-white wall, warm-timber counter, four-position layout, glass opening and late-light reference.\nScene/backdrop: The same broad reception hall and arrival court, operational and uncluttered.\nSubject: One receptionist aged 40–60 calmly explains a plain resort map with no readable detail to two adult guests; a second staff member works softly out of focus at another check-in position.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained teal and sand palette, natural skin and subtle film grain.\nComposition/framing: Horizontal 3:2, the active conversation remains central and comfortably within all edges; the hall retains its sense of scale.\nLighting/mood: Late natural light, calm operational spacing rather than spectacle.\nConstraints: Preserve the approved counter, four work positions, floor, ceiling beams and glass opening; non-frontal faces, natural gestures and plausible hands.\nAvoid: queue, hotel uniforms, gold, readable screens, fake signage, logos, posed smiles, four employees aligned, malformed fingers, glossy skin, HDR, luxury cliché, watermark."
+    },
+    "vida-servicio-restaurante": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-servicio: el restaurante inicia el servicio con orden y naturalidad.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Mar de Fondo demo website\nPrimary request: Photoreal editorial documentary photograph at the start of service in the same open-sided Mar de Fondo campsite restaurant facing the lagoon.\nInput images: instalacion-restaurante.webp is the exact timber ceiling, pale masonry, table layout, open service pass, lagoon reflection and golden-hour reference.\nScene/backdrop: Calm open terrace with simple well-spaced tables and deep-teal water visible beyond.\nSubject: A service worker in plain unbranded clothing pours water into a glass at a family table while another worker quietly prepares a table in the background; the family remains in natural side view, talking rather than posing, with simple Mediterranean food.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, believable hand contact, restrained warm timber and teal palette, subtle film grain.\nComposition/framing: Horizontal 3:2, main service gesture central for mobile crop while architecture and lagoon remain clearly visible.\nLighting/mood: Clean golden hour, premium through calm organisation rather than luxury theatre.\nConstraints: Anonymous secondary people, no frontal hero face, plausible anatomy and glass contact; preserve the approved restaurant geometry and materials.\nAvoid: fine-dining theatre, chef hats, champagne, gold, overloaded table, readable menu, logos, uniforms with brands, frontal smiles, extra fingers, HDR, glossy resort advertising, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H1 · vida-entorno: huéspedes recorren la pasarela de duna hacia la playa.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Mar de Fondo demo website\nPrimary request: Photoreal editorial documentary photograph of guests walking along the same timber boardwalk through restrained Mediterranean dunes toward the open beach.\nInput images: entorno.webp is the exact boardwalk, native grasses, calm sea, broad horizon and clean late-golden-hour reference.\nScene/backdrop: Protected-looking dune landscape with low vegetation and an unbranded timber walkway, no private beach equipment.\nSubject: A family of four walks away toward the beach, naturally spaced and carrying plain towels; farther ahead an older couple walks at a slower pace, separated enough to feel incidental rather than staged.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained coastal colour, long natural shadows and subtle film grain.\nComposition/framing: Horizontal 3:2, people secondary to the landscape but held inside the central 70 percent for mobile crop.\nLighting/mood: Clean late golden hour, spacious and unhurried.\nConstraints: Everyone faces away, plausible gait and limbs, coherent shadows, the boardwalk and dune remain the main subject.\nAvoid: looking back, fashion beachwear, private beach setup, logos, readable signs, malformed limbs, tropical vegetation, crowd, extreme orange sunset, HDR, travel-poster saturation, watermark."
     }
   }
 }

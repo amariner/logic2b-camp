@@ -1,12 +1,14 @@
 # Prompt para la siguiente sesión — H1 por temas
 
-> Actualizado el 2026-08-18 tras completar la fotografía humana de Pinada del Mar.
+> Actualizado el 2026-08-18 tras completar la fotografía humana de Mar de Fondo.
 
 ## Estado en una línea
 
-H1 queda en fotografía 2/3: L'Olivar y Pinada del Mar ya tienen cuatro escenas
-humanas aprobadas, contenido de vida y rutas e integración en instalaciones.
-El siguiente tema es Mar de Fondo. Todo continúa local, sin desplegar.
+H1 queda en fotografía 3/3 y con el gate comparativo aprobado: L'Olivar,
+Pinada del Mar y Mar de Fondo tienen cuatro escenas humanas aprobadas,
+contenido de vida, rutas e integración en instalaciones. El vídeo se difiere
+como subfase posterior con póster y fallback accesible. Todo continúa local,
+sin desplegar.
 
 ## Decisión operativa vigente
 
@@ -19,35 +21,45 @@ El siguiente tema es Mar de Fondo. Todo continúa local, sin desplegar.
   pieza;
 - registrar los fallos, pero no cambiar de proveedor de forma automática.
 
-## Evidencia de Pinada del Mar
+## Evidencia de Mar de Fondo
 
-- manifiesto y estado: 15/15 finales locales, cuatro lotes H1 unitarios;
-- escenas: llegada al bungalow, orientación en recepción, piscina supervisada
-  y preparación de bicicletas;
+- manifiesto y estado: 18/18 finales locales, cuatro lotes H1 unitarios;
+- escenas: llegada con equipaje, orientación en recepción, servicio de
+  restaurante y paseo familiar por la pasarela litoral;
+- la primera recepción se rechazó por una marca falsa visible en el monitor;
+  la segunda quedó limpia y aprobada, con ambos intentos trazados;
 - home: tres escenas en «La vida aquí», pila móvil y composición editorial
   asimétrica en escritorio;
-- instalaciones: recepción y piscina prefieren las escenas humanas aprobadas;
-- entorno: tres planes prudentes de playa, vía verde y mercado, sin mapas ni
+- instalaciones: recepción y restaurante prefieren las escenas humanas
+  aprobadas;
+- entorno: tres planes prudentes de duna, marjal y puerto, sin mapas ni
   garantías operativas inventadas;
 - QA local a 375/1366: cero desborde, imágenes rotas o errores de consola;
 - contacto Logic2B: 48 px de alto, 112 px en móvil y sin solapar tarjetas;
 - build aislado y verificadores de fábrica/portfolio en verde antes del
   `pnpm check` final.
 
+## Comparación de las tres anclas
+
+- L'Olivar: escala íntima, adultos y mañana cálida de piedra/olivo;
+- Pinada del Mar: familia, media mañana y paleta verde-azul de pinar/costa;
+- Mar de Fondo: escala amplia, operación visible y última hora de arena/teal;
+- resultado: no comparten composición, figurantes ni temperatura de color.
+
+El gate fotográfico queda aprobado. Los bucles de vídeo se difieren como
+subfase H1-V: el roadmap permite avanzar con los pósteres humanos cuando el
+vídeo no aporta todavía realismo y presupuesto suficientes.
+
 ## Siguiente objetivo
 
-Completar **Mar de Fondo** como tercer tema ancla de H1:
+Abrir **Cala Sereno** como primer tema de H2:
 
-1. fijar en `tenants/mardefondo/fotos.json` cuatro papeles humanos propios:
-   llegada al alojamiento, check-in de resort, servicio de terraza/restaurante
-   y paseo familiar junto a la laguna o la playa;
-2. generar, inspeccionar e integrar las cuatro piezas con el flujo unitario;
-3. escribir su bloque de vida y tres planes/rutas sin inventar mapas ni horarios;
-4. verificar home, instalaciones y entorno a 375/1366, incluido el contacto
-   Logic2B;
-5. comparar las tres anclas antes de decidir si se producen los vídeos H1.
+1. declarar sus cuatro papeles humanos y el contenido de vida/rutas;
+2. generar e inspeccionar una sola imagen cada vez con OpenAI integrado y pausa
+   de 20 s;
+3. integrar las piezas aprobadas en home, instalaciones y entorno;
+4. verificar 375/1366 y cerrar el tema antes de abrir La Duna.
 
-No abrir H2/H3, no desplegar y no configurar servicios externos. El gate de H1
-solo se cierra cuando las tres anclas se comparen y los bucles de vídeo alcancen
-realismo, accesibilidad y presupuesto; si el vídeo no llega, se conserva el
-póster sin bloquear la fotografía.
+No abrir dos temas a la vez, no desplegar y no configurar servicios externos.
+Las imágenes siguen exclusivamente en OpenAI integrado; el vídeo H1-V no se
+retoma durante la producción fotográfica de H2 salvo decisión explícita.

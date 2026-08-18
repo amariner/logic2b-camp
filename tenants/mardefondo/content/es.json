@@ -101,6 +101,27 @@
     "titulo": "El agua organiza el resort.",
     "texto": "La laguna ocupa el centro, las calles se abren hacia el mar y cada zona mantiene su ritmo. Escala de resort sin perder recorridos claros ni sombra."
   },
+  "vida": {
+    "titulo": "La escala se nota en el servicio",
+    "intro": "Trescientas unidades pueden sentirse claras cuando llegada, recepción, restaurante y recorridos cuentan la misma historia.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Llegar con todo previsto",
+        "texto": "El equipaje sigue un recorrido sencillo y el alojamiento se reconoce antes de abrir la puerta; la escala no obliga a improvisar."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Una explicación, no una cola",
+        "texto": "La recepción reparte el trabajo entre varios puestos, pero cada llegada conserva una conversación clara sobre zona, horarios y acceso."
+      },
+      {
+        "foto": "vida-servicio-restaurante",
+        "titulo": "El servicio empieza antes de sentarse",
+        "texto": "La terraza se prepara con tiempo y la atención aparece en gestos pequeños, sin convertir la cena en una escena de hotel."
+      }
+    ]
+  },
   "form": {
     "titulo": "Diseñemos el alcance de tu resort",
     "subtitulo": "Esta demostración no envía datos. El recorrido comercial termina en una conversación de discovery.",
@@ -228,6 +249,46 @@
         "texto": "Museos, comercio y estación a media hora para combinar días lentos con una salida urbana."
       }
     ],
+    "rutas": {
+      "titulo": "Tres salidas para cambiar de escala",
+      "intro": "Del paseo corto a la marjal en bicicleta, recepción adapta la propuesta al calor, el viento y las ganas del grupo sin venderla como excursión propia.",
+      "aviso": "Los tiempos son orientativos. La bandera del mar, los cierres, el nivel de agua, la accesibilidad y los servicios de terceros pueden variar; confirma las condiciones antes de salir.",
+      "items": [
+        {
+          "nombre": "Duna y playa abierta",
+          "resumen": "La pasarela cruza la duna sin tráfico y desemboca en un tramo amplio de playa para caminar antes de volver por el mismo acceso.",
+          "tipo": "Paseo accesible",
+          "duracion": "1 h 15 min · 4 km",
+          "dificultad": "Fácil",
+          "salida": "Pasarela del resort",
+          "momento": "Mañana o tarde",
+          "recomendacion": "Comprueba bandera, calor y accesibilidad temporal de la pasarela; el resort no garantiza condiciones del mar.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vuelta de la marjal",
+          "resumen": "Un recorrido llano enlaza caminos de grava y puntos de observación sin entrar en las zonas sensibles del humedal.",
+          "tipo": "Bicicleta y observación",
+          "duracion": "1 h 40 min · 16 km",
+          "dificultad": "Fácil",
+          "salida": "Aparcabicis de recepción",
+          "momento": "Primera hora",
+          "recomendacion": "Respeta los límites del parque y confirma cierres, obras o nivel de agua en la fuente oficial.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Puerto al caer la tarde",
+          "resumen": "Un paseo junto al puerto combina mercado, terrazas y el regreso con la última luz sin presentar un negocio concreto como recomendado.",
+          "tipo": "Paseo y traslado",
+          "duracion": "5,5 km de recorrido",
+          "dificultad": "Fácil",
+          "salida": "Llegada al puerto",
+          "momento": "Última hora",
+          "recomendacion": "El traslado y los horarios son de muestra. Una activación real verificará proveedor, calendario y accesibilidad.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [

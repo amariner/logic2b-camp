@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -309,6 +309,59 @@
         "sourceExtension": ".png",
         "dimensions": "2100x900"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T07:48:35.263Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "12f625b1c994cd8fb95085051eabc1b41266983e316d2a18b0f1df6cd3ba7d63",
+        "sourceExtension": ".png",
+        "dimensions": "1535x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T07:49:53.304Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "d4ba509804b7f6653deca22dd6b2892408a08fe60e518c649b92a53bf4e9e9c2",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T07:51:11.680Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "d4ba509804b7f6653deca22dd6b2892408a08fe60e518c649b92a53bf4e9e9c2",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-restaurante": [
+      {
+        "at": "2026-08-18T07:52:54.526Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "3ebc6d1d4510555b91f91ccd5237056083fd305766ea236549f97f1172caebb4",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T07:54:15.407Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "dd808f45ad0e0c268a40e6292f10c6aeee8de721ff9e7ee939e38a1d0f1b634c",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -367,6 +420,22 @@
     "textura-agua": {
       "at": "2026-08-07T20:59:01.527Z",
       "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T07:48:35.509Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T07:51:11.940Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-restaurante": {
+      "at": "2026-08-18T07:52:54.804Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T07:54:15.669Z",
+      "gate": "visual-inspection"
     }
   },
   "rejections": {
@@ -416,6 +485,12 @@
         "at": "2026-08-07T14:35:33.224Z",
         "reason": "arquitectura_de_villa_abierta_incompatible_con_mobil_home",
         "jobId": "7d25b37f-cff2-4148-a4be-28032abbe4cb"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T07:49:53.561Z",
+        "reason": "visible-generated-monitor-marking"
       }
     ]
   }
