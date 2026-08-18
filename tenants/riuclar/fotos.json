@@ -9,7 +9,11 @@
     ["hero-boira", "hero-vespre"],
     ["tipus-parcella-bosc", "tipus-parcella-riu"],
     ["detall-refugi-comu", "installacio-banys-pedra"],
-    ["entorn-sender-humit", "textura-pissarra-molsa"]
+    ["entorn-sender-humit", "textura-pissarra-molsa"],
+    ["vida-arribada"],
+    ["vida-recepcio"],
+    ["vida-servei-refugi"],
+    ["vida-entorn"]
   ],
   "derivados": {
     "fuente": "hero-boira",
@@ -56,6 +60,26 @@
       "aspecto": "21:9",
       "papel": "Signatura material transversal.",
       "prompt": "Primer pla documental de pissarra fosca mullada, molsa i fulles de pollancre al costat d'aigua corrent, textura nítida i llum lateral natural molt suau, paleta verda grisosa i blava, sense persones, text, logos ni efectes digitals."
+    },
+    "vida-arribada": {
+      "aspecto": "3:2",
+      "papel": "H2 · vida: dos hostes munten una tenda sense ocupar el sotabosc.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Càmping Riu Clar demo website\nPrimary request: Photoreal editorial documentary photograph of two adult guests finishing a modest tent setup entirely inside a wet gravel forest pitch.\nInput images: tipus-parcella-bosc.webp is the exact dark gravel, low stone boundary, grey-green family tent, pines, poplars, ferns and cool Pre-Pyrenees identity reference.\nScene/backdrop: One adult tensions a guy line to a proper peg within the gravel while the other places a folding table on the firm dry strip; the complete low stone boundary is visible and roots, ferns and river buffer remain untouched outside it.\nSubject: Two adults aged roughly 35–65 in practical layered clothes and waterproof footwear, focused on the setup and not posing.\nStyle/medium: Natural 35 mm editorial documentary photography, soft overcast morning after rain, muted slate, moss and grey-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; pitch boundary and clear walking route dominate; both adults remain central for mobile crop.\nConstraints: Plausible hands, guy line, peg, mallet, footwear and shadows; no loose lines cross the walking path.\nAvoid: stepping on ferns or roots, ropes outside pitch, extra people, glamping, campfire, logos, readable text, malformed limbs, alpine postcard, HDR, watermark."
+    },
+    "vida-recepcio": {
+      "aspecto": "3:2",
+      "papel": "H2 · recepció: explicació de cabal, pluja i recorregut practicable.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Càmping Riu Clar demo website\nPrimary request: Photoreal editorial documentary photograph of a receptionist explaining today's safe walking limit to two adult guests.\nInput images: hero-vespre.webp and textura-pissarra-molsa.webp define the exact dark local stone, simple timber, wet slate and moss material identity; make the scene daytime.\nScene/backdrop: A modest covered outdoor reception beside the stone building, with a timber counter and a textless schematic board showing only a blue river line, rainfall blocks, one closed crossing and a short green route. Wet forest and river are glimpsed safely beyond.\nSubject: One adult staff member points to the route limit while two adult guests in plain rain shells listen; natural side/back profiles, no one looks at camera.\nStyle/medium: Natural 35 mm editorial documentary photography, cool overcast daylight, muted slate, moss and timber palette, subtle film grain.\nComposition/framing: Horizontal 3:2; clear conversational triangle within central 65 percent.\nConstraints: Plausible hands, jackets and board; no letters, numbers, logos, pseudo-text or dramatic flood.\nAvoid: readable notices, phones toward camera, rescue uniforms, posed smiles, extra limbs, outdoor-adventure advertising, snow peaks, HDR, watermark."
+    },
+    "vida-servei-refugi": {
+      "aspecto": "3:2",
+      "papel": "H2 · servei: dos hostes utilitzen el refugi després de la pluja.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial service scene for the Càmping Riu Clar demo website\nPrimary request: Photoreal editorial documentary photograph of two adult guests using the common rain shelter responsibly after a wet walk.\nInput images: detall-refugi-comu.webp is the exact modest dark-stone interior, timber beams, wide window, long table, benches, unlit stove and rainy forest light reference.\nScene/backdrop: Near the entrance, one adult hangs a plain wet rain shell on a proper wall hook while the other places muddy walking boots in a shallow rubber drip tray; dry indoor shoes are already on both adults' feet. A small steel mug and folded route sheet without readable text sit on the table.\nSubject: Exactly two adults aged roughly 35–65, absorbed in tidying their gear, not posing.\nStyle/medium: Natural 35 mm editorial documentary photography, clear soft daylight from the large window, warm timber against cool slate, subtle film grain.\nComposition/framing: Horizontal 3:2; complete bodies, hook, boot tray and clear floor route visible; central mobile-safe action.\nConstraints: Plausible hands, footwear, hooks, wet fabric and reflections; stove remains off; room modest and clean.\nAvoid: bare or duplicate feet, extra people, open fire, restaurant styling, alcohol, readable text, logos, malformed limbs, dark horror mood, HDR, watermark."
+    },
+    "vida-entorn": {
+      "aspecto": "3:2",
+      "papel": "H2 · entorn: dos hostes caminen pel sender de ribera practicable.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Càmping Riu Clar demo website\nPrimary request: Photoreal editorial documentary photograph of two adult campsite guests walking an authorized wet riparian trail parallel to a clear flowing Pre-Pyrenees river.\nInput images: entorn-sender-humit.webp is the exact narrow wet gravel trail, poplars, pines, ferns, dark stone, visible river and light mist identity reference.\nScene/backdrop: The firm path remains the unmistakable subject and stays safely above the river; a simple low timber footbridge is visible farther ahead but no one is crossing water or leaving the trail.\nSubject: Two adults aged roughly 35–65 walk away at an easy pace in plain rain shells, waterproof boots and small day packs; one uses a single trekking pole correctly.\nStyle/medium: Natural 35 mm editorial documentary photography, cool overcast light after rain, muted slate, moss and blue-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; trail and river dominate; hikers occupy 10–20 percent and remain central for mobile crop.\nConstraints: Plausible posture, hands, boots, pole and shadows; clothing suited to cool wet weather.\nAvoid: entering river, improvised crossing, dangerous flood, umbrellas, expedition gear, logos, readable signs, malformed limbs, alpine peaks, saturation, HDR, watermark."
     }
   }
 }

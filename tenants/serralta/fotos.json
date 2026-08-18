@@ -3,14 +3,18 @@
     "tipo": "generada",
     "fuente": "Lote D6-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping Serralta.",
-    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+    "nota": "Producción inicial en cinco tandas máximas de dos piezas. La ampliación humana H3 del 2026-08-18 usa exclusivamente OpenAI integrado, una pieza cada vez y con inspección visual antes de avanzar."
   },
   "lotes": [
     ["hero-bosque", "hero-anochecer"],
     ["tipo-parcela-bosque", "tipo-parcela-mirador"],
     ["tipo-cabana-pizarra", "tipo-refugio-familiar"],
     ["instalacion-recepcion", "instalacion-fuego"],
-    ["entorno", "textura-lona"]
+    ["entorno", "textura-lona"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-fuego"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-bosque",
@@ -67,6 +71,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano editorial documental de lajas de pizarra húmeda junto a hojas pequeñas de helecho y una línea fina de luz color brasa reflejada, textura mineral nítida y composición horizontal abstracta. Sin personas, manos, pies, texto, logos, fuego visible, basura, pintura, gemas, efectos digitales ni HDR."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H3 · llegada: dos senderistas descargan equipo mojado sin invadir la calle ni el drenaje.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping Serralta demo website\nPrimary request: Photoreal editorial documentary photograph of two adult hiking guests aged roughly 30–55 finishing their arrival at a Forest Pitch in the same wet mountain campsite.\nInput images: tipo-parcela-bosque.webp provides the dark draining gravel, low timber boundary, mature wet beech forest, ferns, compact camper scale and subdued palette reference.\nScene/backdrop: One clearly bounded pitch after light rain; camera faces the plain unbranded side of a compact silver camper, with both ends excluded enough that no bumper, badge or licence plate appears.\nSubject: One guest lifts one plain hiking daypack from the open side door while the other places exactly two muddy boots together on one shallow rubber tray beneath the awning.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, cool slate, wet green and muted navy palette, subtle film grain.\nComposition/framing: Horizontal 3:2, pitch geometry and forest dominate; people occupy 15–25 percent and remain in the central 70 percent for mobile crop. The timber boundary runs across the lower foreground.\nLighting/mood: Soft grey morning after rain, practical and calm rather than adventurous.\nConstraints: Both guests, tray, boots and pack remain fully inside the pitch with an empty strip of gravel between them and the boundary. Plausible hands; anonymous side/back views. Camper side is completely blank with no badges, decals, characters, numbers or text. Access lane and drainage stay clear.\nAvoid: visible licence plate, manufacturer badge, person straddling boundary, tray on boundary, extra footwear, gear across lane, deep mud, fire, glamping styling, logos, readable text, frontal smiles, extra fingers, HDR, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H3 · recepción: parte de barro, niebla y retirada antes de elegir ruta.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping Serralta demo website\nPrimary request: Photoreal editorial documentary photograph of a practical morning route briefing at the reception of the same wet mountain campsite.\nInput images: instalacion-recepcion.webp is the exact low slate-and-dark-timber building, deep porch, simple counter, boot bench, plain yellow and green raincoats, wet gravel and fern backdrop reference.\nScene/backdrop: The modest open reception remains recognisable; no hotel lobby, wall map or decorative ski lodge.\nSubject: A receptionist aged roughly 40–65 indicates three simple coloured route bands on a small waterproof card with no readable text while two adult hikers aged roughly 30–60 listen; one holds a plain folded rain shell and the other a single unbranded daypack.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, cool natural colour, honest wet textures and subtle film grain.\nComposition/framing: Horizontal 3:2, waist-up conversation under the porch with entrance and clear gravel access visible; people occupy no more than 35 percent.\nLighting/mood: Diffuse grey morning light, direct and cautious rather than staged.\nConstraints: Plausible hands and card contact; anonymous non-frontal faces; plain layered clothing; preserve the approved building, bench and two hanging raincoats.\nAvoid: readable forecast, pseudo lettering, dramatic map, screens with text, logos, uniforms, posed smiles, extra fingers, luxury reception, HDR, watermark."
+    },
+    "vida-servicio-fuego": {
+      "aspecto": "3:2",
+      "papel": "H3 · servicio: fuego común pequeño, atendido y separado del bosque tras la lluvia.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping Serralta demo website\nPrimary request: Photoreal editorial documentary photograph of the controlled shared fire being used quietly and safely at the same wet mountain campsite.\nInput images: instalacion-fuego.webp is the exact high open steel shelter, broad black recessed brazier, wet slate mineral platform, distant benches, lidded metal bucket and forest separation reference.\nScene/backdrop: The entire non-combustible roof and clean mineral perimeter remain clearly visible; the forest is wet and distant, with no fire anywhere else.\nSubject: One campsite attendant aged roughly 40–65 uses a long metal tool to settle a very small bed of embers from outside the brazier while two adult hikers aged roughly 35–65 sit together on one distant bench in dry layered clothes, talking quietly and keeping hands away from the flame.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, restrained slate blue, wet charcoal and tiny ember-orange palette, subtle film grain.\nComposition/framing: Horizontal 3:2, shelter and safety geometry dominate; people occupy 15–25 percent and remain within the central 75 percent.\nLighting/mood: Blue hour after rain, calm supervised use rather than campfire nostalgia.\nConstraints: Plausible hands and long tool; one tiny flame only; attendant remains outside the brazier; benches stay distant; lidded bucket present; clear exit and dry clothing.\nAvoid: children, crowd, alcohol, food, raised hands over flame, sparks, high flames, loose logs, smoke cloud, fire in forest, party, fairy lights, logos, text, extra limbs, HDR, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H3 · entorno: tres adultos caminan en fila por el hayedo húmedo y conservan margen de retirada.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping Serralta demo website\nPrimary request: Photoreal editorial documentary photograph of three adult campsite guests beginning the moderate beech-forest circuit near Camping Serralta after rain.\nInput images: entorno.webp is the exact firm earth-and-stone trail, visible roots, wet ferns, tall beech trunks, thin mist and modest forested slope reference.\nScene/backdrop: A single established trail crosses the damp beech forest; the plain timber post has no text and the route never approaches a cliff or summit.\nSubject: Three adults aged roughly 30–65 walk away in loose single file at a measured pace, wearing plain rain shells, ordinary daypacks and hiking shoes with visible tread; no trekking poles and no one leaves the path.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, cool moss, slate and muted rust palette, subtle film grain.\nComposition/framing: Horizontal 3:2, trail, roots and forest dominate; walkers occupy 12–22 percent and remain in the central 60 percent for mobile crop.\nLighting/mood: Quiet late morning with thinning mist after rain, attentive movement without summit drama.\nConstraints: Plausible gait, footwear and pack straps; anonymous back views; all six feet remain on the established surface; wet roots are visible but not exaggerated.\nAvoid: off-trail shortcut, alpine summit, cliff, snow, racing kit, rescue scene, readable sign, logos, dramatic pose, malformed limbs, HDR, saturation, watermark."
     }
   }
 }

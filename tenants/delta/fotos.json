@@ -9,7 +9,11 @@
     ["hero-amanecer", "hero-ultima-luz"],
     ["tipo-parcela-canizo", "tipo-parcela-arrozal"],
     ["detalle-observatorio", "instalacion-banos-cal"],
-    ["entorno-camino-arrozal", "textura-canizo-agua"]
+    ["entorno-camino-arrozal", "textura-canizo-agua"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-bicis"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-amanecer",
@@ -56,6 +60,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano editorial documental de cañizo natural trenzado proyectando líneas finas sobre una lámina de agua somera y tierra húmeda, con tallos jóvenes de arroz desenfocados al fondo. Tonos hueso, verde apagado y oro, luz lateral suave, material real y patrón legible; sin personas, manos, pies, texto, logos, plástico, basura, decoración tropical ni efectos digitales."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H2 · vida: dos huéspedes delimitan una llegada ligera dentro de la parcela.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping El Delta demo website\nPrimary request: Photoreal editorial documentary photograph of two adult guests finishing a restrained setup inside a gravel Cañizo pitch.\nInput images: tipo-parcela-canizo.webp is the exact pitch, reed shade, drainage gravel, small generic camper and flat rice-field identity reference.\nScene/backdrop: The camper is correctly parked; one adult clips a light shade panel to the existing reed pergola while the other places two folding chairs fully inside the timber pitch boundary. The agricultural path, irrigation ditch and vegetated margin remain visibly unobstructed beyond.\nSubject: Two adults aged roughly 35–65 in practical warm-weather clothes, absorbed in the task and not posing.\nStyle/medium: Natural 35 mm editorial documentary photography, soft humid morning light, muted bone, reed-gold and rice-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; pitch geometry and clear boundary dominate; both people remain in the central 60 percent for mobile crop.\nLighting/mood: Quiet competent arrival, no leisure spectacle.\nConstraints: Plausible hands, tools, shade attachment and cable routing; all camping objects remain on gravel; camper fully generic.\nAvoid: stepping into crops or ditch, extra people, posed smiles, glamping, large awning, clutter, logos, readable text, license plates, malformed limbs, HDR, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H2 · recepción: orientación responsable sobre caminos y zonas sensibles.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping El Delta demo website\nPrimary request: Photoreal editorial documentary photograph of a campsite receptionist explaining today's open paths to two adult guests.\nInput images: detalle-observatorio.webp and textura-canizo-agua.webp define the exact straight reed-screen construction, muted materials and waterland light.\nScene/backdrop: A very small open-air reception under a reed porch, with a simple counter, reusable water bottles, compact binoculars and a textless schematic map made only of colored path lines and closed-area shapes. Rice fields are glimpsed beyond at a safe distance.\nSubject: One adult staff member points to the path diagram while two adult guests listen; natural side and back profiles, no one looks at camera.\nStyle/medium: Natural 35 mm editorial documentary photography, subdued bone, ceramic green and reed-gold palette, gentle humid daylight, subtle film grain.\nComposition/framing: Horizontal 3:2; the three people form a clear conversational triangle in the central 65 percent.\nLighting/mood: Calm practical briefing, attentive rather than promotional.\nConstraints: Plausible hands and binocular straps; diagram contains no letters, numbers or logos; no claim of visible birds.\nAvoid: readable signs, branded brochures, phones toward camera, staged handshakes, uniforms with logos, extra limbs, safari styling, tropical resort, HDR, watermark."
+    },
+    "vida-servicio-bicis": {
+      "aspecto": "3:2",
+      "papel": "H2 · servicio: puesta a punto de una bicicleta antes de salir.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial service scene for the Camping El Delta demo website\nPrimary request: Photoreal editorial documentary photograph of two adult campsite guests checking an ordinary touring bicycle before a flat delta route.\nInput images: instalacion-banos-cal.webp is the exact low limewashed service architecture, muted green ceramic, reed porch and accessible gravel setting reference.\nScene/backdrop: Under a modest reed-roofed bicycle bay beside the service module, one adult steadies the bicycle while the other uses a floor pump and checks the rear brake; two additional unbranded city bicycles are parked neatly behind.\nSubject: Exactly two adults aged roughly 30–65, dressed for an easy ride with simple helmets resting on the bench, focused on the bicycle and not camera.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, flat clean daylight, subdued bone, reed and rice-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2, full bicycle and both adults visible, central 60 percent safe for mobile crop.\nLighting/mood: Practical, self-sufficient and unhurried.\nConstraints: Mechanically plausible bicycle, wheels, pump, brake, hands, feet and shadows; clear accessible path.\nAvoid: racing kit, workshop branding, motorbikes, readable text, logos, tool clutter, malformed wheels or limbs, posed smiles, HDR, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H2 · entorno: dos huéspedes pedalean por el camino permitido entre arrozales.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping El Delta demo website\nPrimary request: Photoreal editorial documentary photograph of two adult campsite guests cycling along an authorized flat gravel track between Mediterranean rice fields.\nInput images: entorno-camino-arrozal.webp is the exact horizontal waterland, drainage ditch, low vegetation, pale track and humid morning identity reference.\nScene/backdrop: A firm existing agricultural and cycle track runs between irrigated rice plots and a narrow ditch, with a small reed bird screen far in the distance; no one enters fields or vegetated margins.\nSubject: Two adults aged roughly 35–65 ride ordinary unbranded touring bicycles away at an easy pace, wearing simple helmets and small day bags; one turns slightly toward the landscape, not camera.\nStyle/medium: Natural 35 mm editorial documentary photography, subdued rice-green, bone and reed-gold palette, soft humid first light, subtle film grain.\nComposition/framing: Horizontal 3:2; track, water and landscape dominate; cyclists occupy 10–20 percent and remain in central 60 percent for mobile crop.\nLighting/mood: Quiet forward movement and respect for the working landscape.\nConstraints: Plausible bicycles, posture, hands, limbs and shadows; existing firm route clearly separated from crops and ditch.\nAvoid: riding inside fields, blocking farm work, racing kit, cars, logos, readable signs, bird spectacle, malformed wheels or limbs, mountains, beach, HDR, watermark."
     }
   }
 }

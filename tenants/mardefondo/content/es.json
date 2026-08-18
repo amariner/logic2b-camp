@@ -253,6 +253,13 @@
       "titulo": "Tres salidas para cambiar de escala",
       "intro": "Del paseo corto a la marjal en bicicleta, recepción adapta la propuesta al calor, el viento y las ganas del grupo sin venderla como excursión propia.",
       "aviso": "Los tiempos son orientativos. La bandera del mar, los cierres, el nivel de agua, la accesibilidad y los servicios de terceros pueden variar; confirma las condiciones antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
       "items": [
         {
           "nombre": "Duna y playa abierta",

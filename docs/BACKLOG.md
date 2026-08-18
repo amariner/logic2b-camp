@@ -481,8 +481,36 @@ es un gate de producción, no un pendiente local de implementación.
   posterior. Se difiere sin bloquear H2, tal como permite el roadmap: los
   pósteres humanos y los fallbacks de ahorro de datos, movimiento reducido y
   error ya están implementados.
-- [H2] Cinco demos de costa/humedal/río. Gate fotográfico de H1 aprobado.
-- [H3] Cinco demos de interior/montaña/larga estancia, solo tras aprobar H1.
+- ~~[H2] Cinco demos de costa/humedal/río~~ → **hecho local 2026-08-18: 5/5.**
+  Cala Sereno, La Duna, El Delta, Riu Clar y La Ballena suman veinte escenas
+  humanas nuevas, cinco bloques de vida, quince rutas prudentes y recepción
+  más un servicio en uso por tema. Los manifiestos quedan completos en 16/16,
+  12/12, 12/12, 12/12 y 14/14 piezas locales. La Duna separa pasarela y carril;
+  El Delta mantiene personas y bicicletas fuera de arrozales; Riu Clar trabaja
+  cabal, refugio y sendero en catalán; Ballena muestra cambio de turno y parque
+  de agua familiar sin derivar a resort. Las imágenes se produjeron una a una
+  con OpenAI integrado, se inspeccionaron y los descartes quedaron trazados.
+  QA real 375/1366 en los cinco temas: cero desborde e imágenes rotas, CTA de
+  recepción visible y contacto Logic2B reducido a 48 px en todos los tamaños
+  para no solapar tarjetas. Tipos, contrato de fábrica y builds tier 1/3 en
+  verde; `pnpm check` cierra 71/71 tareas y construye los doce campings. El
+  vídeo H1-V continúa diferido y no bloquea fotografía.
+- [H3] Cinco demos de interior/montaña/larga estancia → **en curso 2026-08-18:
+  4/5.** La Carrasca, Serralta, Els Tarongers y Entre Vinyes quedan completas
+  con dieciséis escenas humanas, cuatro bloques de vida y doce planes prudentes;
+  los cuatro manifiestos cierran 14/14 piezas locales. Carrasca conserva el tono
+  adulto y el encinar sobrio.
+  Serralta trabaja lluvia reciente, equipo dentro de parcela, parte de barro y
+  retirada, fuego común supervisado y tres senderistas siempre dentro del
+  firme. Tarongers separa llegada bajo cítricos, orientación familiar, pausa
+  intergeneracional en piscina y bicicleta entre huerta y costa, sin repetir el
+  lenguaje de resort de H2. Entre Vinyes mantiene huéspedes y equipamiento fuera
+  del cultivo, explica el tráfico de vendimia, usa el patio para agua y sombra y
+  trata la bodega como servicio externo. Dos llegadas descartadas de Serralta y
+  dos variantes descartadas de Vinyes quedan auditadas. Typecheck, contrato y
+  builds tier 1/2/3 verdes; QA real 375/1366 sin desborde, roturas ni errores de
+  consola, con contacto de 48 px y CTA de recepción visibles. Siguiente y último
+  tema de H3: Sol d'Hivern.
 - [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs
   provisionales con un cliente antes de crear tablas o integraciones.
 

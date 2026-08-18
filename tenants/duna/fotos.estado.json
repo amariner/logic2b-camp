@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -248,6 +248,59 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T09:38:32.441Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "88038bfd0d4571187c8883e515bcbc66dc310507a0637f857482bed5d5d92ce4",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T09:39:31.195Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "59abc08254f7b699bcd5556ad3ace9b95856e5509620e0dec06940414fe5f8d5",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-agua": [
+      {
+        "at": "2026-08-18T09:40:36.969Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "3ff05860a2f8441c74810aac8634f2d03d6dda1d653076f171e1ccb172413448",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      },
+      {
+        "at": "2026-08-18T09:42:26.921Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "3ff05860a2f8441c74810aac8634f2d03d6dda1d653076f171e1ccb172413448",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T09:43:32.007Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "b495035f05e508ed0071e30e2f384b2adb9a1c4305b59a3eea8878fb1b38984f",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -281,6 +334,22 @@
     },
     "entorno-pasarela-mar": {
       "at": "2026-08-10T14:21:44.264Z",
+      "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T09:38:32.495Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T09:39:31.251Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-agua": {
+      "at": "2026-08-18T09:42:26.969Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T09:43:32.053Z",
       "gate": "visual-inspection"
     }
   },
@@ -350,6 +419,12 @@
         "at": "2026-08-10T14:20:37.926Z",
         "reason": "underexposed_green_cast_and_not_clean_first_morning_editorial_quality",
         "jobId": "4d60ffcb-dcc3-4551-8eb0-070c5af80508"
+      }
+    ],
+    "vida-servicio-agua": [
+      {
+        "at": "2026-08-18T09:40:37.016Z",
+        "reason": "anatomia_pie_ambiguo"
       }
     ]
   }

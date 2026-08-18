@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -241,6 +241,68 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T10:49:22.358Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "84bd6b1053627d0b1d48361ef7d1e676ba45b7903ae3c74d80292c96e76c3ead",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T10:51:04.914Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "84bd6b1053627d0b1d48361ef7d1e676ba45b7903ae3c74d80292c96e76c3ead",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      },
+      {
+        "at": "2026-08-18T10:53:10.038Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "b583270373999ef1a5e9b2b1f6f046b01569bfc1291e6664d1016c83ad03c074",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T10:54:22.656Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "58e4869dba3e196875752e4732196e67c8db947a91c5ee560bc479ad9717937b",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-fuego": [
+      {
+        "at": "2026-08-18T10:55:42.758Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "9b761b2fe257c6069aadb3f73bcb61c57d995fb70f0c3c01a998e719ecba112e",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T10:56:56.679Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "181ec7124d56b166b4e3ec70b58aacb1b686a810bf62b7a7fae9fa8f6459d959",
+        "sourceExtension": ".png",
+        "dimensions": "1535x1024"
+      }
     ]
   },
   "approvals": {
@@ -282,6 +344,22 @@
     },
     "textura-lona": {
       "at": "2026-08-10T16:00:29.818Z",
+      "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T10:53:10.092Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T10:54:22.708Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-fuego": {
+      "at": "2026-08-18T10:55:42.815Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T10:56:56.743Z",
       "gate": "visual-inspection"
     }
   },
@@ -336,6 +414,16 @@
         "at": "2026-08-10T15:32:38.999Z",
         "reason": "Sigue sin aparecer la cubierta no combustible; se refuerza su presencia como requisito compositivo",
         "jobId": "50fa91f0-b614-4f2e-907f-d8341cd4ad7b"
+      }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T10:49:22.408Z",
+        "reason": "equipo_y_persona_sobre_limite_de_parcela"
+      },
+      {
+        "at": "2026-08-18T10:51:04.961Z",
+        "reason": "matricula_y_marca_pseudovisibles"
       }
     ]
   }

@@ -59,11 +59,12 @@ const [brandLabel, actionLabel] = contact.label.split(' · ');
     display: inline-flex;
     min-height: 48px;
     align-items: center;
-    gap: 9px;
+    gap: 0;
+    overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--lc-hueso) 18%, transparent);
     border-radius: 999px;
     background: var(--lc-tinta);
-    padding: 10px 15px 10px 11px;
+    padding: 11px;
     color: var(--lc-hueso);
     font-size: 13px;
     font-weight: 650;
@@ -75,12 +76,30 @@ const [brandLabel, actionLabel] = contact.label.split(' · ');
   }
   .lc-logic2b-contact[data-visible='true'] { opacity: 1; pointer-events: auto; transform: none; }
   .lc-logic2b-contact svg { width: 24px; height: 24px; flex: none; fill: #61d36f; }
+  .lc-logic2b-contact > span {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    transition: max-width 180ms ease, margin-left 180ms ease, opacity 120ms ease;
+  }
+  .lc-logic2b-contact:is(:hover, :focus-visible) > span {
+    max-width: 150px;
+    margin-left: 9px;
+    opacity: 1;
+  }
   .lc-logic2b-contact:hover { background: var(--lc-pino-oscuro); }
   .lc-logic2b-contact:focus-visible { outline-offset: 4px; }
+  @media (min-width: 480px) {
+    .lc-logic2b-contact {
+      right: max(4px, env(safe-area-inset-right));
+    }
+  }
   @media (max-width: 479px) {
     .lc-logic2b-contact-action { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .lc-logic2b-contact { transition: none; transform: none; }
+    .lc-logic2b-contact > span { transition: none; }
   }
 </style>

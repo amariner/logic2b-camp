@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -133,6 +133,46 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T12:38:52.415Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "c6de4e2494482c0d7cf13f283b9623b4a364ebf6e761dd471894d03040dd83aa",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T12:41:05.483Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "aba91e05ff7c95545559791af10280721d4e5c5f4de1817e79e1ebb057f1c9ec",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T12:43:03.652Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "e7f576c43d949a623cc14a933c3efa011e95a40940385cc0a6e220db02ec8c38",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T12:44:41.557Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "ac5c02c65bf232399ba32046906917c2507f843f6182d446aeaf022d742e1d85",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -175,7 +215,26 @@
     "textura-lona": {
       "at": "2026-08-12T10:50:08.767Z",
       "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T12:43:03.699Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T12:44:41.604Z",
+      "gate": "visual-inspection"
     }
   },
-  "rejections": {}
+  "rejections": {
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T12:38:52.471Z",
+        "reason": "La silla aparece abierta frente al estado plegado declarado; se ajusta la acción a colocar una silla plegable abierta y se regenera"
+      },
+      {
+        "at": "2026-08-18T12:41:05.537Z",
+        "reason": "La trasera conserva un rectángulo ambiguo con lectura de matrícula; se excluyen ambos extremos del vehículo en el encuadre"
+      }
+    ]
+  }
 }

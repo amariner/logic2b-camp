@@ -92,6 +92,27 @@
     "titulo": "La cala primero, el camping después",
     "texto": "Cala Sereno existe porque existía la cala: 300 metros de pinada la separan de las parcelas. Castellón de interior a la espalda, senderos que salen andando desde recepción y pueblos con mercado a diez minutos."
   },
+  "vida": {
+    "titulo": "La pinada marca el ritmo",
+    "intro": "La recepción orienta, la mesa reúne y el camino a la cala empieza sin coger el coche: aquí el servicio cabe en gestos pequeños.",
+    "escenas": [
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Preguntar antes de salir",
+        "texto": "En recepción una conversación breve aclara sombra, desnivel y mejor hora sin convertir cada paseo en una excursión organizada."
+      },
+      {
+        "foto": "vida-servicio-restaurante",
+        "titulo": "La mesa sigue bajo la lona",
+        "texto": "El arroz llega al centro y el mar queda entre los troncos; el restaurante acompaña el día sin cambiar la escala familiar del camping."
+      },
+      {
+        "foto": "vida-servicio-cala",
+        "titulo": "A la cala, andando",
+        "texto": "El sendero propio cruza la pinada y convierte los trescientos metros hasta el agua en parte de la mañana, no en un traslado."
+      }
+    ]
+  },
   "form": {
     "titulo": "Escríbenos",
     "subtitulo": "Te contestamos en menos de un día. En temporada, antes.",
@@ -238,6 +259,53 @@
         "texto": "La comarca es de arroz melós y pescado de lonja. Preguntad en recepción: tenemos la lista corta de los sitios donde comemos nosotros, con teléfono y nombre propio. En temporada conviene llamar la víspera."
       }
     ],
+    "rutas": {
+      "titulo": "Tres caminos que empiezan aquí",
+      "intro": "De la cala al pinar alto, recepción ayuda a elegir según el calor, la luz y las ganas sin prometer condiciones que cambian cada día.",
+      "aviso": "Los tiempos son orientativos. El estado del sendero, el calor, el viento, la vigilancia de la cala y los servicios externos pueden variar; confirma las condiciones antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Bajada a la cala",
+          "resumen": "Un sendero corto entre pinos enlaza el camping con la pequeña cala de canto rodado sin cruzar carreteras.",
+          "tipo": "Paseo de costa",
+          "duracion": "25 min · 600 m ida y vuelta",
+          "dificultad": "Fácil",
+          "salida": "Recepción",
+          "momento": "Primera hora",
+          "recomendacion": "Consulta vigilancia, oleaje y sombra; el acceso corto no sustituye la atención a las condiciones del mar.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Camino del faro",
+          "resumen": "El trazado costero gana perspectiva sobre la bahía y regresa por el mismo corredor de pinar y roca caliza.",
+          "tipo": "Sendero litoral",
+          "duracion": "1 h · recorrido señalizado",
+          "dificultad": "Media",
+          "salida": "Puerta de la pinada",
+          "momento": "Tarde sin calor",
+          "recomendacion": "Evita la última luz sin margen de regreso y confirma cierres, viento y estado del borde costero.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Pinar alto",
+          "resumen": "La subida enlaza romero, sombra irregular y un punto abierto sobre la bahía antes de volver al camping.",
+          "tipo": "Monte mediterráneo",
+          "duracion": "Según variante señalizada",
+          "dificultad": "Media",
+          "salida": "Recepción",
+          "momento": "Mañana fresca",
+          "recomendacion": "Pide la variante vigente y lleva agua; en días de calor o riesgo forestal puede no ser una opción adecuada.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "A mano",
       "items": [

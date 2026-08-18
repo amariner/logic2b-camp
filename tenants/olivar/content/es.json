@@ -231,6 +231,13 @@
       "titulo": "Tres planes que empiezan en la puerta",
       "intro": "No hace falta llenar el día. En recepción ajustamos estas propuestas a la luz, el calor y las ganas de caminar.",
       "aviso": "Los tiempos son orientativos. El estado de caminos, visitas y horarios puede variar; confirma las condiciones en recepción antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
       "items": [
         {
           "nombre": "Vuelta corta de piedra seca",

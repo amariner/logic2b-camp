@@ -35,6 +35,27 @@
     "silencio de 22:00 a 8:00",
     "abierto de abril a octubre"
   ],
+  "vida": {
+    "titulo": "El humedal se disfruta mejor cuando se entiende",
+    "intro": "La parcela termina antes que el arrozal, recepción cuenta qué caminos están abiertos y las bicicletas salen revisadas para recorrer el delta sin dejar más huella.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Instalarse sin ocupar el paisaje",
+        "texto": "La sombra, las sillas y la conexión quedan dentro de la grava: el camino agrícola, la acequia y sus márgenes siguen libres desde el primer minuto."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Primero, qué está abierto hoy",
+        "texto": "Recepción traduce agua, trabajos del arrozal y zonas sensibles en un recorrido posible, sin prometer aves ni acceso donde hoy no lo hay."
+      },
+      {
+        "foto": "vida-servicio-bicis",
+        "titulo": "Revisar antes de pedalear",
+        "texto": "Altura de sillín, presión y frenos se comprueban bajo el porche; una preparación corta evita convertir el camino llano en una avería larga."
+      }
+    ]
+  },
   "mostrador": {
     "buscar": "Consultar",
     "llegada": "Llegada",
@@ -157,12 +178,15 @@
       {
         "id": "tienda",
         "nombre": "Recepción y despensa",
-        "desc": "Pan por encargo, fruta, agua fría, mapas y café desde las 8:00. También explicamos caminos abiertos y zonas sensibles."
+        "desc": "Pan por encargo, fruta, agua fría, mapas y café desde las 8:00. También explicamos caminos abiertos y zonas sensibles.",
+        "foto": "vida-recepcion",
+        "recepcion": true
       },
       {
         "id": "banos",
         "nombre": "Baños compactos",
-        "desc": "Duchas calientes, cabina accesible y limpieza diaria en un volumen sencillo de cal y cerámica."
+        "desc": "Duchas calientes, cabina accesible y limpieza diaria en un volumen sencillo de cal y cerámica.",
+        "foto": "instalacion-banos-cal"
       },
       {
         "id": "agua",
@@ -172,12 +196,14 @@
       {
         "id": "observatorio",
         "nombre": "Observatorio pequeño",
-        "desc": "Una pantalla de cañizo, banco y guía visual sin reclamos ni iluminación nocturna. La presencia de aves nunca se garantiza."
+        "desc": "Una pantalla de cañizo, banco y guía visual sin reclamos ni iluminación nocturna. La presencia de aves nunca se garantiza.",
+        "foto": "detalle-observatorio"
       },
       {
         "id": "bicis",
         "nombre": "Bicis y herramientas",
-        "desc": "Ocho bicicletas de paseo, aparcamiento cubierto, bomba y herramientas para seguir los caminos llanos del delta."
+        "desc": "Ocho bicicletas de paseo, aparcamiento cubierto, bomba y herramientas para seguir los caminos llanos del delta.",
+        "foto": "vida-servicio-bicis"
       }
     ]
   },
@@ -206,6 +232,53 @@
         "texto": "A diecisiete minutos en bicicleta hay mercado, farmacia, taller y cocina local. El supermercado grande queda a once minutos en vehículo."
       }
     ],
+    "rutas": {
+      "titulo": "Tres formas de leer el agua",
+      "intro": "Recepción ayuda a escoger entre observatorio, embarcadero y pueblo según los trabajos agrícolas, el calor y el estado de los caminos.",
+      "aviso": "Los tiempos son orientativos. El agua, las labores del arrozal, la nidificación, el firme y los horarios externos pueden alterar el recorrido; confirma las condiciones antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Observatorio y acequia",
+          "resumen": "Un paseo por el camino firme bordea la acequia y llega a la pantalla de cañizo sin entrar en márgenes ni campos.",
+          "tipo": "Paseo a pie",
+          "duracion": "45 min · 3 km",
+          "dificultad": "Fácil",
+          "salida": "Recepción",
+          "momento": "Primera luz",
+          "recomendacion": "Pregunta por los tramos abiertos, habla bajo y observa desde la pantalla; ninguna especie ni avistamiento está garantizado.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Embarcadero y arrozales",
+          "resumen": "La pista llana enlaza campos, compuertas y embarcadero por caminos existentes, lejos de los márgenes más sensibles.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "1 h 30 min · 14 km",
+          "dificultad": "Fácil",
+          "salida": "Aparcabicis",
+          "momento": "Mañana fresca",
+          "recomendacion": "Cede el paso a maquinaria agrícola, no bloquees compuertas y evita salir después de lluvias que ablanden el firme.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mercado y centro del agua",
+          "resumen": "Un itinerario práctico combina el mercado del pueblo con el centro de interpretación sin mover la camper.",
+          "tipo": "Bicicleta práctica",
+          "duracion": "1 h 20 min · 17 km",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Mañanas de mercado",
+          "recomendacion": "Confirma horarios y camino vigente; lleva agua, candado y luces incluso si esperas volver antes de que cambie la tarde.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde la parcela",
       "items": [

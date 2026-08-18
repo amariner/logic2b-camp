@@ -3,7 +3,7 @@
     "tipo": "legado-documentado",
     "fuente": "Nano Banana Pro y Higgsfield Soul 2.0; ADR 0006 y trabajos/roles de ADR 0024.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Cala Sereno.",
-    "nota": "Los primeros trabajos preceden a fotos.estado.json; no se inventan metadatos retroactivos. Toda sustitución futura usa foto-pipeline.mjs."
+    "nota": "Los primeros trabajos preceden a fotos.estado.json; no se inventan metadatos retroactivos. La ampliación humana H2 del 2026-08-18 usa exclusivamente OpenAI integrado, una pieza cada vez y con pausa entre solicitudes."
   },
   "lotes": [
     ["hero-dia", "hero-anochecer"],
@@ -11,7 +11,11 @@
     ["tipo-bungalow", "tipo-glamping"],
     ["tipo-autocaravana", "detalle-bungalow-interior"],
     ["detalle-glamping-interior", "instalacion-piscina"],
-    ["instalacion-restaurante", "textura-lona"]
+    ["instalacion-restaurante", "textura-lona"],
+    ["vida-recepcion"],
+    ["vida-servicio-restaurante"],
+    ["vida-servicio-cala"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-dia",
@@ -78,6 +82,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano de lona mediterránea con sombra de pino y textura visible, luz natural lateral, sin personas, texto, logos, HDR o tratamiento artificial."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H2 · recepción: orientación de senderos en un mostrador abierto bajo la pinada.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Cala Sereno demo website\nPrimary request: Photoreal editorial documentary photograph of a small, personal reception conversation in the same Mediterranean pine campsite as the approved Cala Sereno assets.\nInput images: hero-dia.webp is the exact sandy pine-grove light and material reference; tipo-bungalow.webp is the restrained timber reference.\nScene/backdrop: A modest open-sided reception counter made of pale timber under mature Aleppo pines, compacted sand underfoot and the sea only faintly glimpsed between trunks; no hotel lobby.\nSubject: A receptionist aged 45–65 points out a walking option on a plain folded paper map with no readable detail to two adult guests carrying small unbranded daypacks; all three are absorbed in the map rather than posing.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, quiet grain and the muted pine-green, sand and sea-blue palette of Cala Sereno.\nComposition/framing: Horizontal 3:2, waist-up conversation slightly off-centre with enough campsite context; all important action inside the central 70 percent for mobile crop.\nLighting/mood: Soft mid-morning dappled shade, familiar and practical rather than staged.\nConstraints: Plausible hands and paper contact, anonymous non-frontal faces, simple fully covering everyday clothes, believable campsite scale.\nAvoid: hotel uniforms, queue, computers with text, readable map, signs, logos, branded gear, posed smiles, luxury materials, extra fingers, HDR, glossy resort advertising, watermark."
+    },
+    "vida-servicio-restaurante": {
+      "aspecto": "3:2",
+      "papel": "H2 · restaurante: un arroz llega a una mesa bajo la lona y los pinos.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Cala Sereno demo website\nPrimary request: Photoreal editorial documentary photograph of lunch service in the same modest Cala Sereno restaurant terrace beneath canvas and Mediterranean pines.\nInput images: instalacion-restaurante.webp is the exact cream canvas, rattan chairs, compacted sand, pine trunks and nearby sea reference.\nScene/backdrop: The same open-air campsite restaurant at a calm late lunch, with only a few occupied tables and the cove visible beyond the trunks.\nSubject: A server in plain unbranded clothes carefully sets a shallow clay rice pan at a multigenerational table of four adults; the diners make room naturally and continue their conversation without looking at camera.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained colour, believable food and hand contact, subtle 35 mm grain.\nComposition/framing: Horizontal 3:2, the shared serving gesture is central while the canvas, pines and strip of sea remain unmistakable; mobile-safe central action.\nLighting/mood: Warm but soft early-afternoon shade, convivial and unhurried.\nConstraints: Plausible anatomy and tableware, anonymous side-view people, simple Mediterranean lunch, preserve the approved terrace geometry and material palette.\nAvoid: fine-dining theatre, paella spectacle, chef hat, champagne, overloaded food, readable menus, logos, uniforms with brands, frontal smiles, extra fingers, HDR, luxury cliché, watermark."
+    },
+    "vida-servicio-cala": {
+      "aspecto": "3:2",
+      "papel": "H2 · cala: huéspedes alcanzan la pequeña playa a pie desde la pinada.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Cala Sereno demo website\nPrimary request: Photoreal editorial documentary photograph of campsite guests reaching a small Castellón pebble cove on foot through the same mature pine grove as Cala Sereno.\nInput images: hero-dia.webp is the exact dappled pine-grove light, compacted sandy path and restrained coastal colour reference.\nScene/backdrop: A narrow unpaved path descends gently between Aleppo pines to a modest clear-water cove with rounded stones, no road crossing and no private beach furniture.\nSubject: One adult and two older children aged roughly 10–15 walk away from camera toward the water carrying plain rolled towels and a reusable bottle; another adult follows a few steps behind at an easy pace.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, muted pine green, pale stone and calm sea blue, subtle film grain.\nComposition/framing: Horizontal 3:2, the path leads from foreground to the cove; figures remain secondary and inside the central 70 percent for mobile crop.\nLighting/mood: Clear late morning with cool tree shade, simple anticipation rather than holiday advertising.\nConstraints: Everyone fully clothed in ordinary summer walking clothes, back or side view, plausible gait and limbs, coherent shadows, environmentally credible cove.\nAvoid: swimwear posing, looking back, tropical sand, beach club, umbrellas, logos, readable signs, crowd, malformed limbs, extreme turquoise, HDR, travel-poster saturation, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H2 · entorno: dos senderistas salen desde recepción hacia el pinar alto.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Cala Sereno demo website\nPrimary request: Photoreal editorial documentary photograph of two adult guests beginning a marked coastal walk directly from the same Cala Sereno pine campsite.\nInput images: hero-dia.webp is the exact Aleppo-pine canopy, pale compacted path, morning light and quiet campsite material reference.\nScene/backdrop: The campsite edge opens into a dry Mediterranean footpath with rosemary, limestone and a distant glimpse of the bay; no invented monument or dramatic cliff.\nSubject: Two adults aged roughly 35–60 walk away at an easy pace with small plain daypacks; one adjusts a shoulder strap while the other studies the natural fork in the path, without a visible branded sign.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, subdued pine green, limestone and sea blue, subtle 35 mm grain.\nComposition/framing: Horizontal 3:2, path and landscape dominate; the two figures sit within the central 60 percent and remain anonymous.\nLighting/mood: Fresh early morning, quiet and practical, distinct from golden-hour resort imagery.\nConstraints: Fully covering walking clothes, plausible gait and hands, coherent terrain and shadows, preserve Cala Sereno's intimate pine-grove scale.\nAvoid: heroic mountaineering, trekking poles, cliff-edge danger, readable wayfinding, logos, branded gear, frontal faces, malformed limbs, orange sunset, HDR, travel-poster saturation, watermark."
     }
   }
 }

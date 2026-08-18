@@ -3,13 +3,17 @@
     "tipo": "generada",
     "fuente": "Lote D5-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping La Duna.",
-    "nota": "Producción en cuatro tandas máximas de dos piezas, con inspección visual antes de avanzar."
+    "nota": "Producción inicial en cuatro tandas máximas de dos piezas. La ampliación humana H2 del 2026-08-18 usa exclusivamente OpenAI integrado, una pieza cada vez y con inspección visual antes de avanzar."
   },
   "lotes": [
     ["hero-amanecer", "hero-ultima-luz"],
     ["tipo-plaza-base", "tipo-plaza-duna"],
     ["detalle-tienda-tablas", "instalacion-banos-modulo"],
-    ["entorno-pasarela-mar", "textura-madera-sal"]
+    ["entorno-pasarela-mar", "textura-madera-sal"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-agua"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-amanecer",
@@ -56,6 +60,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano editorial documental de tablones de madera lavados por sol y sal junto a arena fina con pequeñas hojas de barrón, veta gris y cálida muy nítida, luz lateral coral suave y una sombra lineal de barandilla; sin personas, pies, texto, logos, pintura, basura, conchas decorativas ni efectos digitales."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H2 · llegada: una pareja instala una camper compacta sin ocupar el paso.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Duna demo website\nPrimary request: Photoreal editorial documentary photograph of two adult travellers calmly settling a compact camper into a Base pitch at the same small Mediterranean dune campsite.\nInput images: tipo-plaza-base.webp is the exact compacted ground, washed timber borders, tamarisk vegetation, generic white camper and modest pitch scale reference.\nScene/backdrop: One clearly bounded pitch behind the protected dune, with the elevated boardwalk only faintly visible beyond native scrub; no vehicle or furniture on beach sand.\nSubject: Two adults aged roughly 28–45 work naturally: one unfolds two plain compact chairs while the other connects a discreet electrical lead along the pitch edge; both look at the task, not the camera.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, restrained sand, grey timber and sea-blue palette, subtle film grain.\nComposition/framing: Horizontal 3:2, vehicle and pitch geometry dominate; people occupy 15–25 percent and all action stays in the central 70 percent.\nLighting/mood: Clean early morning after arrival, light coastal breeze, practical and unhurried.\nConstraints: Plausible hands, cable and chairs; anonymous side or back views; generic unbranded camper with no visible plate; realistic safety and manoeuvring space.\nAvoid: campsite party, decorative vanlife styling, rugs, fairy lights, surf-brand logos, readable text, vehicle on beach, frontal smiles, extra fingers, HDR, luxury advertising, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H2 · recepción: parte práctico de viento y acceso en la tienda pequeña.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Duna demo website\nPrimary request: Photoreal editorial documentary photograph of a practical reception conversation inside the same tiny shop-reception at Camping La Duna.\nInput images: detalle-tienda-tablas.webp is the exact pale plywood, painted steel, simple counter, generic provisions, plain soft surfboards and tamarisk-window reference.\nScene/backdrop: The modest daylit shop-reception, functional and compact, with no hotel lobby or decorative beach bar.\nSubject: A receptionist aged roughly 35–60 uses one finger to indicate wind direction on a small plain laminated diagram with no readable text while two adult camper guests listen; one holds a bicycle helmet at their side.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained colour and subtle film grain.\nComposition/framing: Horizontal 3:2, waist-up conversation centred around the simple counter; context stays visible and people occupy no more than 35 percent.\nLighting/mood: Bright but soft morning light, direct and helpful rather than staged.\nConstraints: Plausible hands and diagram contact, anonymous non-frontal faces, plain unbranded clothes and helmet, maintain the approved small scale and materials.\nAvoid: readable forecast, screens with text, logos, uniforms, neon, tropical decoration, posed smiles, extra fingers, luxury reception, HDR, watermark."
+    },
+    "vida-servicio-agua": {
+      "aspecto": "3:2",
+      "papel": "H2 · servicio: viajeros usan el agua exterior del módulo al volver de la costa.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Duna demo website\nPrimary request: Photoreal editorial documentary photograph of travellers naturally using the exterior water points beside the same compact timber bathroom module at Camping La Duna.\nInput images: instalacion-banos-modulo.webp is the exact vertical salt-weathered timber, flat stabilized access, gentle ramp, foot shower, tamarisks and protected-dune reference.\nScene/backdrop: Exterior only, beside the modest service module; the access remains clear and no bathroom interior is visible.\nSubject: One fully clothed adult in ordinary walking clothes rinses sand from bare feet at the low foot shower while a second adult refills a plain reusable bottle at a separate waist-height tap; both focus on the small tasks.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, honest material texture, restrained coastal colour and subtle film grain.\nComposition/framing: Horizontal 3:2, service module and accessible approach dominate; people occupy 15–30 percent and remain within the central 70 percent.\nLighting/mood: Clear midday shade from the small porch, fresh and practical.\nConstraints: Plausible water flow, hands and feet; anonymous side/back views; ramp and passage unobstructed; no visible private interior.\nAvoid: showering body, swimwear pose, wet-floor hazard, branded bottles, signs, text, logos, extra fingers or toes, spa styling, HDR, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H2 · entorno: dos huéspedes recorren en bicicleta la vía litoral interior.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Duna demo website\nPrimary request: Photoreal editorial documentary photograph of two adult campsite guests beginning the flat coastal bicycle route inland from the protected dune.\nInput images: entorno-pasarela-mar.webp is the exact low dune vegetation, washed timber, open coastal light and restrained sea-blue reference; bicycles must remain off the pedestrian boardwalk.\nScene/backdrop: A firm pale gravel cycle track runs parallel to tamarisk scrub and distant salinas, with the raised pedestrian boardwalk and sea only far to one side; no road traffic.\nSubject: Two adults aged roughly 30–60 ride ordinary unbranded touring bicycles away at an easy pace, wearing simple helmets and small day bags; one briefly turns their head toward the landscape, not the camera.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, subdued sand, salt-green and blue palette, subtle film grain.\nComposition/framing: Horizontal 3:2, route and landscape dominate; cyclists occupy 10–20 percent and remain in the central 60 percent for mobile crop.\nLighting/mood: Fresh morning with visible but gentle coastal breeze, quiet forward movement.\nConstraints: Plausible bicycles, posture and shadows; both riders fully clothed and correctly helmeted; environmentally credible route outside the protected sand.\nAvoid: cycling on boardwalk or beach, racing kit, motor traffic, logos, readable signs, stunt pose, malformed wheels or limbs, tropical saturation, HDR, watermark."
     }
   }
 }

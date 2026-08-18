@@ -35,6 +35,27 @@
     "nits fresques tot l'estiu",
     "accés final per carretera estreta"
   ],
+  "vida": {
+    "titulo": "Ser a prop del riu també vol dir saber quan aturar-se",
+    "intro": "La parcel·la es munta sense tocar el sotabosc, recepció llegeix cabal i pluja amb cada hoste, i el refugi fa útil un dia humit sense convertir-lo en una aventura.",
+    "escenas": [
+      {
+        "foto": "vida-arribada",
+        "titulo": "La tenda queda dins la parcel·la",
+        "texto": "Les piquetes, la taula i el pas sec es resolen sobre la grava; falgueres, arrels i franja de ribera queden fora de la instal·lació."
+      },
+      {
+        "foto": "vida-recepcio",
+        "titulo": "Avui, fins on es pot caminar",
+        "texto": "Recepció combina cabal, pluja recent i hores de llum per explicar una ruta possible, també quan la resposta responsable és tornar abans."
+      },
+      {
+        "foto": "vida-servei-refugi",
+        "titulo": "Eixugar-se també forma part del dia",
+        "texto": "Al refugi, els impermeables van al penjador i les botes a la safata: una pausa senzilla abans de decidir si el bosc permet una altra volta."
+      }
+    ]
+  },
   "mostrador": {
     "buscar": "Consultar",
     "llegada": "Arribada",
@@ -157,12 +178,14 @@
       {
         "id": "refugi",
         "nombre": "El refugi comú",
-        "desc": "Una sala petita amb taula, bancs, pica i estufa per als dies freds. No és un restaurant ni una sala d'animació."
+        "desc": "Una sala petita amb taula, bancs, pica i estufa per als dies freds. No és un restaurant ni una sala d'animació.",
+        "foto": "vida-servei-refugi"
       },
       {
         "id": "banys",
         "nombre": "Banys i dutxes",
-        "desc": "Un bloc de pedra amb aigua calenta, cabina accessible i neteja al matí i al vespre."
+        "desc": "Un bloc de pedra amb aigua calenta, cabina accessible i neteja al matí i al vespre.",
+        "foto": "installacio-banys-pedra"
       },
       {
         "id": "rentat",
@@ -177,7 +200,9 @@
       {
         "id": "recepcio",
         "nombre": "Recepció amb nom",
-        "desc": "De 8:00 a 11:30 i de 17:00 a 20:00. Les arribades tardanes s'acorden abans perquè l'últim tram és estret."
+        "desc": "De 8:00 a 11:30 i de 17:00 a 20:00. Les arribades tardanes s'acorden abans perquè l'últim tram és estret.",
+        "foto": "vida-recepcio",
+        "recepcion": true
       }
     ]
   },
@@ -206,6 +231,53 @@
         "texto": "El bosc guanya color i el riu, soroll. El refugi comú obre tot el dia i proposem passejades curtes sense vendre la pluja com una aventura."
       }
     ],
+    "rutas": {
+      "titulo": "Tres sortides segons l'aigua i la llum",
+      "intro": "Recepció ajuda a triar entre la volta curta, la passera i els prats alts segons el cabal, el fang i el temps disponible.",
+      "aviso": "Els temps són orientatius. La pluja, el cabal, el fang, les passeres i les hores de llum poden canviar el recorregut; confirma l'estat abans de sortir.",
+      "etiquetas": {
+        "duracion": "Durada",
+        "dificultad": "Dificultat",
+        "salida": "Sortida",
+        "momento": "Millor moment",
+        "mapa": "Veure mapa verificat"
+      },
+      "items": [
+        {
+          "nombre": "Volta curta de ribera",
+          "resumen": "El sender ombrívol acompanya el riu per terreny ferm i torna abans de la primera passera baixa.",
+          "tipo": "Passeig a peu",
+          "duracion": "1 h · 4 km",
+          "dificultad": "Fàcil",
+          "salida": "Porta del càmping",
+          "momento": "Matí fresc",
+          "recomendacion": "Pregunta pel cabal després de pluja, no baixis a la llera i gira quan el ferm deixi de ser clar.",
+          "foto": "vida-entorn"
+        },
+        {
+          "nombre": "Passera baixa i pollancreda",
+          "resumen": "Una volta més llarga travessa només per la passera oberta i continua entre pollancres fins al punt de retorn.",
+          "tipo": "Sender de ribera",
+          "duracion": "2 h 15 min · 8 km",
+          "dificultad": "Moderada",
+          "salida": "Recepció",
+          "momento": "Dia sec",
+          "recomendacion": "Confirma que la passera és oberta, porta calçat ferm i no improvisis cap gual si el riu baixa alt.",
+          "foto": "vida-entorn"
+        },
+        {
+          "nombre": "Prats del coll",
+          "resumen": "Des de l'inici alt, un camí sostingut puja fins als prats oberts i torna pel mateix itinerari senyalitzat.",
+          "tipo": "Ruta de muntanya",
+          "duracion": "3 h 30 min · 9 km",
+          "dificultad": "Mitjana",
+          "salida": "Inici del coll",
+          "momento": "Matí estable",
+          "recomendacion": "Revisa núvols i hores de llum, porta una capa seca i renuncia al coll si la boira es tanca.",
+          "foto": "vida-entorn"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Des de la parcel·la",
       "items": [

@@ -4,66 +4,158 @@
     "description": "Camping de montaña con parcelas, cabañas, refugios y rutas desde la puerta. Demostración ficticia de Logic2B."
   },
   "nav": {
-    "alojamientos": "Alojamientos", "instalaciones": "El camping", "entorno": "Bosque y rutas",
-    "tarifas": "Tarifas", "blog": "Parte de senderos", "contacto": "Consultar estancia",
-    "menu": "Menú", "idioma": "Idioma", "tema": "Estilo"
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Bosque y rutas",
+    "tarifas": "Tarifas",
+    "blog": "Parte de senderos",
+    "contacto": "Consultar estancia",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
   },
   "demo": {
     "banner": "Demostración ficticia de Logic2B: la consulta se guarda solo en este navegador y no se envía.",
-    "nivel": "Gestión", "nivel1": "Inicio", "nivel3": "Gestión"
+    "nivel": "Gestión",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
   },
-  "hero3": { "titulo": "Ochenta unidades. Tres idiomas. Una sola bandeja.", "prueba": "80 unidades · recepción coordinada" },
-  "hero1": { "titulo": "Bosque húmedo. Pizarra seca. Tu ruta empieza aquí.", "cta": "Consulta tu estancia" },
+  "hero3": {
+    "titulo": "Ochenta unidades. Tres idiomas. Una sola bandeja.",
+    "prueba": "80 unidades · recepción coordinada"
+  },
+  "hero1": {
+    "titulo": "Bosque húmedo. Pizarra seca. Tu ruta empieza aquí.",
+    "cta": "Consulta tu estancia"
+  },
   "ticker": [
-    "66 parcelas entre árboles", "14 cabañas y refugios", "senderos desde la puerta",
-    "parte de rutas cada mañana", "recepción en español, francés y alemán"
+    "66 parcelas entre árboles",
+    "14 cabañas y refugios",
+    "senderos desde la puerta",
+    "parte de rutas cada mañana",
+    "recepción en español, francés y alemán"
   ],
-  "mostrador": { "buscar": "Consultar", "llegada": "Llegada", "salida": "Salida", "adultos": "Adultos", "ninos": "Niños" },
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
   "tipos": {
     "titulo": "Dormir dentro del bosque sin improvisar",
     "subtitulo": "Parcela bajo hayas, claro con más maniobra, cabaña compacta o refugio para seis. Cuatro opciones con superficie y acceso explicados.",
     "verTodo": "Ver los cuatro alojamientos",
     "nombres": {
-      "ut_bosque": "Parcela Bosque", "ut_mirador": "Parcela Mirador",
-      "ut_cabana": "Cabaña Pizarra", "ut_refugio": "Refugio Serralta"
+      "ut_bosque": "Parcela Bosque",
+      "ut_mirador": "Parcela Mirador",
+      "ut_cabana": "Cabaña Pizarra",
+      "ut_refugio": "Refugio Serralta"
     },
     "cards": [
-      { "id": "bosque", "nombre": "Parcela Bosque", "desc": "Setenta y cinco metros cuadrados bajo sombra húmeda, electricidad de 10 A y suelo drenante.", "foto": "tipo-parcela-bosque" },
-      { "id": "mirador", "nombre": "Parcela Mirador", "desc": "Noventa metros cuadrados en la parte alta, con más maniobra, sol de tarde y acceso firme.", "foto": "tipo-parcela-mirador" },
-      { "id": "cabana", "nombre": "Cabaña Pizarra", "desc": "Dos estancias, baño y porche cubierto para cuatro, sin climatización innecesaria.", "foto": "tipo-cabana-pizarra" },
-      { "id": "refugio", "nombre": "Refugio Serralta", "desc": "Tres dormitorios sencillos, baño, secadero y mesa grande para un grupo de seis.", "foto": "tipo-refugio-familiar" }
+      {
+        "id": "bosque",
+        "nombre": "Parcela Bosque",
+        "desc": "Setenta y cinco metros cuadrados bajo sombra húmeda, electricidad de 10 A y suelo drenante.",
+        "foto": "tipo-parcela-bosque"
+      },
+      {
+        "id": "mirador",
+        "nombre": "Parcela Mirador",
+        "desc": "Noventa metros cuadrados en la parte alta, con más maniobra, sol de tarde y acceso firme.",
+        "foto": "tipo-parcela-mirador"
+      },
+      {
+        "id": "cabana",
+        "nombre": "Cabaña Pizarra",
+        "desc": "Dos estancias, baño y porche cubierto para cuatro, sin climatización innecesaria.",
+        "foto": "tipo-cabana-pizarra"
+      },
+      {
+        "id": "refugio",
+        "nombre": "Refugio Serralta",
+        "desc": "Tres dormitorios sencillos, baño, secadero y mesa grande para un grupo de seis.",
+        "foto": "tipo-refugio-familiar"
+      }
     ]
   },
   "entorno": {
     "titulo": "El bosque marca el ritmo y la niebla pone la hora.",
     "texto": "Las calles siguen la ladera y terminan antes del hayedo. Cada mañana recepción comparte humedad, barro, cierres y tiempo estimado de las rutas, sin convertir una previsión en promesa."
   },
+  "vida": {
+    "titulo": "La montaña empieza antes de salir del camping",
+    "intro": "El equipo mojado se queda dentro de la parcela, recepción ayuda a decidir cuándo retirarse y el fuego solo existe como servicio común atendido.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Llegar también es ordenar el regreso",
+        "texto": "Las botas van a la bandeja, la mochila bajo el toldo y la calle queda libre. Así el barro no entra en el vehículo ni corta el drenaje."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "El parte termina en una decisión",
+        "texto": "Barro, niebla y hora de retirada se explican con tres opciones sencillas; recomendar una ruta incluye decir cuándo no conviene salir."
+      },
+      {
+        "foto": "vida-servicio-fuego",
+        "titulo": "Una brasa atendida, nunca una hoguera libre",
+        "texto": "El hogar común abre con perímetro mojado y supervisión. Si el viento o el parte forestal cambian, se cierra sin convertirlo en promesa de la estancia."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta una estancia en la sierra",
     "subtitulo": "Rellena esta solicitud ficticia y ábrela después en el gestor Logic2B. El idioma y la ruta quedan visibles; no se enviará ningún mensaje.",
-    "nombre": "Nombre ficticio", "email": "Email de prueba", "fechas": "Fechas", "entrada": "Entrada", "salida": "Salida",
-    "fechasEjemplo": "12 → 17 septiembre", "grupo": "Personas", "estancia": "Cómo quieres quedarte",
-    "estanciaVacia": "Elige parcela o alojamiento", "mensaje": "Vehículo, ruta prevista y qué necesitas saber",
-    "enviar": "Crear solicitud demo", "enviando": "Guardando en esta demo…", "ok": "Solicitud demo creada.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "entrada": "Entrada",
+    "salida": "Salida",
+    "fechasEjemplo": "12 → 17 septiembre",
+    "grupo": "Personas",
+    "estancia": "Cómo quieres quedarte",
+    "estanciaVacia": "Elige parcela o alojamiento",
+    "mensaje": "Vehículo, ruta prevista y qué necesitas saber",
+    "enviar": "Crear solicitud demo",
+    "enviando": "Guardando en esta demo…",
+    "ok": "Solicitud demo creada.",
     "error": "La demostración no ha podido guardar la solicitud. Reintenta sin datos reales.",
-    "demoEtiqueta": "Demostración:", "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
     "demoSpam": "Demostración de antispam: la solicitud se ha detenido antes de guardarse.",
     "demoExitoTitulo": "Solicitud SR-WEB-001 creada",
     "demoExitoTexto": "La solicitud existe solo en este navegador. Ábrela en el gestor, comprueba idioma y ruta, márcala contactada y conviértela en estancia.",
-    "demoCopiar": "Copiar resumen", "demoCopiado": "Resumen copiado",
-    "demoCta": "Quiero una operativa así", "demoAbrirGestor": "Abrir en el gestor",
-    "demoResumenEstancia": "Estancia", "demoResumenFechas": "Fechas", "demoResumenGrupo": "Personas",
-    "demoResumenMensaje": "Consulta", "demoSinConcretar": "Por concretar"
+    "demoCopiar": "Copiar resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una operativa así",
+    "demoAbrirGestor": "Abrir en el gestor",
+    "demoResumenEstancia": "Estancia",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
   },
   "footer": {
     "aviso": "Camping de montaña ficticio de 80 unidades · datos de demostración",
-    "legal": "Aviso legal", "privacidad": "Privacidad", "cookies": "Cookies", "poweredBy": "Web y gestión por Logic2B"
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web y gestión por Logic2B"
   },
   "alojamientos": {
-    "seo": { "title": "Parcelas, cabañas y refugios | Serralta", "description": "Parcelas de bosque, cabañas de pizarra y refugios familiares en un camping de montaña ficticio." },
-    "titulo": "Alojamientos", "intro": "Cuatro categorías y 80 unidades organizadas por calles. La consulta no bloquea inventario ni cobra nada.",
-    "desdeNoche": "desde {precio}/noche", "verFicha": "Ver ficha", "consultar": "Consultar estas fechas", "volver": "Todos los alojamientos",
-    "parcelas": "Parcelas", "alojados": "Cabañas y refugios",
+    "seo": {
+      "title": "Parcelas, cabañas y refugios | Serralta",
+      "description": "Parcelas de bosque, cabañas de pizarra y refugios familiares en un camping de montaña ficticio."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías y 80 unidades organizadas por calles. La consulta no bloquea inventario ni cobra nada.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Cabañas y refugios",
     "fichas": {
       "ut_bosque": "Parcela sombreada de unos 75 m² para tienda, caravana o furgoneta. Electricidad de 10 A, suelo drenante y agua próxima.",
       "ut_mirador": "Parcela de unos 90 m² en la calle alta, con mayor radio de giro y algo de sol de tarde.",
@@ -71,11 +163,25 @@
       "ut_refugio": "Tres dormitorios, baño, cocina, secadero y mesa común para seis personas; acepta mascota."
     },
     "ficha": {
-      "capacidad": "Capacidad", "personas": "personas", "personasIncluidas": "{n} incluidas en el precio",
-      "superficie": "Superficie", "electricidad": "Electricidad", "sombra": "Sombra", "sombraParcial": "parcial", "sombraTotal": "total",
-      "camas": "Camas", "banos": "Baños privados", "aire": "Aire acondicionado", "mascotas": "Mascotas", "si": "sí", "no": "no",
-      "unidades": "{n} unidades de este tipo", "tarifasTitulo": "Tarifa orientativa por noche",
-      "estanciaMin": "estancia mínima {n} noches", "estanciaMin1": "sin estancia mínima", "llegadaSabado": "llegada en sábado",
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Camas",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
       "notaPrecios": "Precio ficticio con {n} personas. Recepción confirmaría disponibilidad y condiciones antes de reservar.",
       "disponibilidadTitulo": "¿Libre para tus fechas?",
       "solicitudTitulo": "Consulta {tipo}",
@@ -83,46 +189,156 @@
     }
   },
   "instalaciones": {
-    "seo": { "title": "Servicios del camping | Serralta", "description": "Recepción de rutas, baños calientes, secadero y fuego común controlado en un camping de montaña." },
+    "seo": {
+      "title": "Servicios del camping | Serralta",
+      "description": "Recepción de rutas, baños calientes, secadero y fuego común controlado en un camping de montaña."
+    },
     "titulo": "Volver con barro también forma parte del día",
     "intro": "Recepción comparte el estado de rutas; el secadero y las duchas resuelven el regreso. El fuego común solo abre cuando el parte forestal lo permite.",
     "items": [
-      { "id": "recepcion", "nombre": "Recepción de rutas", "desc": "Abierta de 7:30 a 21:00; publica barro, cierres, tormentas y tiempos observados en español, francés y alemán." },
-      { "id": "fuego", "nombre": "Fuego común controlado", "desc": "Un hogar mineral atendido, sin fuego en parcelas. Permanece cerrado cuando el riesgo forestal o el viento lo exigen." },
-      { "id": "banos", "nombre": "Baños y secadero", "desc": "Dos bloques con cabina accesible, duchas calientes, lavadora y una sala ventilada para botas y chaquetas." },
-      { "id": "despensa", "nombre": "Despensa pequeña", "desc": "Pan por encargo, fruta, cena sencilla, gas y material básico para una salida temprana." },
-      { "id": "bicis", "nombre": "Lavado y herramientas", "desc": "Manguera de baja presión, caballete, bomba y herramientas para bicicleta sin verter barro al arroyo." }
+      {
+        "id": "recepcion",
+        "nombre": "Recepción de rutas",
+        "desc": "Abierta de 7:30 a 21:00; publica barro, cierres, tormentas y tiempos observados en español, francés y alemán.",
+        "foto": "vida-recepcion",
+        "recepcion": true
+      },
+      {
+        "id": "fuego",
+        "nombre": "Fuego común controlado",
+        "desc": "Un hogar mineral atendido, sin fuego en parcelas. Permanece cerrado cuando el riesgo forestal o el viento lo exigen.",
+        "foto": "vida-servicio-fuego"
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños y secadero",
+        "desc": "Dos bloques con cabina accesible, duchas calientes, lavadora y una sala ventilada para botas y chaquetas."
+      },
+      {
+        "id": "despensa",
+        "nombre": "Despensa pequeña",
+        "desc": "Pan por encargo, fruta, cena sencilla, gas y material básico para una salida temprana."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Lavado y herramientas",
+        "desc": "Manguera de baja presión, caballete, bomba y herramientas para bicicleta sin verter barro al arroyo."
+      }
     ]
   },
   "entornoPagina": {
-    "seo": { "title": "Bosque y rutas | Serralta", "description": "Hayedo, collado, circuito familiar y pueblo de montaña desde Camping Serralta." },
+    "seo": {
+      "title": "Bosque y rutas | Serralta",
+      "description": "Hayedo, collado, circuito familiar y pueblo de montaña desde Camping Serralta."
+    },
     "titulo": "El sendero empieza donde termina la grava",
     "intro": "No hace falta mover el vehículo para caminar. Cuatro rutas salen del acceso; recepción explica desnivel, firme y retirada antes de recomendar una.",
     "secciones": [
-      { "titulo": "El hayedo", "texto": "Un circuito de siete kilómetros atraviesa el bosque húmedo sin grandes desniveles. Después de lluvia exige calzado con dibujo." },
-      { "titulo": "El collado", "texto": "Doce kilómetros y 620 metros positivos, con un tramo expuesto. No se recomienda con tormenta ni niebla cerrada." },
-      { "titulo": "En bicicleta", "texto": "Una pista forestal de 24 kilómetros enlaza miradores y bordas. Recepción presta bomba y herramientas básicas." },
-      { "titulo": "El pueblo", "texto": "Horno, farmacia, taller y mercado de sábado quedan a once minutos en vehículo o cuarenta en bicicleta." }
+      {
+        "titulo": "El hayedo",
+        "texto": "Un circuito de siete kilómetros atraviesa el bosque húmedo sin grandes desniveles. Después de lluvia exige calzado con dibujo."
+      },
+      {
+        "titulo": "El collado",
+        "texto": "Doce kilómetros y 620 metros positivos, con un tramo expuesto. No se recomienda con tormenta ni niebla cerrada."
+      },
+      {
+        "titulo": "En bicicleta",
+        "texto": "Una pista forestal de 24 kilómetros enlaza miradores y bordas. Recepción presta bomba y herramientas básicas."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Horno, farmacia, taller y mercado de sábado quedan a once minutos en vehículo o cuarenta en bicicleta."
+      }
     ],
+    "rutas": {
+      "titulo": "Tres salidas, cada una con retirada",
+      "intro": "El parte de recepción no promete cumbres: compara firme, desnivel, niebla y tiempo de vuelta antes de recomendar un trazado.",
+      "aviso": "Los tiempos son orientativos. La lluvia, el barro, la niebla, las tormentas, los trabajos forestales y los cierres pueden cambiar el recorrido; confirma el parte oficial y la retirada antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Circuito del hayedo",
+          "resumen": "El camino entra en el bosque húmedo, cruza dos vaguadas por firme consolidado y regresa sin ganar la ladera alta.",
+          "tipo": "Senderismo de bosque",
+          "duracion": "2 h 15 min · 7 km",
+          "dificultad": "Moderada",
+          "salida": "Puerta del camping",
+          "momento": "Mañana con visibilidad",
+          "recomendacion": "Comprueba barro y tormenta; con lluvia reciente usa calzado con dibujo y regresa por el mismo enlace si la niebla baja.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mirador bajo",
+          "resumen": "Una variante corta asciende entre hayas hasta una apertura modesta sobre el valle y evita el tramo expuesto del collado.",
+          "tipo": "Paseo con desnivel",
+          "duracion": "1 h 20 min · 4 km",
+          "dificultad": "Fácil–moderada",
+          "salida": "Inicio del hayedo",
+          "momento": "Después de levantar la niebla",
+          "recomendacion": "No busques vistas fuera del sendero; si el poste queda dentro de nube o el suelo resbala, vuelve por el trazado de subida.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Collado de Serralta",
+          "resumen": "La ruta larga enlaza bosque, ladera abierta y collado, con 620 metros positivos y un tramo que exige visibilidad estable.",
+          "tipo": "Senderismo de jornada",
+          "duracion": "4 h 45 min · 12 km",
+          "dificultad": "Media–alta",
+          "salida": "Recepción",
+          "momento": "Día estable y salida temprana",
+          "recomendacion": "Descártala con tormenta o niebla cerrada, comunica el plan y fija una hora de vuelta que permita regresar antes de perder luz.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [
-        { "lugar": "Inicio del hayedo", "valor": "3 min a pie" }, { "lugar": "Mirador bajo", "valor": "22 min a pie" },
-        { "lugar": "Collado", "valor": "2 h 40 min a pie" }, { "lugar": "Pueblo y farmacia", "valor": "11 min en coche" },
-        { "lugar": "Centro de salud", "valor": "24 min en coche" }, { "lugar": "Estación", "valor": "38 min en coche" }
+        { "lugar": "Inicio del hayedo", "valor": "3 min a pie" },
+        { "lugar": "Mirador bajo", "valor": "22 min a pie" },
+        { "lugar": "Collado", "valor": "2 h 40 min a pie" },
+        { "lugar": "Pueblo y farmacia", "valor": "11 min en coche" },
+        { "lugar": "Centro de salud", "valor": "24 min en coche" },
+        { "lugar": "Estación", "valor": "38 min en coche" }
       ]
     }
   },
   "tarifas": {
-    "seo": { "title": "Tarifas orientativas | Serralta", "description": "Precios ficticios por noche para parcelas, cabañas y refugios de montaña." },
-    "titulo": "Tres momentos de la sierra", "intro": "Los importes enseñan cómo se presenta el catálogo. Esta web solo crea una solicitud y no cobra ni confirma una reserva.",
-    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
-    "temporadas": { "sea_deshielo": "Deshielo · 1 mayo – 20 junio", "sea_cumbre": "Cumbre · 20 junio – 10 septiembre", "sea_setas": "Setas · 10 septiembre – 3 noviembre" },
-    "suplementos": {
-      "titulo": "Suplementos orientativos", "personaExtra": "Persona a partir de la {n}ª", "nino": "Niño (3–12 años)",
-      "electricidad": "Electricidad 10 A", "vehiculo": "Segundo vehículo", "mascota": "Mascota en parcela o refugio"
+    "seo": {
+      "title": "Tarifas orientativas | Serralta",
+      "description": "Precios ficticios por noche para parcelas, cabañas y refugios de montaña."
     },
-    "extras": { "titulo": "Extras", "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" }, "nombres": { "ext_lena": "Saco de leña certificada", "ext_mascota": "Mascota en parcela o refugio" } },
+    "titulo": "Tres momentos de la sierra",
+    "intro": "Los importes enseñan cómo se presenta el catálogo. Esta web solo crea una solicitud y no cobra ni confirma una reserva.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_deshielo": "Deshielo · 1 mayo – 20 junio",
+      "sea_cumbre": "Cumbre · 20 junio – 10 septiembre",
+      "sea_setas": "Setas · 10 septiembre – 3 noviembre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos orientativos",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 10 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela o refugio"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": {
+        "ext_lena": "Saco de leña certificada",
+        "ext_mascota": "Mascota en parcela o refugio"
+      }
+    },
     "condiciones": {
       "titulo": "Antes de consultar",
       "items": [
@@ -134,17 +350,41 @@
     }
   },
   "contacto": {
-    "seo": { "title": "Consultar estancia | Serralta", "description": "Crea una solicitud ficticia y sigue su recorrido en el gestor Logic2B." },
+    "seo": {
+      "title": "Consultar estancia | Serralta",
+      "description": "Crea una solicitud ficticia y sigue su recorrido en el gestor Logic2B."
+    },
     "titulo": "Consulta, idioma y ruta en una historia",
     "intro": "Usa datos inventados. La solicitud se guarda temporalmente en tu navegador y aparecerá en el gestor con idioma y contexto; no sale ningún email ni mensaje.",
-    "datos": { "titulo": "Datos ficticios", "direccion": "Dirección", "telefono": "Teléfono", "email": "Email" },
-    "horario": { "titulo": "Recepción", "texto": "Horario de muestra: 7:30–21:00 en temporada Cumbre y 8:00–20:00 el resto." },
-    "llegar": { "titulo": "Cómo llegar", "texto": "La dirección y los canales son ficticios. Una activación real publicaría pista recomendada, gálibo y alternativa para vehículos largos verificados por el camping." }
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 7:30–21:00 en temporada Cumbre y 8:00–20:00 el resto."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La dirección y los canales son ficticios. Una activación real publicaría pista recomendada, gálibo y alternativa para vehículos largos verificados por el camping."
+    }
   },
   "blog": {
-    "seo": { "title": "Parte de senderos | Serralta", "description": "Información práctica sobre barro, cierres y rutas desde un camping de montaña ficticio." },
-    "titulo": "Parte de senderos", "intro": "La demo no publica partes. La sección queda preparada para avisos de barro, cierres y tormenta sin convertir una observación en garantía.",
-    "leerMas": "Leer", "volver": "Todos los partes", "vacio": "No hay partes en esta demostración."
+    "seo": {
+      "title": "Parte de senderos | Serralta",
+      "description": "Información práctica sobre barro, cierres y rutas desde un camping de montaña ficticio."
+    },
+    "titulo": "Parte de senderos",
+    "intro": "La demo no publica partes. La sección queda preparada para avisos de barro, cierres y tormenta sin convertir una observación en garantía.",
+    "leerMas": "Leer",
+    "volver": "Todos los partes",
+    "vacio": "No hay partes en esta demostración."
   },
-  "noEncontrada": { "titulo": "Este sendero se pierde en la niebla", "texto": "La dirección no corresponde a ninguna zona del camping.", "cta": "Volver al inicio" }
+  "noEncontrada": {
+    "titulo": "Este sendero se pierde en la niebla",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  }
 }

@@ -15,7 +15,15 @@ import type { ImageMetadata, MarkdownInstance } from 'astro';
 
 export type TipoCard = { id: string; nombre: string; desc: string; foto: string };
 export type Seo = { title: string; description: string };
-export type NamedItem = { id: string; nombre: string; desc: string };
+export type NamedItem = {
+  id: string;
+  nombre: string;
+  desc: string;
+  /** Foto editorial explícita cuando el id operativo y el nombre del activo no coinciden. */
+  foto?: string;
+  /** Identifica el punto de recepción para conectarlo con contacto. */
+  recepcion?: boolean;
+};
 export type VidaScene = { foto: string; titulo: string; texto: string };
 export type RoutePlan = {
   nombre: string;
@@ -77,6 +85,13 @@ export type Content = {
       titulo: string;
       intro: string;
       aviso: string;
+      etiquetas: {
+        duracion: string;
+        dificultad: string;
+        salida: string;
+        momento: string;
+        mapa: string;
+      };
       items: RoutePlan[];
     };
   };

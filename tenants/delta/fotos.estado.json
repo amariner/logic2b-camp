@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -182,6 +182,59 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T09:49:15.773Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "ea5e0b3204fe899c5ddb7877e791ed006c66f6df904d2d18cbc982f4afdd3390",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T09:50:13.863Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "ea5e0b3204fe899c5ddb7877e791ed006c66f6df904d2d18cbc982f4afdd3390",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T09:51:19.735Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "0f5a143a928bf0851224419f1adb5840823533fc4c33cb4765cd9375c7082463",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-bicis": [
+      {
+        "at": "2026-08-18T09:52:45.394Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "b93201c6716e9ef9521605d97f217edf8caf8e7f47e1e47f91cbab9d4b8e4bc1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T09:54:04.858Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "35dba3f976dc873692f895c05f62af6661178be2ee67d45d3146c9a9e3fad0a4",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -215,6 +268,22 @@
     },
     "entorno-camino-arrozal": {
       "at": "2026-08-10T14:53:22.737Z",
+      "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T09:50:13.912Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T09:51:19.783Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-bicis": {
+      "at": "2026-08-18T09:52:45.443Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T09:54:04.907Z",
       "gate": "visual-inspection"
     }
   },
@@ -250,6 +319,12 @@
         "at": "2026-08-10T14:52:04.110Z",
         "reason": "Aparecen montaña y núcleo urbano; las bicicletas no son de paseo y una lleva texto visible",
         "jobId": "b60e9ff5-d8ad-4026-8b98-02c7086530e3"
+      }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T09:49:15.828Z",
+        "reason": "cable_suelto_en_zona_de_paso"
       }
     ]
   }

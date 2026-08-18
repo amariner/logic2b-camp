@@ -101,6 +101,27 @@
     "titulo": "El encinar organiza la sombra y el silencio.",
     "texto": "Las calles siguen la topografía suave, la piscina cabe en el claro central y las parcelas respetan los troncos adultos. Interior mediterráneo sin disfraz rural ni promesas de aislamiento."
   },
+  "vida": {
+    "titulo": "Quedarse bajo el encinar empieza por entenderlo",
+    "intro": "La parcela se ocupa sin forzar el terreno, recepción explica las reglas y el claro de la piscina sirve para bajar el ritmo, no para cambiar de paisaje.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "La maniobra termina dentro de la parcela",
+        "texto": "Nivelar una rueda, plegar lo que no se usa y dejar libre la calle protege tanto la llegada siguiente como las raíces que dan sombra."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Las reglas se explican antes de cobrar",
+        "texto": "Recepción sitúa residuos, sombra y restricciones de fuego en una conversación breve, con el mismo cuidado que el impuesto o la cancelación."
+      },
+      {
+        "foto": "vida-servicio-piscina",
+        "titulo": "El agua ocupa un solo claro",
+        "texto": "La piscina se usa con calma y sin extender el ocio por todo el bosque: un vaso proporcionado, acceso despejado y el encinar fuera de la valla."
+      }
+    ]
+  },
   "form": {
     "titulo": "Diseñemos reglas que recepción pueda explicar",
     "subtitulo": "Esta demostración no envía datos. Impuesto, depósito y cancelación son ejemplos ficticios para una conversación de alcance.",
@@ -174,7 +195,8 @@
       {
         "id": "piscina-natural",
         "nombre": "Piscina del claro",
-        "desc": "Vaso proporcionado, zona infantil separada, pavimento seguro y sombra fuera del recinto."
+        "desc": "Vaso proporcionado, zona infantil separada, pavimento seguro y sombra fuera del recinto.",
+        "foto": "vida-servicio-piscina"
       },
       {
         "id": "era",
@@ -184,7 +206,9 @@
       {
         "id": "recepcion",
         "nombre": "Recepción y tienda",
-        "desc": "Dos puestos, productos básicos y explicación del desglose antes de cobrar."
+        "desc": "Dos puestos, productos básicos y explicación del desglose antes de cobrar.",
+        "foto": "vida-recepcion",
+        "recepcion": true
       },
       {
         "id": "banos",
@@ -228,6 +252,53 @@
         "texto": "Senderos de mayor desnivel a media hora; recepción no sustituye los avisos oficiales de acceso o incendio."
       }
     ],
+    "rutas": {
+      "titulo": "Tres planes para medir el interior",
+      "intro": "Recepción separa el paseo propio, la vía verde y la salida al pueblo para que cada plan tenga una distancia y una precaución claras.",
+      "aviso": "Los tiempos son orientativos. El calor, el riesgo de incendio, el estado de los caminos y los horarios externos pueden cambiar; confirma avisos y accesos antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Circuito del encinar",
+          "resumen": "Un trazado corto recorre la linde por firme consolidado y vuelve sin entrar en las zonas de regeneración.",
+          "tipo": "Paseo a pie",
+          "duracion": "35 min · circular",
+          "dificultad": "Fácil",
+          "salida": "Era común",
+          "momento": "Primera hora o última luz",
+          "recomendacion": "Pregunta qué tramo está abierto y no abandones el firme: la sombra no elimina el calor ni el riesgo de incendio.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vía verde y apeadero",
+          "resumen": "Un enlace local conduce a la antigua plataforma ferroviaria para pedalear entre campos y volver por el mismo corredor.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "1 h 30 min · 16 km",
+          "dificultad": "Fácil",
+          "salida": "Taller de bicicletas",
+          "momento": "Mañana templada",
+          "recomendacion": "Confirma el enlace vigente, lleva agua y evita las horas centrales: varios kilómetros carecen de sombra continua.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mercado y horno del pueblo",
+          "resumen": "La salida combina una caminata corta desde el aparcamiento con compra práctica en el núcleo cercano, sin venderlo como excursión rural.",
+          "tipo": "Paseo de pueblo",
+          "duracion": "1 h · con parada",
+          "dificultad": "Fácil",
+          "salida": "Recepción · 11 min en coche",
+          "momento": "Sábado por la mañana",
+          "recomendacion": "Comprueba horario y aparcamiento con recepción; mercado, farmacia y horno son servicios externos y pueden cambiar.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [

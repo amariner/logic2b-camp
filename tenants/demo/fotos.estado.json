@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "policy": {
+    "primary": "codex-integrated",
+    "fallback": "codex-integrated",
+    "fallbackAfterFailures": 2,
+    "fallbackScope": "manifest",
+    "higgsfieldModel": "soul_location",
+    "higgsfieldFallbackModel": "gpt_image_2",
+    "modelFallbackAfterRejections": 2
+  },
+  "attempts": {
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T08:06:44.673Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "4e203bdbf9b7c3c78fca2017ce0b2fb584686d546be9d36322cec9169a1ae7fd",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-restaurante": [
+      {
+        "at": "2026-08-18T08:07:32.448Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:08:12.449Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:08:55.466Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:09:54.048Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:10:45.977Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:11:24.123Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T08:12:01.328Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "network_before_bytes",
+        "detail": "imagegen-connection-failed"
+      },
+      {
+        "at": "2026-08-18T09:23:29.698Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "75e443c7de35c69369a31b2c17eadfb2d7ffd8668642f979c77ab52ad8a87bdd",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-cala": [
+      {
+        "at": "2026-08-18T09:24:31.120Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "36065b7210798506710cb08d28feb15ccb5345c6be4fc7e62cd6b5ae9dfa9917",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T09:26:08.698Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "32d4c651680055da618073d79f733fb7eec90989e6ac5579f472f39187a30b50",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ]
+  },
+  "approvals": {
+    "vida-recepcion": {
+      "at": "2026-08-18T08:06:51.544Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-restaurante": {
+      "at": "2026-08-18T09:23:29.745Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-cala": {
+      "at": "2026-08-18T09:24:31.167Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T09:26:08.745Z",
+      "gate": "visual-inspection"
+    }
+  },
+  "rejections": {}
+}

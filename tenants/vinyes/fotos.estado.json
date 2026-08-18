@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -230,6 +230,68 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T12:09:47.724Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "03059ef22b790c25d5ab302dce9327eab2802ad4e999b5fe56c368dd87b7139a",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T12:10:51.250Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "721b3574655998b23849c657680f0e9dd06e22232390ab9c440c6562d1cdb1ac",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-patio": [
+      {
+        "at": "2026-08-18T12:11:54.904Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "22a1067b414d312a45a26672b40918939c655c33b4770b636aa1b0ffeb817376",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T12:13:22.022Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "f3811bf058e69fe9606036600dc9810b5fe716abda909b6427c7d24bb555235b",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T12:16:50.694Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "5c8f614477b6139c1c47fc362bc0f2088d226fc333b55e5415119442a83f7e76",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T12:19:23.138Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "d53cbd3dab8663042b011620f3e010f9d2d6a2a9fe3c93ce3ed31955534ba1a2",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      }
     ]
   },
   "approvals": {
@@ -271,6 +333,22 @@
     },
     "entorno": {
       "at": "2026-08-11T10:04:09.125Z",
+      "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T12:09:47.773Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T12:10:51.304Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-patio": {
+      "at": "2026-08-18T12:13:22.069Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T12:19:23.185Z",
       "gate": "visual-inspection"
     }
   },
@@ -316,6 +394,18 @@
         "at": "2026-08-11T10:01:39.998Z",
         "reason": "poste_cruciforme_dominante",
         "jobId": "40a513df-f471-4c1e-8d32-91edab60a66c"
+      }
+    ],
+    "vida-servicio-patio": [
+      {
+        "at": "2026-08-18T12:11:54.955Z",
+        "reason": "Aparece un segundo recipiente sobre la mesa; se exige una única cantimplora en la fuente y mesa vacía para evitar lectura de cata"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T12:16:50.742Z",
+        "reason": "La escena muestra tres mochilas frente a las dos declaradas; se ajusta el contrato a una mochila por caminante y se regenera"
       }
     ]
   }

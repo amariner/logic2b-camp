@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -226,6 +226,77 @@
         "sourceExtension": ".png",
         "dimensions": "2560x1072"
       }
+    ],
+    "vida-arribada": [
+      {
+        "at": "2026-08-18T09:59:53.690Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "ae86d675f7b5e04b9ec6fa8629f15fd6ca32663679da08d8c67a451b925ff1e0",
+        "sourceExtension": ".png",
+        "dimensions": "1535x1025"
+      },
+      {
+        "at": "2026-08-18T10:00:53.070Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "ae86d675f7b5e04b9ec6fa8629f15fd6ca32663679da08d8c67a451b925ff1e0",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcio": [
+      {
+        "at": "2026-08-18T10:02:32.082Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "519e230161f8ed441d44a5aaac06b5b7f726772a6670ff4039ac02a77b29502b",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servei-refugi": [
+      {
+        "at": "2026-08-18T10:04:05.393Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "459c4bb2ab1d2f3b73efc3ff9468ce46480899b3a5d981c54ac7f9ee5c1ed2e1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T10:05:28.845Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "459c4bb2ab1d2f3b73efc3ff9468ce46480899b3a5d981c54ac7f9ee5c1ed2e1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T10:06:23.608Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "459c4bb2ab1d2f3b73efc3ff9468ce46480899b3a5d981c54ac7f9ee5c1ed2e1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorn": [
+      {
+        "at": "2026-08-18T10:07:49.761Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "49d1f07e00747fada5d822f29be6f896f186d989550b9c167f81c11bb8d00ad3",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -259,6 +330,22 @@
     },
     "entorn-sender-humit": {
       "at": "2026-08-10T13:36:20.325Z",
+      "gate": "visual-inspection"
+    },
+    "vida-arribada": {
+      "at": "2026-08-18T10:00:53.117Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcio": {
+      "at": "2026-08-18T10:02:32.131Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servei-refugi": {
+      "at": "2026-08-18T10:06:23.657Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorn": {
+      "at": "2026-08-18T10:07:49.818Z",
       "gate": "visual-inspection"
     }
   },
@@ -320,6 +407,22 @@
         "at": "2026-08-10T13:32:04.886Z",
         "reason": "Sender correcto pero agua quemada, dominante magenta y detalle blando; no iguala el acabado editorial aprobado.",
         "jobId": "2d84ad7c-c22d-48da-bf41-0a1a8c1e1959"
+      }
+    ],
+    "vida-arribada": [
+      {
+        "at": "2026-08-18T09:59:53.736Z",
+        "reason": "equip_fora_del_perimetre"
+      }
+    ],
+    "vida-servei-refugi": [
+      {
+        "at": "2026-08-18T10:04:05.439Z",
+        "reason": "botes_duplicades"
+      },
+      {
+        "at": "2026-08-18T10:05:28.892Z",
+        "reason": "peu_dins_la_safata"
       }
     ]
   }

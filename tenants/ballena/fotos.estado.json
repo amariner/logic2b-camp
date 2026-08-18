@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -119,6 +119,59 @@
         "sourceExtension": ".png",
         "dimensions": "2100x900"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T10:12:19.925Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "7197fe6d73474175fb5c2c55ebe35296ce3674037d62b7fbfbd291fcb0fd24a1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T10:13:43.766Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "8c669b15e025f83d94eed2d67e14a6ad1d692f85d7d4aac38aa088820c57c9cc",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-agua": [
+      {
+        "at": "2026-08-18T10:15:11.443Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "c4d56852d084d134962bf199de412c96701903ff119eb9b90015324de6e4daef",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      },
+      {
+        "at": "2026-08-18T10:16:59.949Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "d2b885e9ab6711b8d3189fff6dbc0d4afb0200fc997a5fe69c6f41cc16e99b21",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T10:18:19.372Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "42389848b1b0e9c3f12e1ce4d14d40b4f8e0c9bb44564c6f9d3a77505d5cf7cf",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -161,7 +214,30 @@
     "textura-azulejo": {
       "at": "2026-08-11T20:36:45.875Z",
       "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T10:12:20.065Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T10:13:43.819Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-agua": {
+      "at": "2026-08-18T10:16:59.999Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T10:18:19.424Z",
+      "gate": "visual-inspection"
     }
   },
-  "rejections": {}
+  "rejections": {
+    "vida-servicio-agua": [
+      {
+        "at": "2026-08-18T10:15:11.505Z",
+        "reason": "calzado_duplicado"
+      }
+    ]
+  }
 }

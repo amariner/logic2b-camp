@@ -71,6 +71,66 @@ function list(value, label, min = 1) {
   }
 }
 
+function requiredText(value, label) {
+  if (typeof value !== 'string' || value.trim().length < 2) fail(`${label}: falta texto`);
+}
+
+function validateHumanContent(slug, locale, content) {
+  const label = `${slug}/content/${locale}.json`;
+  if (content.vida) {
+    requiredText(content.vida.titulo, `${label}: vida.titulo`);
+    requiredText(content.vida.intro, `${label}: vida.intro`);
+    if (
+      !Array.isArray(content.vida.escenas) ||
+      content.vida.escenas.length < 2 ||
+      content.vida.escenas.length > 3
+    ) {
+      fail(`${label}: vida.escenas requiere dos o tres escenas`);
+    }
+    for (const [index, scene] of content.vida.escenas.entries()) {
+      requiredText(scene.foto, `${label}: vida.escenas[${index}].foto`);
+      requiredText(scene.titulo, `${label}: vida.escenas[${index}].titulo`);
+      requiredText(scene.texto, `${label}: vida.escenas[${index}].texto`);
+      if (!existsSync(join(tenantsDir, slug, 'content/media', `${scene.foto}.webp`))) {
+        fail(`${label}: vida.escenas[${index}] referencia una foto inexistente`);
+      }
+    }
+  }
+
+  const routes = content.entornoPagina?.rutas;
+  if (!routes) return;
+  requiredText(routes.titulo, `${label}: entornoPagina.rutas.titulo`);
+  requiredText(routes.intro, `${label}: entornoPagina.rutas.intro`);
+  requiredText(routes.aviso, `${label}: entornoPagina.rutas.aviso`);
+  for (const key of ['duracion', 'dificultad', 'salida', 'momento', 'mapa']) {
+    requiredText(routes.etiquetas?.[key], `${label}: entornoPagina.rutas.etiquetas.${key}`);
+  }
+  if (!Array.isArray(routes.items) || routes.items.length !== 3) {
+    fail(`${label}: entornoPagina.rutas.items requiere exactamente tres planes`);
+  }
+  for (const [index, route] of routes.items.entries()) {
+    for (const key of [
+      'nombre',
+      'resumen',
+      'tipo',
+      'duracion',
+      'dificultad',
+      'salida',
+      'momento',
+      'recomendacion',
+      'foto',
+    ]) {
+      requiredText(route[key], `${label}: entornoPagina.rutas.items[${index}].${key}`);
+    }
+    if (!existsSync(join(tenantsDir, slug, 'content/media', `${route.foto}.webp`))) {
+      fail(`${label}: entornoPagina.rutas.items[${index}] referencia una foto inexistente`);
+    }
+    if (route.mapaUrl && !/^https:\/\//.test(route.mapaUrl)) {
+      fail(`${label}: entornoPagina.rutas.items[${index}].mapaUrl debe usar HTTPS`);
+    }
+  }
+}
+
 function validateBrief(brief, label, { allowTodos = false } = {}) {
   if (!brief || typeof brief !== 'object' || brief.version !== 1)
     fail(`${label}: version debe ser 1`);
@@ -286,7 +346,7 @@ for (const slug of tenantSlugs) {
   for (const locale of locales) {
     const content = join(dir, 'content', `${locale}.json`);
     if (!existsSync(content)) fail(`${slug}: falta content/${locale}.json`);
-    json(content);
+    validateHumanContent(slug, locale, json(content));
   }
   const brief = validateBrief(json(join(dir, 'identity.json')), `${slug}/identity.json`);
   if (brief.id !== slug) fail(`${slug}/identity.json: id incoherente`);
@@ -313,7 +373,9 @@ for (const slug of conceptSlugs) {
 const catalog = json(join(repo, 'apps/site/src/content/es.json')).temas.items;
 const nonNavigableItems = catalog.filter((item) => !item.href);
 if (nonNavigableItems.length > 0)
-  fail(`catálogo ES: quedan conceptos sin demo (${nonNavigableItems.map((item) => item.slug).join(', ')})`);
+  fail(
+    `catálogo ES: quedan conceptos sin demo (${nonNavigableItems.map((item) => item.slug).join(', ')})`,
+  );
 const soldhivernItem = catalog.find((item) => item.slug === 'soldhivern');
 if (!soldhivernItem || soldhivernItem.href !== '/demos/soldhivern/')
   fail("catálogo ES: Sol d'Hivern debe enlazar a su demo navegable");

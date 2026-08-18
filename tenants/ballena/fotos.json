@@ -10,7 +10,11 @@
     ["parcela-orilla", "parcela-brisa"],
     ["bungalow-ola", "mobil-marea"],
     ["instalacion-recepcion", "instalacion-agua"],
-    ["entorno-salinas", "textura-azulejo"]
+    ["entorno-salinas", "textura-azulejo"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-agua"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-olas",
@@ -67,6 +71,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano editorial documental horizontal de baldosas hidráulicas azul petróleo y blanco ligeramente gastadas, una pulsera lisa de papel sin texto y gotas de agua secas. Textura real, luz lateral suave y composición abstracta. Sin personas, manos, pies, letras, símbolos, logotipos, ballena, brillo plástico, efectos digitales ni HDR."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H2 · vida: una familia deja libre el circuito de llegada y usa un carro.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Ballena demo website\nPrimary request: Photoreal editorial documentary photograph of a family completing an orderly Saturday arrival at a large Mediterranean family campsite.\nInput images: hero-sabado.webp and bungalow-ola.webp define the exact one-storey reception, teal-and-sand palette, young pines, realistic luggage carts, shared lanes and modest bungalow architecture.\nScene/backdrop: In a clearly marked but textless short-stay bay beside reception, two adults and two school-age children transfer four ordinary bags from a generic parked family car into one plain luggage cart; the car doors are closed and the vehicle remains fully inside the bay. The through-lane behind is completely clear.\nSubject: Exactly four family members; one adult pushes the loaded cart, the other checks the closed tailgate, and both children carry one small personal item each. Natural action, no camera gaze.\nStyle/medium: Natural 35 mm editorial documentary photography, clean Saturday morning light, restrained teal, sand and pine-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; clear bay, cart and open circulation dominate; family central for mobile crop.\nConstraints: Plausible hands, cart wheels, bags, car doors and shadows; no readable signs or license plate.\nAvoid: traffic queue, open car door into lane, running children, luxury luggage, logos, readable text, malformed limbs, resort glamour, HDR, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H2 · recepción: orientación de una familia en el cambio de turno.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Ballena demo website\nPrimary request: Photoreal editorial documentary photograph of a receptionist orienting a family of four during Saturday check-in.\nInput images: instalacion-recepcion.webp is the exact long teal-and-sand counter, abstract arrival board, natural light and operational scale reference.\nScene/backdrop: At one uncluttered counter position, one adult staff member points to a large textless ring map showing only colored paths between four simple geometric zones: accommodation, shallow pool, family club and coastal gate. Two adult guests and two school-age children listen together; a plain luggage cart waits behind without blocking circulation.\nSubject: Exactly five people total, natural side/back profiles; one child traces a route with a finger while the other holds a small unbranded backpack. No camera gaze.\nStyle/medium: Natural 35 mm editorial documentary photography, clean daylight, restrained teal, sand and warm wood, subtle film grain.\nComposition/framing: Horizontal 3:2; conversation and map within central 70 percent for mobile crop.\nConstraints: Plausible hands and faces; map has no letters, numbers, icons, logos or pseudo-text.\nAvoid: queue, wristband close-up, readable paperwork, screens, brand marks, staged smiles, extra people or limbs, resort desk, HDR, watermark."
+    },
+    "vida-servicio-agua": {
+      "aspecto": "3:2",
+      "papel": "H2 · servicio: preparación familiar antes de entrar en la piscina baja.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial service scene for the Camping La Ballena demo website\nPrimary request: Photoreal editorial documentary photograph of a family preparing safely beside the campsite's shallow water park before entering.\nInput images: instalacion-agua.webp is the exact compact rectangular shallow pool, two modest low slides, anti-slip deck, shade, discreet fence, young pines and bungalow reference.\nScene/backdrop: Under a simple shade canopy outside the wet deck, two adults help two school-age children adjust correctly sized plain flotation vests over long-sleeve rash guards. All four family members wear one normal pair of sandals each; there is no footwear rack and no extra footwear. Folded towels and two reusable water bottles sit on a bench. Pool and slides are visible but nobody is in the water.\nSubject: Exactly four family members, fully clothed in modest pool clothing, focused on fit and rules, no camera gaze.\nStyle/medium: Natural editorial documentary photography, bright controlled morning light, restrained teal, white and sand palette, subtle film grain.\nComposition/framing: Horizontal 3:2; all full bodies, vests, bench and shallow pool visible; central mobile-safe action.\nConstraints: Plausible hands, straps, feet, sandals and shadows; dry anti-slip floor.\nAvoid: bare torsos, bikinis, unsafe water play, inflatable toys, lifeguard impersonation, logos, readable rules, extra or duplicate footwear, malformed limbs, theme-park scale, HDR, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H2 · entorno: una familia recorre en bicicleta el carril de las salinas.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Ballena demo website\nPrimary request: Photoreal editorial documentary photograph of a family group cycling responsibly along the authorized flat salinas route.\nInput images: entorno-salinas.webp is the exact calm saltwater, low Mediterranean vegetation, scattered pines, flat horizon, curving pale cycle lane and soft natural light reference.\nScene/backdrop: The continuous dedicated cycle lane curves beside the salinas with no motor traffic and clear separation from water and vegetation.\nSubject: Exactly three riders: two adults and one older school-age child, all riding ordinary unbranded city bicycles away at an easy pace with correctly fitted simple helmets and small day bags; the child rides between the adults.\nStyle/medium: Natural 35 mm editorial documentary photography, soft early-morning light, restrained salt-green, sand and blue palette, subtle film grain.\nComposition/framing: Horizontal 3:2; route and landscape dominate; riders occupy 10–20 percent and remain central for mobile crop.\nConstraints: Three complete mechanically plausible bicycles, posture, hands, feet, helmets and shadows; child clearly supervised between adults.\nAvoid: riding off lane, racing, motor traffic, wildlife spectacle, logos, readable signs, malformed wheels or limbs, beach crowd, resort, HDR, watermark."
     }
   }
 }

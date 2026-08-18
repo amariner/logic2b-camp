@@ -1,7 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { getContent, images } from '../../lib/content';
+import { getContent, images, localePath } from '../../lib/content';
 import PageIntro from '../PageIntro.astro';
 
 interface Props {
@@ -11,14 +11,16 @@ const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.instalaciones;
 
-const photoFor = (id: string) => {
-  if (id === 'recepcion' && images['vida-recepcion']) return 'vida-recepcion';
-  if (images[`vida-servicio-${id}`]) return `vida-servicio-${id}`;
-  if (images[`instalacion-${id}`]) return `instalacion-${id}`;
+const photoFor = (item: (typeof p.items)[number]) => {
+  if (item.foto && images[item.foto]) return item.foto;
+  if (item.id === 'recepcion' && images['vida-recepcion']) return 'vida-recepcion';
+  if (images[`vida-servicio-${item.id}`]) return `vida-servicio-${item.id}`;
+  if (images[`instalacion-${item.id}`]) return `instalacion-${item.id}`;
   return null;
 };
-const fotos = p.items.filter((i) => photoFor(i.id));
-const sinFoto = p.items.filter((i) => !photoFor(i.id));
+const fotos = p.items.filter((item) => photoFor(item));
+const sinFoto = p.items.filter((item) => !photoFor(item));
+const recepcion = p.items.find((item) => item.recepcion || item.id === 'recepcion');
 ---
 
 <Base locale={locale} path="/instalaciones" title={p.seo.title} description={p.seo.description}>
@@ -30,12 +32,12 @@ const sinFoto = p.items.filter((i) => !photoFor(i.id));
         {fotos.map((item) => (
           <article class="flex flex-col gap-4">
             <Picture
-              src={images[photoFor(item.id)!]!}
+              src={images[photoFor(item)!]!}
               alt={item.nombre}
               widths={[640, 1024, 1600]}
               sizes="(min-width: 768px) 50vw, 100vw"
               formats={['avif', 'webp']}
-            fallbackFormat="webp"
+              fallbackFormat="webp"
               loading="lazy"
               class="aspect-3/2 w-full rounded-(--lc-radius-lg) object-cover"
             />
@@ -59,4 +61,18 @@ const sinFoto = p.items.filter((i) => !photoFor(i.id));
       ))}
     </div>
   </section>
+
+  {recepcion && (
+    <section class="border-t border-arena/60 bg-arena-suave/50">
+      <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 py-12 sm:flex-row sm:items-center md:px-8">
+        <div class="max-w-2xl">
+          <h2 class="font-display text-[clamp(1.35rem,2.5vw,1.9rem)] font-semibold tracking-tight">{recepcion.nombre}</h2>
+          <p class="mt-2 text-[14px] leading-relaxed text-tinta-suave">{recepcion.desc}</p>
+        </div>
+        <a class="inline-flex min-h-11 shrink-0 items-center rounded-full bg-pino px-6 py-3 text-[13px] font-semibold text-white transition-opacity hover:opacity-90" href={localePath(locale, '/contacto')}>
+          {c.nav.contacto}<span class="ml-2" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  )}
 </Base>

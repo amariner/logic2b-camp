@@ -4,66 +4,158 @@
     "description": "Camping rural con parcelas y cabañas entre viñedos del interior mediterráneo. Demostración ficticia de Logic2B."
   },
   "nav": {
-    "alojamientos": "Alojamientos", "instalaciones": "El camping", "entorno": "Viñas y caminos",
-    "tarifas": "Tarifas", "blog": "Cuaderno de cosecha", "contacto": "Consultar estancia",
-    "menu": "Menú", "idioma": "Idioma", "tema": "Estilo"
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Viñas y caminos",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno de cosecha",
+    "contacto": "Consultar estancia",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
   },
   "demo": {
     "banner": "Demostración ficticia de Logic2B: la consulta se guarda solo en este navegador y no se envía.",
-    "nivel": "Gestión", "nivel1": "Inicio", "nivel3": "Gestión"
+    "nivel": "Gestión",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
   },
-  "hero3": { "titulo": "Setenta unidades. Cuatro temporadas. Una regla clara.", "prueba": "70 unidades · vendimia prioritaria" },
-  "hero1": { "titulo": "Cepa vieja. Tierra blanca. Septiembre sabe distinto.", "cta": "Consulta tu estancia" },
+  "hero3": {
+    "titulo": "Setenta unidades. Cuatro temporadas. Una regla clara.",
+    "prueba": "70 unidades · vendimia prioritaria"
+  },
+  "hero1": {
+    "titulo": "Cepa vieja. Tierra blanca. Septiembre sabe distinto.",
+    "cta": "Consulta tu estancia"
+  },
   "ticker": [
-    "56 parcelas entre viñas", "14 cabañas y casetas", "caminos desde la puerta",
-    "vendimia por encima del verano", "recepción sin cobro online"
+    "56 parcelas entre viñas",
+    "14 cabañas y casetas",
+    "caminos desde la puerta",
+    "vendimia por encima del verano",
+    "recepción sin cobro online"
   ],
-  "mostrador": { "buscar": "Consultar", "llegada": "Llegada", "salida": "Salida", "adultos": "Adultos", "ninos": "Niños" },
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
   "tipos": {
     "titulo": "Dormir entre viñas sin pisar el cultivo",
     "subtitulo": "Parcela junto a cepas, bancal con más maniobra, cabaña encalada o antigua caseta rehabilitada. Cuatro opciones con superficie y sombra explicadas.",
     "verTodo": "Ver los cuatro alojamientos",
     "nombres": {
-      "ut_cepa": "Parcela Cepa", "ut_bancal": "Parcela Bancal",
-      "ut_cal": "Cabaña de Cal", "ut_caseta": "Caseta de Viña"
+      "ut_cepa": "Parcela Cepa",
+      "ut_bancal": "Parcela Bancal",
+      "ut_cal": "Cabaña de Cal",
+      "ut_caseta": "Caseta de Viña"
     },
     "cards": [
-      { "id": "cepa", "nombre": "Parcela Cepa", "desc": "Ochenta metros cuadrados junto a hileras de viña, electricidad de 10 A y sombra ligera de morera.", "foto": "tipo-parcela-cepa" },
-      { "id": "bancal", "nombre": "Parcela Bancal", "desc": "Noventa metros cuadrados en una terraza amplia, con giro cómodo y vista abierta al mosaico agrícola.", "foto": "tipo-parcela-bancal" },
-      { "id": "cal", "nombre": "Cabaña de Cal", "desc": "Dos estancias, baño y porche profundo para cuatro, con muros claros y persianas de madera.", "foto": "tipo-cabana-cal" },
-      { "id": "caseta", "nombre": "Caseta de Viña", "desc": "Volumen rural rehabilitado para cuatro, patio mineral y mesa exterior bajo una parra.", "foto": "tipo-caseta-vinya" }
+      {
+        "id": "cepa",
+        "nombre": "Parcela Cepa",
+        "desc": "Ochenta metros cuadrados junto a hileras de viña, electricidad de 10 A y sombra ligera de morera.",
+        "foto": "tipo-parcela-cepa"
+      },
+      {
+        "id": "bancal",
+        "nombre": "Parcela Bancal",
+        "desc": "Noventa metros cuadrados en una terraza amplia, con giro cómodo y vista abierta al mosaico agrícola.",
+        "foto": "tipo-parcela-bancal"
+      },
+      {
+        "id": "cal",
+        "nombre": "Cabaña de Cal",
+        "desc": "Dos estancias, baño y porche profundo para cuatro, con muros claros y persianas de madera.",
+        "foto": "tipo-cabana-cal"
+      },
+      {
+        "id": "caseta",
+        "nombre": "Caseta de Viña",
+        "desc": "Volumen rural rehabilitado para cuatro, patio mineral y mesa exterior bajo una parra.",
+        "foto": "tipo-caseta-vinya"
+      }
     ]
   },
   "entorno": {
     "titulo": "La viña cambia de color y el calendario cambia con ella.",
     "texto": "Las calles respetan bancales, ribazos y acequias. En vendimia, recepción explica tráfico agrícola, caminos abiertos y horarios de las bodegas sin confundir una visita con una promesa incluida."
   },
+  "vida": {
+    "titulo": "La cosecha ordena el día sin entrar en la parcela",
+    "intro": "Entre Vinyes se vive desde los límites: instalarse antes del ribazo, preguntar qué camino está abierto y usar el patio como agua y sombra, no como decorado de bodega.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "La grava es estancia; la viña, trabajo",
+        "texto": "Bolsa y sillas quedan bajo el toldo, con la calle, la toma y el muro libres. Llegar durante vendimia no autoriza a pisar el cultivo ni ocupar el acceso agrícola."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Dos trazados explican mejor que una promesa",
+        "texto": "Recepción distingue el acceso habitual del alternativo y confirma qué camino soporta tráfico de cosecha antes de recomendar una salida."
+      },
+      {
+        "foto": "vida-servicio-patio",
+        "titulo": "Agua, sombra y una mesa sin ceremonia",
+        "texto": "La parra baja la temperatura y la fuente permite rellenar una cantimplora. El patio sigue siendo un espacio común, no una cata ni un evento."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta una estancia entre viñas",
     "subtitulo": "Rellena esta solicitud ficticia y ábrela después en el gestor Logic2B. Las fechas y el motivo de la visita quedan visibles; no se enviará ningún mensaje.",
-    "nombre": "Nombre ficticio", "email": "Email de prueba", "fechas": "Fechas", "entrada": "Entrada", "salida": "Salida",
-    "fechasEjemplo": "5 → 10 septiembre", "grupo": "Personas", "estancia": "Cómo quieres quedarte",
-    "estanciaVacia": "Elige parcela o alojamiento", "mensaje": "Vehículo, visita prevista y qué necesitas saber",
-    "enviar": "Crear solicitud demo", "enviando": "Guardando en esta demo…", "ok": "Solicitud demo creada.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "entrada": "Entrada",
+    "salida": "Salida",
+    "fechasEjemplo": "5 → 10 septiembre",
+    "grupo": "Personas",
+    "estancia": "Cómo quieres quedarte",
+    "estanciaVacia": "Elige parcela o alojamiento",
+    "mensaje": "Vehículo, visita prevista y qué necesitas saber",
+    "enviar": "Crear solicitud demo",
+    "enviando": "Guardando en esta demo…",
+    "ok": "Solicitud demo creada.",
     "error": "La demostración no ha podido guardar la solicitud. Reintenta sin datos reales.",
-    "demoEtiqueta": "Demostración:", "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
     "demoSpam": "Demostración de antispam: la solicitud se ha detenido antes de guardarse.",
     "demoExitoTitulo": "Solicitud VY-WEB-001 creada",
     "demoExitoTexto": "La solicitud existe solo en este navegador. Ábrela en el gestor, comprueba fechas y temporada aplicada, márcala contactada y conviértela en estancia.",
-    "demoCopiar": "Copiar resumen", "demoCopiado": "Resumen copiado",
-    "demoCta": "Quiero una operativa así", "demoAbrirGestor": "Abrir en el gestor",
-    "demoResumenEstancia": "Estancia", "demoResumenFechas": "Fechas", "demoResumenGrupo": "Personas",
-    "demoResumenMensaje": "Consulta", "demoSinConcretar": "Por concretar"
+    "demoCopiar": "Copiar resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una operativa así",
+    "demoAbrirGestor": "Abrir en el gestor",
+    "demoResumenEstancia": "Estancia",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
   },
   "footer": {
     "aviso": "Camping rural ficticio de 70 unidades · datos de demostración",
-    "legal": "Aviso legal", "privacidad": "Privacidad", "cookies": "Cookies", "poweredBy": "Web y gestión por Logic2B"
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web y gestión por Logic2B"
   },
   "alojamientos": {
-    "seo": { "title": "Parcelas y cabañas | Entre Vinyes", "description": "Parcelas junto a cepas, cabañas encaladas y casetas rehabilitadas en un camping rural ficticio." },
-    "titulo": "Alojamientos", "intro": "Cuatro categorías y 70 unidades organizadas sin invadir las hileras de cultivo. La consulta no bloquea inventario ni cobra nada.",
-    "desdeNoche": "desde {precio}/noche", "verFicha": "Ver ficha", "consultar": "Consultar estas fechas", "volver": "Todos los alojamientos",
-    "parcelas": "Parcelas", "alojados": "Cabañas y casetas",
+    "seo": {
+      "title": "Parcelas y cabañas | Entre Vinyes",
+      "description": "Parcelas junto a cepas, cabañas encaladas y casetas rehabilitadas en un camping rural ficticio."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías y 70 unidades organizadas sin invadir las hileras de cultivo. La consulta no bloquea inventario ni cobra nada.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Cabañas y casetas",
     "fichas": {
       "ut_cepa": "Parcela de unos 80 m² para tienda, caravana o furgoneta, separada del cultivo por ribazo bajo y con electricidad de 10 A.",
       "ut_bancal": "Parcela de unos 90 m² en una terraza ancha, con mayor radio de giro, toma eléctrica y sombra parcial.",
@@ -71,11 +163,25 @@
       "ut_caseta": "Dos dormitorios, baño, cocina compacta y patio mineral para cuatro personas bajo una parra."
     },
     "ficha": {
-      "capacidad": "Capacidad", "personas": "personas", "personasIncluidas": "{n} incluidas en el precio",
-      "superficie": "Superficie", "electricidad": "Electricidad", "sombra": "Sombra", "sombraParcial": "parcial", "sombraTotal": "total",
-      "camas": "Camas", "banos": "Baños privados", "aire": "Aire acondicionado", "mascotas": "Mascotas", "si": "sí", "no": "no",
-      "unidades": "{n} unidades de este tipo", "tarifasTitulo": "Tarifa orientativa por noche",
-      "estanciaMin": "estancia mínima {n} noches", "estanciaMin1": "sin estancia mínima", "llegadaSabado": "llegada en sábado",
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Camas",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
       "notaPrecios": "Precio ficticio con {n} personas. Recepción confirmaría disponibilidad y condiciones antes de reservar.",
       "disponibilidadTitulo": "¿Libre para tus fechas?",
       "solicitudTitulo": "Consulta {tipo}",
@@ -83,46 +189,154 @@
     }
   },
   "instalaciones": {
-    "seo": { "title": "Servicios del camping | Entre Vinyes", "description": "Recepción, patio, baños y tienda local en un camping entre viñedos." },
+    "seo": {
+      "title": "Servicios del camping | Entre Vinyes",
+      "description": "Recepción, patio, baños y tienda local en un camping entre viñedos."
+    },
     "titulo": "El campo sigue trabajando mientras tú descansas",
     "intro": "Recepción coordina accesos durante vendimia; el patio, los baños y la pequeña despensa resuelven el día sin fingir servicios de resort.",
     "items": [
-      { "id": "recepcion", "nombre": "Recepción y cosecha", "desc": "Abierta de 8:00 a 21:00; informa de caminos ocupados, tractores y visitas disponibles sin vender actividades ajenas." },
-      { "id": "patio", "nombre": "Patio de sombra", "desc": "Pavimento mineral, parra alta, mesas vacías y agua fresca para detenerse en las horas de más calor." },
-      { "id": "banos", "nombre": "Baños y lavadero", "desc": "Dos bloques ventilados con cabina accesible, duchas, lavadora y fregaderos separados del riego agrícola." },
-      { "id": "despensa", "nombre": "Despensa de proximidad", "desc": "Pan por encargo, fruta, aceite, conservas y una cesta de desayuno preparada en recepción." },
-      { "id": "bicis", "nombre": "Bicicletas y herramientas", "desc": "Aparcabicis cubierto, bomba y herramientas básicas para recorrer caminos agrícolas señalados fuera de las parcelas." }
+      {
+        "id": "recepcion",
+        "nombre": "Recepción y cosecha",
+        "desc": "Abierta de 8:00 a 21:00; informa de caminos ocupados, tractores y visitas disponibles sin vender actividades ajenas.",
+        "foto": "vida-recepcion",
+        "recepcion": true
+      },
+      {
+        "id": "patio",
+        "nombre": "Patio de sombra",
+        "desc": "Pavimento mineral, parra alta, mesas vacías y agua fresca para detenerse en las horas de más calor.",
+        "foto": "vida-servicio-patio"
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños y lavadero",
+        "desc": "Dos bloques ventilados con cabina accesible, duchas, lavadora y fregaderos separados del riego agrícola."
+      },
+      {
+        "id": "despensa",
+        "nombre": "Despensa de proximidad",
+        "desc": "Pan por encargo, fruta, aceite, conservas y una cesta de desayuno preparada en recepción."
+      },
+      {
+        "id": "bicis",
+        "nombre": "Bicicletas y herramientas",
+        "desc": "Aparcabicis cubierto, bomba y herramientas básicas para recorrer caminos agrícolas señalados fuera de las parcelas."
+      }
     ]
   },
   "entornoPagina": {
-    "seo": { "title": "Viñas y caminos | Entre Vinyes", "description": "Bancales, bodegas, vía verde y pueblo desde Camping Entre Vinyes." },
+    "seo": {
+      "title": "Viñas y caminos | Entre Vinyes",
+      "description": "Bancales, bodegas, vía verde y pueblo desde Camping Entre Vinyes."
+    },
     "titulo": "El paisaje se entiende caminando entre bancales",
     "intro": "Tres caminos salen del acceso sin cruzar parcelas cultivadas. Recepción explica firme, sombra y tráfico de cosecha antes de recomendar uno.",
     "secciones": [
-      { "titulo": "Los bancales", "texto": "Un circuito de seis kilómetros bordea viñas viejas y muros de piedra. Durante cosecha algunos tramos cambian de sentido." },
-      { "titulo": "Las bodegas", "texto": "Tres proyectos familiares reciben visitas con reserva propia. El camping informa de horarios, pero no incluye ni garantiza plazas." },
-      { "titulo": "La vía verde", "texto": "Un antiguo trazado ferroviario permite recorrer 28 kilómetros con pendiente suave y sombra intermitente." },
-      { "titulo": "El pueblo", "texto": "Horno, farmacia, taller y mercado de viernes quedan a nueve minutos en vehículo o media hora en bicicleta." }
+      {
+        "titulo": "Los bancales",
+        "texto": "Un circuito de seis kilómetros bordea viñas viejas y muros de piedra. Durante cosecha algunos tramos cambian de sentido."
+      },
+      {
+        "titulo": "Las bodegas",
+        "texto": "Tres proyectos familiares reciben visitas con reserva propia. El camping informa de horarios, pero no incluye ni garantiza plazas."
+      },
+      {
+        "titulo": "La vía verde",
+        "texto": "Un antiguo trazado ferroviario permite recorrer 28 kilómetros con pendiente suave y sombra intermitente."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Horno, farmacia, taller y mercado de viernes quedan a nueve minutos en vehículo o media hora en bicicleta."
+      }
     ],
+    "rutas": {
+      "titulo": "Tres salidas con el trabajo agrícola a la vista",
+      "intro": "El circuito de bancales, la bodega del camino y la vía verde exigen ritmos distintos; recepción separa información propia de horarios y servicios externos.",
+      "aviso": "Los tiempos son orientativos. La vendimia, los tractores, el calor, los trabajos en caminos, las reservas de terceros y los cierres de la vía pueden cambiar el recorrido; confirma accesos antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Circuito de bancales",
+          "resumen": "El camino público bordea muros secos y viñas viejas sin entrar en las hileras, y regresa por un segundo enlace de grava clara.",
+          "tipo": "Paseo entre cultivos",
+          "duracion": "1 h 45 min · 6 km",
+          "dificultad": "Fácil–moderada",
+          "salida": "Puerta del camping",
+          "momento": "Primera hora",
+          "recomendacion": "Confirma el sentido vigente, mantente tras los muros y cede el paso desde un ensanche seguro; nunca atravieses una hilera para esquivar un vehículo agrícola.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Bodega del camino",
+          "resumen": "Un trazado corto enlaza el camping con un proyecto familiar que gestiona sus propias visitas y plazas, sin convertirlas en servicio incluido.",
+          "tipo": "Paseo con visita externa",
+          "duracion": "1 h 20 min · 4 km ida y vuelta",
+          "dificultad": "Fácil",
+          "salida": "Recepción",
+          "momento": "Con reserva confirmada",
+          "recomendacion": "Comprueba horario y reserva directamente con la bodega. Si la visita incluye alcohol, decide antes un regreso a pie seguro y no conduzcas.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vía verde y apeadero",
+          "resumen": "El enlace local alcanza la antigua plataforma ferroviaria para recorrer un trazado largo de pendiente suave y sombra intermitente.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "2 h 15 min · 28 km",
+          "dificultad": "Moderada",
+          "salida": "Aparcabicis cubierto",
+          "momento": "Mañana templada",
+          "recomendacion": "Lleva agua, cámara de repuesto y reparación básica; confirma el enlace, evita las horas centrales y acorta en el apeadero si el calor o el tráfico de cosecha aumentan.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [
-        { "lugar": "Camino de bancales", "valor": "2 min a pie" }, { "lugar": "Bodega más próxima", "valor": "18 min a pie" },
-        { "lugar": "Vía verde", "valor": "12 min en bici" }, { "lugar": "Pueblo y farmacia", "valor": "9 min en coche" },
-        { "lugar": "Centro de salud", "valor": "21 min en coche" }, { "lugar": "Estación", "valor": "34 min en coche" }
+        { "lugar": "Camino de bancales", "valor": "2 min a pie" },
+        { "lugar": "Bodega más próxima", "valor": "18 min a pie" },
+        { "lugar": "Vía verde", "valor": "12 min en bici" },
+        { "lugar": "Pueblo y farmacia", "valor": "9 min en coche" },
+        { "lugar": "Centro de salud", "valor": "21 min en coche" },
+        { "lugar": "Estación", "valor": "34 min en coche" }
       ]
     }
   },
   "tarifas": {
-    "seo": { "title": "Tarifas orientativas | Entre Vinyes", "description": "Precios ficticios por noche para parcelas y cabañas entre viñedos." },
-    "titulo": "Cuatro tiempos del viñedo", "intro": "Vendimia se solapa con Verano y gana por prioridad. La web hace visible esa regla, pero solo crea una solicitud: no cobra ni confirma una reserva.",
-    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
-    "temporadas": { "sea_brotacion": "Brotación · 15 marzo – 15 junio", "sea_verano": "Verano · 1 junio – 30 septiembre", "sea_vendimia": "Vendimia prioritaria · 25 agosto – 12 octubre", "sea_reposo": "Reposo · 12 octubre – 8 diciembre" },
-    "suplementos": {
-      "titulo": "Suplementos orientativos", "personaExtra": "Persona a partir de la {n}ª", "nino": "Niño (3–12 años)",
-      "electricidad": "Electricidad 10 A", "vehiculo": "Segundo vehículo", "mascota": "Mascota en parcela"
+    "seo": {
+      "title": "Tarifas orientativas | Entre Vinyes",
+      "description": "Precios ficticios por noche para parcelas y cabañas entre viñedos."
     },
-    "extras": { "titulo": "Extras", "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" }, "nombres": { "ext_cesta": "Cesta de desayuno local", "ext_mascota": "Mascota en parcela" } },
+    "titulo": "Cuatro tiempos del viñedo",
+    "intro": "Vendimia se solapa con Verano y gana por prioridad. La web hace visible esa regla, pero solo crea una solicitud: no cobra ni confirma una reserva.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_brotacion": "Brotación · 15 marzo – 15 junio",
+      "sea_verano": "Verano · 1 junio – 30 septiembre",
+      "sea_vendimia": "Vendimia prioritaria · 25 agosto – 12 octubre",
+      "sea_reposo": "Reposo · 12 octubre – 8 diciembre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos orientativos",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 10 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": { "ext_cesta": "Cesta de desayuno local", "ext_mascota": "Mascota en parcela" }
+    },
     "condiciones": {
       "titulo": "Antes de consultar",
       "items": [
@@ -134,17 +348,41 @@
     }
   },
   "contacto": {
-    "seo": { "title": "Consultar estancia | Entre Vinyes", "description": "Crea una solicitud ficticia y sigue su recorrido en el gestor Logic2B." },
+    "seo": {
+      "title": "Consultar estancia | Entre Vinyes",
+      "description": "Crea una solicitud ficticia y sigue su recorrido en el gestor Logic2B."
+    },
     "titulo": "Consulta, fecha y cosecha en una historia",
     "intro": "Usa datos inventados. La solicitud se guarda temporalmente en tu navegador y aparecerá en el gestor con fechas y contexto; no sale ningún email ni mensaje.",
-    "datos": { "titulo": "Datos ficticios", "direccion": "Dirección", "telefono": "Teléfono", "email": "Email" },
-    "horario": { "titulo": "Recepción", "texto": "Horario de muestra: 8:00–21:00 en Vendimia y Verano; 9:00–19:00 el resto." },
-    "llegar": { "titulo": "Cómo llegar", "texto": "La dirección y los canales son ficticios. Una activación real publicaría el acceso alternativo para vehículos largos durante los trabajos de cosecha." }
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 8:00–21:00 en Vendimia y Verano; 9:00–19:00 el resto."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La dirección y los canales son ficticios. Una activación real publicaría el acceso alternativo para vehículos largos durante los trabajos de cosecha."
+    }
   },
   "blog": {
-    "seo": { "title": "Cuaderno de cosecha | Entre Vinyes", "description": "Información práctica sobre vendimia, caminos y paisaje en un camping rural ficticio." },
-    "titulo": "Cuaderno de cosecha", "intro": "La demo no publica artículos. La sección queda preparada para avisos de caminos, cosecha y visitas sin convertir información de terceros en garantía.",
-    "leerMas": "Leer", "volver": "Todo el cuaderno", "vacio": "No hay entradas en esta demostración."
+    "seo": {
+      "title": "Cuaderno de cosecha | Entre Vinyes",
+      "description": "Información práctica sobre vendimia, caminos y paisaje en un camping rural ficticio."
+    },
+    "titulo": "Cuaderno de cosecha",
+    "intro": "La demo no publica artículos. La sección queda preparada para avisos de caminos, cosecha y visitas sin convertir información de terceros en garantía.",
+    "leerMas": "Leer",
+    "volver": "Todo el cuaderno",
+    "vacio": "No hay entradas en esta demostración."
   },
-  "noEncontrada": { "titulo": "Este camino termina en otro bancal", "texto": "La dirección no corresponde a ninguna zona del camping.", "cta": "Volver al inicio" }
+  "noEncontrada": {
+    "titulo": "Este camino termina en otro bancal",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  }
 }

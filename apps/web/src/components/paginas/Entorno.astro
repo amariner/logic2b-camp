@@ -11,6 +11,7 @@ interface Props {
 const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.entornoPagina;
+const rutas = p.rutas;
 const fotoEntorno =
   images['entorno'] ??
   images['entorno-piedra-seca'] ??
@@ -48,16 +49,16 @@ const fotoEntorno =
     ))}
   </section>
 
-  {p.rutas && p.rutas.items.length > 0 && (
+  {rutas && rutas.items.length > 0 && (
     <section class="mx-auto max-w-7xl px-5 pb-24 md:px-8 md:pb-32" aria-labelledby="rutas-titulo">
       <div class="mb-10 grid gap-4 md:grid-cols-2 md:items-end">
         <h2 id="rutas-titulo" class="font-display text-[clamp(1.7rem,3vw,2.5rem)] leading-tight font-semibold tracking-tight">
-          {p.rutas.titulo}
+          {rutas.titulo}
         </h2>
-        <p class="text-[14px] leading-relaxed text-tinta-suave">{p.rutas.intro}</p>
+        <p class="text-[14px] leading-relaxed text-tinta-suave">{rutas.intro}</p>
       </div>
       <div class="grid gap-8 lg:grid-cols-3">
-        {p.rutas.items.slice(0, 3).map((ruta) => (
+        {rutas.items.slice(0, 3).map((ruta) => (
           <article class="overflow-hidden rounded-(--lc-radius-lg) border border-arena/60 bg-hueso">
             {images[ruta.foto] && (
               <Picture
@@ -78,20 +79,20 @@ const fotoEntorno =
                 <p class="mt-2 text-[14px] leading-relaxed text-tinta-suave">{ruta.resumen}</p>
               </div>
               <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px]">
-                <div><dt class="text-tinta-suave">Duración</dt><dd class="font-medium">{ruta.duracion}</dd></div>
-                <div><dt class="text-tinta-suave">Dificultad</dt><dd class="font-medium">{ruta.dificultad}</dd></div>
-                <div><dt class="text-tinta-suave">Salida</dt><dd class="font-medium">{ruta.salida}</dd></div>
-                <div><dt class="text-tinta-suave">Mejor momento</dt><dd class="font-medium">{ruta.momento}</dd></div>
+                <div><dt class="text-tinta-suave">{rutas.etiquetas.duracion}</dt><dd class="font-medium">{ruta.duracion}</dd></div>
+                <div><dt class="text-tinta-suave">{rutas.etiquetas.dificultad}</dt><dd class="font-medium">{ruta.dificultad}</dd></div>
+                <div><dt class="text-tinta-suave">{rutas.etiquetas.salida}</dt><dd class="font-medium">{ruta.salida}</dd></div>
+                <div><dt class="text-tinta-suave">{rutas.etiquetas.momento}</dt><dd class="font-medium">{ruta.momento}</dd></div>
               </dl>
               <p class="border-t border-arena/60 pt-4 text-[13px] leading-relaxed text-tinta-suave">{ruta.recomendacion}</p>
               {ruta.mapaUrl && (
-                <a class="min-h-11 self-start py-3 text-[13px] font-semibold text-pino underline underline-offset-4" href={ruta.mapaUrl} rel="noreferrer" target="_blank">Ver mapa verificado ↗</a>
+                <a class="min-h-11 self-start py-3 text-[13px] font-semibold text-pino underline underline-offset-4" href={ruta.mapaUrl} rel="noreferrer" target="_blank">{rutas.etiquetas.mapa} ↗</a>
               )}
             </div>
           </article>
         ))}
       </div>
-      <p class="mt-6 text-[12px] leading-relaxed text-tinta-suave">{p.rutas.aviso}</p>
+      <p class="mt-6 text-[12px] leading-relaxed text-tinta-suave">{rutas.aviso}</p>
     </section>
   )}
 

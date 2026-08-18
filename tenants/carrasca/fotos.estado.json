@@ -2,7 +2,7 @@
   "version": 1,
   "policy": {
     "primary": "codex-integrated",
-    "fallback": "higgsfield",
+    "fallback": "codex-integrated",
     "fallbackAfterFailures": 2,
     "fallbackScope": "manifest",
     "higgsfieldModel": "soul_location",
@@ -263,6 +263,50 @@
         "sourceExtension": ".png",
         "dimensions": "2688x1520"
       }
+    ],
+    "vida-llegada": [
+      {
+        "at": "2026-08-18T10:31:24.291Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "cffc53b02140e8e014c1f43a9cb99870c3c38b899785ad1fb7c10b0707874365",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      }
+    ],
+    "vida-recepcion": [
+      {
+        "at": "2026-08-18T10:32:18.883Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "3e3e46288f6960d7a52766483e3e096ce349bf9cdebb93cd61496bb3e39445bc",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-servicio-piscina": [
+      {
+        "at": "2026-08-18T10:33:31.220Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "6cc3d44238d6240bf632aaf1bd8ed948f6491cd9cc3c3b7b8b60aedb7af5f87b",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T10:34:32.428Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "3e119c3519a1353bc22dad8e0a5fbf3e9bad9101465050b6fbb389772ad6563d",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -304,6 +348,22 @@
     },
     "textura-carrasca": {
       "at": "2026-08-11T13:55:13.513Z",
+      "gate": "visual-inspection"
+    },
+    "vida-llegada": {
+      "at": "2026-08-18T10:31:24.338Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion": {
+      "at": "2026-08-18T10:32:18.930Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-piscina": {
+      "at": "2026-08-18T10:33:31.277Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T10:34:32.480Z",
       "gate": "visual-inspection"
     }
   },

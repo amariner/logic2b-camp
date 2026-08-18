@@ -3,14 +3,18 @@
     "tipo": "generada",
     "fuente": "Lote D6-C producido para Logic2B con generación integrada y fallback controlado; los másteres *-source.png se conservan junto a los finales.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Camping La Carrasca.",
-    "nota": "Producción en cinco tandas máximas de dos piezas, con inspección visual antes de avanzar."
+    "nota": "Producción inicial en cinco tandas máximas de dos piezas. La ampliación humana H3 del 2026-08-18 usa exclusivamente OpenAI integrado, una pieza cada vez y con inspección visual antes de avanzar."
   },
   "lotes": [
     ["hero-encinar", "hero-era"],
     ["parcela-encina", "parcela-carrascal"],
     ["bungalow-bellota", "casa-umbria"],
     ["instalacion-recepcion", "instalacion-piscina-natural"],
-    ["entorno", "textura-carrasca"]
+    ["entorno", "textura-carrasca"],
+    ["vida-llegada"],
+    ["vida-recepcion"],
+    ["vida-servicio-piscina"],
+    ["vida-entorno"]
   ],
   "derivados": {
     "fuente": "hero-encinar",
@@ -67,6 +71,26 @@
       "aspecto": "21:9",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano editorial documental de hojas reales de carrasca verde mate, una bellota pequeña y una pieza irregular de piedra caliza sobre tierra seca. Composición horizontal abstracta y luz lateral suave. Sin personas, manos, pies, texto, símbolos, logotipos, joyas, frutos gigantes, fuego, efectos digitales ni HDR."
+    },
+    "vida-llegada": {
+      "aspecto": "3:2",
+      "papel": "H3 · llegada: una pareja adulta instala la parcela sin dañar el arbolado ni invadir la calle.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Carrasca demo website\nPrimary request: Photoreal editorial documentary photograph of two adult guests aged roughly 50–70 calmly settling a compact generic caravan into an Encina pitch at the same Mediterranean holm-oak campsite.\nInput images: parcela-encina.webp is the exact gravel pitch, mature tree shade, compact pale caravan, closed electrical point and modest inland scale reference.\nScene/backdrop: One clearly bounded pitch under mature holm oaks; roots, trunk and the gravel access lane remain completely clear.\nSubject: One guest kneels beside a single visible levelling block near the caravan wheel while the other places one folded plain chair beside the caravan; both focus on the task and neither faces the camera.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, restrained limestone, dry green and soft blue-grey palette, subtle film grain.\nComposition/framing: Horizontal 3:2, pitch geometry and shade dominate; people occupy 15–25 percent and remain in the central 70 percent for mobile crop.\nLighting/mood: Quiet late-morning shade with warm reflected light, practical and unhurried.\nConstraints: Plausible hands, wheel, levelling block and chair; anonymous side/back views; generic unbranded caravan with no visible plate; no object tied to or touching a living tree.\nAvoid: cable across the access lane, damaged roots, hammock, rug, fire, glamping decoration, readable text, logos, frontal smiles, extra fingers, HDR, luxury advertising, watermark."
+    },
+    "vida-recepcion": {
+      "aspecto": "3:2",
+      "papel": "H3 · recepción: explicación práctica de sombra, fuego y residuos antes de ocupar la parcela.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Carrasca demo website\nPrimary request: Photoreal editorial documentary photograph of a practical rules briefing at the open reception of the same Mediterranean holm-oak campsite.\nInput images: instalacion-recepcion.webp is the exact low whitewashed building, local stone detail, deep porch, simple counter, gravel access and bicycle rack reference.\nScene/backdrop: The modest open doorway and counter remain recognisable; the reception is functional, not a hotel lobby.\nSubject: A receptionist aged roughly 45–65 points with one open hand to three simple colour blocks on a small plain site diagram with no readable text while two adult guests aged roughly 35–70 listen; one guest holds a folded paper bag for recycling.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained mineral and dry-green colour, subtle film grain.\nComposition/framing: Horizontal 3:2, waist-up conversation under the porch with building and clear access visible; people occupy no more than 35 percent.\nLighting/mood: Soft shaded midday light, direct and helpful rather than staged.\nConstraints: Plausible hands and diagram contact; anonymous non-frontal faces; plain unbranded clothes; preserve the approved small building and clear entrance.\nAvoid: readable rules, pseudo lettering, screens with text, logos, uniforms, posed smiles, extra fingers, luxury reception, fireplace, HDR, watermark."
+    },
+    "vida-servicio-piscina": {
+      "aspecto": "3:2",
+      "papel": "H3 · servicio: uso tranquilo de la piscina del claro por huéspedes adultos.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Carrasca demo website\nPrimary request: Photoreal editorial documentary photograph of two older adult guests naturally using the modest pool in the clearing at the same Mediterranean holm-oak campsite.\nInput images: instalacion-piscina-natural.webp is the exact rectangular adult pool, separate shallow child basin, pale anti-slip stone, discreet dark fence, closed taupe umbrellas and holm-oak backdrop reference.\nScene/backdrop: The pool remains small, quiet and proportional to a 150-unit inland campsite; the child basin is empty and the gate and circulation stay clear.\nSubject: One adult aged roughly 55–75 swims calmly across the main pool with anatomically plausible arms mostly below the water; a second similarly aged adult sits upright on the coping at a safe distance with lower legs in the water, seen from behind, with one plain folded towel beside them.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained limestone, muted turquoise and dry-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2, water and clearing dominate; the two guests occupy 10–25 percent and stay within the central 70 percent.\nLighting/mood: Clean early-morning light before heat, quiet restorative use rather than resort leisure.\nConstraints: Plausible anatomy, waterline and reflections; anonymous back/side views; modest plain swimwear; no one in the child basin; fence and gate remain functional.\nAvoid: young family, crowd, diving, inflatable, cocktail, sunbed row, open parasols, lifeguard claim, logos, text, extra limbs, resort styling, HDR, watermark."
+    },
+    "vida-entorno": {
+      "aspecto": "3:2",
+      "papel": "H3 · entorno: caminantes maduros recorren el circuito del encinar por el trazado permitido.",
+      "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Camping La Carrasca demo website\nPrimary request: Photoreal editorial documentary photograph of two mature campsite guests beginning a quiet walk on the permitted holm-oak circuit near Camping La Carrasca.\nInput images: entorno.webp is the exact pale gravel path, low dry-stone wall, dense Mediterranean scrub, muted ridge and restrained inland atmosphere reference.\nScene/backdrop: The public-looking gravel path curves through low holm oak and aromatic scrub; both walkers remain on the path and no fabricated sign or map is present.\nSubject: Two adults aged roughly 55–75 walk away at an easy pace in ordinary layered walking clothes; one carries a small reusable water bottle and the other a single plain daypack, no trekking poles.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, subdued limestone, sage and warm-grey palette, subtle film grain.\nComposition/framing: Horizontal 3:2, path and vegetation dominate; walkers occupy 10–18 percent and remain in the central 60 percent for mobile crop.\nLighting/mood: Mild autumn morning after haze has lifted, quiet forward movement and no adventure advertising.\nConstraints: Plausible gait, footwear and shadows; anonymous back views; both people fully on the established surface; keep dry-stone wall and low-relief landscape credible.\nAvoid: leaving the path, alpine mountain, cliff, fire, wildlife encounter, racing kit, logos, readable sign, dramatic summit pose, malformed limbs, HDR, saturation, watermark."
     }
   }
 }

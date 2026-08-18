@@ -69,6 +69,27 @@
     "titulo": "Aquí el día empieza mirando el viento, no el calendario.",
     "texto": "La duna protege el camping y la pasarela protege la duna. Antes de salir compartimos viento, mar y acceso; después cada cual decide si toca agua, bicicleta o mesa a la sombra."
   },
+  "vida": {
+    "titulo": "Llegar con poco también requiere cuidado",
+    "intro": "La plaza se ocupa sin invadir, recepción comparte lo que cambia y el agua quita la sal antes de volver al vehículo.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Cada cosa dentro de su plaza",
+        "texto": "Dos sillas, la conexión bien guiada y el paso libre: instalarse bien aquí consiste en dejar que las veinte plazas sigan respirando."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Primero, el parte de costa",
+        "texto": "Recepción traduce viento, acceso y estado de la pasarela en una conversación breve, sin vender una actividad que hoy quizá no toca."
+      },
+      {
+        "foto": "vida-servicio-agua",
+        "titulo": "La arena se queda fuera",
+        "texto": "El punto de pies y el grifo de agua se usan al volver: un servicio pequeño que evita llevar la playa hasta la parcela."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta tus fechas",
     "subtitulo": "Dinos cuándo vienes, cuántos sois y cuánto mide el vehículo. Esta demostración enseña la respuesta sin enviar tus datos.",
@@ -157,7 +178,9 @@
       {
         "id": "tienda",
         "nombre": "Tienda y recepción",
-        "desc": "Pan, fruta, hielo, repuestos básicos y café desde las 7:30. También resolvemos acceso, viento y llegada tardía."
+        "desc": "Pan, fruta, hielo, repuestos básicos y café desde las 7:30. También resolvemos acceso, viento y llegada tardía.",
+        "foto": "vida-recepcion",
+        "recepcion": true
       },
       {
         "id": "banos",
@@ -167,7 +190,8 @@
       {
         "id": "agua",
         "nombre": "Agua y vaciado",
-        "desc": "Puntos de agua potable, fregaderos, vaciado de aguas grises y un punto separado para el químico."
+        "desc": "Puntos de agua potable, fregaderos, vaciado de aguas grises y un punto separado para el químico.",
+        "foto": "vida-servicio-agua"
       },
       {
         "id": "tablas",
@@ -206,6 +230,53 @@
         "texto": "A doce minutos en bici hay mercado, farmacia, taller y varios sitios donde cenar. El supermercado grande queda a nueve minutos en vehículo."
       }
     ],
+    "rutas": {
+      "titulo": "Tres salidas según el viento",
+      "intro": "Recepción ayuda a escoger entre pasarela, bicicleta y mercado según el calor, el viento y el tiempo disponible.",
+      "aviso": "Los tiempos son orientativos. El viento, el estado de la pasarela, la protección de la duna, los accesos y los horarios externos pueden cambiar; confirma las condiciones antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Pasarela y orilla",
+          "resumen": "El paseo deja las ruedas en el camping y cruza la duna únicamente por la pasarela hasta una playa abierta.",
+          "tipo": "Paseo a pie",
+          "duracion": "30 min · ida y vuelta",
+          "dificultad": "Fácil",
+          "salida": "Última plaza",
+          "momento": "Primera hora",
+          "recomendacion": "Confirma viento, estado de la pasarela y vigilancia; no abandones el trazado para acortar por la vegetación.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Torre y salinas",
+          "resumen": "La vía litoral casi llana enlaza el borde de las salinas con una torre costera y vuelve por el mismo corredor interior.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "1 h 45 min · 18 km",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Mañana sin levante fuerte",
+          "recomendacion": "Pide el parte de viento, lleva agua y respeta los desvíos temporales de las zonas protegidas.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mercado del pueblo",
+          "resumen": "Un recorrido corto por caminos tranquilos llega al mercado y la farmacia sin necesitar mover la camper.",
+          "tipo": "Bicicleta práctica",
+          "duracion": "50 min · con parada",
+          "dificultad": "Fácil",
+          "salida": "Aparcabicis",
+          "momento": "Días de mercado",
+          "recomendacion": "Confirma el horario del mercado y el tramo vigente; al volver, el poniente puede sentirse más que a la ida.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde la plaza",
       "items": [

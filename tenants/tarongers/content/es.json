@@ -4,66 +4,158 @@
     "description": "Camping familiar con parcelas y bungalows entre naranjos de la costa valenciana. Demostración ficticia de Logic2B."
   },
   "nav": {
-    "alojamientos": "Alojamientos", "instalaciones": "El camping", "entorno": "Huerta y mar",
-    "tarifas": "Tarifas", "blog": "Cuaderno familiar", "contacto": "Consultar estancia",
-    "menu": "Menú", "idioma": "Idioma", "tema": "Estilo"
+    "alojamientos": "Alojamientos",
+    "instalaciones": "El camping",
+    "entorno": "Huerta y mar",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno familiar",
+    "contacto": "Consultar estancia",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
   },
   "demo": {
     "banner": "Demostración ficticia de Logic2B: la consulta se guarda solo en este navegador y no se envía.",
-    "nivel": "Gestión", "nivel1": "Inicio", "nivel3": "Gestión"
+    "nivel": "Gestión",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
   },
-  "hero3": { "titulo": "Cien unidades. Cada familia en su sitio.", "prueba": "100 unidades · recepción familiar" },
-  "hero1": { "titulo": "Azahar por la mañana. Sombra para la siesta.", "cta": "Consulta tu estancia" },
+  "hero3": {
+    "titulo": "Cien unidades. Cada familia en su sitio.",
+    "prueba": "100 unidades · recepción familiar"
+  },
+  "hero1": {
+    "titulo": "Azahar por la mañana. Sombra para la siesta.",
+    "cta": "Consulta tu estancia"
+  },
   "ticker": [
-    "80 parcelas entre naranjos", "20 bungalows y casas", "acequias protegidas",
-    "playa a doce minutos", "solicitudes con edades y sombra"
+    "80 parcelas entre naranjos",
+    "20 bungalows y casas",
+    "acequias protegidas",
+    "playa a doce minutos",
+    "solicitudes con edades y sombra"
   ],
-  "mostrador": { "buscar": "Consultar", "llegada": "Llegada", "salida": "Salida", "adultos": "Adultos", "ninos": "Niños" },
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
   "tipos": {
     "titulo": "Elegir sombra, espacio y camas antes de preguntar",
     "subtitulo": "Parcela bajo naranjos, parcela amplia junto a la acequia, bungalow para cinco o casa para seis. Cuatro opciones pensadas para familias distintas.",
     "verTodo": "Ver los cuatro alojamientos",
     "nombres": {
-      "ut_taronger": "Parcela Taronger", "ut_sequia": "Parcela Séquia",
-      "ut_azahar": "Bungalow Azahar", "ut_naranjal": "Casa Naranjal"
+      "ut_taronger": "Parcela Taronger",
+      "ut_sequia": "Parcela Séquia",
+      "ut_azahar": "Bungalow Azahar",
+      "ut_naranjal": "Casa Naranjal"
     },
     "cards": [
-      { "id": "taronger", "nombre": "Parcela Taronger", "desc": "Setenta y ocho metros cuadrados bajo copa de cítrico, electricidad de 10 A y suelo firme.", "foto": "tipo-parcela-taronger" },
-      { "id": "sequia", "nombre": "Parcela Séquia", "desc": "Noventa y dos metros cuadrados, giro cómodo y una acequia histórica protegida fuera del perímetro.", "foto": "tipo-parcela-sequia" },
-      { "id": "azahar", "nombre": "Bungalow Azahar", "desc": "Dos dormitorios, baño y porche para cinco, con cuna y trona disponibles sin coste.", "foto": "tipo-bungalow-azahar" },
-      { "id": "naranjal", "nombre": "Casa Naranjal", "desc": "Tres dormitorios para seis, patio de sombra y espacio real para una familia grande.", "foto": "tipo-casa-naranjal" }
+      {
+        "id": "taronger",
+        "nombre": "Parcela Taronger",
+        "desc": "Setenta y ocho metros cuadrados bajo copa de cítrico, electricidad de 10 A y suelo firme.",
+        "foto": "tipo-parcela-taronger"
+      },
+      {
+        "id": "sequia",
+        "nombre": "Parcela Séquia",
+        "desc": "Noventa y dos metros cuadrados, giro cómodo y una acequia histórica protegida fuera del perímetro.",
+        "foto": "tipo-parcela-sequia"
+      },
+      {
+        "id": "azahar",
+        "nombre": "Bungalow Azahar",
+        "desc": "Dos dormitorios, baño y porche para cinco, con cuna y trona disponibles sin coste.",
+        "foto": "tipo-bungalow-azahar"
+      },
+      {
+        "id": "naranjal",
+        "nombre": "Casa Naranjal",
+        "desc": "Tres dormitorios para seis, patio de sombra y espacio real para una familia grande.",
+        "foto": "tipo-casa-naranjal"
+      }
     ]
   },
   "entorno": {
     "titulo": "La sombra no es decoración: organiza el día.",
     "texto": "Las calles conservan naranjos adultos y mantienen las acequias fuera de las parcelas. Recepción explica qué zona recibe sol de tarde, dónde cabe una autocaravana y cuánto se tarda de verdad hasta la playa."
   },
+  "vida": {
+    "titulo": "Una familia, tres pausas bajo los cítricos",
+    "intro": "La estancia se entiende en gestos pequeños: dejar libre la calle, elegir la sombra antes de instalarse y reservar las horas suaves para el agua y la huerta.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "La parcela empieza donde termina la calle",
+        "texto": "Sillas, bolsa y botella quedan dentro del perímetro. La maniobra, las raíces y el paso común siguen libres aunque la llegada sea en familia."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Preguntar por la sombra cambia el día",
+        "texto": "Recepción sitúa el sol de tarde, el acceso con carrito y la zona adecuada al vehículo antes de recomendar una parcela o una salida."
+      },
+      {
+        "foto": "vida-servicio-piscina",
+        "titulo": "El agua también puede ser una pausa",
+        "texto": "El vaso principal y la zona infantil se mantienen separados. A última hora basta sentarse al borde sin convertir la piscina en un reclamo de resort."
+      }
+    ]
+  },
   "form": {
     "titulo": "Consulta una semana en familia",
     "subtitulo": "Rellena esta solicitud ficticia y ábrela después en el gestor Logic2B. Las fechas, edades y preferencia de sombra quedan visibles; no se enviará ningún mensaje.",
-    "nombre": "Nombre ficticio", "email": "Email de prueba", "fechas": "Fechas", "entrada": "Entrada", "salida": "Salida",
-    "fechasEjemplo": "18 → 25 julio", "grupo": "Personas", "estancia": "Cómo quieres quedarte",
-    "estanciaVacia": "Elige parcela o alojamiento", "mensaje": "Edades, vehículo, sombra y qué necesitas saber",
-    "enviar": "Crear solicitud demo", "enviando": "Guardando en esta demo…", "ok": "Solicitud demo creada.",
+    "nombre": "Nombre ficticio",
+    "email": "Email de prueba",
+    "fechas": "Fechas",
+    "entrada": "Entrada",
+    "salida": "Salida",
+    "fechasEjemplo": "18 → 25 julio",
+    "grupo": "Personas",
+    "estancia": "Cómo quieres quedarte",
+    "estanciaVacia": "Elige parcela o alojamiento",
+    "mensaje": "Edades, vehículo, sombra y qué necesitas saber",
+    "enviar": "Crear solicitud demo",
+    "enviando": "Guardando en esta demo…",
+    "ok": "Solicitud demo creada.",
     "error": "La demostración no ha podido guardar la solicitud. Reintenta sin datos reales.",
-    "demoEtiqueta": "Demostración:", "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ningún mensaje; usa solo datos ficticios.",
     "demoSpam": "Demostración de antispam: la solicitud se ha detenido antes de guardarse.",
     "demoExitoTitulo": "Solicitud TG-WEB-001 creada",
     "demoExitoTexto": "La solicitud existe solo en este navegador. Ábrela en el gestor, comprueba edades y zona, márcala contactada y conviértela en estancia.",
-    "demoCopiar": "Copiar resumen", "demoCopiado": "Resumen copiado",
-    "demoCta": "Quiero una operativa así", "demoAbrirGestor": "Abrir en el gestor",
-    "demoResumenEstancia": "Estancia", "demoResumenFechas": "Fechas", "demoResumenGrupo": "Personas",
-    "demoResumenMensaje": "Consulta", "demoSinConcretar": "Por concretar"
+    "demoCopiar": "Copiar resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una operativa así",
+    "demoAbrirGestor": "Abrir en el gestor",
+    "demoResumenEstancia": "Estancia",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
   },
   "footer": {
     "aviso": "Camping familiar ficticio de 100 unidades · datos de demostración",
-    "legal": "Aviso legal", "privacidad": "Privacidad", "cookies": "Cookies", "poweredBy": "Web y gestión por Logic2B"
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web y gestión por Logic2B"
   },
   "alojamientos": {
-    "seo": { "title": "Parcelas y bungalows | Els Tarongers", "description": "Parcelas bajo naranjos, bungalows y casas familiares en un camping costero ficticio." },
-    "titulo": "Alojamientos", "intro": "Cuatro categorías y 100 unidades organizadas por sombra, superficie y camas. La consulta no bloquea inventario ni cobra nada.",
-    "desdeNoche": "desde {precio}/noche", "verFicha": "Ver ficha", "consultar": "Consultar estas fechas", "volver": "Todos los alojamientos",
-    "parcelas": "Parcelas", "alojados": "Bungalows y casas",
+    "seo": {
+      "title": "Parcelas y bungalows | Els Tarongers",
+      "description": "Parcelas bajo naranjos, bungalows y casas familiares en un camping costero ficticio."
+    },
+    "titulo": "Alojamientos",
+    "intro": "Cuatro categorías y 100 unidades organizadas por sombra, superficie y camas. La consulta no bloquea inventario ni cobra nada.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todos los alojamientos",
+    "parcelas": "Parcelas",
+    "alojados": "Bungalows y casas",
     "fichas": {
       "ut_taronger": "Parcela de unos 78 m² para tienda, caravana o furgoneta, bajo naranjos adultos y con electricidad de 10 A.",
       "ut_sequia": "Parcela de unos 92 m² con mayor radio de giro; la acequia queda vallada y fuera del espacio de estancia.",
@@ -71,11 +163,25 @@
       "ut_naranjal": "Tres dormitorios, baño, cocina y patio de sombra para seis personas; cuna y trona bajo petición."
     },
     "ficha": {
-      "capacidad": "Capacidad", "personas": "personas", "personasIncluidas": "{n} incluidas en el precio",
-      "superficie": "Superficie", "electricidad": "Electricidad", "sombra": "Sombra", "sombraParcial": "parcial", "sombraTotal": "total",
-      "camas": "Camas", "banos": "Baños privados", "aire": "Aire acondicionado", "mascotas": "Mascotas", "si": "sí", "no": "no",
-      "unidades": "{n} unidades de este tipo", "tarifasTitulo": "Tarifa orientativa por noche",
-      "estanciaMin": "estancia mínima {n} noches", "estanciaMin1": "sin estancia mínima", "llegadaSabado": "llegada en sábado",
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Camas",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
       "notaPrecios": "Precio ficticio con {n} personas. Recepción confirmaría disponibilidad y condiciones antes de reservar.",
       "disponibilidadTitulo": "¿Libre para tus fechas?",
       "solicitudTitulo": "Consulta {tipo}",
@@ -83,46 +189,154 @@
     }
   },
   "instalaciones": {
-    "seo": { "title": "Servicios del camping | Els Tarongers", "description": "Piscina familiar, patio de agua, baños y tienda en un camping entre naranjos." },
+    "seo": {
+      "title": "Servicios del camping | Els Tarongers",
+      "description": "Piscina familiar, patio de agua, baños y tienda en un camping entre naranjos."
+    },
     "titulo": "Todo cerca, nada sobreactuado",
     "intro": "Una piscina proporcionada, un patio de agua y servicios pensados para el ritmo familiar. La acequia se conserva y se protege; no es una zona de juego.",
     "items": [
-      { "id": "recepcion", "nombre": "Recepción familiar", "desc": "Abierta de 8:00 a 22:00 en verano; organiza solicitudes por fechas, edades, vehículo y preferencia de sombra." },
-      { "id": "piscina", "nombre": "Piscina familiar", "desc": "Vaso principal y zona de poca profundidad separada, con sombra perimetral y horario visible en una activación real." },
-      { "id": "banos", "nombre": "Baños y lavadero", "desc": "Dos bloques con cabina accesible, duchas familiares, lavadora y fregaderos a altura cómoda." },
-      { "id": "tienda", "nombre": "Tienda y pan", "desc": "Pan por encargo, fruta, agua, básicos de playa y productos de la huerta de proveedores locales." },
-      { "id": "juegos", "nombre": "Patio de agua", "desc": "Fuente baja de circuito cerrado y suelo antideslizante; la acequia histórica queda fuera y protegida." }
+      {
+        "id": "recepcion",
+        "nombre": "Recepción familiar",
+        "desc": "Abierta de 8:00 a 22:00 en verano; organiza solicitudes por fechas, edades, vehículo y preferencia de sombra.",
+        "foto": "vida-recepcion",
+        "recepcion": true
+      },
+      {
+        "id": "piscina",
+        "nombre": "Piscina familiar",
+        "desc": "Vaso principal y zona de poca profundidad separada, con sombra perimetral y horario visible en una activación real.",
+        "foto": "vida-servicio-piscina"
+      },
+      {
+        "id": "banos",
+        "nombre": "Baños y lavadero",
+        "desc": "Dos bloques con cabina accesible, duchas familiares, lavadora y fregaderos a altura cómoda."
+      },
+      {
+        "id": "tienda",
+        "nombre": "Tienda y pan",
+        "desc": "Pan por encargo, fruta, agua, básicos de playa y productos de la huerta de proveedores locales."
+      },
+      {
+        "id": "juegos",
+        "nombre": "Patio de agua",
+        "desc": "Fuente baja de circuito cerrado y suelo antideslizante; la acequia histórica queda fuera y protegida."
+      }
     ]
   },
   "entornoPagina": {
-    "seo": { "title": "Huerta y mar | Els Tarongers", "description": "Naranjales, vía verde, playa y pueblo desde Camping Els Tarongers." },
+    "seo": {
+      "title": "Huerta y mar | Els Tarongers",
+      "description": "Naranjales, vía verde, playa y pueblo desde Camping Els Tarongers."
+    },
     "titulo": "Del naranjal al mar sin prometer primera línea",
     "intro": "La playa queda a doce minutos en vehículo y la huerta empieza en la puerta. Recepción explica sombra, horarios y accesos con carrito antes de recomendar una salida.",
     "secciones": [
-      { "titulo": "El naranjal", "texto": "Un paseo corto recorre lindes y caminos públicos sin entrar en fincas. En floración el aroma es intenso y se evita recolectar." },
-      { "titulo": "La playa", "texto": "Arena amplia y pasarela accesible a doce minutos en vehículo; el aparcamiento varía según temporada." },
-      { "titulo": "La vía verde", "texto": "Doce kilómetros llanos enlazan huerta, marjal y dos áreas de descanso con sombra irregular." },
-      { "titulo": "El pueblo", "texto": "Horno, farmacia, pediatría y mercado de jueves quedan a siete minutos en vehículo." }
+      {
+        "titulo": "El naranjal",
+        "texto": "Un paseo corto recorre lindes y caminos públicos sin entrar en fincas. En floración el aroma es intenso y se evita recolectar."
+      },
+      {
+        "titulo": "La playa",
+        "texto": "Arena amplia y pasarela accesible a doce minutos en vehículo; el aparcamiento varía según temporada."
+      },
+      {
+        "titulo": "La vía verde",
+        "texto": "Doce kilómetros llanos enlazan huerta, marjal y dos áreas de descanso con sombra irregular."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "Horno, farmacia, pediatría y mercado de jueves quedan a siete minutos en vehículo."
+      }
     ],
+    "rutas": {
+      "titulo": "Tres salidas para ordenar sol, sombra y distancia",
+      "intro": "El paseo del azahar, la vía verde y la playa responden a momentos distintos del día; recepción explica el acceso sin prometer condiciones que dependen de terceros.",
+      "aviso": "Los tiempos son orientativos. El calor, los trabajos agrícolas, el estado de la vía, el aparcamiento y las condiciones del mar pueden cambiar; confirma accesos y avisos antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Paseo del azahar",
+          "resumen": "Un recorrido corto sigue caminos públicos y lindes del naranjal, con regreso por el mismo corredor llano.",
+          "tipo": "Paseo a pie",
+          "duracion": "45 min · ida y vuelta",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Primera hora",
+          "recomendacion": "Mantente en el camino público, no recolectes fruta ni entres en parcelas agrícolas y evita la salida si hay trabajos en la linde.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vía verde del marjal",
+          "resumen": "El enlace local conduce a un trazado llano entre huerta y marjal, con dos descansos y sombra discontinua.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "1 h 30 min · 12 km",
+          "dificultad": "Fácil",
+          "salida": "Aparcabicis de recepción",
+          "momento": "Mañana templada",
+          "recomendacion": "Lleva agua, mantén a los menores en fila y confirma el enlace vigente: el calor y los trabajos de mantenimiento pueden dejar tramos sin sombra o cerrados.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Playa y pasarela",
+          "resumen": "Un desplazamiento corto en vehículo enlaza la huerta con una pasarela de acceso a la arena, sin presentar el camping como primera línea.",
+          "tipo": "Salida de playa",
+          "duracion": "1 h 30 min · con estancia",
+          "dificultad": "Fácil",
+          "salida": "Recepción · 12 min en coche",
+          "momento": "Primera o última hora",
+          "recomendacion": "Comprueba aparcamiento, pasarela, bandera y estado del mar; son servicios y condiciones externos que cambian según temporada.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [
-        { "lugar": "Camino del naranjal", "valor": "1 min a pie" }, { "lugar": "Vía verde", "valor": "8 min en bici" },
-        { "lugar": "Playa y pasarela", "valor": "12 min en coche" }, { "lugar": "Pueblo y farmacia", "valor": "7 min en coche" },
-        { "lugar": "Centro de salud", "valor": "16 min en coche" }, { "lugar": "Estación", "valor": "29 min en coche" }
+        { "lugar": "Camino del naranjal", "valor": "1 min a pie" },
+        { "lugar": "Vía verde", "valor": "8 min en bici" },
+        { "lugar": "Playa y pasarela", "valor": "12 min en coche" },
+        { "lugar": "Pueblo y farmacia", "valor": "7 min en coche" },
+        { "lugar": "Centro de salud", "valor": "16 min en coche" },
+        { "lugar": "Estación", "valor": "29 min en coche" }
       ]
     }
   },
   "tarifas": {
-    "seo": { "title": "Tarifas orientativas | Els Tarongers", "description": "Precios ficticios por noche para parcelas y bungalows familiares." },
-    "titulo": "Cuatro ritmos de la huerta", "intro": "Los importes separan floración, tiempo templado, verano familiar y cosecha. Esta web solo crea una solicitud: no cobra ni confirma una reserva.",
-    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
-    "temporadas": { "sea_azahar": "Azahar · 15 febrero – 1 mayo", "sea_templada": "Templada · 1 mayo – 21 junio", "sea_verano": "Verano familiar · 21 junio – 15 septiembre", "sea_cosecha": "Cosecha · 15 septiembre – 8 diciembre" },
-    "suplementos": {
-      "titulo": "Suplementos orientativos", "personaExtra": "Persona a partir de la {n}ª", "nino": "Niño (3–12 años)",
-      "electricidad": "Electricidad 10 A", "vehiculo": "Segundo vehículo", "mascota": "Mascota en parcela"
+    "seo": {
+      "title": "Tarifas orientativas | Els Tarongers",
+      "description": "Precios ficticios por noche para parcelas y bungalows familiares."
     },
-    "extras": { "titulo": "Extras", "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" }, "nombres": { "ext_cuna": "Cuna y trona", "ext_mascota": "Mascota en parcela" } },
+    "titulo": "Cuatro ritmos de la huerta",
+    "intro": "Los importes separan floración, tiempo templado, verano familiar y cosecha. Esta web solo crea una solicitud: no cobra ni confirma una reserva.",
+    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "temporadas": {
+      "sea_azahar": "Azahar · 15 febrero – 1 mayo",
+      "sea_templada": "Templada · 1 mayo – 21 junio",
+      "sea_verano": "Verano familiar · 21 junio – 15 septiembre",
+      "sea_cosecha": "Cosecha · 15 septiembre – 8 diciembre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos orientativos",
+      "personaExtra": "Persona a partir de la {n}ª",
+      "nino": "Niño (3–12 años)",
+      "electricidad": "Electricidad 10 A",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota en parcela"
+    },
+    "extras": {
+      "titulo": "Extras",
+      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "nombres": { "ext_cuna": "Cuna y trona", "ext_mascota": "Mascota en parcela" }
+    },
     "condiciones": {
       "titulo": "Antes de consultar",
       "items": [
@@ -134,17 +348,41 @@
     }
   },
   "contacto": {
-    "seo": { "title": "Consultar estancia | Els Tarongers", "description": "Crea una solicitud familiar ficticia y sigue su recorrido en el gestor Logic2B." },
+    "seo": {
+      "title": "Consultar estancia | Els Tarongers",
+      "description": "Crea una solicitud familiar ficticia y sigue su recorrido en el gestor Logic2B."
+    },
     "titulo": "Consulta, edades y sombra en una historia",
     "intro": "Usa datos inventados. La solicitud se guarda temporalmente en tu navegador y aparecerá en el gestor con fechas, edades y contexto; no sale ningún email ni mensaje.",
-    "datos": { "titulo": "Datos ficticios", "direccion": "Dirección", "telefono": "Teléfono", "email": "Email" },
-    "horario": { "titulo": "Recepción", "texto": "Horario de muestra: 8:00–22:00 en Verano familiar; 9:00–20:00 el resto." },
-    "llegar": { "titulo": "Cómo llegar", "texto": "La dirección y los canales son ficticios. Una activación real publicaría el acceso para caravanas, el cruce de la acequia y la ruta accesible verificados por el camping." }
+    "datos": {
+      "titulo": "Datos ficticios",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Email"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: 8:00–22:00 en Verano familiar; 9:00–20:00 el resto."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La dirección y los canales son ficticios. Una activación real publicaría el acceso para caravanas, el cruce de la acequia y la ruta accesible verificados por el camping."
+    }
   },
   "blog": {
-    "seo": { "title": "Cuaderno familiar | Els Tarongers", "description": "Información práctica sobre sombra, playa y huerta en un camping familiar ficticio." },
-    "titulo": "Cuaderno familiar", "intro": "La demo no publica artículos. La sección queda preparada para avisos de sombra, agua, playa y accesos sin convertir información de terceros en garantía.",
-    "leerMas": "Leer", "volver": "Todo el cuaderno", "vacio": "No hay entradas en esta demostración."
+    "seo": {
+      "title": "Cuaderno familiar | Els Tarongers",
+      "description": "Información práctica sobre sombra, playa y huerta en un camping familiar ficticio."
+    },
+    "titulo": "Cuaderno familiar",
+    "intro": "La demo no publica artículos. La sección queda preparada para avisos de sombra, agua, playa y accesos sin convertir información de terceros en garantía.",
+    "leerMas": "Leer",
+    "volver": "Todo el cuaderno",
+    "vacio": "No hay entradas en esta demostración."
   },
-  "noEncontrada": { "titulo": "Esta acequia no lleva a esa parcela", "texto": "La dirección no corresponde a ninguna zona del camping.", "cta": "Volver al inicio" }
+  "noEncontrada": {
+    "titulo": "Esta acequia no lleva a esa parcela",
+    "texto": "La dirección no corresponde a ninguna zona del camping.",
+    "cta": "Volver al inicio"
+  }
 }
