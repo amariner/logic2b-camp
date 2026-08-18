@@ -17,6 +17,8 @@ tmp/
 tenants/*/content/media/*-source.*
 tenants/*/content/media/.staging/
 tenants/*/content/media/.rejected/
+tenants/*/content/media/.motion-staging/
+tenants/*/content/media/.motion-rejected/
 
 # Playwright (E2E)
 test-results/

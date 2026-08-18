@@ -101,6 +101,27 @@
     "titulo": "Sol bajo, días largos y una comunidad que se queda.",
     "texto": "Las parcelas miran al mediodía, el salón común ocupa el centro y recepción organiza correo, suministros y estancias de varios meses. Invierno mediterráneo sin decorado de resort."
   },
+  "vida": {
+    "titulo": "Quedarse también es ordenar lo cotidiano",
+    "intro": "Cuarenta y cinco noches cambian las prioridades: guardar sin invadir la calle, recibir un paquete y volver al mismo salón mañana importan más que acumular actividades.",
+    "escenas": [
+      {
+        "foto": "vida-llegada",
+        "titulo": "Cuarenta y cinco noches caben dentro de la parcela",
+        "texto": "La caja queda bajo el avance y la silla junto a la mesa, mientras la calle, la toma y el espacio de maniobra siguen libres. Instalarse mejor no significa ocupar más."
+      },
+      {
+        "foto": "vida-recepcion",
+        "titulo": "Una dirección temporal también recibe paquetes",
+        "texto": "Recepción recoge correo y paquetería sin convertir el mostrador en una conserjería. El aviso, la entrega y los límites del servicio se explican antes de una estancia larga."
+      },
+      {
+        "foto": "vida-servicio-salon",
+        "titulo": "El salón funciona porque vuelve a usarse mañana",
+        "texto": "Una partida de dominó ocupa una mesa y deja el paso a la terraza despejado. La comunidad aparece en los hábitos compartidos, no en un programa de animación."
+      }
+    ]
+  },
   "form": {
     "titulo": "Diseñemos una temporada larga sin fricción",
     "subtitulo": "Esta demostración no envía datos. La estancia mínima, la señal y los servicios son ejemplos ficticios para una conversación de alcance.",
@@ -174,7 +195,8 @@
       {
         "id": "salon",
         "nombre": "Salón común",
-        "desc": "Mesas móviles, biblioteca de intercambio y terraza soleada para actividades de la comunidad."
+        "desc": "Mesas móviles, biblioteca de intercambio y terraza soleada para actividades de la comunidad.",
+        "foto": "vida-servicio-salon"
       },
       {
         "id": "correo",
@@ -184,7 +206,9 @@
       {
         "id": "recepcion",
         "nombre": "Recepción todo el año",
-        "desc": "Altas, consumos, prórrogas y cambios de parcela en un mostrador preparado para estancias largas."
+        "desc": "Altas, consumos, prórrogas y cambios de parcela en un mostrador preparado para estancias largas.",
+        "foto": "vida-recepcion",
+        "recepcion": true
       },
       {
         "id": "baños",
@@ -228,6 +252,53 @@
         "texto": "Senderos cortos alcanzan miradores resguardados; el estado de cada ruta se comprueba antes de salir."
       }
     ],
+    "rutas": {
+      "titulo": "Tres salidas para una estancia que dura semanas",
+      "intro": "Un paseo entre bancales, una vía verde y los recados del pueblo cubren ritmos distintos. Recepción orienta sobre el acceso, pero no garantiza caminos ni horarios de terceros.",
+      "aviso": "Los tiempos son orientativos. Los trabajos agrícolas, el estado de la vía verde y los horarios de mercado, autobús o farmacia pueden cambiar; confirma cada servicio antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Camino de los almendros",
+          "resumen": "Un circuito público bordea bancales en flor, muros de piedra seca y vegetación aromática sin entrar en las parcelas cultivadas.",
+          "tipo": "Paseo cotidiano",
+          "duracion": "1 h 15 min · 4 km",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Media mañana",
+          "recomendacion": "Pregunta por trabajos agrícolas, permanece en el camino público y cede el paso desde un ensanche seguro. La floración se observa sin cortar ramas ni cruzar muros.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Vía verde al apeadero",
+          "resumen": "El enlace llano alcanza la antigua plataforma ferroviaria para pedalear entre huerta y almendros, lejos del tráfico motorizado.",
+          "tipo": "Ruta en bicicleta",
+          "duracion": "1 h 30 min · 14 km",
+          "dificultad": "Fácil",
+          "salida": "Taller de bicicletas",
+          "momento": "Mañana templada",
+          "recomendacion": "Comprueba que el enlace esté abierto, lleva agua y reparación básica y mantén libres los accesos agrícolas. Acorta en el apeadero si cambia el tiempo.",
+          "foto": "vida-entorno"
+        },
+        {
+          "nombre": "Mercado y farmacia",
+          "resumen": "Una salida práctica reúne compra semanal, farmacia y parada de autobús en el centro, con tiempo suficiente para resolver recados sin prisa.",
+          "tipo": "Salida cotidiana",
+          "duracion": "1 h 30 min · con recados",
+          "dificultad": "Fácil",
+          "salida": "Recepción · 8 min en vehículo",
+          "momento": "Mañana de mercado",
+          "recomendacion": "Verifica el día de mercado, los horarios de farmacia y autobús y el regreso antes de salir. Son servicios externos y pueden variar durante festivos.",
+          "foto": "vida-entorno"
+        }
+      ]
+    },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [

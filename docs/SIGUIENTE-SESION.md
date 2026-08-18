@@ -1,13 +1,15 @@
-# Prompt para la siguiente sesión — H3 por temas
+# Prompt para la siguiente sesión — cierre de mejora de temas
 
-> Actualizado el 2026-08-18 tras completar Entre Vinyes.
+> Actualizado el 2026-08-18 tras completar Sol d'Hivern y cerrar H3.
 
 ## Estado en una línea
 
-H3 queda 4/5: La Carrasca, Serralta, Els Tarongers y Entre Vinyes tienen cuatro
-papeles humanos aprobados, bloque de vida, recepción y servicio en uso, tres
-planes prudentes y QA real 375/1366. H1 permanece 3/3 y H2, 5/5. Todo continúa
-local, sin desplegar; el vídeo H1-V sigue diferido con fallback estático completo.
+H3 queda 5/5: La Carrasca, Serralta, Els Tarongers, Entre Vinyes y Sol d'Hivern
+tienen cuatro papeles humanos aprobados, bloque de vida, recepción y servicio en
+uso, tres planes prudentes y QA real 375/1366. H1 permanece 3/3 y H2, 5/5. Todo
+continúa local, sin desplegar. H1-V se ha abierto con un prototipo de L'Olivar,
+pero el proveedor lo rechazó dos veces antes de generar bytes por saldo
+insuficiente; el fallback estático continúa completo.
 
 ## Evidencia cerrada
 
@@ -26,6 +28,22 @@ local, sin desplegar; el vídeo H1-V sigue diferido con fallback estático compl
 - Riu Clar conserva catalán y Ballena mantiene su flujo tier 3 de reserva;
 - typecheck sin diagnósticos, builds aislados y contrato de fábrica verdes;
   `pnpm check` termina 71/71 y construye los doce campings.
+- H3 suma veinte escenas, cinco bloques de vida y quince rutas; Carrasca,
+  Serralta, Tarongers, Vinyes y Sol d'Hivern cierran sus manifiestos en 14/14.
+- `HeroMedia` anuncia MP4/WebM con el MIME correcto y detiene o reanuda un vídeo
+  si cambian en vivo movimiento reducido o ahorro de datos; web typecheck, tests
+  de fábrica y los doce builds quedan verdes.
+- nueve pruebas fijan hidratación, fallback, MIME, trazabilidad, huella, audio,
+  duración, `yuv420p`, recorte, presupuesto y `faststart`; el verificador informa
+  0 tenants con vídeo aprobado y mantiene intactos todos los pósteres.
+- cinco pruebas adicionales fijan el pipeline de staging: normalización H.264
+  sin audio, candidato fuera del runtime, aprobación atómica con manifiesto,
+  rechazo auditable y prohibición de reutilizar el apaisado como móvil.
+- las tres anclas tienen ya un póster vertical 9:16 propio: `<picture>` lo sirve
+  solo bajo 640 px y los preloads móvil/escritorio son excluyentes. QA real en
+  L'Olivar, Pinada del Mar y Mar de Fondo confirma la fuente vertical a 375 px,
+  el regreso al apaisado en escritorio, cero desborde y cero avisos de consola;
+  el build del portfolio fija también ese contrato en el HTML final.
 
 ## La Carrasca cerrada
 
@@ -80,6 +98,20 @@ local, sin desplegar; el vídeo H1-V sigue diferido con fallback estático compl
 - QA real 375/1366: cero desborde o imagen rota, tarjetas de ruta equilibradas,
   cero `warn`/`error` de consola y contacto Logic2B de 48×48 px.
 
+## Sol d'Hivern cerrado
+
+- manifiesto 14/14 y cuatro escenas H3 finales generadas una a una con OpenAI
+  integrado; dos encuadres de llegada rechazados por silla incoherente y forma
+  similar a una matrícula quedan conservados en la auditoría;
+- instalación ordenada para 45 noches, entrega cotidiana de paquetería, partida
+  de dominó en el salón y dos residentes en bicicleta con cuatro alforjas;
+- bloque de vida, recepción y salón con foto explícita, CTA de contacto y tres
+  rutas que distinguen camino público, vía verde y servicios externos del pueblo;
+- typecheck de 67 archivos sin diagnósticos, contrato de fábrica y build tier 3
+  de 25 páginas verdes;
+- QA real 375/1366: cero desborde o imagen rota, tarjetas de ruta a la misma
+  altura, cero `warn`/`error` de consola y contacto Logic2B de 48×48 px.
+
 ## Diferenciación de la ola H2
 
 - Cala Sereno: cala, restaurante y pinar costero sobrio;
@@ -90,6 +122,17 @@ local, sin desplegar; el vídeo H1-V sigue diferido con fallback estático compl
 
 El gate queda aprobado: los cinco temas usan el agua de forma distinta y no
 repiten la misma escena de familia en piscina.
+
+## Diferenciación de la ola H3
+
+- La Carrasca: pareja madura, encinar sobrio y uso tranquilo del claro;
+- Serralta: lluvia reciente, parte de barro, fuego supervisado y retirada;
+- Els Tarongers: familia entre cítricos, sombra, piscina y huerta;
+- Entre Vinyes: límites de vendimia, patio de agua y sombra y accesos agrícolas;
+- Sol d'Hivern: 45 noches, correo, salón vecinal y movilidad cotidiana.
+
+El gate queda aprobado: las cinco identidades no comparten grupo, conflicto
+operativo, servicio central ni relación con el paisaje.
 
 ## Decisión operativa vigente
 
@@ -103,15 +146,16 @@ repiten la misma escena de familia en piscina.
 
 ## Siguiente objetivo
 
-Abrir **Sol d'Hivern** como quinto y último tema de H3:
-
-1. definir residentes de larga estancia, correo/recepción, lavandería o salón
-   común y camino de almendros sin repetir el lenguaje vacacional de H1/H2;
-2. redactar en sus locales el bloque de vida y tres planes útiles;
-3. generar e inspeccionar cuatro escenas propias, sin reutilizar figurantes,
-   arquitectura o temperatura de H1/H2;
-4. integrar recepción, un segundo servicio y CTA de contacto;
-5. verificar 375/1366, contrato, build y el gate comparativo completo de H3.
-
-Después: cerrar el gate de H3 y ejecutar una validación global. No retomar vídeo
-H1-V durante la producción fotográfica salvo decisión explícita.
+La mejora fotográfica H1/H2/H3 queda cerrada y H1-V es el frente activo. Cuando
+el proveedor disponga de saldo, reintentar **solo L'Olivar** con Seedance 2.0:
+6 s, 16:9, 720p, cámara fija, sin audio, `hero-dia.webp` como inicio y final y
+movimiento limitado a hojas, sombras y lona. Inspeccionar continuidad y bucle,
+normalizar H.264/WebM local con `faststart`, medir ≤3 MB y validar reducción de
+movimiento/ahorro de datos antes de producir Pinada del Mar o Mar de Fondo. No
+hay otro tenant fotográfico pendiente; los tres pósteres verticales ya están
+aprobados y deben ser la referencia de encuadre para las futuras salidas móviles.
+No se despliega sin autorización.
+Los seis prompts, referencias, rechazos específicos y orden de producción están
+cerrados en `BRIEF-H1-VIDEO.md`; no hay que rediseñarlos al reanudar.
+La incorporación se hace con `pnpm motion -- stage/approve/reject`; no copiar el
+resultado del proveedor directamente a `content/media/`.

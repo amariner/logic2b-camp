@@ -45,6 +45,11 @@ function configuredTier(slug) {
   return Number(matches[0][1]);
 }
 
+function configuredMobileHero(slug) {
+  const source = readFileSync(join(tenantsDir, slug, 'config.ts'), 'utf8');
+  return source.match(/^\s*staticHeroMobileImage\s*:\s*['"]([^'"]+)['"]\s*,/im)?.[1];
+}
+
 function contactEnabled(slug) {
   const source = readFileSync(join(tenantsDir, slug, 'config.ts'), 'utf8');
   return !/^\s*logic2bContact\s*:\s*false\s*,/gim.test(source);
@@ -55,6 +60,8 @@ function checkTierBoundary(slug, outDir) {
   const files = filesUnder(outDir);
   const html = files.filter((file) => file.endsWith('.html'));
   const js = files.filter((file) => file.endsWith('.js'));
+  const homepage = readFileSync(join(outDir, 'index.html'), 'utf8');
+  const mobileHero = configuredMobileHero(slug);
   const bookingRoutes = html.filter(
     (file) => file === 'reserva/index.html' || file.startsWith('reservar/'),
   );
@@ -75,6 +82,27 @@ function checkTierBoundary(slug, outDir) {
   }
   if (!contactEnabled(slug) && pagesWithoutContact.length !== html.length) {
     throw new Error(`${slug}: logic2bContact false todavía emite el contacto`);
+  }
+
+  if (mobileHero) {
+    const escapedKey = mobileHero.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const mobilePreload = new RegExp(
+      `<link[^>]+rel="preload"[^>]+imagesrcset="[^"]*${escapedKey}\\.[^"]+"[^>]+media="\\(max-width: 639px\\)"`,
+    );
+    const mobileSource = new RegExp(
+      `<source[^>]+media="\\(max-width: 639px\\)"[^>]+srcset="[^"]*${escapedKey}\\.[^"]+"`,
+    );
+    const desktopPreload =
+      /<link[^>]+rel="preload"[^>]+imagesrcset="[^"]+"[^>]+media="\(min-width: 640px\)"/;
+    if (
+      !mobilePreload.test(homepage) ||
+      !mobileSource.test(homepage) ||
+      !desktopPreload.test(homepage)
+    ) {
+      throw new Error(
+        `${slug}: staticHeroMobileImage no conserva preload móvil, <source> vertical y preload de escritorio excluyente`,
+      );
+    }
   }
 
   if (tier < 3 && (bookingRoutes.length > 0 || bookingChunks.length > 0)) {

@@ -69,6 +69,11 @@ export const tenantWebConfigSchema = z
       .string()
       .regex(/^[a-z0-9][a-z0-9-]*$/)
       .optional(),
+    /** Variante vertical opcional del póster estático, servida solo en móvil. */
+    staticHeroMobileImage: z
+      .string()
+      .regex(/^[a-z0-9][a-z0-9-]*$/, 'debe ser una clave de medio segura')
+      .optional(),
     /**
      * Bucle ambiental opcional del héroe (ADR 0047). Las claves resuelven
      * archivos locales del tenant; nunca se admiten URLs ni rutas. El póster

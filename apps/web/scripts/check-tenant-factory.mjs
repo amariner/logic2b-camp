@@ -292,6 +292,15 @@ async function validateManifest(slug, path, { requireFiles = true } = {}) {
       ) {
         fail(`${slug}/${name}.webp: dimensiones fuera del rango 900–2000 px`);
       }
+      const [ratioWidth, ratioHeight] = piece.aspecto.split(':').map(Number);
+      const declaredRatio = ratioWidth / ratioHeight;
+      const actualRatio = metadata.width / metadata.height;
+      const ratioDelta = Math.abs(actualRatio - declaredRatio) / declaredRatio;
+      if (ratioDelta > 0.05) {
+        fail(
+          `${slug}/${name}.webp: ${metadata.width}×${metadata.height} no coincide con aspecto ${piece.aspecto}`,
+        );
+      }
     }
   }
   for (const batch of manifest.lotes ?? []) {
@@ -343,6 +352,24 @@ for (const slug of tenantSlugs) {
   const defaultLocale = configString(config, 'defaultLocale');
   if (locales.length < 1 || !locales.includes(defaultLocale))
     fail(`${slug}/config.ts: locales/defaultLocale incoherentes`);
+  const staticHeroMobileImage = configString(config, 'staticHeroMobileImage');
+  if (
+    staticHeroMobileImage &&
+    !existsSync(join(dir, 'content/media', `${staticHeroMobileImage}.webp`))
+  ) {
+    fail(`${slug}/config.ts: falta staticHeroMobileImage ${staticHeroMobileImage}.webp`);
+  }
+  if (staticHeroMobileImage) {
+    const photoManifest = json(join(dir, 'fotos.json'));
+    const mobilePiece = photoManifest.piezas?.[staticHeroMobileImage];
+    if (!mobilePiece) {
+      fail(`${slug}/config.ts: staticHeroMobileImage no está trazado en fotos.json`);
+    }
+    const [ratioWidth, ratioHeight] = String(mobilePiece.aspecto).split(':').map(Number);
+    if (!(ratioWidth > 0 && ratioHeight > ratioWidth)) {
+      fail(`${slug}/config.ts: staticHeroMobileImage debe declarar un aspecto vertical`);
+    }
+  }
   for (const locale of locales) {
     const content = join(dir, 'content', `${locale}.json`);
     if (!existsSync(content)) fail(`${slug}: falta content/${locale}.json`);

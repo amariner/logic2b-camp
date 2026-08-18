@@ -14,6 +14,7 @@ export const config: TenantWebConfig = {
     address: 'Camí de la Marjal s/n, 03700 Costa Blanca, Alicante',
   },
   staticHeroImage: 'hero-laguna',
+  staticHeroMobileImage: 'hero-mobile',
   bookingTransport: 'demo-session',
   demoManagerPath: '/demos/mardefondo/gestion/',
   isDemo: true,

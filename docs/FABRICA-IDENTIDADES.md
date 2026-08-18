@@ -16,6 +16,7 @@ Una identidad vive íntegramente bajo `tenants/{slug}/`:
 | `data.ts`               | Inventario, temporadas, tarifas y extras que consume el build                                           | Fixture determinista y coherente con el nivel         |
 | `custom/hooks.ts`       | Registro explícito de extensiones                                                                       | Vacío por defecto; nunca parchea el core              |
 | `fotos.json`            | Procedencia/licencia, papel, proporción, prompt, lotes y derivados                                      | Aprobado antes de gastar o ingerir bytes              |
+| `movimiento.json`       | Procedencia, modelo, prompt, póster, aprobación y huella de cada vídeo activo                           | Solo existe cuando `config.heroMotion` está activo    |
 | `content/media/`        | Finales locales aprobados                                                                               | Sin URLs temporales ni activos de otra marca          |
 
 `apps/` y `packages/` no forman parte de la identidad. Si una necesidad real no
@@ -83,8 +84,32 @@ Reglas comunes:
   abren el fallback registrado. Nada cambia de proveedor en silencio.
 
 El checker acepta finales históricos solo cuando tienen procedencia explícita.
-Los cuatro tenants actuales están completos: Cala 12/12, L'Olivar 8/8, Pinada
-11/11 y Mar de Fondo 14/14.
+Los trece tenants actuales están completos: 184 piezas declaradas y 184 finales
+locales; las olas humanas H1/H2/H3 y los tres pósteres móviles de H1 forman
+parte ya de esos manifiestos.
+
+Un tenant puede declarar `staticHeroMobileImage` como clave local opcional. El
+final debe estar trazado en `fotos.json`, ser vertical y conservar el mismo
+camping y momento que el héroe apaisado. La home lo sirve mediante `<picture>`
+solo hasta 639 px; los preloads móvil y escritorio son excluyentes para no
+descargar ambos candidatos. Sin la clave, el héroe histórico conserva
+exactamente su comportamiento anterior.
+
+Un vídeo de héroe no entra por `fotos.json`. Al activar `heroMotion`, el tenant
+añade `movimiento.json` con `version: 1` y una entrada en `clips` por cada clave
+de escritorio o móvil. Cada entrada declara `poster`, `provider`, `model`,
+`prompt`, `generatedAt`, `approvedAt`, `approval: "visual-inspection"` y la
+huella SHA-256 del final normalizado. El gate rechaza:
+
+- una URL, un clip huérfano, dos extensiones para la misma clave o la
+  reutilización del recorte de escritorio como fuente móvil;
+- menos de 6 s o más de 10 s, cualquier pista de audio y más de una pista de
+  vídeo;
+- MP4 que no sea H.264 `yuv420p` con `moov` antes de `mdat`, o WebM que no sea
+  VP9/AV1;
+- escritorio no apaisado, móvil no vertical/cuadrado, más de 3 MB en escritorio
+  o más de 1,5 MB en móvil;
+- póster, aprobación o huella que no coincidan con la config y los bytes.
 
 ## 5. Receta local reproducible
 
@@ -113,10 +138,41 @@ pnpm fotos -- derive {slug}
 `.staging` antes de aprobar; rechazo, proveedor, modelo, trabajo y huella del
 prompt quedan en `fotos.estado.json`.
 
+Un vídeo recibido del proveedor tampoco se copia directamente al runtime. Se
+prepara primero un JSON de evidencia local:
+
+```json
+{
+  "provider": "higgsfield",
+  "model": "seedance_2_0",
+  "prompt": "Prompt exacto enviado al proveedor…",
+  "generatedAt": "2026-08-18T15:00:00.000Z"
+}
+```
+
+Después se normaliza y revisa en dos pasos:
+
+```bash
+pnpm motion -- stage {slug} desktop /ruta/al/master.mp4 /ruta/evidence.json
+# inspeccionar content/media/.motion-staging/hero-motion.mp4
+pnpm motion -- approve {slug} desktop
+# o conservar el descarte fuera del runtime
+pnpm motion -- reject {slug} desktop "motivo visual concreto"
+```
+
+Para móvil se sustituye `desktop` por `mobile`; la clave resultante es
+`hero-motion-mobile`. `stage` requiere FFmpeg, elimina audio, fuerza H.264
+`yuv420p` y `faststart`, y aplica el mismo gate de duración, orientación y peso
+que producción. `approve` vuelve a sondear los bytes, verifica que no cambiaron,
+los publica y crea o amplía `movimiento.json` con la aprobación y SHA-256. Hasta
+ese momento no modifica config ni activa ningún vídeo. Tras aprobar, declarar la
+clave en `config.heroMotion` y ejecutar el contrato común.
+
 ### C. Contrato, build y capturas
 
 ```bash
 node apps/web/scripts/check-tenant-factory.mjs
+node apps/web/scripts/hero-motion-contract.mjs
 TENANT={slug} BASE_PATH=/demos/{slug} pnpm --filter @logic-camp/web build
 pnpm --filter @logic-camp/web capture:tenant -- {slug}
 pnpm --filter @logic-camp/web capture:tenant -- {slug} /contacto/
@@ -147,6 +203,13 @@ reseed remoto, DNS, secrets o consumo de proveedor sin aprobación concreta.
 `check-tenant-factory.mjs`, incluido en `pnpm check`, descubre tenants en vez de
 enumerar marcas. Comprueba contrato de ficheros, locales, briefs, tokens,
 contraste claro/oscuro, coincidencia selector/CSS, radios, manifiestos, lotes,
-procedencia, dimensiones y presupuestos. `check-portfolio.mjs` construye después
-cada tenant y conserva las fronteras de tier. Playwright cubre URL,
+procedencia, dimensiones y presupuestos. `hero-motion-contract.mjs` permanece
+verde con cero clips y se vuelve estricto en cuanto una config activa
+`heroMotion`; usa `ffprobe` para acreditar códec, píxeles, pistas y duración, y
+lee los átomos MP4 para comprobar `faststart`. `check-portfolio.mjs` construye
+después cada tenant y conserva las fronteras de tier. Playwright cubre URL,
 persistencia, fallback y reduced motion contra el bundle compuesto real.
+
+La proporción declarada en cada pieza también se compara con los píxeles del
+final con una tolerancia del 5 %. Este gate corrigió cinco declaraciones
+históricas: cuatro piezas de L'Olivar y `textura-lona` de Cala Sereno.

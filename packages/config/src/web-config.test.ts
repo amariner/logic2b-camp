@@ -32,6 +32,25 @@ describe('parseTenantWebConfig', () => {
     });
   });
 
+  it('acepta un póster vertical local para el héroe móvil', () => {
+    expect(
+      parseTenantWebConfig({
+        ...base,
+        staticHeroImage: 'hero-dia',
+        staticHeroMobileImage: 'hero-mobile',
+      }),
+    ).toMatchObject({ staticHeroMobileImage: 'hero-mobile' });
+  });
+
+  it.each(['https://media.example/hero.webp', '../hero', '/hero'])(
+    'rechaza un póster móvil que no sea una clave local: %s',
+    (staticHeroMobileImage) => {
+      expect(() => parseTenantWebConfig({ ...base, staticHeroMobileImage })).toThrow(
+        'staticHeroMobileImage: debe ser una clave de medio segura',
+      );
+    },
+  );
+
   it('acepta vídeo ambiental local y encuadre opcional', () => {
     expect(
       parseTenantWebConfig({
@@ -45,7 +64,7 @@ describe('parseTenantWebConfig', () => {
     ).toMatchObject({ heroMotion: { desktop: 'hero-motion', mobile: 'hero-motion-mobile' } });
   });
 
-  it.each(['https://media.example/hero.mp4', '../hero', '/hero']) (
+  it.each(['https://media.example/hero.mp4', '../hero', '/hero'])(
     'rechaza una fuente de vídeo no local: %s',
     (desktop) => {
       expect(() => parseTenantWebConfig({ ...base, heroMotion: { desktop } })).toThrow(

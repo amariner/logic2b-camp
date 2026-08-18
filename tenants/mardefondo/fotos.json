@@ -17,6 +17,7 @@
   ],
   "lotes": [
     ["hero-laguna", "hero-horizonte"],
+    ["hero-mobile"],
     ["parcela-atlantica", "bungalow-laguna"],
     ["bungalow-laguna-interior", "mobil-horizonte"],
     ["mobil-horizonte-interior", "glamping-duna"],
@@ -38,6 +39,11 @@
       "aspecto": "21:9",
       "papel": "héroe principal con espacio negativo a la izquierda",
       "prompt": "Wide editorial documentary photograph of a large Mediterranean campsite resort at clean golden hour. A geometric lagoon pool fills the right two thirds, pale stone terraces and restrained palms, low white accommodation buildings beyond, a narrow glimpse of sea at the horizon. The left third is calm pale architecture and soft shadow with clear negative space for headline. Premium through order and scale, not luxury clichés. Natural muted Atlantic ink, salt white, sand and deep teal palette, subtle 35mm grain. No people, text, logos, HDR or impossible architecture."
+    },
+    "hero-mobile": {
+      "aspecto": "9:16",
+      "papel": "Póster estático vertical del héroe, servido exclusivamente en móvil.",
+      "prompt": "Use case: precise-object-edit\nAsset type: mobile static hero poster for the Camping Resort Mar de Fondo demo website\nPrimary request: Recompose the supplied ultra-wide lagoon photograph into a restrained vertical mobile hero while preserving the exact fictional resort architecture, scale and editorial realism.\nInput images: Image 1 is the edit target and sole visual authority.\nScene/backdrop: The same geometric dark-teal lagoon, pale stone terraces, one white low accommodation volume, ordered sand-coloured buildings, restrained palms, plain parasol and narrow sea horizon.\nComposition/framing: Portrait 9:16. Use the lagoon edge as a strong lower vertical anchor, keep one complete white architectural volume to the left-middle, ordered sand buildings and a slim sea horizon above, plus one restrained palm/parasol detail for scale. Reserve a calm mid-to-upper area with stable tonal value for centered light headline text. Reconstruct only the peripheral scene required for a credible vertical frame; do not stretch or redesign.\nLighting/mood: Preserve the same clean natural golden-hour light, quiet operational order and premium-through-clarity mood.\nColor palette: Salt white, pale sand, deep muted teal, restrained warm sunlight.\nConstraints: Preserve straight architecture, pool geometry and water level, terrace edges, furniture scale, horizon, lens character and exposure. Same empty fictional campsite resort. No text, logos or watermark.\nAvoid: people, swimmers, drinks, luxury props, new pools, duplicated palms, bent buildings, impossible reflections, tropical excess, glossy hotel advertising, HDR, excessive saturation, blur."
     },
     "hero-horizonte": {
       "aspecto": "21:9",

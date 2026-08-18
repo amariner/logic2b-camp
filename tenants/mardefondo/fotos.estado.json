@@ -362,6 +362,17 @@
         "sourceExtension": ".png",
         "dimensions": "1536x1024"
       }
+    ],
+    "hero-mobile": [
+      {
+        "at": "2026-08-18T14:01:24.274Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "865cdf0406fda5f48e9ae6d54bb5afef7dd133a91472eac5fd34ecbdf9b97fff",
+        "sourceExtension": ".png",
+        "dimensions": "941x1672"
+      }
     ]
   },
   "approvals": {
@@ -435,6 +446,10 @@
     },
     "vida-entorno": {
       "at": "2026-08-18T07:54:15.669Z",
+      "gate": "visual-inspection"
+    },
+    "hero-mobile": {
+      "at": "2026-08-18T14:01:24.519Z",
       "gate": "visual-inspection"
     }
   },

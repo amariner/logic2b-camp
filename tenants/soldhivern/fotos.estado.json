@@ -173,6 +173,28 @@
         "sourceExtension": ".png",
         "dimensions": "1536x1024"
       }
+    ],
+    "vida-servicio-salon": [
+      {
+        "at": "2026-08-18T13:18:24.674Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "e31d2188e8f639ad898e13a925b65bbd004a8540b4a7004d460c85cfa9a282f1",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-entorno": [
+      {
+        "at": "2026-08-18T13:19:58.619Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "ea8e1439f5481b1aa2ba22a51ac93f44e00a74b75f7dab78cec2f23d0a468c20",
+        "sourceExtension": ".png",
+        "dimensions": "1537x1023"
+      }
     ]
   },
   "approvals": {
@@ -222,6 +244,14 @@
     },
     "vida-recepcion": {
       "at": "2026-08-18T12:44:41.604Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-salon": {
+      "at": "2026-08-18T13:18:24.722Z",
+      "gate": "visual-inspection"
+    },
+    "vida-entorno": {
+      "at": "2026-08-18T13:19:58.667Z",
       "gate": "visual-inspection"
     }
   },

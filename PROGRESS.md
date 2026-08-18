@@ -1,5 +1,32 @@
 # PROGRESS — Logic Camp
 
+## La mejora de temas cierra fotografía y deja el vídeo preparado · 2026-08-18 (sesión 149)
+
+- H3 queda cerrado en 5/5 con Sol d'Hivern: llegada de larga estancia,
+  paquetería en recepción, salón común y salida cotidiana en bicicleta se
+  integran en «La vida aquí», instalaciones y tres planes prudentes. La ola
+  completa suma veinte escenas propias, cinco bloques de vida y quince rutas
+  sin repetir grupo, conflicto operativo, servicio central ni relación con el
+  paisaje.
+- Las tres anclas H1 sirven ahora un póster vertical 9:16 propio bajo 640 px.
+  `<picture>` y dos preloads mutuamente excluyentes conservan el LCP sin obligar
+  al móvil a descargar también el apaisado; el portfolio fija el contrato en el
+  HTML construido de L'Olivar, Pinada del Mar y Mar de Fondo.
+- H1-V queda preparado pero no fingido: `HeroMedia` carga vídeo solo como mejora
+  progresiva, declara el MIME real y reacciona a movimiento reducido o ahorro
+  de datos. El contrato acredita procedencia, huella, duración, pistas, códec,
+  orientación, peso y `faststart`; `pnpm motion` normaliza fuera del runtime y
+  solo publica tras inspección explícita. Con cero clips activos, los trece
+  tenants conservan el fallback estático íntegro.
+- Seedance 2.0 se reintentó únicamente para L'Olivar con el brief aprobado,
+  mismo póster al inicio y al final, 6 s, 720p, 16:9 y audio desactivado. El
+  proveedor respondió `not_enough_credits` antes de crear el trabajo: no hay
+  bytes parciales, activo que revisar ni consumo atribuible a esta sesión.
+- Verificación: 28/28 pruebas dirigidas, contrato de fábrica, gate de vídeo y
+  builds aislados de los doce campings verdes; `pnpm check` termina 71/71. Se
+  inspeccionaron también los tres pósteres verticales. No hubo deploy, cambios
+  remotos ni publicación.
+
 ## El carril no temático queda revalidado en su límite local · 2026-08-17 (sesión 148)
 
 - La revisión posterior a la conversión de solicitudes no encuentra otro bloque

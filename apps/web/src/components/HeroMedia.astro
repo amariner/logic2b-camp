@@ -1,10 +1,14 @@
 ---
 import type { ImageMetadata } from 'astro';
+import { heroVideoMimeType } from '../lib/hero-motion.mjs';
 
 interface Props {
   image: ImageMetadata;
   src: string;
   srcset: string;
+  mobileImage?: ImageMetadata;
+  mobileSrc?: string;
+  mobileSrcset?: string;
   desktopVideo?: string;
   mobileVideo?: string;
   position?: string;
@@ -15,25 +19,34 @@ const {
   image,
   src,
   srcset,
+  mobileImage,
+  mobileSrc,
+  mobileSrcset,
   desktopVideo,
   mobileVideo,
   position = 'center',
   class: className = '',
 } = Astro.props;
+
 ---
 
 <div class={`absolute inset-0 ${className}`} data-hero-media>
-  <img
-    src={src}
-    srcset={srcset}
-    sizes="100vw"
-    width={image.width}
-    height={image.height}
-    alt=""
-    class="lc-settle absolute inset-0 h-full w-full object-cover"
-    style={`object-position: ${position}`}
-    fetchpriority="high"
-  />
+  <picture>
+    {mobileImage && mobileSrc && mobileSrcset && (
+      <source media="(max-width: 639px)" srcset={mobileSrcset} sizes="100vw" />
+    )}
+    <img
+      src={src}
+      srcset={srcset}
+      sizes="100vw"
+      width={image.width}
+      height={image.height}
+      alt=""
+      class="lc-settle absolute inset-0 h-full w-full object-cover"
+      style={`object-position: ${position}`}
+      fetchpriority="high"
+    />
+  </picture>
   {desktopVideo && (
     <video
       class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 data-[ready]:opacity-100"
@@ -45,30 +58,45 @@ const {
       aria-hidden="true"
       data-progressive-hero
     >
-      {mobileVideo && <source data-src={mobileVideo} media="(max-width: 639px)" type="video/mp4" />}
-      <source data-src={desktopVideo} type="video/mp4" />
+      {mobileVideo && (
+        <source
+          data-src={mobileVideo}
+          media="(max-width: 639px)"
+          type={heroVideoMimeType(mobileVideo)}
+        />
+      )}
+      <source data-src={desktopVideo} type={heroVideoMimeType(desktopVideo)} />
     </video>
   )}
 </div>
 
 {desktopVideo && (
   <script>
+    import { canPlayHeroMotion, syncHeroMotion } from '../lib/hero-motion.mjs';
+
+    type ConnectionPreference = EventTarget & { saveData?: boolean };
+
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const connection = (navigator as Navigator & { connection?: ConnectionPreference }).connection;
+    const heroVideos = Array.from(
+      document.querySelectorAll<HTMLVideoElement>('[data-progressive-hero]'),
+    );
+
     const canLoadMotion = () => {
-      const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-      return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !connection?.saveData;
+      return canPlayHeroMotion({
+        reducedMotion: motionPreference.matches,
+        saveData: connection?.saveData === true,
+      });
     };
 
-    document.querySelectorAll('[data-progressive-hero]').forEach((node) => {
-      if (!(node instanceof HTMLVideoElement) || node.dataset.initialized || !canLoadMotion()) return;
-      node.dataset.initialized = 'true';
-      node.querySelectorAll('source[data-src]').forEach((source) => {
-        if (!(source instanceof HTMLSourceElement)) return;
-        source.src = source.dataset.src ?? '';
-      });
-      node.addEventListener('playing', () => node.setAttribute('data-ready', ''), { once: true });
-      node.addEventListener('error', () => node.removeAttribute('data-ready'), { once: true });
-      node.load();
-      void node.play().catch(() => node.removeAttribute('data-ready'));
+    heroVideos.forEach((video) => {
+      video.addEventListener('error', () => video.removeAttribute('data-ready'));
+      void syncHeroMotion(video, canLoadMotion());
     });
+
+    const syncAllMotion = () =>
+      heroVideos.forEach((video) => void syncHeroMotion(video, canLoadMotion()));
+    motionPreference.addEventListener('change', syncAllMotion);
+    connection?.addEventListener('change', syncAllMotion);
   </script>
 )}

@@ -458,6 +458,10 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[H0] Contrato compartido de humanidad/rutas/vídeo~~ → **hecho local
   2026-08-14**: opcional y retrocompatible, póster LCP, ahorro de datos,
   movimiento reducido, error de vídeo y ausencia de campos conservan fallback.
+  Endurecido el 2026-08-18: MIME MP4/WebM real, reacción a cambios de
+  preferencias después de cargar y nueve pruebas nuevas. El gate ejecutable
+  exige `movimiento.json`, trazabilidad y SHA-256, 6–10 s, cero audio, una pista,
+  códec/píxeles compatibles, recorte por dispositivo, presupuesto y `faststart`.
 - ~~[H1-FOTO] Generar, inspeccionar y comparar las cuatro escenas de L'Olivar,
   Pinada del Mar y Mar de Fondo~~ → **hecho local 2026-08-18: fotografía 3/3.**
   L'Olivar queda completo con cuatro másteres humanos propios y aprobados
@@ -478,9 +482,29 @@ es un gate de producción, no un pendiente local de implementación.
   luminoso y verde-azul; Mar de Fondo es amplio, operativo y de última hora.
   No comparten composición, figurantes ni temperatura de color.
 - [H1-V] Prototipar los bucles de vídeo de las tres anclas como subfase
-  posterior. Se difiere sin bloquear H2, tal como permite el roadmap: los
-  pósteres humanos y los fallbacks de ahorro de datos, movimiento reducido y
-  error ya están implementados.
+  posterior. **Abierta el 2026-08-18 y bloqueada antes de generar bytes:** el
+  primer prototipo de L'Olivar queda especificado como un bucle de 6 s, cámara
+  fija, sin audio y con el mismo fotograma al principio y al final, pero
+  Seedance 2.0 rechazó el trabajo por saldo insuficiente. Un segundo intento
+  reproducible en el cierre de la sesión 149 devolvió de nuevo
+  `not_enough_credits` antes de crear el trabajo. No existe un vídeo
+  parcial ni se consumieron créditos. Mientras tanto, el componente común ya
+  anuncia WebM con su MIME real y reacciona en vivo a cambios de movimiento
+  reducido o ahorro de datos: pausa y devuelve el póster, y puede reanudar al
+  retirar la preferencia. El nuevo gate de medios pasa con **0 vídeos activos y
+  fallback íntegro**; se volverá obligatorio al declarar el primero. Además,
+  L'Olivar, Pinada del Mar y Mar de Fondo ya sirven un póster 9:16 propio bajo
+  640 px, con `<picture>` y preloads excluyentes para no descargar también el
+  apaisado. QA real a 375/1366 confirma el cambio de fuente, cero desborde y cero
+  avisos de consola; el portfolio verifica el HTML final de las tres anclas.
+  Tipos, tests de fábrica y los doce builds siguen verdes. La fotografía H1/H2/H3
+  permanece cerrada y no depende de este medio. Los briefs reproducibles de las
+  seis salidas —escritorio y móvil para las tres anclas— quedan cerrados en
+  `BRIEF-H1-VIDEO.md`, con referencias, prompts, rechazos y orden de integración.
+  El pipeline local de staging queda también cerrado: `pnpm motion` normaliza
+  con FFmpeg, bloquea audio/formato/orientación/peso inválidos, mantiene el clip
+  fuera del runtime hasta inspección y solo al aprobar publica bytes y evidencia
+  SHA-256 en `movimiento.json`; los rechazos se conservan aparte.
 - ~~[H2] Cinco demos de costa/humedal/río~~ → **hecho local 2026-08-18: 5/5.**
   Cala Sereno, La Duna, El Delta, Riu Clar y La Ballena suman veinte escenas
   humanas nuevas, cinco bloques de vida, quince rutas prudentes y recepción
@@ -495,22 +519,24 @@ es un gate de producción, no un pendiente local de implementación.
   para no solapar tarjetas. Tipos, contrato de fábrica y builds tier 1/3 en
   verde; `pnpm check` cierra 71/71 tareas y construye los doce campings. El
   vídeo H1-V continúa diferido y no bloquea fotografía.
-- [H3] Cinco demos de interior/montaña/larga estancia → **en curso 2026-08-18:
-  4/5.** La Carrasca, Serralta, Els Tarongers y Entre Vinyes quedan completas
-  con dieciséis escenas humanas, cuatro bloques de vida y doce planes prudentes;
-  los cuatro manifiestos cierran 14/14 piezas locales. Carrasca conserva el tono
-  adulto y el encinar sobrio.
+- ~~[H3] Cinco demos de interior/montaña/larga estancia~~ → **hecho local
+  2026-08-18: 5/5.** La Carrasca, Serralta, Els Tarongers, Entre Vinyes y Sol
+  d'Hivern suman veinte escenas humanas, cinco bloques de vida y quince planes
+  prudentes; los cinco manifiestos cierran 14/14 piezas locales. Carrasca
+  conserva el tono adulto y el encinar sobrio.
   Serralta trabaja lluvia reciente, equipo dentro de parcela, parte de barro y
   retirada, fuego común supervisado y tres senderistas siempre dentro del
   firme. Tarongers separa llegada bajo cítricos, orientación familiar, pausa
   intergeneracional en piscina y bicicleta entre huerta y costa, sin repetir el
   lenguaje de resort de H2. Entre Vinyes mantiene huéspedes y equipamiento fuera
   del cultivo, explica el tráfico de vendimia, usa el patio para agua y sombra y
-  trata la bodega como servicio externo. Dos llegadas descartadas de Serralta y
-  dos variantes descartadas de Vinyes quedan auditadas. Typecheck, contrato y
-  builds tier 1/2/3 verdes; QA real 375/1366 sin desborde, roturas ni errores de
-  consola, con contacto de 48 px y CTA de recepción visibles. Siguiente y último
-  tema de H3: Sol d'Hivern.
+  trata la bodega como servicio externo. Sol d'Hivern evita el lenguaje
+  vacacional: organiza una estancia de 45 noches, correo, dominó en el salón y
+  movilidad cotidiana con alforjas entre almendros. Dos llegadas descartadas de
+  Serralta, dos variantes descartadas de Vinyes y dos encuadres de llegada
+  descartados de Sol d'Hivern quedan auditados. Typecheck, contrato y builds
+  tier 1/2/3 verdes; QA real 375/1366 sin desborde, roturas ni errores de consola,
+  con tarjetas equilibradas, contacto de 48 px y CTA de recepción visibles.
 - [CLIENTE-REAL/F] Validar dominio, roles, privacidad, proveedores y APIs
   provisionales con un cliente antes de crear tablas o integraciones.
 

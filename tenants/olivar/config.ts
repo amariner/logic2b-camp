@@ -15,6 +15,7 @@ export const config: TenantWebConfig = {
   },
   enquiryTransport: 'demo',
   staticHeroImage: 'hero-dia',
+  staticHeroMobileImage: 'hero-mobile',
   isDemo: true,
   legal: {
     razonSocial: "Camping L'Olivar — demostración ficticia de Logic2B",

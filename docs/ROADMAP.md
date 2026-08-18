@@ -350,15 +350,15 @@ producto real se activa módulo a módulo cuando exista un cliente.
 > [`ROADMAP-MEJORA-TEMAS.md`](ROADMAP-MEJORA-TEMAS.md); decisión en
 > [ADR 0047](adr/0047-humanidad-rutas-y-movimiento-en-temas.md).
 
-| Fase                                    | Estado             | Resultado                                                                                                                                         |
-| --------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| H0 · contrato común                     | ✅ Candidato local | `heroMotion` seguro, póster LCP, carga progresiva, ahorro de datos/movimiento reducido, `vida`, rutas e instalaciones humanas con fallback        |
-| H1 · tres anclas                        | ⛔ Medio externo   | Brief, copy y gates cerrados; generación detenida al fallar el servicio integrado el 2026-08-14. No se sustituyen por fotografía sin trazabilidad |
-| H2 · costa, humedal y río               | ⬜ Pendiente de H1 | Cinco identidades, tandas máximas de dos y revisión por manifiesto                                                                                |
-| H3 · interior, montaña y larga estancia | ⬜ Pendiente de H1 | Cinco identidades sin repetir edad, grupo, arquitectura ni paisaje                                                                                |
+| Fase                                    | Estado         | Resultado                                                                                                                                |
+| --------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| H0 · contrato común                     | ✅ Hecho local | `heroMotion` seguro, póster LCP responsive, preferencias reactivas y gate de trazabilidad/formato/peso; `vida` y rutas con fallback      |
+| H1 · tres anclas                        | ✅ Foto 3/3    | Doce escenas aprobadas, tres bloques de vida, nueve rutas y gate comparativo; H1-V queda diferido con fallback estático completo         |
+| H2 · costa, humedal y río               | ✅ Hecho 5/5   | Veinte escenas, cinco bloques de vida, quince rutas, recepción y servicio humano por tema                                                |
+| H3 · interior, montaña y larga estancia | ✅ Hecho 5/5   | Veinte escenas, cinco bloques de vida y quince rutas sin repetir grupo, conflicto operativo, servicio central ni relación con el paisaje |
 
-El fallo de generación no bloquea la web: los campos son opcionales, el póster
-continúa como LCP y los 13 tenants existentes construyen sin medios nuevos.
+H1-V continúa diferido sin bloquear el cierre fotográfico: los campos son
+opcionales, el póster continúa como LCP y los 13 tenants construyen con fallback.
 
 ## Frente F — Inteligente · Control total
 

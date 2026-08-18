@@ -28,6 +28,9 @@ const showTierSwitch = demoTierSwitch;
 async function buildHero(src: ImageMetadata | undefined) {
   return src ? getImage({ src, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 60 }) : null;
 }
+async function buildMobileHero(src: ImageMetadata | undefined) {
+  return src ? getImage({ src, widths: [640, 828, 1024], format: 'webp', quality: 60 }) : null;
+}
 // Los tenants históricos llaman `hero-dia` al héroe del motor. Las demos de la
 // fábrica visual pueden declarar una clave propia en `staticHeroImage`; si no
 // existe `hero-dia`, esa foto también debe vestir el héroe de nivel 3 en vez de
@@ -35,8 +38,12 @@ async function buildHero(src: ImageMetadata | undefined) {
 const fotoDia = images['hero-dia'] ?? images[config.staticHeroImage ?? ''];
 const staticHeroKey = config.staticHeroImage ?? 'hero-anochecer';
 const fotoStatic = images[staticHeroKey];
+const fotoMobile = config.staticHeroMobileImage
+  ? images[config.staticHeroMobileImage]
+  : undefined;
 const heroDia = instant || showTierSwitch ? await buildHero(fotoDia) : null;
 const heroAnochecer = !instant || showTierSwitch ? await buildHero(fotoStatic) : null;
+const heroMobile = await buildMobileHero(fotoMobile);
 // el que se ve por defecto (sin JS ni preferencia guardada) sigue siendo el del `instant` de build
 const heroPreload = instant ? heroDia : heroAnochecer;
 const fotoLona = images['textura-lona'];
@@ -54,6 +61,18 @@ const lona = fotoLona
       imagesrcset={heroPreload.srcSet.attribute}
       imagesizes="100vw"
       fetchpriority="high"
+      media={heroMobile ? '(min-width: 640px)' : undefined}
+    />
+  )}
+  {heroMobile && (
+    <link
+      slot="head"
+      rel="preload"
+      as="image"
+      imagesrcset={heroMobile.srcSet.attribute}
+      imagesizes="100vw"
+      fetchpriority="high"
+      media="(max-width: 639px)"
     />
   )}
   {/* héroe nivel 3: el mostrador ES el héroe · héroe nivel 1: la promesa + una acción.
@@ -69,6 +88,9 @@ const lona = fotoLona
             image={fotoDia}
             src={heroDia.src}
             srcset={heroDia.srcSet.attribute}
+            mobileImage={fotoMobile}
+            mobileSrc={heroMobile?.src}
+            mobileSrcset={heroMobile?.srcSet.attribute}
             desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined}
             mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined}
             position={config.heroMotion?.position}
@@ -110,6 +132,9 @@ const lona = fotoLona
             image={fotoStatic}
             src={heroAnochecer.src}
             srcset={heroAnochecer.srcSet.attribute}
+            mobileImage={fotoMobile}
+            mobileSrc={heroMobile?.src}
+            mobileSrcset={heroMobile?.srcSet.attribute}
             desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined}
             mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined}
             position={config.heroMotion?.position}

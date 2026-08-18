@@ -16,6 +16,7 @@ export const config: TenantWebConfig = {
   enquiryTransport: 'demo-session',
   demoManagerPath: '/demos/pinadamar/gestion/',
   staticHeroImage: 'hero-calle',
+  staticHeroMobileImage: 'hero-mobile',
   isDemo: true,
   legal: {
     razonSocial: 'Camping Pinada del Mar — demostración ficticia de Logic2B',

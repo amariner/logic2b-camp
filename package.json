@@ -19,6 +19,7 @@
     "db:seed:remote": "pnpm --filter @tenant/demo seed:remote",
     "e2e": "pnpm --filter @logic-camp/web e2e",
     "fotos": "node apps/web/scripts/foto-pipeline.mjs",
+    "motion": "node apps/web/scripts/hero-motion-pipeline.mjs",
     "new:camping": "pnpm --filter @logic-camp/cli run new:camping --",
     "onboarding:rehearse": "pnpm --filter @logic-camp/cli run onboarding:rehearse --",
     "activation:rehearse": "pnpm --filter @logic-camp/cli run activation:rehearse",

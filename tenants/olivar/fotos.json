@@ -7,6 +7,7 @@
   },
   "lotes": [
     ["hero-dia", "hero-anochecer"],
+    ["hero-mobile"],
     ["tipo-parcela", "tipo-tienda"],
     ["detalle-tienda-interior", "instalacion-balsa"],
     ["entorno-piedra-seca", "textura-lona"],
@@ -22,12 +23,17 @@
   },
   "piezas": {
     "hero-dia": {
-      "aspecto": "21:9",
+      "aspecto": "16:9",
       "papel": "Héroe principal con espacio negativo.",
       "prompt": "Fotografía documental editorial de una tienda y parcela bajo olivos en un microcamping del Maestrat, luz seca de mañana, piedra y cal, sin personas, texto, logos ni HDR."
     },
+    "hero-mobile": {
+      "aspecto": "9:16",
+      "papel": "Póster estático vertical del héroe, servido exclusivamente en móvil.",
+      "prompt": "Use case: precise-object-edit\nAsset type: mobile static hero poster for the Camping L'Olivar demo website\nPrimary request: Recompose the supplied landscape photograph into a natural vertical mobile hero while preserving the same campsite, moment and documentary realism.\nInput images: Image 1 is the edit target and sole visual authority.\nScene/backdrop: The exact dry Maestrat olive-grove pitch, raw canvas tent, mature olive trunks, dry-stone wall and narrow path.\nComposition/framing: Portrait 9:16. Keep the entire tent entrance and roof visible in the lower-middle area, one strong olive trunk and canopy framing the upper area, and a usable section of the stone path leading into depth. Leave calm darker foliage in the upper-middle area so centered light headline text remains readable. Do not simply stretch or crop blindly; reconstruct only the peripheral scene needed for a credible vertical frame.\nLighting/mood: Preserve the same dry mild morning light, restrained shadow and quiet intimate mood.\nColor palette: Preserve olive green, raw canvas, pale stone and dry earth.\nConstraints: Preserve tent geometry, canvas seams, guy lines, tree anatomy, stone construction, scale, lens character and exposure. Same unoccupied fictional campsite. No text, logos or watermark.\nAvoid: people, animals, vehicles, new camping equipment, duplicated trunks, floating fabric, changed tent design, fantasy foliage, HDR, resort styling, excessive saturation, blur."
+    },
     "hero-anochecer": {
-      "aspecto": "21:9",
+      "aspecto": "16:9",
       "papel": "Héroe secundario y página no encontrada.",
       "prompt": "Fotografía documental de una masía y tienda entre olivos al anochecer, luz cálida contenida y cielo todavía azul, sin personas, texto, logos ni estética de resort."
     },
@@ -52,12 +58,12 @@
       "prompt": "Pequeña balsa o alberca segura entre olivos y piedra seca, agua tranquila y luz de mañana, fotografía editorial documental sin personas, texto, logos ni HDR."
     },
     "entorno-piedra-seca": {
-      "aspecto": "21:9",
+      "aspecto": "3:2",
       "papel": "Cabecera de entorno.",
       "prompt": "Camino entre bancales y muros de piedra seca del Maestrat, materia antes que postal, luz natural y color contenido, sin personas, texto, logos ni saturación turística."
     },
     "textura-lona": {
-      "aspecto": "21:9",
+      "aspecto": "3:2",
       "papel": "Firma material transversal.",
       "prompt": "Primer plano documental de sombra de hoja de olivo sobre cal o lona cruda, textura visible, luz lateral natural, sin personas, texto, logos ni efectos digitales."
     },

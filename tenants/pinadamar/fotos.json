@@ -26,6 +26,7 @@
   ],
   "lotes": [
     ["hero-calle", "hero-anochecer"],
+    ["hero-mobile"],
     ["parcela", "calle-pinos"],
     ["bungalow-exterior", "bungalow-interior"],
     ["mobil-home", "instalacion-recepcion"],
@@ -46,6 +47,11 @@
       "prompt": "Editorial documentary photograph of the main street of a Mediterranean coastal campsite at mid-morning in August. A wide compacted sand-and-gravel avenue runs away from the camera under tall Aleppo pines with high open canopies. On both sides, numbered pitches with white touring caravans, green canvas awnings and simple wooden posts; dappled pine shade falls across the sand. At the far end the street opens onto a pale strip of sea and sky. Natural Mediterranean light, no HDR, no brochure saturation, muted greens and warm sand tones, subtle 35mm film grain, 35mm lens at f/5.6. No people, no text, no signage lettering, no logos, no watermarks.",
       "aspecto": "21:9",
       "nota": "héroe de la home (config.staticHeroImage)"
+    },
+    "hero-mobile": {
+      "aspecto": "9:16",
+      "papel": "Póster estático vertical del héroe, servido exclusivamente en móvil.",
+      "prompt": "Use case: precise-object-edit\nAsset type: mobile static hero poster for the Camping Pinada del Mar demo website\nPrimary request: Recompose the supplied ultra-wide campsite photograph into a natural vertical mobile hero while preserving the exact coastal campsite identity and documentary realism.\nInput images: Image 1 is the edit target and sole visual authority.\nScene/backdrop: The same compacted sand-and-gravel central avenue under tall Aleppo pines, touring caravans with restrained green awnings on both sides, hedges, wooden utility posts and pale sea at the far end.\nComposition/framing: Portrait 9:16. Make the full clear avenue and its opening toward the sea the central vertical axis. Keep enough pine canopy overhead to form shade, one partial caravan/awning edge on each side to explain the campsite, and calm darker canopy behind the upper-middle area for centered light headline text. Reconstruct only the peripheral scene required for a credible vertical composition; do not stretch.\nLighting/mood: Preserve the same natural August mid-morning light, dappled shade and practical family-camping calm.\nColor palette: Muted pine greens, warm sand, white caravans and pale blue sea.\nConstraints: Preserve lane width and access, tree anatomy, caravan scale, awning materials, hedges, posts, perspective, lens character and exposure. Same empty fictional campsite. No text, numbers, logos or watermark.\nAvoid: people, children, vehicles moving, invented signs, readable plates, duplicated caravans or trunks, warped awnings, blocked lane, tropical vegetation, resort styling, HDR, excessive saturation, blur."
     },
     "hero-anochecer": {
       "prompt": "Editorial documentary photograph of a curved row of sober single-storey bungalows in a Mediterranean coastal campsite at dusk. Plain pale render walls with dark wood trim, covered porches, small terraces with two simple chairs and a folded towel over a rail; warm porch lights just switched on. Tall Aleppo pines rise above, their trunks catching the last warm light. A compacted sand path curves through the foreground. Deep blue-green evening sky with a faint band of sea light low on the horizon. Natural light only, no HDR, no brochure saturation, muted palette, subtle 35mm film grain. No people, no text, no lettering, no logos, no watermarks.",
