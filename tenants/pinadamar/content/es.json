@@ -16,6 +16,7 @@
   },
   "demo": {
     "banner": "Demostración ficticia de Logic2B: la consulta se guarda solo en este navegador y no se envía.",
+    "mostrador": "Abrir el gestor del camping",
     "nivel": "Gestión",
     "nivel1": "Inicio",
     "nivel3": "Gestión"
