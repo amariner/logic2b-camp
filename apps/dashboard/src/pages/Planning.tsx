@@ -42,7 +42,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { Ban, Map as MapIcon, Plus, Search } from 'lucide-react';
+import { Ban, ChevronRight, Map as MapIcon, Plus, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ApiError,
@@ -83,7 +83,8 @@ const GROUP_H = 30;
 const MOBILE_PLANNING_QUERY = '(max-width: 767px)';
 
 type Row =
-  { kind: 'group'; id: string; label: string } | { kind: 'unit'; id: string; unit: PlanningUnit };
+  | { kind: 'group'; id: string; typeId: string; label: string; occupied: number; total: number }
+  | { kind: 'unit'; id: string; unit: PlanningUnit };
 
 /** Reasignar una reserva a otra unidad. `fromUnitId` solo se usa para deshacer. */
 type ReassignInput = { id: string; unitId: string; fromUnitId: string; undo?: boolean };
@@ -227,6 +228,9 @@ export default function Planning() {
   // tipo oculta grupos de filas; estado y búsqueda ATENÚAN barras (ocultarlas
   // mentiría sobre la ocupación real de la unidad).
   const [tipoFiltro, setTipoFiltro] = useState('');
+  const [kindFiltro, setKindFiltro] = useState<'' | 'pitch' | 'lodging'>('');
+  const [soloDisponibles, setSoloDisponibles] = useState(false);
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => new Set());
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [buscar, setBuscar] = useState('');
   const hayFiltroBarras = Boolean(estadoFiltro || buscar.trim());
@@ -248,13 +252,37 @@ export default function Planning() {
     const out: Row[] = [];
     for (const type of data.unitTypes) {
       if (tipoFiltro && type.id !== tipoFiltro) continue;
-      const units = byType.get(type.id) ?? [];
+      if (kindFiltro && type.kind !== kindFiltro) continue;
+      const units = (byType.get(type.id) ?? []).filter((unit) => {
+        if (!soloDisponibles) return true;
+        const busy = data.bookings.some(
+          (b) => b.unitId === unit.id && b.dateFrom <= today && b.dateTo > today,
+        );
+        const blocked = data.blocks.some(
+          (b) =>
+            (b.unitId === unit.id || b.unitTypeId === unit.unitTypeId) &&
+            b.dateFrom <= today &&
+            b.dateTo > today,
+        );
+        return unit.status !== 'inactive' && !busy && !blocked;
+      });
       if (!units.length) continue;
-      out.push({ kind: 'group', id: `g_${type.id}`, label: type.nameI18n.es ?? type.id });
+      const occupied = units.filter((unit) =>
+        data.bookings.some((b) => b.unitId === unit.id && b.dateFrom < to && b.dateTo > from),
+      ).length;
+      out.push({
+        kind: 'group',
+        id: `g_${type.id}`,
+        typeId: type.id,
+        label: type.nameI18n.es ?? type.id,
+        occupied,
+        total: units.length,
+      });
+      if (collapsedGroups.has(type.id)) continue;
       for (const u of units) out.push({ kind: 'unit', id: u.id, unit: u });
     }
     return out;
-  }, [data, tipoFiltro]);
+  }, [data, tipoFiltro, kindFiltro, soloDisponibles, collapsedGroups, today, from, to]);
 
   const byUnit = useMemo(() => {
     const bookings = new Map<string, PlanningBooking[]>();
@@ -1072,6 +1100,33 @@ export default function Planning() {
                   </option>
                 ))}
               </SelectNative>
+              <Button
+                type="button"
+                size="xs"
+                variant={kindFiltro === 'pitch' ? 'primary' : 'outline'}
+                aria-pressed={kindFiltro === 'pitch'}
+                onClick={() => setKindFiltro((v) => (v === 'pitch' ? '' : 'pitch'))}
+              >
+                {t('planning.filtro.parcelas')}
+              </Button>
+              <Button
+                type="button"
+                size="xs"
+                variant={kindFiltro === 'lodging' ? 'primary' : 'outline'}
+                aria-pressed={kindFiltro === 'lodging'}
+                onClick={() => setKindFiltro((v) => (v === 'lodging' ? '' : 'lodging'))}
+              >
+                {t('planning.filtro.alojamientos')}
+              </Button>
+              <Button
+                type="button"
+                size="xs"
+                variant={soloDisponibles ? 'primary' : 'outline'}
+                aria-pressed={soloDisponibles}
+                onClick={() => setSoloDisponibles((v) => !v)}
+              >
+                {t('planning.filtro.disponibles')}
+              </Button>
               <SelectNative
                 aria-label={t('planning.filtro.estado')}
                 value={estadoFiltro}
@@ -1247,14 +1302,33 @@ export default function Planning() {
                         }}
                       >
                         {row.kind === 'group' ? (
-                          <div
-                            className="flex h-full items-end border-b border-border/60 bg-background pb-0.5"
+                          <button
+                            type="button"
+                            className="flex h-full w-full items-end border-b border-border/60 bg-background pb-0.5 text-left hover:bg-accent/50"
                             style={{ paddingLeft: 8 }}
+                            aria-expanded={!collapsedGroups.has(row.typeId)}
+                            onClick={() =>
+                              setCollapsedGroups((current) => {
+                                const next = new Set(current);
+                                if (next.has(row.typeId)) next.delete(row.typeId);
+                                else next.add(row.typeId);
+                                return next;
+                              })
+                            }
                           >
-                            <span className="sticky left-2 z-10 text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+                            <span className="sticky left-2 z-10 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+                              <ChevronRight
+                                className={`size-3 transition-transform ${collapsedGroups.has(row.typeId) ? '' : 'rotate-90'}`}
+                              />
                               {row.label}
+                              <span className="tnum tracking-normal normal-case">
+                                {t('planning.grupo.ocupadas', {
+                                  n: row.occupied,
+                                  total: row.total,
+                                })}
+                              </span>
                             </span>
-                          </div>
+                          </button>
                         ) : (
                           <div className="flex h-full border-b border-border/40">
                             <div

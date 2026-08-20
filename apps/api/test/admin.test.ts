@@ -325,6 +325,59 @@ describe('reservas privadas', () => {
     expect((await fetchItems('departuresOn=2026-10-05')).some((b) => b.id === id)).toBe(false);
   });
 
+  it('guarda matrícula/ETA y permite localizar una llegada por matrícula', async () => {
+    const created = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-10-12', '2026-10-15')),
+        headers: { 'content-type': 'application/json', cookie: reception },
+      },
+      envA,
+    );
+    const { id } = (await created.json()) as { id: string };
+    const arrivalEta = '2026-10-12T15:30:00.000Z';
+
+    const saved = await app.request(
+      `/api/admin/bookings/${id}`,
+      patch(
+        {
+          action: 'set_arrival_details',
+          vehiclePlate: '1234 abc',
+          arrivalEta,
+          accessCredential: 'Mando 12',
+        },
+        reception,
+      ),
+      envA,
+    );
+    expect(saved.status).toBe(200);
+
+    const list = await app.request(
+      '/api/admin/bookings?q=1234ABC',
+      {
+        headers: { cookie: readonly },
+      },
+      envA,
+    );
+    const item = (
+      (await list.json()) as {
+        items: Array<{
+          id: string;
+          vehiclePlate: string | null;
+          arrivalEta: string | null;
+          readiness: string;
+          readinessReasons: string[];
+        }>;
+      }
+    ).items.find((booking) => booking.id === id);
+    expect(item).toMatchObject({
+      vehiclePlate: '1234ABC',
+      arrivalEta,
+      readiness: 'blocked',
+      readinessReasons: ['pending_payment', 'missing_document', 'missing_consent'],
+    });
+  });
+
   it('transición inválida → 409', async () => {
     const res = await app.request(
       '/api/admin/bookings',
@@ -432,8 +485,33 @@ describe('check-in / check-out (ADR 0022)', () => {
     );
     expect(r.status).toBe(201);
     // el alta manual nace 'confirmed' (canal phone, ver createBooking)
-    return ((await r.json()) as { id: string }).id;
+    const id = ((await r.json()) as { id: string }).id;
+    const detail = (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      totalCents: number;
+      paidCents: number;
+    };
+    const pendingCents = detail.totalCents - detail.paidCents;
+    if (pendingCents > 0)
+      await act(id, { action: 'record_payment', amountCents: pendingCents, method: 'cash' });
+    return id;
   };
+
+  it('bloquea el check-in mientras quede saldo pendiente', async () => {
+    const r = await app.request(
+      '/api/admin/bookings',
+      {
+        ...json(bookingBody('2026-03-20', '2026-03-23')),
+        headers: { 'content-type': 'application/json', cookie: reception, ...IP },
+      },
+      envA,
+    );
+    const id = ((await r.json()) as { id: string }).id;
+    const response = await act(id, { action: 'check_in' });
+    expect(response.status).toBe(409);
+    expect((await response.json()) as { error: string }).toMatchObject({
+      error: 'payment_pending',
+    });
+  });
 
   it('check-in estampa checkedInAt sin tocar el status; no toca la ocupación', async () => {
     const id = await mkConfirmed('2026-04-01', '2026-04-05');

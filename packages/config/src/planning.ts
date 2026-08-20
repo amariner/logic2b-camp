@@ -29,7 +29,8 @@ export type BarGeometry = {
 
 /**
  * Posición de una barra en el lienzo visible. `null` si cae fuera.
- * from inclusive / to exclusive, como todo el dominio.
+ * La ocupación sigue siendo from inclusive / to exclusive, pero la barra empieza
+ * a media celda del día de entrada y termina a media celda del día de salida.
  */
 export function barGeometry(
   viewFrom: string,
@@ -38,8 +39,8 @@ export function barGeometry(
   dateFrom: string,
   dateTo: string,
 ): BarGeometry | null {
-  const startDay = daysBetweenIso(viewFrom, dateFrom);
-  const endDay = daysBetweenIso(viewFrom, dateTo);
+  const startDay = daysBetweenIso(viewFrom, dateFrom) + 0.5;
+  const endDay = daysBetweenIso(viewFrom, dateTo) + 0.5;
   const start = Math.max(0, startDay);
   const end = Math.min(viewDays, endDay);
   if (end <= start) return null;

@@ -13,7 +13,7 @@ import {
   validateStay,
 } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
-import { and, desc, eq, gt, inArray, like, lt, ne, or } from 'drizzle-orm';
+import { and, desc, eq, gt, inArray, like, lt, ne, or, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import {
   provisionUser,
@@ -334,7 +334,16 @@ export const adminRoutes = new Hono<AuthEnv>()
       ...(q.to ? [lt(schema.bookings.dateFrom, q.to)] : []),
       ...(q.arrivalsOn ? [eq(schema.bookings.dateFrom, q.arrivalsOn)] : []),
       ...(q.departuresOn ? [eq(schema.bookings.dateTo, q.departuresOn)] : []),
-      ...(q.q ? [like(schema.bookings.code, `${q.q}%`)] : []),
+      ...(q.q
+        ? [
+            or(
+              like(schema.bookings.code, `%${q.q}%`),
+              like(schema.bookings.vehiclePlate, `%${q.q.replace(/[\s-]/g, '')}%`),
+              like(schema.guests.name, `%${q.q}%`),
+              like(schema.guests.surname, `%${q.q}%`),
+            ),
+          ]
+        : []),
     ];
     const rows = await db
       .select({
@@ -342,6 +351,9 @@ export const adminRoutes = new Hono<AuthEnv>()
         unitCode: schema.units.code,
         leadName: schema.guests.name,
         leadSurname: schema.guests.surname,
+        leadPhone: schema.guests.phone,
+        leadDocNumber: schema.guests.docNumber,
+        leadConsentVersion: schema.guests.gdprConsentVersion,
       })
       .from(schema.bookings)
       .leftJoin(schema.units, eq(schema.bookings.unitId, schema.units.id))
@@ -354,18 +366,33 @@ export const adminRoutes = new Hono<AuthEnv>()
       )
       .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
       .where(filters.length ? and(...filters) : undefined)
-      .orderBy(desc(schema.bookings.createdAt))
+      .orderBy(
+        sql`${schema.bookings.arrivalEta} is null`,
+        schema.bookings.arrivalEta,
+        desc(schema.bookings.createdAt),
+      )
       .limit(q.pageSize)
       .offset((q.page - 1) * q.pageSize);
 
     return c.json({
       page: q.page,
       pageSize: q.pageSize,
-      items: rows.map((r) => ({
-        ...r.booking,
-        unitCode: r.unitCode,
-        leadName: r.leadName ? `${r.leadName} ${r.leadSurname ?? ''}`.trim() : null,
-      })),
+      items: rows.map((r) => {
+        const reasons: string[] = [];
+        const pendingCents = r.booking.totalCents - r.booking.paidCents;
+        if (pendingCents > 0) reasons.push('pending_payment');
+        if (!r.leadDocNumber) reasons.push('missing_document');
+        if (!r.leadConsentVersion) reasons.push('missing_consent');
+        const readiness = pendingCents > 0 ? 'blocked' : reasons.length ? 'attention' : 'ready';
+        return {
+          ...r.booking,
+          unitCode: r.unitCode,
+          leadName: r.leadName ? `${r.leadName} ${r.leadSurname ?? ''}`.trim() : null,
+          leadPhone: r.leadPhone,
+          readiness,
+          readinessReasons: reasons,
+        };
+      }),
     });
   })
 
@@ -502,6 +529,27 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ id, notes: action.notes });
     }
 
+    if (action.action === 'set_arrival_details') {
+      const vehiclePlate = action.vehiclePlate
+        ? action.vehiclePlate.toUpperCase().replace(/[\s-]/g, '')
+        : null;
+      await db
+        .update(schema.bookings)
+        .set({
+          vehiclePlate,
+          arrivalEta: action.arrivalEta,
+          accessCredential: action.accessCredential || null,
+          updatedAt: nowIso(),
+        })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'arrival_details', {
+        hasVehiclePlate: Boolean(vehiclePlate),
+        arrivalEta: action.arrivalEta,
+        hasAccessCredential: Boolean(action.accessCredential),
+      });
+      return c.json({ id, vehiclePlate, arrivalEta: action.arrivalEta });
+    }
+
     // Forma de pago de la operación para el parte de viajeros (ADR 0028): se captura
     // explícita, no se deriva del proveedor de la pasarela. No toca precio ni estado.
     if (action.action === 'set_payment_kind') {
@@ -527,6 +575,8 @@ export const adminRoutes = new Hono<AuthEnv>()
       if (action.action === 'check_in') {
         if (booking.status !== 'confirmed' || booking.checkedInAt)
           return c.json({ error: 'invalid_checkin', status: booking.status }, 409);
+        const pendingCents = booking.totalCents - booking.paidCents;
+        if (pendingCents > 0) return c.json({ error: 'payment_pending', pendingCents }, 409);
         const at = nowIso();
         await db
           .update(schema.bookings)

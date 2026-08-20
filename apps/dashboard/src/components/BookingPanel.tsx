@@ -67,6 +67,8 @@ function useMobileSheet(): boolean {
 
 /** € (coma o punto) → céntimos enteros — mismo criterio que Tarifas.tsx. */
 const toCents = (euros: string) => Math.round(Number(euros.replace(',', '.')) * 100);
+const toLocalDateTime = (value: string | null | undefined) =>
+  value ? new Date(value).toISOString().slice(0, 16) : '';
 
 export default function BookingPanel({
   bookingId,
@@ -99,6 +101,9 @@ export default function BookingPanel({
   const [payAmount, setPayAmount] = useState('');
   const [payMethod, setPayMethod] = useState<'cash' | 'card'>('cash');
   const [refundAmount, setRefundAmount] = useState('');
+  const [vehiclePlate, setVehiclePlate] = useState('');
+  const [arrivalEta, setArrivalEta] = useState('');
+  const [accessCredential, setAccessCredential] = useState('');
   const puedeOperar = usePuede('booking:operate');
   const puedeGestionar = usePuede('booking:manage');
 
@@ -125,7 +130,17 @@ export default function BookingPanel({
     setNotes(null);
     setPayAmount('');
     setRefundAmount('');
+    setVehiclePlate('');
+    setArrivalEta('');
+    setAccessCredential('');
   }, [bookingId]);
+
+  useEffect(() => {
+    if (!data) return;
+    setVehiclePlate(data.vehiclePlate ?? '');
+    setArrivalEta(toLocalDateTime(data.arrivalEta));
+    setAccessCredential(data.accessCredential ?? '');
+  }, [data?.id, data?.vehiclePlate, data?.arrivalEta, data?.accessCredential]);
 
   // En móvil lo resuelve Radix (con trampa de foco); el aside de escritorio
   // conserva el cierre global aunque el foco salga tras deshabilitar un botón.
@@ -180,6 +195,22 @@ export default function BookingPanel({
     onError: (e) => errorMutacion(e, t('ficha.pagoError')),
   });
 
+  const saveArrival = useMutation({
+    mutationFn: () =>
+      apiPatch(`/api/admin/bookings/${bookingId}`, {
+        action: 'set_arrival_details',
+        vehiclePlate: vehiclePlate.trim() || null,
+        arrivalEta: arrivalEta ? new Date(arrivalEta).toISOString() : null,
+        accessCredential: accessCredential.trim() || null,
+      }),
+    onSuccess: () => {
+      toast.success(t('ficha.llegadaGuardada'));
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: (e) => errorMutacion(e, t('ficha.accionError')),
+  });
+
   // check-in / check-out (ADR 0022): hechos de recepción, no transiciones. "En
   // casa" se deriva; el servidor valida la precondición SIEMPRE.
   const recepcion = useMutation({
@@ -230,6 +261,7 @@ export default function BookingPanel({
     data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt,
   );
   const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
+  const checkInBlocked = canCheckIn && pendingCents > 0;
   // Una estancia ya iniciada se cierra exclusivamente con check-out: además de
   // registrar la salida, esa acción completa la reserva en una sola operación.
   const stateActions = data && !inHouse ? ACTIONS_BY_STATUS[data.status] : [];
@@ -324,20 +356,94 @@ export default function BookingPanel({
             </dl>
           </section>
 
+          {/* preparación operativa de la llegada: dato compartido por ficha y listado. */}
+          {puedeOperar && (
+            <section>
+              <h3 className="lc-panel-h">{t('ficha.prepararLlegada')}</h3>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="flex flex-col gap-1">
+                  <span className="text-muted-foreground">{t('ficha.matricula')}</span>
+                  <input
+                    value={vehiclePlate}
+                    maxLength={20}
+                    onChange={(e) => setVehiclePlate(e.target.value.toUpperCase())}
+                    placeholder="1234ABC"
+                    className="rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base uppercase md:text-[13px]"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span className="text-muted-foreground">{t('ficha.eta')}</span>
+                  <input
+                    type="datetime-local"
+                    value={arrivalEta}
+                    onChange={(e) => setArrivalEta(e.target.value)}
+                    className="rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base md:text-[13px]"
+                  />
+                </label>
+                <label className="flex flex-col gap-1 sm:col-span-2">
+                  <span className="text-muted-foreground">{t('ficha.acceso')}</span>
+                  <input
+                    value={accessCredential}
+                    maxLength={80}
+                    onChange={(e) => setAccessCredential(e.target.value)}
+                    placeholder={t('ficha.accesoPlaceholder')}
+                    className="rounded-(--lc-radius) border border-foreground/20 bg-background px-2 py-1.5 text-base md:text-[13px]"
+                  />
+                </label>
+              </div>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="mt-2"
+                disabled={saveArrival.isPending}
+                onClick={() => saveArrival.mutate()}
+              >
+                {t('ficha.guardarLlegada')}
+              </Button>
+            </section>
+          )}
+
           {/* recepción: check-in / check-out (ADR 0022). "En casa" se deriva. */}
           {puedeOperar && (canCheckIn || inHouse) && (
             <section>
               <h3 className="lc-panel-h">{t('ficha.recepcion')}</h3>
               {canCheckIn && (
-                <Button
-                  type="button"
-                  size="sm"
-                  disabled={recepcion.isPending}
-                  onClick={() => recepcion.mutate('check_in')}
-                >
-                  <DoorOpen className="size-4" />
-                  {t('ficha.hacerCheckin')}
-                </Button>
+                <div className="flex flex-col items-start gap-2">
+                  {checkInBlocked && (
+                    <p className="text-[12px] font-medium text-destructive">
+                      {t('ficha.checkinPagoPendiente', {
+                        importe: eur(pendingCents, data.priceBreakdown.currency),
+                      })}
+                    </p>
+                  )}
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={recepcion.isPending || checkInBlocked}
+                      >
+                        <DoorOpen className="size-4" />
+                        {t('ficha.hacerCheckin')}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>{t('confirmar.checkin.titulo')}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          {t('confirmar.checkin.desc')}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => recepcion.mutate('check_in')}>
+                          {t('confirmar.checkin.ok')}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               )}
               {inHouse && data.checkedInAt && (
                 <div className="flex flex-col gap-2">

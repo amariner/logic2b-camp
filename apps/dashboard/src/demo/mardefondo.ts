@@ -121,6 +121,15 @@ type DemoBooking = BookingListItem & {
   payments: BookingPayment[];
 };
 
+function arrivalItem(booking: DemoBooking): BookingListItem {
+  const pendingPayment = booking.totalCents > booking.paidCents;
+  return {
+    ...booking,
+    readiness: pendingPayment ? 'blocked' : 'attention',
+    readinessReasons: pendingPayment ? ['pending_payment'] : ['missing_document'],
+  };
+}
+
 function makeBooking(index: number): DemoBooking {
   // Una unidad distinta por fixture: agosto queda denso pero nunca inventa
   // dos reservas solapadas. BL-008 se reserva para el hilo MF-DEMO-001.
@@ -718,10 +727,12 @@ export async function demoScenarioRequest(
     if (departure) items = items.filter((booking) => booking.dateTo === departure);
     if (query)
       items = items.filter((booking) =>
-        `${booking.code} ${booking.leadName} ${booking.guestEmail}`.toLowerCase().includes(query),
+        `${booking.code} ${booking.leadName} ${booking.guestEmail} ${booking.vehiclePlate ?? ''}`
+          .toLowerCase()
+          .includes(query),
       );
     if (status) items = items.filter((booking) => booking.status === status);
-    return ok({ items });
+    return ok({ items: items.map(arrivalItem) });
   }
   if (method === 'GET' && url.pathname === '/api/admin/payments') {
     const provider = url.searchParams.get('provider');
@@ -781,9 +792,21 @@ export async function demoScenarioRequest(
       booking.touristTaxCents = nights * 210;
     }
     if (body.action === 'note' && typeof body.notes === 'string') booking.notes = body.notes;
+    if (body.action === 'set_arrival_details') {
+      booking.vehiclePlate =
+        typeof body.vehiclePlate === 'string'
+          ? body.vehiclePlate.toUpperCase().replace(/[\s-]/g, '')
+          : null;
+      booking.arrivalEta = typeof body.arrivalEta === 'string' ? body.arrivalEta : null;
+      booking.accessCredential =
+        typeof body.accessCredential === 'string' ? body.accessCredential : null;
+    }
     if (body.action === 'confirm') booking.status = 'confirmed';
     if (body.action === 'cancel') booking.status = 'cancelled';
-    if (body.action === 'check_in') booking.checkedInAt = '2026-08-07T12:00:00.000Z';
+    if (body.action === 'check_in') {
+      if (booking.totalCents > booking.paidCents) return fail(409, 'payment_pending');
+      booking.checkedInAt = '2026-08-07T12:00:00.000Z';
+    }
     if (body.action === 'undo_checkin') booking.checkedInAt = null;
     if (body.action === 'check_out') {
       booking.checkedOutAt = '2026-08-07T12:10:00.000Z';

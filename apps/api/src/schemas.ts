@@ -181,6 +181,12 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
   }),
   z.object({ action: z.literal('note'), notes: z.string().max(2000) }),
   z.object({
+    action: z.literal('set_arrival_details'),
+    vehiclePlate: z.string().trim().max(20).nullable(),
+    arrivalEta: z.string().datetime({ offset: true }).nullable(),
+    accessCredential: z.string().trim().max(80).nullable(),
+  }),
+  z.object({
     action: z.literal('record_payment'),
     amountCents: z.number().int().positive(),
     method: z.enum(['cash', 'card']),

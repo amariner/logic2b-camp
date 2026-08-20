@@ -397,6 +397,15 @@ export const baseEnquiries: EnquiryItem[] = Array.from({ length: 42 }, (_, index
 
 type DemoBooking = BookingListItem & { locale: string; guestEmail: string };
 
+function arrivalItem(booking: DemoBooking): BookingListItem {
+  const pendingPayment = booking.totalCents > booking.paidCents;
+  return {
+    ...booking,
+    readiness: pendingPayment ? 'blocked' : 'attention',
+    readinessReasons: pendingPayment ? ['pending_payment'] : ['missing_document'],
+  };
+}
+
 function baseBookings(): DemoBooking[] {
   if (isSoldhivernScenario) {
     const longStayUnits = units.filter((unit) => unit.status === 'active');
@@ -1496,10 +1505,12 @@ export async function demoScenarioRequest(
     if (departure) items = items.filter((booking) => booking.dateTo === departure);
     if (query)
       items = items.filter((booking) =>
-        `${booking.code} ${booking.leadName}`.toLowerCase().includes(query),
+        `${booking.code} ${booking.leadName} ${booking.vehiclePlate ?? ''}`
+          .toLowerCase()
+          .includes(query),
       );
     if (status) items = items.filter((booking) => booking.status === status);
-    return ok({ items });
+    return ok({ items: items.map(arrivalItem) });
   }
   const bookingMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)$/);
   if (method === 'GET' && bookingMatch) {
@@ -1552,9 +1563,21 @@ export async function demoScenarioRequest(
       booking.totalCents = nights * 14400;
     }
     if (body.action === 'note' && typeof body.notes === 'string') booking.notes = body.notes;
+    if (body.action === 'set_arrival_details') {
+      booking.vehiclePlate =
+        typeof body.vehiclePlate === 'string'
+          ? body.vehiclePlate.toUpperCase().replace(/[\s-]/g, '')
+          : null;
+      booking.arrivalEta = typeof body.arrivalEta === 'string' ? body.arrivalEta : null;
+      booking.accessCredential =
+        typeof body.accessCredential === 'string' ? body.accessCredential : null;
+    }
     if (body.action === 'confirm') booking.status = 'confirmed';
     if (body.action === 'cancel') booking.status = 'cancelled';
-    if (body.action === 'check_in') booking.checkedInAt = '2026-08-06T12:00:00.000Z';
+    if (body.action === 'check_in') {
+      if (booking.totalCents > booking.paidCents) return fail(409, 'payment_pending');
+      booking.checkedInAt = '2026-08-06T12:00:00.000Z';
+    }
     if (body.action === 'undo_checkin') booking.checkedInAt = null;
     saveState(state);
     return ok({

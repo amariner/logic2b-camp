@@ -31,7 +31,7 @@ describe('barGeometry', () => {
 
   it('barra entera dentro: sin recortes', () => {
     const g = barGeometry(view.from, view.days, CW, '2026-08-03', '2026-08-06')!;
-    expect(g).toMatchObject({ left: 2 * CW, clipStart: false, clipEnd: false });
+    expect(g).toMatchObject({ left: 2.5 * CW, clipStart: false, clipEnd: false });
     expect(g.width).toBe(3 * CW - 2);
   });
 
@@ -50,7 +50,16 @@ describe('barGeometry', () => {
 
   it('fuera del rango visible → null', () => {
     expect(barGeometry(view.from, view.days, CW, '2026-09-10', '2026-09-12')).toBeNull();
-    expect(barGeometry(view.from, view.days, CW, '2026-07-01', '2026-08-01')).toBeNull(); // to exclusive
+    expect(barGeometry(view.from, view.days, CW, '2026-07-01', '2026-07-31')).toBeNull();
+  });
+
+  it('muestra media celda de salida al inicio de la ventana', () => {
+    expect(barGeometry(view.from, view.days, CW, '2026-07-28', '2026-08-01')).toMatchObject({
+      left: 0,
+      width: 0.5 * CW - 2,
+      clipStart: true,
+      clipEnd: false,
+    });
   });
 });
 

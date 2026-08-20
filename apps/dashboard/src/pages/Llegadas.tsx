@@ -5,7 +5,7 @@
  */
 import { errorMutacion } from '../avisos';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { forwardRef, useRef, useState, type ReactNode } from 'react';
+import { forwardRef, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,7 +26,7 @@ import {
   focusRing,
   toast,
 } from '@logic-camp/ui';
-import { DoorOpen, LogOut } from 'lucide-react';
+import { Clock3, DoorOpen, LogOut, MessageCircle, Search } from 'lucide-react';
 import { apiGet, apiPatch, type BookingListItem } from '../api';
 import { usePuede } from '../auth';
 import BookingPanel from '../components/BookingPanel';
@@ -91,7 +91,17 @@ const REJILLA =
  * extremos y abre hueco al titular; el saldo conserva el importe y deja el
  * rótulo completo a lector de pantalla.
  */
-const ACCION = 'flex w-11 shrink-0 justify-end @sm:w-28';
+const ACCION = 'flex shrink-0 justify-end';
+
+type FiltroLlegada = 'all' | 'ready' | 'blocked' | 'late';
+const isLate = (b: BookingListItem) =>
+  Boolean(b.arrivalEta && Date.parse(b.arrivalEta) < Date.now() && !b.checkedInAt);
+const readiness = (b: BookingListItem) =>
+  b.readiness ?? (b.totalCents > b.paidCents ? 'blocked' : 'attention');
+const etaHora = (value?: string | null) =>
+  value
+    ? new Intl.DateTimeFormat('es', { hour: '2-digit', minute: '2-digit' }).format(new Date(value))
+    : null;
 
 /**
  * Llegadas y salidas, una al lado de la otra… mientras quepan. El corte iba por
@@ -154,6 +164,7 @@ function Lista({
   vacio,
   onOpen,
   action,
+  showReadiness = false,
 }: {
   titulo: string;
   items: BookingListItem[];
@@ -161,6 +172,7 @@ function Lista({
   onOpen: (id: string, el: HTMLElement) => void;
   /** botón de recepción (check-in/check-out) por fila, FUERA del <button> de la fila */
   action?: (b: BookingListItem) => ReactNode;
+  showReadiness?: boolean;
 }) {
   // Se resuelve una vez por lista: si NINGUNA fila puede registrarse, la lista
   // no reserva el hueco y no deja un canalón vacío de 112px a la derecha.
@@ -201,7 +213,11 @@ function Lista({
                   {b.code.replace(/^[A-Z]+-\d{4}-/, '')}
                 </span>
                 <span className="truncate font-medium">{b.leadName ?? '—'}</span>
-                {here ? (
+                {showReadiness ? (
+                  <span className={`lc-chip arrival-${readiness(b)} justify-self-end`}>
+                    {t(`dia.readiness.${readiness(b)}`)}
+                  </span>
+                ) : here ? (
                   <span className="lc-chip st-inhouse justify-self-end">
                     {t('plano.estado.enCasa')}
                   </span>
@@ -213,9 +229,16 @@ function Lista({
                 <span className="tnum col-start-1 truncate text-muted-foreground">
                   {b.unitCode ?? t('dia.sinUnidad')}
                 </span>
-                <span className="tnum col-start-2 text-muted-foreground">
+                <span className="tnum col-start-2 truncate text-muted-foreground">
                   {t('planning.pax', { n: pax })} ·{' '}
                   {t('dia.noches', { n: noches(b.dateFrom, b.dateTo) })}
+                  {showReadiness && (
+                    <>
+                      {' '}
+                      · {b.vehiclePlate ?? t('dia.sinMatricula')} ·{' '}
+                      {etaHora(b.arrivalEta) ?? t('dia.sinEta')}
+                    </>
+                  )}
                 </span>
                 <span
                   className={`tnum col-start-3 min-w-0 justify-self-end text-[12px] font-medium ${
@@ -252,8 +275,16 @@ export default function Llegadas() {
   const puedeOperar = usePuede('booking:operate');
   const [dia, setDia] = useState(hoyIso);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [buscar, setBuscar] = useState('');
+  const [buscarApi, setBuscarApi] = useState('');
+  const [filtro, setFiltro] = useState<FiltroLlegada>('all');
   const openerRef = useRef<HTMLElement | null>(null);
   const qc = useQueryClient();
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setBuscarApi(buscar.trim()), 250);
+    return () => window.clearTimeout(id);
+  }, [buscar]);
 
   // check-in desde la llegada / check-out desde la salida (ADR 0022): el gesto
   // más frecuente del mostrador, sin abrir la ficha. El servidor valida SIEMPRE.
@@ -269,9 +300,11 @@ export default function Llegadas() {
   });
 
   const llegadas = useQuery({
-    queryKey: ['bookings', 'arrivals', dia],
+    queryKey: ['bookings', 'arrivals', dia, buscarApi],
     queryFn: () =>
-      apiGet<{ items: BookingListItem[] }>(`/api/admin/bookings?arrivalsOn=${dia}&pageSize=100`),
+      apiGet<{ items: BookingListItem[] }>(
+        `/api/admin/bookings?arrivalsOn=${dia}&pageSize=100${buscarApi ? `&q=${encodeURIComponent(buscarApi)}` : ''}`,
+      ),
     refetchInterval: 60_000,
   });
   const salidas = useQuery({
@@ -284,7 +317,12 @@ export default function Llegadas() {
   // canceladas fuera: no llegan ni salen
   const soloVivas = (items?: BookingListItem[]) =>
     (items ?? []).filter((b) => b.status !== 'cancelled');
-  const llegadasHoy = soloVivas(llegadas.data?.items);
+  const llegadasHoy = soloVivas(llegadas.data?.items).filter((b) => {
+    if (filtro === 'ready') return readiness(b) === 'ready';
+    if (filtro === 'blocked') return readiness(b) === 'blocked';
+    if (filtro === 'late') return isLate(b);
+    return true;
+  });
   const salidasHoy = soloVivas(salidas.data?.items);
 
   const openPanel = (id: string, el: HTMLElement) => {
@@ -299,6 +337,26 @@ export default function Llegadas() {
 
   const cargando = llegadas.isPending || salidas.isPending;
   const error = llegadas.isError || salidas.isError;
+
+  const arrivalDetails = useMutation({
+    mutationFn: (b: BookingListItem) => {
+      const base =
+        b.arrivalEta && Date.parse(b.arrivalEta) > Date.now()
+          ? Date.parse(b.arrivalEta)
+          : Date.now();
+      return apiPatch(`/api/admin/bookings/${b.id}`, {
+        action: 'set_arrival_details',
+        vehiclePlate: b.vehiclePlate ?? null,
+        arrivalEta: new Date(base + 3_600_000).toISOString(),
+        accessCredential: b.accessCredential ?? null,
+      });
+    },
+    onSuccess: () => {
+      toast.success(t('dia.detallesGuardados'));
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: (e) => errorMutacion(e, t('ficha.accionError')),
+  });
 
   return (
     <div className="flex h-full">
@@ -353,6 +411,39 @@ export default function Llegadas() {
           <BotonAyuda className="size-11 md:size-7" />
         </div>
 
+        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-2 py-2 md:px-4">
+          <label className="relative min-w-56 flex-1 md:max-w-sm">
+            <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={buscar}
+              onChange={(e) => setBuscar(e.target.value)}
+              placeholder={t('dia.buscar')}
+              aria-label={t('dia.buscar')}
+              className="h-10 pl-8 md:h-8"
+            />
+          </label>
+          {(
+            [
+              ['all', 'dia.filtro.todos'],
+              ['ready', 'dia.filtro.express'],
+              ['blocked', 'dia.filtro.pago'],
+              ['late', 'dia.filtro.retrasados'],
+            ] as const
+          ).map(([id, key]) => (
+            <Button
+              key={id}
+              type="button"
+              size="xs"
+              variant={filtro === id ? 'primary' : 'outline'}
+              aria-pressed={filtro === id}
+              onClick={() => setFiltro(id)}
+              className="h-9 md:h-7"
+            >
+              {t(key)}
+            </Button>
+          ))}
+        </div>
+
         {cargando && (
           /* Dos columnas de filas de 3 huecos: código · nombre · importe. La
              forma de la hoja real, no un rectángulo (ADR 0020, C3). */
@@ -381,17 +472,44 @@ export default function Llegadas() {
             <Lista
               titulo={t('dia.llegadas')}
               items={llegadasHoy}
+              showReadiness
               onOpen={openPanel}
-              action={(b) =>
-                puedeOperar && b.status === 'confirmed' && !b.checkedInAt ? (
-                  <BotonRecepcion
-                    icono={DoorOpen}
-                    rotulo={t('accion.check_in')}
-                    disabled={recepcion.isPending}
-                    onClick={() => recepcion.mutate({ id: b.id, action: 'check_in' })}
-                  />
-                ) : null
-              }
+              action={(b) => (
+                <div className="flex items-center gap-1">
+                  {b.leadPhone && (
+                    <Button asChild variant="ghost" size="iconSm" title={t('dia.whatsapp')}>
+                      <a
+                        href={`https://wa.me/${b.leadPhone.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, ¿a qué hora tiene prevista su llegada al camping?')}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={t('dia.whatsapp')}
+                      >
+                        <MessageCircle className="size-3.5" />
+                      </a>
+                    </Button>
+                  )}
+                  {puedeOperar && (
+                    <Button
+                      variant="ghost"
+                      size="iconSm"
+                      title={t('dia.retrasar')}
+                      aria-label={t('dia.retrasar')}
+                      disabled={arrivalDetails.isPending}
+                      onClick={() => arrivalDetails.mutate(b)}
+                    >
+                      <Clock3 className="size-3.5" />
+                    </Button>
+                  )}
+                  {puedeOperar && b.status === 'confirmed' && !b.checkedInAt && (
+                    <BotonRecepcion
+                      icono={DoorOpen}
+                      rotulo={t('accion.check_in')}
+                      disabled={recepcion.isPending || readiness(b) === 'blocked'}
+                      onClick={() => recepcion.mutate({ id: b.id, action: 'check_in' })}
+                    />
+                  )}
+                </div>
+              )}
               vacio={
                 <EmptyState
                   art="calendar"

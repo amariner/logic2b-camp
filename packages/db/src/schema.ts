@@ -241,6 +241,10 @@ export const bookings = sqliteTable(
     touristTaxCents: integer('tourist_tax_cents').notNull().default(0),
     depositCents: integer('deposit_cents').notNull().default(0),
     notes: text('notes'),
+    /** Operativa de llegada (E-mejoras): datos nulables y aditivos. */
+    vehiclePlate: text('vehicle_plate'),
+    arrivalEta: text('arrival_eta'),
+    accessCredential: text('access_credential'),
     // Check-in / check-out (ADR 0022): hechos ORTOGONALES al ciclo de vida, no
     // un estado. Una reserva confirmada con el huésped dentro sigue siendo
     // 'confirmed' — "en casa" se deriva (checkedInAt != null && checkedOutAt == null).

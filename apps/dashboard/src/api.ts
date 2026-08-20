@@ -181,6 +181,9 @@ export type BookingDetail = {
   touristTaxCents: number;
   depositCents: number;
   notes: string | null;
+  vehiclePlate?: string | null;
+  arrivalEta?: string | null;
+  accessCredential?: string | null;
   checkedInAt: string | null;
   checkedOutAt: string | null;
   /** Forma de pago de la operación para el parte de viajeros (ADR 0028). */
@@ -204,6 +207,12 @@ export type BookingListItem = {
   unitId: string | null;
   unitCode: string | null;
   leadName: string | null;
+  leadPhone?: string | null;
+  vehiclePlate?: string | null;
+  arrivalEta?: string | null;
+  accessCredential?: string | null;
+  readiness?: 'ready' | 'attention' | 'blocked';
+  readinessReasons?: Array<'pending_payment' | 'missing_document' | 'missing_consent'>;
   occupancy: { adults: number; childrenAges: number[]; pets: number; vehicles: number };
   totalCents: number;
   paidCents: number;

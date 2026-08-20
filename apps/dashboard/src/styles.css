@@ -117,6 +117,23 @@ html {
   text-decoration: line-through;
 }
 
+/* Preparación de llegada: color + texto, nunca color solo. */
+.lc-chip.arrival-ready {
+  background: color-mix(in oklab, var(--lc-status-inhouse) 28%, var(--background));
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--lc-status-inhouse) 55%, var(--border));
+}
+.lc-chip.arrival-attention {
+  background: color-mix(in oklab, var(--lc-status-pending) 28%, var(--background));
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--lc-status-pending) 55%, var(--border));
+}
+.lc-chip.arrival-blocked {
+  background: color-mix(in oklab, var(--lc-status-no-show) 18%, var(--background));
+  color: var(--destructive);
+  border: 1px solid color-mix(in oklab, var(--lc-status-no-show) 55%, var(--border));
+}
+
 .lc-grab {
   cursor: grab;
   touch-action: none;
