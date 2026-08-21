@@ -187,6 +187,16 @@ export const bookingActionSchema = z.discriminatedUnion('action', [
     accessCredential: z.string().trim().max(80).nullable(),
   }),
   z.object({
+    action: z.literal('set_deposit_requirement'),
+    amountCents: z.number().int().nonnegative(),
+  }),
+  z.object({
+    action: z.literal('record_deposit'),
+    amountCents: z.number().int().positive(),
+    method: z.enum(['cash', 'card']),
+  }),
+  z.object({ action: z.literal('refund_deposit'), amountCents: z.number().int().positive() }),
+  z.object({
     action: z.literal('record_payment'),
     amountCents: z.number().int().positive(),
     method: z.enum(['cash', 'card']),

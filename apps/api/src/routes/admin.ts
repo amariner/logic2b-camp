@@ -380,10 +380,18 @@ export const adminRoutes = new Hono<AuthEnv>()
       items: rows.map((r) => {
         const reasons: string[] = [];
         const pendingCents = r.booking.totalCents - r.booking.paidCents;
+        const pendingDepositCents = r.booking.depositCents - r.booking.depositPaidCents;
         if (pendingCents > 0) reasons.push('pending_payment');
+        if (pendingDepositCents > 0) reasons.push('pending_deposit');
+        if (!r.booking.accessCredential) reasons.push('missing_access');
         if (!r.leadDocNumber) reasons.push('missing_document');
         if (!r.leadConsentVersion) reasons.push('missing_consent');
-        const readiness = pendingCents > 0 ? 'blocked' : reasons.length ? 'attention' : 'ready';
+        const readiness =
+          pendingCents > 0 || pendingDepositCents > 0 || !r.booking.accessCredential
+            ? 'blocked'
+            : reasons.length
+              ? 'attention'
+              : 'ready';
         return {
           ...r.booking,
           unitCode: r.unitCode,
@@ -550,6 +558,63 @@ export const adminRoutes = new Hono<AuthEnv>()
       return c.json({ id, vehiclePlate, arrivalEta: action.arrivalEta });
     }
 
+    if (action.action === 'set_deposit_requirement') {
+      if (action.amountCents < booking.depositPaidCents)
+        return c.json({ error: 'deposit_below_held', heldCents: booking.depositPaidCents }, 422);
+      await db
+        .update(schema.bookings)
+        .set({ depositCents: action.amountCents, updatedAt: nowIso() })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'deposit_requirement', {
+        amountCents: action.amountCents,
+      });
+      return c.json({ id, depositCents: action.amountCents });
+    }
+
+    if (action.action === 'record_deposit') {
+      const pendingDepositCents = booking.depositCents - booking.depositPaidCents;
+      if (action.amountCents > pendingDepositCents)
+        return c.json({ error: 'deposit_exceeds_pending', pendingDepositCents }, 422);
+      const at = nowIso();
+      const depositPaidCents = booking.depositPaidCents + action.amountCents;
+      await db
+        .update(schema.bookings)
+        .set({
+          depositPaidCents,
+          depositCollectedAt: at,
+          depositReturnedAt: null,
+          updatedAt: at,
+        })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'record_deposit', {
+        amountCents: action.amountCents,
+        method: action.method,
+      });
+      return c.json({ id, depositPaidCents });
+    }
+
+    if (action.action === 'refund_deposit') {
+      if (action.amountCents > booking.depositPaidCents)
+        return c.json(
+          { error: 'deposit_refund_exceeds_held', heldCents: booking.depositPaidCents },
+          422,
+        );
+      const at = nowIso();
+      const depositPaidCents = booking.depositPaidCents - action.amountCents;
+      await db
+        .update(schema.bookings)
+        .set({
+          depositPaidCents,
+          depositReturnedAt: depositPaidCents === 0 ? at : null,
+          updatedAt: at,
+        })
+        .where(eq(schema.bookings.id, id));
+      await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'refund_deposit', {
+        amountCents: action.amountCents,
+      });
+      return c.json({ id, depositPaidCents });
+    }
+
     // Forma de pago de la operación para el parte de viajeros (ADR 0028): se captura
     // explícita, no se deriva del proveedor de la pasarela. No toca precio ni estado.
     if (action.action === 'set_payment_kind') {
@@ -577,20 +642,29 @@ export const adminRoutes = new Hono<AuthEnv>()
           return c.json({ error: 'invalid_checkin', status: booking.status }, 409);
         const pendingCents = booking.totalCents - booking.paidCents;
         if (pendingCents > 0) return c.json({ error: 'payment_pending', pendingCents }, 409);
+        const pendingDepositCents = booking.depositCents - booking.depositPaidCents;
+        if (pendingDepositCents > 0)
+          return c.json({ error: 'deposit_pending', pendingDepositCents }, 409);
+        if (!booking.accessCredential) return c.json({ error: 'access_missing' }, 409);
         const at = nowIso();
         await db
           .update(schema.bookings)
-          .set({ checkedInAt: at, updatedAt: at })
+          .set({ checkedInAt: at, accessGrantedAt: at, accessRevokedAt: null, updatedAt: at })
           .where(eq(schema.bookings.id, id));
         await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'check_in');
-        return c.json({ id, checkedInAt: at });
+        return c.json({ id, checkedInAt: at, accessGrantedAt: at });
       }
       if (action.action === 'undo_checkin') {
         if (booking.status !== 'confirmed' || !inHouse)
           return c.json({ error: 'invalid_checkin', status: booking.status }, 409);
         await db
           .update(schema.bookings)
-          .set({ checkedInAt: null, updatedAt: nowIso() })
+          .set({
+            checkedInAt: null,
+            accessGrantedAt: null,
+            accessRevokedAt: nowIso(),
+            updatedAt: nowIso(),
+          })
           .where(eq(schema.bookings.id, id));
         await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'undo_checkin');
         return c.json({ id, checkedInAt: null });
@@ -602,7 +676,7 @@ export const adminRoutes = new Hono<AuthEnv>()
       const at = nowIso();
       await db
         .update(schema.bookings)
-        .set({ checkedOutAt: at, status: 'completed', updatedAt: at })
+        .set({ checkedOutAt: at, accessRevokedAt: at, status: 'completed', updatedAt: at })
         .where(eq(schema.bookings.id, id));
       await audit(db, tenant.slug, c.get('user').id, 'booking', id, 'check_out', {
         from: booking.status,

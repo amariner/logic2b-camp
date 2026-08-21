@@ -240,11 +240,18 @@ export const bookings = sqliteTable(
     paidCents: integer('paid_cents').notNull().default(0),
     touristTaxCents: integer('tourist_tax_cents').notNull().default(0),
     depositCents: integer('deposit_cents').notNull().default(0),
+    /** Fianza retenida: separada de paidCents porque no es ingreso. */
+    depositPaidCents: integer('deposit_paid_cents').notNull().default(0),
+    depositCollectedAt: text('deposit_collected_at'),
+    depositReturnedAt: text('deposit_returned_at'),
     notes: text('notes'),
     /** Operativa de llegada (E-mejoras): datos nulables y aditivos. */
     vehiclePlate: text('vehicle_plate'),
     arrivalEta: text('arrival_eta'),
     accessCredential: text('access_credential'),
+    /** Acceso/barrera: sello auditable, independiente del proveedor físico. */
+    accessGrantedAt: text('access_granted_at'),
+    accessRevokedAt: text('access_revoked_at'),
     // Check-in / check-out (ADR 0022): hechos ORTOGONALES al ciclo de vida, no
     // un estado. Una reserva confirmada con el huésped dentro sigue siendo
     // 'confirmed' — "en casa" se deriva (checkedInAt != null && checkedOutAt == null).

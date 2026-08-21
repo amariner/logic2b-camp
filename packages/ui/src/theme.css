@@ -140,32 +140,34 @@
  * barra sobre fondo ≥ 3:1, light Y dark): el mapa no puede romperse en silencio.
  */
 :root {
-  --lc-status-confirmed: var(--primary);
-  --lc-status-confirmed-fg: var(--primary-foreground);
+  /* Paleta E-mejoras: tonos naturales de camping, deliberadamente más suaves
+     que el blanco/negro anterior pero con contraste AA verificado. */
+  --lc-status-confirmed: oklch(60% 0.07 150);
+  --lc-status-confirmed-fg: oklch(14.5% 0 0);
 
   /* "En casa" (ADR 0022): huésped presente. Verde esmeralda sólido — distinto
      del negro de `confirmed` y del ámbar de `pending`, para que el mostrador
      distinga de un vistazo "está dentro" de "solo tiene reserva". */
-  --lc-status-inhouse: oklch(50% 0.14 152);
-  --lc-status-inhouse-fg: oklch(100% 0 0);
+  --lc-status-inhouse: oklch(57% 0.12 152);
+  --lc-status-inhouse-fg: oklch(14.5% 0 0);
 
   /* Ámbar profundo. El pálido provisional (L 82.8%) se quedaba en 1.7:1 sobre
      blanco — invisible como bloque para baja visión; lo cazó el test AA. */
-  --lc-status-pending: oklch(63% 0.155 84.4);
+  --lc-status-pending: oklch(62% 0.11 84.4);
   --lc-status-pending-fg: oklch(14.5% 0 0);
 
   /* Rojo propio, un punto más oscuro que --destructive: el blanco sobre el
      destructive de shadcn se queda en ~4:1 y la barra lleva texto (AA exige 4.5). */
-  --lc-status-no-show: oklch(50.5% 0.213 27.5);
+  --lc-status-no-show: oklch(50% 0.12 27.5);
   --lc-status-no-show-fg: oklch(100% 0 0);
 
   /* Gris un punto más oscuro que --muted-foreground por la misma razón AA. */
-  --lc-status-completed: oklch(51% 0 0);
-  --lc-status-completed-fg: oklch(100% 0 0);
+  --lc-status-completed: oklch(57% 0.015 250);
+  --lc-status-completed-fg: oklch(9% 0 0);
 
   /* Azul de "en curso / informativo": solicitud contactada, aviso en cola. */
-  --lc-status-info: oklch(39.8% 0.07 227.392);
-  --lc-status-info-fg: oklch(100% 0 0);
+  --lc-status-info: oklch(56% 0.08 227.392);
+  --lc-status-info-fg: oklch(9% 0 0);
 
   --lc-status-blocked: var(--muted-foreground);
 
@@ -188,19 +190,22 @@
  * inadvertido con los --chart-*. Los que derivan de tokens semánticos
  * (confirmed→primary…) se voltean solos; los fijos se declaran aquí. */
 .dark {
-  --lc-status-inhouse: oklch(76% 0.16 152);
+  --lc-status-confirmed: oklch(75% 0.08 150);
+  --lc-status-confirmed-fg: oklch(16% 0 0);
+
+  --lc-status-inhouse: oklch(72% 0.13 152);
   --lc-status-inhouse-fg: oklch(16% 0 0);
 
-  --lc-status-pending: oklch(82.8% 0.189 84.429);
+  --lc-status-pending: oklch(78% 0.13 84.429);
   --lc-status-pending-fg: oklch(16% 0 0);
 
-  --lc-status-no-show: oklch(68% 0.19 25);
+  --lc-status-no-show: oklch(72% 0.13 25);
   --lc-status-no-show-fg: oklch(16% 0 0);
 
-  --lc-status-completed: oklch(65% 0 0);
+  --lc-status-completed: oklch(70% 0.02 250);
   --lc-status-completed-fg: oklch(14.5% 0 0);
 
-  --lc-status-info: oklch(74% 0.1 230);
+  --lc-status-info: oklch(74% 0.09 230);
   --lc-status-info-fg: oklch(16% 0 0);
 
   --lc-today: oklch(70% 0.16 35);

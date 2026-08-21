@@ -24,7 +24,7 @@ import {
   toast,
 } from '@logic-camp/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { DoorOpen, LogOut, Printer, Undo2 } from 'lucide-react';
+import { DoorOpen, LogOut, Printer, ShieldCheck, Undo2, WalletCards } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiGet, apiPatch, type BookingDetail, type TenantSettings } from '../api';
 import { usePuede } from '../auth';
@@ -104,6 +104,7 @@ export default function BookingPanel({
   const [vehiclePlate, setVehiclePlate] = useState('');
   const [arrivalEta, setArrivalEta] = useState('');
   const [accessCredential, setAccessCredential] = useState('');
+  const [depositRequirement, setDepositRequirement] = useState('');
   const puedeOperar = usePuede('booking:operate');
   const puedeGestionar = usePuede('booking:manage');
 
@@ -133,6 +134,7 @@ export default function BookingPanel({
     setVehiclePlate('');
     setArrivalEta('');
     setAccessCredential('');
+    setDepositRequirement('');
   }, [bookingId]);
 
   useEffect(() => {
@@ -140,7 +142,8 @@ export default function BookingPanel({
     setVehiclePlate(data.vehiclePlate ?? '');
     setArrivalEta(toLocalDateTime(data.arrivalEta));
     setAccessCredential(data.accessCredential ?? '');
-  }, [data?.id, data?.vehiclePlate, data?.arrivalEta, data?.accessCredential]);
+    setDepositRequirement((data.depositCents / 100).toFixed(2).replace('.', ','));
+  }, [data?.id, data?.vehiclePlate, data?.arrivalEta, data?.accessCredential, data?.depositCents]);
 
   // En móvil lo resuelve Radix (con trampa de foco); el aside de escritorio
   // conserva el cierre global aunque el foco salga tras deshabilitar un botón.
@@ -211,6 +214,49 @@ export default function BookingPanel({
     onError: (e) => errorMutacion(e, t('ficha.accionError')),
   });
 
+  const setDepositRequirementMutation = useMutation({
+    mutationFn: (amountCents: number) =>
+      apiPatch(`/api/admin/bookings/${bookingId}`, {
+        action: 'set_deposit_requirement',
+        amountCents,
+      }),
+    onSuccess: () => {
+      toast.success(t('ficha.fianzaConfigurada'));
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: (e) => errorMutacion(e, t('ficha.fianzaError')),
+  });
+
+  const recordDeposit = useMutation({
+    mutationFn: (amountCents: number) =>
+      apiPatch(`/api/admin/bookings/${bookingId}`, {
+        action: 'record_deposit',
+        amountCents,
+        method: payMethod,
+      }),
+    onSuccess: () => {
+      toast.success(t('ficha.fianzaCobrada'));
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: (e) => errorMutacion(e, t('ficha.fianzaError')),
+  });
+
+  const refundDeposit = useMutation({
+    mutationFn: (amountCents: number) =>
+      apiPatch(`/api/admin/bookings/${bookingId}`, {
+        action: 'refund_deposit',
+        amountCents,
+      }),
+    onSuccess: () => {
+      toast.success(t('ficha.fianzaDevuelta'));
+      void qc.invalidateQueries({ queryKey: ['booking', bookingId] });
+      void qc.invalidateQueries({ queryKey: ['bookings'] });
+    },
+    onError: (e) => errorMutacion(e, t('ficha.fianzaError')),
+  });
+
   // check-in / check-out (ADR 0022): hechos de recepción, no transiciones. "En
   // casa" se deriva; el servidor valida la precondición SIEMPRE.
   const recepcion = useMutation({
@@ -256,12 +302,15 @@ export default function BookingPanel({
   const n = data ? noches(data.dateFrom, data.dateTo) : 0;
   const pax = data ? data.occupancy.adults + data.occupancy.childrenAges.length : 0;
   const pendingCents = data ? data.totalCents - data.paidCents : 0;
+  const depositPendingCents = data ? data.depositCents - data.depositPaidCents : 0;
   // "en casa" (ADR 0022): huésped presente. NO es un status — se deriva.
   const inHouse = Boolean(
     data && data.status === 'confirmed' && data.checkedInAt && !data.checkedOutAt,
   );
   const canCheckIn = Boolean(data && data.status === 'confirmed' && !data.checkedInAt);
-  const checkInBlocked = canCheckIn && pendingCents > 0;
+  const checkInBlocked = Boolean(
+    canCheckIn && (pendingCents > 0 || depositPendingCents > 0 || !data?.accessCredential),
+  );
   // Una estancia ya iniciada se cierra exclusivamente con check-out: además de
   // registrar la salida, esa acción completa la reserva en una sola operación.
   const stateActions = data && !inHouse ? ACTIONS_BY_STATUS[data.status] : [];
@@ -404,6 +453,92 @@ export default function BookingPanel({
             </section>
           )}
 
+          {/* La fianza se retiene fuera de paidCents: nunca aparece como ingreso. */}
+          {puedeOperar && (
+            <section>
+              <h3 className="lc-panel-h flex items-center gap-1.5">
+                <WalletCards className="size-3.5" />
+                {t('ficha.controlFianza')}
+              </h3>
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-medium">
+                    {eur(data.depositPaidCents, data.priceBreakdown.currency)} /{' '}
+                    {eur(data.depositCents, data.priceBreakdown.currency)}
+                  </p>
+                  <p className="text-[12px] text-muted-foreground">
+                    {depositPendingCents > 0
+                      ? t('ficha.fianzaPendiente', {
+                          importe: eur(depositPendingCents, data.priceBreakdown.currency),
+                        })
+                      : data.depositPaidCents > 0
+                        ? t('ficha.fianzaRetenida')
+                        : t('ficha.fianzaNoRequerida')}
+                  </p>
+                </div>
+                {depositPendingCents > 0 && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={recordDeposit.isPending}
+                    onClick={() => recordDeposit.mutate(depositPendingCents)}
+                  >
+                    {t('ficha.cobrarFianza')}
+                  </Button>
+                )}
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-border/60 pt-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={depositRequirement}
+                  onChange={(e) => setDepositRequirement(e.target.value)}
+                  aria-label={t('ficha.importeFianza')}
+                  className="h-9 w-24 rounded-(--lc-radius) border border-foreground/20 bg-background px-2 text-base md:h-7 md:text-[13px]"
+                />
+                <Button
+                  type="button"
+                  size="xs"
+                  variant="outline"
+                  disabled={
+                    toCents(depositRequirement) < data.depositPaidCents ||
+                    setDepositRequirementMutation.isPending
+                  }
+                  onClick={() => setDepositRequirementMutation.mutate(toCents(depositRequirement))}
+                >
+                  {t('ficha.definirFianza')}
+                </Button>
+                {data.depositPaidCents > 0 && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button type="button" size="xs" variant="outline">
+                        {t('ficha.devolverFianza')}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>{t('confirmar.fianza.titulo')}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          {t('confirmar.fianza.desc', {
+                            importe: eur(data.depositPaidCents, data.priceBreakdown.currency),
+                          })}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>{t('confirmar.cancelar')}</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => refundDeposit.mutate(data.depositPaidCents)}
+                        >
+                          {t('confirmar.fianza.ok')}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+              </div>
+            </section>
+          )}
+
           {/* recepción: check-in / check-out (ADR 0022). "En casa" se deriva. */}
           {puedeOperar && (canCheckIn || inHouse) && (
             <section>
@@ -411,11 +546,23 @@ export default function BookingPanel({
               {canCheckIn && (
                 <div className="flex flex-col items-start gap-2">
                   {checkInBlocked && (
-                    <p className="text-[12px] font-medium text-destructive">
-                      {t('ficha.checkinPagoPendiente', {
-                        importe: eur(pendingCents, data.priceBreakdown.currency),
-                      })}
-                    </p>
+                    <div className="space-y-1 text-[12px] font-medium text-destructive">
+                      {pendingCents > 0 && (
+                        <p>
+                          {t('ficha.checkinPagoPendiente', {
+                            importe: eur(pendingCents, data.priceBreakdown.currency),
+                          })}
+                        </p>
+                      )}
+                      {depositPendingCents > 0 && (
+                        <p>
+                          {t('ficha.checkinFianzaPendiente', {
+                            importe: eur(depositPendingCents, data.priceBreakdown.currency),
+                          })}
+                        </p>
+                      )}
+                      {!data.accessCredential && <p>{t('ficha.checkinAccesoPendiente')}</p>}
+                    </div>
                   )}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -425,7 +572,7 @@ export default function BookingPanel({
                         disabled={recepcion.isPending || checkInBlocked}
                       >
                         <DoorOpen className="size-4" />
-                        {t('ficha.hacerCheckin')}
+                        {t('ficha.hacerCheckinAcceso')}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -451,6 +598,12 @@ export default function BookingPanel({
                     <span className="lc-chip st-inhouse mr-1.5">{t('ficha.enCasa')}</span>
                     {t('ficha.entradaEl', { fecha: fecha(data.checkedInAt) })}
                   </p>
+                  {data.accessGrantedAt && (
+                    <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                      <ShieldCheck className="size-3.5 text-status-inhouse" />
+                      {t('ficha.accesoHabilitado', { acceso: data.accessCredential ?? '—' })}
+                    </p>
+                  )}
                   <div className="flex flex-wrap gap-2">
                     {/* check-out cierra la cuenta (completa). Confirma, y avisa si
                         queda pendiente por cobrar. */}
@@ -576,7 +729,7 @@ export default function BookingPanel({
               ))}
             </ul>
 
-            {puedeGestionar && (data.status === 'pending' || data.status === 'confirmed') && (
+            {puedeOperar && (data.status === 'pending' || data.status === 'confirmed') && (
               <div className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-2">
                 {/* cobrar todo lo pendiente en un gesto (ADR 0022): hasta ahora
                     había que leer la cifra arriba y teclearla a mano. */}

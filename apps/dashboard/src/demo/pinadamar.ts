@@ -397,12 +397,31 @@ export const baseEnquiries: EnquiryItem[] = Array.from({ length: 42 }, (_, index
 
 type DemoBooking = BookingListItem & { locale: string; guestEmail: string };
 
+function demoDepositCents(booking: DemoBooking): number {
+  return Math.round(
+    booking.totalCents *
+      (isCarrascaScenario ? 0.3 : isBallenaScenario ? 0.25 : isSoldhivernScenario ? 0.15 : 0.35),
+  );
+}
+
 function arrivalItem(booking: DemoBooking): BookingListItem {
   const pendingPayment = booking.totalCents > booking.paidCents;
+  const depositCents = booking.depositCents ?? demoDepositCents(booking);
+  const depositPaidCents = booking.depositPaidCents ?? 0;
+  const readinessReasons: NonNullable<BookingListItem['readinessReasons']> = [];
+  if (pendingPayment) readinessReasons.push('pending_payment');
+  if (depositPaidCents < depositCents) readinessReasons.push('pending_deposit');
+  if (!booking.accessCredential) readinessReasons.push('missing_access');
+  readinessReasons.push('missing_document');
   return {
     ...booking,
-    readiness: pendingPayment ? 'blocked' : 'attention',
-    readinessReasons: pendingPayment ? ['pending_payment'] : ['missing_document'],
+    depositCents,
+    depositPaidCents,
+    readiness:
+      pendingPayment || depositPaidCents < depositCents || !booking.accessCredential
+        ? 'blocked'
+        : 'attention',
+    readinessReasons,
   };
 }
 
@@ -640,6 +659,13 @@ export const pinadaPlano: PlanoDescriptor = {
     { kind: 'enclosure', x: 20, y: 20, w: 900, h: 650 },
     { kind: 'water', x: 850, y: 0, w: 90, h: 700, label: 'Mar Mediterráneo · este' },
     { kind: 'green', x: 40, y: 40, w: 760, h: 54, label: 'Pinada litoral' },
+    { kind: 'label', x: 68, y: 106, text: 'CALLE DE LOS PINOS I', size: 's' },
+    { kind: 'label', x: 68, y: 200, text: 'CALLE DE LOS PINOS II', size: 's' },
+    { kind: 'label', x: 68, y: 390, text: 'CALLE BRISA', size: 's' },
+    { kind: 'label', x: 496, y: 106, text: 'BUNGALOWS', size: 's' },
+    { kind: 'label', x: 496, y: 484, text: 'MOBIL-HOME SALINA', size: 's' },
+    { kind: 'label', x: 68, y: 650, text: 'ACCESO PRINCIPAL ↑', size: 's' },
+    { kind: 'label', x: 802, y: 54, text: 'N ↑', size: 'm' },
     { kind: 'road', x: 60, y: 168, w: 740, h: 18 },
     { kind: 'road', x: 60, y: 358, w: 740, h: 18 },
     { kind: 'road', x: 430, y: 94, w: 18, h: 510 },
@@ -1190,10 +1216,12 @@ function bookingDetail(booking: DemoBooking): BookingDetail {
       currency: 'EUR',
     },
     touristTaxCents,
-    depositCents: Math.round(
-      booking.totalCents *
-        (isCarrascaScenario ? 0.3 : isBallenaScenario ? 0.25 : isSoldhivernScenario ? 0.15 : 0.35),
-    ),
+    depositCents: booking.depositCents ?? demoDepositCents(booking),
+    depositPaidCents: booking.depositPaidCents ?? 0,
+    depositCollectedAt: booking.depositPaidCents ? booking.createdAt : null,
+    depositReturnedAt: null,
+    accessGrantedAt: booking.accessGrantedAt ?? (booking.checkedInAt ? booking.checkedInAt : null),
+    accessRevokedAt: booking.checkedOutAt ?? null,
     paymentKind: booking.paidCents > 0 ? 'card' : null,
     locale: booking.locale,
     guests: [
@@ -1572,19 +1600,61 @@ export async function demoScenarioRequest(
       booking.accessCredential =
         typeof body.accessCredential === 'string' ? body.accessCredential : null;
     }
+    if (body.action === 'set_deposit_requirement' && typeof body.amountCents === 'number') {
+      if (body.amountCents < (booking.depositPaidCents ?? 0))
+        return fail(422, 'deposit_below_held');
+      booking.depositCents = body.amountCents;
+    }
+    if (body.action === 'record_deposit' && typeof body.amountCents === 'number') {
+      const required = booking.depositCents ?? demoDepositCents(booking);
+      const held = booking.depositPaidCents ?? 0;
+      if (body.amountCents > required - held) return fail(422, 'deposit_exceeds_pending');
+      booking.depositPaidCents = held + body.amountCents;
+    }
+    if (body.action === 'refund_deposit' && typeof body.amountCents === 'number') {
+      const held = booking.depositPaidCents ?? 0;
+      if (body.amountCents > held) return fail(422, 'deposit_refund_exceeds_held');
+      booking.depositPaidCents = held - body.amountCents;
+    }
     if (body.action === 'confirm') booking.status = 'confirmed';
     if (body.action === 'cancel') booking.status = 'cancelled';
     if (body.action === 'check_in') {
       if (booking.totalCents > booking.paidCents) return fail(409, 'payment_pending');
-      booking.checkedInAt = '2026-08-06T12:00:00.000Z';
+      const required = booking.depositCents ?? demoDepositCents(booking);
+      if ((booking.depositPaidCents ?? 0) < required) return fail(409, 'deposit_pending');
+      if (!booking.accessCredential) return fail(409, 'access_missing');
+      booking.checkedInAt = `${booking.dateFrom}T12:00:00.000Z`;
+      booking.accessGrantedAt = booking.checkedInAt;
     }
-    if (body.action === 'undo_checkin') booking.checkedInAt = null;
+    if (body.action === 'undo_checkin') {
+      booking.checkedInAt = null;
+      booking.accessGrantedAt = null;
+    }
+    if (body.action === 'check_out') {
+      booking.checkedOutAt = `${booking.dateTo}T12:10:00.000Z`;
+      booking.accessGrantedAt = null;
+      booking.status = 'completed';
+    }
+    if (
+      body.action === 'record_payment' &&
+      typeof body.amountCents === 'number' &&
+      body.amountCents > 0
+    ) {
+      const amount = Math.min(body.amountCents, booking.totalCents - booking.paidCents);
+      booking.paidCents += amount;
+    }
+    if (body.action === 'refund' && typeof body.amountCents === 'number' && body.amountCents > 0) {
+      const amount = Math.min(body.amountCents, booking.paidCents);
+      booking.paidCents -= amount;
+    }
     saveState(state);
     return ok({
       id: booking.id,
       status: booking.status,
       notes: booking.notes,
       paidCents: booking.paidCents,
+      depositPaidCents: booking.depositPaidCents ?? 0,
+      accessGrantedAt: booking.accessGrantedAt ?? null,
     });
   }
   const requoteMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/requote$/);

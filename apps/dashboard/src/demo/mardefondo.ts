@@ -123,10 +123,22 @@ type DemoBooking = BookingListItem & {
 
 function arrivalItem(booking: DemoBooking): BookingListItem {
   const pendingPayment = booking.totalCents > booking.paidCents;
+  const depositCents = booking.depositCents ?? Math.round(booking.totalCents * 0.35);
+  const depositPaidCents = booking.depositPaidCents ?? 0;
+  const readinessReasons: NonNullable<BookingListItem['readinessReasons']> = [];
+  if (pendingPayment) readinessReasons.push('pending_payment');
+  if (depositPaidCents < depositCents) readinessReasons.push('pending_deposit');
+  if (!booking.accessCredential) readinessReasons.push('missing_access');
+  readinessReasons.push('missing_document');
   return {
     ...booking,
-    readiness: pendingPayment ? 'blocked' : 'attention',
-    readinessReasons: pendingPayment ? ['pending_payment'] : ['missing_document'],
+    depositCents,
+    depositPaidCents,
+    readiness:
+      pendingPayment || depositPaidCents < depositCents || !booking.accessCredential
+        ? 'blocked'
+        : 'attention',
+    readinessReasons,
   };
 }
 
@@ -569,7 +581,12 @@ function bookingDetail(booking: DemoBooking): BookingDetail {
       touristTaxCents: booking.touristTaxCents,
       currency: 'EUR',
     },
-    depositCents: Math.round(booking.totalCents * 0.35),
+    depositCents: booking.depositCents ?? Math.round(booking.totalCents * 0.35),
+    depositPaidCents: booking.depositPaidCents ?? 0,
+    depositCollectedAt: booking.depositPaidCents ? booking.createdAt : null,
+    depositReturnedAt: null,
+    accessGrantedAt: booking.accessGrantedAt ?? (booking.checkedInAt ? booking.checkedInAt : null),
+    accessRevokedAt: booking.checkedOutAt ?? null,
     paymentKind: booking.paidCents > 0 ? 'card' : null,
     guests: [
       {
@@ -801,15 +818,39 @@ export async function demoScenarioRequest(
       booking.accessCredential =
         typeof body.accessCredential === 'string' ? body.accessCredential : null;
     }
+    if (body.action === 'set_deposit_requirement' && typeof body.amountCents === 'number') {
+      if (body.amountCents < (booking.depositPaidCents ?? 0))
+        return fail(422, 'deposit_below_held');
+      booking.depositCents = body.amountCents;
+    }
+    if (body.action === 'record_deposit' && typeof body.amountCents === 'number') {
+      const required = booking.depositCents ?? Math.round(booking.totalCents * 0.35);
+      const held = booking.depositPaidCents ?? 0;
+      if (body.amountCents > required - held) return fail(422, 'deposit_exceeds_pending');
+      booking.depositPaidCents = held + body.amountCents;
+    }
+    if (body.action === 'refund_deposit' && typeof body.amountCents === 'number') {
+      const held = booking.depositPaidCents ?? 0;
+      if (body.amountCents > held) return fail(422, 'deposit_refund_exceeds_held');
+      booking.depositPaidCents = held - body.amountCents;
+    }
     if (body.action === 'confirm') booking.status = 'confirmed';
     if (body.action === 'cancel') booking.status = 'cancelled';
     if (body.action === 'check_in') {
       if (booking.totalCents > booking.paidCents) return fail(409, 'payment_pending');
-      booking.checkedInAt = '2026-08-07T12:00:00.000Z';
+      const required = booking.depositCents ?? Math.round(booking.totalCents * 0.35);
+      if ((booking.depositPaidCents ?? 0) < required) return fail(409, 'deposit_pending');
+      if (!booking.accessCredential) return fail(409, 'access_missing');
+      booking.checkedInAt = `${booking.dateFrom}T12:00:00.000Z`;
+      booking.accessGrantedAt = booking.checkedInAt;
     }
-    if (body.action === 'undo_checkin') booking.checkedInAt = null;
+    if (body.action === 'undo_checkin') {
+      booking.checkedInAt = null;
+      booking.accessGrantedAt = null;
+    }
     if (body.action === 'check_out') {
-      booking.checkedOutAt = '2026-08-07T12:10:00.000Z';
+      booking.checkedOutAt = `${booking.dateTo}T12:10:00.000Z`;
+      booking.accessGrantedAt = null;
       booking.status = 'completed';
     }
     if (

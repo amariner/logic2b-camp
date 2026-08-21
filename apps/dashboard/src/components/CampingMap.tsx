@@ -358,6 +358,27 @@ export default function CampingMap({
         style={smooth ? { transition: 'none' } : undefined}
       >
         <defs>
+          <linearGradient id="plano-water" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="var(--lc-status-info)" stopOpacity="0.12" />
+            <stop offset="1" stopColor="var(--lc-status-info)" stopOpacity="0.34" />
+          </linearGradient>
+          <linearGradient id="plano-green" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="var(--lc-status-confirmed)" stopOpacity="0.2" />
+            <stop offset="1" stopColor="var(--lc-status-confirmed)" stopOpacity="0.07" />
+          </linearGradient>
+          <pattern id="plano-pines" width="22" height="18" patternUnits="userSpaceOnUse">
+            <circle cx="5" cy="7" r="2.2" fill="var(--lc-status-confirmed)" opacity="0.32" />
+            <circle cx="15" cy="13" r="1.6" fill="var(--lc-status-confirmed)" opacity="0.24" />
+          </pattern>
+          <pattern id="plano-waves" width="28" height="12" patternUnits="userSpaceOnUse">
+            <path
+              d="M0 6 Q7 1 14 6 T28 6"
+              fill="none"
+              stroke="var(--lc-status-info)"
+              strokeWidth="1.4"
+              opacity="0.28"
+            />
+          </pattern>
           {/* rayados: bloqueo temporal y baja de servicio indefinida. */}
           <pattern
             id="plano-blocked-hatch"
@@ -461,16 +482,33 @@ function Decor({ d }: { d: PlanoDecor }) {
         {...common}
         rx={10}
         fill="none"
-        stroke="var(--border)"
-        strokeWidth={2}
-        strokeDasharray="2 4"
+        stroke="var(--muted-foreground)"
+        strokeWidth={1.5}
+        strokeDasharray="4 5"
+        opacity={0.55}
       />
     );
-  if (d.kind === 'road') return <rect {...common} rx={3} fill="var(--muted)" opacity={0.8} />;
+  if (d.kind === 'road')
+    return (
+      <g>
+        <rect {...common} rx={5} fill="var(--muted)" opacity={0.78} />
+        <line
+          x1={d.w > d.h ? d.x + 8 : d.x + d.w / 2}
+          y1={d.w > d.h ? d.y + d.h / 2 : d.y + 8}
+          x2={d.w > d.h ? d.x + d.w - 8 : d.x + d.w / 2}
+          y2={d.w > d.h ? d.y + d.h / 2 : d.y + d.h - 8}
+          stroke="var(--muted-foreground)"
+          strokeWidth={1}
+          strokeDasharray="7 8"
+          opacity={0.24}
+        />
+      </g>
+    );
   if (d.kind === 'water')
     return (
       <g>
-        <rect {...common} rx={4} fill="var(--lc-status-info)" opacity={0.22} />
+        <rect {...common} rx={10} fill="url(#plano-water)" />
+        <rect {...common} rx={10} fill="url(#plano-waves)" />
         {d.label && (
           <text
             x={d.x + 8}
@@ -486,7 +524,8 @@ function Decor({ d }: { d: PlanoDecor }) {
   if (d.kind === 'green')
     return (
       <g>
-        <rect {...common} rx={6} fill="var(--lc-status-confirmed)" opacity={0.1} />
+        <rect {...common} rx={9} fill="url(#plano-green)" />
+        <rect {...common} rx={9} fill="url(#plano-pines)" />
         {d.label && (
           <text
             x={d.x + 6}
@@ -504,7 +543,14 @@ function Decor({ d }: { d: PlanoDecor }) {
   const s = clamp(Math.min(d.w, d.h) * 0.35, 12, 18);
   return (
     <g>
-      <rect {...common} rx={5} fill="var(--card)" stroke="var(--border)" strokeWidth={1.5} />
+      <rect
+        {...common}
+        rx={8}
+        fill="var(--card)"
+        stroke="var(--muted-foreground)"
+        strokeWidth={1.25}
+        opacity={0.96}
+      />
       <Icon
         x={d.x + d.w / 2 - s / 2}
         y={d.y + d.h / 2 - s + 1}
@@ -567,7 +613,7 @@ function Unit({
         width={rect.w}
         height={rect.h}
         rx={4}
-        fill={v.free ? 'var(--background)' : v.fill}
+        fill={v.free ? 'var(--card)' : v.fill}
         stroke={selected ? 'var(--ring)' : v.free ? 'var(--border)' : 'transparent'}
         strokeWidth={selected ? 2 : 1}
       />

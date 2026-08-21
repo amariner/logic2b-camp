@@ -493,6 +493,12 @@ describe('check-in / check-out (ADR 0022)', () => {
     const pendingCents = detail.totalCents - detail.paidCents;
     if (pendingCents > 0)
       await act(id, { action: 'record_payment', amountCents: pendingCents, method: 'cash' });
+    await act(id, {
+      action: 'set_arrival_details',
+      vehiclePlate: null,
+      arrivalEta: null,
+      accessCredential: 'Mando pruebas',
+    });
     return id;
   };
 
@@ -510,6 +516,47 @@ describe('check-in / check-out (ADR 0022)', () => {
     expect(response.status).toBe(409);
     expect((await response.json()) as { error: string }).toMatchObject({
       error: 'payment_pending',
+    });
+  });
+
+  it('retiene y devuelve la fianza, y habilita el acceso al hacer check-in', async () => {
+    const id = await mkConfirmed('2026-03-24', '2026-03-27');
+
+    expect((await act(id, { action: 'set_deposit_requirement', amountCents: 15_000 })).status).toBe(
+      200,
+    );
+    const blocked = await act(id, { action: 'check_in' });
+    expect(blocked.status).toBe(409);
+    expect((await blocked.json()) as { error: string }).toMatchObject({
+      error: 'deposit_pending',
+    });
+
+    expect(
+      (
+        await act(id, {
+          action: 'record_deposit',
+          amountCents: 15_000,
+          method: 'card',
+        })
+      ).status,
+    ).toBe(200);
+
+    const checkedIn = await act(id, { action: 'check_in' });
+    expect(checkedIn.status).toBe(200);
+    expect((await checkedIn.json()) as { accessGrantedAt: string | null }).toMatchObject({
+      accessGrantedAt: expect.any(String),
+    });
+
+    expect((await act(id, { action: 'refund_deposit', amountCents: 15_000 })).status).toBe(200);
+    const detail = (await (await get(`/api/admin/bookings/${id}`)).json()) as {
+      depositPaidCents: number;
+      depositReturnedAt: string | null;
+      accessGrantedAt: string | null;
+    };
+    expect(detail).toMatchObject({
+      depositPaidCents: 0,
+      depositReturnedAt: expect.any(String),
+      accessGrantedAt: expect.any(String),
     });
   });
 

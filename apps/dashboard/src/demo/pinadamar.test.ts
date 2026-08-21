@@ -77,4 +77,60 @@ describe('escenario Pinada del Mar', () => {
       vi.unstubAllGlobals();
     }
   });
+
+  it('completa cobro, fianza, acceso y check-in en el circuito de recepción', async () => {
+    const stored = new Map<string, string>();
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => stored.get(key) ?? null,
+      setItem: (key: string, value: string) => stored.set(key, value),
+      removeItem: (key: string) => stored.delete(key),
+    });
+    try {
+      const arrivals = await demoScenarioRequest('/api/admin/bookings?arrivalsOn=2026-08-21');
+      const booking = (
+        arrivals.body as {
+          items: Array<{ id: string }>;
+        }
+      ).items[0]!;
+      const detail = (await demoScenarioRequest(`/api/admin/bookings/${booking.id}`)).body as {
+        totalCents: number;
+        paidCents: number;
+        depositCents: number;
+      };
+      const act = (body: unknown) =>
+        demoScenarioRequest(`/api/admin/bookings/${booking.id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(body),
+        });
+
+      expect((await act({ action: 'check_in' })).status).toBe(409);
+      await act({
+        action: 'record_payment',
+        amountCents: detail.totalCents - detail.paidCents,
+        method: 'cash',
+      });
+      await act({
+        action: 'set_arrival_details',
+        vehiclePlate: '1234 abc',
+        arrivalEta: '2026-08-21T15:30:00.000Z',
+        accessCredential: 'Mando recepción 12',
+      });
+      expect((await act({ action: 'check_in' })).status).toBe(409);
+      await act({
+        action: 'record_deposit',
+        amountCents: detail.depositCents,
+        method: 'card',
+      });
+      expect((await act({ action: 'check_in' })).status).toBe(200);
+
+      expect((await demoScenarioRequest(`/api/admin/bookings/${booking.id}`)).body).toMatchObject({
+        checkedInAt: '2026-08-21T12:00:00.000Z',
+        accessGrantedAt: '2026-08-21T12:00:00.000Z',
+        accessCredential: 'Mando recepción 12',
+        depositPaidCents: detail.depositCents,
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
