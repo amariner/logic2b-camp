@@ -485,3 +485,5 @@ export type QuoteResponse = {
     currency: string;
   };
 };
+/** Refresco de cortesía: D1 no se consulta cada minuto; al volver a la pestaña React Query refresca. */
+export const D1_REFETCH_MS = 5 * 60_000;

@@ -13,7 +13,7 @@ import type {
   UnitType,
 } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
-import { gt, inArray } from 'drizzle-orm';
+import { and, gt, inArray, lt } from 'drizzle-orm';
 
 export type EngineData = {
   seasons: Season[];
@@ -24,8 +24,28 @@ export type EngineData = {
   ratePlans: RatePlan[];
 };
 
-/** Carga el universo que necesita el motor. Filtrar por fechas es optimización futura. */
-export async function loadEngineData(db: Db): Promise<EngineData> {
+/**
+ * Carga el universo que necesita el motor, acotando reservas y bloqueos al
+ * intervalo solicitado. En la demo densa evita leer ~1.300 reservas activas en
+ * cada paso del funnel cuando solo unas decenas pueden solapar la estancia.
+ */
+export async function loadEngineData(
+  db: Db,
+  range?: { dateFrom: string; dateTo: string },
+): Promise<EngineData> {
+  const activeBookingFilter = range
+    ? and(
+        inArray(schema.bookings.status, ['pending', 'confirmed']),
+        lt(schema.bookings.dateFrom, range.dateTo),
+        gt(schema.bookings.dateTo, range.dateFrom),
+      )
+    : inArray(schema.bookings.status, ['pending', 'confirmed']);
+  const blockFilter = range
+    ? and(
+        lt(schema.inventoryBlocks.dateFrom, range.dateTo),
+        gt(schema.inventoryBlocks.dateTo, range.dateFrom),
+      )
+    : undefined;
   const [seasonRows, typeRows, unitRows, bookingRows, blockRows, planRows] = await Promise.all([
     db.select().from(schema.seasonsCalendar),
     db.select().from(schema.unitTypes),
@@ -40,8 +60,8 @@ export async function loadEngineData(db: Db): Promise<EngineData> {
         status: schema.bookings.status,
       })
       .from(schema.bookings)
-      .where(inArray(schema.bookings.status, ['pending', 'confirmed'])),
-    db.select().from(schema.inventoryBlocks),
+      .where(activeBookingFilter),
+    db.select().from(schema.inventoryBlocks).where(blockFilter),
     db.select().from(schema.ratePlans),
   ]);
 

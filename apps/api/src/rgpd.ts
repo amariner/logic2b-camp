@@ -13,7 +13,7 @@ import {
   type RetentionStay,
 } from '@logic-camp/core';
 import { schema, type Db } from '@logic-camp/db';
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, isNull, lt } from 'drizzle-orm';
 import { nowIso, uid } from './ids';
 import { paymentView } from './payments';
 
@@ -242,27 +242,54 @@ const SCRUBBED_CONTACT = { name: 'Anonimizado', email: '', phone: undefined, loc
 
 export async function sweepEnquiries(
   db: Db,
-  opts: { dryRun?: boolean; today?: string; years?: number } = {},
-): Promise<{ due: string[]; anonymized: number }> {
+  opts: {
+    dryRun?: boolean;
+    today?: string;
+    years?: number;
+    maxCandidates?: number;
+    maxAnonymize?: number;
+  } = {},
+): Promise<{ due: string[]; anonymized: number; capped: boolean }> {
   const today = opts.today ?? todayIso();
   const cutoff = addYears(today, -(opts.years ?? RETENTION.defaultPurgeYears));
-  const rows = await db.select().from(schema.enquiries);
+  const maxCandidates = opts.maxCandidates ?? 500;
+  const rows = await db
+    .select()
+    .from(schema.enquiries)
+    .where(and(eq(schema.enquiries.demoFixture, false), lt(schema.enquiries.createdAt, cutoff)))
+    .limit(maxCandidates + 1);
   const due = rows
-    .filter((e) => e.createdAt.slice(0, 10) < cutoff)
+    .slice(0, maxCandidates)
     .filter((e) => e.contact.name !== SCRUBBED_CONTACT.name)
     .map((e) => e.id);
+  const selected = due.slice(0, opts.maxAnonymize ?? 25);
+  const capped = rows.length > maxCandidates || selected.length < due.length;
 
-  if (opts.dryRun) return { due, anonymized: 0 };
-  for (const id of due) {
+  if (opts.dryRun) return { due, anonymized: 0, capped };
+  for (const id of selected) {
     await db
       .update(schema.enquiries)
       .set({ contact: SCRUBBED_CONTACT, message: '' })
       .where(eq(schema.enquiries.id, id));
   }
-  return { due, anonymized: due.length };
+  return { due, anonymized: selected.length, capped };
 }
 
-export type RetentionSweep = { scanned: number; due: string[]; anonymized: number };
+export type RetentionSweep = {
+  scanned: number;
+  due: string[];
+  anonymized: number;
+  capped: boolean;
+};
+
+const D1_IN_CHUNK = 75;
+const chunksOf = <T>(values: T[], size = D1_IN_CHUNK): T[][] => {
+  const chunks: T[][] = [];
+  for (let offset = 0; offset < values.length; offset += size) {
+    chunks.push(values.slice(offset, offset + size));
+  }
+  return chunks;
+};
 
 /**
  * Purga por retención. La ejecuta el cron; con `dryRun` se puede mirar antes qué
@@ -271,20 +298,70 @@ export type RetentionSweep = { scanned: number; due: string[]; anonymized: numbe
 export async function sweepRetention(
   db: Db,
   tenantSlug: string,
-  opts: { dryRun?: boolean; today?: string; years?: number } = {},
+  opts: {
+    dryRun?: boolean;
+    today?: string;
+    years?: number;
+    maxCandidates?: number;
+    maxAnonymize?: number;
+  } = {},
 ): Promise<RetentionSweep> {
   const today = opts.today ?? todayIso();
-  const guests = await db.select().from(schema.guests);
-  const pending = guests.filter((g) => !g.anonymizedAt);
+  const maxCandidates = opts.maxCandidates ?? 500;
+  const guests = await db
+    .select({ id: schema.guests.id })
+    .from(schema.guests)
+    // Los fixtures se regeneran por su flujo propio. La retención legal solo
+    // opera sobre personas reales y nunca puede convertir una reserva real en demo.
+    .where(and(eq(schema.guests.demoFixture, false), isNull(schema.guests.anonymizedAt)))
+    .limit(maxCandidates + 1);
+  const pending = guests.slice(0, maxCandidates);
 
-  const due: string[] = [];
-  for (const g of pending) {
-    if (isDueForAnonymization(await staysOf(db, g.id), today, opts.years)) due.push(g.id);
+  // Antes se hacía una consulta booking_guests + otra bookings POR huésped.
+  // En la demo remota fue la consulta más cara de D1. Se carga el grafo en
+  // bloques acotados y se agrupa en memoria; el índice guest_id mantiene cada
+  // bloque proporcional a sus resultados.
+  const links = (
+    await Promise.all(
+      chunksOf(pending.map((guest) => guest.id)).map((ids) =>
+        db
+          .select({
+            guestId: schema.bookingGuests.guestId,
+            bookingId: schema.bookingGuests.bookingId,
+          })
+          .from(schema.bookingGuests)
+          .where(inArray(schema.bookingGuests.guestId, ids)),
+      ),
+    )
+  ).flat();
+  const bookingIds = [...new Set(links.map((link) => link.bookingId))];
+  const stays = (
+    await Promise.all(
+      chunksOf(bookingIds).map((ids) =>
+        db
+          .select({ id: schema.bookings.id, dateTo: schema.bookings.dateTo })
+          .from(schema.bookings)
+          .where(inArray(schema.bookings.id, ids)),
+      ),
+    )
+  ).flat();
+  const dateByBooking = new Map(stays.map((stay) => [stay.id, stay.dateTo]));
+  const staysByGuest = new Map<string, RetentionStay[]>();
+  for (const link of links) {
+    const dateTo = dateByBooking.get(link.bookingId);
+    if (!dateTo) continue;
+    staysByGuest.set(link.guestId, [...(staysByGuest.get(link.guestId) ?? []), { dateTo }]);
   }
+
+  const due = pending
+    .filter((guest) => isDueForAnonymization(staysByGuest.get(guest.id) ?? [], today, opts.years))
+    .map((guest) => guest.id);
+  const selected = due.slice(0, opts.maxAnonymize ?? 25);
+  const capped = guests.length > maxCandidates || selected.length < due.length;
 
   let anonymized = 0;
   if (!opts.dryRun) {
-    for (const id of due) {
+    for (const id of selected) {
       // `userId: null` — la purga no la ejecuta una persona, y la auditoría debe decirlo.
       // NO se le pasa `years`: la comprobación individual usa siempre el plazo LEGAL,
       // así que la ventana de purga (más larga) nunca puede relajarlo por debajo.
@@ -292,5 +369,5 @@ export async function sweepRetention(
       if (r.ok && !r.alreadyDone) anonymized++;
     }
   }
-  return { scanned: pending.length, due, anonymized };
+  return { scanned: pending.length, due, anonymized, capped };
 }

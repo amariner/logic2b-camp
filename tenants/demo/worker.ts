@@ -1,17 +1,14 @@
 /**
  * Punto de entrada del Worker del tenant `demo` (ADR 0013). Envuelve el
  * Worker genérico de `@logic-camp/api` sin tocarlo — SOLO aquí, dentro de
- * `tenants/demo/`, viven el reset nocturno y la puerta de acceso anónimo
+ * `tenants/demo/`, viven el refresco semanal acotado y la puerta de acceso anónimo
  * (ADR 0029): ningún camping real (que sigue apuntando `main` a
  * `apps/api/src/index.ts` directamente) carga un byte de este fichero ni de
  * los datos ficticios de Cala Sereno.
  */
-import apiWorker, { type Bindings } from '@logic-camp/api';
-import { resetDemoData } from './reset';
+import apiWorker, { CRONS, type Bindings } from '@logic-camp/api';
+import { refreshDemoReservations } from './refresh';
 import { DEMO_LOGIN } from './seed';
-
-// distinto del cron de purga de holds cada 15 min (ADR 0007), que sigue igual
-const RESET_CRON = '0 3 * * *';
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -65,8 +62,9 @@ async function rutasDemo(
     );
   }
 
-  // Restablecer los datos: la MISMA función del cron nocturno, sin duplicar
-  // nada. Exige sesión válida — no es una barrera de seguridad seria y no
+  // Actualiza exclusivamente las reservas ficticias y sus tablas dependientes.
+  // Comparte el candado semanal con el cron: ni el botón ni reintentos pueden
+  // multiplicar el consumo. Exige sesión válida — no es una barrera seria y no
   // pretende serlo: es el pestillo que impide que un desconocido con `curl`
   // deje la demo en un bucle de wipes sin haber entrado siquiera.
   if (pathname === '/api/demo/reset' && request.method === 'POST') {
@@ -82,11 +80,8 @@ async function rutasDemo(
       typeof cuerpo === 'object' && cuerpo !== null && 'user' in cuerpo && cuerpo.user !== null;
     if (!hayUsuario) return json({ error: 'unauthorized' }, 401);
 
-    await resetDemoData(env.DB);
-    // El wipe incluye `sessions`: la sesión de quien acaba de pulsar el botón
-    // ya no existe. El cliente tiene que volver a entrar por la puerta, y se
-    // le dice aquí para que eso no dependa de que alguien lo recuerde.
-    return json({ ok: true, sessionInvalidated: true });
+    const result = await refreshDemoReservations(env.DB);
+    return json({ ok: true, updated: !result.skipped, sessionInvalidated: false });
   }
 
   return null;
@@ -104,10 +99,10 @@ export default {
 
   async scheduled(event: ScheduledController, env: Bindings): Promise<void> {
     await apiWorker.scheduled(event, env);
-    // doble guarda: el cron correcto Y el tenant correcto, aunque este
+    // Doble guarda: el cron correcto Y el tenant correcto, aunque este
     // fichero nunca se referencia desde el wrangler.jsonc de otro tenant.
-    if (event.cron === RESET_CRON && env.TENANT_SLUG === 'demo') {
-      await resetDemoData(env.DB);
+    if (event.cron === CRONS.weekly && env.TENANT_SLUG === 'demo') {
+      await refreshDemoReservations(env.DB);
     }
   },
 };

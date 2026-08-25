@@ -21,7 +21,7 @@ import {
   cn,
   focusRing,
 } from '@logic-camp/ui';
-import { apiGet, type BookingDetail, type BookingListItem } from '../api';
+import { D1_REFETCH_MS, apiGet, type BookingDetail, type BookingListItem } from '../api';
 import { usePuede } from '../auth';
 import BookingPanel from '../components/BookingPanel';
 import NewBookingPanel from '../components/NewBookingPanel';
@@ -58,7 +58,7 @@ export default function Reservas() {
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['bookings', 'list', params.toString()],
     queryFn: () => apiGet<{ items: BookingListItem[] }>(`/api/admin/bookings?${params}`),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
 
   const items = data?.items ?? [];

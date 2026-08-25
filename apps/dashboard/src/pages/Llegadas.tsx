@@ -27,7 +27,7 @@ import {
   toast,
 } from '@logic-camp/ui';
 import { Clock3, DoorOpen, LogOut, MessageCircle, Search } from 'lucide-react';
-import { apiGet, apiPatch, type BookingListItem } from '../api';
+import { D1_REFETCH_MS, apiGet, apiPatch, type BookingListItem } from '../api';
 import { usePuede } from '../auth';
 import BookingPanel from '../components/BookingPanel';
 import { QueryError } from '../components/QueryError';
@@ -305,13 +305,13 @@ export default function Llegadas() {
       apiGet<{ items: BookingListItem[] }>(
         `/api/admin/bookings?arrivalsOn=${dia}&pageSize=100${buscarApi ? `&q=${encodeURIComponent(buscarApi)}` : ''}`,
       ),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
   const salidas = useQuery({
     queryKey: ['bookings', 'departures', dia],
     queryFn: () =>
       apiGet<{ items: BookingListItem[] }>(`/api/admin/bookings?departuresOn=${dia}&pageSize=100`),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
 
   // canceladas fuera: no llegan ni salen

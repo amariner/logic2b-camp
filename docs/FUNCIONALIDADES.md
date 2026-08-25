@@ -178,7 +178,7 @@ La pantalla firma del producto. La rejilla unidades × días que en muchos campi
 - **Zoom** semana / mes / temporada, navegación por fechas y salto a hoy.
 - **Bandeja "sin asignar"**: las reservas sin unidad física asignada nunca se pierden de vista — y se **arrastran directamente a una fila** para asignarlas.
 - **Modo oscuro** (claro / oscuro / según el sistema): un mostrador a las 23:00 lo agradece. Los colores de estado están verificados de contraste en ambos temas.
-- Se actualiza sola cada minuto.
+- Se actualiza cada cinco minutos y al volver a enfocar la pestaña.
 
 ### 6.2 Mover, estirar y crear arrastrando
 

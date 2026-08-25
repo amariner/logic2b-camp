@@ -46,6 +46,7 @@ import { Ban, ChevronRight, Map as MapIcon, Plus, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ApiError,
+  D1_REFETCH_MS,
   apiDelete,
   apiGet,
   apiPatch,
@@ -221,7 +222,7 @@ export default function Planning() {
     queryKey: ['planning', from, to],
     queryFn: () => apiGet<PlanningData>(`/api/admin/planning?from=${from}&to=${to}`),
     staleTime: 15_000,
-    refetchInterval: 60_000, // "tiempo real" de recepción: refresco de cortesía
+    refetchInterval: D1_REFETCH_MS, // cortesía; al volver a la pestaña también refresca
   });
 
   // ---------- filtros DENTRO del planning (ADR 0023 §3) ----------

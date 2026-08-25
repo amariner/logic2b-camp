@@ -18,7 +18,7 @@ import {
 } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { apiGet, type NotificationLogItem, type NotificationStatus } from '../api';
+import { D1_REFETCH_MS, apiGet, type NotificationLogItem, type NotificationStatus } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t, tDyn } from '../i18n';
 import { BotonAyuda } from '../components/BotonAyuda';
@@ -44,7 +44,7 @@ export default function Notificaciones() {
       apiGet<{ items: NotificationLogItem[] }>(
         `/api/admin/notifications${filtro === 'todas' ? '' : `?status=${filtro}`}`,
       ),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
 
   const items = data?.items ?? [];

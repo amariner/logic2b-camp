@@ -118,7 +118,7 @@ export async function createBooking(
     }
   }
 
-  const data = await loadEngineData(db);
+  const data = await loadEngineData(db, { dateFrom: body.dateFrom, dateTo: body.dateTo });
   const unitType = data.unitTypes.find((t) => t.id === body.unitTypeId);
   if (!unitType) return { ok: false, status: 404, body: { error: 'unknown_unit_type' } };
 

@@ -1,6 +1,7 @@
 import { createDb, schema } from '@logic-camp/db';
-import { lt } from 'drizzle-orm';
+import { inArray, lt } from 'drizzle-orm';
 import { app } from './app';
+import { assertCronBudget, cronName } from './cron-policy';
 import { errorDetail, logEvent } from './errors';
 import { notifyArrivalReminders, notifyStuckPendingBookings } from './notify';
 import { sweepEnquiries, sweepRetention } from './rgpd';
@@ -9,6 +10,7 @@ import type { Bindings } from './tenant';
 export type { AppType } from './app';
 export type { Bindings } from './tenant';
 export { createApiClient, type ApiClient } from './client';
+export { CRONS } from './cron-policy';
 
 /**
  * Cada tarea del cron falla SOLA (ADR 0026 §3).
@@ -32,55 +34,80 @@ async function runTask(name: string, tenant: string, fn: () => Promise<unknown>)
   }
 }
 
-export default {
-  fetch: app.fetch,
-
-  // Cron (ADR 0007 + 0014 + 0015 + 0026): purga de holds caducados (la expiración
-  // perezosa ya los ignora en las queries; esto solo limpia filas muertas) + aviso
-  // de reservas web `pending` colgadas sin pagar ni cancelar + recordatorio de
-  // llegada al huésped el día antes + purga por retención de datos personales.
-  async scheduled(_event: ScheduledController, env: Bindings): Promise<void> {
-    const db = createDb(env.DB);
-    const tenantSlug = env.TENANT_SLUG ?? 'unknown';
-
-    await runTask('purge_holds', tenantSlug, () =>
-      db
-        .delete(schema.inventoryHolds)
-        .where(lt(schema.inventoryHolds.expiresAt, new Date().toISOString())),
+async function purgeExpiredHolds(db: ReturnType<typeof createDb>): Promise<void> {
+  // La expiración perezosa ya protege disponibilidad. Esta limpieza solo evita
+  // basura, por eso 50 filas/día son suficientes y actúan como fusible.
+  const expired = await db
+    .select({ id: schema.inventoryHolds.id })
+    .from(schema.inventoryHolds)
+    .where(lt(schema.inventoryHolds.expiresAt, new Date().toISOString()))
+    .limit(50);
+  if (expired.length) {
+    await db.delete(schema.inventoryHolds).where(
+      inArray(
+        schema.inventoryHolds.id,
+        expired.map((row) => row.id),
+      ),
     );
+  }
+}
+
+/** Ejecutable y testeable sin desplegar ni tocar la configuración remota. */
+export async function runScheduled(event: ScheduledController, env: Bindings): Promise<void> {
+  const name = cronName(event.cron);
+  if (!name) return;
+  assertCronBudget(name);
+
+  const db = createDb(env.DB);
+  const tenantSlug = env.TENANT_SLUG ?? 'unknown';
+
+  if (name === 'daily') {
+    await runTask('purge_holds', tenantSlug, () => purgeExpiredHolds(db));
     await runTask('stuck_pending', tenantSlug, () =>
       notifyStuckPendingBookings(db, tenantSlug, env.RESEND_API_KEY),
     );
     await runTask('arrival_reminders', tenantSlug, () =>
       notifyArrivalReminders(db, tenantSlug, env.RESEND_API_KEY),
     );
-    // Retención RGPD (ADR 0026 §2.4). Va la ÚLTIMA a propósito: es la única tarea
-    // irreversible del tick, y no debe correr por delante de las que sí se pueden
-    // repetir sin daño.
-    await runTask('retention_sweep', tenantSlug, async () => {
-      const result = await sweepRetention(db, tenantSlug);
-      if (result.anonymized > 0) {
-        logEvent({
-          level: 'info',
-          event: 'retention_sweep',
-          tenant: tenantSlug,
-          scanned: result.scanned,
-          anonymized: result.anonymized,
-        });
-      }
+    return;
+  }
+
+  // Retención RGPD semanal y con lote máximo. Es irreversible, por lo que no
+  // comparte tick con tareas operativas y nunca procesa fixtures sintéticos.
+  await runTask('retention_sweep', tenantSlug, async () => {
+    const result = await sweepRetention(db, tenantSlug, {
+      maxCandidates: 500,
+      maxAnonymize: 25,
     });
-    // Solicitudes: corre en TODOS los niveles, incluido el 1, que no tiene motor
-    // pero sí acumula datos de contacto de cualquiera que rellenó el formulario.
-    await runTask('enquiry_retention', tenantSlug, async () => {
-      const result = await sweepEnquiries(db);
-      if (result.anonymized > 0) {
-        logEvent({
-          level: 'info',
-          event: 'enquiry_retention',
-          tenant: tenantSlug,
-          anonymized: result.anonymized,
-        });
-      }
-    });
+    if (result.anonymized > 0) {
+      logEvent({
+        level: 'info',
+        event: 'retention_sweep',
+        tenant: tenantSlug,
+        scanned: result.scanned,
+        anonymized: result.anonymized,
+        capped: result.capped,
+      });
+    }
+  });
+  await runTask('enquiry_retention', tenantSlug, async () => {
+    const result = await sweepEnquiries(db, { maxCandidates: 500, maxAnonymize: 25 });
+    if (result.anonymized > 0) {
+      logEvent({
+        level: 'info',
+        event: 'enquiry_retention',
+        tenant: tenantSlug,
+        anonymized: result.anonymized,
+        capped: result.capped,
+      });
+    }
+  });
+}
+
+export default {
+  fetch: app.fetch,
+
+  async scheduled(event: ScheduledController, env: Bindings): Promise<void> {
+    await runScheduled(event, env);
   },
 };

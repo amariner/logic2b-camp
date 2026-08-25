@@ -115,10 +115,8 @@ export function useEntrarDemo() {
 }
 
 /**
- * Restablece los datos de la demo. El wipe borra `sessions`, así que la sesión
- * de quien pulsa muere con él: por eso vuelve a entrar por la puerta antes de
- * refrescar nada (ADR 0029 §4). Sin ese segundo paso, "restablecer" expulsaría
- * al visitante al login — justo la impresión contraria a la que se busca.
+ * Solicita el refresco semanal acotado de fixtures. El servidor conserva la
+ * sesión y aplica un candado común con el cron para impedir ejecuciones extra.
  */
 export function useResetDemo() {
   const qc = useQueryClient();
@@ -130,11 +128,7 @@ export function useResetDemo() {
       }
       const res = await fetch('/api/demo/reset', { method: 'POST', credentials: 'same-origin' });
       if (!res.ok) throw new Error('demo_reset_failed');
-      const volver = await fetch('/api/demo/sign-in', {
-        method: 'POST',
-        credentials: 'same-origin',
-      });
-      if (!volver.ok) throw new Error('demo_sign_in_failed');
+      return res.json();
     },
     onSuccess: () => void qc.invalidateQueries(),
   });

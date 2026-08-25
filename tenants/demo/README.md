@@ -26,10 +26,12 @@ Login: `POST /api/auth/sign-in/email` con `{ email, password }` (cookie de sesi�
 
 ## Reseed de la D1 REMOTA (`pnpm db:seed:remote`)
 
-El deploy lleva **schema** (migraciones), **no datos** — no existe reset nocturno
-remoto. Si cambias el seed (p. ej. activas un módulo en `tenants.modules`), la
-demo remota se queda con los datos viejos hasta re-sembrarla. Este comando
-encapsula el procedimiento FK-safe que antes se hacía a mano (deuda `[infra]`):
+El deploy lleva **schema** (migraciones), **no datos**. El Worker solo refresca
+semanalmente y de forma diferencial reservas ficticias marcadas, sus pagos,
+solicitudes ficticias y dependencias acotadas; nunca reescribe catálogo,
+usuarios, sesiones, huéspedes ni datos reales. Si cambia el catálogo del seed
+(p. ej. un módulo en `tenants.modules`), hace falta una operación manual
+autorizada. Este comando destructivo existe solo para ese caso excepcional:
 
 ```bash
 pnpm db:seed:remote            # dry-run: imprime el plan, no toca nada
@@ -41,7 +43,7 @@ re-siembra una base de producción**; requiere además credenciales de Cloudflar
 El plan: regenera `seed.sql` → vacía las 21 tablas **hijo→padre** con `--command`
 uno a uno (la D1 remota **sí** fuerza FKs; el `--file` masivo hace `fetch failed`)
 preservando `d1_migrations` → siembra con `--file seed.sql` (INSERT-only). El
-orden de borrado es el mismo `DELETE_ORDER` del reset local (`reset.ts`), fuente
+orden de borrado es el mismo `DELETE_ORDER` del reset exclusivamente local (`reset.ts`), fuente
 única; la lógica es pura y está testeada en `remote-seed.test.ts`. Ojo: el wipe
 borra sesiones, así que después toca re-login en el dashboard.
 

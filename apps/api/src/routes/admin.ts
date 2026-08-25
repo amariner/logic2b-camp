@@ -100,7 +100,10 @@ async function quoteMove(
   if (booking.status !== 'pending' && booking.status !== 'confirmed')
     return { ok: false, status: 409, body: { error: 'invalid_state', status: booking.status } };
 
-  const data = await loadEngineData(db);
+  const data = await loadEngineData(db, {
+    dateFrom: target.dateFrom,
+    dateTo: target.dateTo,
+  });
   const unitType = data.unitTypes.find((t) => t.id === booking.unitTypeId);
   if (!unitType) return { ok: false, status: 404, body: { error: 'unknown_unit_type' } };
 
@@ -367,9 +370,9 @@ export const adminRoutes = new Hono<AuthEnv>()
       .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
       .where(filters.length ? and(...filters) : undefined)
       .orderBy(
-        sql`${schema.bookings.arrivalEta} is null`,
-        schema.bookings.arrivalEta,
-        desc(schema.bookings.createdAt),
+        ...(q.arrivalsOn
+          ? [sql`${schema.bookings.arrivalEta} is null`, schema.bookings.arrivalEta]
+          : [desc(schema.bookings.createdAt)]),
       )
       .limit(q.pageSize)
       .offset((q.page - 1) * q.pageSize);

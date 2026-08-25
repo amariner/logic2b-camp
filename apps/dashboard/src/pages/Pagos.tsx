@@ -17,7 +17,7 @@ import {
 } from '@logic-camp/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { apiGet, type PaymentLogItem } from '../api';
+import { D1_REFETCH_MS, apiGet, type PaymentLogItem } from '../api';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
 import { eur, fecha } from '../lib/format';
@@ -38,7 +38,7 @@ export default function Pagos() {
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['payments', proveedor, estado],
     queryFn: () => apiGet<{ items: PaymentLogItem[] }>(`/api/admin/payments${qs ? `?${qs}` : ''}`),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
 
   const items = data?.items ?? [];

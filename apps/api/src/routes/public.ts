@@ -74,7 +74,10 @@ export const publicRoutes = new Hono<Env>()
 
     const db = c.get('tenant').db;
     const now = nowIso();
-    const [data, holds] = await Promise.all([loadEngineData(db), loadLiveHolds(db, now)]);
+    const [data, holds] = await Promise.all([
+      loadEngineData(db, { dateFrom: q.from, dateTo: q.to }),
+      loadLiveHolds(db, now),
+    ]);
     const occupancy: Occupancy = {
       adults: q.adults,
       childrenAges: childAges(q.children),
@@ -141,7 +144,10 @@ export const publicRoutes = new Hono<Env>()
     if (!parsed.success) return c.json({ error: 'invalid_body', issues: parsed.error.issues }, 400);
     const body = parsed.data;
     const db = c.get('tenant').db;
-    const [data, tenantConfig] = await Promise.all([loadEngineData(db), loadTenantConfig(db)]);
+    const [data, tenantConfig] = await Promise.all([
+      loadEngineData(db, { dateFrom: body.dateFrom, dateTo: body.dateTo }),
+      loadTenantConfig(db),
+    ]);
 
     const unitType = data.unitTypes.find((t) => t.id === body.unitTypeId);
     if (!unitType) return c.json({ error: 'unknown_unit_type' }, 404);
@@ -197,7 +203,10 @@ export const publicRoutes = new Hono<Env>()
     const db = c.get('tenant').db;
     const now = nowIso();
 
-    const [data, holds] = await Promise.all([loadEngineData(db), loadLiveHolds(db, now)]);
+    const [data, holds] = await Promise.all([
+      loadEngineData(db, { dateFrom: body.dateFrom, dateTo: body.dateTo }),
+      loadLiveHolds(db, now),
+    ]);
     const unitType = data.unitTypes.find((t) => t.id === body.unitTypeId);
     if (!unitType) return c.json({ error: 'unknown_unit_type' }, 404);
 
@@ -438,7 +447,7 @@ export const publicRoutes = new Hono<Env>()
 
     const now = nowIso();
     const [data, holds, tenantConfig] = await Promise.all([
-      loadEngineData(db),
+      loadEngineData(db, { dateFrom: body.dateFrom, dateTo: body.dateTo }),
       loadLiveHolds(db, now),
       loadTenantConfig(db),
     ]);

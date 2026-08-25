@@ -8,7 +8,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Button, EmptyState, SkeletonRows, cn, focusRing, toast } from '@logic-camp/ui';
-import { apiGet, apiPatch, type Catalog, type EnquiryItem, type EnquiryStatus } from '../api';
+import {
+  D1_REFETCH_MS,
+  apiGet,
+  apiPatch,
+  type Catalog,
+  type EnquiryItem,
+  type EnquiryStatus,
+} from '../api';
 import { usePuede } from '../auth';
 import { QueryError } from '../components/QueryError';
 import { t } from '../i18n';
@@ -65,7 +72,7 @@ export default function Solicitudes() {
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['enquiries'],
     queryFn: () => apiGet<{ items: EnquiryItem[] }>('/api/admin/enquiries'),
-    refetchInterval: 60_000,
+    refetchInterval: D1_REFETCH_MS,
   });
   const { data: catalog } = useQuery({
     queryKey: ['catalog'],

@@ -186,7 +186,9 @@ artefacto y el procedimiento local; **no acredita la API remota ni Time Travel**
 
 ### 4b. Ensayo remoto autorizado
 
-Contra la demo, que para eso está y se resetea sola cada noche:
+Contra una **base nueva de ensayo** derivada de la demo. La D1 publicada ya no
+se borra cada noche: conserva datos reales y solo refresca fixtures acotados una
+vez por semana.
 
 1. `pnpm export:tenant demo`
 2. `npx wrangler d1 time-travel info logic-camp-demo --config tenants/demo/wrangler.jsonc` → anota el bookmark más antiguo disponible.

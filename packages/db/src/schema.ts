@@ -209,8 +209,13 @@ export const enquiries = sqliteTable(
     source: text('source').notNull(),
     convertedBookingId: text('converted_booking_id'),
     createdAt: text('created_at').notNull(),
+    /** Solo datos sintéticos del portfolio. Las solicitudes reales conservan false. */
+    demoFixture: integer('demo_fixture', { mode: 'boolean' }).notNull().default(false),
   },
-  (t) => [index('enquiries_status_idx').on(t.status)],
+  (t) => [
+    index('enquiries_status_idx').on(t.status),
+    index('enquiries_fixture_created_idx').on(t.demoFixture, t.createdAt),
+  ],
 );
 
 // ---------- Reservas ----------
@@ -269,41 +274,58 @@ export const bookings = sqliteTable(
     locale: text('locale').notNull(),
     createdAt: text('created_at').notNull(),
     updatedAt: text('updated_at').notNull(),
+    /** Marca explícita de reserva ficticia; nunca se infiere de tenant, canal o código. */
+    demoFixture: integer('demo_fixture', { mode: 'boolean' }).notNull().default(false),
   },
   (t) => [
     uniqueIndex('bookings_code_uq').on(t.code),
     index('bookings_type_dates_idx').on(t.unitTypeId, t.dateFrom, t.dateTo),
     index('bookings_unit_dates_idx').on(t.unitId, t.dateFrom, t.dateTo),
     index('bookings_status_idx').on(t.status),
+    index('bookings_created_idx').on(t.createdAt),
+    index('bookings_date_from_idx').on(t.dateFrom),
+    index('bookings_date_to_idx').on(t.dateTo),
+    index('bookings_pending_cron_idx').on(t.status, t.channel, t.createdAt),
+    index('bookings_arrival_cron_idx').on(t.status, t.dateFrom),
+    index('bookings_fixture_idx').on(t.demoFixture),
   ],
 );
 
-export const guests = sqliteTable('guests', {
-  id: text('id').primaryKey(),
-  tenantId: text('tenant_id').notNull(),
-  name: text('name').notNull(),
-  surname: text('surname').notNull(),
-  docType: text('doc_type', { enum: ['dni', 'nie', 'passport', 'other'] }),
-  docNumber: text('doc_number'),
-  /** Nº de soporte del documento (ADR 0028): dato del parte distinto de docNumber. */
-  docSupportNumber: text('doc_support_number'),
-  birthdate: text('birthdate'),
-  nationality: text('nationality'),
-  /** Sexo, requerido por el parte de viajeros (ADR 0028). Nulable y aditivo. */
-  sex: text('sex', { enum: ['M', 'F'] }),
-  /** Segundo apellido, requerido por el parte. */
-  secondSurname: text('second_surname'),
-  /** Parentesco con el acompañante — SOLO para viajeros menores de 14 (ADR 0028). */
-  kinship: text('kinship'),
-  email: text('email'),
-  phone: text('phone'),
-  address: text('address'),
-  gdprConsentAt: text('gdpr_consent_at'),
-  /** A qué texto se consintió — una fecha sin versión no prueba nada (ADR 0026 §2.3). */
-  gdprConsentVersion: text('gdpr_consent_version'),
-  /** Sello de supresión (art. 17). La fila sobrevive vaciada, nunca se borra (ADR 0026 §2.2). */
-  anonymizedAt: text('anonymized_at'),
-});
+export const guests = sqliteTable(
+  'guests',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    name: text('name').notNull(),
+    surname: text('surname').notNull(),
+    docType: text('doc_type', { enum: ['dni', 'nie', 'passport', 'other'] }),
+    docNumber: text('doc_number'),
+    /** Nº de soporte del documento (ADR 0028): dato del parte distinto de docNumber. */
+    docSupportNumber: text('doc_support_number'),
+    birthdate: text('birthdate'),
+    nationality: text('nationality'),
+    /** Sexo, requerido por el parte de viajeros (ADR 0028). Nulable y aditivo. */
+    sex: text('sex', { enum: ['M', 'F'] }),
+    /** Segundo apellido, requerido por el parte. */
+    secondSurname: text('second_surname'),
+    /** Parentesco con el acompañante — SOLO para viajeros menores de 14 (ADR 0028). */
+    kinship: text('kinship'),
+    email: text('email'),
+    phone: text('phone'),
+    address: text('address'),
+    gdprConsentAt: text('gdpr_consent_at'),
+    /** A qué texto se consintió — una fecha sin versión no prueba nada (ADR 0026 §2.3). */
+    gdprConsentVersion: text('gdpr_consent_version'),
+    /** Sello de supresión (art. 17). La fila sobrevive vaciada, nunca se borra (ADR 0026 §2.2). */
+    anonymizedAt: text('anonymized_at'),
+    /** Titular sintético de fixture. Un huésped real conserva false para siempre. */
+    demoFixture: integer('demo_fixture', { mode: 'boolean' }).notNull().default(false),
+  },
+  (t) => [
+    index('guests_fixture_idx').on(t.demoFixture),
+    index('guests_name_idx').on(t.surname, t.name),
+  ],
+);
 
 export const bookingGuests = sqliteTable(
   'booking_guests',
@@ -316,7 +338,11 @@ export const bookingGuests = sqliteTable(
       .references(() => guests.id),
     isLead: integer('is_lead', { mode: 'boolean' }).notNull().default(false),
   },
-  (t) => [uniqueIndex('booking_guests_uq').on(t.bookingId, t.guestId)],
+  (t) => [
+    uniqueIndex('booking_guests_uq').on(t.bookingId, t.guestId),
+    index('booking_guests_guest_idx').on(t.guestId),
+    index('booking_guests_lead_idx').on(t.bookingId, t.isLead),
+  ],
 );
 
 export const payments = sqliteTable(
@@ -340,20 +366,27 @@ export const payments = sqliteTable(
 
 // ---------- Operación ----------
 
-export const notificationsLog = sqliteTable('notifications_log', {
-  id: text('id').primaryKey(),
-  tenantId: text('tenant_id').notNull(),
-  bookingId: text('booking_id').references(() => bookings.id),
-  enquiryId: text('enquiry_id').references(() => enquiries.id),
-  channel: text('channel', { enum: ['email', 'whatsapp'] }).notNull(),
-  template: text('template').notNull(),
-  status: text('status', { enum: ['queued', 'sent', 'failed', 'disabled'] }).notNull(),
-  attempts: integer('attempts').notNull().default(0),
-  sentAt: text('sent_at'),
-  // Nullable a propósito (como sentAt): las filas de antes de esta columna
-  // (sesiones 18-21, ya en la D1 remota) no tienen fecha real que inventar.
-  createdAt: text('created_at'),
-});
+export const notificationsLog = sqliteTable(
+  'notifications_log',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull(),
+    bookingId: text('booking_id').references(() => bookings.id),
+    enquiryId: text('enquiry_id').references(() => enquiries.id),
+    channel: text('channel', { enum: ['email', 'whatsapp'] }).notNull(),
+    template: text('template').notNull(),
+    status: text('status', { enum: ['queued', 'sent', 'failed', 'disabled'] }).notNull(),
+    attempts: integer('attempts').notNull().default(0),
+    sentAt: text('sent_at'),
+    // Nullable a propósito (como sentAt): las filas de antes de esta columna
+    // (sesiones 18-21, ya en la D1 remota) no tienen fecha real que inventar.
+    createdAt: text('created_at'),
+  },
+  (t) => [
+    index('notifications_booking_template_idx').on(t.bookingId, t.template),
+    index('notifications_status_created_idx').on(t.status, t.createdAt),
+  ],
+);
 
 // Tabla ÚNICA de usuario: la de dominio Y la de Better Auth (ADR 0005).
 // name/email_verified/image/created_at/updated_at son los campos que exige Better Auth.

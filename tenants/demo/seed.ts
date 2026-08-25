@@ -1046,6 +1046,7 @@ export function generateSeed(anchor: string): SeedData {
     guests.push({
       id: gid,
       tenant_id: T,
+      demo_fixture: true,
       name: fn,
       surname: ln,
       second_surname: isSpanish ? lastNames[Math.floor(bkgN / 3) % lastNames.length]! : null,
@@ -1304,6 +1305,7 @@ export function generateSeed(anchor: string): SeedData {
     bookings.push({
       id,
       tenant_id: T,
+      demo_fixture: true,
       code: `CS-${Y}-${String(bkgN).padStart(4, '0')}`,
       status,
       channel: opts.channel ?? 'web',
@@ -1856,6 +1858,7 @@ export function generateSeed(anchor: string): SeedData {
     enquiries.push({
       id: `enq_${String(n).padStart(3, '0')}`,
       tenant_id: T,
+      demo_fixture: true,
       status,
       date_from: from,
       date_to: from ? addDays(from, 3 + Math.floor(rand() * 9)) : null,

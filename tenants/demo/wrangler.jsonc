@@ -4,15 +4,15 @@
 {
   "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
   "name": "logic-camp-demo",
-  // envuelve apps/api/src/index.ts + el reset nocturno (ADR 0013) — SOLO este tenant
+  // envuelve apps/api/src/index.ts + el refresco semanal acotado — SOLO este tenant
   "main": "./worker.ts",
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   // Solo el lead comercial usa Resend. Su secreto es LEADS_RESEND_API_KEY;
   // RESEND_API_KEY permanece ausente para no activar mensajería interna demo.
   "vars": { "TENANT_SLUG": "demo", "LEADS_TRANSPORT": "resend" },
-  // */15: purga de holds caducados del funnel (ADR 0007). 0 3 * * *: reset nocturno (ADR 0013)
-  "triggers": { "crons": ["*/15 * * * *", "0 3 * * *"] },
+  // Diario: holds + avisos. Semanal: RGPD + refresco incremental de reservas demo.
+  "triggers": { "crons": ["17 8 * * *", "37 3 * * 1"] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
   "assets": {
     // Bundle compuesto (ADR 0016): landing de producto en la raíz + web-demo en /demo/ +

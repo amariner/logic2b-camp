@@ -45,12 +45,14 @@ type DispatchInput = {
  * (disparado desde un cron) lo arma directamente desde `env`.
  */
 export type DispatchDeps = { db: Db; tenantSlug: string; apiKey?: string };
+type DispatchTenant = typeof schema.tenants.$inferSelect;
 
-async function dispatch(deps: DispatchDeps, input: DispatchInput): Promise<void> {
+async function dispatch(
+  deps: DispatchDeps,
+  input: DispatchInput,
+  row: DispatchTenant,
+): Promise<void> {
   const { db, tenantSlug, apiKey } = deps;
-
-  const row = (await db.select().from(schema.tenants))[0];
-  if (!row) throw new Error('TenantConfig ausente: la D1 no contiene una fila tenants');
   const config: NotificationsConfig = parseNotificationsConfig(
     tenantModules(row.modules).notifications,
   );
@@ -122,7 +124,7 @@ function depsFromContext(c: NotifyContext): DispatchDeps {
  */
 export function notifyAfter(c: NotifyContext, inputs: DispatchInput[]): Promise<unknown> {
   const deps = depsFromContext(c);
-  const task = Promise.allSettled(inputs.map((i) => dispatch(deps, i)));
+  const task = notifyNow(deps, inputs);
   try {
     c.executionCtx.waitUntil(task);
     return Promise.resolve();
@@ -137,7 +139,10 @@ export function notifyAfter(c: NotifyContext, inputs: DispatchInput[]): Promise<
  * que aquí simplemente se espera (ADR 0014).
  */
 export async function notifyNow(deps: DispatchDeps, inputs: DispatchInput[]): Promise<void> {
-  await Promise.allSettled(inputs.map((i) => dispatch(deps, i)));
+  if (!inputs.length) return;
+  const tenant = (await deps.db.select().from(schema.tenants))[0];
+  if (!tenant) throw new Error('TenantConfig ausente: la D1 no contiene una fila tenants');
+  await Promise.allSettled(inputs.map((input) => dispatch(deps, input, tenant)));
 }
 
 /**
@@ -222,7 +227,7 @@ export async function notifyStuckPendingBookings(
   tenantSlug: string,
   apiKey?: string,
 ): Promise<void> {
-  const { and, eq, lt } = await import('drizzle-orm');
+  const { and, eq, inArray, lt } = await import('drizzle-orm');
   const threshold = new Date(Date.now() - STUCK_PENDING_MS).toISOString();
 
   const stuck = await db
@@ -230,6 +235,7 @@ export async function notifyStuckPendingBookings(
       booking: schema.bookings,
       leadName: schema.guests.name,
       leadSurname: schema.guests.surname,
+      unitTypeNames: schema.unitTypes.nameI18n,
     })
     .from(schema.bookings)
     .leftJoin(
@@ -240,57 +246,72 @@ export async function notifyStuckPendingBookings(
       ),
     )
     .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
+    .leftJoin(schema.unitTypes, eq(schema.unitTypes.id, schema.bookings.unitTypeId))
     .where(
       and(
         eq(schema.bookings.status, 'pending'),
         eq(schema.bookings.channel, 'web'),
         lt(schema.bookings.createdAt, threshold),
       ),
-    );
+    )
+    .limit(25);
   if (!stuck.length) return;
+
+  const alreadySent = new Set(
+    (
+      await db
+        .select({ bookingId: schema.notificationsLog.bookingId })
+        .from(schema.notificationsLog)
+        .where(
+          and(
+            inArray(
+              schema.notificationsLog.bookingId,
+              stuck.map((row) => row.booking.id),
+            ),
+            eq(schema.notificationsLog.template, 'booking_pending_stuck'),
+          ),
+        )
+    ).flatMap((row) => (row.bookingId ? [row.bookingId] : [])),
+  );
 
   const houseLocale = (await loadTenantConfig(db)).locales[0] ?? 'es';
   const deps: DispatchDeps = { db, tenantSlug, apiKey };
-
-  for (const row of stuck) {
-    const already = await db
-      .select()
-      .from(schema.notificationsLog)
-      .where(
-        and(
-          eq(schema.notificationsLog.bookingId, row.booking.id),
-          eq(schema.notificationsLog.template, 'booking_pending_stuck'),
-        ),
-      );
-    if (already.length) continue;
-
-    const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
-    const breakdown = row.booking.priceBreakdown as { currency: string };
-    await notifyNow(deps, [
-      {
-        payload: {
-          kind: 'booking_pending_stuck',
-          data: {
-            campName: '',
-            code: row.booking.code,
-            holderName: row.leadName ? `${row.leadName} ${row.leadSurname ?? ''}`.trim() : '—',
-            dateFrom: row.booking.dateFrom,
-            dateTo: row.booking.dateTo,
-            nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
-            persons: occupancy.adults + occupancy.childrenAges.length,
-            unitTypeName: await unitTypeName(db, row.booking.unitTypeId, houseLocale),
-            lines: [],
-            totalCents: row.booking.totalCents,
-            touristTaxCents: row.booking.touristTaxCents,
-            currency: breakdown.currency,
+  await notifyNow(
+    deps,
+    stuck.flatMap((row): DispatchInput[] => {
+      if (alreadySent.has(row.booking.id)) return [];
+      const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
+      const breakdown = row.booking.priceBreakdown as { currency: string };
+      return [
+        {
+          payload: {
+            kind: 'booking_pending_stuck',
+            data: {
+              campName: '',
+              code: row.booking.code,
+              holderName: row.leadName ? `${row.leadName} ${row.leadSurname ?? ''}`.trim() : '—',
+              dateFrom: row.booking.dateFrom,
+              dateTo: row.booking.dateTo,
+              nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
+              persons: occupancy.adults + occupancy.childrenAges.length,
+              unitTypeName: localizedUnitTypeName(
+                row.unitTypeNames,
+                row.booking.unitTypeId,
+                houseLocale,
+              ),
+              lines: [],
+              totalCents: row.booking.totalCents,
+              touristTaxCents: row.booking.touristTaxCents,
+              currency: breakdown.currency,
+            },
           },
+          to: null,
+          locale: houseLocale,
+          bookingId: row.booking.id,
         },
-        to: null,
-        locale: houseLocale,
-        bookingId: row.booking.id,
-      },
-    ]);
-  }
+      ];
+    }),
+  );
 }
 
 const DAY_ISO_MS = 86_400_000;
@@ -306,13 +327,14 @@ export async function notifyArrivalReminders(
   tenantSlug: string,
   apiKey?: string,
 ): Promise<void> {
-  const { and, eq } = await import('drizzle-orm');
+  const { and, eq, inArray } = await import('drizzle-orm');
   const arrivalsOn = tomorrowIso();
 
   const arriving = await db
     .select({
       booking: schema.bookings,
       leadEmail: schema.guests.email,
+      unitTypeNames: schema.unitTypes.nameI18n,
     })
     .from(schema.bookings)
     .leftJoin(
@@ -323,52 +345,66 @@ export async function notifyArrivalReminders(
       ),
     )
     .leftJoin(schema.guests, eq(schema.guests.id, schema.bookingGuests.guestId))
-    .where(and(eq(schema.bookings.status, 'confirmed'), eq(schema.bookings.dateFrom, arrivalsOn)));
+    .leftJoin(schema.unitTypes, eq(schema.unitTypes.id, schema.bookings.unitTypeId))
+    .where(and(eq(schema.bookings.status, 'confirmed'), eq(schema.bookings.dateFrom, arrivalsOn)))
+    .limit(25);
   if (!arriving.length) return;
 
+  const alreadySent = new Set(
+    (
+      await db
+        .select({ bookingId: schema.notificationsLog.bookingId })
+        .from(schema.notificationsLog)
+        .where(
+          and(
+            inArray(
+              schema.notificationsLog.bookingId,
+              arriving.map((row) => row.booking.id),
+            ),
+            eq(schema.notificationsLog.template, 'booking_reminder'),
+          ),
+        )
+    ).flatMap((row) => (row.bookingId ? [row.bookingId] : [])),
+  );
+
   const deps: DispatchDeps = { db, tenantSlug, apiKey };
-
-  for (const row of arriving) {
-    if (!row.leadEmail) continue; // sin email no hay a quién avisar — no se sustituye por notifyTo
-
-    const already = await db
-      .select()
-      .from(schema.notificationsLog)
-      .where(
-        and(
-          eq(schema.notificationsLog.bookingId, row.booking.id),
-          eq(schema.notificationsLog.template, 'booking_reminder'),
-        ),
-      );
-    if (already.length) continue;
-
-    const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
-    const breakdown = row.booking.priceBreakdown as { currency: string };
-    await notifyNow(deps, [
-      {
-        payload: {
-          kind: 'booking_reminder',
-          data: {
-            campName: '',
-            code: row.booking.code,
-            holderName: '',
-            dateFrom: row.booking.dateFrom,
-            dateTo: row.booking.dateTo,
-            nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
-            persons: occupancy.adults + occupancy.childrenAges.length,
-            unitTypeName: await unitTypeName(db, row.booking.unitTypeId, row.booking.locale),
-            lines: [],
-            totalCents: row.booking.totalCents,
-            touristTaxCents: row.booking.touristTaxCents,
-            currency: breakdown.currency,
+  await notifyNow(
+    deps,
+    arriving.flatMap((row): DispatchInput[] => {
+      // sin email no hay a quién avisar — no se sustituye por notifyTo
+      if (!row.leadEmail || alreadySent.has(row.booking.id)) return [];
+      const occupancy = row.booking.occupancy as { adults: number; childrenAges: number[] };
+      const breakdown = row.booking.priceBreakdown as { currency: string };
+      return [
+        {
+          payload: {
+            kind: 'booking_reminder',
+            data: {
+              campName: '',
+              code: row.booking.code,
+              holderName: '',
+              dateFrom: row.booking.dateFrom,
+              dateTo: row.booking.dateTo,
+              nights: nightsOf(row.booking.dateFrom, row.booking.dateTo),
+              persons: occupancy.adults + occupancy.childrenAges.length,
+              unitTypeName: localizedUnitTypeName(
+                row.unitTypeNames,
+                row.booking.unitTypeId,
+                row.booking.locale,
+              ),
+              lines: [],
+              totalCents: row.booking.totalCents,
+              touristTaxCents: row.booking.touristTaxCents,
+              currency: breakdown.currency,
+            },
           },
+          to: row.leadEmail,
+          locale: row.booking.locale,
+          bookingId: row.booking.id,
         },
-        to: row.leadEmail,
-        locale: row.booking.locale,
-        bookingId: row.booking.id,
-      },
-    ]);
-  }
+      ];
+    }),
+  );
 }
 
 /** Desglose de la reserva → líneas del email en el idioma del titular. */
@@ -388,7 +424,11 @@ async function unitTypeName(db: Db, unitTypeId: string, locale: string): Promise
   const ut = (
     await db.select().from(schema.unitTypes).where(eq(schema.unitTypes.id, unitTypeId))
   )[0];
-  const names = (ut?.nameI18n ?? {}) as Record<string, string>;
+  return localizedUnitTypeName(ut?.nameI18n, unitTypeId, locale);
+}
+
+function localizedUnitTypeName(rawNames: unknown, unitTypeId: string, locale: string): string {
+  const names = (rawNames ?? {}) as Record<string, string>;
   return names[locale.slice(0, 2)] ?? names.es ?? unitTypeId;
 }
 
