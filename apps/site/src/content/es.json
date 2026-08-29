@@ -14,17 +14,312 @@
     "demo": "Ver demo",
     "mostrador": "Probar el gestor de reservas",
     "contacto": "Comenzar",
+    "web": "Web",
+    "gestor": "Gestor",
+    "contactar": "Contactar",
+    "comoFunciona": "Ver recorrido",
     "verDemo": "Ver la demo en vivo"
   },
   "hero": {
-    "kicker": "De tu primera web al copiloto del camping",
-    "titulo": "Web, reservas y gestión para campings, en un solo sistema.",
-    "subtitulo": "Desde 49 €/mes. Primero consigues consultas, después controlas reservas y pagos, automatizas recepción y terminas tomando mejores decisiones con tus datos. Sin cambiar de plataforma por el camino.",
+    "kicker": "Sistema de reservas para camping",
+    "tituloAntes": "Gestiona",
+    "tituloPalabras": ["reservas", "cobros", "recepción"],
+    "tituloDespues": "sin complicarte.",
+    "tituloAccesible": "Gestiona reservas, cobros y recepción sin complicarte.",
+    "subtitulo": "Web, reservas y operativa en un solo sistema. Empieza desde 49 €/mes.",
+    "emailLabel": "Email de trabajo",
+    "emailPlaceholder": "Tu email de trabajo",
+    "emailCta": "Solicitar información",
     "ctaDemo": "Ver planes",
+    "ctaComoFunciona": "Ver recorrido",
     "ctaVer": "Ver la web de ejemplo",
     "ctaMostrador": "Probar el gestor de reservas",
     "nota": "Plan Inicio: alta 0 €, un idioma y compromiso de 12 meses. Sin comisión por reserva.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
+  },
+  "conversion": {
+    "seoTitle": "Solicita información — Logic2B Campings",
+    "seoDescription": "Cuéntanos cómo es tu camping y te responderemos con el siguiente paso más útil para tu proyecto.",
+    "kicker": "Un primer paso, sin compromiso",
+    "titulo": "Veamos qué necesita tu camping.",
+    "texto": "Déjanos los datos esenciales. Revisaremos tu caso y te responderemos con una propuesta clara, sin obligarte a elegir un plan ahora.",
+    "beneficios": ["Respuesta personal, no automática", "Alcance y próximos pasos claros", "Sin tarjeta ni compromiso"],
+    "formKicker": "Solicita información",
+    "formTitulo": "Cuéntanos lo esencial",
+    "formTexto": "El correo que has indicado ya está preparado. Completa los datos restantes y nos pondremos en contacto contigo.",
+    "mensajePlaceholder": "Por ejemplo: quiero ordenar reservas y cobros",
+    "enviar": "Enviar solicitud"
+  },
+  "workflow": {
+    "kicker": "Tu operativa, conectada",
+    "titulo": "Todo el flujo de tu camping, en una sola plataforma.",
+    "texto": "Diseñamos el recorrido a medida de cómo vende y trabaja tu equipo: desde la primera visita a la web hasta la lectura de resultados.",
+    "aria": "Pasos del flujo de trabajo de Logic2B Campings",
+    "anterior": "Ver pasos anteriores",
+    "siguiente": "Ver pasos siguientes",
+    "items": [
+      {
+        "icono": "web",
+        "titulo": "Web que convierte",
+        "resumen": "Presenta cada estancia con claridad y guía hacia la consulta.",
+        "detalle": "La estructura, el contenido y los formularios se adaptan a tus alojamientos, temporadas y forma real de vender."
+      },
+      {
+        "icono": "disponibilidad",
+        "titulo": "Disponibilidad clara",
+        "resumen": "Recoge fechas, ocupación y preferencias desde el primer paso.",
+        "detalle": "El huésped aporta la información que recepción necesita sin cadenas de correos ni preguntas repetidas."
+      },
+      {
+        "icono": "solicitud",
+        "titulo": "Solicitud conectada",
+        "resumen": "Cada oportunidad llega ordenada al gestor del camping.",
+        "detalle": "Los datos de la web entran con su contexto para que el equipo pueda revisar, responder y convertir sin volver a copiarlos."
+      },
+      {
+        "icono": "planning",
+        "titulo": "Reserva en planning",
+        "resumen": "Ubica estancias y unidades en una vista operativa común.",
+        "detalle": "Recepción controla entradas, salidas, disponibilidad y asignaciones desde un mismo calendario de trabajo."
+      },
+      {
+        "icono": "cobros",
+        "titulo": "Cobros controlados",
+        "resumen": "Importes, estados y documentos permanecen ligados a la reserva.",
+        "detalle": "El equipo sabe qué está pendiente, qué se ha confirmado y qué debe revisarse antes de la llegada."
+      },
+      {
+        "icono": "comunicacion",
+        "titulo": "Comunicación coordinada",
+        "resumen": "Cada mensaje parte del mismo contexto operativo.",
+        "detalle": "Confirmaciones, indicaciones y seguimiento se preparan con la información correcta y por el canal acordado."
+      },
+      {
+        "icono": "datos",
+        "titulo": "Datos para decidir",
+        "resumen": "Convierte la actividad diaria en una lectura útil del camping.",
+        "detalle": "Ocupación, demanda y operación ayudan a detectar cuellos de botella y decidir el siguiente paso con criterio."
+      }
+    ]
+  },
+  "platformShowcase": {
+    "kicker": "Una plataforma, cinco vistas",
+    "titulo": "Todo lo que necesitas para gestionar un camping rentable.",
+    "aria": "Áreas de la plataforma Logic2B Campings",
+    "capturaLabel": "Vista real",
+    "items": [
+      {
+        "icono": "web",
+        "etiqueta": "Web",
+        "titulo": "Una web que trabaja antes que recepción",
+        "resumen": "Convierte cada visita en una consulta mejor preparada.",
+        "puntos": [
+          "Alojamientos y parcelas explicados con claridad",
+          "Buscador adaptado a temporadas y ocupación",
+          "Consultas que llegan con el contexto necesario"
+        ],
+        "detalle": "Diseñamos la experiencia alrededor del camping real, no de una plantilla genérica.",
+        "imagen": "web",
+        "capturaAlt": "Web pública de un camping con imagen de portada y buscador de disponibilidad"
+      },
+      {
+        "icono": "reservas",
+        "etiqueta": "Reservas",
+        "titulo": "Reserva directa sin perder el control",
+        "resumen": "El huésped avanza con claridad y el equipo conserva el contexto.",
+        "puntos": [
+          "Fechas, huéspedes y tipo de estancia desde el inicio",
+          "Información comercial y operativa en el mismo recorrido",
+          "Confirmación conectada con el trabajo de recepción"
+        ],
+        "detalle": "Cada paso reduce preguntas repetidas y prepara una gestión más rápida cuando la solicitud llega al camping.",
+        "imagen": "reservas",
+        "capturaAlt": "Portada de reserva directa de un resort de demostración"
+      },
+      {
+        "icono": "planning",
+        "etiqueta": "Planning",
+        "titulo": "El día entero de recepción, de un vistazo",
+        "resumen": "Reservas, unidades y fechas comparten una vista operativa.",
+        "puntos": [
+          "Horizonte diario, semanal, mensual o de temporada",
+          "Entradas, salidas y huecos visibles en contexto",
+          "Cambios preparados desde el mismo calendario"
+        ],
+        "detalle": "El planning está pensado para trabajar con volumen sin perder la lectura rápida que necesita recepción.",
+        "imagen": "planning",
+        "capturaAlt": "Planning mensual del gestor con parcelas y reservas de demostración"
+      },
+      {
+        "icono": "plano",
+        "etiqueta": "Plano",
+        "titulo": "Tu camping, sobre el terreno",
+        "resumen": "La disponibilidad se entiende también por ubicación física.",
+        "puntos": [
+          "Parcelas y alojamientos agrupados por zonas",
+          "Estados visibles sobre el mapa operativo",
+          "Lectura conjunta de planning y distribución real"
+        ],
+        "detalle": "El plano conecta la reserva con el lugar que ocupará, evitando trabajar con referencias desconectadas del terreno.",
+        "imagen": "plano",
+        "capturaAlt": "Plano operativo de un camping con parcelas, alojamientos y zonas comunes"
+      },
+      {
+        "icono": "operativa",
+        "etiqueta": "Operativa",
+        "titulo": "Decisiones con la operación delante",
+        "resumen": "Los datos sirven para preparar acciones, no solo para mirar informes.",
+        "puntos": [
+          "Ocupación, demanda y riesgos explicados",
+          "Recomendaciones supervisadas antes de cualquier cambio",
+          "Impacto y dudas visibles para dirección"
+        ],
+        "detalle": "La plataforma ayuda a detectar el siguiente paso manteniendo siempre la decisión final en manos del equipo.",
+        "imagen": "operativa",
+        "capturaAlt": "Vista de recomendación operativa con ocupación, impacto y cambio propuesto"
+      }
+    ]
+  },
+  "integrationsShowcase": {
+    "kicker": "Conecta sin rehacer",
+    "titulo": "Todo conectado, para que el camping avance con más fluidez.",
+    "texto": "Logic2B Campings puede enlazarse con las herramientas que ya utiliza tu equipo mediante APIs, webhooks y conectores definidos para cada proyecto.",
+    "aria": "Integraciones, pagos y conexiones con inteligencia artificial",
+    "conexiones": {
+      "kicker": "Ecosistema abierto",
+      "titulo": "Tus herramientas dentro del mismo flujo",
+      "texto": "Calendarios, mapas, mensajería, automatización y correo pueden compartir contexto con la operativa del camping, sin duplicar datos innecesariamente."
+    },
+    "pagos": {
+      "kicker": "Cobro seguro",
+      "titulo": "Pagos conectados a la reserva",
+      "texto": "Redsys y Stripe permiten mantener importe, estado y confirmación junto al expediente del huésped."
+    },
+    "ia": {
+      "kicker": "IA con contexto",
+      "titulo": "Conexión mediante MCP",
+      "texto": "Los asistentes compatibles pueden consultar herramientas autorizadas sin perder control sobre los datos ni las acciones.",
+      "protocolo": "MCP"
+    },
+    "nota": "Las conexiones se activan según el alcance de cada proyecto. Las marcas mostradas pertenecen a sus respectivos titulares."
+  },
+  "pricingShowcase": {
+    "kicker": "Web + gestor, en el mismo plan",
+    "titulo": "Elige cómo quieres empezar. La plataforma crece contigo.",
+    "texto": "Cada plan combina una dirección web con el nivel de gestión que necesita el camping. Primero ves cómo se presenta; después, cómo se trabaja por dentro.",
+    "webLabel": "Diseño de la web",
+    "gestorLabel": "Gestor del camping",
+    "ctaWeb": "Ver web demo",
+    "ctaGestor": "Ver gestor demo",
+    "assistText": "Sea cual sea el tamaño de tu camping, te acompañamos en todo el proceso.",
+    "assistCta": "Hablar con nosotros",
+    "aria": "Planes de Logic2B Campings con diseño web y gestor",
+    "nota": "Importes mensuales sin IVA. El alcance final, la implantación y las integraciones se concretan antes de iniciar el proyecto.",
+    "items": [
+      {
+        "nombre": "Inicial",
+        "precio": "49 €",
+        "periodo": "/mes",
+        "tono": "lime",
+        "web": {
+          "titulo": "Web esencial para empezar a vender directo",
+          "texto": "Presenta alojamientos, parcelas, servicios y datos de contacto desde móvil y escritorio.",
+          "imagen": "/hero-atmosfera.webp",
+          "capturaAlt": "Diseño web natural de la demo L'Olivar",
+          "href": "/demos/olivar/",
+          "marca": "L'Olivar",
+          "previewKicker": "Estancias y parcelas",
+          "previewTitulo": "Encuentra tu próxima escapada.",
+          "incluye": [
+            "Diseño responsive con la identidad del camping",
+            "Páginas esenciales de alojamientos y servicios",
+            "Formulario de solicitud y SEO básico",
+            "Un idioma, alojamiento y HTTPS"
+          ]
+        },
+        "gestor": {
+          "titulo": "Las solicitudes llegan al correo del camping",
+          "texto": "Recepción recibe fechas, número de huéspedes y datos de contacto directamente por email para responder desde su operativa habitual.",
+          "imagen": "inicial",
+          "capturaAlt": "Panel inicial del gestor de Logic2B Campings",
+          "modo": "email",
+          "incluye": []
+        }
+      },
+      {
+        "nombre": "Gestión",
+        "etiqueta": "Plan central",
+        "precio": "399 €",
+        "periodo": "/mes",
+        "tono": "water",
+        "web": {
+          "titulo": "Web con disponibilidad y reserva directa",
+          "texto": "Publica tipos de estancia, temporadas y precios, y permite consultar disponibilidad sin depender de llamadas.",
+          "imagen": "/propuestas/azahar/vida-camping.jpg",
+          "capturaAlt": "Diseño web de naturaleza de la demo Pinada del Mar",
+          "href": "/demos/pinadamar/",
+          "marca": "Pinada del Mar",
+          "previewKicker": "Reserva directa",
+          "previewTitulo": "Dormir bajo los pinos.",
+          "incluye": [
+            "Buscador de fechas y huéspedes",
+            "Fichas completas de alojamientos y parcelas",
+            "Motor de reservas conectado al gestor",
+            "Idiomas, analítica y contenidos ampliados"
+          ]
+        },
+        "gestor": {
+          "titulo": "Recepción trabaja desde una sola vista",
+          "texto": "Gestiona reservas, asignaciones, entradas, salidas y cobros desde el mismo entorno.",
+          "imagen": "gestion",
+          "capturaAlt": "Planning mensual del gestor de Logic2B Campings",
+          "ruta": "planning",
+          "modo": "demo",
+          "incluye": [
+            "Planning y plano interactivo",
+            "Reservas, clientes y tarifas",
+            "Cobros con Redsys o Stripe",
+            "Llegadas, salidas e informes"
+          ]
+        }
+      },
+      {
+        "nombre": "Avanzado",
+        "precio": "Consultar",
+        "periodo": "proyecto a medida",
+        "tono": "forest",
+        "web": {
+          "titulo": "Web a medida para más marcas, idiomas y recorridos",
+          "texto": "Organiza un catálogo amplio, campañas y mercados distintos con una arquitectura preparada para crecer.",
+          "imagen": "/propuestas/azahar/piscina.jpg",
+          "capturaAlt": "Diseño web de resort de la demo Mar de Fondo",
+          "href": "/demos/mardefondo/",
+          "marca": "Mar de Fondo",
+          "previewKicker": "Experiencia completa",
+          "previewTitulo": "Todo el resort, en una sola reserva.",
+          "incluye": [
+            "Arquitectura y dirección visual a medida",
+            "Varios idiomas, mercados y campañas",
+            "Recorridos específicos por tipo de estancia",
+            "Analítica e integraciones personalizadas"
+          ]
+        },
+        "gestor": {
+          "titulo": "Más automatización y control operativo",
+          "texto": "Añade flujos supervisados, integraciones y lectura avanzada de datos sobre todas las funciones de Gestión.",
+          "imagen": "avanzado",
+          "capturaAlt": "Vista inteligente del gestor con una recomendación operativa",
+          "ruta": "inteligente",
+          "modo": "demo",
+          "incluye": [
+            "Todo lo incluido en Gestión",
+            "Automatizaciones y comunicaciones",
+            "Integraciones, API y conexión MCP",
+            "Informes avanzados e IA supervisada"
+          ]
+        }
+      }
+    ]
   },
   "temas": {
     "seo": {

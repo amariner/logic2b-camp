@@ -589,5 +589,9 @@ const demoBookingBootScript = demoBookingCatalog ? `
 
     {demoThemes.length > 0 && <script is:inline set:html={themeMenuScript} />}
     {showTierSwitch && <script is:inline set:html={tierMenuScript} />}
+    <script>
+      import { initCampTour } from '@logic-camp/tour';
+      initCampTour();
+    </script>
   </body>
 </html>

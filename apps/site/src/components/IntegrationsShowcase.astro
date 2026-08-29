@@ -1,0 +1,458 @@
+---
+import {
+  siClaude,
+  siGooglecalendar,
+  siGooglegemini,
+  siGooglemaps,
+  siMailchimp,
+  siMastercard,
+  siResend,
+  siStripe,
+  siVisa,
+  siWhatsapp,
+  siZapier,
+} from 'simple-icons';
+
+interface CardCopy {
+  kicker: string;
+  titulo: string;
+  texto: string;
+}
+
+interface Props {
+  kicker: string;
+  titulo: string;
+  texto: string;
+  aria: string;
+  conexiones: CardCopy;
+  pagos: CardCopy;
+  ia: CardCopy & { protocolo: string };
+  nota: string;
+}
+
+const { kicker, titulo, texto, aria, conexiones, pagos, ia, nota } = Astro.props;
+
+const connectionBrands = [
+  siGooglecalendar,
+  siGooglemaps,
+  siWhatsapp,
+  siZapier,
+  siMailchimp,
+  siResend,
+];
+
+const paymentBrands = [siStripe, siVisa, siMastercard];
+const aiBrands = [siClaude, siGooglegemini];
+---
+
+<section id="integraciones" class="integrations-section" aria-labelledby="integrations-title">
+  <div class="integrations-shell">
+    <header class="integrations-heading lc-reveal">
+      <p class="botanical-eyebrow">{kicker}</p>
+      <h2 id="integrations-title">{titulo}</h2>
+      <p>{texto}</p>
+    </header>
+
+    <div class="integrations-grid" aria-label={aria}>
+      <article class="integration-card integration-card--tools lc-reveal">
+        <div class="integration-card-copy">
+          <p class="integration-card-kicker">{conexiones.kicker}</p>
+          <h3>{conexiones.titulo}</h3>
+          <p>{conexiones.texto}</p>
+        </div>
+
+        <ul class="brand-cloud" aria-label={conexiones.titulo}>
+          {
+            connectionBrands.map((brand) => (
+              <li style={`--brand:#${brand.hex}`}>
+                <span class="brand-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d={brand.path} /></svg>
+                </span>
+                <span>{brand.title}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <div class="integration-stack">
+        <article class="integration-card integration-card--payments lc-reveal">
+          <div class="integration-card-copy">
+            <p class="integration-card-kicker">{pagos.kicker}</p>
+            <h3>{pagos.titulo}</h3>
+            <p>{pagos.texto}</p>
+          </div>
+
+          <div class="payment-logos" aria-label={pagos.titulo}>
+            <span class="redsys-wordmark" role="img" aria-label="Redsys">
+              <span>red</span><strong>sys</strong>
+            </span>
+            {
+              paymentBrands.map((brand) => (
+                <span class="payment-logo" style={`--brand:#${brand.hex}`} role="img" aria-label={brand.title}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d={brand.path} /></svg>
+                </span>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="integration-card integration-card--ai lc-reveal">
+          <div class="mcp-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M7 9.5h7M18 9.5h7M11 6v7M21 6v7M11 13v4.5a5 5 0 0 0 5 5h5M21 19l4 3.5-4 3.5" />
+            </svg>
+            <span>{ia.protocolo}</span>
+          </div>
+          <div class="integration-card-copy">
+            <p class="integration-card-kicker">{ia.kicker}</p>
+            <h3>{ia.titulo}</h3>
+            <p>{ia.texto}</p>
+          </div>
+          <div class="ai-logos" aria-label={ia.titulo}>
+            {
+              aiBrands.map((brand) => (
+                <span style={`--brand:#${brand.hex}`} role="img" aria-label={brand.title}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d={brand.path} /></svg>
+                </span>
+              ))
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <p class="integrations-note">{nota}</p>
+  </div>
+</section>
+
+<style>
+  .integrations-section {
+    overflow: hidden;
+    background: var(--botanical-paper);
+    padding-block: clamp(82px, 9vw, 138px);
+    scroll-margin-top: 112px;
+  }
+
+  .integrations-shell {
+    width: calc(100% - clamp(32px, 5vw, 72px));
+    max-width: 1540px;
+    margin-inline: auto;
+  }
+
+  .integrations-heading {
+    max-width: 1020px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .integrations-heading h2 {
+    margin-top: 18px;
+    color: var(--botanical-ink);
+    font-size: clamp(48px, 5.4vw, 82px);
+    letter-spacing: -.052em;
+    line-height: .98;
+    text-wrap: balance;
+  }
+
+  .integrations-heading > p:last-child {
+    max-width: 700px;
+    margin: 24px auto 0;
+    color: color-mix(in srgb, var(--botanical-charcoal) 70%, white);
+    font-size: clamp(16px, 1.5vw, 19px);
+    line-height: 1.55;
+  }
+
+  .integrations-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
+    gap: clamp(18px, 2.2vw, 32px);
+    margin-top: clamp(52px, 6vw, 82px);
+  }
+
+  .integration-stack {
+    display: grid;
+    gap: clamp(18px, 2.2vw, 32px);
+  }
+
+  .integration-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 8%, transparent);
+    border-radius: clamp(22px, 2.2vw, 32px);
+    background: color-mix(in srgb, var(--botanical-keylime) 26%, var(--botanical-paper));
+    padding: clamp(28px, 3.4vw, 48px);
+  }
+
+  .integration-card--tools {
+    display: grid;
+    min-height: 520px;
+    align-content: space-between;
+    background:
+      radial-gradient(circle at 88% 8%, color-mix(in srgb, var(--botanical-keylime) 86%, transparent), transparent 42%),
+      color-mix(in srgb, var(--botanical-keylime) 22%, var(--botanical-paper));
+  }
+
+  .integration-card-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 540px;
+  }
+
+  .integration-card-kicker {
+    color: var(--botanical-ink);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .integration-card h3 {
+    margin-top: 12px;
+    color: var(--botanical-ink);
+    font-family: inherit;
+    font-size: clamp(27px, 2.7vw, 40px);
+    font-weight: 600;
+    letter-spacing: -.045em;
+    line-height: 1.08;
+  }
+
+  .integration-card-copy > p:last-child {
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-charcoal) 70%, white);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .brand-cloud {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 48px;
+  }
+
+  .brand-cloud li {
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    gap: 11px;
+    border-radius: 18px;
+    background: rgb(255 255 255 / 82%);
+    padding: 14px;
+    color: var(--botanical-charcoal);
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.15;
+  }
+
+  .brand-icon {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    place-items: center;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--brand) 10%, white);
+    color: var(--brand);
+  }
+
+  .brand-icon svg {
+    width: 21px;
+    height: 21px;
+    fill: currentColor;
+  }
+
+  .integration-card--payments {
+    min-height: 238px;
+  }
+
+  .payment-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .redsys-wordmark,
+  .payment-logo {
+    display: inline-flex;
+    height: 54px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: white;
+  }
+
+  .redsys-wordmark {
+    min-width: 126px;
+    padding-inline: 20px;
+    color: #53565a;
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -.06em;
+  }
+
+  .redsys-wordmark strong {
+    color: #f28b23;
+  }
+
+  .payment-logo {
+    width: 58px;
+    color: var(--brand);
+  }
+
+  .payment-logo svg {
+    width: 31px;
+    height: 31px;
+    fill: currentColor;
+  }
+
+  .integration-card--ai {
+    display: grid;
+    min-height: 250px;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background: var(--botanical-ink);
+  }
+
+  .integration-card--ai .integration-card-kicker,
+  .integration-card--ai h3 {
+    color: var(--botanical-paper);
+  }
+
+  .integration-card--ai .integration-card-copy > p:last-child {
+    color: color-mix(in srgb, var(--botanical-keylime) 70%, white);
+  }
+
+  .mcp-mark {
+    display: grid;
+    width: 78px;
+    height: 78px;
+    flex: none;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 22%);
+    border-radius: 22px;
+    background: rgb(255 255 255 / 9%);
+    color: var(--botanical-paper);
+  }
+
+  .mcp-mark svg {
+    width: 34px;
+    height: 34px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .mcp-mark span {
+    margin-top: -14px;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .12em;
+  }
+
+  .ai-logos {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-logos span {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--botanical-paper);
+    color: var(--brand);
+  }
+
+  .ai-logos svg {
+    width: 21px;
+    height: 21px;
+    fill: currentColor;
+  }
+
+  .integrations-note {
+    max-width: 880px;
+    margin: 24px auto 0;
+    color: color-mix(in srgb, var(--botanical-charcoal) 52%, white);
+    font-size: 12px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  @media (max-width: 980px) {
+    .integrations-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .integration-card--tools {
+      min-height: 460px;
+    }
+
+    .integration-stack {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .integration-card--ai {
+      grid-template-columns: auto 1fr;
+    }
+
+    .ai-logos {
+      display: none;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .integrations-section {
+      padding-block: 72px;
+    }
+
+    .integrations-heading h2 {
+      font-size: clamp(44px, 14vw, 62px);
+    }
+
+    .integrations-grid {
+      margin-top: 42px;
+    }
+
+    .integration-stack {
+      grid-template-columns: 1fr;
+    }
+
+    .integration-card--tools {
+      min-height: auto;
+    }
+
+    .brand-cloud {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 36px;
+    }
+
+    .brand-cloud li {
+      min-height: 72px;
+      padding: 10px;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .integration-card--ai {
+      min-height: auto;
+      grid-template-columns: 1fr;
+    }
+
+    .mcp-mark {
+      width: 66px;
+      height: 66px;
+    }
+
+    .payment-logos {
+      flex-wrap: wrap;
+    }
+  }
+</style>

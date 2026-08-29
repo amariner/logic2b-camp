@@ -30,6 +30,7 @@ import {
 } from '@tanstack/react-router';
 import { ChevronLeft, Home, LogOut, Menu, Search } from 'lucide-react';
 import { StrictMode, useCallback, useRef, useState } from 'react';
+import { initCampTour } from '@logic-camp/tour';
 import { ApiError } from './api';
 import { createRoot } from 'react-dom/client';
 import { useRol, useSession, useSignOut } from './auth';
@@ -509,3 +510,5 @@ createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </StrictMode>,
 );
+
+initCampTour();

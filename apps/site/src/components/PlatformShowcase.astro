@@ -1,0 +1,409 @@
+---
+import intelligentImage from '../../../../tenants/mardefondo/content/media/capturas/inteligente-1366.webp?url';
+import planningImage from '../../../../tenants/mardefondo/content/media/capturas/planning-1366.webp?url';
+import bookingImage from '../../../../tenants/mardefondo/content/media/capturas/portada-reserva-1366.webp?url';
+
+interface PlatformItem {
+  icono: string;
+  etiqueta: string;
+  titulo: string;
+  resumen: string;
+  puntos: string[];
+  detalle: string;
+  imagen: string;
+  capturaAlt: string;
+}
+
+interface Props {
+  kicker: string;
+  titulo: string;
+  aria: string;
+  capturaLabel: string;
+  items: PlatformItem[];
+}
+
+const { kicker, titulo, aria, capturaLabel, items } = Astro.props;
+
+const images: Record<string, string> = {
+  web: '/captura-web.webp',
+  reservas: bookingImage,
+  planning: planningImage,
+  plano: '/captura-plano.webp',
+  operativa: intelligentImage,
+};
+
+const iconPaths: Record<string, string[]> = {
+  web: ['M3.5 5.5h17v13h-17zM3.5 9h17', 'M7 7.25h.01M10 7.25h.01', 'M8 14h8'],
+  reservas: ['M5 4h14v16H5zM8 2v4M16 2v4M5 8h14', 'M9 13h6M12 10v6'],
+  planning: ['M4 5h16v15H4zM4 9h16M8 3v4M16 3v4', 'M8 13h3v3H8zM14 13h2M14 16h2'],
+  plano: ['m4 6 5-3 6 3 5-3v15l-5 3-6-3-5 3V6Z', 'M9 3v15M15 6v15'],
+  operativa: ['M4 19V9M10 19V5M16 19v-7M22 19V7M2 19h22', 'M4 7l6-4 6 6 6-4'],
+};
+---
+
+<section id="plataforma" class="platform-section" aria-labelledby="platform-title" data-platform-showcase>
+  <div class="platform-shell">
+    <header class="platform-heading lc-reveal">
+      <p class="botanical-eyebrow">{kicker}</p>
+      <h2 id="platform-title">{titulo}</h2>
+    </header>
+
+    <div class="platform-tabs" role="tablist" aria-label={aria}>
+      {
+        items.map((item, index) => (
+          <button
+            id={`platform-tab-${index}`}
+            type="button"
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-controls={`platform-panel-${index}`}
+            tabindex={index === 0 ? 0 : -1}
+            data-platform-tab={index}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              {(iconPaths[item.icono] ?? iconPaths.web!).map((path) => <path d={path} />)}
+            </svg>
+            <span>{item.etiqueta}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="platform-panels">
+      {
+        items.map((item, index) => (
+          <article
+            id={`platform-panel-${index}`}
+            class="platform-panel"
+            role="tabpanel"
+            aria-labelledby={`platform-tab-${index}`}
+            hidden={index !== 0}
+            data-platform-panel={index}
+          >
+            <div class="platform-copy">
+              <span class="platform-index">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{item.titulo}</h3>
+              <p class="platform-summary">{item.resumen}</p>
+              <ul>
+                {item.puntos.map((point) => <li><span aria-hidden="true">→</span>{point}</li>)}
+              </ul>
+              <p class="platform-detail">{item.detalle}</p>
+            </div>
+
+            <figure class="platform-visual">
+              <div class="platform-stage">
+                <span class="platform-stage-label">{capturaLabel} · {item.etiqueta}</span>
+                <img src={images[item.imagen] ?? images.web} alt={item.capturaAlt} loading="lazy" decoding="async" />
+              </div>
+            </figure>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-platform-showcase]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-platform-tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-platform-panel]')];
+
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, tabIndex) => {
+        const active = tabIndex === index;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+      panels.forEach((panel, panelIndex) => {
+        panel.hidden = panelIndex !== index;
+      });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => select(index));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? tabs.length - 1
+            : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        select(next, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .platform-section {
+    overflow: hidden;
+    background: color-mix(in srgb, var(--botanical-keylime) 74%, var(--botanical-paper));
+    padding-block: clamp(78px, 9vw, 132px);
+    scroll-margin-top: 112px;
+  }
+
+  .platform-shell {
+    width: calc(100% - clamp(32px, 5vw, 72px));
+    max-width: 1600px;
+    margin-inline: auto;
+  }
+
+  .platform-heading {
+    max-width: 1060px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .platform-heading h2 {
+    margin-top: 18px;
+    font-size: clamp(52px, 6vw, 92px);
+    letter-spacing: -.05em;
+    line-height: .98;
+    text-wrap: balance;
+  }
+
+  .platform-tabs {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    gap: 4px;
+    margin: clamp(46px, 6vw, 78px) auto 0;
+    overflow-x: auto;
+    border: 0;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--botanical-paper) 94%, transparent);
+    padding: 7px;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--botanical-ink) 7%, transparent);
+    scrollbar-width: none;
+  }
+
+  .platform-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .platform-tabs button {
+    display: inline-flex;
+    min-height: 54px;
+    align-items: center;
+    gap: 9px;
+    border: 0;
+    border-radius: 14px;
+    padding: 10px clamp(16px, 2vw, 30px);
+    color: color-mix(in srgb, var(--botanical-ink) 65%, white);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+
+  .platform-tabs button:hover {
+    background: color-mix(in srgb, var(--botanical-keylime) 34%, transparent);
+    color: var(--botanical-ink);
+  }
+
+  .platform-tabs button:focus-visible {
+    outline: 0;
+    background: color-mix(in srgb, var(--botanical-keylime) 62%, var(--botanical-paper));
+  }
+
+  .platform-tabs button[aria-selected='true'] {
+    background: color-mix(in srgb, var(--botanical-keylime) 68%, var(--botanical-paper));
+    color: var(--botanical-ink);
+    font-weight: 700;
+  }
+
+  .platform-tabs svg {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .platform-panels {
+    margin-top: clamp(54px, 7vw, 88px);
+  }
+
+  .platform-panel {
+    display: grid;
+    grid-template-columns: minmax(260px, .34fr) minmax(0, .66fr);
+    gap: clamp(40px, 7vw, 110px);
+    align-items: center;
+  }
+
+  .platform-panel[hidden] {
+    display: none;
+  }
+
+  .platform-copy {
+    max-width: 420px;
+  }
+
+  .platform-index {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--botanical-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+  }
+
+  .platform-index::after {
+    width: 70px;
+    height: 1px;
+    background: color-mix(in srgb, var(--botanical-ink) 28%, transparent);
+    content: '';
+  }
+
+  .platform-copy h3 {
+    margin-top: 24px;
+    font-family: inherit;
+    font-size: clamp(30px, 3vw, 44px);
+    font-weight: 600;
+    letter-spacing: -.04em;
+    line-height: 1.08;
+  }
+
+  .platform-summary {
+    margin-top: 18px;
+    color: var(--botanical-charcoal);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .platform-copy ul {
+    display: grid;
+    gap: 15px;
+    margin-top: 28px;
+  }
+
+  .platform-copy li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 8px;
+    color: var(--botanical-ink);
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .platform-copy li span {
+    font-weight: 700;
+  }
+
+  .platform-detail {
+    margin-top: 28px;
+    color: color-mix(in srgb, var(--botanical-charcoal) 58%, white);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .platform-visual {
+    min-width: 0;
+  }
+
+  .platform-stage {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(480px, 49vw, 660px);
+    border-radius: clamp(22px, 2.4vw, 34px);
+    background:
+      repeating-linear-gradient(90deg, transparent 0 74px, rgb(255 255 255 / 13%) 74px 112px),
+      color-mix(in srgb, var(--botanical-ink) 86%, black);
+    padding: clamp(58px, 7vw, 94px) 0 0 clamp(46px, 6vw, 86px);
+    box-shadow: 0 22px 46px color-mix(in srgb, var(--botanical-ink) 13%, transparent);
+  }
+
+  .platform-stage-label {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    z-index: 1;
+    border-radius: 999px;
+    background: var(--botanical-paper);
+    padding: 9px 13px;
+    color: var(--botanical-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .platform-stage img {
+    display: block;
+    width: 118%;
+    max-width: none;
+    height: auto;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 12%, transparent);
+    border-radius: 15px 0 0 0;
+    background: white;
+    box-shadow: 0 18px 46px rgb(0 0 0 / 22%);
+  }
+
+  @media (max-width: 1023px) {
+    .platform-panel {
+      grid-template-columns: 1fr;
+      gap: 38px;
+    }
+
+    .platform-copy {
+      max-width: 680px;
+    }
+
+    .platform-stage {
+      min-height: 480px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .platform-section {
+      padding-block: 68px 78px;
+      scroll-margin-top: 92px;
+    }
+
+    .platform-heading h2 {
+      font-size: clamp(42px, 12.8vw, 54px);
+    }
+
+    .platform-tabs {
+      width: 100%;
+      justify-content: flex-start;
+      margin-top: 38px;
+      border-radius: 17px;
+    }
+
+    .platform-tabs button {
+      min-height: 48px;
+      padding-inline: 15px;
+      font-size: 13px;
+    }
+
+    .platform-panels {
+      margin-top: 44px;
+    }
+
+    .platform-copy h3 {
+      font-size: 32px;
+    }
+
+    .platform-summary {
+      font-size: 16px;
+    }
+
+    .platform-stage {
+      min-height: 300px;
+      border-radius: 22px;
+      padding: 54px 0 0 24px;
+    }
+
+    .platform-stage img {
+      width: 150%;
+    }
+  }
+</style>

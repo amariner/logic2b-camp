@@ -1,0 +1,358 @@
+---
+interface WorkflowItem {
+  icono: string;
+  titulo: string;
+  resumen: string;
+  detalle: string;
+}
+
+interface Props {
+  kicker: string;
+  titulo: string;
+  texto: string;
+  aria: string;
+  anterior: string;
+  siguiente: string;
+  items: WorkflowItem[];
+}
+
+const { kicker, titulo, texto, aria, anterior, siguiente, items } = Astro.props;
+
+const iconPaths: Record<string, string[]> = {
+  web: [
+    'M3.5 5.5h17v13h-17z',
+    'M3.5 9h17',
+    'M7 7.25h.01M10 7.25h.01',
+    'M8 14h8M12 11.5V16.5',
+  ],
+  disponibilidad: [
+    'M5 4.5h10.5a2 2 0 0 1 2 2v5.5',
+    'M7.5 2.5v4M14.5 2.5v4M5 8.5h12.5',
+    'M8 12h2M8 15h2',
+    'M16.5 16.5m-3.5 0a3.5 3.5 0 1 0 7 0 3.5 3.5 0 1 0-7 0M19 19l2.5 2.5',
+  ],
+  solicitud: [
+    'M4 5h16v12H4z',
+    'M4 13h4l2 3h4l2-3h4',
+    'M12 3v7M9 7l3 3 3-3',
+  ],
+  planning: [
+    'M4 5h16v15H4zM4 9h16M8 3v4M16 3v4',
+    'M8 13h3v3H8zM14 13h2M14 16h2',
+  ],
+  cobros: [
+    'M3.5 6h17v12h-17zM3.5 10h17',
+    'M7 14h4',
+    'M17.5 14.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z',
+  ],
+  comunicacion: [
+    'M4 5h16v11H9l-5 4V5Z',
+    'M8 9h8M8 12h5',
+  ],
+  datos: [
+    'M4 20V10M10 20V4M16 20v-7M22 20V7',
+    'M2 20h22',
+    'M4 7l6-4 6 7 6-5',
+  ],
+};
+---
+
+<section id="flujo" class="workflow-section" aria-labelledby="workflow-title" data-workflow-slider>
+  <div class="workflow-header">
+    <div class="workflow-heading lc-reveal">
+      <p class="botanical-eyebrow">{kicker}</p>
+      <h2 id="workflow-title">{titulo}</h2>
+      <p>{texto}</p>
+    </div>
+    <div class="workflow-controls" aria-label={aria}>
+      <button type="button" aria-label={anterior} data-workflow-prev disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M10 7l-5 5 5 5" /></svg>
+      </button>
+      <button type="button" aria-label={siguiente} data-workflow-next>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="workflow-viewport" tabindex="0" role="region" aria-label={aria} data-workflow-viewport>
+    <ol class="workflow-track">
+      {
+        items.map((item, index) => (
+          <li class="workflow-card">
+            <div class="workflow-card-topline">
+              <span class="workflow-step">{String(index + 1).padStart(2, '0')}</span>
+              <span class="workflow-connector" aria-hidden="true"></span>
+            </div>
+            <span class="workflow-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                {(iconPaths[item.icono] ?? iconPaths.web!).map((path) => <path d={path} />)}
+              </svg>
+            </span>
+            <h3>{item.titulo}</h3>
+            <p class="workflow-summary">{item.resumen}</p>
+            <p class="workflow-detail">{item.detalle}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-workflow-slider]').forEach((root) => {
+    const viewport = root.querySelector<HTMLElement>('[data-workflow-viewport]');
+    const previous = root.querySelector<HTMLButtonElement>('[data-workflow-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-workflow-next]');
+    const firstCard = root.querySelector<HTMLElement>('.workflow-card');
+    if (!viewport || !previous || !next || !firstCard) return;
+
+    const update = () => {
+      const end = viewport.scrollWidth - viewport.clientWidth;
+      previous.disabled = viewport.scrollLeft <= 2;
+      next.disabled = viewport.scrollLeft >= end - 2;
+    };
+
+    const move = (direction: number) => {
+      const track = viewport.querySelector<HTMLElement>('.workflow-track');
+      const gap = track ? Number.parseFloat(getComputedStyle(track).columnGap) || 0 : 0;
+      viewport.scrollBy({ left: direction * (firstCard.getBoundingClientRect().width + gap), behavior: 'smooth' });
+    };
+
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    viewport.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(update).observe(viewport);
+    update();
+  });
+</script>
+
+<style>
+  .workflow-section {
+    overflow: hidden;
+    background: var(--botanical-paper);
+    padding-block: clamp(64px, 6vw, 88px) clamp(78px, 9vw, 128px);
+    scroll-margin-top: 112px;
+  }
+
+  .workflow-header {
+    display: grid;
+    width: calc(100% - clamp(32px, 5vw, 72px));
+    max-width: 1600px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 32px;
+    align-items: start;
+    margin-inline: auto;
+  }
+
+  .workflow-heading {
+    max-width: 1080px;
+  }
+
+  .workflow-heading h2 {
+    max-width: 1040px;
+    margin-top: 18px;
+    font-size: clamp(48px, 5vw, 78px);
+    letter-spacing: -.05em;
+    line-height: .98;
+    text-wrap: balance;
+  }
+
+  .workflow-heading > p:last-child {
+    max-width: 720px;
+    margin-top: 18px;
+    color: color-mix(in srgb, var(--botanical-ink) 68%, white);
+    font-size: clamp(16px, 1.4vw, 20px);
+    line-height: 1.55;
+    text-wrap: balance;
+  }
+
+  .workflow-controls {
+    display: flex;
+    gap: 12px;
+    padding-top: 58px;
+  }
+
+  .workflow-controls button {
+    display: inline-grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 20%, transparent);
+    border-radius: 50%;
+    color: var(--botanical-ink);
+    transition: background-color 160ms ease, opacity 160ms ease, transform 160ms ease;
+  }
+
+  .workflow-controls button:hover:not(:disabled) {
+    background: var(--botanical-keylime);
+    transform: translateY(-1px);
+  }
+
+  .workflow-controls button:disabled {
+    opacity: .25;
+  }
+
+  .workflow-controls svg {
+    width: 23px;
+    height: 23px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .workflow-viewport {
+    overflow-x: auto;
+    margin-top: clamp(46px, 5vw, 68px);
+    outline: none;
+    scroll-behavior: smooth;
+    scroll-padding-inline: max(clamp(16px, 2.5vw, 36px), calc((100vw - 1600px) / 2));
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .workflow-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .workflow-viewport:focus-visible {
+    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--botanical-sage) 70%, transparent);
+  }
+
+  .workflow-track {
+    display: grid;
+    width: max-content;
+    grid-auto-columns: clamp(300px, 27vw, 410px);
+    grid-auto-flow: column;
+    column-gap: clamp(28px, 4vw, 68px);
+    margin: 0;
+    padding: 0 max(clamp(16px, 2.5vw, 36px), calc((100vw - 1600px) / 2));
+    list-style: none;
+  }
+
+  .workflow-card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .workflow-card-topline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .workflow-step {
+    color: var(--botanical-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+  }
+
+  .workflow-connector {
+    width: 72px;
+    height: 1px;
+    background: color-mix(in srgb, var(--botanical-ink) 22%, transparent);
+  }
+
+  .workflow-icon {
+    display: inline-grid;
+    width: 92px;
+    height: 92px;
+    place-items: center;
+    border-radius: 26px;
+    background: color-mix(in srgb, var(--botanical-keylime) 72%, var(--botanical-paper));
+    color: var(--botanical-ink);
+  }
+
+  .workflow-icon svg {
+    width: 58px;
+    height: 58px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.35;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .workflow-card h3 {
+    margin-top: 30px;
+    font-family: inherit;
+    font-size: clamp(26px, 2.2vw, 34px);
+    font-weight: 600;
+    letter-spacing: -.035em;
+    line-height: 1.05;
+  }
+
+  .workflow-summary {
+    margin-top: 14px;
+    color: var(--botanical-charcoal);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .workflow-detail {
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-charcoal) 58%, white);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 767px) {
+    .workflow-section {
+      padding-block: 68px 78px;
+      scroll-margin-top: 92px;
+    }
+
+    .workflow-header {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+
+    .workflow-heading h2 {
+      font-size: clamp(42px, 13vw, 54px);
+    }
+
+    .workflow-heading > p:last-child {
+      margin-top: 18px;
+      font-size: 15px;
+    }
+
+    .workflow-controls {
+      padding: 0;
+    }
+
+    .workflow-controls button {
+      width: 48px;
+      height: 48px;
+    }
+
+    .workflow-viewport {
+      margin-top: 46px;
+    }
+
+    .workflow-track {
+      grid-auto-columns: min(82vw, 330px);
+      column-gap: 24px;
+    }
+
+    .workflow-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 23px;
+    }
+
+    .workflow-icon svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workflow-viewport {
+      scroll-behavior: auto;
+    }
+  }
+</style>

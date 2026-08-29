@@ -3,11 +3,15 @@ import Base from '../layouts/Base.astro';
 import CampaignShowcase from './CampaignShowcase.astro';
 import EcosystemRail from './EcosystemRail.astro';
 import GuidedTour from './GuidedTour.astro';
+import IntegrationsShowcase from './IntegrationsShowcase.astro';
 import PlanningVisual from './PlanningVisual.astro';
+import PlatformShowcase from './PlatformShowcase.astro';
 import PlanStatus from './PlanStatus.astro';
 import PortfolioGallery from './PortfolioGallery.astro';
+import PricingShowcase from './PricingShowcase.astro';
 import ProductCardVisual from './ProductCardVisual.astro';
 import ThemeRail from './ThemeRail.astro';
+import WorkflowSlider from './WorkflowSlider.astro';
 import { GUIAS } from '../lib/docs';
 import { getContent, localePath, type Locale } from '../lib/i18n';
 
@@ -17,6 +21,8 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = getContent(locale);
+const heroWords = [...c.hero.tituloPalabras, c.hero.tituloPalabras[0]];
+const ecosystemHighlights = c.escala.ecosistema.items.slice(0, 8);
 // El gestor comparte dominio en producción, pero tiene su propio servidor Vite
 // durante el desarrollo local.
 const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/admin/';
@@ -43,37 +49,65 @@ const iconosProblema = [
 <Base locale={locale} content={c}>
   <div class="botanical-landing">
     <section class="botanical-shell botanical-hero" aria-labelledby="hero-title">
-      <div class="botanical-hero-copy">
-        <div>
-          <p class="botanical-eyebrow">{c.hero.kicker}</p>
-          <h1 id="hero-title" class="botanical-heading">{c.hero.titulo}</h1>
-          <p class="botanical-copy">{c.hero.subtitulo}</p>
-        </div>
-        <div>
-          <div class="botanical-hero-actions">
-            <a href="#niveles" class="botanical-button">
-              <span>{c.hero.ctaDemo}</span><span class="botanical-arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-          <div class="botanical-hero-links">
+      <div class="botanical-hero-intro">
+        <p class="botanical-eyebrow">{c.hero.kicker}</p>
+        <h1 id="hero-title" class="botanical-hero-heading" aria-label={c.hero.tituloAccesible}>
+          <span class="botanical-hero-title-line" aria-hidden="true">{c.hero.tituloAntes}</span>
+          <span class="botanical-hero-accent" aria-hidden="true">
+            <span class="botanical-word-counter">
+              {heroWords.map((word) => <span>{word}</span>)}
+            </span>
+          </span>
+          <span class="botanical-hero-title-line" aria-hidden="true">{c.hero.tituloDespues}</span>
+        </h1>
+        <p class="botanical-copy botanical-hero-subtitle">{c.hero.subtitulo}</p>
+
+        <form
+          class="botanical-hero-cta"
+          method="get"
+          action={localePath(locale, 'empezar/')}
+          data-hero-lead-form
+        >
+          <label class="botanical-visually-hidden" for={`hero-email-${locale}`}>{c.hero.emailLabel}</label>
+          <input
+            id={`hero-email-${locale}`}
+            class="botanical-hero-email"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            placeholder={c.hero.emailPlaceholder}
+            required
+          />
+          <button type="submit" class="botanical-button">
+            <span>{c.hero.emailCta}</span>
+          </button>
+        </form>
+
+        <ul class="botanical-hero-shortcuts" aria-label={c.hero.kicker}>
+          <li>
             <a href="/demo/">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M4 5h16v11H4V5Zm4 15h8M12 16v4" />
-              </svg>
-              <span>{c.hero.ctaVer}</span><span aria-hidden="true">↗</span>
+              <span class="botanical-hero-check" aria-hidden="true">✓</span>
+              <span>{c.hero.ctaVer}</span>
             </a>
+          </li>
+          <li>
+            <button type="button" data-camp-tour-trigger aria-haspopup="dialog">
+              <span class="botanical-hero-check" aria-hidden="true">✓</span>
+              <span data-camp-tour-label>{c.hero.ctaComoFunciona}</span>
+            </button>
+          </li>
+          <li>
             <a href={managerHref}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-                <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm3 8h3m2 0h3M8 17h3" />
-              </svg>
-              <span>{c.hero.ctaMostrador}</span><span aria-hidden="true">↗</span>
+              <span class="botanical-hero-check" aria-hidden="true">✓</span>
+              <span>{c.hero.ctaMostrador}</span>
             </a>
-          </div>
-          <p class="botanical-note">{c.hero.nota}</p>
-        </div>
+          </li>
+        </ul>
+        <p class="botanical-note botanical-hero-note">{c.hero.nota}</p>
       </div>
 
-      <div class="botanical-hero-product lc-reveal">
+      <div class="botanical-hero-themes lc-reveal" aria-label={c.temas.estado}>
         <ThemeRail
           items={c.temas.items}
           status={c.temas.estado}
@@ -85,10 +119,24 @@ const iconosProblema = [
       </div>
     </section>
 
-    <section id="escala" class="botanical-shell botanical-brand-band lc-reveal" aria-labelledby="ecosystem-title">
-      <p id="ecosystem-title" class="botanical-brand-band-label">{c.escala.titulo}</p>
-      <EcosystemRail items={c.escala.ecosistema.items} label={c.escala.ecosistema.aria} />
+    <section id="escala" class="botanical-brand-band lc-reveal" aria-labelledby="ecosystem-title">
+      <div class="botanical-brand-band-inner">
+        <div class="botanical-brand-band-heading">
+          <span aria-hidden="true"></span>
+          <p id="ecosystem-title" class="botanical-brand-band-label">{c.escala.titulo}</p>
+          <span aria-hidden="true"></span>
+        </div>
+        <EcosystemRail items={ecosystemHighlights} label={c.escala.ecosistema.aria} />
+      </div>
     </section>
+
+    <WorkflowSlider {...c.workflow} />
+
+    <PlatformShowcase {...c.platformShowcase} />
+
+    <IntegrationsShowcase {...c.integrationsShowcase} />
+
+    <PricingShowcase {...c.pricingShowcase} />
 
     <PortfolioGallery content={c.portfolio} />
 

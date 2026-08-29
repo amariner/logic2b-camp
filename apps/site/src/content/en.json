@@ -14,17 +14,312 @@
     "demo": "See demo",
     "mostrador": "Try the booking manager",
     "contacto": "Get started",
+    "web": "Website",
+    "gestor": "Manager",
+    "contactar": "Contact",
+    "comoFunciona": "View tour",
     "verDemo": "See the live demo"
   },
   "hero": {
-    "kicker": "From your first website to the campsite copilot",
-    "titulo": "Website, bookings and campsite management in one system.",
-    "subtitulo": "From €49/month. First win enquiries, then control bookings and payments, automate reception and make better decisions with your data. Without changing platform along the way.",
+    "kicker": "Booking system for campsites",
+    "tituloAntes": "Run",
+    "tituloPalabras": ["bookings", "payments", "reception"],
+    "tituloDespues": "without the busywork.",
+    "tituloAccesible": "Run bookings, payments and reception without the busywork.",
+    "subtitulo": "Website, bookings and daily operations in one system. Start from €49/month.",
+    "emailLabel": "Work email",
+    "emailPlaceholder": "Your work email",
+    "emailCta": "Request information",
     "ctaDemo": "See plans",
+    "ctaComoFunciona": "View tour",
     "ctaVer": "See the example website",
     "ctaMostrador": "Try the booking manager",
     "nota": "Start plan: €0 setup, one language and a 12-month commitment. No booking commission.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
+  },
+  "conversion": {
+    "seoTitle": "Request information — Logic2B Campings",
+    "seoDescription": "Tell us about your campsite and we will reply with the most useful next step for your project.",
+    "kicker": "A first step, with no commitment",
+    "titulo": "Let's see what your campsite needs.",
+    "texto": "Share the essentials. We will review your situation and reply with a clear proposal, without asking you to choose a plan now.",
+    "beneficios": ["A personal, not automated, reply", "Clear scope and next steps", "No card or commitment"],
+    "formKicker": "Request information",
+    "formTitulo": "Tell us the essentials",
+    "formTexto": "The email you entered is ready. Complete the remaining details and we will get in touch.",
+    "mensajePlaceholder": "For example: I want to organise bookings and payments",
+    "enviar": "Send request"
+  },
+  "workflow": {
+    "kicker": "Your operation, connected",
+    "titulo": "Your campsite’s whole workflow, in one platform.",
+    "texto": "We shape the journey around how your team sells and works, from the first website visit to a clear view of the results.",
+    "aria": "Logic2B Campings workflow steps",
+    "anterior": "View previous steps",
+    "siguiente": "View next steps",
+    "items": [
+      {
+        "icono": "web",
+        "titulo": "A website that converts",
+        "resumen": "Present every stay clearly and guide visitors towards an enquiry.",
+        "detalle": "Structure, content and forms adapt to your accommodation, seasons and the way you actually sell."
+      },
+      {
+        "icono": "disponibilidad",
+        "titulo": "Clear availability",
+        "resumen": "Collect dates, party size and preferences from the first step.",
+        "detalle": "Guests provide what reception needs without long email threads or repeated questions."
+      },
+      {
+        "icono": "solicitud",
+        "titulo": "A connected enquiry",
+        "resumen": "Every opportunity arrives neatly in the campsite manager.",
+        "detalle": "Website data keeps its context so the team can review, reply and convert without copying it again."
+      },
+      {
+        "icono": "planning",
+        "titulo": "Booking in the planner",
+        "resumen": "Place stays and units in one shared operational view.",
+        "detalle": "Reception controls arrivals, departures, availability and allocations from the same working calendar."
+      },
+      {
+        "icono": "cobros",
+        "titulo": "Controlled payments",
+        "resumen": "Amounts, statuses and documents stay linked to the booking.",
+        "detalle": "The team knows what is pending, what is confirmed and what needs attention before arrival."
+      },
+      {
+        "icono": "comunicacion",
+        "titulo": "Coordinated communication",
+        "resumen": "Every message starts from the same operational context.",
+        "detalle": "Confirmations, directions and follow-up use the right information through the agreed channel."
+      },
+      {
+        "icono": "datos",
+        "titulo": "Data for decisions",
+        "resumen": "Turn daily activity into a useful view of the campsite.",
+        "detalle": "Occupancy, demand and operations reveal bottlenecks and help the team choose the next step with confidence."
+      }
+    ]
+  },
+  "platformShowcase": {
+    "kicker": "One platform, five views",
+    "titulo": "Everything you need to run a profitable campsite.",
+    "aria": "Logic2B Campings platform areas",
+    "capturaLabel": "Real view",
+    "items": [
+      {
+        "icono": "web",
+        "etiqueta": "Website",
+        "titulo": "A website that works before reception does",
+        "resumen": "Turn every visit into a better prepared enquiry.",
+        "puntos": [
+          "Accommodation and pitches explained clearly",
+          "Search shaped around seasons and party size",
+          "Enquiries that arrive with the context you need"
+        ],
+        "detalle": "We design the experience around the real campsite, not a generic template.",
+        "imagen": "web",
+        "capturaAlt": "Public campsite website with a hero image and availability search"
+      },
+      {
+        "icono": "reservas",
+        "etiqueta": "Bookings",
+        "titulo": "Direct booking without losing control",
+        "resumen": "Guests move forward clearly while the team keeps the context.",
+        "puntos": [
+          "Dates, guests and stay type from the start",
+          "Commercial and operational details in one journey",
+          "Confirmation connected to reception work"
+        ],
+        "detalle": "Every step reduces repeated questions and prepares faster handling when the enquiry reaches the campsite.",
+        "imagen": "reservas",
+        "capturaAlt": "Direct booking homepage for a fictional resort"
+      },
+      {
+        "icono": "planning",
+        "etiqueta": "Planner",
+        "titulo": "Reception’s whole day at a glance",
+        "resumen": "Bookings, units and dates share one operational view.",
+        "puntos": [
+          "Daily, weekly, monthly or seasonal horizon",
+          "Arrivals, departures and gaps shown in context",
+          "Changes prepared from the same calendar"
+        ],
+        "detalle": "The planner handles volume without losing the quick reading reception needs.",
+        "imagen": "planning",
+        "capturaAlt": "Monthly manager planner with fictional pitches and bookings"
+      },
+      {
+        "icono": "plano",
+        "etiqueta": "Map",
+        "titulo": "Your campsite, on the ground",
+        "resumen": "Availability also makes sense through physical location.",
+        "puntos": [
+          "Pitches and accommodation grouped by area",
+          "Statuses visible on the operational map",
+          "Planner and real layout read together"
+        ],
+        "detalle": "The map connects each booking to the place it will occupy instead of leaving reception with detached references.",
+        "imagen": "plano",
+        "capturaAlt": "Operational campsite map with pitches, accommodation and shared areas"
+      },
+      {
+        "icono": "operativa",
+        "etiqueta": "Operations",
+        "titulo": "Decisions with the operation in view",
+        "resumen": "Data helps prepare action instead of merely filling reports.",
+        "puntos": [
+          "Occupancy, demand and risks explained",
+          "Supervised recommendations before any change",
+          "Impact and uncertainty visible to management"
+        ],
+        "detalle": "The platform helps identify the next step while keeping the final decision with the team.",
+        "imagen": "operativa",
+        "capturaAlt": "Operational recommendation view with occupancy, impact and a proposed change"
+      }
+    ]
+  },
+  "integrationsShowcase": {
+    "kicker": "Connect without rebuilding",
+    "titulo": "Everything connected, so your campsite runs more smoothly.",
+    "texto": "Logic2B Campings can link to the tools your team already uses through APIs, webhooks and connectors defined for each project.",
+    "aria": "Integrations, payments and artificial intelligence connections",
+    "conexiones": {
+      "kicker": "Open ecosystem",
+      "titulo": "Your tools in the same workflow",
+      "texto": "Calendars, maps, messaging, automation and email can share context with campsite operations without duplicating data unnecessarily."
+    },
+    "pagos": {
+      "kicker": "Secure collection",
+      "titulo": "Payments connected to each booking",
+      "texto": "Redsys and Stripe keep the amount, status and confirmation alongside the guest record."
+    },
+    "ia": {
+      "kicker": "Context-aware AI",
+      "titulo": "Connected through MCP",
+      "texto": "Compatible assistants can access authorised tools without losing control over data or actions.",
+      "protocolo": "MCP"
+    },
+    "nota": "Connections are activated according to each project's scope. The brands shown belong to their respective owners."
+  },
+  "pricingShowcase": {
+    "kicker": "Website + manager, in the same plan",
+    "titulo": "Choose how you want to start. The platform grows with you.",
+    "texto": "Every plan pairs a website direction with the level of management your campsite needs. First you see how it presents itself; then how the team works behind the scenes.",
+    "webLabel": "Website design",
+    "gestorLabel": "Campsite manager",
+    "ctaWeb": "View website demo",
+    "ctaGestor": "View manager demo",
+    "assistText": "Whatever the size of your campsite, we will guide you through the whole process.",
+    "assistCta": "Talk to us",
+    "aria": "Logic2B Campings plans with website design and manager",
+    "nota": "Monthly prices exclude VAT. Final scope, onboarding and integrations are agreed before the project begins.",
+    "items": [
+      {
+        "nombre": "Start",
+        "precio": "€49",
+        "periodo": "/month",
+        "tono": "lime",
+        "web": {
+          "titulo": "An essential website for direct enquiries",
+          "texto": "Present accommodation, pitches, services and contact details clearly on mobile and desktop.",
+          "imagen": "/hero-atmosfera.webp",
+          "capturaAlt": "Natural website design from the L'Olivar demo",
+          "href": "/en/demos/olivar/",
+          "marca": "L'Olivar",
+          "previewKicker": "Stays and pitches",
+          "previewTitulo": "Find your next escape.",
+          "incluye": [
+            "Responsive design with the campsite identity",
+            "Essential accommodation and service pages",
+            "Enquiry form and basic SEO",
+            "One language, hosting and HTTPS"
+          ]
+        },
+        "gestor": {
+          "titulo": "Enquiries arrive in the campsite inbox",
+          "texto": "Reception receives dates, guest numbers and contact details directly by email and replies using its existing workflow.",
+          "imagen": "inicial",
+          "capturaAlt": "Logic2B Campings manager home dashboard",
+          "modo": "email",
+          "incluye": []
+        }
+      },
+      {
+        "nombre": "Management",
+        "etiqueta": "Core plan",
+        "precio": "€399",
+        "periodo": "/month",
+        "tono": "water",
+        "web": {
+          "titulo": "Website with availability and direct booking",
+          "texto": "Publish stay types, seasons and rates, and let guests check availability without calling reception.",
+          "imagen": "/propuestas/azahar/vida-camping.jpg",
+          "capturaAlt": "Nature-led website design from the Pinada del Mar demo",
+          "href": "/en/demos/pinadamar/",
+          "marca": "Pinada del Mar",
+          "previewKicker": "Direct booking",
+          "previewTitulo": "Sleep beneath the pines.",
+          "incluye": [
+            "Date and guest search",
+            "Complete accommodation and pitch pages",
+            "Booking engine connected to the manager",
+            "Languages, analytics and expanded content"
+          ]
+        },
+        "gestor": {
+          "titulo": "Reception works from one view",
+          "texto": "Manage bookings, allocations, arrivals, departures and payments from the same workspace.",
+          "imagen": "gestion",
+          "capturaAlt": "Monthly planner in the Logic2B Campings manager",
+          "ruta": "planning",
+          "modo": "demo",
+          "incluye": [
+            "Planner and interactive map",
+            "Bookings, guests and rates",
+            "Payments with Redsys or Stripe",
+            "Arrivals, departures and reports"
+          ]
+        }
+      },
+      {
+        "nombre": "Advanced",
+        "precio": "Contact us",
+        "periodo": "tailored project",
+        "tono": "forest",
+        "web": {
+          "titulo": "A tailored website for more brands, languages and journeys",
+          "texto": "Organise a broad catalogue, campaigns and distinct markets with an architecture designed to grow.",
+          "imagen": "/propuestas/azahar/piscina.jpg",
+          "capturaAlt": "Resort website design from the Mar de Fondo demo",
+          "href": "/en/demos/mardefondo/",
+          "marca": "Mar de Fondo",
+          "previewKicker": "Complete experience",
+          "previewTitulo": "The whole resort, in one booking.",
+          "incluye": [
+            "Tailored architecture and visual direction",
+            "Multiple languages, markets and campaigns",
+            "Specific journeys for each stay type",
+            "Custom analytics and integrations"
+          ]
+        },
+        "gestor": {
+          "titulo": "More automation and operational control",
+          "texto": "Add supervised workflows, integrations and advanced data insight on top of every Management feature.",
+          "imagen": "avanzado",
+          "capturaAlt": "Intelligent manager view with an operational recommendation",
+          "ruta": "inteligente",
+          "modo": "demo",
+          "incluye": [
+            "Everything included in Management",
+            "Automations and communications",
+            "Integrations, API and MCP connectivity",
+            "Advanced reporting and supervised AI"
+          ]
+        }
+      }
+    ]
   },
   "temas": {
     "seo": {

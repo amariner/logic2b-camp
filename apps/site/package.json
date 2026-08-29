@@ -16,10 +16,12 @@
     "og": "node scripts/og.mjs",
     "capturas:mardefondo": "node scripts/capturas-mardefondo.mjs",
     "video:ola1": "node scripts/video-ola-1.mjs",
+    "video:home-dashboard": "node scripts/video-home-dashboard.mjs",
     "video:planning": "node scripts/video-gestos-planning.mjs"
   },
   "dependencies": {
     "@logic-camp/config": "workspace:*",
+    "@logic-camp/tour": "workspace:*",
     "@logic-camp/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^5.12.0",

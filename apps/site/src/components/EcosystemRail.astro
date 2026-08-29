@@ -58,6 +58,7 @@ const icons: Record<string, { path: string }> = {
           <svg viewBox="0 0 24 24" role="img" aria-label={item.nombre}>
             <path d={icon.path} />
           </svg>
+          <span class="brand-mark-name">{item.nombre}</span>
         </span>
       );
     })
@@ -67,36 +68,52 @@ const icons: Record<string, { path: string }> = {
 <style>
   .brand-rail {
     display:grid;
-    grid-template-columns:repeat(16,minmax(28px,1fr));
+    grid-template-columns:repeat(8,minmax(0,1fr));
     align-items:center;
-    gap:clamp(10px,1.25vw,20px);
+    gap:clamp(18px,2vw,32px);
     width:100%;
   }
   .brand-mark {
-    display:grid;
+    display:flex;
     min-width:0;
-    place-items:center;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(7px,.7vw,11px);
     color:#111;
   }
   .brand-mark svg {
     display:block;
-    width:clamp(20px,2vw,30px);
-    height:clamp(20px,2vw,30px);
+    flex:0 0 auto;
+    width:clamp(24px,2.35vw,34px);
+    height:clamp(24px,2.35vw,34px);
     fill:currentColor;
+  }
+  .brand-mark-name {
+    min-width:0;
+    font-size:clamp(11px,.95vw,14px);
+    font-weight:650;
+    letter-spacing:-.025em;
+    line-height:1.05;
+  }
+  @media (max-width:1050px) {
+    .brand-rail {
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
   }
   @media (max-width:767px) {
     .brand-rail {
-      grid-template-columns:repeat(16,24px);
-      justify-content:start;
-      gap:16px;
-      overflow-x:auto;
-      padding:2px 0 12px;
-      scroll-snap-type:x proximity;
-      scrollbar-color:color-mix(in srgb,currentColor 22%,transparent) transparent;
-      scrollbar-width:thin;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:24px 18px;
     }
     .brand-mark {
-      scroll-snap-align:start;
+      justify-content:flex-start;
+    }
+    .brand-mark svg {
+      width:28px;
+      height:28px;
+    }
+    .brand-mark-name {
+      font-size:12px;
     }
   }
 </style>

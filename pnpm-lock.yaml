@@ -93,6 +93,9 @@ importers:
       '@logic-camp/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@logic-camp/tour':
+        specifier: workspace:*
+        version: link:../../packages/tour
       '@logic-camp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -151,6 +154,9 @@ importers:
       '@logic-camp/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@logic-camp/tour':
+        specifier: workspace:*
+        version: link:../../packages/tour
       '@logic-camp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -191,6 +197,9 @@ importers:
       '@logic-camp/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@logic-camp/tour':
+        specifier: workspace:*
+        version: link:../../packages/tour
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
@@ -361,6 +370,18 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^3.2.0
+        version: 3.2.7(@types/debug@4.1.13)(@types/node@26.1.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0)
+
+  packages/tour:
+    devDependencies:
+      '@logic-camp/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.7
         version: 3.2.7(@types/debug@4.1.13)(@types/node@26.1.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(lightningcss@1.32.0)(tsx@4.23.1)(yaml@2.9.0)
 
   packages/tsconfig: {}
@@ -4023,6 +4044,7 @@ packages:
   eslint@9.39.5:
     resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'

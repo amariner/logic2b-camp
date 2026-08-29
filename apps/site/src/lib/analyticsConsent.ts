@@ -65,7 +65,18 @@ export function initializeConsent(): void {
 }
 
 export function trackAnalyticsEvent(
-  event: 'camp_open_lead_form' | 'camp_view_demo' | 'camp_open_manager' | 'camp_submit_lead',
+  event:
+    | 'camp_open_lead_form'
+    | 'camp_view_demo'
+    | 'camp_open_manager'
+    | 'camp_submit_lead'
+    | 'tour_start'
+    | 'tour_step_complete'
+    | 'tour_pause'
+    | 'tour_resume'
+    | 'tour_complete'
+    | 'tour_exit'
+    | 'tour_cta',
   attributes: Record<string, string | boolean> = {},
 ): void {
   if (!readConsent()?.analytics) return;

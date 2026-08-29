@@ -1,0 +1,215 @@
+---
+import { existsSync } from 'node:fs';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const videoPath = '/media/logic2b-dashboard-mini.mp4';
+const posterPath = '/media/logic2b-dashboard-mini-poster.webp';
+const labels =
+  locale === 'es'
+    ? {
+        aria: 'Recorrido visual del gestor: control total, planning y plano del camping',
+        pause: 'Pausar el vídeo del gestor',
+        play: 'Reproducir el vídeo del gestor',
+        caption: 'Pantallas reales de la demostración: control total, planning y plano.',
+        fallback: 'Descargar el vídeo del gestor',
+      }
+    : {
+        aria: 'Visual tour of the manager: control centre, planner and campsite map',
+        pause: 'Pause the manager video',
+        play: 'Play the manager video',
+        caption: 'Real demo screens: control centre, planner and campsite map.',
+        fallback: 'Download the manager video',
+      };
+
+for (const file of [
+  '../../public/media/logic2b-dashboard-mini.mp4',
+  '../../public/media/logic2b-dashboard-mini-poster.webp',
+]) {
+  if (!existsSync(new URL(file, import.meta.url))) throw new Error(`Falta el activo del dashboard ${file}`);
+}
+---
+
+<section id="dashboard-video" class="botanical-shell dashboard-video-section lc-reveal" aria-label={labels.aria}>
+  <figure class="dashboard-video-stage">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster={posterPath}
+      aria-label={labels.aria}
+      data-dashboard-video
+    >
+      <source src={videoPath} type="video/mp4" />
+      <a href={videoPath}>{labels.fallback}</a>
+    </video>
+    <button
+      type="button"
+      class="dashboard-video-toggle"
+      aria-label={labels.pause}
+      data-pause-label={labels.pause}
+      data-play-label={labels.play}
+      data-dashboard-video-toggle
+    >
+      <svg data-dashboard-video-pause viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 6v12M16 6v12" />
+      </svg>
+      <svg class="is-hidden" data-dashboard-video-play viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m9 6 9 6-9 6V6Z" />
+      </svg>
+    </button>
+    <figcaption class="sr-only">{labels.caption}</figcaption>
+  </figure>
+</section>
+
+<script>
+  const videos = document.querySelectorAll<HTMLVideoElement>('[data-dashboard-video]');
+
+  videos.forEach((video) => {
+    const stage = video.closest<HTMLElement>('.dashboard-video-stage');
+    const toggle = stage?.querySelector<HTMLButtonElement>('[data-dashboard-video-toggle]');
+    const pauseIcon = toggle?.querySelector<SVGElement>('[data-dashboard-video-pause]');
+    const playIcon = toggle?.querySelector<SVGElement>('[data-dashboard-video-play]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userPaused = reduced;
+
+    const paint = () => {
+      if (!toggle || !pauseIcon || !playIcon) return;
+      const paused = video.paused;
+      pauseIcon.classList.toggle('is-hidden', paused);
+      playIcon.classList.toggle('is-hidden', !paused);
+      toggle.setAttribute('aria-label', paused ? toggle.dataset.playLabel ?? '' : toggle.dataset.pauseLabel ?? '');
+    };
+
+    if (reduced) {
+      video.pause();
+      video.removeAttribute('autoplay');
+      paint();
+    } else {
+      void video.play().then(paint).catch(paint);
+    }
+
+    toggle?.addEventListener('click', () => {
+      userPaused = !video.paused;
+      if (video.paused) void video.play().then(paint).catch(paint);
+      else {
+        video.pause();
+        paint();
+      }
+    });
+
+    video.addEventListener('play', paint);
+    video.addEventListener('pause', paint);
+
+    if ('IntersectionObserver' in window && !reduced) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry) return;
+          if (!entry.isIntersecting) video.pause();
+          else if (!userPaused) void video.play().then(paint).catch(paint);
+        },
+        { threshold: 0.2 },
+      );
+      observer.observe(video);
+    }
+  });
+</script>
+
+<style>
+  .dashboard-video-section {
+    padding-block: clamp(38px, 6vw, 86px);
+  }
+
+  .dashboard-video-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: clamp(20px, 2.5vw, 34px);
+    background: #27312b;
+    box-shadow: 0 30px 90px color-mix(in srgb, var(--botanical-ink) 18%, transparent);
+    padding: clamp(12px, 3.8vw, 58px);
+  }
+
+  .dashboard-video-stage video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: clamp(12px, 1.5vw, 20px);
+    background: #27312b;
+    box-shadow: 0 22px 52px rgb(3 14 7 / 32%);
+  }
+
+  .dashboard-video-toggle {
+    position: absolute;
+    right: clamp(24px, 5vw, 76px);
+    bottom: clamp(24px, 5vw, 76px);
+    display: grid;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 50%;
+    background: rgb(15 31 20 / 78%);
+    color: white;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: transform 160ms ease, background-color 160ms ease;
+  }
+
+  .dashboard-video-toggle:hover {
+    background: rgb(15 31 20 / 94%);
+    transform: translateY(-1px);
+  }
+
+  .dashboard-video-toggle:focus-visible {
+    outline: 3px solid var(--botanical-keylime);
+    outline-offset: 3px;
+  }
+
+  .dashboard-video-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .dashboard-video-toggle svg.is-hidden {
+    display: none;
+  }
+
+  @media (max-width: 560px) {
+    .dashboard-video-section {
+      padding-block: 34px 48px;
+    }
+
+    .dashboard-video-stage {
+      border-radius: 18px;
+      padding: 8px;
+    }
+
+    .dashboard-video-stage video {
+      border-radius: 12px;
+    }
+
+    .dashboard-video-toggle {
+      right: 18px;
+      bottom: 18px;
+      width: 42px;
+      height: 42px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dashboard-video-stage video {
+      scroll-behavior: auto;
+    }
+  }
+</style>

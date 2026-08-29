@@ -1,0 +1,347 @@
+---
+import Base from '../layouts/Base.astro';
+import { getContent, localePath, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const c = getContent(locale);
+---
+
+<Base
+  locale={locale}
+  content={c}
+  ruta="empezar/"
+  seo={{ title: c.conversion.seoTitle, description: c.conversion.seoDescription }}
+>
+  <main class="conversion-page botanical-page">
+    <section class="botanical-shell conversion-layout" aria-labelledby="conversion-title">
+      <div class="conversion-copy">
+        <p class="botanical-eyebrow">{c.conversion.kicker}</p>
+        <h1 id="conversion-title">{c.conversion.titulo}</h1>
+        <p>{c.conversion.texto}</p>
+        <ul>
+          {c.conversion.beneficios.map((benefit) => (
+            <li><span aria-hidden="true">✓</span>{benefit}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="conversion-card">
+        <p class="botanical-eyebrow">{c.conversion.formKicker}</p>
+        <h2>{c.conversion.formTitulo}</h2>
+        <p class="conversion-card-copy">{c.conversion.formTexto}</p>
+
+        <form id="conversion-lead-form" novalidate>
+          <input type="hidden" name="lang" value={locale} />
+          <label>
+            <span>{c.contacto.campos.nombre}</span>
+            <input name="name" autocomplete="name" required />
+          </label>
+          <label>
+            <span>{c.contacto.campos.camping}</span>
+            <input name="campingName" autocomplete="organization" required />
+          </label>
+          <label class="conversion-span-two">
+            <span>{c.contacto.campos.email}</span>
+            <input name="email" type="email" inputmode="email" autocomplete="email" data-conversion-email required />
+          </label>
+          <label>
+            <span>{c.contacto.campos.telefono}</span>
+            <input name="phone" type="tel" autocomplete="tel" />
+          </label>
+          <label>
+            <span>{c.contacto.campos.mensaje}</span>
+            <input name="message" placeholder={c.conversion.mensajePlaceholder} />
+          </label>
+          <label class="botanical-honeypot" aria-hidden="true">
+            <span>{c.contacto.honeypot}</span>
+            <input name="website" tabindex="-1" autocomplete="off" />
+          </label>
+          <label class="conversion-consent conversion-span-two">
+            <input name="accept" type="checkbox" value="true" required />
+            <span>
+              {c.contacto.privacidadAntes}{' '}
+              <a href={localePath(locale, 'privacidad/')}>{c.contacto.privacidadEnlace}</a>.
+            </span>
+          </label>
+          <button
+            class="botanical-button conversion-submit conversion-span-two"
+            type="submit"
+            data-send={c.conversion.enviar}
+            data-sending={c.contacto.enviando}
+          >
+            <span data-conversion-submit-label>{c.conversion.enviar}</span><span aria-hidden="true">→</span>
+          </button>
+          <p id="conversion-lead-message" class="conversion-span-two" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error }}>
+  const conversionForm = document.getElementById('conversion-lead-form');
+  const conversionEmail = conversionForm?.querySelector('[data-conversion-email]');
+  const conversionSubmit = conversionForm?.querySelector('button[type="submit"]');
+  const conversionSubmitLabel = conversionSubmit?.querySelector('[data-conversion-submit-label]');
+  const conversionMessage = document.getElementById('conversion-lead-message');
+  const requestedEmail = new URLSearchParams(window.location.search).get('email')?.trim() ?? '';
+
+  if (conversionEmail instanceof HTMLInputElement && requestedEmail) {
+    conversionEmail.value = requestedEmail;
+  }
+
+  conversionForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(conversionForm instanceof HTMLFormElement) || !conversionForm.reportValidity()) return;
+    if (!(conversionSubmit instanceof HTMLButtonElement)) return;
+
+    const data = Object.fromEntries(new FormData(conversionForm).entries());
+    data.accept = data.accept === 'true';
+    conversionSubmit.disabled = true;
+    if (conversionSubmitLabel) conversionSubmitLabel.textContent = conversionSubmit.dataset.sending ?? '';
+    if (conversionMessage) conversionMessage.textContent = '';
+
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error('bad');
+      if (conversionMessage) conversionMessage.textContent = result.outcome === 'demo' ? demo : ok;
+      if (result.outcome === 'delivered') {
+        window.l2bTrackEvent?.('camp_submit_lead', {
+          form: 'conversion',
+          locale: document.documentElement.lang,
+        });
+      }
+    } catch {
+      if (conversionMessage) conversionMessage.textContent = err;
+    } finally {
+      conversionSubmit.disabled = false;
+      if (conversionSubmitLabel) conversionSubmitLabel.textContent = conversionSubmit.dataset.send ?? '';
+    }
+  });
+  </script>
+</Base>
+
+<style>
+  .conversion-page {
+    min-height: 100svh;
+    padding: clamp(36px, 5vw, 74px) 0 clamp(76px, 9vw, 128px);
+  }
+
+  .conversion-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(520px, 1.18fr);
+    gap: clamp(60px, 9vw, 148px);
+    align-items: center;
+    min-height: calc(100svh - 190px);
+  }
+
+  .conversion-copy h1 {
+    max-width: 650px;
+    margin: 22px 0 0;
+    font-size: clamp(58px, 6.4vw, 102px);
+    letter-spacing: -0.055em;
+    line-height: 0.94;
+  }
+
+  .conversion-copy > p:not(.botanical-eyebrow) {
+    max-width: 560px;
+    margin: 32px 0 0;
+    color: color-mix(in srgb, var(--botanical-ink) 72%, white);
+    font-size: clamp(16px, 1.45vw, 19px);
+    line-height: 1.55;
+  }
+
+  .conversion-copy ul {
+    display: grid;
+    gap: 13px;
+    margin: 34px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .conversion-copy li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: color-mix(in srgb, var(--botanical-ink) 76%, white);
+    font-size: 14px;
+  }
+
+  .conversion-copy li span {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--botanical-sage);
+    color: var(--botanical-ink);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .conversion-card {
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 11%, transparent);
+    border-radius: clamp(22px, 2.4vw, 34px);
+    background: color-mix(in srgb, var(--botanical-keylime) 44%, var(--botanical-paper));
+    box-shadow: 0 24px 70px color-mix(in srgb, var(--botanical-ink) 11%, transparent);
+    padding: clamp(30px, 4vw, 58px);
+  }
+
+  .conversion-card h2 {
+    margin: 15px 0 0;
+    font-size: clamp(36px, 3.6vw, 56px);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .conversion-card-copy {
+    max-width: 580px;
+    margin: 20px 0 0;
+    color: color-mix(in srgb, var(--botanical-ink) 68%, white);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .conversion-card form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 34px;
+  }
+
+  .conversion-card .botanical-honeypot {
+    display: none;
+  }
+
+  .conversion-card label:not(.conversion-consent):not(.botanical-honeypot) {
+    display: grid;
+    gap: 8px;
+  }
+
+  .conversion-card label > span:first-child {
+    color: color-mix(in srgb, var(--botanical-ink) 66%, white);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .conversion-card input:not([type='checkbox']) {
+    width: 100%;
+    min-height: 54px;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 16%, transparent);
+    border-radius: 12px;
+    outline: 0;
+    background: var(--botanical-paper);
+    padding: 13px 15px;
+    color: var(--botanical-ink);
+    font: inherit;
+    font-size: 15px;
+  }
+
+  .conversion-card input:not([type='checkbox']):focus {
+    border-color: color-mix(in srgb, var(--botanical-ink) 50%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--botanical-sage) 40%, transparent);
+  }
+
+  .conversion-span-two {
+    grid-column: 1 / -1;
+  }
+
+  .conversion-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: color-mix(in srgb, var(--botanical-ink) 66%, white);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .conversion-consent input {
+    margin-top: 2px;
+  }
+
+  .conversion-consent a {
+    color: var(--botanical-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .conversion-submit {
+    width: 100%;
+    min-height: 58px;
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .conversion-submit:disabled {
+    cursor: wait;
+    opacity: 0.68;
+  }
+
+  #conversion-lead-message {
+    min-height: 20px;
+    margin: -4px 0 0;
+    color: color-mix(in srgb, var(--botanical-ink) 74%, white);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  @media (max-width: 960px) {
+    .conversion-layout {
+      grid-template-columns: 1fr;
+      gap: 52px;
+      min-height: 0;
+    }
+
+    .conversion-copy {
+      text-align: center;
+    }
+
+    .conversion-copy h1,
+    .conversion-copy > p:not(.botanical-eyebrow) {
+      margin-inline: auto;
+    }
+
+    .conversion-copy ul {
+      width: max-content;
+      max-width: 100%;
+      margin-inline: auto;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .conversion-page {
+      padding-top: 42px;
+    }
+
+    .conversion-copy h1 {
+      font-size: 52px;
+    }
+
+    .conversion-card {
+      padding: 28px 20px;
+    }
+
+    .conversion-card form {
+      grid-template-columns: 1fr;
+    }
+
+    .conversion-span-two {
+      grid-column: auto;
+    }
+  }
+</style>

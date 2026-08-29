@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/react": "^4.4.2",
     "@logic-camp/config": "workspace:*",
+    "@logic-camp/tour": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^5.12.0",
     "react": "^19.2.7",

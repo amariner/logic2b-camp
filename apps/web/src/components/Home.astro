@@ -79,7 +79,7 @@ const lona = fotoLona
      Con showTierSwitch (ADR 0013) se generan LOS DOS y un `data-hero-nivel` + CSS puro
      (ver global.css) decide cuál se ve — el otro no se desmonta ni recarga por red. */}
   {(instant || showTierSwitch) && (
-    <section class="relative" data-hero-nivel="3">
+    <section class="relative" data-hero-nivel="3" data-tour-medium-web>
       <div class="relative h-[82svh] min-h-130 overflow-hidden">
         {/* sin foto NO se cae el héroe entero: en nivel 3 el héroe es el
             mostrador, y ese sigue montándose sobre la materia del tenant */}
@@ -125,7 +125,7 @@ const lona = fotoLona
     </section>
   )}
   {(!instant || showTierSwitch) && (
-    <section class="relative" data-hero-nivel={showTierSwitch ? '1' : undefined}>
+    <section class="relative" data-hero-nivel={showTierSwitch ? '1' : undefined} data-tour-medium-web>
       <div class="relative h-[88svh] min-h-130 overflow-hidden">
         {heroAnochecer && fotoStatic ? (
           <HeroMedia

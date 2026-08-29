@@ -4,6 +4,8 @@ import HeaderIcon from '../components/HeaderIcon.astro';
 import ProjectRequestDialog from '../components/ProjectRequestDialog.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Logic2BContact from '../components/Logic2BContact.astro';
+import { logic2bContact } from '@logic-camp/config/contact';
+import { siWhatsapp } from 'simple-icons';
 import { commercialSite } from '../config';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
@@ -122,6 +124,14 @@ const nav = [
   { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
   { href: localePath(locale, 'docs/'), label: c.nav.docs, icon: 'guides' },
 ] as const;
+const isHomeMini = ruta === '/';
+const homeNav = [
+  { href: '/demo/', label: c.nav.web, icon: 'demo' },
+  { href: managerHref, label: c.nav.gestor, icon: 'manager' },
+  { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
+] as const;
+const headerNav = isHomeMini ? homeNav : nav;
+const whatsappContact = logic2bContact(locale, contactContext);
 // Acciones (también compartidas): demo pública, gestor demo y el CTA de contacto.
 const acciones = [
   { href: '/demo/', label: c.nav.demo, icon: 'demo' },
@@ -205,7 +215,7 @@ const acciones = [
     </script>
     <slot name="head" />
   </head>
-  <body class="theme-botanical min-h-screen bg-background text-foreground antialiased">
+  <body class:list={['theme-botanical min-h-screen bg-background text-foreground antialiased', isHomeMini && 'home-mini']}>
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
@@ -215,19 +225,10 @@ const acciones = [
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}
         <Wordmark class="shrink-0 text-base sm:text-lg" href={localePath(locale)} />
-        <nav class="hidden items-center gap-6 text-sm text-muted-foreground xl:flex" aria-label="Navegación principal">
-          {nav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
+        <nav class="ml-auto hidden items-center gap-6 text-sm text-muted-foreground xl:flex" aria-label="Navegación principal">
+          {headerNav.map((n) => <a href={n.href} class="transition-colors hover:text-foreground">{n.label}</a>)}
         </nav>
-        <div class="site-header-actions ml-auto flex items-center gap-4">
-          <a
-            href={acciones[0]!.href}
-            class="site-header-demo inline-flex shrink-0 items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >{acciones[0]!.label}</a>
-          <button
-            type="button"
-            class="site-header-start inline-flex shrink-0 items-center bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            data-project-request-open
-          >{c.nav.contacto}</button>
+        <div class="site-header-actions ml-auto flex items-center gap-4 xl:ml-0">
           <button
             type="button"
             class="site-menu-toggle"
@@ -240,11 +241,61 @@ const acciones = [
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
+          {
+            isHomeMini ? (
+              <>
+                <a
+                  href={whatsappContact.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="site-header-demo inline-flex shrink-0 items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label={whatsappContact.ariaLabel}
+                >
+                  <span>{c.nav.contactar}</span>
+                  <svg class="site-header-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d={siWhatsapp.path} />
+                  </svg>
+                </a>
+                <button
+                  type="button"
+                  class="site-header-start inline-flex shrink-0 items-center bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                  data-camp-tour-trigger
+                  aria-haspopup="dialog"
+                >
+                  <span data-camp-tour-label>{c.nav.comoFunciona}</span>
+                  <svg
+                    class="site-header-route-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M14 7l5 5-5 5" />
+                  </svg>
+                </button>
+              </>
+            ) : (
+              <>
+                <a
+                  href={acciones[0]!.href}
+                  class="site-header-demo inline-flex shrink-0 items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >{acciones[0]!.label}</a>
+                <button
+                  type="button"
+                  class="site-header-start inline-flex shrink-0 items-center bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                  data-project-request-open
+                >{c.nav.contacto}</button>
+              </>
+            )
+          }
         </div>
         <div id="site-menu" class="site-menu" hidden data-site-menu>
           <nav class="site-menu__links" aria-label="Navegación">
             {
-              nav.map((n) => (
+              headerNav.map((n) => (
                 <a href={n.href} class="site-menu__link" data-site-menu-link>
                   <HeaderIcon name={n.icon} class="site-menu__icon" />
                   <span>{n.label}</span>
@@ -254,12 +305,51 @@ const acciones = [
           </nav>
           <div class="site-menu__actions">
             {
-              acciones.map((a) => (
-                <a href={a.href} class="site-menu__link" data-site-menu-link>
-                  <HeaderIcon name={a.icon} class="site-menu__icon" />
-                  <span>{a.label}</span>
-                </a>
-              ))
+              isHomeMini ? (
+                <>
+                  <a
+                    href={whatsappContact.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="site-menu__link"
+                    data-site-menu-link
+                    aria-label={whatsappContact.ariaLabel}
+                  >
+                    <svg class="site-menu__icon site-menu__icon--fill" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d={siWhatsapp.path} />
+                    </svg>
+                    <span>{c.nav.contactar}</span>
+                  </a>
+                  <button
+                    type="button"
+                    class="site-menu__link"
+                    data-site-menu-link
+                    data-camp-tour-trigger
+                    aria-haspopup="dialog"
+                  >
+                    <svg
+                      class="site-menu__icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M14 7l5 5-5 5" />
+                    </svg>
+                    <span data-camp-tour-label>{c.nav.comoFunciona}</span>
+                  </button>
+                </>
+              ) : (
+                acciones.map((a) => (
+                  <a href={a.href} class="site-menu__link" data-site-menu-link>
+                    <HeaderIcon name={a.icon} class="site-menu__icon" />
+                    <span>{a.label}</span>
+                  </a>
+                ))
+              )
             }
           </div>
         </div>
@@ -391,6 +481,10 @@ const acciones = [
           closeMenu();
         }
       });
+    </script>
+    <script>
+      import { initCampTour } from '@logic-camp/tour';
+      initCampTour();
     </script>
   </body>
 </html>
