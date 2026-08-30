@@ -207,20 +207,37 @@
     "kicker": "Website + manager, in the same plan",
     "titulo": "Choose how you want to start. The platform grows with you.",
     "texto": "Every plan pairs a website direction with the level of management your campsite needs. First you see how it presents itself; then how the team works behind the scenes.",
-    "webLabel": "Website design",
-    "gestorLabel": "Campsite manager",
+    "billingAria": "Billing frequency",
+    "billingMonthly": "Pay monthly",
+    "billingAnnual": "Pay annually",
+    "billingDiscount": "−10%",
+    "slideWebLabel": "Website",
+    "slideManagerLabel": "Management system",
     "ctaWeb": "View website demo",
     "ctaGestor": "View manager demo",
+    "requestCta": "Request plan",
     "assistText": "Whatever the size of your campsite, we will guide you through the whole process.",
-    "assistCta": "Talk to us",
+    "assistCta": "Book a meeting",
     "aria": "Logic2B Campings plans with website design and manager",
-    "nota": "Monthly prices exclude VAT. Final scope, onboarding and integrations are agreed before the project begins.",
     "items": [
       {
+        "id": "inicial",
         "nombre": "Start",
         "precio": "€49",
         "periodo": "/month",
+        "precioAnual": "€529",
+        "periodoAnual": "/year",
+        "precioAnualAnterior": "€588",
+        "detallePrecio": "6-month commitment",
         "tono": "lime",
+        "ofertaTitulo": "Website design",
+        "ofertaTexto": "A clear, fast website for presenting the campsite and receiving enquiries directly by email.",
+        "incluye": [
+          "Responsive design with the campsite identity",
+          "Accommodation, pitches and services",
+          "Enquiries connected to the reception inbox",
+          "Basic SEO, hosting and HTTPS"
+        ],
         "web": {
           "titulo": "An essential website for direct enquiries",
           "texto": "Present accommodation, pitches, services and contact details clearly on mobile and desktop.",
@@ -247,11 +264,24 @@
         }
       },
       {
+        "id": "gestion",
         "nombre": "Management",
         "etiqueta": "Core plan",
         "precio": "€399",
         "periodo": "/month",
+        "precioAnual": "€4,309",
+        "periodoAnual": "/year",
+        "precioAnualAnterior": "€4,788",
+        "onboarding": "€1,900 · onboarding and website design",
         "tono": "water",
+        "ofertaTitulo": "Website design + management system",
+        "ofertaTexto": "Direct booking on the website and one workspace for coordinating campsite operations.",
+        "incluye": [
+          "Website design, catalogue, content and languages",
+          "Connected availability search and booking engine",
+          "Planner, guests, inventory and rates",
+          "Payments, arrivals, departures and reports"
+        ],
         "web": {
           "titulo": "Website with availability and direct booking",
           "texto": "Publish stay types, seasons and rates, and let guests check availability without calling reception.",
@@ -284,10 +314,22 @@
         }
       },
       {
+        "id": "avanzado",
         "nombre": "Advanced",
+        "etiqueta": "Tailored",
         "precio": "Contact us",
         "periodo": "tailored project",
+        "precioAnual": "Contact us",
+        "periodoAnual": "tailored project",
         "tono": "forest",
+        "ofertaTitulo": "Website design + management system plus",
+        "ofertaTexto": "A tailored website experience with more automation, integrations and operational control.",
+        "incluye": [
+          "Tailored visual direction, markets and journeys",
+          "Complete booking and operations management",
+          "Automations, communications and integrations",
+          "Advanced reporting and supervised AI"
+        ],
         "web": {
           "titulo": "A tailored website for more brands, languages and journeys",
           "texto": "Organise a broad catalogue, campaigns and distinct markets with an architecture designed to grow.",
@@ -854,7 +896,7 @@
     "kicker": "Clear pricing · no booking commission",
     "titulo": "Start small. Scale without starting over.",
     "intro": "First you win enquiries. Then you control operations, automate work and use your data to decide better. Your website, brand and system grow with you.",
-    "iva": "Prices exclude VAT. Start requires a 12-month commitment or €490/year. Domain, third-party services and specific integrations are billed separately where applicable.",
+    "iva": "Prices exclude VAT. Annual payment includes a 10% discount. Domain, third-party services and specific integrations are billed separately where applicable.",
     "planesTitulo": "Four steps, one platform",
     "altaLabel": "Setup",
     "cuotaLabel": "Subscription",

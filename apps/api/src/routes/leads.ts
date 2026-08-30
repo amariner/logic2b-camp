@@ -19,6 +19,7 @@ const leadSchema = z.object({
   message: z.string().trim().max(2000).optional(),
   lang: z.string().trim().max(5).optional(),
   plan: z.string().trim().max(100).optional(),
+  billing: z.enum(['monthly', 'annual']).optional(),
   accept: z.literal(true),
   website: z.string().trim().max(200).optional(),
 });
@@ -44,6 +45,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     ['Email', d.email],
     ['Teléfono', d.phone || '—'],
     ['Plan', d.plan || '—'],
+    ['Pago', d.billing === 'annual' ? 'Anual' : d.billing === 'monthly' ? 'Mensual' : '—'],
     ['Idioma', d.lang || '—'],
     ['Consentimiento', 'Aceptó la política de privacidad'],
   ];

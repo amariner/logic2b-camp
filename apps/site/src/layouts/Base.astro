@@ -410,7 +410,7 @@ const acciones = [
 
     <ProjectRequestDialog contacto={c.contacto} locale={locale} />
     <CookieBanner copy={c.cookieBanner} policyHref={localePath(locale, 'cookies/')} />
-    <Logic2BContact locale={locale} context={contactContext} />
+    {!isHomeMini && <Logic2BContact locale={locale} context={contactContext} />}
 
     {/* Reveal on scroll (ADR 0027), compartido por todas las páginas: cualquier
         .lc-reveal del slot funciona igual en home, temas, precios y guías. */}

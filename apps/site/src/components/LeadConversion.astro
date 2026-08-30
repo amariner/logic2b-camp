@@ -8,6 +8,15 @@ interface Props {
 
 const { locale } = Astro.props;
 const c = getContent(locale);
+const planOptions = c.pricingShowcase.items.map((plan) => ({
+  id: plan.id,
+  name: plan.nombre,
+  monthlyPrice: plan.precio,
+  monthlyPeriod: plan.periodo,
+  annualPrice: plan.precioAnual,
+  annualPeriod: plan.periodoAnual,
+  onboarding: 'onboarding' in plan ? plan.onboarding : '',
+}));
 ---
 
 <Base
@@ -34,8 +43,22 @@ const c = getContent(locale);
         <h2>{c.conversion.formTitulo}</h2>
         <p class="conversion-card-copy">{c.conversion.formTexto}</p>
 
+        <div class="conversion-selection" data-conversion-selection hidden>
+          <div>
+            <p>{c.contacto.planSeleccionado}</p>
+            <h3 data-conversion-plan-name></h3>
+          </div>
+          <div class="conversion-selection-price">
+            <strong data-conversion-plan-price></strong>
+            <span data-conversion-plan-period></span>
+          </div>
+          <small data-conversion-plan-onboarding hidden></small>
+        </div>
+
         <form id="conversion-lead-form" novalidate>
           <input type="hidden" name="lang" value={locale} />
+          <input type="hidden" name="plan" data-conversion-plan-input />
+          <input type="hidden" name="billing" data-conversion-billing-input />
           <label>
             <span>{c.contacto.campos.nombre}</span>
             <input name="name" autocomplete="name" required />
@@ -81,16 +104,52 @@ const c = getContent(locale);
     </section>
   </main>
 
-  <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error }}>
+  <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error, planOptions }}>
   const conversionForm = document.getElementById('conversion-lead-form');
   const conversionEmail = conversionForm?.querySelector('[data-conversion-email]');
+  const conversionPlanInput = conversionForm?.querySelector('[data-conversion-plan-input]');
+  const conversionBillingInput = conversionForm?.querySelector('[data-conversion-billing-input]');
+  const conversionSelection = document.querySelector('[data-conversion-selection]');
+  const conversionPlanName = conversionSelection?.querySelector('[data-conversion-plan-name]');
+  const conversionPlanPrice = conversionSelection?.querySelector('[data-conversion-plan-price]');
+  const conversionPlanPeriod = conversionSelection?.querySelector('[data-conversion-plan-period]');
+  const conversionPlanOnboarding = conversionSelection?.querySelector('[data-conversion-plan-onboarding]');
   const conversionSubmit = conversionForm?.querySelector('button[type="submit"]');
   const conversionSubmitLabel = conversionSubmit?.querySelector('[data-conversion-submit-label]');
   const conversionMessage = document.getElementById('conversion-lead-message');
-  const requestedEmail = new URLSearchParams(window.location.search).get('email')?.trim() ?? '';
+  const conversionParams = new URLSearchParams(window.location.search);
+  const requestedEmail = conversionParams.get('email')?.trim() ?? '';
+  const requestedPlanId = conversionParams.get('plan')?.trim() ?? '';
+  const requestedBilling = conversionParams.get('billing') === 'annual' ? 'annual' : 'monthly';
+  const requestedPlan = planOptions.find((plan) => plan.id === requestedPlanId);
 
   if (conversionEmail instanceof HTMLInputElement && requestedEmail) {
     conversionEmail.value = requestedEmail;
+  }
+
+  if (requestedPlan) {
+    const syncRequestedPlan = () => {
+      if (conversionPlanInput) conversionPlanInput.value = requestedPlan.id;
+      if (conversionBillingInput) conversionBillingInput.value = requestedBilling;
+    };
+    syncRequestedPlan();
+    window.addEventListener('pageshow', syncRequestedPlan, { once: true });
+    if (conversionPlanName) conversionPlanName.textContent = requestedPlan.name;
+    if (conversionPlanPrice) {
+      conversionPlanPrice.textContent = requestedBilling === 'annual'
+        ? requestedPlan.annualPrice
+        : requestedPlan.monthlyPrice;
+    }
+    if (conversionPlanPeriod) {
+      conversionPlanPeriod.textContent = requestedBilling === 'annual'
+        ? requestedPlan.annualPeriod
+        : requestedPlan.monthlyPeriod;
+    }
+    if (conversionPlanOnboarding instanceof HTMLElement && requestedPlan.onboarding) {
+      conversionPlanOnboarding.textContent = requestedPlan.onboarding;
+      conversionPlanOnboarding.hidden = false;
+    }
+    if (conversionSelection instanceof HTMLElement) conversionSelection.hidden = false;
   }
 
   conversionForm?.addEventListener('submit', async (event) => {
@@ -99,6 +158,10 @@ const c = getContent(locale);
     if (!(conversionSubmit instanceof HTMLButtonElement)) return;
 
     const data = Object.fromEntries(new FormData(conversionForm).entries());
+    if (requestedPlan) {
+      data.plan = requestedPlan.id;
+      data.billing = requestedBilling;
+    }
     data.accept = data.accept === 'true';
     conversionSubmit.disabled = true;
     if (conversionSubmitLabel) conversionSubmitLabel.textContent = conversionSubmit.dataset.sending ?? '';
@@ -117,6 +180,8 @@ const c = getContent(locale);
         window.l2bTrackEvent?.('camp_submit_lead', {
           form: 'conversion',
           locale: document.documentElement.lang,
+          plan_id: requestedPlan?.id ?? '',
+          billing: requestedPlan ? requestedBilling : '',
         });
       }
     } catch {
@@ -208,6 +273,65 @@ const c = getContent(locale);
     color: color-mix(in srgb, var(--botanical-ink) 68%, white);
     font-size: 14px;
     line-height: 1.55;
+  }
+
+  .conversion-selection {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 24px;
+    margin-top: 24px;
+    border: 1px solid color-mix(in srgb, var(--botanical-ink) 13%, transparent);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--botanical-paper) 82%, white);
+    padding: 18px 20px;
+  }
+
+  .conversion-selection[hidden] {
+    display: none;
+  }
+
+  .conversion-selection p {
+    color: color-mix(in srgb, var(--botanical-ink) 58%, white);
+    font-size: 10px;
+    font-weight: 720;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .conversion-selection h3 {
+    margin-top: 5px;
+    color: var(--botanical-ink);
+    font-size: clamp(23px, 2.1vw, 30px);
+    font-weight: 590;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .conversion-selection-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--botanical-ink);
+  }
+
+  .conversion-selection-price strong {
+    font-size: clamp(25px, 2.4vw, 34px);
+    font-weight: 590;
+    letter-spacing: -0.045em;
+  }
+
+  .conversion-selection-price span,
+  .conversion-selection small {
+    color: color-mix(in srgb, var(--botanical-ink) 60%, white);
+    font-size: 10px;
+    font-weight: 620;
+  }
+
+  .conversion-selection small {
+    grid-column: 1 / -1;
+    border-top: 1px solid color-mix(in srgb, var(--botanical-ink) 10%, transparent);
+    padding-top: 10px;
   }
 
   .conversion-card form {
@@ -337,6 +461,10 @@ const c = getContent(locale);
     }
 
     .conversion-card form {
+      grid-template-columns: 1fr;
+    }
+
+    .conversion-selection {
       grid-template-columns: 1fr;
     }
 

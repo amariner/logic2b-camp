@@ -207,20 +207,37 @@
     "kicker": "Web + gestor, en el mismo plan",
     "titulo": "Elige cómo quieres empezar. La plataforma crece contigo.",
     "texto": "Cada plan combina una dirección web con el nivel de gestión que necesita el camping. Primero ves cómo se presenta; después, cómo se trabaja por dentro.",
-    "webLabel": "Diseño de la web",
-    "gestorLabel": "Gestor del camping",
+    "billingAria": "Frecuencia de pago",
+    "billingMonthly": "Pago mensual",
+    "billingAnnual": "Pago anual",
+    "billingDiscount": "−10 %",
+    "slideWebLabel": "Web",
+    "slideManagerLabel": "Sistema de gestión",
     "ctaWeb": "Ver web demo",
     "ctaGestor": "Ver gestor demo",
+    "requestCta": "Solicitar plan",
     "assistText": "Sea cual sea el tamaño de tu camping, te acompañamos en todo el proceso.",
-    "assistCta": "Hablar con nosotros",
+    "assistCta": "Solicitar una cita",
     "aria": "Planes de Logic2B Campings con diseño web y gestor",
-    "nota": "Importes mensuales sin IVA. El alcance final, la implantación y las integraciones se concretan antes de iniciar el proyecto.",
     "items": [
       {
+        "id": "inicial",
         "nombre": "Inicial",
         "precio": "49 €",
         "periodo": "/mes",
+        "precioAnual": "529 €",
+        "periodoAnual": "/año",
+        "precioAnualAnterior": "588 €",
+        "detallePrecio": "Permanencia de 6 meses",
         "tono": "lime",
+        "ofertaTitulo": "Diseño web",
+        "ofertaTexto": "Una web clara y rápida para presentar el camping y recibir solicitudes directamente por email.",
+        "incluye": [
+          "Diseño responsive con la identidad del camping",
+          "Alojamientos, parcelas y servicios",
+          "Solicitudes conectadas al correo de recepción",
+          "SEO básico, alojamiento y HTTPS"
+        ],
         "web": {
           "titulo": "Web esencial para empezar a vender directo",
           "texto": "Presenta alojamientos, parcelas, servicios y datos de contacto desde móvil y escritorio.",
@@ -247,11 +264,24 @@
         }
       },
       {
+        "id": "gestion",
         "nombre": "Gestión",
         "etiqueta": "Plan central",
         "precio": "399 €",
         "periodo": "/mes",
+        "precioAnual": "4.309 €",
+        "periodoAnual": "/año",
+        "precioAnualAnterior": "4.788 €",
+        "onboarding": "1.900 € · onboarding y diseño web",
         "tono": "water",
+        "ofertaTitulo": "Diseño web + sistema de gestión",
+        "ofertaTexto": "Reserva directa en la web y una sola vista para coordinar la operativa del camping.",
+        "incluye": [
+          "Diseño web, catálogo, contenidos e idiomas",
+          "Buscador y motor de reservas conectado",
+          "Planning, clientes, inventario y tarifas",
+          "Cobros, llegadas, salidas e informes"
+        ],
         "web": {
           "titulo": "Web con disponibilidad y reserva directa",
           "texto": "Publica tipos de estancia, temporadas y precios, y permite consultar disponibilidad sin depender de llamadas.",
@@ -284,10 +314,22 @@
         }
       },
       {
+        "id": "avanzado",
         "nombre": "Avanzado",
+        "etiqueta": "A medida",
         "precio": "Consultar",
         "periodo": "proyecto a medida",
+        "precioAnual": "Consultar",
+        "periodoAnual": "proyecto a medida",
         "tono": "forest",
+        "ofertaTitulo": "Diseño web + sistema de gestión plus",
+        "ofertaTexto": "Una experiencia web a medida con más automatización, integraciones y control operativo.",
+        "incluye": [
+          "Dirección visual, mercados y recorridos a medida",
+          "Gestión completa de reservas y operaciones",
+          "Automatizaciones, comunicaciones e integraciones",
+          "Informes avanzados e IA supervisada"
+        ],
         "web": {
           "titulo": "Web a medida para más marcas, idiomas y recorridos",
           "texto": "Organiza un catálogo amplio, campañas y mercados distintos con una arquitectura preparada para crecer.",
@@ -854,7 +896,7 @@
     "kicker": "Precios claros · sin comisión por reserva",
     "titulo": "Empieza pequeño. Escala sin volver a empezar.",
     "intro": "Primero consigues consultas. Después controlas el camping, automatizas trabajo y utilizas tus datos para decidir mejor. La web, la marca y el sistema crecen contigo.",
-    "iva": "Importes sin IVA. Inicio exige 12 meses o 490 €/año. Dominio, servicios de terceros e integraciones específicas se facturan aparte cuando apliquen.",
+    "iva": "Importes sin IVA. El pago anual incluye un 10 % de descuento. Dominio, servicios de terceros e integraciones específicas se facturan aparte cuando apliquen.",
     "planesTitulo": "Cuatro pasos, una sola plataforma",
     "altaLabel": "Alta",
     "cuotaLabel": "Cuota",
