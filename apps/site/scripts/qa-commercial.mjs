@@ -217,38 +217,93 @@ try {
         `${variant.locale}/${variant.width}: rechazar cargó Google`,
       );
     }
-    await assertContact(page, {
-      context: 'commercial',
-      visible: false,
-      label: `${variant.locale}/${variant.width}: contacto inicial`,
-    });
-    const planSection = page.locator('#niveles');
+    assert.equal(
+      await page.locator('[data-logic2b-contact]').count(),
+      0,
+      `${variant.locale}/${variant.width}: la portada usa su cierre comercial propio`,
+    );
+    if (acceptsAnalytics) {
+      await page
+        .locator('a[href="/demos/pinadamar/gestion/#/planning"]')
+        .first()
+        .evaluate((link) => {
+          if (!(link instanceof HTMLAnchorElement)) throw new Error('enlace de gestión ausente');
+          link.addEventListener('click', (event) => event.preventDefault(), { once: true });
+          link.click();
+        });
+      assert.equal(
+        await page.evaluate(() => window.dataLayer?.at(-1)?.event),
+        'camp_open_manager',
+        'la demo de gestión conserva su evento analítico',
+      );
+    }
+
+    const themeShowcase = page.locator('[data-theme-showcase]');
+    const themeShowcasePrevious = themeShowcase.locator('[data-theme-showcase-prev]');
+    const themeShowcaseNext = themeShowcase.locator('[data-theme-showcase-next]');
+    assert.equal(await themeShowcase.count(), 1, `${variant.locale}/${variant.width}: slider único`);
+    assert.equal(
+      await themeShowcase.locator('.theme-showcase-card').count(),
+      12,
+      `${variant.locale}/${variant.width}: doce temas en el slider`,
+    );
+    assert.equal(await themeShowcasePrevious.isDisabled(), true, `${variant.locale}/${variant.width}: inicio del slider`);
+    assert.equal(await themeShowcaseNext.isDisabled(), false, `${variant.locale}/${variant.width}: slider navegable`);
+    await themeShowcaseNext.click();
+    await page.waitForFunction(
+      () => {
+        const track = document.querySelector('[data-theme-showcase-track]');
+        const previous = document.querySelector('[data-theme-showcase-prev]');
+        return (track?.scrollLeft ?? 0) > 2 && previous instanceof HTMLButtonElement && !previous.disabled;
+      },
+    );
+    assert.equal(await themeShowcasePrevious.isDisabled(), false, `${variant.locale}/${variant.width}: retorno del slider`);
+
+    const planSection = page.locator('#precios');
     await planSection.scrollIntoViewIfNeeded();
-    await assertContact(page, {
-      context: 'commercial',
-      visible: true,
-      label: `${variant.locale}/${variant.width}: contacto tras scroll`,
-    });
-    const statuses = planSection.locator('[data-plan-status]');
+    const pricingCards = planSection.locator('.pricing-card');
     assert.equal(
-      await statuses.count(),
-      4,
-      `${variant.locale}/${variant.width}: estados en portada`,
-    );
-    const stateTypes = await statuses.evaluateAll((items) =>
-      items.map((item) => item.getAttribute('data-plan-status')),
-    );
-    assert.deepEqual(stateTypes, ['disponible', 'disponible', 'desarrollo', 'vision']);
-    const treatments = await statuses.evaluateAll((items) =>
-      items.map((item) => {
-        const style = getComputedStyle(item);
-        return `${style.backgroundColor}/${style.borderColor}`;
-      }),
-    );
-    assert.equal(
-      new Set(treatments).size,
+      await pricingCards.count(),
       3,
-      `${variant.locale}/${variant.width}: tratamientos de estado`,
+      `${variant.locale}/${variant.width}: tres planes en portada`,
+    );
+    assert.equal(
+      await planSection.locator('[data-plan-status]').count(),
+      0,
+      `${variant.locale}/${variant.width}: sin estados del catálogo anterior`,
+    );
+    const requestLinks = planSection.locator('[data-request-base]');
+    const requestedPlans = await requestLinks.evaluateAll((items) =>
+      items.map((item) => new URL(item.getAttribute('data-request-base'), location.origin).searchParams.get('plan')),
+    );
+    assert.deepEqual(
+      requestedPlans,
+      ['inicial', 'gestion', 'avanzado'],
+      `${variant.locale}/${variant.width}: identidad de los planes`,
+    );
+    assert.deepEqual(
+      await requestLinks.evaluateAll((items) =>
+        items.map((item) => new URL(item.href).searchParams.get('billing')),
+      ),
+      ['monthly', 'monthly', 'monthly'],
+      `${variant.locale}/${variant.width}: solicitud mensual inicial`,
+    );
+    const annualBilling = planSection.locator('[data-billing-option="annual"]');
+    await annualBilling.click();
+    assert.equal(await annualBilling.getAttribute('aria-pressed'), 'true');
+    assert.equal(await planSection.getAttribute('data-billing'), 'annual');
+    assert.ok(
+      await planSection.locator('[data-pricing-price]').evaluateAll((items) =>
+        items.every((item) => item.textContent.trim() === item.getAttribute('data-annual')),
+      ),
+      `${variant.locale}/${variant.width}: precios anuales visibles`,
+    );
+    assert.deepEqual(
+      await requestLinks.evaluateAll((items) =>
+        items.map((item) => new URL(item.href).searchParams.get('billing')),
+      ),
+      ['annual', 'annual', 'annual'],
+      `${variant.locale}/${variant.width}: solicitud anual`,
     );
 
     const guides = page.locator('.botanical-guide-grid a');
@@ -284,7 +339,7 @@ try {
       `${variant.locale}/${variant.width}: FAQ visible y estructurada divergen`,
     );
 
-    const leadForm = page.locator('#lead-form');
+    const leadForm = page.locator('#project-request-form');
     assert.equal(
       await leadForm.locator('label').count(),
       7,
@@ -295,36 +350,24 @@ try {
       4,
       `${variant.locale}/${variant.width}: campos obligatorios`,
     );
-    const requestedPlan = await planSection
-      .locator('[data-project-request-plan]')
-      .last()
-      .getAttribute('data-project-request-plan');
-    await planSection.locator('[data-project-request-plan]').last().click();
+    const requestTrigger = page.locator('.home-closing-button');
+    await requestTrigger.scrollIntoViewIfNeeded();
+    await requestTrigger.click();
     const dialog = page.locator('#project-request-dialog');
     assert.ok(
       await dialog.evaluate((item) => item.open),
       `${variant.locale}/${variant.width}: diálogo de solicitud`,
     );
-    await assertContact(page, {
-      context: 'commercial',
-      visible: false,
-      label: `${variant.locale}/${variant.width}: contacto bajo modal`,
-    });
     assert.equal(
       await dialog.locator('[data-project-request-plan-input]').inputValue(),
-      requestedPlan,
-      `${variant.locale}/${variant.width}: el plan no llega al formulario`,
+      '',
+      `${variant.locale}/${variant.width}: la solicitud general no preselecciona plan`,
     );
     await dialog.locator('[data-project-request-close]').click();
     assert.ok(
       !(await dialog.evaluate((item) => item.open)),
       `${variant.locale}/${variant.width}: cierre del diálogo`,
     );
-    await assertContact(page, {
-      context: 'commercial',
-      visible: true,
-      label: `${variant.locale}/${variant.width}: contacto tras modal`,
-    });
     await page.screenshot({
       path: `${output}/logic-camp-commercial-contact-${variant.locale}-${variant.width}.png`,
       animations: 'disabled',
@@ -350,6 +393,44 @@ try {
       context: 'commercial',
       visible: true,
       label: `${variant.locale}/${variant.width}: contacto en precios`,
+    });
+
+    await page.goto(`${origin}${variant.prefix}/paneles/`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    assert.equal(
+      await page.locator('main').count(),
+      1,
+      `${variant.locale}/${variant.width}: estructura principal de paneles`,
+    );
+    const panelVisuals = page.locator('.management-panel-visual');
+    assert.equal(
+      await panelVisuals.count(),
+      2,
+      `${variant.locale}/${variant.width}: dos paneles de gestión`,
+    );
+    const panelVisualText = (await panelVisuals.allTextContents()).join(' ');
+    assert.match(
+      panelVisualText,
+      variant.locale === 'es'
+        ? /Planning semanal.*Vista ejecutiva/s
+        : /Weekly planner.*Executive overview/s,
+      `${variant.locale}/${variant.width}: paneles localizados`,
+    );
+    assert.deepEqual(
+      await page.locator('.panels-type-copy > a').evaluateAll((items) =>
+        items.map((item) => item.getAttribute('href')),
+      ),
+      [
+        '/demos/pinadamar/gestion/#/planning',
+        '/demos/mardefondo/gestion/#/inteligente',
+      ],
+      `${variant.locale}/${variant.width}: destinos de los paneles`,
+    );
+    await assertNoOverflow(page, `${variant.locale}/${variant.width}: paneles`);
+    await page.screenshot({
+      path: `${output}/logic-camp-commercial-panels-${variant.locale}-${variant.width}.png`,
+      fullPage: true,
+      animations: 'disabled',
     });
 
     await page.goto(`${origin}${variant.prefix}/docs/recepcion/check-in/`, {
@@ -444,7 +525,7 @@ try {
 
     assert.deepEqual(failures, [], `${variant.locale}/${variant.width}: errores de navegador`);
     console.log(
-      `${variant.locale} · ${variant.width}px · portada, precios y guía sin desborde ni errores`,
+      `${variant.locale} · ${variant.width}px · portada, precios, paneles y guía sin desborde ni errores`,
     );
     await context.close();
   }

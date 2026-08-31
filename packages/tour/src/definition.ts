@@ -18,17 +18,17 @@ export const CAMP_TOUR_STEPS: readonly GuidedTourStep[] = [
   {
     id: 'entry-models',
     phase: { es: 'La oferta', en: 'The offer' },
-    title: { es: 'Dos formas de empezar', en: 'Two ways to get started' },
+    title: { es: 'Tres formas de empezar', en: 'Three ways to get started' },
     description: {
-      es: 'Inicio crea una web que convierte visitas en solicitudes. Gestión conserva esa web y añade el mostrador para ordenar el trabajo. Puedes crecer sin rehacerla.',
-      en: 'Start turns website visits into enquiries. Management keeps that website and adds the front desk workspace. You can grow without rebuilding it.',
+      es: 'Inicial activa una web que recibe solicitudes; Gestión añade reserva directa y el espacio de recepción; Avanzado suma automatización, integraciones e inteligencia supervisada. Puedes crecer sin cambiar de plataforma.',
+      en: 'Start launches a website that receives enquiries; Management adds direct booking and the reception workspace; Advanced adds automation, integrations and supervised intelligence. You can grow without changing platform.',
     },
     evidence: {
-      es: 'En pantalla: Inicio y Gestión comparten la misma base y resuelven necesidades distintas.',
-      en: 'On screen: Start and Management share one foundation while solving different needs.',
+      es: 'En pantalla: los planes Inicial, Gestión y Avanzado comparan web, operativa y precio en la misma sección.',
+      en: 'On screen: Start, Management and Advanced compare website, operations and pricing in the same section.',
     },
-    route: { es: '/#niveles', en: '/en/#niveles' },
-    target: '#niveles',
+    route: { es: '/#precios', en: '/en/#precios' },
+    target: '#precios',
   },
   {
     id: 'themes',
@@ -176,7 +176,7 @@ export const TOUR_COPY = {
     eyebrow: 'Recorrido del servicio',
     introTitle: 'De la web al trabajo de recepción',
     introText:
-      'En menos de 4 minutos verás las dos formas de empezar, cómo personalizamos cada web y cómo una solicitud llega al gestor de un camping mediano.',
+      'En menos de 4 minutos verás las tres formas de empezar, cómo personalizamos cada web y cómo una solicitud llega al gestor de un camping mediano.',
     duration: '9 hitos · menos de 4 minutos · datos ficticios',
     guided: 'Visita guiada',
     free: 'Explorar libremente',
@@ -195,7 +195,7 @@ export const TOUR_COPY = {
     eyebrow: 'Service tour',
     introTitle: 'From the website to reception work',
     introText:
-      'In under 4 minutes, see two ways to start, how every website is personalised, and how an enquiry reaches a medium-sized campsite’s management area.',
+      'In under 4 minutes, see three ways to start, how every website is personalised, and how an enquiry reaches a medium-sized campsite’s management area.',
     duration: '9 milestones · under 4 minutes · fictional data',
     guided: 'Guided tour',
     free: 'Explore freely',

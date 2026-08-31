@@ -22,7 +22,7 @@ test.describe('recorrido guiado Camp', () => {
     });
 
     await page.goto('/');
-    const trigger = page.locator('[data-camp-tour-trigger]');
+    const trigger = page.locator('[data-camp-tour-trigger]:visible').first();
     await trigger.click();
 
     const dialog = page.locator('.lc-tour-intro');
@@ -30,10 +30,11 @@ test.describe('recorrido guiado Camp', () => {
     await expect(dialog).toHaveAttribute('role', 'dialog');
     await expect(dialog).toHaveAttribute('aria-label', /conocer Logic2B Campings/i);
     await expect(dialog).toContainText('9 hitos');
+    await expect(dialog).toContainText('tres formas de empezar');
     await page.getByRole('button', { name: 'Visita guiada' }).click();
-    await expect(page).toHaveURL(/#niveles$/);
+    await expect(page).toHaveURL(/#precios$/);
 
-    const card = page.getByRole('region', { name: /Dos formas de empezar/i });
+    const card = page.getByRole('region', { name: /Tres formas de empezar/i });
     await expect(card).toBeVisible();
     await expect(card.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1');
 
@@ -70,7 +71,7 @@ test.describe('recorrido guiado Camp', () => {
   test('la tarjeta móvil conserva acciones y objetivo visibles a 320 px', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 700 });
     await page.goto('/');
-    await page.locator('[data-camp-tour-trigger]').click();
+    await page.locator('[data-camp-tour-trigger]:visible').first().click();
     await page.getByRole('button', { name: 'Visita guiada' }).click();
 
     const card = page.locator('.lc-tour-card');
@@ -81,6 +82,6 @@ test.describe('recorrido guiado Camp', () => {
     expect(box!.x + box!.width).toBeLessThanOrEqual(320);
     await expect(card.locator('[data-tour-pause]')).toBeVisible();
     await expect(card.locator('[data-tour-next]')).toBeVisible();
-    await expect(page.locator('#niveles')).toBeVisible();
+    await expect(page.locator('#precios')).toBeVisible();
   });
 });

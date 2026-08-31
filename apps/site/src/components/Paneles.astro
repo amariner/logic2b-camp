@@ -8,14 +8,17 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.paneles;
-const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
+const panelDemos = {
+  gestion: '/demos/pinadamar/gestion/#/planning',
+  avanzado: '/demos/mardefondo/gestion/#/inteligente',
+} as const;
 const visualLabels = locale === 'es'
   ? { gestion: 'Vista simulada del panel Gestión', avanzado: 'Vista simulada del panel Avanzado' }
   : { gestion: 'Simulated Management dashboard view', avanzado: 'Simulated Advanced dashboard view' };
 ---
 
 <Base locale={locale} content={c} ruta="paneles/" seo={p.seo}>
-  <main class="panels-page">
+  <div class="panels-page">
     <section class="panels-hero botanical-shell">
       <p class="botanical-eyebrow">{p.pagina.kicker}</p>
       <h1>{p.pagina.titulo}</h1>
@@ -26,7 +29,7 @@ const visualLabels = locale === 'es'
       {p.tipos.map((tipo, index) => (
         <article class:list={['panels-type', `is-${tipo.id}`]}>
           <div class="panels-type-visual lc-reveal">
-            <ManagementPanelVisual variant={tipo.id as 'gestion' | 'avanzado'} label={tipo.nombre} ariaLabel={visualLabels[tipo.id as keyof typeof visualLabels]} />
+            <ManagementPanelVisual locale={locale} variant={tipo.id as 'gestion' | 'avanzado'} label={tipo.nombre} ariaLabel={visualLabels[tipo.id as keyof typeof visualLabels]} />
           </div>
           <div class="panels-type-copy lc-reveal">
             <div class="panels-type-label"><span>{String(index + 1).padStart(2, '0')}</span><b>{tipo.etiqueta}</b></div>
@@ -34,7 +37,7 @@ const visualLabels = locale === 'es'
             <h3>{tipo.titulo}</h3>
             <p>{tipo.texto}</p>
             <ul>{tipo.incluye.map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}</ul>
-            <a href={`${managerBase}/${tipo.ruta}`}>{tipo.cta}<span aria-hidden="true">↗</span></a>
+            <a href={panelDemos[tipo.id as keyof typeof panelDemos]}>{tipo.cta}<span aria-hidden="true">↗</span></a>
           </div>
         </article>
       ))}
@@ -79,7 +82,7 @@ const visualLabels = locale === 'es'
         <a class="botanical-button" href={localePath(locale, 'empezar/')}>{p.pagina.cierreCta}<span aria-hidden="true">↗</span></a>
       </div>
     </section>
-  </main>
+  </div>
 </Base>
 
 <style>

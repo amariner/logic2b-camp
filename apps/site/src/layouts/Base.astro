@@ -105,7 +105,7 @@ const datosEstructurados = {
     },
   ],
 };
-// Absolutas (`/#producto`, no `#producto`) para que el header funcione igual
+// Absolutas (`/#plataforma`, no `#plataforma`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const inicio = localePath(locale);
 const contactContext = ruta === 'docs/' || ruta.startsWith('docs/') ? 'docs' : 'commercial';
@@ -118,9 +118,9 @@ const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/adm
 // Si un destino entra o sale, se toca solo aquí y los dos menús siguen iguales.
 const nav = [
   { href: `${inicio}#demos`, label: c.nav.portfolio, icon: 'themes' },
-  { href: `${inicio}#producto`, label: c.nav.producto, icon: 'product' },
-  { href: `${inicio}#planning`, label: c.nav.planning, icon: 'planning' },
-  { href: `${inicio}#niveles`, label: c.nav.niveles, icon: 'plans' },
+  { href: `${inicio}#flujo`, label: c.nav.flujo, icon: 'planning' },
+  { href: `${inicio}#plataforma`, label: c.nav.producto, icon: 'product' },
+  { href: localePath(locale, 'paneles/'), label: c.nav.paneles, icon: 'manager' },
   { href: localePath(locale, 'temas/'), label: c.nav.temas, icon: 'themes' },
   { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
   { href: localePath(locale, 'docs/'), label: c.nav.docs, icon: 'guides' },
@@ -450,7 +450,11 @@ const acciones = [
         }
         if (!(target instanceof HTMLAnchorElement)) return;
         const path = new URL(target.href, location.href).pathname;
-        if (path === '/admin/' || path.startsWith('/admin/')) {
+        const opensManager =
+          path === '/admin/' ||
+          path.startsWith('/admin/') ||
+          /^\/demos\/[^/]+\/gestion(?:\/|$)/.test(path);
+        if (opensManager) {
           trackAnalyticsEvent('camp_open_manager', { locale: document.documentElement.lang });
         } else if (path === '/demo/' || path.startsWith('/demos/')) {
           trackAnalyticsEvent('camp_view_demo', { locale: document.documentElement.lang });

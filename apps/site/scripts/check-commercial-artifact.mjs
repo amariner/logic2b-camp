@@ -48,6 +48,44 @@ function planStatuses(html) {
   );
 }
 
+function attribute(tag, name) {
+  return tag.match(new RegExp(`(?:^|\\s)${name}="([^"]*)"`, 'i'))?.[1];
+}
+
+function tagsWithAttribute(html, name) {
+  return [...html.matchAll(new RegExp(`<[^>]+\\s${name}(?:="[^"]*")?[^>]*>`, 'gi'))].map(
+    ([tag]) => tag,
+  );
+}
+
+function assertHomePricing(html, content, locale) {
+  const label = `${locale.code}: portada`;
+  const priceTags = tagsWithAttribute(html, 'data-pricing-price');
+  const requestTags = tagsWithAttribute(html, 'data-request-base');
+  const expectedRequestPath = `/${locale.prefix}empezar/`;
+
+  assert(content.pricingShowcase.items.length === 3, `${label}: deben existir tres planes`);
+  assert(priceTags.length === 3, `${label}: debe renderizar tres precios`);
+  assert(requestTags.length === 3, `${label}: debe renderizar tres solicitudes de plan`);
+  assert(html.includes('data-pricing-billing'), `${label}: falta el selector de facturación`);
+  assert(
+    tagsWithAttribute(html, 'data-billing-option').length === 2,
+    `${label}: el selector debe ofrecer pago mensual y anual`,
+  );
+
+  content.pricingShowcase.items.forEach((plan, index) => {
+    assert(attribute(priceTags[index], 'data-monthly') === plan.precio, `${label}: precio mensual de ${plan.id}`);
+    assert(attribute(priceTags[index], 'data-annual') === plan.precioAnual, `${label}: precio anual de ${plan.id}`);
+    assert(
+      attribute(requestTags[index], 'data-request-base') ===
+        `${expectedRequestPath}?plan=${encodeURIComponent(plan.id)}`,
+      `${label}: solicitud incorrecta para ${plan.id}`,
+    );
+  });
+
+  assert(planStatuses(html).length === 0, `${label}: reaparecieron estados del catálogo anterior`);
+}
+
 function structuredData(fragment) {
   return [
     ...fragment.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi),
@@ -125,26 +163,19 @@ for (const header of requiredSecurityHeaders) {
 
 for (const locale of locales) {
   const content = JSON.parse(await readFile(path.join(contentDir, `${locale.code}.json`), 'utf8'));
-  const expectedHome = content.niveles.items.map(({ estadoTipo: state, estado: label }) => ({
-    state,
-    label,
-  }));
   const expectedPricing = content.precios.planes.map(({ estadoTipo: state, estado: label }) => ({
     state,
     label,
   }));
-  assert(
-    JSON.stringify(expectedHome) === JSON.stringify(expectedPricing),
-    `${locale.code}: portada y precios divergen en sus estados comerciales`,
-  );
 
   const home = await readHtml(`${locale.prefix}index.html`);
   const pricing = await readHtml(`${locale.prefix}precios/index.html`);
   const themes = await readHtml(`${locale.prefix}temas/index.html`);
   const legalPaths = ['aviso-legal', 'privacidad', 'cookies'];
+  assertHomePricing(home, content, locale);
   assert(
-    JSON.stringify(planStatuses(home)) === JSON.stringify(expectedHome),
-    `${locale.code}: la portada no muestra exactamente los cuatro estados comerciales`,
+    !/href="\/demos\/[^"#?]*\/en\//i.test(`${home}${themes}`),
+    `${locale.code}: una demo enlaza una variante inglesa que el tenant no publica`,
   );
   assert(
     JSON.stringify(planStatuses(pricing)) === JSON.stringify(expectedPricing),
@@ -162,7 +193,8 @@ for (const locale of locales) {
   assert(home.includes('href="/admin/"'), `${locale.code}: falta el salto al gestor demo`);
   assert(home.includes('GTM-TVDWZ9LC'), `${locale.code}: falta el contenedor GTM comercial`);
   assert(home.includes('data-consent-banner'), `${locale.code}: falta el banner de consentimiento`);
-  assertContact(home, 'commercial', `${locale.code}: portada`);
+  assert(home.includes('data-hero-lead-form'), `${locale.code}: falta la captación principal`);
+  assert(home.includes('data-project-request-open'), `${locale.code}: falta la solicitud de demo`);
   assertThemeMotion(home, content, `${locale.code}: portada`);
   assertContact(pricing, 'commercial', `${locale.code}: precios`);
   assertContact(themes, 'commercial', `${locale.code}: temas`);
@@ -284,5 +316,5 @@ for (const locale of locales) {
 }
 
 console.log(
-  `Contrato comercial y cabeceras del sitio verificados: ${locales.length * 2} páginas de planes, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
+  `Contrato comercial y cabeceras del sitio verificados: ${locales.length} portadas con tres planes, ${locales.length} páginas de precios con cuatro estados, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
 );

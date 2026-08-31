@@ -19,9 +19,7 @@ const { locale } = Astro.props;
 const c = getContent(locale);
 const heroWords = [...c.hero.tituloPalabras, c.hero.tituloPalabras[0]];
 const ecosystemHighlights = c.escala.ecosistema.items.slice(0, 8);
-// El gestor comparte dominio en producción, pero tiene su propio servidor Vite
-// durante el desarrollo local.
-const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/admin/';
+const managementDemoHref = '/demos/pinadamar/gestion/#/planning';
 
 const faqEstructurada = {
   '@context': 'https://schema.org',
@@ -87,7 +85,7 @@ const faqEstructurada = {
             </button>
           </li>
           <li>
-            <a href={managerHref}>
+            <a href={managementDemoHref}>
               <span class="botanical-hero-check" aria-hidden="true">✓</span>
               <span>{c.hero.ctaMostrador}</span>
             </a>
@@ -125,7 +123,7 @@ const faqEstructurada = {
 
     <IntegrationsShowcase {...c.integrationsShowcase} />
 
-    <PricingShowcase {...c.pricingShowcase} requestHref={localePath(locale, 'empezar/')} />
+    <PricingShowcase {...c.pricingShowcase} locale={locale} requestHref={localePath(locale, 'empezar/')} />
 
     <ThemeShowcaseSlider locale={locale} content={c.temas} href={localePath(locale, 'temas/')} />
 

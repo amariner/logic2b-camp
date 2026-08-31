@@ -1,12 +1,49 @@
 ---
+import type { Locale } from '../lib/i18n';
+
 interface Props {
   variant: 'gestion' | 'avanzado';
   label: string;
   ariaLabel: string;
+  locale?: Locale;
 }
 
-const { variant, label, ariaLabel } = Astro.props;
+const { variant, label, ariaLabel, locale: requestedLocale } = Astro.props;
+const locale: Locale = requestedLocale ?? (Astro.url.pathname.startsWith('/en/') ? 'en' : 'es');
 const advanced = variant === 'avanzado';
+const copy = locale === 'es'
+  ? {
+      online: 'En línea',
+      liveData: 'Datos en directo',
+      executiveView: 'Vista ejecutiva',
+      weeklyPlanning: 'Planning semanal',
+      customIndicators: 'Indicadores personalizados',
+      week: '18 — 24 agosto',
+      occupancy: 'Ocupación',
+      directSales: 'Venta directa',
+      directBookingLift: '+12% reserva directa',
+      bestWindow: 'Mejor ventana: 21 días',
+      days: ['Lun 18', 'Mar 19', 'Mié 20', 'Jue 21', 'Vie 22'],
+      arrivals: 'Llegadas',
+      departures: 'Salidas',
+      pending: 'Pendientes',
+    }
+  : {
+      online: 'Online',
+      liveData: 'Live data',
+      executiveView: 'Executive overview',
+      weeklyPlanning: 'Weekly planner',
+      customIndicators: 'Custom indicators',
+      week: '18 — 24 August',
+      occupancy: 'Occupancy',
+      directSales: 'Direct sales',
+      directBookingLift: '+12% direct bookings',
+      bestWindow: 'Best window: 21 days',
+      days: ['Mon 18', 'Tue 19', 'Wed 20', 'Thu 21', 'Fri 22'],
+      arrivals: 'Arrivals',
+      departures: 'Departures',
+      pending: 'Pending',
+    };
 ---
 
 <div class:list={['management-panel-visual', `is-${variant}`]} role="img" aria-label={ariaLabel}>
@@ -21,7 +58,7 @@ const advanced = variant === 'avanzado';
       </span>
       <strong>{label}</strong>
     </div>
-    <div class="management-panel-status"><i aria-hidden="true"></i><span>{advanced ? 'Live data' : 'En línea'}</span></div>
+    <div class="management-panel-status"><i aria-hidden="true"></i><span>{advanced ? copy.liveData : copy.online}</span></div>
   </div>
 
   <div class="management-panel-app">
@@ -30,35 +67,35 @@ const advanced = variant === 'avanzado';
     </aside>
     <div class="management-panel-workspace">
       <div class="management-panel-toolbar">
-        <div><b>{advanced ? 'Vista ejecutiva' : 'Planning semanal'}</b><small>{advanced ? 'Indicadores personalizados' : '18 — 24 agosto'}</small></div>
+        <div><b>{advanced ? copy.executiveView : copy.weeklyPlanning}</b><small>{advanced ? copy.customIndicators : copy.week}</small></div>
         <span aria-hidden="true">•••</span>
       </div>
 
       {advanced ? (
         <div class="management-panel-advanced">
           <div class="management-panel-kpis" aria-hidden="true">
-            <article><small>Ocupación</small><strong>84%</strong><i style="--value:84%"></i></article>
+            <article><small>{copy.occupancy}</small><strong>84%</strong><i style="--value:84%"></i></article>
             <article><small>ADR</small><strong>76 €</strong><i style="--value:68%"></i></article>
-            <article><small>Venta directa</small><strong>61%</strong><i style="--value:61%"></i></article>
+            <article><small>{copy.directSales}</small><strong>61%</strong><i style="--value:61%"></i></article>
           </div>
           <div class="management-panel-insight" aria-hidden="true">
             <div class="management-panel-chart">
               <span style="--h:36%"></span><span style="--h:52%"></span><span style="--h:46%"></span><span style="--h:72%"></span><span style="--h:63%"></span><span style="--h:88%"></span><span style="--h:78%"></span>
             </div>
             <div class="management-panel-note">
-              <span>↗</span><div><strong>+12% reserva directa</strong><small>Mejor ventana: 21 días</small></div>
+              <span>↗</span><div><strong>{copy.directBookingLift}</strong><small>{copy.bestWindow}</small></div>
             </div>
           </div>
         </div>
       ) : (
         <div class="management-panel-planning" aria-hidden="true">
-          <div class="management-panel-days"><span>Lun 18</span><span>Mar 19</span><span>Mié 20</span><span>Jue 21</span><span>Vie 22</span></div>
+          <div class="management-panel-days">{copy.days.map((day) => <span>{day}</span>)}</div>
           <div class="management-panel-grid">
             <span></span><span></span><span></span><span></span><span></span>
             <i class="booking-one"></i><i class="booking-two"></i><i class="booking-three"></i><i class="booking-four"></i>
           </div>
           <div class="management-panel-summary">
-            <span><b>12</b><small>Llegadas</small></span><span><b>9</b><small>Salidas</small></span><span><b>7</b><small>Pendientes</small></span>
+            <span><b>12</b><small>{copy.arrivals}</small></span><span><b>9</b><small>{copy.departures}</small></span><span><b>7</b><small>{copy.pending}</small></span>
           </div>
         </div>
       )}

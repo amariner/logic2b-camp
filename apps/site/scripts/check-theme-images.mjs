@@ -5,10 +5,10 @@ import { fileURLToPath } from 'node:url';
 const siteDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const distDir = path.join(siteDir, 'dist');
 const routes = [
-  { file: 'index.html', expected: 24, duplicateCycle: true },
-  { file: 'en/index.html', expected: 24, duplicateCycle: true },
-  { file: 'temas/index.html', expected: 12, duplicateCycle: false },
-  { file: 'en/temas/index.html', expected: 12, duplicateCycle: false },
+  { file: 'index.html', kind: 'home' },
+  { file: 'en/index.html', kind: 'home' },
+  { file: 'temas/index.html', kind: 'catalog' },
+  { file: 'en/temas/index.html', kind: 'catalog' },
 ];
 
 function assert(condition, message) {
@@ -40,15 +40,16 @@ function outputPath(url) {
   return path.join(distDir, decodeURIComponent(pathname).replace(/^\//, ''));
 }
 
-const mobileRailUrls = new Set();
+const mobileHomeUrls = new Set();
 const mobileCatalogUrls = new Set();
 
 for (const route of routes) {
   const html = await readFile(path.join(distDir, route.file), 'utf8');
   const tags = imageTags(html, 'data-theme-thumbnail');
+  const expected = route.kind === 'home' ? 36 : 12;
   assert(
-    tags.length === route.expected,
-    `${route.file}: ${tags.length}/${route.expected} miniaturas`,
+    tags.length === expected,
+    `${route.file}: ${tags.length}/${expected} miniaturas`,
   );
   assert(
     imageTags(html, 'data-theme-thumbnail-fallback').length === 0,
@@ -68,43 +69,49 @@ for (const route of routes) {
       `${route.file}/${theme}: escalera responsive inesperada`,
     );
 
-    const signature = `${attribute(tag, 'src')}|${attribute(tag, 'srcset')}|${sizes}`;
+    const signature = `${attribute(tag, 'src')}|${attribute(tag, 'srcset')}`;
     const signatures = byTheme.get(theme) ?? [];
     signatures.push(signature);
     byTheme.set(theme, signatures);
 
-    const target = route.duplicateCycle ? mobileRailUrls : mobileCatalogUrls;
-    const selectedWidth = route.duplicateCycle ? 360 : 800;
+    const target = route.kind === 'home' ? mobileHomeUrls : mobileCatalogUrls;
+    const selectedWidth = route.kind === 'home' ? 360 : 800;
     target.add(widths.find(({ width }) => width === selectedWidth).url);
   }
 
   assert(byTheme.size === 12, `${route.file}: deben existir doce temas únicos`);
   for (const [theme, signatures] of byTheme) {
-    const expectedCopies = route.duplicateCycle ? 2 : 1;
+    const expectedCopies = route.kind === 'home' ? 3 : 1;
     assert(
       signatures.length === expectedCopies,
       `${route.file}/${theme}: ${signatures.length} copias`,
     );
     assert(
       new Set(signatures).size === 1,
-      `${route.file}/${theme}: el ciclo duplicado genera URLs distintas`,
+      `${route.file}/${theme}: las apariciones generan URLs distintas`,
     );
   }
 
-  if (route.duplicateCycle) {
-    const themeCandidates = new Set(
-      tags.flatMap((tag) => candidates(tag).map(({ url, width }) => `${width}:${url}`)),
-    );
-    const portfolioTags = imageTags(html, 'data-portfolio-thumbnail');
-    assert(portfolioTags.length === 3, `${route.file}: ${portfolioTags.length}/3 anclas`);
-    for (const tag of portfolioTags) {
-      const slug = attribute(tag, 'data-portfolio-thumbnail');
-      assert(attribute(tag, 'sizes'), `${route.file}/${slug}: ancla sin sizes`);
-      for (const { url, width } of candidates(tag)) {
-        assert(
-          themeCandidates.has(`${width}:${url}`),
-          `${route.file}/${slug}: el portfolio no reutiliza el derivado ${width}w del carril`,
-        );
+  if (route.kind === 'home') {
+    const showcaseStart = html.indexOf('data-theme-showcase');
+    assert(showcaseStart >= 0, `${route.file}: falta el slider de temas`);
+    const showcaseTags = imageTags(html.slice(showcaseStart), 'data-theme-thumbnail');
+    const railTags = imageTags(html.slice(0, showcaseStart), 'data-theme-thumbnail');
+    assert(showcaseTags.length === 12, `${route.file}: ${showcaseTags.length}/12 temas en slider`);
+    assert(railTags.length === 24, `${route.file}: ${railTags.length}/24 temas en carril`);
+
+    for (const [scope, scopedTags, copies] of [
+      ['slider', showcaseTags, 1],
+      ['carril', railTags, 2],
+    ]) {
+      const counts = new Map();
+      for (const tag of scopedTags) {
+        const theme = attribute(tag, 'data-theme-thumbnail');
+        counts.set(theme, (counts.get(theme) ?? 0) + 1);
+      }
+      assert(counts.size === 12, `${route.file}: ${scope} sin los doce temas únicos`);
+      for (const [theme, count] of counts) {
+        assert(count === copies, `${route.file}/${theme}: ${count}/${copies} copias en ${scope}`);
       }
     }
   }
@@ -116,20 +123,20 @@ async function bytes(urls) {
   return total;
 }
 
-const railBytes = await bytes(mobileRailUrls);
+const homeBytes = await bytes(mobileHomeUrls);
 const catalogBytes = await bytes(mobileCatalogUrls);
-assert(mobileRailUrls.size === 12, `rail: ${mobileRailUrls.size}/12 salidas móviles únicas`);
+assert(mobileHomeUrls.size === 12, `portada: ${mobileHomeUrls.size}/12 salidas móviles únicas`);
 assert(
   mobileCatalogUrls.size === 12,
   `catálogo: ${mobileCatalogUrls.size}/12 salidas móviles únicas`,
 );
-assert(railBytes <= 450 * 1024, `rail móvil: ${(railBytes / 1024).toFixed(1)} KiB > 450 KiB`);
+assert(homeBytes <= 450 * 1024, `portada móvil: ${(homeBytes / 1024).toFixed(1)} KiB > 450 KiB`);
 assert(
   catalogBytes <= 900 * 1024,
   `catálogo móvil 2x: ${(catalogBytes / 1024).toFixed(1)} KiB > 900 KiB`,
 );
 
 console.log(
-  `Miniaturas responsive verificadas: 12 temas, ciclo con URLs compartidas, ` +
-    `${(railBytes / 1024).toFixed(1)} KiB a 360w y ${(catalogBytes / 1024).toFixed(1)} KiB a 800w.`,
+  `Miniaturas responsive verificadas: 12 temas, carril y slider con URLs compartidas, ` +
+    `${(homeBytes / 1024).toFixed(1)} KiB a 360w y ${(catalogBytes / 1024).toFixed(1)} KiB a 800w.`,
 );

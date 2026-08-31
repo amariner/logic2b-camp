@@ -1,4 +1,6 @@
 ---
+import type { Locale } from '../lib/i18n';
+
 interface WebBlock {
   titulo: string;
   texto: string;
@@ -41,6 +43,7 @@ interface PricingItem {
 }
 
 interface Props {
+  locale: Locale;
   kicker: string;
   titulo: string;
   texto: string;
@@ -60,8 +63,17 @@ interface Props {
   items: PricingItem[];
 }
 
-const { kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items } = Astro.props;
-const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
+const { locale, kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items } = Astro.props;
+const managerDemoHrefs = {
+  gestion: '/demos/pinadamar/gestion/#/planning',
+  avanzado: '/demos/mardefondo/gestion/#/inteligente',
+} as const;
+const getManagerDemoHref = (planId: string) => planId === 'avanzado'
+  ? managerDemoHrefs.avanzado
+  : managerDemoHrefs.gestion;
+const availabilityCopy = locale === 'es'
+  ? { arrival: 'Llegada', departure: 'Salida', guests: 'Huéspedes', month: 'AGO' }
+  : { arrival: 'Arrival', departure: 'Departure', guests: 'Guests', month: 'AUG' };
 ---
 
 <section id="precios" class="pricing-showcase" aria-labelledby="pricing-showcase-title">
@@ -127,9 +139,9 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
                   <img src={plan.web.imagen} alt={plan.web.capturaAlt} loading="lazy" decoding="async" />
                 </div>
                 <div class="pricing-availability" aria-hidden="true">
-                  <span><small>Llegada</small><b>05 AGO</b></span>
-                  <span><small>Salida</small><b>12 AGO</b></span>
-                  <span><small>Huéspedes</small><b>2 + 1</b></span>
+                  <span><small>{availabilityCopy.arrival}</small><b>05 {availabilityCopy.month}</b></span>
+                  <span><small>{availabilityCopy.departure}</small><b>12 {availabilityCopy.month}</b></span>
+                  <span><small>{availabilityCopy.guests}</small><b>2 + 1</b></span>
                   <i>→</i>
                 </div>
               </div>
@@ -209,7 +221,7 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
                   {ctaWeb}<span aria-hidden="true">↗</span>
                 </a>
                 {plan.gestor.modo === 'demo' && (
-                  <a class="pricing-cta" href={`${managerBase}/${plan.gestor.ruta ?? ''}`}>
+                  <a class="pricing-cta" href={getManagerDemoHref(plan.id)}>
                     {ctaGestor}<span aria-hidden="true">↗</span>
                   </a>
                 )}

@@ -15,6 +15,7 @@ function rutas(): SitemapRoute[] {
   return [
     { path: '/', lastmod: '2026-08-11' },
     { path: 'empezar/', lastmod: '2026-08-29' },
+    { path: 'paneles/', lastmod: '2026-08-31' },
     { path: 'precios/', lastmod: '2026-08-11' },
     { path: 'inteligente/', lastmod: '2026-08-14' },
     { path: 'temas/', lastmod: '2026-08-11' },

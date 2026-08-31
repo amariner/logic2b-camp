@@ -11,7 +11,8 @@ interface Props {
 }
 
 const { locale, content: c } = Astro.props;
-const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
+const managementDemoHref = '/demos/pinadamar/gestion/#/planning';
+const advancedDemoHref = '/demos/mardefondo/gestion/#/inteligente';
 const whatsapp = logic2bContact(locale, 'commercial');
 const copy = locale === 'es'
   ? {
@@ -34,6 +35,17 @@ const copy = locale === 'es'
       featureCta: 'Conocer los paneles',
       copyright: 'Logic2B Campings · Castellón',
       visual: 'Vista simulada del panel Gestión de Logic2B Campings',
+      phone: {
+        label: 'Gestión',
+        title: 'Gestión móvil',
+        date: 'Hoy · lunes 31',
+        occupancy: 'Ocupación',
+        arrivals: 'Llegadas',
+        upcomingArrivals: 'Próximas llegadas',
+        viewAll: 'Ver todas',
+        pitch: 'Parcela',
+        bungalow: 'Bungalow',
+      },
     }
   : {
       kicker: 'Logic2B Campings · guided demo',
@@ -55,6 +67,17 @@ const copy = locale === 'es'
       featureCta: 'Explore the dashboards',
       copyright: 'Logic2B Campings · Spain',
       visual: 'Simulated Logic2B Campings Management dashboard',
+      phone: {
+        label: 'Management',
+        title: 'Mobile management',
+        date: 'Today · Monday 31',
+        occupancy: 'Occupancy',
+        arrivals: 'Arrivals',
+        upcomingArrivals: 'Upcoming arrivals',
+        viewAll: 'View all',
+        pitch: 'Pitch',
+        bungalow: 'Bungalow',
+      },
     };
 ---
 
@@ -74,23 +97,23 @@ const copy = locale === 'es'
       </div>
       <div class="home-closing-visual lc-reveal">
         <img class="home-closing-image" src={closingBackground} alt="" loading="lazy" decoding="async" aria-hidden="true" />
-        <ManagementPanelVisual variant="gestion" label="Gestión" ariaLabel={copy.visual} />
+        <ManagementPanelVisual locale={locale} variant="gestion" label={copy.phone.label} ariaLabel={copy.visual} />
         <div class="home-closing-phone" aria-hidden="true">
           <div class="home-closing-phone-status"><b>9:41</b><i></i><span></span></div>
           <div class="home-closing-phone-head">
-            <div><small>Logic2B Campings</small><strong>Gestión móvil</strong></div>
+            <div><small>Logic2B Campings</small><strong>{copy.phone.title}</strong></div>
             <span>LC</span>
           </div>
-          <div class="home-closing-phone-date"><span>Hoy · lunes 31</span><b>‹</b><b>›</b></div>
+          <div class="home-closing-phone-date"><span>{copy.phone.date}</span><b>‹</b><b>›</b></div>
           <div class="home-closing-phone-metrics">
-            <article><small>Ocupación</small><strong>84%</strong><i style="--phone-value:84%"></i></article>
-            <article><small>Llegadas</small><strong>12</strong><i style="--phone-value:62%"></i></article>
+            <article><small>{copy.phone.occupancy}</small><strong>84%</strong><i style="--phone-value:84%"></i></article>
+            <article><small>{copy.phone.arrivals}</small><strong>12</strong><i style="--phone-value:62%"></i></article>
           </div>
           <div class="home-closing-phone-list">
-            <div class="home-closing-phone-list-head"><strong>Próximas llegadas</strong><span>Ver todas</span></div>
-            <article><i>AM</i><div><strong>Ana Martín</strong><small>Parcela 24 · 12:30</small></div><b>→</b></article>
-            <article><i>JL</i><div><strong>Joan López</strong><small>Bungalow 08 · 15:00</small></div><b>→</b></article>
-            <article><i>MS</i><div><strong>Marta Soler</strong><small>Parcela 17 · 17:45</small></div><b>→</b></article>
+            <div class="home-closing-phone-list-head"><strong>{copy.phone.upcomingArrivals}</strong><span>{copy.phone.viewAll}</span></div>
+            <article><i>AM</i><div><strong>Ana Martín</strong><small>{copy.phone.pitch} 24 · 12:30</small></div><b>→</b></article>
+            <article><i>JL</i><div><strong>Joan López</strong><small>{copy.phone.bungalow} 08 · 15:00</small></div><b>→</b></article>
+            <article><i>MS</i><div><strong>Marta Soler</strong><small>{copy.phone.pitch} 17 · 17:45</small></div><b>→</b></article>
           </div>
           <div class="home-closing-phone-nav"><span class="is-active"></span><span></span><span></span><span></span></div>
         </div>
@@ -111,8 +134,8 @@ const copy = locale === 'es'
         <div>
           <h3>{copy.product}</h3>
           <a href="/demo/">{copy.links.web}</a>
-          <a href={`${managerBase}/planning`}>{copy.links.management}</a>
-          <a href={`${managerBase}/inteligente`}>{copy.links.advanced}</a>
+          <a href={managementDemoHref}>{copy.links.management}</a>
+          <a href={advancedDemoHref}>{copy.links.advanced}</a>
           <a href={localePath(locale, 'precios/')}>{copy.links.pricing}</a>
         </div>
         <div>

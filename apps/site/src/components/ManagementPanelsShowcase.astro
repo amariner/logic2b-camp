@@ -9,7 +9,10 @@ interface Props {
 }
 
 const { locale, content, href } = Astro.props;
-const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
+const managerDemoHrefs = {
+  gestion: '/demos/pinadamar/gestion/#/planning',
+  avanzado: '/demos/mardefondo/gestion/#/inteligente',
+} as const;
 const visualLabels = locale === 'es'
   ? { gestion: 'Vista simulada del panel Gestión', avanzado: 'Vista simulada del panel Avanzado' }
   : { gestion: 'Simulated Management dashboard view', avanzado: 'Simulated Advanced dashboard view' };
@@ -31,13 +34,13 @@ const visualLabels = locale === 'es'
     <div class="management-panels-grid">
       {content.tipos.map((tipo: any, index: number) => (
         <article class:list={['management-panel-card', `is-${tipo.id}`, 'lc-reveal']} style={`--lc-delay:${index * 80}ms`}>
-          <ManagementPanelVisual variant={tipo.id} label={tipo.nombre} ariaLabel={visualLabels[tipo.id as keyof typeof visualLabels]} />
+          <ManagementPanelVisual locale={locale} variant={tipo.id} label={tipo.nombre} ariaLabel={visualLabels[tipo.id as keyof typeof visualLabels]} />
           <div class="management-panel-copy">
             <div class="management-panel-meta"><span>{tipo.etiqueta}</span><b>{String(index + 1).padStart(2, '0')}</b></div>
             <h3>{tipo.titulo}</h3>
             <p>{tipo.texto}</p>
             <ul>{tipo.incluye.map((item: string) => <li><span aria-hidden="true">✓</span>{item}</li>)}</ul>
-            <a class="management-panel-link" href={`${managerBase}/${tipo.ruta}`}>
+            <a class="management-panel-link" href={managerDemoHrefs[tipo.id as keyof typeof managerDemoHrefs]}>
               <span>{tipo.cta}</span><i aria-hidden="true">↗</i>
             </a>
           </div>
