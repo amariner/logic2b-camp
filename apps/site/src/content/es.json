@@ -103,7 +103,7 @@
     ]
   },
   "platformShowcase": {
-    "kicker": "Una plataforma, cinco vistas",
+    "kicker": "Una plataforma. Cinco momentos clave",
     "titulo": "Todo lo que necesitas para gestionar un camping rentable.",
     "aria": "Áreas de la plataforma Logic2B Campings",
     "capturaLabel": "Vista real",
@@ -134,7 +134,7 @@
         ],
         "detalle": "Cada paso reduce preguntas repetidas y prepara una gestión más rápida cuando la solicitud llega al camping.",
         "imagen": "reservas",
-        "capturaAlt": "Portada de reserva directa de un resort de demostración"
+        "capturaAlt": "Detalle de una reserva directa confirmada con estancia, importe, señal y contexto operativo"
       },
       {
         "icono": "planning",
@@ -148,7 +148,7 @@
         ],
         "detalle": "El planning está pensado para trabajar con volumen sin perder la lectura rápida que necesita recepción.",
         "imagen": "planning",
-        "capturaAlt": "Planning mensual del gestor con parcelas y reservas de demostración"
+        "capturaAlt": "Detalle ampliado del planning con una reserva encajada entre una salida y una entrada"
       },
       {
         "icono": "plano",
@@ -162,7 +162,7 @@
         ],
         "detalle": "El plano conecta la reserva con el lugar que ocupará, evitando trabajar con referencias desconectadas del terreno.",
         "imagen": "plano",
-        "capturaAlt": "Plano operativo de un camping con parcelas, alojamientos y zonas comunes"
+        "capturaAlt": "Detalle del plano con la parcela A-19 seleccionada junto a la piscina y su disponibilidad"
       },
       {
         "icono": "operativa",
@@ -176,7 +176,7 @@
         ],
         "detalle": "La plataforma ayuda a detectar el siguiente paso manteniendo siempre la decisión final en manos del equipo.",
         "imagen": "operativa",
-        "capturaAlt": "Vista de recomendación operativa con ocupación, impacto y cambio propuesto"
+        "capturaAlt": "Detalle de una recomendación operativa supervisada con evidencias, impacto y revisión humana"
       }
     ]
   },
@@ -230,8 +230,8 @@
         "precioAnualAnterior": "588 €",
         "detallePrecio": "Permanencia de 6 meses",
         "tono": "lime",
-        "ofertaTitulo": "Diseño web",
-        "ofertaTexto": "Una web clara y rápida para presentar el camping y recibir solicitudes directamente por email.",
+        "ofertaTitulo": "Web esencial",
+        "ofertaTexto": "Presenta el camping y recibe solicitudes directamente.",
         "incluye": [
           "Diseño responsive con la identidad del camping",
           "Alojamientos, parcelas y servicios",
@@ -274,8 +274,8 @@
         "precioAnualAnterior": "4.788 €",
         "onboarding": "1.900 € · onboarding y diseño web",
         "tono": "water",
-        "ofertaTitulo": "Diseño web + sistema de gestión",
-        "ofertaTexto": "Reserva directa en la web y una sola vista para coordinar la operativa del camping.",
+        "ofertaTitulo": "Web + gestión",
+        "ofertaTexto": "Reserva directa y toda la operativa en una sola vista.",
         "incluye": [
           "Diseño web, catálogo, contenidos e idiomas",
           "Buscador y motor de reservas conectado",
@@ -322,8 +322,8 @@
         "precioAnual": "Consultar",
         "periodoAnual": "proyecto a medida",
         "tono": "forest",
-        "ofertaTitulo": "Diseño web + sistema de gestión plus",
-        "ofertaTexto": "Una experiencia web a medida con más automatización, integraciones y control operativo.",
+        "ofertaTitulo": "Web + gestión avanzada",
+        "ofertaTexto": "Más automatización, integraciones y control a medida.",
         "incluye": [
           "Dirección visual, mercados y recorridos a medida",
           "Gestión completa de reservas y operaciones",
@@ -487,6 +487,73 @@
         "href": "/demos/soldhivern/"
       }
     ]
+  },
+  "paneles": {
+    "seo": {
+      "title": "Paneles de gestión para campings — Logic2B Campings",
+      "description": "Conoce los paneles Gestión y Avanzado de Logic2B Campings: vistas configurables para recepción, gerencia, operación y análisis."
+    },
+    "kicker": "Paneles que se adaptan al equipo",
+    "titulo": "Tu operativa, organizada a tu manera.",
+    "texto": "Cada camping decide qué ve cada perfil, qué indicadores importan y qué tareas deben estar primero. La misma base se convierte en dos niveles de panel.",
+    "verTodos": "Conocer los paneles de gestión",
+    "tipos": [
+      {
+        "id": "gestion",
+        "nombre": "Gestión",
+        "etiqueta": "Operativa diaria",
+        "titulo": "Control claro para recepción y gerencia.",
+        "texto": "Reservas, disponibilidad, cobros y movimientos diarios en vistas configuradas alrededor del trabajo real del camping.",
+        "ruta": "planning",
+        "cta": "Abrir panel Gestión",
+        "incluye": [
+          "Planning y plano configurables",
+          "Roles y accesos por equipo",
+          "Cobros, llegadas e informes"
+        ]
+      },
+      {
+        "id": "avanzado",
+        "nombre": "Avanzado",
+        "etiqueta": "Análisis y automatización",
+        "titulo": "Más contexto para decidir y anticiparse.",
+        "texto": "Añade indicadores, automatizaciones supervisadas e inteligencia sobre la misma operativa, sin perder el control humano.",
+        "ruta": "inteligente",
+        "cta": "Abrir panel Avanzado",
+        "incluye": [
+          "Indicadores y comparativas a medida",
+          "Automatizaciones supervisadas",
+          "Integraciones e IA con contexto"
+        ]
+      }
+    ],
+    "pagina": {
+      "kicker": "Dos paneles, una misma base",
+      "titulo": "El panel se adapta al camping, no al revés.",
+      "intro": "Logic2B Campings organiza la información según el tamaño del equipo, los permisos y el ritmo de la operación. Empiezas con las vistas que necesitas y puedes añadir capacidad sin rehacer el sistema.",
+      "personalizacionKicker": "Personalización real",
+      "personalizacionTitulo": "Vistas, permisos y prioridades para cada equipo.",
+      "personalizacionTexto": "No todos los campings trabajan igual ni todas las personas necesitan ver lo mismo. Configuramos el panel para reducir ruido y acercar cada decisión a quien debe tomarla.",
+      "personalizacion": [
+        {
+          "titulo": "Roles y permisos",
+          "texto": "Recepción, gerencia, administración y mantenimiento acceden solo a las vistas y acciones que les corresponden."
+        },
+        {
+          "titulo": "Módulos y prioridades",
+          "texto": "Planning, plano, cobros, llegadas, informes e indicadores se ordenan según la operativa de cada camping."
+        },
+        {
+          "titulo": "Datos e integraciones",
+          "texto": "Tarifas, canales, pagos y automatizaciones se conectan con un alcance definido y trazable."
+        }
+      ],
+      "diferenciaKicker": "Elige el nivel adecuado",
+      "diferenciaTitulo": "Gestión ordena el día. Avanzado ayuda a preparar el siguiente.",
+      "cierreTitulo": "¿Qué necesita ver tu equipo para trabajar mejor?",
+      "cierreTexto": "Te enseñamos ambos paneles y configuramos una demostración alrededor de tu inventario, tus roles y tus prioridades.",
+      "cierreCta": "Solicitar una demostración"
+    }
   },
   "portfolio": {
     "kicker": "Tres campings, un solo producto",

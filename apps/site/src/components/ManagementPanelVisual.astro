@@ -1,0 +1,78 @@
+---
+interface Props {
+  variant: 'gestion' | 'avanzado';
+  label: string;
+  ariaLabel: string;
+}
+
+const { variant, label, ariaLabel } = Astro.props;
+const advanced = variant === 'avanzado';
+---
+
+<div class:list={['management-panel-visual', `is-${variant}`]} role="img" aria-label={ariaLabel}>
+  <div class="management-panel-chrome">
+    <div class="management-panel-brand">
+      <span class="management-panel-icon" aria-hidden="true">
+        {advanced ? (
+          <svg viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24"><path d="M7 3v3m10-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1Z" /></svg>
+        )}
+      </span>
+      <strong>{label}</strong>
+    </div>
+    <div class="management-panel-status"><i aria-hidden="true"></i><span>{advanced ? 'Live data' : 'En línea'}</span></div>
+  </div>
+
+  <div class="management-panel-app">
+    <aside aria-hidden="true">
+      <span class="is-active"></span><span></span><span></span><span></span><span></span>
+    </aside>
+    <div class="management-panel-workspace">
+      <div class="management-panel-toolbar">
+        <div><b>{advanced ? 'Vista ejecutiva' : 'Planning semanal'}</b><small>{advanced ? 'Indicadores personalizados' : '18 — 24 agosto'}</small></div>
+        <span aria-hidden="true">•••</span>
+      </div>
+
+      {advanced ? (
+        <div class="management-panel-advanced">
+          <div class="management-panel-kpis" aria-hidden="true">
+            <article><small>Ocupación</small><strong>84%</strong><i style="--value:84%"></i></article>
+            <article><small>ADR</small><strong>76 €</strong><i style="--value:68%"></i></article>
+            <article><small>Venta directa</small><strong>61%</strong><i style="--value:61%"></i></article>
+          </div>
+          <div class="management-panel-insight" aria-hidden="true">
+            <div class="management-panel-chart">
+              <span style="--h:36%"></span><span style="--h:52%"></span><span style="--h:46%"></span><span style="--h:72%"></span><span style="--h:63%"></span><span style="--h:88%"></span><span style="--h:78%"></span>
+            </div>
+            <div class="management-panel-note">
+              <span>↗</span><div><strong>+12% reserva directa</strong><small>Mejor ventana: 21 días</small></div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="management-panel-planning" aria-hidden="true">
+          <div class="management-panel-days"><span>Lun 18</span><span>Mar 19</span><span>Mié 20</span><span>Jue 21</span><span>Vie 22</span></div>
+          <div class="management-panel-grid">
+            <span></span><span></span><span></span><span></span><span></span>
+            <i class="booking-one"></i><i class="booking-two"></i><i class="booking-three"></i><i class="booking-four"></i>
+          </div>
+          <div class="management-panel-summary">
+            <span><b>12</b><small>Llegadas</small></span><span><b>9</b><small>Salidas</small></span><span><b>7</b><small>Pendientes</small></span>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+<style>
+  .management-panel-visual{overflow:hidden;border:1px solid rgb(15 62 23 / 12%);border-radius:20px;background:#f7faf7;box-shadow:0 22px 46px rgb(4 35 13 / 12%)}
+  .management-panel-chrome{display:flex;min-height:54px;align-items:center;justify-content:space-between;border-bottom:1px solid rgb(15 62 23 / 10%);padding:0 18px;background:rgb(255 255 255 / 92%)}
+  .management-panel-brand,.management-panel-status{display:flex;align-items:center;gap:9px}.management-panel-brand strong{font-size:12px;letter-spacing:.01em}.management-panel-icon{display:grid;width:29px;height:29px;place-items:center;border-radius:9px;background:var(--botanical-ink);color:white}.management-panel-icon svg{width:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.management-panel-status{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgb(15 62 23 / 58%)}.management-panel-status i{width:7px;height:7px;border-radius:50%;background:#62bd75;box-shadow:0 0 0 4px rgb(98 189 117 / 16%)}
+  .management-panel-app{display:grid;min-height:292px;grid-template-columns:48px 1fr}.management-panel-app aside{display:flex;flex-direction:column;align-items:center;gap:16px;border-right:1px solid rgb(15 62 23 / 9%);padding-top:20px;background:#fff}.management-panel-app aside span{width:15px;height:15px;border:2px solid rgb(15 62 23 / 22%);border-radius:5px}.management-panel-app aside .is-active{border-color:var(--botanical-ink);background:var(--botanical-ink);box-shadow:0 0 0 6px rgb(15 62 23 / 7%)}
+  .management-panel-workspace{min-width:0;padding:18px}.management-panel-toolbar{display:flex;align-items:flex-start;justify-content:space-between}.management-panel-toolbar div{display:grid;gap:2px}.management-panel-toolbar b{font-size:13px}.management-panel-toolbar small{font-size:9px;color:rgb(15 62 23 / 52%)}.management-panel-toolbar>span{font-weight:800;letter-spacing:2px;color:rgb(15 62 23 / 35%)}
+  .management-panel-days{display:grid;grid-template-columns:repeat(5,1fr);margin-top:18px;border:1px solid rgb(15 62 23 / 9%);border-bottom:0;border-radius:9px 9px 0 0;background:#fff}.management-panel-days span{padding:8px 5px;border-right:1px solid rgb(15 62 23 / 8%);font-size:8px;text-align:center;color:rgb(15 62 23 / 58%)}.management-panel-days span:last-child{border:0}.management-panel-grid{position:relative;display:grid;height:112px;grid-template-columns:repeat(5,1fr);overflow:hidden;border:1px solid rgb(15 62 23 / 9%);border-radius:0 0 9px 9px;background:repeating-linear-gradient(to bottom,#fbfdfb 0,#fbfdfb 27px,rgb(15 62 23 / 7%) 27px,rgb(15 62 23 / 7%) 28px)}.management-panel-grid>span{border-right:1px solid rgb(15 62 23 / 8%)}.management-panel-grid>span:last-of-type{border:0}.management-panel-grid i{position:absolute;height:14px;border-radius:5px;box-shadow:inset 0 0 0 1px rgb(255 255 255 / 38%)}.booking-one{top:12px;left:5%;width:34%;background:#8fcaa0}.booking-two{top:39px;left:27%;width:45%;background:#b6cbd0}.booking-three{top:67px;left:52%;width:38%;background:#e9c778}.booking-four{top:94px;left:12%;width:48%;background:#c9b4df}.management-panel-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.management-panel-summary span{display:flex;align-items:baseline;gap:5px;border-radius:8px;background:#fff;padding:8px}.management-panel-summary b{font-family:var(--botanical-serif);font-size:18px}.management-panel-summary small{font-size:8px;color:rgb(15 62 23 / 55%)}
+  .is-avanzado{background:#f6f8f5}.is-avanzado .management-panel-icon{background:#def04c;color:var(--botanical-ink)}.management-panel-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.management-panel-kpis article{display:grid;gap:5px;border:1px solid rgb(15 62 23 / 8%);border-radius:10px;background:#fff;padding:12px}.management-panel-kpis small{font-size:8px;color:rgb(15 62 23 / 54%)}.management-panel-kpis strong{font-family:var(--botanical-serif);font-size:21px}.management-panel-kpis i{position:relative;height:4px;border-radius:999px;background:rgb(15 62 23 / 8%)}.management-panel-kpis i:after{content:'';position:absolute;inset:0 auto 0 0;width:var(--value);border-radius:inherit;background:var(--botanical-ink)}.management-panel-insight{display:grid;grid-template-columns:1.45fr 1fr;gap:10px;margin-top:10px}.management-panel-chart{display:flex;height:98px;align-items:end;gap:7px;border:1px solid rgb(15 62 23 / 8%);border-radius:10px;background:#fff;padding:16px}.management-panel-chart span{flex:1;height:var(--h);border-radius:4px 4px 2px 2px;background:#a5c9ac}.management-panel-chart span:nth-child(6){background:var(--botanical-ink)}.management-panel-note{display:flex;align-items:flex-start;gap:9px;border-radius:10px;background:#def04c;padding:14px}.management-panel-note>span{display:grid;width:26px;height:26px;flex:none;place-items:center;border-radius:50%;background:var(--botanical-ink);color:white}.management-panel-note div{display:grid;gap:4px}.management-panel-note strong{font-size:10px;line-height:1.25}.management-panel-note small{font-size:8px;line-height:1.35;color:rgb(15 62 23 / 62%)}
+  @media(max-width:560px){.management-panel-app{min-height:260px;grid-template-columns:38px 1fr}.management-panel-workspace{padding:14px}.management-panel-kpis article{padding:9px}.management-panel-kpis strong{font-size:17px}.management-panel-insight{grid-template-columns:1fr}.management-panel-note{display:none}.management-panel-summary small{display:none}}
+</style>

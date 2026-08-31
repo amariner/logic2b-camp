@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import ManagementPanelVisual from './ManagementPanelVisual.astro';
+import { getContent, localePath, type Locale } from '../lib/i18n';
+
+interface Props { locale: Locale }
+
+const { locale } = Astro.props;
+const c = getContent(locale);
+const p = c.paneles;
+const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
+const visualLabels = locale === 'es'
+  ? { gestion: 'Vista simulada del panel Gestión', avanzado: 'Vista simulada del panel Avanzado' }
+  : { gestion: 'Simulated Management dashboard view', avanzado: 'Simulated Advanced dashboard view' };
+---
+
+<Base locale={locale} content={c} ruta="paneles/" seo={p.seo}>
+  <main class="panels-page">
+    <section class="panels-hero botanical-shell">
+      <p class="botanical-eyebrow">{p.pagina.kicker}</p>
+      <h1>{p.pagina.titulo}</h1>
+      <p>{p.pagina.intro}</p>
+    </section>
+
+    <section class="panels-types botanical-shell" aria-label={p.pagina.diferenciaTitulo}>
+      {p.tipos.map((tipo, index) => (
+        <article class:list={['panels-type', `is-${tipo.id}`]}>
+          <div class="panels-type-visual lc-reveal">
+            <ManagementPanelVisual variant={tipo.id as 'gestion' | 'avanzado'} label={tipo.nombre} ariaLabel={visualLabels[tipo.id as keyof typeof visualLabels]} />
+          </div>
+          <div class="panels-type-copy lc-reveal">
+            <div class="panels-type-label"><span>{String(index + 1).padStart(2, '0')}</span><b>{tipo.etiqueta}</b></div>
+            <h2>{tipo.nombre}</h2>
+            <h3>{tipo.titulo}</h3>
+            <p>{tipo.texto}</p>
+            <ul>{tipo.incluye.map((item) => <li><span aria-hidden="true">✓</span>{item}</li>)}</ul>
+            <a href={`${managerBase}/${tipo.ruta}`}>{tipo.cta}<span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <section class="panels-customization">
+      <div class="botanical-shell">
+        <header class="panels-section-head lc-reveal">
+          <div><p class="botanical-eyebrow">{p.pagina.personalizacionKicker}</p><h2>{p.pagina.personalizacionTitulo}</h2></div>
+          <p>{p.pagina.personalizacionTexto}</p>
+        </header>
+        <div class="panels-customization-grid">
+          {p.pagina.personalizacion.map((item, index) => (
+            <article class="lc-reveal" style={`--lc-delay:${index * 70}ms`}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{item.titulo}</h3>
+              <p>{item.texto}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="panels-difference botanical-shell lc-reveal">
+      <p class="botanical-eyebrow">{p.pagina.diferenciaKicker}</p>
+      <h2>{p.pagina.diferenciaTitulo}</h2>
+      <div>
+        {p.tipos.map((tipo, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{tipo.nombre}</h3>
+            <p>{tipo.texto}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="panels-close">
+      <div class="botanical-shell">
+        <h2>{p.pagina.cierreTitulo}</h2>
+        <p>{p.pagina.cierreTexto}</p>
+        <a class="botanical-button" href={localePath(locale, 'empezar/')}>{p.pagina.cierreCta}<span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .panels-page{overflow:hidden}.panels-hero{display:grid;grid-template-columns:.7fr 1.3fr;column-gap:clamp(50px,8vw,135px);padding:clamp(82px,10vw,150px) 0 clamp(78px,9vw,132px)}.panels-hero>.botanical-eyebrow{grid-column:1}.panels-hero h1{grid-column:2;grid-row:1 / span 2;max-width:1000px;font-family:var(--botanical-serif);font-size:clamp(54px,7.8vw,118px);font-weight:400;letter-spacing:-.055em;line-height:.88}.panels-hero>p:last-child{grid-column:2;max-width:760px;margin-top:32px;font-size:clamp(17px,1.6vw,23px);line-height:1.55;color:rgb(15 62 23 / 67%)}
+  .panels-types{display:grid;gap:clamp(90px,12vw,180px);padding-bottom:clamp(100px,12vw,180px)}.panels-type{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(42px,7vw,110px);align-items:center}.panels-type:nth-child(even) .panels-type-visual{order:2}.panels-type:nth-child(even) .panels-type-copy{order:1}.panels-type-visual{padding:clamp(12px,2.5vw,34px);border-radius:32px;background:var(--botanical-mint)}.panels-type.is-avanzado .panels-type-visual{background:#dfe8dc}.panels-type-label{display:flex;align-items:center;gap:12px}.panels-type-label span{font-family:var(--botanical-serif);font-size:28px;color:rgb(15 62 23 / 38%)}.panels-type-label b{font-size:10px;letter-spacing:.11em;text-transform:uppercase}.panels-type-copy h2{margin-top:25px;font-family:var(--botanical-serif);font-size:clamp(50px,6vw,86px);font-weight:400;letter-spacing:-.05em;line-height:.88}.panels-type-copy h3{max-width:540px;margin-top:25px;font-size:clamp(22px,2.4vw,34px);font-weight:600;line-height:1.08}.panels-type-copy>p{max-width:590px;margin-top:17px;font-size:15px;line-height:1.65;color:rgb(15 62 23 / 67%)}.panels-type-copy ul{display:grid;gap:0;margin-top:27px}.panels-type-copy li{display:flex;gap:10px;border-top:1px solid rgb(15 62 23 / 14%);padding:12px 0;font-size:13px}.panels-type-copy li span{font-weight:900}.panels-type-copy>a{display:inline-flex;align-items:center;gap:11px;margin-top:20px;border-bottom:1px solid currentColor;padding-bottom:5px;color:inherit;font-size:13px;font-weight:800}.panels-type-copy>a span{font-size:18px}
+  .panels-customization{padding:clamp(85px,10vw,145px) 0;background:var(--botanical-ink);color:var(--botanical-paper)}.panels-section-head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(50px,9vw,145px);align-items:end}.panels-section-head .botanical-eyebrow{color:#bad1be}.panels-section-head h2{max-width:750px;margin-top:18px;color:inherit;font-family:var(--botanical-serif);font-size:clamp(44px,5.5vw,80px);font-weight:400;letter-spacing:-.045em;line-height:.95}.panels-section-head>p{max-width:630px;font-size:17px;line-height:1.65;color:rgb(250 249 245 / 67%)}.panels-customization-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(50px,7vw,90px);border-top:1px solid rgb(250 249 245 / 21%)}.panels-customization-grid article{min-height:290px;border-right:1px solid rgb(250 249 245 / 21%);padding:27px}.panels-customization-grid article:first-child{padding-left:0}.panels-customization-grid article:last-child{border:0}.panels-customization-grid article>span{font-family:var(--botanical-serif);font-size:31px;color:#b8cfbc}.panels-customization-grid h3{margin-top:75px;color:inherit;font-size:24px}.panels-customization-grid p{max-width:390px;margin-top:13px;font-size:13px;line-height:1.6;color:rgb(250 249 245 / 62%)}
+  .panels-difference{padding:clamp(95px,11vw,165px) 0}.panels-difference>h2{max-width:980px;margin-top:18px;font-family:var(--botanical-serif);font-size:clamp(45px,6vw,88px);font-weight:400;letter-spacing:-.05em;line-height:.93}.panels-difference>div{display:grid;grid-template-columns:repeat(2,1fr);margin-top:60px;border-top:1px solid rgb(15 62 23 / 17%)}.panels-difference article{display:grid;grid-template-columns:50px 1fr;column-gap:20px;padding:26px 30px 0 0}.panels-difference article:first-child{border-right:1px solid rgb(15 62 23 / 17%)}.panels-difference article:last-child{padding-left:30px}.panels-difference article>span{grid-row:1 / span 2;font-family:var(--botanical-serif);font-size:24px;color:rgb(15 62 23 / 35%)}.panels-difference h3{font-size:25px}.panels-difference article p{max-width:520px;margin-top:10px;font-size:13px;line-height:1.6;color:rgb(15 62 23 / 62%)}
+  .panels-close{padding:clamp(86px,10vw,145px) 0;background:var(--botanical-keylime);text-align:center}.panels-close .botanical-shell{display:grid;justify-items:center}.panels-close h2{max-width:950px;font-family:var(--botanical-serif);font-size:clamp(45px,6vw,86px);font-weight:400;letter-spacing:-.05em;line-height:.93}.panels-close p{max-width:680px;margin-top:25px;font-size:16px;line-height:1.6}.panels-close a{margin-top:30px}
+  @media(max-width:900px){.panels-hero,.panels-type,.panels-section-head{grid-template-columns:1fr}.panels-hero h1,.panels-hero>p:last-child{grid-column:1}.panels-hero h1{grid-row:auto;margin-top:20px}.panels-type:nth-child(even) .panels-type-visual,.panels-type:nth-child(even) .panels-type-copy{order:initial}.panels-customization-grid{grid-template-columns:1fr}.panels-customization-grid article,.panels-customization-grid article:first-child{min-height:0;border-right:0;border-bottom:1px solid rgb(250 249 245 / 21%);padding:30px 0}.panels-customization-grid h3{margin-top:35px}}
+  @media(max-width:620px){.panels-hero h1{font-size:52px}.panels-type-visual{margin:0 -3px;padding:8px;border-radius:22px}.panels-difference>div{grid-template-columns:1fr}.panels-difference article,.panels-difference article:last-child{padding:24px 0}.panels-difference article:first-child{border-right:0;border-bottom:1px solid rgb(15 62 23 / 17%)}.panels-type-copy h2{font-size:55px}}
+</style>

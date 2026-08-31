@@ -1,16 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import CampaignShowcase from './CampaignShowcase.astro';
 import EcosystemRail from './EcosystemRail.astro';
-import GuidedTour from './GuidedTour.astro';
 import IntegrationsShowcase from './IntegrationsShowcase.astro';
-import PlanningVisual from './PlanningVisual.astro';
 import PlatformShowcase from './PlatformShowcase.astro';
-import PlanStatus from './PlanStatus.astro';
-import PortfolioGallery from './PortfolioGallery.astro';
 import PricingShowcase from './PricingShowcase.astro';
-import ProductCardVisual from './ProductCardVisual.astro';
 import ThemeRail from './ThemeRail.astro';
+import ThemeShowcaseSlider from './ThemeShowcaseSlider.astro';
+import ManagementPanelsShowcase from './ManagementPanelsShowcase.astro';
 import WorkflowSlider from './WorkflowSlider.astro';
 import { GUIAS } from '../lib/docs';
 import { getContent, localePath, type Locale } from '../lib/i18n';
@@ -36,13 +32,6 @@ const faqEstructurada = {
     acceptedAnswer: { '@type': 'Answer', text: f.a },
   })),
 };
-
-const iconosProblema = [
-  'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2ZM10 14l4 4M14 14l-4 4',
-  'M19 5 5 19M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
-  'M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5ZM3 9h18M9 21V9',
-  'm5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6',
-];
 
 ---
 
@@ -132,191 +121,15 @@ const iconosProblema = [
 
     <WorkflowSlider {...c.workflow} />
 
-    <PlatformShowcase {...c.platformShowcase} />
+    <PlatformShowcase {...c.platformShowcase} locale={locale} />
 
     <IntegrationsShowcase {...c.integrationsShowcase} />
 
     <PricingShowcase {...c.pricingShowcase} requestHref={localePath(locale, 'empezar/')} />
 
-    <PortfolioGallery content={c.portfolio} />
+    <ThemeShowcaseSlider locale={locale} content={c.temas} href={localePath(locale, 'temas/')} />
 
-    <CampaignShowcase content={c.campana} />
-
-    <GuidedTour content={c.video} locale={locale} />
-
-    <section class="botanical-shell botanical-section botanical-problem-layout">
-      <div class="botanical-problem-title lc-reveal">
-        <p class="botanical-eyebrow">{c.problema.puntos[0].titulo}</p>
-        <h2 class="botanical-heading-sm">{c.problema.titulo}</h2>
-      </div>
-      <div class="botanical-problem-list">
-        {
-          c.problema.puntos.map((p, i) => (
-            <article class="botanical-problem-card lc-reveal" style={`--lc-delay:${i * 60}ms`}>
-              <span class="botanical-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  width="22"
-                  height="22"
-                  aria-hidden="true"
-                >
-                  <path d={iconosProblema[i]} />
-                </svg>
-              </span>
-              <div>
-                <h3>{p.titulo}</h3>
-                <p>{p.texto}</p>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section id="producto" class="botanical-product-section botanical-section">
-      <div class="botanical-shell">
-        <div class="botanical-centered-head lc-reveal">
-          <p class="botanical-eyebrow">{c.nav.producto}</p>
-          <h2 class="botanical-heading-sm">{c.producto.titulo}</h2>
-          <p class="botanical-copy">{c.producto.subtitulo}</p>
-        </div>
-
-        <div class="botanical-product-grid">
-          {
-            c.producto.bloques.map((b, i) => (
-              <article class="botanical-product-card lc-reveal" style={`--lc-delay:${i * 80}ms`}>
-                <ProductCardVisual variant={i === 0 ? 'website' : 'manager'} alt={b.capturaAlt} />
-                <div class="botanical-product-body">
-                  <h3>{b.titulo}</h3>
-                  <p>{b.texto}</p>
-                  <ul class="botanical-checks">
-                    {b.puntos.map((pt) => (
-                      <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={localePath(locale, 'precios/')} class="botanical-button-outline botanical-product-cta">
-                    {b.cta}<span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-
-    <section id="planning" class="botanical-shell botanical-section botanical-planning-layout">
-      <div class="botanical-planning-copy lc-reveal">
-        <p class="botanical-eyebrow">{c.planning.kicker}</p>
-        <h2 class="botanical-heading-sm">{c.planning.titulo}</h2>
-        <p class="botanical-copy">{c.planning.texto}</p>
-        <ul class="botanical-planning-points">
-          {c.planning.puntos.map((pt) => <li>{pt}</li>)}
-        </ul>
-        <a href={managerHref} class="botanical-button">{c.planning.cta}<span aria-hidden="true">→</span></a>
-      </div>
-
-      <figure class="botanical-showcase lc-reveal">
-        <PlanningVisual
-          alt={c.planning.capturaAlt}
-          mapAlt={c.planning.planoAlt}
-          windowLabel={c.planning.ventana}
-          mapTitle={c.planning.planoTitulo}
-          mapStatus={c.planning.planoEstado}
-          mapMetric={c.planning.planoOcupacion}
-          mapLegend={c.planning.planoLeyenda}
-        />
-      </figure>
-    </section>
-
-    <section id="niveles" class="botanical-plans-wrap botanical-section">
-      <div class="botanical-shell">
-        <div class="lc-reveal">
-          <p class="botanical-eyebrow">{c.niveles.kicker}</p>
-          <h2 class="botanical-heading-sm">{c.niveles.titulo}</h2>
-          <p class="botanical-copy" style="max-width:760px;margin-top:20px">{c.niveles.subtitulo}</p>
-        </div>
-
-        <div class="botanical-plan-selector lc-reveal" role="group" aria-label={c.niveles.selector.pregunta}>
-          <p>{c.niveles.selector.pregunta}</p>
-          {
-            c.niveles.selector.opciones.map((opcion, i) => (
-              <button class="botanical-plan-chip" type="button" data-nivel-chip={i} aria-pressed="false">
-                {opcion}
-              </button>
-            ))
-          }
-        </div>
-        <p
-          id="nivel-sugerido"
-          class="botanical-plan-result"
-          data-plantilla={c.niveles.selector.resultado}
-          role="status"
-          aria-live="polite"
-          hidden
-        ></p>
-
-        <div class="botanical-plans-grid">
-          {
-            c.niveles.items.map((n, i) => (
-              <article
-                class:list={['botanical-plan lc-reveal', n.destacado && 'is-featured']}
-                data-nivel-card={i}
-                data-nombre={n.nombre}
-                style={`--lc-delay:${i * 70}ms`}
-              >
-                <div class="botanical-plan-top">
-                  <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
-                  <PlanStatus label={n.estado} state={n.estadoTipo} />
-                </div>
-                <h3>{n.nombre}</h3>
-                <p class="botanical-plan-for">{n.para}</p>
-                <p class="botanical-plan-result-copy">{n.resultado}</p>
-                <p class="botanical-plan-description">{n.texto}</p>
-                <div class="botanical-price">
-                  <strong>{n.precio}</strong>
-                  <span>{n.alta}</span>
-                </div>
-                <ul class="botanical-checks">
-                  {n.incluye.map((item) => (
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  type="button"
-                  class="botanical-button"
-                  data-project-request-open
-                  data-project-request-plan={n.nombre}
-                >
-                  {i === 0 ? c.contacto.iniciarWeb : c.contacto.solicitarPlan}<span aria-hidden="true">→</span>
-                </button>
-              </article>
-            ))
-          }
-        </div>
-        <p class="botanical-note-wide">
-          {c.niveles.nota}
-          <a href={localePath(locale, 'docs/dueno/')} style="color:var(--botanical-ink);text-decoration:underline;text-underline-offset:4px">
-            {c.docs.guias.dueno.nombre} →
-          </a>
-        </p>
-      </div>
-    </section>
+    <ManagementPanelsShowcase locale={locale} content={c.paneles} href={localePath(locale, 'paneles/')} />
 
     <section class="botanical-shell botanical-section botanical-aftercare">
       <article class="botanical-aftercare-card lc-reveal">
@@ -368,131 +181,5 @@ const iconosProblema = [
       </div>
     </section>
 
-    <section id="contacto" class="botanical-shell botanical-contact scroll-mt-20">
-      <div class="botanical-contact-panel">
-        <div class="botanical-contact-copy lc-reveal">
-          <p class="botanical-eyebrow">{c.contacto.kicker}</p>
-          <h2 class="botanical-heading-sm">{c.contacto.titulo}</h2>
-          <p class="botanical-copy">{c.contacto.texto}</p>
-          <p class="botanical-contact-links">
-            {c.contacto.verDemoTexto}<br />
-            <a href="/demo/">{c.nav.verDemo} →</a><br />
-            <a href={managerHref}>{c.contacto.verMostrador} →</a>
-          </p>
-        </div>
-
-        <form id="lead-form" class="botanical-form lc-reveal" novalidate>
-          <input type="hidden" name="lang" value={locale} />
-          <label>
-            <span>{c.contacto.campos.nombre}</span>
-            <input name="name" required />
-          </label>
-          <label>
-            <span>{c.contacto.campos.camping}</span>
-            <input name="campingName" required />
-          </label>
-          <label>
-            <span>{c.contacto.campos.email}</span>
-            <input name="email" type="email" required />
-          </label>
-          <label>
-            <span>{c.contacto.campos.telefono}</span>
-            <input name="phone" />
-          </label>
-          <label class="span-two">
-            <span>{c.contacto.campos.mensaje}</span>
-            <textarea name="message" rows="4"></textarea>
-          </label>
-          <label class="botanical-honeypot" aria-hidden="true">
-            <span>{c.contacto.honeypot}</span>
-            <input name="website" tabindex="-1" autocomplete="off" />
-          </label>
-          <label class="botanical-consent span-two">
-            <input name="accept" type="checkbox" value="true" required />
-            <span>{c.contacto.privacidadAntes} <a href={localePath(locale, 'privacidad/')}>{c.contacto.privacidadEnlace}</a>.</span>
-          </label>
-          <div class="botanical-form-actions">
-            <button
-              type="submit"
-              class="botanical-button"
-              data-send={c.contacto.enviar}
-              data-sending={c.contacto.enviando}
-            ><span data-lead-submit-label>{c.contacto.enviar}</span><span aria-hidden="true">→</span></button>
-            <p id="lead-msg" role="status" aria-live="polite"></p>
-          </div>
-        </form>
-      </div>
-    </section>
   </div>
 </Base>
-
-<script
-  is:inline
-  define:vars={{
-    ok: getContent(locale).contacto.ok,
-    demo: getContent(locale).contacto.demo,
-    err: getContent(locale).contacto.error,
-  }}
->
-  const form = document.getElementById('lead-form');
-  const msg = document.getElementById('lead-msg');
-  const btn = form?.querySelector('button[type=submit]');
-  const btnLabel = btn?.querySelector('[data-lead-submit-label]');
-  form?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
-    const data = Object.fromEntries(new FormData(form).entries());
-    data.accept = data.accept === 'true';
-    btn.disabled = true;
-    btnLabel.textContent = btn.dataset.sending;
-    msg.textContent = '';
-    try {
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error('bad');
-      msg.textContent = result.outcome === 'demo' ? demo : ok;
-      if (result.outcome === 'delivered') {
-        window.l2bTrackEvent?.('camp_submit_lead', {
-          form: 'inline',
-          locale: document.documentElement.lang,
-        });
-      }
-      form.reset();
-    } catch {
-      msg.textContent = err;
-    } finally {
-      btn.disabled = false;
-      btnLabel.textContent = btn.dataset.send;
-    }
-  });
-</script>
-
-<script>
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-nivel-chip]')];
-  const niveles = [...document.querySelectorAll<HTMLElement>('[data-nivel-card]')];
-  const grid = document.querySelector<HTMLElement>('.botanical-plans-grid');
-  const sugerido = document.getElementById('nivel-sugerido');
-  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const index = Number(chip.dataset.nivelChip);
-      const repetido = chip.getAttribute('aria-pressed') === 'true';
-      chips.forEach((item) => item.setAttribute('aria-pressed', String(item === chip && !repetido)));
-      niveles.forEach((card, i) => card.classList.toggle('lc-elegido', !repetido && i === index));
-      grid?.classList.toggle('lc-con-eleccion', !repetido);
-      if (sugerido) {
-        sugerido.hidden = repetido;
-        if (!repetido) {
-          const nombre = niveles[index]?.dataset.nombre ?? '';
-          sugerido.textContent = (sugerido.dataset.plantilla ?? '').replace('{nivel}', nombre);
-        }
-      }
-      if (!repetido) niveles[index]?.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'nearest' });
-    });
-  });
-</script>

@@ -1,0 +1,264 @@
+---
+import ThemeMiniature from './ThemeMiniature.astro';
+import { portfolioImage } from '../lib/portfolio';
+import type { Locale } from '../lib/i18n';
+
+interface ThemeItem {
+  slug: string;
+  nombre: string;
+  estilo: string;
+  imagen: string;
+  variante: string;
+  estado: string;
+  href?: string;
+}
+
+interface Props {
+  locale: Locale;
+  href: string;
+  content: {
+    kicker: string;
+    titulo: string;
+    texto: string;
+    verTodos: string;
+    estado: string;
+    items: ThemeItem[];
+  };
+}
+
+const { locale, href, content: c } = Astro.props;
+const previousLabel = locale === 'es' ? 'Ver los temas anteriores' : 'View previous themes';
+const nextLabel = locale === 'es' ? 'Ver los temas siguientes' : 'View next themes';
+const sliderLabel = locale === 'es' ? 'Doce temas web para campings' : 'Twelve website themes for campsites';
+---
+
+<section id="demos" class="theme-showcase botanical-section" aria-labelledby="theme-showcase-title" data-theme-showcase>
+  <div class="botanical-shell">
+    <header class="theme-showcase-heading lc-reveal">
+      <div>
+        <p class="botanical-eyebrow">{c.kicker}</p>
+        <h2 id="theme-showcase-title" class="botanical-heading-sm">{c.titulo}</h2>
+      </div>
+      <div class="theme-showcase-intro">
+        <p class="botanical-copy">{c.texto}</p>
+        <a href={href}>{c.verTodos}<span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <div class="theme-showcase-toolbar lc-reveal">
+      <p><strong>{String(c.items.length).padStart(2, '0')}</strong> {c.estado}</p>
+      <div class="theme-showcase-controls">
+        <button type="button" aria-label={previousLabel} data-theme-showcase-prev disabled>
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" aria-label={nextLabel} data-theme-showcase-next>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="theme-showcase-track" role="region" aria-label={sliderLabel} tabindex="0" data-theme-showcase-track>
+      {
+        c.items.map((theme, index) => (
+          <article class="theme-showcase-card">
+            {theme.href ? (
+              <a class="theme-showcase-visual" href={theme.href} aria-label={`${theme.nombre} · ${theme.estado}`}>
+                <ThemeMiniature
+                  name={theme.nombre}
+                  style={theme.estilo}
+                  image={portfolioImage(theme.slug, theme.imagen)}
+                  variant={theme.variante}
+                  eager={index < 4}
+                />
+              </a>
+            ) : (
+              <div class="theme-showcase-visual">
+                <ThemeMiniature
+                  name={theme.nombre}
+                  style={theme.estilo}
+                  image={portfolioImage(theme.slug, theme.imagen)}
+                  variant={theme.variante}
+                  eager={index < 4}
+                />
+              </div>
+            )}
+            <div class="theme-showcase-card-body">
+              <div class="theme-showcase-card-meta">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <small>{theme.estado}</small>
+              </div>
+              <h3>{theme.nombre}</h3>
+              <p>{theme.estilo}</p>
+              {theme.href && <a class="theme-showcase-open" href={theme.href} aria-label={`${theme.nombre} →`}>↗</a>}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-theme-showcase]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-theme-showcase-track]');
+    const previous = root.querySelector<HTMLButtonElement>('[data-theme-showcase-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-theme-showcase-next]');
+    if (!track || !previous || !next) return;
+
+    const updateControls = () => {
+      const maximum = Math.max(0, track.scrollWidth - track.clientWidth);
+      previous.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maximum - 2;
+    };
+
+    const move = (direction: -1 | 1) => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const card = track.querySelector<HTMLElement>('.theme-showcase-card');
+      const gap = Number.parseFloat(getComputedStyle(track).columnGap) || 0;
+      const visibleCards = window.innerWidth >= 1024 ? 4 : window.innerWidth >= 768 ? 2 : 1;
+      const distance = card ? (card.offsetWidth + gap) * visibleCards : track.clientWidth;
+      track.scrollBy({
+        left: direction * distance,
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
+    };
+
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    track.addEventListener('scroll', updateControls, { passive: true });
+    window.addEventListener('resize', updateControls, { passive: true });
+    updateControls();
+  });
+</script>
+
+<style>
+  .theme-showcase {
+    overflow: hidden;
+    background: var(--botanical-keylime);
+  }
+  .theme-showcase-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .72fr);
+    gap: clamp(36px, 8vw, 120px);
+    align-items: end;
+  }
+  .theme-showcase-heading h2 { margin-top:18px; }
+  .theme-showcase-intro { max-width:610px; }
+  .theme-showcase-intro a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    border-bottom: 1px solid color-mix(in srgb,var(--botanical-ink) 34%,transparent);
+    padding-bottom: 3px;
+    color: var(--botanical-ink);
+    font-size: 13px;
+    font-weight: 720;
+  }
+  .theme-showcase-intro a span { transition:transform 160ms ease; }
+  .theme-showcase-intro a:hover span { transform:translate(2px,-2px); }
+  .theme-showcase-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: clamp(38px,5vw,62px);
+  }
+  .theme-showcase-toolbar p {
+    color: color-mix(in srgb,var(--botanical-ink) 62%,white);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .theme-showcase-toolbar strong { color:var(--botanical-ink); }
+  .theme-showcase-controls { display:flex; gap:8px; }
+  .theme-showcase-controls button {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb,var(--botanical-ink) 18%,transparent);
+    border-radius: 50%;
+    background: var(--botanical-paper);
+    color: var(--botanical-ink);
+    font: inherit;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background-color 160ms ease,opacity 160ms ease,transform 160ms ease;
+  }
+  .theme-showcase-controls button:hover:not(:disabled) { transform:translateY(-2px); background:white; }
+  .theme-showcase-controls button:disabled { opacity:.28; cursor:default; }
+  .theme-showcase-track {
+    --theme-showcase-gutter: max(24px, calc((100vw - 1500px) / 2));
+    display: grid;
+    width: 100vw;
+    grid-auto-columns: calc((100vw - var(--theme-showcase-gutter) - var(--theme-showcase-gutter) - 42px) / 4);
+    grid-auto-flow: column;
+    gap: 14px;
+    margin-top: 0;
+    margin-left: calc(50% - 50vw);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding: 26px var(--theme-showcase-gutter) 50px;
+    scroll-behavior: smooth;
+    scroll-padding-inline: var(--theme-showcase-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    box-sizing: border-box;
+  }
+  .theme-showcase-track::-webkit-scrollbar { display:none; }
+  .theme-showcase-track:focus-visible { outline:2px solid var(--botanical-ink); outline-offset:6px; }
+  .theme-showcase-card {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb,var(--botanical-ink) 9%,transparent);
+    border-radius: 22px;
+    background: var(--botanical-paper);
+    box-shadow: 0 14px 34px color-mix(in srgb,var(--botanical-ink) 6%,transparent);
+    scroll-snap-align: start;
+  }
+  .theme-showcase-visual { display:block; margin:10px 10px 0; overflow:hidden; border-radius:15px; }
+  .theme-showcase-visual :global(.theme-miniature) { aspect-ratio:1.35; }
+  .theme-showcase-card-body { position:relative; padding:16px 18px 20px; }
+  .theme-showcase-card-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .theme-showcase-card-meta span,.theme-showcase-card-meta small {
+    color: color-mix(in srgb,var(--botanical-ink) 54%,white);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .theme-showcase-card-meta small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .theme-showcase-card h3 { margin-top:11px; padding-right:36px; color:var(--botanical-ink); font-size:clamp(20px,1.65vw,25px); letter-spacing:-.035em; line-height:1; }
+  .theme-showcase-card-body > p { min-height:2.8em; margin-top:7px; padding-right:28px; color:color-mix(in srgb,var(--botanical-ink) 62%,white); font-size:11px; line-height:1.4; }
+  .theme-showcase-open {
+    position: absolute;
+    right: 16px;
+    bottom: 18px;
+    display: grid;
+    width: 31px;
+    height: 31px;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb,var(--botanical-keylime) 68%,white);
+    color: var(--botanical-ink);
+    font-size: 13px;
+    transition: transform 160ms ease,background-color 160ms ease;
+  }
+  .theme-showcase-open:hover { transform:translate(2px,-2px); background:var(--botanical-keylime); }
+  @media (prefers-reduced-motion:reduce) {
+    .theme-showcase-track { scroll-behavior:auto; }
+    .theme-showcase-intro a span,.theme-showcase-open { transition:none; }
+  }
+  @media (max-width:1023px) {
+    .theme-showcase-track { grid-auto-columns:calc((100vw - var(--theme-showcase-gutter) - var(--theme-showcase-gutter) - 14px) / 2); }
+  }
+  @media (max-width:767px) {
+    .theme-showcase-heading { grid-template-columns:1fr; gap:22px; }
+    .theme-showcase-track { --theme-showcase-gutter:14px; grid-auto-columns:min(82vw,310px); }
+    .theme-showcase-controls button { width:40px; height:40px; }
+    .theme-showcase-card h3 { font-size:24px; }
+  }
+</style>

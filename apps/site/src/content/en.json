@@ -103,7 +103,7 @@
     ]
   },
   "platformShowcase": {
-    "kicker": "One platform, five views",
+    "kicker": "One platform. Five key moments",
     "titulo": "Everything you need to run a profitable campsite.",
     "aria": "Logic2B Campings platform areas",
     "capturaLabel": "Real view",
@@ -134,7 +134,7 @@
         ],
         "detalle": "Every step reduces repeated questions and prepares faster handling when the enquiry reaches the campsite.",
         "imagen": "reservas",
-        "capturaAlt": "Direct booking homepage for a fictional resort"
+        "capturaAlt": "Confirmed direct booking detail with stay, amount, deposit and operational context"
       },
       {
         "icono": "planning",
@@ -148,7 +148,7 @@
         ],
         "detalle": "The planner handles volume without losing the quick reading reception needs.",
         "imagen": "planning",
-        "capturaAlt": "Monthly manager planner with fictional pitches and bookings"
+        "capturaAlt": "Close-up of the planner with a booking fitted between a departure and an arrival"
       },
       {
         "icono": "plano",
@@ -162,7 +162,7 @@
         ],
         "detalle": "The map connects each booking to the place it will occupy instead of leaving reception with detached references.",
         "imagen": "plano",
-        "capturaAlt": "Operational campsite map with pitches, accommodation and shared areas"
+        "capturaAlt": "Close-up of the map with pitch A-19 selected beside the pool and its availability"
       },
       {
         "icono": "operativa",
@@ -176,7 +176,7 @@
         ],
         "detalle": "The platform helps identify the next step while keeping the final decision with the team.",
         "imagen": "operativa",
-        "capturaAlt": "Operational recommendation view with occupancy, impact and a proposed change"
+        "capturaAlt": "Close-up of a supervised operational recommendation with evidence, impact and human review"
       }
     ]
   },
@@ -230,8 +230,8 @@
         "precioAnualAnterior": "€588",
         "detallePrecio": "6-month commitment",
         "tono": "lime",
-        "ofertaTitulo": "Website design",
-        "ofertaTexto": "A clear, fast website for presenting the campsite and receiving enquiries directly by email.",
+        "ofertaTitulo": "Essential website",
+        "ofertaTexto": "Present the campsite and receive enquiries directly.",
         "incluye": [
           "Responsive design with the campsite identity",
           "Accommodation, pitches and services",
@@ -274,8 +274,8 @@
         "precioAnualAnterior": "€4,788",
         "onboarding": "€1,900 · onboarding and website design",
         "tono": "water",
-        "ofertaTitulo": "Website design + management system",
-        "ofertaTexto": "Direct booking on the website and one workspace for coordinating campsite operations.",
+        "ofertaTitulo": "Website + management",
+        "ofertaTexto": "Direct booking and every operation in one workspace.",
         "incluye": [
           "Website design, catalogue, content and languages",
           "Connected availability search and booking engine",
@@ -322,8 +322,8 @@
         "precioAnual": "Contact us",
         "periodoAnual": "tailored project",
         "tono": "forest",
-        "ofertaTitulo": "Website design + management system plus",
-        "ofertaTexto": "A tailored website experience with more automation, integrations and operational control.",
+        "ofertaTitulo": "Website + advanced management",
+        "ofertaTexto": "More automation, integrations and tailored control.",
         "incluye": [
           "Tailored visual direction, markets and journeys",
           "Complete booking and operations management",
@@ -487,6 +487,73 @@
         "href": "/demos/soldhivern/"
       }
     ]
+  },
+  "paneles": {
+    "seo": {
+      "title": "Campsite management dashboards — Logic2B Campings",
+      "description": "Explore the Management and Advanced dashboards in Logic2B Campings: configurable views for reception, leadership, operations and analysis."
+    },
+    "kicker": "Dashboards shaped around the team",
+    "titulo": "Your operation, organised your way.",
+    "texto": "Each campsite decides what every role sees, which indicators matter and which tasks come first. The same foundation becomes two levels of dashboard.",
+    "verTodos": "Explore management dashboards",
+    "tipos": [
+      {
+        "id": "gestion",
+        "nombre": "Management",
+        "etiqueta": "Daily operations",
+        "titulo": "Clear control for reception and leadership.",
+        "texto": "Bookings, availability, payments and daily movements in views configured around the campsite's real work.",
+        "ruta": "planning",
+        "cta": "Open Management dashboard",
+        "incluye": [
+          "Configurable planner and map",
+          "Roles and access by team",
+          "Payments, arrivals and reporting"
+        ]
+      },
+      {
+        "id": "avanzado",
+        "nombre": "Advanced",
+        "etiqueta": "Analysis and automation",
+        "titulo": "More context to decide and anticipate.",
+        "texto": "Add indicators, supervised automation and intelligence to the same operation without losing human control.",
+        "ruta": "inteligente",
+        "cta": "Open Advanced dashboard",
+        "incluye": [
+          "Tailored indicators and comparisons",
+          "Supervised automation",
+          "Integrations and contextual AI"
+        ]
+      }
+    ],
+    "pagina": {
+      "kicker": "Two dashboards, one foundation",
+      "titulo": "The dashboard adapts to the campsite, not the other way round.",
+      "intro": "Logic2B Campings organises information around team size, permissions and the pace of operations. Start with the views you need and add capability without rebuilding the system.",
+      "personalizacionKicker": "Real configuration",
+      "personalizacionTitulo": "Views, permissions and priorities for every team.",
+      "personalizacionTexto": "No two campsites work in exactly the same way, and not everyone needs to see the same information. We configure the dashboard to reduce noise and bring each decision closer to the person responsible.",
+      "personalizacion": [
+        {
+          "titulo": "Roles and permissions",
+          "texto": "Reception, leadership, administration and maintenance only access the views and actions relevant to them."
+        },
+        {
+          "titulo": "Modules and priorities",
+          "texto": "Planner, map, payments, arrivals, reports and indicators are ordered around each campsite's operation."
+        },
+        {
+          "titulo": "Data and integrations",
+          "texto": "Rates, channels, payments and automation connect through a defined, traceable scope."
+        }
+      ],
+      "diferenciaKicker": "Choose the right level",
+      "diferenciaTitulo": "Management organises today. Advanced helps prepare what comes next.",
+      "cierreTitulo": "What does your team need to see to work better?",
+      "cierreTexto": "We will show you both dashboards and configure a demonstration around your inventory, roles and priorities.",
+      "cierreCta": "Request a demonstration"
+    }
   },
   "portfolio": {
     "kicker": "Three campsites, one product",

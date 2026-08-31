@@ -60,7 +60,7 @@ interface Props {
   items: PricingItem[];
 }
 
-const { kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideWebLabel, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items } = Astro.props;
+const { kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items } = Astro.props;
 const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admin';
 ---
 
@@ -85,99 +85,124 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
       {
         items.map((plan, index) => (
           <article class:list={['pricing-card', `pricing-card--${plan.tono}`, index === 1 && 'is-featured', 'lc-reveal']}>
-            <header class="pricing-card-head">
-              <h3>{plan.nombre}</h3>
-              {plan.etiqueta && <strong>{plan.etiqueta}</strong>}
-            </header>
-
-            <div class:list={['pricing-visual-stage', plan.gestor.modo === 'demo' && 'has-slider']}>
-              <figure class="pricing-web-demo pricing-visual-slide">
-                <div class="pricing-browser">
-                  <div class="pricing-browser-top" aria-hidden="true">
-                    <span><i></i><i></i><i></i></span>
-                    <b>{plan.web.marca}</b>
-                    <em></em>
-                  </div>
-                  <div class="pricing-browser-hero">
-                    <div class="pricing-browser-copy" aria-hidden="true">
-                      <small>{plan.web.previewKicker}</small>
-                      <strong>{plan.web.previewTitulo}</strong>
-                      <span></span><span></span>
-                    </div>
-                    <img src={plan.web.imagen} alt={plan.web.capturaAlt} loading="lazy" decoding="async" />
-                  </div>
-                  <div class="pricing-availability" aria-hidden="true">
-                    <span><small>Llegada</small><b>05 AGO</b></span>
-                    <span><small>Salida</small><b>12 AGO</b></span>
-                    <span><small>Huéspedes</small><b>2 + 1</b></span>
-                    <i>→</i>
-                  </div>
+            <div class="pricing-card-summary">
+              <div class="pricing-card-summary-copy">
+                <header class="pricing-card-head">
+                  <h3>{plan.nombre}</h3>
+                </header>
+                <div class="pricing-card-price">
+                <div class:list={['pricing-card-price-value', plan.id === 'avanzado' && 'is-stacked']}>
+                  <strong data-pricing-price data-monthly={plan.precio} data-annual={plan.precioAnual}>{plan.precio}</strong>
+                  <span data-pricing-period data-monthly={plan.periodo} data-annual={plan.periodoAnual}>{plan.periodo}</span>
+                  {plan.precioAnualAnterior && (
+                    <del class="pricing-annual-original" data-pricing-original hidden>{plan.precioAnualAnterior}</del>
+                  )}
                 </div>
-                {plan.gestor.modo === 'demo' && <figcaption>{slideWebLabel}</figcaption>}
-              </figure>
+                  {plan.detallePrecio && <small class="pricing-price-detail">{plan.detallePrecio}</small>}
+                  {plan.onboarding && <small>{plan.onboarding}</small>}
+                </div>
+              </div>
+              <a
+                class:list={['pricing-request', plan.id === 'gestion' && 'is-primary']}
+                href={`${requestHref}?plan=${encodeURIComponent(plan.id)}&billing=monthly`}
+                data-request-base={`${requestHref}?plan=${encodeURIComponent(plan.id)}`}
+              >
+                {requestCta}<span class="pricing-request-icon" aria-hidden="true">↗</span>
+              </a>
+            </div>
 
+            <figure class="pricing-visual-stage">
+              <div class="pricing-browser">
+                <div class="pricing-browser-top" aria-hidden="true">
+                  <span><i></i><i></i><i></i></span>
+                  <b>{plan.web.marca}</b>
+                  <em></em>
+                </div>
+                <div class="pricing-browser-hero">
+                  <div class="pricing-browser-copy" aria-hidden="true">
+                    <small>{plan.web.previewKicker}</small>
+                    <strong>{plan.web.previewTitulo}</strong>
+                    <span></span><span></span>
+                  </div>
+                  <img src={plan.web.imagen} alt={plan.web.capturaAlt} loading="lazy" decoding="async" />
+                </div>
+                <div class="pricing-availability" aria-hidden="true">
+                  <span><small>Llegada</small><b>05 AGO</b></span>
+                  <span><small>Salida</small><b>12 AGO</b></span>
+                  <span><small>Huéspedes</small><b>2 + 1</b></span>
+                  <i>→</i>
+                </div>
+              </div>
               {
-                plan.gestor.modo === 'demo' && (
-                  <figure
-                    class:list={['pricing-manager-demo', 'pricing-visual-slide', plan.gestor.imagen === 'avanzado' && 'is-intelligent']}
-                    role="img"
-                    aria-label={plan.gestor.capturaAlt}
-                  >
-                    <div class="manager-window" aria-hidden="true">
-                      <header class="manager-window-head">
-                        <strong><i></i>Logic2B</strong>
-                        <span><i></i><i></i><i></i></span>
-                      </header>
-                      <div class="manager-window-body">
-                        <aside class="manager-sidebar">
-                          <b></b><i></i><i></i><i></i><i></i><i></i>
-                        </aside>
-                        {
-                          plan.gestor.imagen === 'avanzado' ? (
-                            <div class="manager-intelligence">
-                              <header><span></span><b></b></header>
-                              <div class="manager-kpis">
-                                <span><small>78%</small><i></i></span>
-                                <span><small>24</small><i></i></span>
-                                <span><small>94%</small><i></i></span>
-                              </div>
-                              <div class="manager-insight-row">
-                                <div class="manager-bars">
-                                  <i></i><i></i><i></i><i></i><i></i><i></i>
-                                </div>
-                                <div class="manager-recommendation">
-                                  <span>✓</span><i></i><i></i><i></i>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <div class="manager-planning">
-                              <header><span></span><b></b></header>
-                              <div class="manager-days"><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
-                              <div class="manager-calendar">
-                                <i class="booking booking-a"></i>
-                                <i class="booking booking-b"></i>
-                                <i class="booking booking-c"></i>
-                                <i class="booking booking-d"></i>
-                              </div>
-                              <span class="manager-occupancy"><b>78%</b><i></i></span>
-                            </div>
-                          )
-                        }
-                      </div>
+                plan.gestor.modo === 'email' && (
+                  <div class="pricing-manager-peek pricing-mail-peek" aria-hidden="true">
+                    <div class="pricing-manager-peek-head">
+                      <span class="pricing-manager-peek-icon pricing-mail-icon">
+                        <svg viewBox="0 0 24 18" fill="none">
+                          <path d="M2 16V4.2L6 7.3V16H2Z" fill="#4285F4" />
+                          <path d="M18 16V7.3L22 4.2V16H18Z" fill="#34A853" />
+                          <path d="M2 4.2 4.6 2.3 12 8l7.4-5.7L22 4.2 12 12 2 4.2Z" fill="#EA4335" />
+                          <path d="M2 4.2V2.8C2 1.8 3.2 1.2 4 1.8l8 6.2-2.1 2.9L2 4.2Z" fill="#C5221F" />
+                          <path d="M22 4.2V2.8c0-1-1.2-1.6-2-1L12 8l2.1 2.9L22 4.2Z" fill="#FBBC04" />
+                        </svg>
+                      </span>
+                      <strong>Gmail</strong>
+                      <i class="pricing-manager-status"></i>
                     </div>
-                    <figcaption>{slideManagerLabel}</figcaption>
-                  </figure>
+                    <div class="pricing-mail-list">
+                      <span class="is-unread"><i></i><b></b><em></em></span>
+                      <span><i></i><b></b><em></em></span>
+                      <span><i></i><b></b><em></em></span>
+                    </div>
+                  </div>
                 )
               }
-              {plan.gestor.modo === 'demo' && <span class="pricing-slider-dots" aria-hidden="true"><i></i><i></i></span>}
-            </div>
+              {
+                plan.gestor.modo === 'demo' && (
+                  <div class:list={['pricing-manager-peek', plan.id === 'avanzado' && 'is-intelligent']} aria-hidden="true">
+                    <div class="pricing-manager-peek-head">
+                      <span class="pricing-manager-peek-icon">
+                        {
+                          plan.id === 'avanzado' ? (
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <path d="M4 18V6M4 18h16" />
+                              <path d="m7 14 4-4 3 2 4-5" />
+                            </svg>
+                          ) : (
+                            <svg viewBox="0 0 24 24" fill="none">
+                              <rect x="4" y="5" width="16" height="15" rx="3" />
+                              <path d="M8 3v4M16 3v4M4 10h16M8 14h3M14 14h2" />
+                            </svg>
+                          )
+                        }
+                      </span>
+                      <strong>{slideManagerLabel}</strong>
+                      <i class="pricing-manager-status"></i>
+                    </div>
+                    {
+                      plan.id === 'avanzado' ? (
+                        <div class="pricing-manager-kpis">
+                          <span><b>78%</b><i></i></span>
+                          <span><b>24</b><i></i></span>
+                          <span><b>94%</b><i></i></span>
+                        </div>
+                      ) : (
+                        <div class="pricing-manager-planning">
+                          <span></span><span></span><span></span><span></span>
+                          <i class="booking-a"></i><i class="booking-b"></i><i class="booking-c"></i>
+                        </div>
+                      )
+                    }
+                  </div>
+                )
+              }
+            </figure>
 
             <section class="pricing-product" aria-labelledby={`pricing-offer-${index}`}>
               <h4 id={`pricing-offer-${index}`}>{plan.ofertaTitulo}</h4>
               <p>{plan.ofertaTexto}</p>
               <ul class="pricing-feature-list">
-                {plan.incluye.map((feature) => <li><span aria-hidden="true">✓</span>{feature}</li>)}
+                {plan.incluye.slice(0, 3).map((feature) => <li><span aria-hidden="true">✓</span>{feature}</li>)}
               </ul>
               <div class="pricing-demo-actions">
                 <a class="pricing-cta" href={plan.web.href}>
@@ -191,26 +216,6 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
               </div>
             </section>
 
-            <footer class="pricing-card-price">
-              <div class="pricing-card-price-row">
-                <div class:list={['pricing-card-price-value', plan.id === 'avanzado' && 'is-stacked']}>
-                  <strong data-pricing-price data-monthly={plan.precio} data-annual={plan.precioAnual}>{plan.precio}</strong>
-                  <span data-pricing-period data-monthly={plan.periodo} data-annual={plan.periodoAnual}>{plan.periodo}</span>
-                  {plan.precioAnualAnterior && (
-                    <del class="pricing-annual-original" data-pricing-original hidden>{plan.precioAnualAnterior}</del>
-                  )}
-                </div>
-                <a
-                  class="pricing-request"
-                  href={`${requestHref}?plan=${encodeURIComponent(plan.id)}&billing=monthly`}
-                  data-request-base={`${requestHref}?plan=${encodeURIComponent(plan.id)}`}
-                >
-                  {requestCta}
-                </a>
-              </div>
-              {plan.detallePrecio && <small class="pricing-price-detail">{plan.detallePrecio}</small>}
-              {plan.onboarding && <small>{plan.onboarding}</small>}
-            </footer>
           </article>
         ))
       }
@@ -219,12 +224,7 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
       <p>{assistText}</p>
       <a href={requestHref}>
         {assistCta}
-        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-          <path d="M4 13v-2a8 8 0 0 1 16 0v2" />
-          <path d="M5 13h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2v-3a1 1 0 0 1 1-1Z" />
-          <path d="M19 13h-2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1Z" />
-          <path d="M16 19c-.7 1.2-1.9 2-4 2h-1" />
-        </svg>
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
@@ -281,113 +281,91 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
   .pricing-heading h2 { margin-top:18px; color:var(--botanical-ink); font-size:clamp(52px,5.8vw,88px); letter-spacing:-.055em; line-height:.98; text-wrap:balance; }
   .pricing-heading > p:last-child { max-width:720px; margin:24px auto 0; color:color-mix(in srgb,var(--botanical-charcoal) 70%,white); font-size:clamp(16px,1.5vw,19px); line-height:1.55; }
 
-  .pricing-billing { display:flex; width:max-content; max-width:100%; gap:4px; margin:clamp(28px,3vw,38px) auto 0; border:1px solid color-mix(in srgb,var(--botanical-ink) 13%,transparent); border-radius:999px; background:rgb(255 255 255 / 62%); padding:4px; box-shadow:0 10px 24px color-mix(in srgb,var(--botanical-ink) 6%,transparent); backdrop-filter:blur(8px); }
-  .pricing-billing button { display:flex; min-height:40px; align-items:center; gap:7px; border:0; border-radius:999px; background:transparent; padding:9px 15px; color:color-mix(in srgb,var(--botanical-ink) 62%,white); font:inherit; font-size:12px; font-weight:700; cursor:pointer; transition:background-color 160ms ease,color 160ms ease; }
-  .pricing-billing button.is-active { background:var(--botanical-ink); color:white; }
-  .pricing-billing button span { border-radius:999px; background:color-mix(in srgb,var(--botanical-keylime) 78%,white); padding:3px 6px; color:var(--botanical-ink); font-size:9px; font-weight:800; }
+  .pricing-billing { display:flex; width:max-content; max-width:100%; gap:4px; margin:clamp(28px,3vw,38px) auto 0; border:0; border-radius:20px; background:color-mix(in srgb,var(--botanical-paper) 94%,transparent); padding:7px; box-shadow:0 14px 34px color-mix(in srgb,var(--botanical-ink) 7%,transparent); }
+  .pricing-billing button { display:flex; min-height:48px; align-items:center; gap:8px; border:0; border-radius:14px; background:transparent; padding:10px 20px; color:color-mix(in srgb,var(--botanical-ink) 65%,white); font:inherit; font-size:13px; font-weight:650; cursor:pointer; transition:background-color 160ms ease,color 160ms ease; }
+  .pricing-billing button:hover { background:color-mix(in srgb,var(--botanical-keylime) 34%,transparent); color:var(--botanical-ink); }
+  .pricing-billing button:focus-visible { outline:0; background:color-mix(in srgb,var(--botanical-keylime) 62%,var(--botanical-paper)); }
+  .pricing-billing button.is-active { background:color-mix(in srgb,var(--botanical-keylime) 68%,var(--botanical-paper)); color:var(--botanical-ink); font-weight:750; }
+  .pricing-billing button span { border-radius:999px; background:color-mix(in srgb,var(--botanical-keylime) 72%,white); padding:3px 7px; color:var(--botanical-ink); font-size:9px; font-weight:800; }
 
   .pricing-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(16px,1.8vw,26px); margin-top:clamp(28px,3.4vw,42px); align-items:stretch; }
   .pricing-card { position:relative; display:flex; overflow:hidden; flex-direction:column; border:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); border-radius:clamp(24px,2.2vw,32px); background:var(--botanical-paper); box-shadow:0 14px 34px color-mix(in srgb,var(--botanical-ink) 5%,transparent); }
   .pricing-card.is-featured { border-color:color-mix(in srgb,var(--botanical-ink) 46%,transparent); background:color-mix(in srgb,var(--botanical-slate) 9%,var(--botanical-paper)); box-shadow:0 28px 68px color-mix(in srgb,var(--botanical-ink) 16%,transparent); }
-  .pricing-card.is-featured::before,.pricing-card--forest::before { position:absolute; inset:0 0 auto; z-index:6; height:4px; background:var(--botanical-ink); content:""; }
   .pricing-card--forest { border-color:color-mix(in srgb,#9a7a3d 30%,transparent); background:color-mix(in srgb,var(--botanical-paper) 96%,#eadbb7); box-shadow:0 20px 48px color-mix(in srgb,var(--botanical-ink) 8%,transparent); }
-  .pricing-card--forest::before { height:2px; background:color-mix(in srgb,#9a7a3d 72%,var(--botanical-ink)); }
 
-  .pricing-visual-stage { position:relative; isolation:isolate; overflow:hidden; height:clamp(232px,18vw,250px); margin:0 12px; border-radius:clamp(17px,1.8vw,23px); background:color-mix(in srgb,var(--botanical-keylime) 68%,var(--botanical-paper)); }
+  .pricing-card-summary { display:grid; min-height:126px; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:18px; padding:20px 24px 16px; }
+  .pricing-card-summary-copy { min-width:0; }
+  .pricing-card-head { min-height:0; padding:0; }
+  .pricing-card-head h3 { color:var(--botanical-ink); font-family:inherit; font-size:clamp(29px,2.35vw,36px); font-weight:580; letter-spacing:-.05em; line-height:1; }
+  .pricing-card.is-featured .pricing-card-head h3 { font-weight:660; }
+
+  .pricing-visual-stage { position:relative; overflow:hidden; height:clamp(188px,15vw,216px); margin:0 18px; border-radius:18px; background:color-mix(in srgb,var(--botanical-keylime) 66%,var(--botanical-paper)); padding:13px 14px; }
   .pricing-card--water .pricing-visual-stage { background:color-mix(in srgb,var(--botanical-slate) 48%,var(--botanical-paper)); }
   .pricing-card--forest .pricing-visual-stage { background:color-mix(in srgb,var(--botanical-keylime) 48%,#87ba91); }
-  .pricing-visual-slide { position:absolute; inset:0; overflow:hidden; margin:0; padding:clamp(15px,1.5vw,19px) clamp(14px,1.6vw,22px); }
-  .pricing-visual-slide figcaption { position:absolute; top:9px; right:10px; z-index:4; border:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); border-radius:999px; background:rgb(255 255 255 / 84%); padding:5px 8px; color:color-mix(in srgb,var(--botanical-ink) 70%,white); font-size:8px; font-weight:760; letter-spacing:.08em; text-transform:uppercase; backdrop-filter:blur(7px); }
-  .has-slider .pricing-web-demo { animation:pricing-slide-web 12s ease-in-out infinite; }
-  .has-slider .pricing-manager-demo { opacity:0; animation:pricing-slide-manager 12s ease-in-out infinite; }
-  .pricing-slider-dots { position:absolute; left:50%; bottom:8px; z-index:5; display:flex; gap:4px; transform:translateX(-50%); border-radius:999px; background:rgb(255 255 255 / 78%); padding:4px 6px; backdrop-filter:blur(7px); }
-  .pricing-slider-dots i { width:5px; height:5px; border-radius:50%; background:color-mix(in srgb,var(--botanical-ink) 22%,white); }
-  .pricing-slider-dots i:first-child { animation:pricing-dot-web 12s ease-in-out infinite; }
-  .pricing-slider-dots i:last-child { animation:pricing-dot-manager 12s ease-in-out infinite; }
-  @keyframes pricing-slide-web { 0%,42%,100% { opacity:1; transform:scale(1); } 49%,93% { opacity:0; transform:scale(.992); } }
-  @keyframes pricing-slide-manager { 0%,42%,100% { opacity:0; transform:scale(.992); } 49%,93% { opacity:1; transform:scale(1); } }
-  @keyframes pricing-dot-web { 0%,42%,100% { background:var(--botanical-ink); } 49%,93% { background:color-mix(in srgb,var(--botanical-ink) 22%,white); } }
-  @keyframes pricing-dot-manager { 0%,42%,100% { background:color-mix(in srgb,var(--botanical-ink) 22%,white); } 49%,93% { background:var(--botanical-ink); } }
-  .pricing-browser { position:relative; overflow:hidden; height:100%; border-radius:16px; background:rgb(255 255 255 / 94%); box-shadow:0 16px 32px rgb(15 62 23 / 12%); }
-  .pricing-browser-top { display:grid; height:32px; grid-template-columns:auto 1fr auto; align-items:center; gap:9px; padding-inline:12px; }
+  .pricing-browser { position:relative; overflow:hidden; height:100%; border-radius:14px; background:rgb(255 255 255 / 96%); box-shadow:0 14px 28px rgb(15 62 23 / 12%); }
+  .pricing-browser-top { display:grid; height:28px; grid-template-columns:auto 1fr auto; align-items:center; gap:8px; padding-inline:10px; }
   .pricing-browser-top > span { display:flex; gap:4px; }
-  .pricing-browser-top i { width:6px; height:6px; border-radius:50%; background:color-mix(in srgb,var(--botanical-keylime) 72%,var(--botanical-ink)); }
-  .pricing-browser-top b { overflow:hidden; color:color-mix(in srgb,var(--botanical-ink) 68%,white); font-size:8px; font-weight:650; text-overflow:ellipsis; white-space:nowrap; }
-  .pricing-browser-top em { width:46px; height:9px; border-radius:999px; background:var(--botanical-ink); }
-  .pricing-browser-hero { display:grid; height:132px; grid-template-columns:.95fr 1.05fr; margin:0 10px; overflow:hidden; border-radius:12px; background:color-mix(in srgb,var(--botanical-keylime) 72%,var(--botanical-paper)); }
-  .pricing-browser-copy { display:flex; min-width:0; flex-direction:column; justify-content:center; padding:15px; }
-  .pricing-browser-copy small { color:var(--botanical-ink); font-size:7px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-  .pricing-browser-copy strong { margin-top:7px; color:var(--botanical-ink); font-family:var(--botanical-serif); font-size:clamp(18px,1.7vw,25px); font-weight:500; letter-spacing:-.045em; line-height:.95; }
-  .pricing-browser-copy > span { width:82%; height:3px; margin-top:11px; border-radius:999px; background:color-mix(in srgb,var(--botanical-ink) 24%,transparent); }
-  .pricing-browser-copy > span + span { width:58%; margin-top:6px; }
-  .pricing-browser-hero img { width:100%; height:132px; object-fit:cover; filter:saturate(.9) contrast(.96); }
-
-  .pricing-availability { position:relative; z-index:2; display:grid; width:calc(100% - 38px); min-height:50px; grid-template-columns:repeat(3,1fr) 36px; align-items:center; gap:5px; margin:-18px auto 13px; border:1px solid color-mix(in srgb,var(--botanical-ink) 9%,transparent); border-radius:12px; background:white; padding:7px 7px 7px 11px; box-shadow:0 9px 18px rgb(15 62 23 / 9%); }
+  .pricing-browser-top i { width:5px; height:5px; border-radius:50%; background:color-mix(in srgb,var(--botanical-keylime) 72%,var(--botanical-ink)); }
+  .pricing-browser-top b { overflow:hidden; color:color-mix(in srgb,var(--botanical-ink) 68%,white); font-size:7px; font-weight:650; text-overflow:ellipsis; white-space:nowrap; }
+  .pricing-browser-top em { width:42px; height:8px; border-radius:999px; background:var(--botanical-ink); }
+  .pricing-browser-hero { display:grid; height:118px; grid-template-columns:.95fr 1.05fr; margin:0 9px; overflow:hidden; border-radius:11px; background:color-mix(in srgb,var(--botanical-keylime) 72%,var(--botanical-paper)); }
+  .pricing-browser-copy { display:flex; min-width:0; flex-direction:column; justify-content:center; padding:13px; }
+  .pricing-browser-copy small { color:var(--botanical-ink); font-size:6px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .pricing-browser-copy strong { margin-top:6px; color:var(--botanical-ink); font-family:var(--botanical-serif); font-size:clamp(17px,1.55vw,23px); font-weight:500; letter-spacing:-.045em; line-height:.96; }
+  .pricing-browser-copy > span { width:82%; height:3px; margin-top:9px; border-radius:999px; background:color-mix(in srgb,var(--botanical-ink) 24%,transparent); }
+  .pricing-browser-copy > span + span { width:58%; margin-top:5px; }
+  .pricing-browser-hero img { width:100%; height:118px; object-fit:cover; filter:saturate(.9) contrast(.96); }
+  .pricing-availability { position:relative; z-index:2; display:grid; width:calc(100% - 34px); min-height:44px; grid-template-columns:repeat(3,1fr) 32px; align-items:center; gap:4px; margin:-16px auto 0; border:1px solid color-mix(in srgb,var(--botanical-ink) 9%,transparent); border-radius:11px; background:white; padding:6px 6px 6px 9px; box-shadow:0 8px 16px rgb(15 62 23 / 9%); }
   .pricing-availability span { min-width:0; border-right:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); }
   .pricing-availability small,.pricing-availability b { display:block; }
-  .pricing-availability small { color:color-mix(in srgb,var(--botanical-ink) 58%,white); font-size:6px; font-weight:750; letter-spacing:.06em; text-transform:uppercase; }
-  .pricing-availability b { margin-top:4px; color:var(--botanical-ink); font-size:8px; }
-  .pricing-availability > i { display:grid; width:32px; height:32px; place-items:center; border-radius:9px; background:var(--botanical-ink); color:white; font-size:15px; font-style:normal; }
-  .pricing-card-head { display:flex; min-height:70px; align-items:center; justify-content:space-between; gap:14px; padding:15px 25px 12px; }
-  .pricing-card-head h3 { color:var(--botanical-ink); font-family:inherit; font-size:clamp(29px,2.35vw,36px); font-weight:580; letter-spacing:-.05em; line-height:1; }
-  .pricing-card-head strong { flex:none; border-radius:999px; background:var(--botanical-ink); padding:7px 10px; color:var(--botanical-paper); font-size:9px; font-weight:750; letter-spacing:.05em; text-transform:uppercase; }
-  .pricing-card.is-featured .pricing-card-head h3 { font-weight:660; }
-  .pricing-card--forest .pricing-card-head strong { border:1px solid color-mix(in srgb,#9a7a3d 50%,transparent); background:color-mix(in srgb,#eadbb7 40%,white); color:color-mix(in srgb,#775a28 82%,var(--botanical-ink)); }
+  .pricing-availability small { color:color-mix(in srgb,var(--botanical-ink) 58%,white); font-size:5px; font-weight:750; letter-spacing:.05em; text-transform:uppercase; }
+  .pricing-availability b { margin-top:3px; color:var(--botanical-ink); font-size:7px; }
+  .pricing-availability > i { display:grid; width:29px; height:29px; place-items:center; border-radius:8px; background:var(--botanical-ink); color:white; font-size:13px; font-style:normal; }
+  .pricing-manager-peek { position:absolute; right:7px; bottom:7px; z-index:4; width:50%; min-width:164px; height:92px; overflow:hidden; border:4px solid rgb(255 255 255 / 96%); border-radius:14px; background:#f8fbf7; box-shadow:0 15px 30px rgb(8 34 14 / 28%); }
+  .pricing-manager-peek-head { display:grid; height:29px; grid-template-columns:19px minmax(0,1fr) auto; align-items:center; gap:6px; border-bottom:1px solid rgb(15 62 23 / 9%); padding:4px 7px; background:rgb(255 255 255 / 97%); }
+  .pricing-manager-peek-icon { display:grid; width:19px; height:19px; place-items:center; border-radius:6px; background:var(--botanical-ink); color:white; }
+  .pricing-manager-peek-icon svg { width:12px; height:12px; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+  .pricing-manager-peek-head strong { overflow:hidden; color:var(--botanical-ink); font-size:6px; font-weight:800; letter-spacing:.025em; text-overflow:ellipsis; text-transform:uppercase; white-space:nowrap; }
+  .pricing-manager-status { width:6px; height:6px; border-radius:50%; background:#63bc73; box-shadow:0 0 0 3px rgb(99 188 115 / 15%); }
+  .pricing-manager-planning { position:relative; display:grid; height:59px; grid-template-columns:repeat(4,1fr); background:repeating-linear-gradient(to bottom,transparent 0,transparent 19px,rgb(15 62 23 / 7%) 19px,rgb(15 62 23 / 7%) 20px); }
+  .pricing-manager-planning > span { border-right:1px solid rgb(15 62 23 / 7%); }
+  .pricing-manager-planning > i { position:absolute; height:9px; border-radius:3px; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 28%); }
+  .pricing-manager-planning .booking-a { top:8px; left:6%; width:42%; background:#acd9b3; }
+  .pricing-manager-planning .booking-b { top:25px; left:34%; width:54%; background:var(--botanical-slate); }
+  .pricing-manager-planning .booking-c { top:43px; left:13%; width:35%; background:#edc983; }
+  .pricing-manager-peek.is-intelligent { background:color-mix(in srgb,var(--botanical-keylime) 18%,white); }
+  .pricing-manager-peek.is-intelligent .pricing-manager-peek-icon { background:color-mix(in srgb,var(--botanical-ink) 88%,#6f8d74); }
+  .pricing-manager-kpis { display:grid; height:59px; grid-template-columns:repeat(3,1fr); gap:5px; padding:7px; }
+  .pricing-manager-kpis > span { min-width:0; border:1px solid rgb(15 62 23 / 8%); border-radius:7px; background:white; padding:6px; box-shadow:0 3px 8px rgb(15 62 23 / 5%); }
+  .pricing-manager-kpis b { display:block; color:var(--botanical-ink); font-size:10px; }
+  .pricing-manager-kpis i { display:block; height:3px; margin-top:7px; border-radius:999px; background:linear-gradient(90deg,var(--botanical-ink) 74%,rgb(15 62 23 / 10%) 74%); }
+  .pricing-mail-peek { background:#f7f8fa; }
+  .pricing-mail-icon { border:1px solid rgb(32 33 36 / 8%); background:white; }
+  .pricing-mail-icon svg { width:14px; height:11px; stroke:none; }
+  .pricing-mail-peek .pricing-manager-status { background:#4285f4; box-shadow:0 0 0 3px rgb(66 133 244 / 14%); }
+  .pricing-mail-list { display:grid; height:59px; grid-template-rows:repeat(3,1fr); padding:3px 5px; background:#f6f8fc; }
+  .pricing-mail-list > span { position:relative; display:grid; grid-template-columns:12px minmax(0,1fr) 24px; align-items:center; gap:5px; border-bottom:1px solid rgb(60 64 67 / 8%); padding-inline:4px; }
+  .pricing-mail-list > span:last-child { border-bottom:0; }
+  .pricing-mail-list > span.is-unread { border-radius:4px; background:white; box-shadow:0 2px 6px rgb(60 64 67 / 9%); }
+  .pricing-mail-list i { width:8px; height:8px; border-radius:50%; background:#d7dbe1; }
+  .pricing-mail-list .is-unread i { background:#4285f4; }
+  .pricing-mail-list b,.pricing-mail-list em { display:block; height:4px; border-radius:999px; background:#c9ced6; }
+  .pricing-mail-list .is-unread b { background:#5f6368; }
+  .pricing-mail-list em { width:70%; justify-self:end; background:#e2e5e9; }
 
-  .pricing-product { flex:1; border-top:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); padding:clamp(18px,1.65vw,23px); }
-  .pricing-product h4 { min-height:2.16em; color:var(--botanical-ink); font-size:clamp(20px,1.65vw,24px); font-weight:570; letter-spacing:-.035em; line-height:1.08; }
-  .pricing-product > p { min-height:2.84em; margin-top:8px; color:color-mix(in srgb,var(--botanical-charcoal) 68%,white); font-size:13px; line-height:1.42; }
-  .pricing-feature-list { display:grid; gap:6px; margin-top:12px; }
+  .pricing-product { flex:1; padding:20px 24px 24px; }
+  .pricing-product h4 { color:var(--botanical-ink); font-size:clamp(19px,1.5vw,22px); font-weight:610; letter-spacing:-.03em; line-height:1.08; }
+  .pricing-product > p { margin-top:7px; color:color-mix(in srgb,var(--botanical-charcoal) 68%,white); font-size:13px; line-height:1.42; }
+  .pricing-feature-list { display:grid; gap:7px; margin-top:14px; }
   .pricing-feature-list li { display:grid; grid-template-columns:18px 1fr; gap:7px; color:var(--botanical-charcoal); font-size:12px; line-height:1.35; }
   .pricing-feature-list li span { color:var(--botanical-ink); font-weight:800; }
 
-  .pricing-manager-demo { background:color-mix(in srgb,var(--botanical-slate) 32%,var(--botanical-paper)); }
-  .pricing-manager-demo.is-intelligent { background:color-mix(in srgb,var(--botanical-keylime) 42%,#a7c6aa); }
-  .manager-window { height:100%; overflow:hidden; border:1px solid rgb(15 62 23 / 8%); border-radius:12px; background:rgb(255 255 255 / 96%); box-shadow:0 13px 28px rgb(15 62 23 / 10%); }
-  .manager-window-head { display:flex; height:27px; align-items:center; justify-content:space-between; border-bottom:1px solid rgb(15 62 23 / 8%); padding-inline:10px; }
-  .manager-window-head strong { display:flex; align-items:center; gap:5px; color:var(--botanical-ink); font-size:7px; font-weight:800; }
-  .manager-window-head strong i { width:4px; height:10px; border-radius:2px; background:var(--botanical-ink); box-shadow:5px -2px 0 color-mix(in srgb,var(--botanical-keylime) 58%,var(--botanical-ink)); }
-  .manager-window-head > span { display:flex; gap:3px; }
-  .manager-window-head > span i { width:4px; height:4px; border-radius:50%; background:rgb(15 62 23 / 22%); }
-  .manager-window-body { display:grid; height:calc(100% - 27px); grid-template-columns:36px 1fr; }
-  .manager-sidebar { display:flex; flex-direction:column; align-items:center; gap:9px; border-right:1px solid rgb(15 62 23 / 7%); padding-top:11px; background:color-mix(in srgb,var(--botanical-paper) 78%,white); }
-  .manager-sidebar b,.manager-sidebar i { display:block; width:13px; height:4px; border-radius:999px; background:rgb(15 62 23 / 18%); }
-  .manager-sidebar b { width:18px; height:18px; border-radius:6px; background:var(--botanical-ink); }
-  .manager-planning,.manager-intelligence { position:relative; min-width:0; padding:10px 10px 9px; }
-  .manager-planning > header,.manager-intelligence > header { display:flex; align-items:center; justify-content:space-between; }
-  .manager-planning > header span,.manager-intelligence > header span { width:54px; height:6px; border-radius:999px; background:var(--botanical-ink); }
-  .manager-planning > header b,.manager-intelligence > header b { width:44px; height:14px; border:1px solid rgb(15 62 23 / 10%); border-radius:999px; background:white; }
-  .manager-days { display:grid; grid-template-columns:repeat(5,1fr); margin:9px 0 0 14px; }
-  .manager-days span { color:rgb(15 62 23 / 47%); font-size:5px; font-weight:700; text-align:center; }
-  .manager-calendar { position:relative; height:88px; margin-top:4px; border:1px solid rgb(15 62 23 / 8%); border-radius:8px; background:repeating-linear-gradient(to right,transparent 0,transparent calc(20% - 1px),rgb(15 62 23 / 7%) calc(20% - 1px),rgb(15 62 23 / 7%) 20%),repeating-linear-gradient(to bottom,transparent 0,transparent calc(25% - 1px),rgb(15 62 23 / 6%) calc(25% - 1px),rgb(15 62 23 / 6%) 25%); }
-  .booking { position:absolute; height:12px; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 35%); }
-  .booking-a { top:12px; left:4%; width:39%; background:#b4deb9; }
-  .booking-b { top:33px; left:29%; width:48%; background:var(--botanical-slate); }
-  .booking-c { top:54px; left:9%; width:27%; background:#f0cd8d; }
-  .booking-d { top:70px; left:56%; width:36%; background:color-mix(in srgb,var(--botanical-ink) 74%,white); }
-  .manager-occupancy { position:absolute; right:17px; bottom:17px; display:grid; width:65px; height:38px; grid-template-columns:25px 1fr; align-items:center; gap:6px; border:1px solid rgb(15 62 23 / 9%); border-radius:9px; background:white; padding:6px; box-shadow:0 7px 15px rgb(15 62 23 / 12%); }
-  .manager-occupancy b { color:var(--botanical-ink); font-size:10px; }
-  .manager-occupancy i { height:5px; border-radius:999px; background:linear-gradient(90deg,var(--botanical-ink) 78%,rgb(15 62 23 / 10%) 78%); }
-  .manager-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:10px; }
-  .manager-kpis > span { min-width:0; border:1px solid rgb(15 62 23 / 7%); border-radius:8px; background:white; padding:7px; }
-  .manager-kpis small { display:block; color:var(--botanical-ink); font-size:10px; font-weight:800; }
-  .manager-kpis i { display:block; width:70%; height:3px; margin-top:5px; border-radius:999px; background:rgb(15 62 23 / 16%); }
-  .manager-insight-row { display:grid; grid-template-columns:1.12fr .88fr; gap:6px; margin-top:6px; }
-  .manager-bars,.manager-recommendation { height:75px; border:1px solid rgb(15 62 23 / 7%); border-radius:8px; background:white; }
-  .manager-bars { display:flex; align-items:flex-end; justify-content:center; gap:5px; padding:10px 8px; }
-  .manager-bars i { width:9px; border-radius:3px 3px 1px 1px; background:color-mix(in srgb,var(--botanical-slate) 70%,var(--botanical-ink)); }
-  .manager-bars i:nth-child(1) { height:28%; }.manager-bars i:nth-child(2) { height:58%; }.manager-bars i:nth-child(3) { height:42%; }.manager-bars i:nth-child(4) { height:78%; }.manager-bars i:nth-child(5) { height:64%; }.manager-bars i:nth-child(6) { height:88%; background:var(--botanical-ink); }
-  .manager-recommendation { display:grid; grid-template-columns:20px 1fr; grid-template-rows:repeat(3,1fr); align-items:center; gap:2px 6px; padding:10px; }
-  .manager-recommendation span { display:grid; grid-row:1/-1; width:20px; height:20px; place-items:center; border-radius:50%; background:var(--botanical-keylime); color:var(--botanical-ink); font-size:9px; font-weight:800; }
-  .manager-recommendation i { width:100%; height:4px; border-radius:999px; background:rgb(15 62 23 / 15%); }
-  .manager-recommendation i:nth-of-type(2) { width:78%; }.manager-recommendation i:nth-of-type(3) { width:55%; }
   .pricing-demo-actions { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:12px; }
   .pricing-cta { display:inline-flex; min-height:28px; align-items:center; gap:9px; padding:0; color:var(--botanical-ink); font-size:12px; font-weight:720; transition:opacity 160ms ease; }
   .pricing-cta span { display:grid; width:27px; height:27px; place-items:center; border-radius:50%; background:color-mix(in srgb,var(--botanical-keylime) 64%,white); color:var(--botanical-ink); font-size:12px; transition:transform 160ms ease,background-color 160ms ease; }
   .pricing-cta:hover { opacity:.74; }
   .pricing-cta:hover span { transform:translate(2px,-2px); background:var(--botanical-keylime); }
-  .pricing-card-price { min-height:80px; margin:5px 22px 13px; border-top:1px solid color-mix(in srgb,var(--botanical-ink) 13%,transparent); padding:14px 1px 0; }
-  .pricing-card-price-row { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .pricing-card-price { margin-top:16px; }
   .pricing-card-price-value { display:flex; min-width:0; flex-wrap:wrap; align-items:baseline; gap:5px 7px; }
   .pricing-card-price-value.is-stacked { flex-direction:column; align-items:flex-start; gap:4px; }
   .pricing-card-price strong { color:var(--botanical-ink); font-size:clamp(27px,2.35vw,34px); font-weight:590; letter-spacing:-.045em; line-height:1; }
@@ -395,19 +373,18 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
   .pricing-card-price small { display:block; margin-top:7px; color:color-mix(in srgb,var(--botanical-charcoal) 62%,white); font-size:10px; font-weight:600; line-height:1.3; }
   .pricing-annual-original { color:color-mix(in srgb,var(--botanical-charcoal) 42%,white); font-size:11px; font-weight:600; text-decoration-color:color-mix(in srgb,var(--botanical-charcoal) 58%,white); text-decoration-thickness:1px; }
   .pricing-annual-original[hidden] { display:none; }
-  .pricing-request { display:inline-flex; min-height:50px; flex:none; align-items:center; justify-content:center; border:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); border-radius:999px; background:color-mix(in srgb,var(--botanical-keylime) 72%,#dfff3f); padding:12px 24px; color:var(--botanical-ink); font-size:16px; font-weight:790; letter-spacing:-.015em; box-shadow:0 8px 18px color-mix(in srgb,var(--botanical-ink) 11%,transparent); transition:opacity 160ms ease,transform 160ms ease,box-shadow 160ms ease; }
+  .pricing-request { display:inline-flex; min-height:44px; flex:none; align-items:center; justify-content:center; gap:9px; border:1px solid color-mix(in srgb,var(--botanical-ink) 28%,transparent); border-radius:999px; background:rgb(255 255 255 / 44%); padding:10px 17px 10px 19px; color:var(--botanical-ink); font-size:14px; font-weight:760; letter-spacing:-.015em; box-shadow:none; transition:background-color 160ms ease,transform 160ms ease,box-shadow 160ms ease; }
+  .pricing-request-icon { color:currentColor; font-size:16px; font-weight:520; line-height:1; transition:transform 160ms ease; }
+  .pricing-request.is-primary { border-color:color-mix(in srgb,var(--botanical-ink) 88%,black); background:var(--botanical-ink); color:white; box-shadow:0 8px 18px color-mix(in srgb,var(--botanical-ink) 16%,transparent); }
   .pricing-request:hover { transform:translateY(-2px); opacity:.9; box-shadow:0 12px 22px color-mix(in srgb,var(--botanical-ink) 18%,transparent); }
-  .pricing-card.is-featured .pricing-request { min-height:52px; background:color-mix(in srgb,var(--botanical-keylime) 62%,#d8ff27); padding-inline:26px; box-shadow:0 10px 24px color-mix(in srgb,var(--botanical-ink) 16%,transparent); }
-  .pricing-card--forest .pricing-request { background:color-mix(in srgb,var(--botanical-keylime) 68%,#e4ff43); box-shadow:0 8px 18px color-mix(in srgb,var(--botanical-ink) 12%,transparent); }
-  .pricing-assist { display:flex; max-width:980px; align-items:center; justify-content:space-between; gap:30px; margin:clamp(38px,4.5vw,60px) auto 0; border:0; background:transparent; padding:0; box-shadow:none; }
-  .pricing-assist p { max-width:650px; color:var(--botanical-ink); font-size:clamp(17px,1.55vw,21px); font-weight:540; letter-spacing:-.02em; line-height:1.3; }
-  .pricing-assist a { display:flex; min-height:58px; flex:none; align-items:center; gap:16px; border-radius:999px; background:#121411; padding:14px 23px 14px 27px; color:white; font-size:15px; font-weight:740; box-shadow:0 12px 28px rgb(18 20 17 / 18%); }
-  .pricing-assist a svg { width:21px; height:21px; flex:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-  @media (prefers-reduced-motion:reduce) {
-    .has-slider .pricing-web-demo,.pricing-slider-dots i { animation:none; }
-    .has-slider .pricing-manager-demo { display:none; animation:none; }
-  }
-
+  .pricing-request:not(.is-primary):hover { background:white; box-shadow:0 9px 18px color-mix(in srgb,var(--botanical-ink) 9%,transparent); }
+  .pricing-request:hover .pricing-request-icon { transform:translate(2px,-2px); }
+  .pricing-assist { display:flex; max-width:980px; flex-direction:column; align-items:center; gap:13px; margin:clamp(38px,4.5vw,60px) auto 0; border:0; background:transparent; padding:0; text-align:center; }
+  .pricing-assist p { max-width:650px; margin-inline:auto; color:var(--botanical-ink); font-size:14px; font-weight:570; letter-spacing:-.01em; line-height:1.4; text-align:center; }
+  .pricing-assist a { display:inline-flex; min-height:28px; align-items:center; gap:8px; border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 34%,transparent); border-radius:0; background:transparent; padding:0 0 3px; color:var(--botanical-ink); font-size:14px; font-weight:740; box-shadow:none; transition:border-color 160ms ease,opacity 160ms ease; }
+  .pricing-assist a span { font-size:15px; transition:transform 160ms ease; }
+  .pricing-assist a:hover { border-color:var(--botanical-ink); opacity:.72; }
+  .pricing-assist a:hover span { transform:translate(2px,-2px); }
   @media (max-width:1120px) {
     .pricing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .pricing-card:last-child { grid-column:1/-1; max-width:calc(50% - 10px); justify-self:center; }
@@ -418,11 +395,9 @@ const managerBase = import.meta.env.DEV ? 'http://localhost:5173/admin' : '/admi
     .pricing-grid { grid-template-columns:1fr; margin-top:38px; }
     .pricing-card.is-featured { transform:none; }
     .pricing-card:last-child { grid-column:auto; width:100%; max-width:none; }
-    .pricing-visual-stage { height:260px; }
-    .pricing-card-head { min-height:72px; }
+    .pricing-card-summary { min-height:0; padding:20px 20px 16px; }
+    .pricing-visual-stage { height:210px; margin-inline:14px; }
     .pricing-product h4 { min-height:0; }
-    .pricing-card-price-row { align-items:flex-end; }
-    .pricing-assist { min-height:0; flex-direction:column; align-items:center; padding:0; text-align:center; }
-    .pricing-assist a { justify-content:center; }
+    .pricing-assist { min-height:0; padding:0; }
   }
 </style>

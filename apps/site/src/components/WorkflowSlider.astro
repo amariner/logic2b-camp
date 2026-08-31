@@ -77,19 +77,14 @@ const iconPaths: Record<string, string[]> = {
   <div class="workflow-viewport" tabindex="0" role="region" aria-label={aria} data-workflow-viewport>
     <ol class="workflow-track">
       {
-        items.map((item, index) => (
+        items.map((item) => (
           <li class="workflow-card">
-            <div class="workflow-card-topline">
-              <span class="workflow-step">{String(index + 1).padStart(2, '0')}</span>
-              <span class="workflow-connector" aria-hidden="true"></span>
-            </div>
             <span class="workflow-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 {(iconPaths[item.icono] ?? iconPaths.web!).map((path) => <path d={path} />)}
               </svg>
             </span>
             <h3>{item.titulo}</h3>
-            <p class="workflow-summary">{item.resumen}</p>
             <p class="workflow-detail">{item.detalle}</p>
           </li>
         ))
@@ -121,6 +116,38 @@ const iconPaths: Record<string, string[]> = {
     previous.addEventListener('click', () => move(-1));
     next.addEventListener('click', () => move(1));
     viewport.addEventListener('scroll', update, { passive: true });
+
+    let activePointer: number | null = null;
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+
+    const finishDrag = () => {
+      if (activePointer === null) return;
+      if (viewport.hasPointerCapture(activePointer)) viewport.releasePointerCapture(activePointer);
+      activePointer = null;
+      delete viewport.dataset.dragging;
+    };
+
+    viewport.addEventListener('pointerdown', (event) => {
+      if (!window.matchMedia('(min-width: 768px) and (pointer: fine)').matches) return;
+      if (event.button !== 0) return;
+      activePointer = event.pointerId;
+      dragStartX = event.clientX;
+      dragStartScroll = viewport.scrollLeft;
+      viewport.setPointerCapture(event.pointerId);
+      viewport.dataset.dragging = 'true';
+    });
+
+    viewport.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== activePointer) return;
+      viewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
+      event.preventDefault();
+    });
+
+    viewport.addEventListener('pointerup', finishDrag);
+    viewport.addEventListener('pointercancel', finishDrag);
+    viewport.addEventListener('lostpointercapture', finishDrag);
+    viewport.addEventListener('dragstart', (event) => event.preventDefault());
     new ResizeObserver(update).observe(viewport);
     update();
   });
@@ -130,7 +157,7 @@ const iconPaths: Record<string, string[]> = {
   .workflow-section {
     overflow: hidden;
     background: var(--botanical-paper);
-    padding-block: clamp(64px, 6vw, 88px) clamp(78px, 9vw, 128px);
+    padding-block: clamp(50px, 5vw, 70px) clamp(60px, 7vw, 88px);
     scroll-margin-top: 112px;
   }
 
@@ -150,7 +177,7 @@ const iconPaths: Record<string, string[]> = {
 
   .workflow-heading h2 {
     max-width: 1040px;
-    margin-top: 18px;
+    margin-top: 14px;
     font-size: clamp(48px, 5vw, 78px);
     letter-spacing: -.05em;
     line-height: .98;
@@ -159,7 +186,7 @@ const iconPaths: Record<string, string[]> = {
 
   .workflow-heading > p:last-child {
     max-width: 720px;
-    margin-top: 18px;
+    margin-top: 14px;
     color: color-mix(in srgb, var(--botanical-ink) 68%, white);
     font-size: clamp(16px, 1.4vw, 20px);
     line-height: 1.55;
@@ -169,7 +196,7 @@ const iconPaths: Record<string, string[]> = {
   .workflow-controls {
     display: flex;
     gap: 12px;
-    padding-top: 58px;
+    padding-top: 46px;
   }
 
   .workflow-controls button {
@@ -204,7 +231,7 @@ const iconPaths: Record<string, string[]> = {
 
   .workflow-viewport {
     overflow-x: auto;
-    margin-top: clamp(46px, 5vw, 68px);
+    margin-top: clamp(30px, 3.5vw, 44px);
     outline: none;
     scroll-behavior: smooth;
     scroll-padding-inline: max(clamp(16px, 2.5vw, 36px), calc((100vw - 1600px) / 2));
@@ -220,12 +247,25 @@ const iconPaths: Record<string, string[]> = {
     box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--botanical-sage) 70%, transparent);
   }
 
+  @media (min-width: 768px) and (pointer: fine) {
+    .workflow-viewport {
+      cursor: grab;
+    }
+
+    .workflow-viewport[data-dragging='true'] {
+      cursor: grabbing;
+      scroll-behavior: auto;
+      scroll-snap-type: none;
+      user-select: none;
+    }
+  }
+
   .workflow-track {
     display: grid;
     width: max-content;
-    grid-auto-columns: clamp(300px, 27vw, 410px);
+    grid-auto-columns: clamp(270px, 24vw, 360px);
     grid-auto-flow: column;
-    column-gap: clamp(28px, 4vw, 68px);
+    column-gap: clamp(24px, 3vw, 48px);
     margin: 0;
     padding: 0 max(clamp(16px, 2.5vw, 36px), calc((100vw - 1600px) / 2));
     list-style: none;
@@ -236,39 +276,19 @@ const iconPaths: Record<string, string[]> = {
     scroll-snap-align: start;
   }
 
-  .workflow-card-topline {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 24px;
-  }
-
-  .workflow-step {
-    color: var(--botanical-ink);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .12em;
-  }
-
-  .workflow-connector {
-    width: 72px;
-    height: 1px;
-    background: color-mix(in srgb, var(--botanical-ink) 22%, transparent);
-  }
-
   .workflow-icon {
     display: inline-grid;
-    width: 92px;
-    height: 92px;
+    width: 72px;
+    height: 72px;
     place-items: center;
-    border-radius: 26px;
+    border-radius: 21px;
     background: color-mix(in srgb, var(--botanical-keylime) 72%, var(--botanical-paper));
     color: var(--botanical-ink);
   }
 
   .workflow-icon svg {
-    width: 58px;
-    height: 58px;
+    width: 44px;
+    height: 44px;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.35;
@@ -277,7 +297,7 @@ const iconPaths: Record<string, string[]> = {
   }
 
   .workflow-card h3 {
-    margin-top: 30px;
+    margin-top: 18px;
     font-family: inherit;
     font-size: clamp(26px, 2.2vw, 34px);
     font-weight: 600;
@@ -285,30 +305,22 @@ const iconPaths: Record<string, string[]> = {
     line-height: 1.05;
   }
 
-  .workflow-summary {
-    margin-top: 14px;
-    color: var(--botanical-charcoal);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.45;
-  }
-
   .workflow-detail {
-    margin-top: 14px;
+    margin-top: 10px;
     color: color-mix(in srgb, var(--botanical-charcoal) 58%, white);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.5;
   }
 
   @media (max-width: 767px) {
     .workflow-section {
-      padding-block: 68px 78px;
+      padding-block: 52px 60px;
       scroll-margin-top: 92px;
     }
 
     .workflow-header {
       grid-template-columns: 1fr;
-      gap: 26px;
+      gap: 20px;
     }
 
     .workflow-heading h2 {
@@ -325,28 +337,28 @@ const iconPaths: Record<string, string[]> = {
     }
 
     .workflow-controls button {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
     }
 
     .workflow-viewport {
-      margin-top: 46px;
+      margin-top: 30px;
     }
 
     .workflow-track {
-      grid-auto-columns: min(82vw, 330px);
-      column-gap: 24px;
+      grid-auto-columns: min(78vw, 300px);
+      column-gap: 18px;
     }
 
     .workflow-icon {
-      width: 82px;
-      height: 82px;
-      border-radius: 23px;
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
     }
 
     .workflow-icon svg {
-      width: 50px;
-      height: 50px;
+      width: 42px;
+      height: 42px;
     }
   }
 

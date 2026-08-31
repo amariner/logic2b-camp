@@ -1,7 +1,5 @@
 ---
-import intelligentImage from '../../../../tenants/mardefondo/content/media/capturas/inteligente-1366.webp?url';
-import planningImage from '../../../../tenants/mardefondo/content/media/capturas/planning-1366.webp?url';
-import bookingImage from '../../../../tenants/mardefondo/content/media/capturas/portada-reserva-1366.webp?url';
+import PlatformVisual from './PlatformVisual.astro';
 
 interface PlatformItem {
   icono: string;
@@ -10,27 +8,18 @@ interface PlatformItem {
   resumen: string;
   puntos: string[];
   detalle: string;
-  imagen: string;
   capturaAlt: string;
 }
 
 interface Props {
+  locale: string;
   kicker: string;
   titulo: string;
   aria: string;
-  capturaLabel: string;
   items: PlatformItem[];
 }
 
-const { kicker, titulo, aria, capturaLabel, items } = Astro.props;
-
-const images: Record<string, string> = {
-  web: '/captura-web.webp',
-  reservas: bookingImage,
-  planning: planningImage,
-  plano: '/captura-plano.webp',
-  operativa: intelligentImage,
-};
+const { locale, kicker, titulo, aria, items } = Astro.props;
 
 const iconPaths: Record<string, string[]> = {
   web: ['M3.5 5.5h17v13h-17zM3.5 9h17', 'M7 7.25h.01M10 7.25h.01', 'M8 14h8'],
@@ -79,6 +68,7 @@ const iconPaths: Record<string, string[]> = {
             aria-labelledby={`platform-tab-${index}`}
             hidden={index !== 0}
             data-platform-panel={index}
+            data-platform-kind={item.icono}
           >
             <div class="platform-copy">
               <span class="platform-index">{String(index + 1).padStart(2, '0')}</span>
@@ -92,8 +82,7 @@ const iconPaths: Record<string, string[]> = {
 
             <figure class="platform-visual">
               <div class="platform-stage">
-                <span class="platform-stage-label">{capturaLabel} · {item.etiqueta}</span>
-                <img src={images[item.imagen] ?? images.web} alt={item.capturaAlt} loading="lazy" decoding="async" />
+                <PlatformVisual kind={item.icono} label={item.etiqueta} alt={item.capturaAlt} locale={locale} />
               </div>
             </figure>
           </article>
@@ -107,6 +96,7 @@ const iconPaths: Record<string, string[]> = {
   document.querySelectorAll<HTMLElement>('[data-platform-showcase]').forEach((root) => {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-platform-tab]')];
     const panels = [...root.querySelectorAll<HTMLElement>('[data-platform-panel]')];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const select = (index: number, focus = false) => {
       tabs.forEach((tab, tabIndex) => {
@@ -118,6 +108,13 @@ const iconPaths: Record<string, string[]> = {
       panels.forEach((panel, panelIndex) => {
         panel.hidden = panelIndex !== index;
       });
+      if (focus || root.getBoundingClientRect().width <= 767) {
+        tabs[index]?.scrollIntoView({
+          behavior: reducedMotion ? 'auto' : 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }
     };
 
     tabs.forEach((tab, index) => {
@@ -204,7 +201,8 @@ const iconPaths: Record<string, string[]> = {
   }
 
   .platform-tabs button:focus-visible {
-    outline: 0;
+    outline: 2px solid var(--botanical-ink);
+    outline-offset: 2px;
     background: color-mix(in srgb, var(--botanical-keylime) 62%, var(--botanical-paper));
   }
 
@@ -234,6 +232,7 @@ const iconPaths: Record<string, string[]> = {
     grid-template-columns: minmax(260px, .34fr) minmax(0, .66fr);
     gap: clamp(40px, 7vw, 110px);
     align-items: center;
+    animation: platform-panel-in 420ms cubic-bezier(.22, .8, .24, 1) both;
   }
 
   .platform-panel[hidden] {
@@ -309,41 +308,19 @@ const iconPaths: Record<string, string[]> = {
   }
 
   .platform-stage {
-    position: relative;
-    overflow: hidden;
     min-height: clamp(480px, 49vw, 660px);
+    border: 1px solid rgb(255 255 255 / 54%);
     border-radius: clamp(22px, 2.4vw, 34px);
+    padding: clamp(12px, 1.5vw, 20px);
     background:
-      repeating-linear-gradient(90deg, transparent 0 74px, rgb(255 255 255 / 13%) 74px 112px),
-      color-mix(in srgb, var(--botanical-ink) 86%, black);
-    padding: clamp(58px, 7vw, 94px) 0 0 clamp(46px, 6vw, 86px);
-    box-shadow: 0 22px 46px color-mix(in srgb, var(--botanical-ink) 13%, transparent);
+      radial-gradient(circle at 10% 5%, rgb(255 255 255 / 88%), transparent 34%),
+      rgb(255 255 255 / 26%);
+    box-shadow: inset 0 1px rgb(255 255 255 / 78%);
   }
 
-  .platform-stage-label {
-    position: absolute;
-    top: 18px;
-    left: 20px;
-    z-index: 1;
-    border-radius: 999px;
-    background: var(--botanical-paper);
-    padding: 9px 13px;
-    color: var(--botanical-ink);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-  }
-
-  .platform-stage img {
-    display: block;
-    width: 118%;
-    max-width: none;
-    height: auto;
-    border: 1px solid color-mix(in srgb, var(--botanical-ink) 12%, transparent);
-    border-radius: 15px 0 0 0;
-    background: white;
-    box-shadow: 0 18px 46px rgb(0 0 0 / 22%);
+  @keyframes platform-panel-in {
+    from { opacity: .2; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @media (max-width: 1023px) {
@@ -376,12 +353,15 @@ const iconPaths: Record<string, string[]> = {
       justify-content: flex-start;
       margin-top: 38px;
       border-radius: 17px;
+      scroll-padding-inline: 8px;
+      scroll-snap-type: x proximity;
     }
 
     .platform-tabs button {
       min-height: 48px;
       padding-inline: 15px;
       font-size: 13px;
+      scroll-snap-align: center;
     }
 
     .platform-panels {
@@ -399,11 +379,11 @@ const iconPaths: Record<string, string[]> = {
     .platform-stage {
       min-height: 300px;
       border-radius: 22px;
-      padding: 54px 0 0 24px;
+      padding: 8px;
     }
+  }
 
-    .platform-stage img {
-      width: 150%;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .platform-panel { animation: none; }
   }
 </style>

@@ -4,6 +4,7 @@ import HeaderIcon from '../components/HeaderIcon.astro';
 import ProjectRequestDialog from '../components/ProjectRequestDialog.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Logic2BContact from '../components/Logic2BContact.astro';
+import HomeClosing from '../components/HomeClosing.astro';
 import { logic2bContact } from '@logic-camp/config/contact';
 import { siWhatsapp } from 'simple-icons';
 import { commercialSite } from '../config';
@@ -360,7 +361,7 @@ const acciones = [
       <slot />
     </main>
 
-    <footer class="border-t border-border bg-muted/40">
+    {isHomeMini ? <HomeClosing locale={locale} content={c} /> : <footer class="border-t border-border bg-muted/40">
       {/* Mismos raíles que el header: el wordmark de arriba y el de abajo alinean. */}
       <div class="mx-auto max-w-[1440px] px-[clamp(24px,4vw,32px)] py-12">
         <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
@@ -406,7 +407,7 @@ const acciones = [
           © 2026 · {c.footer.powered}
         </p>
       </div>
-    </footer>
+    </footer>}
 
     <ProjectRequestDialog contacto={c.contacto} locale={locale} />
     <CookieBanner copy={c.cookieBanner} policyHref={localePath(locale, 'cookies/')} />
