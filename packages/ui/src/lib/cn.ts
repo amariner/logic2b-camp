@@ -15,4 +15,4 @@ export function cn(...inputs: ClassValue[]): string {
  * copiaban las clases a mano — que es exactamente lo que convertía un botón en
  * "crudo". Copiado a mano se desincroniza; importado, no.
  */
-export const focusRing = 'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50';
+export const focusRing = 'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/60';

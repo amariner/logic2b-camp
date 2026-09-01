@@ -159,14 +159,15 @@ un recorrido, un contrato o una condición de entrega.
 
 ### Logic2B UI y dirección visual
 
-- Gestor y controles: DS neutro de Logic2B UI, Inter/Space Grotesk, tokens oklch,
-  radio base de 10 px, componentes compartidos y modo oscuro real.
-- Landing, precios y documentación comercial: dirección botánica de la home de
-  venta —papel, verde tinta, serif editorial, tarjetas grandes, radio de 14 px y
-  CTAs de al menos 48 px— sin duplicar componentes.
+- Gestor y controles: base estructural de Logic2B UI con `.theme-logic2b`,
+  Inter/Space Grotesk, papel/verde compartidos, radio base de 10 px, componentes
+  compartidos y modo oscuro real.
+- Landing, precios y documentación comercial: la misma `.theme-logic2b` más la
+  voz botánica editorial —serif, tarjetas grandes, radio de 14 px y CTAs de al
+  menos 48 px— sin duplicar tokens ni componentes.
 - Web pública: identidad del camping; estructura común y crédito Logic2B discreto.
-- Se reutiliza la gramática de interacción, no se aplica la misma piel a todas
-  las superficies.
+- Producto y comercial comparten piel semántica; cada superficie conserva la
+  densidad y la voz tipográfica que corresponde a su tarea.
 - Foco visible, contraste AA, movimiento reducido y uso real a 1366/375.
 
 ### Definition of Done de cualquier objetivo

@@ -363,7 +363,9 @@ describe('Switch y Checkbox', () => {
   it('el switch conmuta', async () => {
     const onCheckedChange = vi.fn();
     render(<Switch aria-label="Avisos por email" onCheckedChange={onCheckedChange} />);
-    await userEvent.click(screen.getByRole('switch'));
+    const control = screen.getByRole('switch');
+    expect(control).toHaveClass('data-[state=unchecked]:bg-input', 'focus-visible:ring-ring/60');
+    await userEvent.click(control);
     expect(onCheckedChange).toHaveBeenCalledWith(true);
   });
 

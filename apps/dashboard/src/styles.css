@@ -112,8 +112,8 @@ html {
   color: var(--background);
 }
 .lc-chip.st-inactive {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
+  background: var(--lc-status-inactive);
+  color: var(--lc-status-inactive-fg);
   text-decoration: line-through;
 }
 

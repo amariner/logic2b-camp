@@ -143,6 +143,13 @@ es un gate de producción, no un pendiente local de implementación.
 - ~~[10] `ui.logic2b.com` / Storybook propio~~ → **descartado 2026-08-10
   (R1)**: `ui.logic2b.com` ya es la referencia externa y `packages/ui` cubre el
   consumo local. Reabrir solo con un consumidor demostrado.
+- ~~[B-v] Unificar la identidad visual del gestor y la superficie comercial sin
+  duplicar el kit~~ → **hecho 2026-09-01 (sesión 152, ADR 0050)**:
+  `ui.logic2b.com` permanece como base estructural auditable en `packages/ui` y
+  `.theme-logic2b` aporta la paleta comercial común en claro/oscuro. El gestor
+  conserva densidad, tipografía y estados operativos; el sitio conserva su voz
+  editorial. Contratos de tokens, contraste y QA real a 1366/375 px cierran la
+  convergencia.
 - ~~[10] Reset nocturno v2: el ancla móvil~~ → **hecho 2026-07-27 (sesión 57, ADR 0030)**: `generateSeed` recibe una FECHA (`YYYY-MM-DD`) en vez de un año, y esa fecha es **hoy** — la lee el llamante (`reset.ts`/`write-seed.ts`/`data.ts`), no el generador, que sigue puro. El PRNG se sigue sembrando con el **año**, a propósito: el camping es el mismo los 365 días y lo único que se mueve es la línea de HOY (si colgara del día, la demo se reorganizaría entera cada madrugada y el `CS-2026-0412` de ayer sería hoy otra cosa). La ventana de siembra pasa de `abr-15 → oct-15` a **`${Y-1}-11-15 → ${Y+1}-02-15`** (el desborde es lo que evita que el 1 de enero no haya pasado y el 28 de diciembre no haya futuro), la apertura declarada pasa al **año natural** (`1 ene – 31 dic`, que es lo que la tabla de tarifas de la web sabe leer) y la curva de ocupación gana los meses de invierno con estancias largas de invernante. La línea temporal alrededor del ancla se resuelve en **una función con cinco casos** —pasada, sale hoy, en casa, llega hoy, futura— y las dos que faltaban son justo las del defecto. Además, **la banda del día se planta**: seis reservas alrededor del ancla garantizan los dos gestos incluso un 15 de enero al 18 % de ocupación, donde el sorteo dejaba una sola salida y encima ya cerrada. **Coste**: el seed pasa de 2 032 a 3 491 reservas y el SQL de 1,95 a 3,4 MB (53 → 84 sentencias) — verificado contra D1 real en workerd. Texto original abajo — 2026-07-19, cerrado 2026-07-27
 - ~~[seed] **`/clientes` enseña once "Aalto" seguidos**~~ → **hecho 2026-08-03 (sesión 68)**: el seed sustituye la biyección uniforme por plazas de apellido con cola larga (1–40 apariciones), manteniendo cada pareja nombre+apellido y correo única. En las 23 anclas, la primera página contiene ≥7 apellidos y ninguno ocupa más de cuatro filas.
 - ~~[seed] **`created_at` de las 3 500 reservas es el ancla**~~ → **hecho

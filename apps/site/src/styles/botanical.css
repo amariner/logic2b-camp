@@ -4,43 +4,19 @@
  * .theme-botanical en todas las páginas (home, temas, precios y guías). Las
  * propuestas privadas (/propuestas/…) y la demo de tenant no pasan por aquí. */
 .theme-botanical {
-  --botanical-ink: #0f3e17;
-  --botanical-shadow: #0c2f10;
-  --botanical-sage: #b1dbb8;
-  --botanical-keylime: #e1f4df;
-  --botanical-mint: #cfe7d3;
-  --botanical-slate: #b6ced5;
-  --botanical-paper: #fffefc;
-  --botanical-charcoal: #222222;
-  --botanical-border: #e8e9e4;
-  --botanical-serif: 'Iowan Old Style', 'Baskerville', 'Times New Roman', serif;
-
-  /* Los tokens del DS (packages/ui/theme.css) se remapean a la paleta botánica:
-   * así las utilidades token-based que ya usan las páginas y el chasis
-   * (text-muted-foreground, border-border, bg-primary, focus ring…) pintan
-   * botánico sin reescribir cada clase. El lockup de marca queda FUERA a
-   * propósito: --font-wordmark (Poppins) y --logo-2b no se tocan, el logo
-   * Logic2B es idéntico en todas partes (docs/BRAND.md §2). El 72% de tinta
-   * de --muted-foreground no es capricho: es el mismo mix del nav y aguanta
-   * AA sobre papel a 14px. */
-  --background: var(--botanical-paper);
-  --foreground: var(--botanical-charcoal);
-  --card: var(--botanical-paper);
-  --card-foreground: var(--botanical-charcoal);
-  --popover: var(--botanical-paper);
-  --popover-foreground: var(--botanical-charcoal);
-  --primary: var(--botanical-ink);
-  --primary-foreground: var(--botanical-paper);
-  --secondary: var(--botanical-keylime);
-  --secondary-foreground: var(--botanical-ink);
-  --muted: var(--botanical-keylime);
-  --muted-foreground: color-mix(in srgb, var(--botanical-ink) 72%, white);
-  --accent: var(--botanical-mint);
-  --accent-foreground: var(--botanical-ink);
-  --border: var(--botanical-border);
-  --input: var(--botanical-border);
-  --ring: var(--botanical-ink);
-  --link: var(--botanical-ink);
+  /* Compatibilidad de nombres para las reglas editoriales de este fichero.
+   * La paleta y el remapeo semántico ya viven en la variante compartida
+   * `.theme-logic2b` de packages/ui/theme.css (ADR 0050). */
+  --botanical-ink: var(--logic2b-ink);
+  --botanical-shadow: var(--logic2b-shadow);
+  --botanical-sage: var(--logic2b-sage);
+  --botanical-keylime: var(--logic2b-keylime);
+  --botanical-mint: var(--logic2b-mint);
+  --botanical-slate: var(--logic2b-slate);
+  --botanical-paper: var(--logic2b-paper);
+  --botanical-charcoal: var(--logic2b-charcoal);
+  --botanical-border: var(--logic2b-border);
+  --botanical-serif: var(--logic2b-serif);
 
   background: var(--botanical-paper);
   color: var(--botanical-charcoal);

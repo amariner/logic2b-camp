@@ -118,14 +118,14 @@ Ver `docs/DOMAIN.md` — es la ventaja competitiva. Claves: se reserva un **tipo
 
 ## Dirección visual
 
-- **Tres superficies, dos marcas, no confundirlas** (ver `docs/BRAND.md`): el
-  **dashboard Logic2B** conserva el sistema operativo neutro de `packages/ui`
-  (Inter Variable + Space Grotesk, radius 10px y tokens oklch); la **landing y
-  documentación comercial Logic2B** usan el sistema botánico editorial ya
-  aprobado (papel, verde, serif expresiva y radius 14px); la **web pública de
-  cada camping** usa exclusivamente su identidad `--lc-*`, con «powered by
-  Logic2B» discreto en el pie. El sistema botánico nunca viste el dashboard y
-  los tokens del tenant nunca visten producto o landing.
+- **Tres superficies, dos marcas, no confundirlas** (ver `docs/BRAND.md` y ADR
+  0050): el **dashboard, la landing y la documentación de Logic2B** comparten
+  la variante semántica `.theme-logic2b` de `packages/ui` (papel, verde tinta,
+  salvia y menta) sobre la base estructural de `ui.logic2b.com`. El gestor
+  conserva Inter, densidad operativa, radio base de 10px y estados AA; el sitio
+  añade la voz editorial serif y su layout comercial. La **web pública de cada
+  camping** usa exclusivamente su identidad `--lc-*`, con «powered by Logic2B»
+  discreto en el pie. Los tokens del tenant nunca visten producto o landing.
 - **Antimodelo**: SaaS azul isométrico y la plantilla turística genérica
   crema+serif+terracota. El sistema botánico comercial usa serif y papel como
   voz propia de Logic2B, no como disfraz intercambiable de un tenant.

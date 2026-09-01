@@ -9,8 +9,8 @@ import { siWhatsapp } from 'simple-icons';
 import { commercialSite } from '../config';
 import { DEFAULT_LOCALE, LOCALES, localePath, type Locale } from '../lib/i18n';
 import '../styles/global.css';
-/* Después de global.css a propósito: el remapeo de tokens y los estilos de
- * prosa botánicos deben ganar la cascada a los del DS neutro. */
+/* Después de global.css: la variante compartida vive en el DS y este fichero
+ * añade solo aliases, prosa y layout editoriales sobre ella. */
 import '../styles/botanical.css';
 
 interface Props {
@@ -200,7 +200,7 @@ const whatsappContact = logic2bContact(locale, contactContext);
     </script>
     <slot name="head" />
   </head>
-  <body class:list={['theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage']}>
+  <body class:list={['theme-logic2b theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage']}>
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >

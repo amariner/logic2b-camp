@@ -48,7 +48,7 @@ export function SheetContent({
       >
         {children}
         {showClose && (
-          <DialogPrimitive.Close className="absolute right-1.5 top-1.5 inline-flex size-11 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 md:right-3 md:top-3 md:size-6">
+          <DialogPrimitive.Close className="absolute right-1.5 top-1.5 inline-flex size-11 items-center justify-center rounded-md text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/60 md:right-3 md:top-3 md:size-6">
             <X className="size-4" />
             <span className="sr-only">Cerrar</span>
           </DialogPrimitive.Close>

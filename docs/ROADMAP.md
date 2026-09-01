@@ -190,9 +190,11 @@ El bundle compuesto, las guardias y el QA navegable acreditan la decisión.
 - ~~**B-iv — Assets de marca que faltan.**~~ → **resuelta en la sesión 59**:
   Andreu eligió el wordmark tipográfico «Logic2B Campings» sin isotipo; las
   variantes y fuentes están en `packages/ui` y `apps/site`.
-- **[decisión comercial] B-v — Acento de tenant sobre el neutro.** El dashboard
-  actual permanece Logic2B neutro. Reabrir solo si una identidad de cliente real
-  demuestra que teñir `--primary`/`--ring` aporta reconocimiento sin degradar AA.
+- ~~**B-v — Identidad del gestor sobre la base neutra.**~~ → **resuelta
+  2026-09-01 (ADR 0050)**: dashboard y sitio comercial activan
+  `.theme-logic2b` desde `packages/ui`; la base neutral de `ui.logic2b.com`
+  permanece auditable y las webs de tenant conservan su marca propia. La nueva
+  variante light/dark tiene contraste automatizado.
 
 ## Frente C — Acabado profesional (visual + workflow + documentación)
 

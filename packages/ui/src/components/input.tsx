@@ -10,7 +10,7 @@ export function Input({ className, ...props }: ComponentProps<'input'>) {
     <input
       className={cn(
         'h-8 w-full rounded-md border border-input bg-background px-2.5 text-[13px] outline-none transition-[color,box-shadow]',
-        'placeholder:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        'placeholder:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/60',
         'disabled:cursor-not-allowed disabled:opacity-50',
         'aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/30',
         className,
@@ -25,7 +25,7 @@ export function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
     <textarea
       className={cn(
         'w-full rounded-md border border-input bg-background px-2.5 py-1.5 text-[13px] outline-none transition-[color,box-shadow]',
-        'placeholder:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        'placeholder:text-muted-foreground focus-visible:ring-[3px] focus-visible:ring-ring/60',
         'disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
@@ -54,7 +54,7 @@ export function SelectNative({ className, ...props }: ComponentProps<'select'>) 
     <select
       className={cn(
         'h-8 rounded-md border border-input bg-background px-2 text-[13px] outline-none transition-[color,box-shadow]',
-        'focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50',
+        'focus-visible:ring-[3px] focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}

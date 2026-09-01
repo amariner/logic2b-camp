@@ -37,15 +37,14 @@
   --input: oklch(92.2% 0 0);
   --ring: oklch(70.8% 0 0);
 
-  /* Escala de gráficas — valores LIGHT de docs/BRAND.md §4.
-   * Ojo (C-BUG-1, ADR 0020): hasta 2026-07-20 esta lista contenía por error los
-   * valores DARK, los 5 desplazados. Nadie lo detectó porque `.dark` no declaraba
-   * ningún --chart-*, así que en oscuro heredaba estos y "cuadraba". */
-  --chart-1: oklch(48.8% 0.243 264.376);
+  /* Escala de gráficas de ui.logic2b.com, recontrastada contra su CSS público
+   * el 2026-09-01 (ADR 0050). El planning no depende de sus índices: usa los
+   * `--lc-status-*` semánticos de abajo. */
+  --chart-1: oklch(64.6% 0.222 41.116);
   --chart-2: oklch(60% 0.118 184.704);
   --chart-3: oklch(39.8% 0.07 227.392);
-  --chart-4: oklch(62.7% 0.265 303.9);
-  --chart-5: oklch(64.5% 0.246 16.439);
+  --chart-4: oklch(82.8% 0.189 84.429);
+  --chart-5: oklch(76.9% 0.188 70.08);
 
   /* Enlace. Token propio a propósito: hasta ADR 0020 los enlaces de contacto
    * compartían token con los errores (C-BUG-2) y arreglar uno rompía el otro. */
@@ -72,7 +71,8 @@
   /* «2B» del wordmark: un punto por debajo de --foreground, no gris de cuerpo.
    * Réplica de la relación de norte (--text #08090a vs --logo-2b #2a2c30), no
    * de su valor: allí el texto arranca más oscuro que aquí. */
-  --logo-2b: oklch(28% 0 0);
+  --logo-2b: #2a2c30;
+  --logo-ui: #6b7178;
 }
 
 .dark {
@@ -96,14 +96,12 @@
   --input: oklch(100% 0 0 / 0.15);
   --ring: oklch(55.6% 0 0);
 
-  /* Valores DARK de docs/BRAND.md §4. Faltaban por completo hasta ADR 0020:
-   * en oscuro los charts heredaban los de :root, que es exactamente por lo que
-   * C-BUG-1 pasó desapercibido. */
-  --chart-1: oklch(64.6% 0.222 41.116);
+  /* Pareja dark de la escala pública actual de ui.logic2b.com. */
+  --chart-1: oklch(48.8% 0.243 264.376);
   --chart-2: oklch(69.6% 0.17 162.48);
   --chart-3: oklch(76.9% 0.188 70.08);
-  --chart-4: oklch(82.8% 0.189 84.429);
-  --chart-5: oklch(76.9% 0.188 70.08);
+  --chart-4: oklch(62.7% 0.265 303.9);
+  --chart-5: oklch(64.5% 0.246 16.439);
 
   --link: oklch(70.7% 0.165 254.624);
 
@@ -117,7 +115,125 @@
   --sidebar-ring: oklch(55.6% 0 0);
 
   /* En oscuro el «2B» baja desde --foreground (98,5%), no sube. */
-  --logo-2b: oklch(94% 0 0);
+  --logo-2b: #e6e8ea;
+  --logo-ui: #9099a1;
+}
+
+/* ---------- identidad Logic2B Campings (ADR 0050) ----------
+ *
+ * `:root`/`.dark` de arriba siguen siendo la réplica auditable de
+ * ui.logic2b.com: estructura y marca no se mezclan. Esta variante añade la
+ * identidad comercial aprobada sin duplicar primitivos ni importar el layout
+ * de la landing en el gestor.
+ *
+ * Las primitivas viven en :root para que botanical.css pueda mantener aliases
+ * compatibles durante la transición. Son inertes hasta activar
+ * `.theme-logic2b` en el documento consumidor.
+ */
+:root {
+  --logic2b-ink: #0f3e17;
+  --logic2b-shadow: #0c2f10;
+  --logic2b-sage: #b1dbb8;
+  --logic2b-keylime: #e1f4df;
+  --logic2b-mint: #cfe7d3;
+  --logic2b-slate: #b6ced5;
+  --logic2b-paper: #fffefc;
+  --logic2b-charcoal: #222222;
+  --logic2b-border: #e8e9e4;
+  --logic2b-control-border: #6c806e;
+  --logic2b-muted-ink: #49684e;
+  --logic2b-serif: 'Iowan Old Style', 'Baskerville', 'Times New Roman', serif;
+
+  /* Elevación con tinta de marca, compartida por producto y comercial. */
+  --logic2b-shadow-card: 0 1px 2px rgb(15 62 23 / 0.06);
+  --logic2b-shadow-overlay: 0 18px 48px rgb(15 62 23 / 0.18);
+}
+
+.theme-logic2b {
+  --background: var(--logic2b-paper);
+  --foreground: var(--logic2b-charcoal);
+  --card: var(--logic2b-paper);
+  --card-foreground: var(--logic2b-charcoal);
+  --popover: var(--logic2b-paper);
+  --popover-foreground: var(--logic2b-charcoal);
+  --primary: var(--logic2b-ink);
+  --primary-foreground: var(--logic2b-paper);
+  --secondary: var(--logic2b-keylime);
+  --secondary-foreground: var(--logic2b-ink);
+  --muted: var(--logic2b-keylime);
+  --muted-foreground: var(--logic2b-muted-ink);
+  --accent: var(--logic2b-mint);
+  --accent-foreground: var(--logic2b-ink);
+  --destructive: var(--lc-status-no-show);
+  --destructive-foreground: var(--lc-status-no-show-fg);
+  --border: var(--logic2b-border);
+  --input: var(--logic2b-control-border);
+  --ring: var(--logic2b-ink);
+  --link: var(--logic2b-ink);
+
+  --sidebar: var(--logic2b-paper);
+  --sidebar-foreground: var(--logic2b-charcoal);
+  --sidebar-primary: var(--logic2b-ink);
+  --sidebar-primary-foreground: var(--logic2b-paper);
+  --sidebar-accent: var(--logic2b-keylime);
+  --sidebar-accent-foreground: var(--logic2b-ink);
+  --sidebar-border: var(--logic2b-border);
+  --sidebar-ring: var(--logic2b-ink);
+
+  --surface-shadow: var(--logic2b-shadow-card);
+  --overlay-shadow: var(--logic2b-shadow-overlay);
+}
+
+/* El sitio comercial no tenía modo oscuro, pero el gestor sí. La pareja se
+ * define aquí completa para que `dark` nunca mezcle superficies neutras con
+ * la nueva marca. Charts y estados operativos siguen heredando sus contratos;
+ * destructive se vincula a la misma pareja roja AA que "no presentada". */
+.dark.theme-logic2b {
+  --background: #000201;
+  --foreground: #e8eee7;
+  --card: #020603;
+  --card-foreground: #e8eee7;
+  --popover: #020603;
+  --popover-foreground: #e8eee7;
+  --primary: #106b32;
+  --primary-foreground: #f3f6f1;
+  --secondary: #030b06;
+  --secondary-foreground: #dbe8d9;
+  --muted: #020704;
+  --muted-foreground: #76877a;
+  --accent: #06150b;
+  --accent-foreground: #dbe8d9;
+  --destructive: var(--lc-status-no-show);
+  --destructive-foreground: var(--lc-status-no-show-fg);
+  --border: #0a1b10;
+  --input: #386f47;
+  --ring: #5cab6f;
+  --link: #478f58;
+
+  --sidebar: #000100;
+  --sidebar-foreground: #e8eee7;
+  --sidebar-primary: #106b32;
+  --sidebar-primary-foreground: #f3f6f1;
+  --sidebar-accent: #041008;
+  --sidebar-accent-foreground: #dbe8d9;
+  --sidebar-border: #08170d;
+  --sidebar-ring: #5cab6f;
+
+  /* Solo bajan los estados que pertenecen a la familia verde. Pendiente,
+   * peligro, completado e información conservan su código operativo. */
+  --lc-status-confirmed: #176b38;
+  --lc-status-confirmed-fg: #f3f6f1;
+  --lc-status-inhouse: #006c2f;
+  --lc-status-inhouse-fg: #f3f6f1;
+
+  --surface-shadow: 0 1px 2px rgb(0 0 0 / 0.28);
+  --overlay-shadow: 0 18px 48px rgb(0 0 0 / 0.42);
+}
+
+/* Los primitivos siguen siendo los de Logic2B UI; solo reciben una elevación
+ * cromáticamente coherente al activar la marca. */
+.theme-logic2b [data-slot='card'] {
+  box-shadow: var(--surface-shadow);
 }
 
 /* ---------- estado de reserva → color (ADR 0020 §2.2) ----------
@@ -156,10 +272,15 @@
   --lc-status-pending: oklch(62% 0.11 84.4);
   --lc-status-pending-fg: oklch(14.5% 0 0);
 
-  /* Rojo propio, un punto más oscuro que --destructive: el blanco sobre el
-     destructive de shadcn se queda en ~4:1 y la barra lleva texto (AA exige 4.5). */
+  /* Rojo propio accesible. La variante Logic2B lo reutiliza para destructive:
+     ambos expresan peligro y el texto normal exige 4.5:1. */
   --lc-status-no-show: oklch(50% 0.12 27.5);
   --lc-status-no-show-fg: oklch(100% 0 0);
+
+  /* Unidad fuera de servicio: mismo peligro operativo que no presentada,
+     con alias propio para que el consumidor no dependa de destructive. */
+  --lc-status-inactive: var(--lc-status-no-show);
+  --lc-status-inactive-fg: var(--lc-status-no-show-fg);
 
   /* Gris un punto más oscuro que --muted-foreground por la misma razón AA. */
   --lc-status-completed: oklch(57% 0.015 250);
@@ -264,9 +385,12 @@
   --color-status-pending: var(--lc-status-pending);
   --color-status-pending-fg: var(--lc-status-pending-fg);
   --color-status-no-show: var(--lc-status-no-show);
+  --color-status-no-show-fg: var(--lc-status-no-show-fg);
   --color-status-completed: var(--lc-status-completed);
   --color-status-info: var(--lc-status-info);
   --color-status-blocked: var(--lc-status-blocked);
+  --color-status-inactive: var(--lc-status-inactive);
+  --color-status-inactive-fg: var(--lc-status-inactive-fg);
 
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);

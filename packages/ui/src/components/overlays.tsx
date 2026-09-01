@@ -151,7 +151,7 @@ export function TabsTrigger({ className, ...props }: ComponentProps<typeof TabsP
     <TabsPrimitive.Trigger
       className={cn(
         'rounded-md px-3 py-1 text-[13px] font-medium text-muted-foreground outline-none transition-colors',
-        'focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        'focus-visible:ring-[3px] focus-visible:ring-ring/60',
         'data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
         className,
       )}

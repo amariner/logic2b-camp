@@ -1,17 +1,25 @@
 # Prompt para la siguiente sesión — autogestión segura y H1-V condicionado
 
-> Actualizado el 2026-08-19 durante el cierre de la sesión 151.
+> Actualizado el 2026-09-01 durante el cierre de la sesión 152.
 
 ## Estado en una línea
 
-La mejora fotográfica está cerrada en 13/13 y el escaparate ya es accesible,
-responsive y ejecutablemente verificable. H1-V conserva el fallback íntegro y
-su aceptación real de navegador, pero no puede generar L'Olivar: hay 1,38
-créditos y el brief aprobado cuesta 21. El siguiente P0 local independiente del
-proveedor es endurecer la autogestión pública de reservas.
+El gestor y la superficie comercial comparten ya `.theme-logic2b` sobre la base
+auditable de `ui.logic2b.com`. El modo oscuro usa una escala bosque casi negra y
+el claro tiene contraste cruzado para texto secundario, controles y foco. La mejora
+fotográfica sigue cerrada en 13/13. H1-V conserva el fallback íntegro y su
+aceptación real de navegador, pero no puede generar L'Olivar: hay 1,38 créditos
+y el brief aprobado cuesta 21. El siguiente P0 local independiente del proveedor
+sigue siendo endurecer la autogestión pública de reservas.
 
 ## Evidencia nueva cerrada
 
+- ADR 0050 y variante `.theme-logic2b` compartida por dashboard y sitio;
+- snapshot local de los tokens públicos de `ui.logic2b.com` auditados el
+  2026-09-01 y contratos AA claro/oscuro;
+- QA real del gestor a 1366/375 px en Inicio, Llegadas y Planning, sin overflow;
+- `@logic-camp/ui` 203/203, dashboard 70/70, sitio 101 páginas y gate global
+  74/74;
 - control ES/EN de 44 px para pausar/reanudar las dos columnas del carril;
 - pausa por foco y por `prefers-reduced-motion`, con estado `aria-pressed`;
 - QA real a 375/1366 px en movimiento normal y reducido, sin errores ni

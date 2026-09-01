@@ -1,5 +1,38 @@
 # PROGRESS — Logic Camp
 
+## Gestor y comercial comparten la identidad Logic2B · 2026-09-01 (sesión 152)
+
+- La base neutral de `packages/ui` se volvió a contrastar con el CSS público de
+  `ui.logic2b.com`: radio, familias semánticas, charts y colores del wordmark
+  quedan fijados por un contrato local sin red para evitar divergencias
+  silenciosas.
+- ADR 0050 introduce `.theme-logic2b` como variante compartida de papel, verde
+  tinta, salvia, keylime y menta. Dashboard y sitio la activan desde el primer
+  pintado; `botanical.css` conserva solo aliases y reglas editoriales, sin
+  arrastrar el chasis comercial al gestor.
+- El modo oscuro recibe una pareja verde completa. Destructive, charts y estados
+  de reserva no cambian de significado; los tests verifican contraste AA de
+  superficies, enlaces, foco, sidebar y barras operativas en ambos modos.
+- Revisión visual posterior: la variante dark profundiza fondo, cards, sidebar,
+  acciones y los dos estados verdes sin recolorear ámbar/rojo/azul. En claro se
+  corrigen el texto secundario sobre menta y los límites de controles; el foco
+  real sube a 60 % y el switch apagado deja de depender del borde decorativo.
+- Segunda revisión visual pedida por Andreu: dark pasa a una escala bosque casi
+  negra y el primario, Confirmada y En casa cambian coordinadamente a texto
+  claro. El salto es deliberadamente marcado; el tema claro no se toca.
+- Tercera revisión: superficies y sidebar llegan a negro verdoso; primario y
+  estados se cierran hasta el mínimo estructural seguro (≥3:1), con texto claro
+  ≥6:1. Es el límite oscuro del contrato sin perder controles ni reservas.
+- QA real del gestor en Inicio, Llegadas, Planning y Plano a 1366/375 px,
+  claro/oscuro y sin desbordamiento horizontal. La D1 persistida local estaba
+  en 0007: se hizo copia recuperable y se aplicaron solo las migraciones
+  aditivas 0008–0010, sin reset ni reseed; Entradas, Planning y Plano volvieron
+  a responder 200.
+- Verificación: `@logic-camp/ui` 203/203, dashboard 70/70, sitio comercial 101
+  páginas y `pnpm check` global 74/74. El desarrollo y el QA locales no
+  requirieron reset ni reseed de la D1 remota; el cierre sale por el
+  `deploy:demo` estándar del bundle compuesto.
+
 ## Temas accesibles, ligeros y protegidos de extremo a extremo · 2026-08-19 (sesión 151)
 
 - El carril comercial de doce temas incorpora un control localizado de 44 px
