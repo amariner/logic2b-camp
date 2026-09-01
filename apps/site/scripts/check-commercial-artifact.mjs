@@ -104,6 +104,9 @@ function assertContact(html, context, label) {
     html.includes('rel="noopener noreferrer"'),
     `${label}: faltan garantías del enlace externo`,
   );
+  assert(html.includes('data-camp-tour-trigger'), `${label}: falta el recorrido de la cabecera`);
+  assert(html.includes('class="home-closing-cta"'), `${label}: falta el cierre comercial del home`);
+  assert(html.includes('class="home-footer"'), `${label}: falta el footer compartido del home`);
 }
 
 function assertThemeMotion(html, content, label) {
@@ -196,8 +199,12 @@ for (const locale of locales) {
   assert(home.includes('data-hero-lead-form'), `${locale.code}: falta la captación principal`);
   assert(home.includes('data-project-request-open'), `${locale.code}: falta la solicitud de demo`);
   assertThemeMotion(home, content, `${locale.code}: portada`);
-  assertContact(pricing, 'commercial', `${locale.code}: precios`);
-  assertContact(themes, 'commercial', `${locale.code}: temas`);
+  for (const publicPath of ['precios', 'temas', 'inteligente', 'paneles', 'empezar']) {
+    const publicHtml = await readHtml(`${locale.prefix}${publicPath}/index.html`);
+    assertContact(publicHtml, 'commercial', `${locale.code}: ${publicPath}`);
+  }
+  const docsIndex = await readHtml(`${locale.prefix}docs/index.html`);
+  assertContact(docsIndex, 'docs', `${locale.code}: docs`);
   assert(
     !/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(home),
     `${locale.code}: GTM se carga de forma inmediata antes del consentimiento`,

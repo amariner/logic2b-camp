@@ -22,7 +22,7 @@ const routes: Record<LegalKind, string> = {
 ---
 
 <Base locale={locale} content={content} ruta={routes[kind]} seo={{ title: page.title, description: page.description }}>
-  <article class="legal-shell">
+  <article class="legal-shell botanical-legal-page">
     <header class="legal-header">
       <p class="botanical-eyebrow">{commercialSite.domain}</p>
       <h1>{page.heading}</h1>
@@ -82,8 +82,8 @@ const routes: Record<LegalKind, string> = {
 </Base>
 
 <style>
-  .legal-shell { width: min(820px, calc(100% - 40px)); margin: 0 auto; padding: clamp(64px, 9vw, 112px) 0; }
-  .legal-header { padding-bottom: 36px; border-bottom: 1px solid var(--botanical-border); }
+  .legal-shell { width: min(920px, calc(100% - 40px)); margin: 0 auto; padding: clamp(28px, 5vw, 72px) 0 clamp(64px, 9vw, 112px); }
+  .legal-header { margin-bottom: 12px; border: 1px solid color-mix(in srgb, var(--botanical-ink) 9%, transparent); border-radius: clamp(24px, 3vw, 38px); background: linear-gradient(145deg, color-mix(in srgb, var(--botanical-keylime) 78%, white), color-mix(in srgb, var(--botanical-mint) 52%, white)); box-shadow: 0 24px 64px color-mix(in srgb, var(--botanical-ink) 8%, transparent); padding: clamp(34px, 6vw, 68px); }
   .legal-header h1 { margin: 10px 0 16px; color: var(--botanical-ink); font-family: var(--botanical-serif); font-size: clamp(2.5rem, 6vw, 4.8rem); font-weight: 400; letter-spacing: -.04em; line-height: .98; }
   .legal-intro { max-width: 680px; margin: 0; color: color-mix(in srgb, var(--botanical-charcoal) 78%, white); font-size: 1.1rem; line-height: 1.65; }
   .legal-updated { margin: 18px 0 0; color: color-mix(in srgb, var(--botanical-ink) 65%, white); font-size: .86rem; }
@@ -108,5 +108,5 @@ const routes: Record<LegalKind, string> = {
   .legal-action { margin-top: 34px; border-top: 1px solid var(--botanical-border); }
   .legal-action button { margin-top: 16px; min-height: 44px; border: 1px solid var(--botanical-ink); border-radius: 10px; background: var(--botanical-ink); padding: 11px 17px; color: var(--botanical-paper); font: inherit; font-weight: 650; cursor: pointer; }
   .legal-action button:hover { opacity: .86; }
-  @media (max-width: 560px) { .legal-owner div { grid-template-columns: 1fr; gap: 2px; } }
+  @media (max-width: 560px) { .legal-shell { width: min(100% - 24px, 920px); } .legal-header { padding: 30px 22px; } .legal-owner div { grid-template-columns: 1fr; gap: 2px; } }
 </style>

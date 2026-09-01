@@ -8,9 +8,10 @@ import { localePath, type Locale } from '../lib/i18n';
 interface Props {
   locale: Locale;
   content: any;
+  ruta?: string;
 }
 
-const { locale, content: c } = Astro.props;
+const { locale, content: c, ruta = '/' } = Astro.props;
 const managementDemoHref = '/demos/pinadamar/gestion/#/planning';
 const advancedDemoHref = '/demos/mardefondo/gestion/#/inteligente';
 const whatsapp = logic2bContact(locale, 'commercial');
@@ -178,8 +179,8 @@ const copy = locale === 'es'
         <a href={localePath(locale, 'cookies/')}>{c.legal.nav.cookies}</a>
       </nav>
       <div class="home-footer-languages">
-        <a class:list={[locale === 'es' && 'is-active']} href={localePath('es')}>ES</a>
-        <a class:list={[locale === 'en' && 'is-active']} href={localePath('en')}>EN</a>
+        <a class:list={[locale === 'es' && 'is-active']} href={localePath('es', ruta)}>ES</a>
+        <a class:list={[locale === 'en' && 'is-active']} href={localePath('en', ruta)}>EN</a>
       </div>
     </div>
   </div>

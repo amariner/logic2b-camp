@@ -25,7 +25,7 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
   ruta="empezar/"
   seo={{ title: c.conversion.seoTitle, description: c.conversion.seoDescription }}
 >
-  <main class="conversion-page botanical-page">
+  <div class="conversion-page botanical-page">
     <section class="botanical-shell conversion-layout" aria-labelledby="conversion-title">
       <div class="conversion-copy">
         <p class="botanical-eyebrow">{c.conversion.kicker}</p>
@@ -102,7 +102,7 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
         </form>
       </div>
     </section>
-  </main>
+  </div>
 
   <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error, planOptions }}>
   const conversionForm = document.getElementById('conversion-lead-form');

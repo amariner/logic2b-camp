@@ -71,8 +71,9 @@
   padding-inline: 0;
 }
 
-/* Chasis del home mini: la navegación flota como una pieza independiente,
- * mientras el resto de páginas conserva la cabecera documental compacta. */
+/* Chasis compartido del sitio comercial: la navegación flotante que nació en
+ * el home es ahora la única cabecera pública. El gestor y las webs de camping
+ * viven en otras apps y no reciben estas clases. */
 .theme-botanical.home-mini {
   background: color-mix(in srgb, var(--botanical-keylime) 62%, var(--botanical-paper));
 }
@@ -91,6 +92,36 @@
   background: color-mix(in srgb, var(--botanical-paper) 96%, transparent);
   box-shadow: 0 14px 40px color-mix(in srgb, var(--botanical-ink) 12%, transparent);
   padding-inline: clamp(18px, 2.2vw, 34px);
+}
+
+/* Las páginas interiores heredan también la primera impresión del home: una
+ * banda clara continua detrás de la cabecera y un héroe amplio, sin volver a
+ * inventar otra paleta o un chasis documental. */
+.theme-botanical.home-subpage > main {
+  background: var(--botanical-paper);
+}
+
+.botanical-subpage-hero {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  border-block: 1px solid color-mix(in srgb, var(--botanical-ink) 7%, transparent);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--botanical-keylime) 72%, var(--botanical-paper)),
+    color-mix(in srgb, var(--botanical-mint) 45%, var(--botanical-paper))
+  );
+  padding-inline: clamp(24px, 5vw, 80px) !important;
+}
+
+.docs-public-frame {
+  width: calc(100% - clamp(32px, 5vw, 72px));
+  max-width: 1280px;
+  margin-block: clamp(24px, 4vw, 52px) clamp(70px, 9vw, 120px);
+  border: 1px solid color-mix(in srgb, var(--botanical-ink) 8%, transparent);
+  border-radius: clamp(24px, 3vw, 38px);
+  background: var(--botanical-paper);
+  box-shadow: 0 24px 64px color-mix(in srgb, var(--botanical-ink) 7%, transparent);
 }
 
 .home-mini .site-header-demo {
@@ -1443,6 +1474,14 @@ button.site-menu__link {
 
   .theme-botanical.home-mini > header > div {
     padding-inline: 16px;
+  }
+
+  .botanical-subpage-hero {
+    padding-inline: 18px !important;
+  }
+
+  .docs-public-frame {
+    width: calc(100% - 24px);
   }
 
   .botanical-section {

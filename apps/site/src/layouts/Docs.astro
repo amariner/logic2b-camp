@@ -47,7 +47,7 @@ const breadcrumbJsonLd = {
 <Base locale={locale} content={c} ruta={ruta} seo={seo}>
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')} />
   <div
-    class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:py-14"
+    class="docs-public-frame mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:py-14"
   >
     {/* El header botánico mide 72px; 96px deja 24px de respiración visible. */}
     <aside class="order-last lg:order-first lg:sticky lg:top-24 lg:self-start">
