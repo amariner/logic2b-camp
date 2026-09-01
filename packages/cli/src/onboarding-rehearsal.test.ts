@@ -80,6 +80,9 @@ describe('frontera local del ensayo de onboarding', () => {
         '0005_rgpd.sql',
         '0006_hospedajes.sql',
         '0007_scrub_payment_raw.sql',
+        '0008_e_mejoras.sql',
+        '0009_e_mejoras_access.sql',
+        '0010_d1_budget.sql',
       ]);
       expect(result.firstMigrationFingerprint).toBe(result.secondMigrationFingerprint);
       expect(result.firstSeedSqlFingerprint).toBe(result.secondSeedSqlFingerprint);
