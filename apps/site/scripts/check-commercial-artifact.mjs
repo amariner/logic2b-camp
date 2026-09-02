@@ -15,12 +15,12 @@ const locales = [
 ];
 const guides = ['recepcion', 'gestion', 'dueno', 'tecnica'];
 const requiredSecurityHeaders = [
-  "Content-Security-Policy: base-uri 'self'; frame-ancestors 'none'; object-src 'none'",
+  "Content-Security-Policy: base-uri 'self'; frame-ancestors 'self'; object-src 'none'",
   'Permissions-Policy: camera=(), geolocation=(), microphone=()',
   'Referrer-Policy: strict-origin-when-cross-origin',
   'Strict-Transport-Security: max-age=31536000',
   'X-Content-Type-Options: nosniff',
-  'X-Frame-Options: DENY',
+  'X-Frame-Options: SAMEORIGIN',
 ];
 
 function assert(condition, message) {
@@ -74,8 +74,14 @@ function assertHomePricing(html, content, locale) {
   );
 
   content.pricingShowcase.items.forEach((plan, index) => {
-    assert(attribute(priceTags[index], 'data-monthly') === plan.precio, `${label}: precio mensual de ${plan.id}`);
-    assert(attribute(priceTags[index], 'data-annual') === plan.precioAnual, `${label}: precio anual de ${plan.id}`);
+    assert(
+      attribute(priceTags[index], 'data-monthly') === plan.precio,
+      `${label}: precio mensual de ${plan.id}`,
+    );
+    assert(
+      attribute(priceTags[index], 'data-annual') === plan.precioAnual,
+      `${label}: precio anual de ${plan.id}`,
+    );
     assert(
       attribute(requestTags[index], 'data-request-base') ===
         `${expectedRequestPath}?plan=${encodeURIComponent(plan.id)}`,
@@ -199,9 +205,46 @@ for (const locale of locales) {
   assert(home.includes('data-hero-lead-form'), `${locale.code}: falta la captación principal`);
   assert(home.includes('data-project-request-open'), `${locale.code}: falta la solicitud de demo`);
   assertThemeMotion(home, content, `${locale.code}: portada`);
+  assert(
+    tagsWithAttribute(home, 'data-theme-preview-frame').length === content.temas.items.length,
+    `${locale.code}: cada popup debe incluir la web completa del tema`,
+  );
+  assert(
+    home.includes(`href="/${locale.prefix}#demos"`) && home.includes(`>${content.nav.web}<`),
+    `${locale.code}: Webs no enlaza el portfolio del home`,
+  );
   for (const publicPath of ['precios', 'temas', 'inteligente', 'paneles', 'empezar']) {
     const publicHtml = await readHtml(`${locale.prefix}${publicPath}/index.html`);
     assertContact(publicHtml, 'commercial', `${locale.code}: ${publicPath}`);
+  }
+  for (const theme of content.temas.items) {
+    const detailPath = `${locale.prefix}temas/${theme.slug}/index.html`;
+    const detailHtml = await readHtml(detailPath);
+    assertContact(detailHtml, 'commercial', `${locale.code}: tema ${theme.slug}`);
+    assert(
+      themes.includes(`href="/${locale.prefix}temas/${theme.slug}/"`),
+      `${locale.code}: el catálogo no enlaza la ficha ${theme.slug}`,
+    );
+    assert(
+      home.includes(`href="/${locale.prefix}empezar/?theme=${theme.slug}"`),
+      `${locale.code}: el popup ${theme.slug} no lleva el tema al formulario`,
+    );
+    assert(
+      detailHtml.includes(`href="${theme.href}"`),
+      `${locale.code}: la ficha ${theme.slug} no enlaza su demo navegable`,
+    );
+    assert(
+      detailHtml.includes(`data-theme-detail-stage`),
+      `${locale.code}: la ficha ${theme.slug} no incluye vista ampliable`,
+    );
+    assert(
+      detailHtml.includes(`data-theme-detail-frame`) && detailHtml.includes(`src="${theme.href}"`),
+      `${locale.code}: la ficha ${theme.slug} no carga su web completa en el visor`,
+    );
+    assert(
+      detailHtml.includes(`href="/${locale.prefix}empezar/?theme=${theme.slug}"`),
+      `${locale.code}: la ficha ${theme.slug} no conserva el tema en conversión`,
+    );
   }
   const docsIndex = await readHtml(`${locale.prefix}docs/index.html`);
   assertContact(docsIndex, 'docs', `${locale.code}: docs`);

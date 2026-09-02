@@ -19,6 +19,7 @@ const leadSchema = z.object({
   message: z.string().trim().max(2000).optional(),
   lang: z.string().trim().max(5).optional(),
   plan: z.string().trim().max(100).optional(),
+  theme: z.string().trim().max(100).optional(),
   billing: z.enum(['monthly', 'annual']).optional(),
   accept: z.literal(true),
   website: z.string().trim().max(200).optional(),
@@ -45,11 +46,16 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     ['Email', d.email],
     ['Teléfono', d.phone || '—'],
     ['Plan', d.plan || '—'],
+    ['Web seleccionada', d.theme || '—'],
     ['Pago', d.billing === 'annual' ? 'Anual' : d.billing === 'monthly' ? 'Mensual' : '—'],
     ['Idioma', d.lang || '—'],
     ['Consentimiento', 'Aceptó la política de privacidad'],
   ];
-  const requestTitle = d.plan ? `Nueva solicitud del plan ${d.plan}` : 'Nueva petición de demo';
+  const requestTitle = d.theme
+    ? `Nueva solicitud de la web ${d.theme}`
+    : d.plan
+      ? `Nueva solicitud del plan ${d.plan}`
+      : 'Nueva petición de demo';
   const text = `${requestTitle} — Logic2B Campings\n\n${rows
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n')}\n\nMensaje:\n${d.message || '—'}`;
@@ -83,7 +89,11 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     to: LEADS_TO,
     replyTo: d.email,
     idempotencyKey: `lead/${ref}`,
-    message: { subject: `${d.plan ? `Plan ${d.plan}` : 'Demo'}: ${d.campingName}`, html, text },
+    message: {
+      subject: `${d.theme ? `Web ${d.theme}` : d.plan ? `Plan ${d.plan}` : 'Demo'}: ${d.campingName}`,
+      html,
+      text,
+    },
   });
   if (!result.ok) {
     logEvent({

@@ -25,6 +25,12 @@ function imageTags(html, marker) {
   );
 }
 
+function tagsWithAttribute(html, marker) {
+  return [...html.matchAll(new RegExp(`<[^>]+\\s${marker}(?:="[^"]*")?[^>]*>`, 'gi'))].map(
+    ([tag]) => tag,
+  );
+}
+
 function candidates(tag) {
   const srcset = attribute(tag, 'srcset');
   assert(srcset, `miniatura sin srcset: ${tag.slice(0, 160)}`);
@@ -46,11 +52,10 @@ const mobileCatalogUrls = new Set();
 for (const route of routes) {
   const html = await readFile(path.join(distDir, route.file), 'utf8');
   const tags = imageTags(html, 'data-theme-thumbnail');
+  // La portada reutiliza cada miniatura tres veces: dos copias del carril y
+  // una tarjeta del slider. Los dialogs cargan la demo completa en un iframe.
   const expected = route.kind === 'home' ? 36 : 12;
-  assert(
-    tags.length === expected,
-    `${route.file}: ${tags.length}/${expected} miniaturas`,
-  );
+  assert(tags.length === expected, `${route.file}: ${tags.length}/${expected} miniaturas`);
   assert(
     imageTags(html, 'data-theme-thumbnail-fallback').length === 0,
     `${route.file}: alguna miniatura conocida cayó al asset público sin optimizar`,
@@ -94,10 +99,19 @@ for (const route of routes) {
 
   if (route.kind === 'home') {
     const showcaseStart = html.indexOf('data-theme-showcase');
+    const trackStart = html.indexOf('class="theme-showcase-track"', showcaseStart);
+    const dialogsStart = html.indexOf('data-theme-preview-dialog', trackStart);
     assert(showcaseStart >= 0, `${route.file}: falta el slider de temas`);
-    const showcaseTags = imageTags(html.slice(showcaseStart), 'data-theme-thumbnail');
+    assert(trackStart >= 0, `${route.file}: falta el carril del slider`);
+    assert(dialogsStart >= 0, `${route.file}: faltan las previews ampliadas`);
+    const showcaseTags = imageTags(html.slice(trackStart, dialogsStart), 'data-theme-thumbnail');
+    const dialogFrames = tagsWithAttribute(html.slice(dialogsStart), 'data-theme-preview-frame');
     const railTags = imageTags(html.slice(0, showcaseStart), 'data-theme-thumbnail');
     assert(showcaseTags.length === 12, `${route.file}: ${showcaseTags.length}/12 temas en slider`);
+    assert(
+      dialogFrames.length === 12,
+      `${route.file}: ${dialogFrames.length}/12 webs completas en dialogs`,
+    );
     assert(railTags.length === 24, `${route.file}: ${railTags.length}/24 temas en carril`);
 
     for (const [scope, scopedTags, copies] of [

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getContent, localePath, type Locale } from '../lib/i18n';
+import { getManagementPanelViews } from '../lib/managementPanels';
 
 interface Props {
   locale: Locale;
@@ -17,6 +18,16 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
   annualPeriod: plan.periodoAnual,
   onboarding: 'onboarding' in plan ? plan.onboarding : '',
 }));
+const themeOptions = c.temas.items.map((theme) => ({
+  id: theme.slug,
+  name: theme.nombre,
+  style: theme.estilo,
+}));
+const panelOptions = getManagementPanelViews(locale).map(({ id, name }) => ({ id, name }));
+const panelSelectedLabel = locale === 'es' ? 'Panel seleccionado' : 'Selected dashboard';
+const panelMessage = locale === 'es'
+  ? 'Me interesa el panel {panel} y quiero adaptarlo a la operativa de mi camping.'
+  : 'I am interested in the {panel} dashboard and want to adapt it to my campsite operation.';
 ---
 
 <Base
@@ -45,10 +56,10 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
 
         <div class="conversion-selection" data-conversion-selection hidden>
           <div>
-            <p>{c.contacto.planSeleccionado}</p>
+            <p data-conversion-selection-label>{c.contacto.planSeleccionado}</p>
             <h3 data-conversion-plan-name></h3>
           </div>
-          <div class="conversion-selection-price">
+          <div class="conversion-selection-price" data-conversion-selection-price>
             <strong data-conversion-plan-price></strong>
             <span data-conversion-plan-period></span>
           </div>
@@ -59,6 +70,7 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
           <input type="hidden" name="lang" value={locale} />
           <input type="hidden" name="plan" data-conversion-plan-input />
           <input type="hidden" name="billing" data-conversion-billing-input />
+          <input type="hidden" name="theme" data-conversion-theme-input />
           <label>
             <span>{c.contacto.campos.nombre}</span>
             <input name="name" autocomplete="name" required />
@@ -104,12 +116,16 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
     </section>
   </div>
 
-  <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error, planOptions }}>
+  <script is:inline define:vars={{ ok: c.contacto.ok, demo: c.contacto.demo, err: c.contacto.error, planOptions, themeOptions, panelOptions, panelSelectedLabel, panelMessage, themeSelectedLabel: c.conversion.temaSeleccionado, themeMessage: c.conversion.mensajeTema }}>
   const conversionForm = document.getElementById('conversion-lead-form');
   const conversionEmail = conversionForm?.querySelector('[data-conversion-email]');
   const conversionPlanInput = conversionForm?.querySelector('[data-conversion-plan-input]');
   const conversionBillingInput = conversionForm?.querySelector('[data-conversion-billing-input]');
+  const conversionThemeInput = conversionForm?.querySelector('[data-conversion-theme-input]');
+  const conversionMessageInput = conversionForm?.querySelector('[name="message"]');
   const conversionSelection = document.querySelector('[data-conversion-selection]');
+  const conversionSelectionLabel = conversionSelection?.querySelector('[data-conversion-selection-label]');
+  const conversionSelectionPrice = conversionSelection?.querySelector('[data-conversion-selection-price]');
   const conversionPlanName = conversionSelection?.querySelector('[data-conversion-plan-name]');
   const conversionPlanPrice = conversionSelection?.querySelector('[data-conversion-plan-price]');
   const conversionPlanPeriod = conversionSelection?.querySelector('[data-conversion-plan-period]');
@@ -122,6 +138,10 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
   const requestedPlanId = conversionParams.get('plan')?.trim() ?? '';
   const requestedBilling = conversionParams.get('billing') === 'annual' ? 'annual' : 'monthly';
   const requestedPlan = planOptions.find((plan) => plan.id === requestedPlanId);
+  const requestedThemeId = conversionParams.get('theme')?.trim() ?? '';
+  const requestedTheme = themeOptions.find((theme) => theme.id === requestedThemeId);
+  const requestedPanelId = conversionParams.get('panel')?.trim() ?? '';
+  const requestedPanel = panelOptions.find((panel) => panel.id === requestedPanelId);
 
   if (conversionEmail instanceof HTMLInputElement && requestedEmail) {
     conversionEmail.value = requestedEmail;
@@ -150,6 +170,27 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
       conversionPlanOnboarding.hidden = false;
     }
     if (conversionSelection instanceof HTMLElement) conversionSelection.hidden = false;
+  } else if (requestedTheme) {
+    const syncRequestedTheme = () => {
+      if (conversionThemeInput) conversionThemeInput.value = requestedTheme.id;
+    };
+    syncRequestedTheme();
+    window.addEventListener('pageshow', syncRequestedTheme, { once: true });
+    if (conversionSelectionLabel) conversionSelectionLabel.textContent = themeSelectedLabel;
+    if (conversionPlanName) conversionPlanName.textContent = requestedTheme.name;
+    if (conversionSelectionPrice instanceof HTMLElement) conversionSelectionPrice.hidden = true;
+    if (conversionMessageInput instanceof HTMLInputElement && !conversionMessageInput.value) {
+      conversionMessageInput.value = themeMessage.replace('{theme}', requestedTheme.name);
+    }
+    if (conversionSelection instanceof HTMLElement) conversionSelection.hidden = false;
+  } else if (requestedPanel) {
+    if (conversionSelectionLabel) conversionSelectionLabel.textContent = panelSelectedLabel;
+    if (conversionPlanName) conversionPlanName.textContent = requestedPanel.name;
+    if (conversionSelectionPrice instanceof HTMLElement) conversionSelectionPrice.hidden = true;
+    if (conversionMessageInput instanceof HTMLInputElement && !conversionMessageInput.value) {
+      conversionMessageInput.value = panelMessage.replace('{panel}', requestedPanel.name);
+    }
+    if (conversionSelection instanceof HTMLElement) conversionSelection.hidden = false;
   }
 
   conversionForm?.addEventListener('submit', async (event) => {
@@ -162,6 +203,7 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
       data.plan = requestedPlan.id;
       data.billing = requestedBilling;
     }
+    if (requestedTheme) data.theme = requestedTheme.id;
     data.accept = data.accept === 'true';
     conversionSubmit.disabled = true;
     if (conversionSubmitLabel) conversionSubmitLabel.textContent = conversionSubmit.dataset.sending ?? '';
@@ -182,6 +224,7 @@ const planOptions = c.pricingShowcase.items.map((plan) => ({
           locale: document.documentElement.lang,
           plan_id: requestedPlan?.id ?? '',
           billing: requestedPlan ? requestedBilling : '',
+          theme_id: requestedTheme?.id ?? '',
         });
       }
     } catch {

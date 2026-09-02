@@ -1,0 +1,8 @@
+---
+import ManagementPanelDetail from '../../components/ManagementPanelDetail.astro';
+import { getManagementPanelViews } from '../../lib/managementPanels';
+
+export function getStaticPaths(){return getManagementPanelViews('es').map(panel=>({params:{slug:panel.id}}));}
+const { slug } = Astro.params;
+---
+<ManagementPanelDetail locale="es" slug={slug??''}/>

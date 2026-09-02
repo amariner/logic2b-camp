@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { GUIAS, todasLasRutas } from '../lib/docs';
-import { LOCALES, localePath } from '../lib/i18n';
+import { getContent, LOCALES, localePath } from '../lib/i18n';
 
 const site = 'https://camp.logic2b.com';
 
@@ -18,7 +18,11 @@ function rutas(): SitemapRoute[] {
     { path: 'paneles/', lastmod: '2026-08-31' },
     { path: 'precios/', lastmod: '2026-08-11' },
     { path: 'inteligente/', lastmod: '2026-08-14' },
-    { path: 'temas/', lastmod: '2026-08-11' },
+    { path: 'temas/', lastmod: '2026-09-01' },
+    ...getContent('es').temas.items.map(({ slug }) => ({
+      path: `temas/${slug}/`,
+      lastmod: '2026-09-01',
+    })),
     { path: 'aviso-legal/', lastmod: '2026-08-11' },
     { path: 'privacidad/', lastmod: '2026-08-11' },
     { path: 'cookies/', lastmod: '2026-08-11' },

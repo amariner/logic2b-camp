@@ -297,9 +297,28 @@ describe('POST /api/leads', () => {
     await expect(res.json()).resolves.toMatchObject({ outcome: 'disabled' });
   });
 
-  it('rechaza nombres de plan fuera del límite permitido', async () => {
-    const res = await app.request('/api/leads', json({ ...lead, plan: 'x'.repeat(101) }), envA);
+  it('acepta el tema seleccionado y rechaza referencias comerciales fuera del límite', async () => {
+    const accepted = await app.request(
+      '/api/leads',
+      json({ ...lead, theme: 'olivar' }, { 'cf-connecting-ip': '198.51.100.60' }),
+      {
+        ...envA,
+        LEADS_TRANSPORT: 'demo',
+      },
+    );
+    expect(accepted.status).toBe(202);
+    const res = await app.request(
+      '/api/leads',
+      json({ ...lead, plan: 'x'.repeat(101) }, { 'cf-connecting-ip': '198.51.100.61' }),
+      envA,
+    );
     expect(res.status).toBe(400);
+    const theme = await app.request(
+      '/api/leads',
+      json({ ...lead, theme: 'x'.repeat(101) }, { 'cf-connecting-ip': '198.51.100.62' }),
+      envA,
+    );
+    expect(theme.status).toBe(400);
   });
 
   it('aplica una cuota propia de captación y comunica cuándo reintentar', async () => {

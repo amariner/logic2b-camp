@@ -1,0 +1,9 @@
+---
+import ManagementPanelDetail from '../../../components/ManagementPanelDetail.astro';
+import { LOCALES, type Locale } from '../../../lib/i18n';
+import { getManagementPanelViews } from '../../../lib/managementPanels';
+
+export function getStaticPaths(){return LOCALES.filter(locale=>locale!=='es').flatMap(lang=>getManagementPanelViews(lang).map(panel=>({params:{lang,slug:panel.id}})));}
+const { lang, slug } = Astro.params;
+---
+<ManagementPanelDetail locale={lang as Locale} slug={slug??''}/>

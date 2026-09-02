@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import ThemeMiniature from './ThemeMiniature.astro';
+import { getContent, localePath, type Locale } from '../lib/i18n';
+import { portfolioImage } from '../lib/portfolio';
+
+interface Props { locale: Locale; slug: string }
+const { locale, slug } = Astro.props;
+const c = getContent(locale);
+const detail = c.temas.detalle;
+const theme = c.temas.items.find((item) => item.slug === slug);
+if (!theme) throw new Error(`Tema comercial desconocido: ${slug}`);
+const index = c.temas.items.findIndex((item) => item.slug === slug);
+const related = [1, 2, 3].map((offset) => c.temas.items[(index + offset) % c.temas.items.length]);
+const description = detail.descripcion.replace('{theme}', theme.nombre);
+const level = theme.estilo.split(' · ')[0];
+const direction = theme.estilo.split(' · ').slice(1).join(' · ');
+const themePath = (itemSlug: string) => localePath(locale, `temas/${itemSlug}/`);
+const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURIComponent(theme.slug)}`;
+---
+
+<Base
+  locale={locale}
+  content={c}
+  ruta={`temas/${theme.slug}/`}
+  seo={{ title: `${theme.nombre} — ${c.temas.seo.title}`, description }}
+>
+  <article class="theme-detail-page">
+    <header class="theme-detail-head botanical-shell">
+      <nav aria-label={detail.volver}>
+        <a href={localePath(locale, 'temas/')}><span aria-hidden="true">←</span>{detail.volver}</a>
+      </nav>
+      <div class="theme-detail-heading">
+        <div>
+          <p class="botanical-eyebrow">{detail.kicker}</p>
+          <h1>{theme.nombre}</h1>
+        </div>
+        <p>{description}</p>
+      </div>
+    </header>
+
+    <section class="theme-detail-preview botanical-shell" aria-label={detail.previewAria.replace('{theme}', theme.nombre)}>
+      <div class="theme-detail-stage" data-theme-detail-stage>
+        <div class="theme-detail-browser">
+          <div class="theme-detail-bar">
+            <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+            <span>{theme.slug}.tudominio.com</span>
+            <button type="button" data-theme-detail-expand aria-expanded="false" aria-label={detail.abrirPreview}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="theme-detail-screen">
+            <iframe
+              src={theme.href}
+              title={detail.previewAria.replace('{theme}', theme.nombre)}
+              data-theme-detail-frame
+            ></iframe>
+          </div>
+        </div>
+        <aside class="theme-detail-side">
+          <p class="theme-detail-side-kicker">{theme.estado}</p>
+          <h2>{theme.nombre}</h2>
+          <p>{description}</p>
+          <div class="theme-detail-tags"><span>{level}</span><span>{direction}</span><span>{detail.etiquetas[0]}</span></div>
+          <ul>{detail.puntos.map((point) => <li><span aria-hidden="true">✓</span>{point}</li>)}</ul>
+          <div class="theme-detail-side-actions">
+            <a class="is-primary" href={theme.href}>{detail.verDemo}<span aria-hidden="true">↗</span></a>
+            <a href={conversionHref}>{detail.solicitar}<span aria-hidden="true">→</span></a>
+          </div>
+          <small>{detail.notaPreview}</small>
+        </aside>
+      </div>
+    </section>
+
+    <section class="theme-detail-info botanical-shell">
+      <div class="theme-detail-story">
+        <p class="botanical-eyebrow">{detail.resuelveTitulo}</p>
+        <h2>{detail.comoTitulo}</h2>
+        <p>{detail.comoTexto}</p>
+        <ul>{detail.puntos.map((point, pointIndex) => <li><b>{String(pointIndex + 1).padStart(2, '0')}</b><span>{point}</span></li>)}</ul>
+      </div>
+      <aside class="theme-detail-facts">
+        <h3>{detail.detallesTitulo}</h3>
+        <dl>
+          <div><dt>{detail.nivel}</dt><dd>{level}</dd></div>
+          <div><dt>{detail.estado}</dt><dd>{theme.estado}</dd></div>
+          <div><dt>{detail.entrega}</dt><dd>{detail.entregaValor}</dd></div>
+        </dl>
+        <h3>{detail.incluye}</h3>
+        <div class="theme-detail-fact-tags">{detail.etiquetas.map((tag) => <span>{tag}</span>)}</div>
+        <a href={conversionHref}>{detail.solicitar}<span aria-hidden="true">→</span></a>
+      </aside>
+    </section>
+
+    <section class="theme-detail-related botanical-shell">
+      <header><h2>{detail.relacionados}</h2><a href={localePath(locale, 'temas/')}>{detail.verTodosRelacionados}<span aria-hidden="true">→</span></a></header>
+      <div>
+        {related.map((item) => (
+          <a class="theme-detail-related-card" href={themePath(item.slug)}>
+            <ThemeMiniature name={item.nombre} style={item.estilo} image={portfolioImage(item.slug, item.imagen)} variant={item.variante} />
+            <span><b>{item.nombre}</b><small>{item.estilo}</small><i aria-hidden="true">→</i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </article>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-theme-detail-stage]').forEach((stage) => {
+    const trigger = stage.querySelector<HTMLButtonElement>('[data-theme-detail-expand]');
+    const setExpanded = (expanded: boolean) => {
+      stage.classList.toggle('is-expanded', expanded);
+      document.documentElement.classList.toggle('theme-preview-locked', expanded);
+      trigger?.setAttribute('aria-expanded', String(expanded));
+    };
+    trigger?.addEventListener('click', () => setExpanded(!stage.classList.contains('is-expanded')));
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && stage.classList.contains('is-expanded')) setExpanded(false);
+    });
+  });
+</script>
+
+<style>
+  :global(html.theme-preview-locked){overflow:hidden}
+  .theme-detail-page{overflow:hidden;background:var(--botanical-paper)}
+  .theme-detail-head{padding:clamp(46px,6vw,84px) 0 clamp(36px,5vw,62px)}
+  .theme-detail-head nav a{display:inline-flex;min-height:44px;align-items:center;gap:9px;color:color-mix(in srgb,var(--botanical-ink) 67%,white);font-size:12px;font-weight:750}
+  .theme-detail-heading{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(40px,8vw,120px);align-items:end;margin-top:clamp(40px,5vw,66px)}
+  .theme-detail-heading h1{margin-top:15px;color:var(--botanical-ink);font-family:var(--botanical-serif);font-size:clamp(68px,9vw,138px);font-weight:400;letter-spacing:-.065em;line-height:.8}
+  .theme-detail-heading>p{max-width:600px;color:color-mix(in srgb,var(--botanical-ink) 67%,white);font-size:clamp(16px,1.35vw,20px);line-height:1.6}
+  .theme-detail-preview{padding-bottom:clamp(70px,8vw,118px)}
+  .theme-detail-stage{display:grid;grid-template-columns:minmax(0,1fr) clamp(310px,26vw,390px);gap:16px;border-radius:24px;background:color-mix(in srgb,var(--botanical-mint) 46%,white);padding:16px}
+  .theme-detail-browser{min-width:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--botanical-ink) 13%,transparent);border-radius:16px;background:white;box-shadow:0 18px 50px rgb(15 62 23 / 13%)}
+  .theme-detail-bar{display:flex;min-height:46px;align-items:center;gap:7px;border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent);padding:0 9px 0 16px;background:#fffefc}
+  .theme-detail-bar>i{width:10px;height:10px;border-radius:50%;background:color-mix(in srgb,var(--botanical-ink) 18%,white)}
+  .theme-detail-bar>span{margin-left:8px;overflow:hidden;color:color-mix(in srgb,var(--botanical-ink) 48%,white);font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+  .theme-detail-bar button{display:grid;width:44px;height:44px;margin-left:auto;place-items:center;border:0;border-radius:12px;background:transparent;color:var(--botanical-ink);cursor:pointer}
+  .theme-detail-bar button:hover{background:var(--botanical-mint)}
+  .theme-detail-bar svg{width:20px;height:20px}.theme-detail-bar button>span{display:none;font:300 26px/1 var(--botanical-sans)}
+  .theme-detail-screen{height:clamp(530px,55vw,760px);overflow:hidden;background:white}
+  .theme-detail-screen iframe{display:block;width:100%;height:100%;border:0;background:white}
+  .theme-detail-side{display:flex;min-width:0;flex-direction:column;padding:clamp(26px,3vw,42px) clamp(18px,2vw,28px)}
+  .theme-detail-side-kicker{margin:0;color:color-mix(in srgb,var(--botanical-ink) 52%,white);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .theme-detail-side h2{margin:12px 0 0;font-family:var(--botanical-serif);font-size:clamp(38px,4vw,58px);font-weight:400;letter-spacing:-.045em;line-height:.95}
+  .theme-detail-side>p:not(.theme-detail-side-kicker){margin-top:18px;color:color-mix(in srgb,var(--botanical-ink) 65%,white);font-size:14px;line-height:1.55}
+  .theme-detail-tags,.theme-detail-fact-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.theme-detail-tags span,.theme-detail-fact-tags span{border:1px solid color-mix(in srgb,var(--botanical-ink) 14%,transparent);border-radius:999px;padding:6px 10px;color:color-mix(in srgb,var(--botanical-ink) 65%,white);font-size:10px}
+  .theme-detail-side ul{display:grid;gap:12px;margin:25px 0 0;padding:0;list-style:none}.theme-detail-side li{display:grid;grid-template-columns:16px 1fr;gap:8px;color:color-mix(in srgb,var(--botanical-ink) 70%,white);font-size:12px;line-height:1.45}.theme-detail-side li span{color:#397c49;font-weight:800}
+  .theme-detail-side-actions{display:grid;gap:8px;margin-top:auto;padding-top:28px}.theme-detail-side-actions a,.theme-detail-facts>a{display:flex;min-height:48px;align-items:center;justify-content:space-between;gap:14px;border:1px solid color-mix(in srgb,var(--botanical-ink) 18%,transparent);border-radius:999px;padding:0 17px;color:var(--botanical-ink);font-size:12px;font-weight:800}.theme-detail-side-actions a.is-primary{border-color:var(--botanical-ink);background:var(--botanical-ink);color:white}.theme-detail-side>small{margin-top:13px;color:color-mix(in srgb,var(--botanical-ink) 49%,white);font-size:10px;line-height:1.45}
+  .theme-detail-stage.is-expanded{position:fixed;inset:0;z-index:100;grid-template-columns:minmax(0,1fr) clamp(320px,27vw,410px);border-radius:0;padding:14px}.theme-detail-stage.is-expanded .theme-detail-screen{height:calc(100dvh - 76px);min-height:0}.theme-detail-stage.is-expanded .theme-detail-bar svg{display:none}.theme-detail-stage.is-expanded .theme-detail-bar button>span{display:block}
+  .theme-detail-info{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,.4fr);gap:clamp(55px,10vw,150px);padding-bottom:clamp(80px,10vw,145px)}
+  .theme-detail-story h2{max-width:900px;margin-top:18px;font-family:var(--botanical-serif);font-size:clamp(45px,6vw,86px);font-weight:400;letter-spacing:-.05em;line-height:.95}.theme-detail-story>p:not(.botanical-eyebrow){max-width:760px;margin-top:27px;color:color-mix(in srgb,var(--botanical-ink) 67%,white);font-size:clamp(16px,1.35vw,20px);line-height:1.65}.theme-detail-story ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 30px;margin:50px 0 0;padding:0;list-style:none}.theme-detail-story li{display:grid;grid-template-columns:42px 1fr;gap:12px;border-top:1px solid color-mix(in srgb,var(--botanical-ink) 12%,transparent);padding:18px 0}.theme-detail-story li b{color:#5f8d67;font-family:var(--botanical-serif);font-size:22px;font-weight:400}.theme-detail-story li span{color:color-mix(in srgb,var(--botanical-ink) 72%,white);font-size:13px;line-height:1.5}
+  .theme-detail-facts{align-self:start;border:1px solid color-mix(in srgb,var(--botanical-ink) 11%,transparent);border-radius:20px;background:white;padding:28px;box-shadow:0 16px 44px rgb(15 62 23 / 6%)}.theme-detail-facts h3{font-size:10px;letter-spacing:.1em;text-transform:uppercase}.theme-detail-facts dl{display:grid;gap:13px;margin:20px 0 28px}.theme-detail-facts dl>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent);padding-bottom:11px;font-size:12px}.theme-detail-facts dt{color:color-mix(in srgb,var(--botanical-ink) 52%,white)}.theme-detail-facts dd{font-weight:700;text-align:right}.theme-detail-fact-tags{margin-bottom:25px}.theme-detail-facts>a{margin-top:25px;background:var(--botanical-ink);color:white}
+  .theme-detail-related{padding-bottom:clamp(85px,10vw,145px)}.theme-detail-related>header{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}.theme-detail-related h2{font-family:var(--botanical-serif);font-size:clamp(36px,4vw,58px);font-weight:400;letter-spacing:-.04em}.theme-detail-related header>a{display:inline-flex;min-height:44px;align-items:center;gap:10px;border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 30%,transparent);font-size:12px;font-weight:800}.theme-detail-related>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.theme-detail-related-card{overflow:hidden;border:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent);border-radius:18px;background:white}.theme-detail-related-card :global(.theme-miniature){aspect-ratio:1.45}.theme-detail-related-card>span{display:grid;grid-template-columns:1fr auto;gap:7px 15px;padding:18px 20px}.theme-detail-related-card b{font-size:20px}.theme-detail-related-card small{grid-column:1;color:color-mix(in srgb,var(--botanical-ink) 56%,white);font-size:10px}.theme-detail-related-card i{grid-row:1 / span 2;grid-column:2;align-self:center;font-style:normal}
+  @media(prefers-reduced-motion:reduce){.theme-detail-stage,.theme-detail-related-card{transition:none}}
+  @media(max-width:1000px){.theme-detail-stage{grid-template-columns:1fr}.theme-detail-side{min-height:540px}.theme-detail-info{grid-template-columns:1fr}.theme-detail-facts{width:100%}}
+  @media(max-width:760px){.theme-detail-heading{grid-template-columns:1fr;gap:28px}.theme-detail-heading h1{font-size:72px}.theme-detail-stage{padding:0}.theme-detail-browser{border-radius:18px 18px 0 0}.theme-detail-screen{height:330px}.theme-detail-side{min-height:0;padding:28px 20px}.theme-detail-side ul{display:none}.theme-detail-stage.is-expanded{display:grid;grid-template-rows:minmax(300px,55dvh) minmax(0,1fr);grid-template-columns:1fr;padding:0}.theme-detail-stage.is-expanded .theme-detail-browser{border-radius:0}.theme-detail-stage.is-expanded .theme-detail-screen{height:calc(55dvh - 46px)}.theme-detail-stage.is-expanded .theme-detail-side{overflow-y:auto}.theme-detail-story ul{grid-template-columns:1fr}.theme-detail-related>header{align-items:flex-start;flex-direction:column}.theme-detail-related>div{grid-template-columns:1fr}}
+</style>

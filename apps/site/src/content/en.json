@@ -16,7 +16,7 @@
     "demo": "See demo",
     "mostrador": "Try the booking manager",
     "contacto": "Get started",
-    "web": "Website",
+    "web": "Websites",
     "gestor": "Manager",
     "contactar": "Contact",
     "comoFunciona": "View tour",
@@ -45,11 +45,17 @@
     "kicker": "A first step, with no commitment",
     "titulo": "Let's see what your campsite needs.",
     "texto": "Share the essentials. We will review your situation and reply with a clear proposal, without asking you to choose a plan now.",
-    "beneficios": ["A personal, not automated, reply", "Clear scope and next steps", "No card or commitment"],
+    "beneficios": [
+      "A personal, not automated, reply",
+      "Clear scope and next steps",
+      "No card or commitment"
+    ],
     "formKicker": "Request information",
     "formTitulo": "Tell us the essentials",
     "formTexto": "The email you entered is ready. Complete the remaining details and we will get in touch.",
     "mensajePlaceholder": "For example: I want to organise bookings and payments",
+    "temaSeleccionado": "Selected website:",
+    "mensajeTema": "I am interested in the {theme} website and want to adapt it to my campsite.",
     "enviar": "Send request"
   },
   "workflow": {
@@ -379,6 +385,42 @@
     "volver": "Back to the landing page",
     "estado": "Visual portfolio",
     "nota": "One technical base, distinct identities. Each demo changes light, voice, inventory and rhythm without duplicating the product.",
+    "detalle": {
+      "kicker": "Campsite website theme",
+      "descripcion": "A complete visual direction that gives {theme} its own personality, turns visits into enquiries and connects every step with campsite operations.",
+      "previewAria": "Expanded preview of the {theme} theme",
+      "abrirPreview": "Expand preview",
+      "cerrarPreview": "Close preview",
+      "verFicha": "View full theme page",
+      "verDemo": "Open browsable demo",
+      "solicitar": "I want this website",
+      "masInformacion": "More information",
+      "notaPreview": "We adapt it to your brand, accommodation and real sales process.",
+      "puntos": [
+        "Visual direction across home, catalogue, services and contact",
+        "Hierarchy designed for mobile, desktop and accessible reading",
+        "Enquiry or booking connected without diluting the website identity",
+        "The same product foundation, configured without duplicating the project"
+      ],
+      "comoTitulo": "An identity designed to sell and operate.",
+      "comoTexto": "This is not a closed template. We preserve what works —structure, performance and conversion— and adapt photography, voice, rhythm, inventory and calls to action to the real campsite.",
+      "resuelveTitulo": "What this direction solves",
+      "detallesTitulo": "Details",
+      "nivel": "Starting level",
+      "estado": "Status",
+      "entrega": "Delivery",
+      "entregaValor": "Published on your domain",
+      "incluye": "Includes",
+      "etiquetas": ["Responsive", "Direct booking", "Own identity"],
+      "relacionados": "Related themes",
+      "verTodosRelacionados": "View all themes",
+      "volver": "Back to all themes",
+      "buscar": "Search themes",
+      "buscarPlaceholder": "Coast, mountains, family…",
+      "filtrarAria": "Filter themes by level",
+      "todos": "All",
+      "sinResultados": "No themes match this search."
+    },
     "items": [
       {
         "slug": "olivar",
@@ -1381,28 +1423,88 @@
     "familiasTitulo": "Eight families, one shared view",
     "familiasIntro": "These 18 capabilities are a public selection from the internal catalogue. The status explains what can be explored today and what still needs validation.",
     "familias": [
-      { "nombre": "Operations centre", "estado": "Demo funcional", "texto": "The daily pulse and risks that need a decision.", "capacidades": ["Daily pulse", "Prioritised alerts", "Seven-day horizon"] },
-      { "nombre": "Housekeeping", "estado": "Demo funcional", "texto": "Turnarounds, teams and validation before arrival.", "capacidades": ["Turnaround priority", "Assignment and status", "Inspection and reopening"] },
-      { "nombre": "Maintenance and assets", "estado": "Demo funcional", "texto": "Incidents connected to inventory and upcoming arrivals.", "capacidades": ["Operational triage", "Inventory impact"] },
-      { "nombre": "Team and shifts", "estado": "Demo funcional", "texto": "Workload, pending items and a traceable handover.", "capacidades": ["Handover preparation", "Workload"] },
-      { "nombre": "Guest and communication", "estado": "Siguiente por validar", "texto": "Context before replying, with consent and language visible.", "capacidades": ["Guest timeline", "Coordinated requests"] },
-      { "nombre": "Bookings and groups", "estado": "Siguiente por validar", "texto": "Multi-unit files without fragmenting the conversation.", "capacidades": ["Rooming list", "Multiple payers"] },
-      { "nombre": "Revenue and financial control", "estado": "Visión futura", "texto": "An operational view, not statutory accounting.", "capacidades": ["Value, collected and balance", "Due dates"] },
-      { "nombre": "Intelligence and integrations", "estado": "Visión futura", "texto": "Explainable forecasts and proposals that wait for confirmation.", "capacidades": ["Daily summary", "Anomalies and copilot"] }
+      {
+        "nombre": "Operations centre",
+        "estado": "Demo funcional",
+        "texto": "The daily pulse and risks that need a decision.",
+        "capacidades": ["Daily pulse", "Prioritised alerts", "Seven-day horizon"]
+      },
+      {
+        "nombre": "Housekeeping",
+        "estado": "Demo funcional",
+        "texto": "Turnarounds, teams and validation before arrival.",
+        "capacidades": ["Turnaround priority", "Assignment and status", "Inspection and reopening"]
+      },
+      {
+        "nombre": "Maintenance and assets",
+        "estado": "Demo funcional",
+        "texto": "Incidents connected to inventory and upcoming arrivals.",
+        "capacidades": ["Operational triage", "Inventory impact"]
+      },
+      {
+        "nombre": "Team and shifts",
+        "estado": "Demo funcional",
+        "texto": "Workload, pending items and a traceable handover.",
+        "capacidades": ["Handover preparation", "Workload"]
+      },
+      {
+        "nombre": "Guest and communication",
+        "estado": "Siguiente por validar",
+        "texto": "Context before replying, with consent and language visible.",
+        "capacidades": ["Guest timeline", "Coordinated requests"]
+      },
+      {
+        "nombre": "Bookings and groups",
+        "estado": "Siguiente por validar",
+        "texto": "Multi-unit files without fragmenting the conversation.",
+        "capacidades": ["Rooming list", "Multiple payers"]
+      },
+      {
+        "nombre": "Revenue and financial control",
+        "estado": "Visión futura",
+        "texto": "An operational view, not statutory accounting.",
+        "capacidades": ["Value, collected and balance", "Due dates"]
+      },
+      {
+        "nombre": "Intelligence and integrations",
+        "estado": "Visión futura",
+        "texto": "Explainable forecasts and proposals that wait for confirmation.",
+        "capacidades": ["Daily summary", "Anomalies and copilot"]
+      }
     ],
     "estadosTitulo": "Maturity is always visible",
     "estados": [
-      { "nombre": "Available", "texto": "A product capability that can be activated with an agreed scope." },
-      { "nombre": "Functional demo", "texto": "A reversible local flow for evaluating the experience." },
+      {
+        "nombre": "Available",
+        "texto": "A product capability that can be activated with an agreed scope."
+      },
+      {
+        "nombre": "Functional demo",
+        "texto": "A reversible local flow for evaluating the experience."
+      },
       { "nombre": "Next to validate", "texto": "A scenario screen that needs customer learning." },
-      { "nombre": "Future vision", "texto": "Product direction; architecture and date are not committed." }
+      {
+        "nombre": "Future vision",
+        "texto": "Product direction; architecture and date are not committed."
+      }
     ],
     "jornadaTitulo": "The manager's day, one decision after another",
-    "jornada": ["Open the day", "Coordinate departures", "Resolve incidents", "Look after guests and groups", "Control revenue", "Hand over the shift", "Prepare tomorrow"],
+    "jornada": [
+      "Open the day",
+      "Coordinate departures",
+      "Resolve incidents",
+      "Look after guests and groups",
+      "Control revenue",
+      "Hand over the shift",
+      "Prepare tomorrow"
+    ],
     "flujosTitulo": "Three flows you can already explore",
     "flujos": [
       { "nombre": "Housekeeping", "pasos": ["Detect arrival", "Assign", "Mark ready", "Validate"] },
-      { "nombre": "Incident", "pasos": ["Report fault", "Assess impact", "Block in demo", "Prepare alternative"] },
+      {
+        "nombre": "Incident",
+        "pasos": ["Report fault", "Assess impact", "Block in demo", "Prepare alternative"]
+      },
       { "nombre": "Handover", "pasos": ["Gather risks", "Review", "Prepare", "Acknowledge"] }
     ],
     "autonomiaTitulo": "Automate according to risk",

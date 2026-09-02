@@ -116,7 +116,7 @@ const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/adm
 // pertenecer a un producto distinto. Los destinos absolutos funcionan desde
 // cualquier página y el recorrido se ocupa de navegar a su primer hito.
 const headerNav = [
-  { href: '/demo/', label: c.nav.web, icon: 'demo' },
+  { href: `${localePath(locale)}#demos`, label: c.nav.web, icon: 'demo' },
   { href: managerHref, label: c.nav.gestor, icon: 'manager' },
   { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
 ] as const;

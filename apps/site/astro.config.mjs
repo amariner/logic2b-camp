@@ -9,7 +9,23 @@ export default defineConfig({
     plugins: [tailwindcss()],
     server: {
       // dev: el endpoint de leads corre en wrangler dev (8787)
-      proxy: { '/api': 'http://localhost:8787' },
+      proxy: {
+        '/api': 'http://localhost:8787',
+        // En producción las demos se publican en este mismo origen. Durante el
+        // desarrollo del catálogo las servimos desde el despliegue vigente para
+        // que los visores puedan navegar la web completa sin componer el bundle.
+        '/demos': {
+          target: 'https://camp.logic2b.com',
+          changeOrigin: true,
+          configure(proxy) {
+            proxy.on('proxyRes', (response) => {
+              delete response.headers['x-frame-options'];
+              response.headers['content-security-policy'] =
+                "base-uri 'self'; frame-ancestors 'self'; object-src 'none'";
+            });
+          },
+        },
+      },
     },
   },
 });

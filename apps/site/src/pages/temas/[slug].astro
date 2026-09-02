@@ -1,0 +1,12 @@
+---
+import ThemeDetail from '../../components/ThemeDetail.astro';
+import { getContent } from '../../lib/i18n';
+
+export function getStaticPaths() {
+  return getContent('es').temas.items.map((theme) => ({ params: { slug: theme.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+
+<ThemeDetail locale="es" slug={slug ?? ''} />

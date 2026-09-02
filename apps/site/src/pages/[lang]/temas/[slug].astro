@@ -1,0 +1,14 @@
+---
+import ThemeDetail from '../../../components/ThemeDetail.astro';
+import { getContent, LOCALES, type Locale } from '../../../lib/i18n';
+
+export function getStaticPaths() {
+  return LOCALES.filter((locale) => locale !== 'es').flatMap((lang) =>
+    getContent(lang).temas.items.map((theme) => ({ params: { lang, slug: theme.slug } })),
+  );
+}
+
+const { lang, slug } = Astro.params;
+---
+
+<ThemeDetail locale={lang as Locale} slug={slug ?? ''} />

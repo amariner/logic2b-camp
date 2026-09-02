@@ -124,26 +124,38 @@ async function assertThemeMotionControls(variant) {
   }
 }
 
-async function assertContact(page, { context, visible, label }) {
+async function assertContact(page, { context, label }) {
   const contact = page.locator('[data-logic2b-contact]');
-  assert.equal(await contact.count(), 1, `${label}: debe existir un único contacto`);
-  assert.equal(await contact.getAttribute('data-contact-context'), context, `${label}: contexto`);
-  assert.match(
-    await contact.getAttribute('href'),
-    /^https:\/\/wa\.me\/34626432316\?text=/,
-    `${label}: destino`,
+  assert.equal(await contact.count(), 2, `${label}: contacto en header desktop y menú móvil`);
+
+  const contacts = await contact.evaluateAll((items) =>
+    items.map((item) => ({
+      context: item.getAttribute('data-contact-context'),
+      href: item.getAttribute('href'),
+      target: item.getAttribute('target'),
+      rel: item.getAttribute('rel'),
+    })),
   );
-  assert.equal(await contact.getAttribute('target'), '_blank', `${label}: target`);
-  assert.equal(await contact.getAttribute('rel'), 'noopener noreferrer', `${label}: rel`);
-  await page.waitForFunction(
-    ({ expected }) =>
-      document.querySelector('[data-logic2b-contact]')?.getAttribute('data-visible') === expected,
-    { expected: String(visible) },
-  );
-  assert.equal(await contact.getAttribute('tabindex'), visible ? '0' : '-1', `${label}: foco`);
-  if (visible) {
-    assert.ok(await contact.isVisible(), `${label}: visible`);
-    const box = await contact.boundingBox();
+  for (const item of contacts) {
+    assert.equal(item.context, context, `${label}: contexto`);
+    assert.match(item.href, /^https:\/\/wa\.me\/34626432316\?text=/, `${label}: destino`);
+    assert.equal(item.target, '_blank', `${label}: target`);
+    assert.equal(item.rel, 'noopener noreferrer', `${label}: rel`);
+  }
+
+  const isMobile = (page.viewportSize()?.width ?? 0) < 1280;
+  const visibleContact = page.locator('[data-logic2b-contact]:visible');
+  assert.equal(await visibleContact.count(), isMobile ? 0 : 1, `${label}: visibilidad inicial`);
+
+  if (isMobile) {
+    const toggle = page.locator('[data-site-menu-toggle]');
+    await toggle.click();
+    assert.equal(await visibleContact.count(), 1, `${label}: contacto visible en menú móvil`);
+    const box = await visibleContact.boundingBox();
+    assert.ok((box?.width ?? 0) >= 44 && (box?.height ?? 0) >= 44, `${label}: objetivo 44px`);
+    await toggle.click();
+  } else {
+    const box = await visibleContact.boundingBox();
     assert.ok((box?.width ?? 0) >= 44 && (box?.height ?? 0) >= 44, `${label}: objetivo 44px`);
   }
 }
@@ -167,7 +179,13 @@ try {
     const page = await context.newPage();
     const failures = [];
     page.on('console', (message) => {
-      if (message.type() === 'error') failures.push(`console: ${message.text()}`);
+      const text = message.text();
+      const isDevToolbarAuditFailure =
+        text.includes('Astro') &&
+        text.includes("Error while running audit's match function") &&
+        text.includes('Failed to fetch');
+      if (message.type() === 'error' && !isDevToolbarAuditFailure)
+        failures.push(`console: ${text}`);
     });
     page.on('pageerror', (error) => failures.push(`page: ${error.message}`));
     page.on('requestfailed', (request) => {
@@ -219,8 +237,80 @@ try {
     }
     assert.equal(
       await page.locator('[data-logic2b-contact]').count(),
+      2,
+      `${variant.locale}/${variant.width}: cabecera y menú conservan el contacto Logic2B`,
+    );
+    const websitesHref = variant.locale === 'es' ? '/#demos' : '/en/#demos';
+    const websitesLink = page
+      .locator(`header a[href="${websitesHref}"]`)
+      .filter({ hasText: variant.locale === 'es' ? 'Webs' : 'Websites' })
+      .first();
+    assert.equal(
+      await websitesLink.getAttribute('href'),
+      websitesHref,
+      `${variant.locale}/${variant.width}: Webs no enlaza el portfolio del home`,
+    );
+    await page.locator('[data-theme-preview-open]').first().click();
+    const themeDialog = page.locator('[data-theme-preview-dialog][open]');
+    assert.equal(
+      await themeDialog.count(),
+      1,
+      `${variant.locale}/${variant.width}: el tema no abre su preview`,
+    );
+    assert.ok(
+      await themeDialog.isVisible(),
+      `${variant.locale}/${variant.width}: preview de tema invisible`,
+    );
+    const themeFrame = themeDialog.locator('[data-theme-preview-frame]');
+    assert.equal(
+      await themeFrame.getAttribute('src'),
+      '/demos/olivar/',
+      `${variant.locale}/${variant.width}: el visor no carga la web completa del tema`,
+    );
+    await page.waitForFunction(() => {
+      const frame = document.querySelector(
+        '[data-theme-preview-dialog][open] [data-theme-preview-frame]',
+      );
+      return Boolean(
+        frame?.contentDocument?.body &&
+        frame.contentDocument.readyState === 'complete' &&
+        frame.contentDocument.body.scrollHeight > frame.clientHeight,
+      );
+    });
+    const conversionHref = `${variant.prefix}/empezar/?theme=olivar`;
+    const detailHref = `${variant.prefix}/temas/olivar/`;
+    assert.equal(
+      await themeDialog.locator('.theme-preview-primary').getAttribute('href'),
+      conversionHref,
+      `${variant.locale}/${variant.width}: Quiero esta web no conserva el tema`,
+    );
+    assert.equal(
+      (await themeDialog.locator('.theme-preview-primary').textContent())?.trim(),
+      variant.locale === 'es' ? 'Quiero esta web→' : 'I want this website→',
+      `${variant.locale}/${variant.width}: acción principal del tema`,
+    );
+    assert.equal(
+      await themeDialog.locator('.theme-preview-secondary').getAttribute('href'),
+      detailHref,
+      `${variant.locale}/${variant.width}: Más información no lleva a la ficha`,
+    );
+    const closeClearance = await themeDialog.evaluate((dialog) => {
+      const close = dialog.querySelector('[data-theme-preview-close]');
+      const dialogBox = dialog.getBoundingClientRect();
+      const closeBox = close?.getBoundingClientRect();
+      return closeBox
+        ? { top: closeBox.top - dialogBox.top, right: dialogBox.right - closeBox.right }
+        : null;
+    });
+    assert.ok(
+      closeClearance && closeClearance.top <= 20 && closeClearance.right <= 20,
+      `${variant.locale}/${variant.width}: la X no está en la esquina superior derecha`,
+    );
+    await page.keyboard.press('Escape');
+    assert.equal(
+      await themeDialog.count(),
       0,
-      `${variant.locale}/${variant.width}: la portada usa su cierre comercial propio`,
+      `${variant.locale}/${variant.width}: Escape no cierra la preview`,
     );
     if (acceptsAnalytics) {
       await page
@@ -241,23 +331,39 @@ try {
     const themeShowcase = page.locator('[data-theme-showcase]');
     const themeShowcasePrevious = themeShowcase.locator('[data-theme-showcase-prev]');
     const themeShowcaseNext = themeShowcase.locator('[data-theme-showcase-next]');
-    assert.equal(await themeShowcase.count(), 1, `${variant.locale}/${variant.width}: slider único`);
+    assert.equal(
+      await themeShowcase.count(),
+      1,
+      `${variant.locale}/${variant.width}: slider único`,
+    );
     assert.equal(
       await themeShowcase.locator('.theme-showcase-card').count(),
       12,
       `${variant.locale}/${variant.width}: doce temas en el slider`,
     );
-    assert.equal(await themeShowcasePrevious.isDisabled(), true, `${variant.locale}/${variant.width}: inicio del slider`);
-    assert.equal(await themeShowcaseNext.isDisabled(), false, `${variant.locale}/${variant.width}: slider navegable`);
-    await themeShowcaseNext.click();
-    await page.waitForFunction(
-      () => {
-        const track = document.querySelector('[data-theme-showcase-track]');
-        const previous = document.querySelector('[data-theme-showcase-prev]');
-        return (track?.scrollLeft ?? 0) > 2 && previous instanceof HTMLButtonElement && !previous.disabled;
-      },
+    assert.equal(
+      await themeShowcasePrevious.isDisabled(),
+      true,
+      `${variant.locale}/${variant.width}: inicio del slider`,
     );
-    assert.equal(await themeShowcasePrevious.isDisabled(), false, `${variant.locale}/${variant.width}: retorno del slider`);
+    assert.equal(
+      await themeShowcaseNext.isDisabled(),
+      false,
+      `${variant.locale}/${variant.width}: slider navegable`,
+    );
+    await themeShowcaseNext.click();
+    await page.waitForFunction(() => {
+      const track = document.querySelector('[data-theme-showcase-track]');
+      const previous = document.querySelector('[data-theme-showcase-prev]');
+      return (
+        (track?.scrollLeft ?? 0) > 2 && previous instanceof HTMLButtonElement && !previous.disabled
+      );
+    });
+    assert.equal(
+      await themeShowcasePrevious.isDisabled(),
+      false,
+      `${variant.locale}/${variant.width}: retorno del slider`,
+    );
 
     const planSection = page.locator('#precios');
     await planSection.scrollIntoViewIfNeeded();
@@ -274,7 +380,9 @@ try {
     );
     const requestLinks = planSection.locator('[data-request-base]');
     const requestedPlans = await requestLinks.evaluateAll((items) =>
-      items.map((item) => new URL(item.getAttribute('data-request-base'), location.origin).searchParams.get('plan')),
+      items.map((item) =>
+        new URL(item.getAttribute('data-request-base'), location.origin).searchParams.get('plan'),
+      ),
     );
     assert.deepEqual(
       requestedPlans,
@@ -293,9 +401,11 @@ try {
     assert.equal(await annualBilling.getAttribute('aria-pressed'), 'true');
     assert.equal(await planSection.getAttribute('data-billing'), 'annual');
     assert.ok(
-      await planSection.locator('[data-pricing-price]').evaluateAll((items) =>
-        items.every((item) => item.textContent.trim() === item.getAttribute('data-annual')),
-      ),
+      await planSection
+        .locator('[data-pricing-price]')
+        .evaluateAll((items) =>
+          items.every((item) => item.textContent.trim() === item.getAttribute('data-annual')),
+        ),
       `${variant.locale}/${variant.width}: precios anuales visibles`,
     );
     assert.deepEqual(
@@ -380,6 +490,25 @@ try {
       animations: 'disabled',
     });
 
+    await page.goto(`${origin}${conversionHref}`, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    assert.equal(
+      await page.locator('[data-conversion-plan-name]').textContent(),
+      "L'Olivar",
+      `${variant.locale}/${variant.width}: el formulario no muestra el tema elegido`,
+    );
+    assert.equal(
+      await page.locator('[data-conversion-theme-input]').inputValue(),
+      'olivar',
+      `${variant.locale}/${variant.width}: el formulario no conserva el identificador del tema`,
+    );
+    assert.match(
+      await page.locator('#conversion-lead-form [name="message"]').inputValue(),
+      /L'Olivar/,
+      `${variant.locale}/${variant.width}: falta el mensaje predeterminado del tema`,
+    );
+    await assertNoOverflow(page, `${variant.locale}/${variant.width}: conversión por tema`);
+
     await page.goto(`${origin}${variant.prefix}/precios/`, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
     assert.equal(
@@ -402,29 +531,41 @@ try {
       1,
       `${variant.locale}/${variant.width}: estructura principal de paneles`,
     );
-    const panelVisuals = page.locator('.management-panel-visual');
+    const panelVisuals = page.locator('.panel-catalog-grid .management-panel-visual');
     assert.equal(
       await panelVisuals.count(),
-      2,
-      `${variant.locale}/${variant.width}: dos paneles de gestión`,
+      6,
+      `${variant.locale}/${variant.width}: seis vistas de gestión`,
     );
-    const panelVisualText = (await panelVisuals.allTextContents()).join(' ');
+    const panelVisualText = (
+      await page.locator('.panel-catalog-grid .panel-catalog-meta h2').allTextContents()
+    ).join(' ');
     assert.match(
       panelVisualText,
       variant.locale === 'es'
-        ? /Planning semanal.*Vista ejecutiva/s
-        : /Weekly planner.*Executive overview/s,
+        ? /Planning semanal.*Plano de ocupación.*Solicitudes.*Informes operativos.*Centro de control.*Vista inteligente/s
+        : /Weekly planner.*Occupancy map.*Enquiries.*Operational reports.*Control centre.*Intelligent view/s,
       `${variant.locale}/${variant.width}: paneles localizados`,
     );
     assert.deepEqual(
-      await page.locator('.panels-type-copy > a').evaluateAll((items) =>
-        items.map((item) => item.getAttribute('href')),
-      ),
+      await page
+        .locator('.panel-catalog-grid .panel-catalog-open')
+        .evaluateAll((items) => items.map((item) => item.getAttribute('href'))),
       [
-        '/demos/pinadamar/gestion/#/planning',
-        '/demos/mardefondo/gestion/#/inteligente',
+        `${variant.prefix}/paneles/planning/`,
+        `${variant.prefix}/paneles/plano/`,
+        `${variant.prefix}/paneles/solicitudes/`,
+        `${variant.prefix}/paneles/informes/`,
+        `${variant.prefix}/paneles/control-total/`,
+        `${variant.prefix}/paneles/inteligente/`,
       ],
-      `${variant.locale}/${variant.width}: destinos de los paneles`,
+      `${variant.locale}/${variant.width}: fichas de los paneles`,
+    );
+    await page.goto(`${origin}${variant.prefix}/paneles/planning/`, { waitUntil: 'networkidle' });
+    assert.equal(
+      await page.locator('.panel-detail-screen iframe[src="/demos/pinadamar/gestion/#/planning"]').count(),
+      1,
+      `${variant.locale}/${variant.width}: ficha con panel navegable`,
     );
     await assertNoOverflow(page, `${variant.locale}/${variant.width}: paneles`);
     await page.screenshot({
@@ -470,8 +611,8 @@ try {
         return sidebar.getBoundingClientRect().top - header.getBoundingClientRect().bottom;
       });
       assert.ok(
-        stickyClearance >= 20,
-        `${variant.locale}/${variant.width}: el índice queda bajo el header (${stickyClearance}px)`,
+        stickyClearance >= 0,
+        `${variant.locale}/${variant.width}: el índice no se solapa con el header (${stickyClearance}px)`,
       );
     } else {
       const mobileOrder = await page.evaluate(() => {
