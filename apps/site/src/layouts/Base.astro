@@ -122,6 +122,8 @@ const headerNav = [
 ] as const;
 const isHome = ruta === '/';
 const whatsappContact = logic2bContact(locale, contactContext);
+const menuOpenLabel = locale === 'es' ? 'Abrir menú' : 'Open menu';
+const menuCloseLabel = locale === 'es' ? 'Cerrar menú' : 'Close menu';
 ---
 
 <!doctype html>
@@ -205,7 +207,7 @@ const whatsappContact = logic2bContact(locale, contactContext);
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
       {/* Raíles botánicos: el CSS amplía el contenedor y fija 72px de alto. */}
-      <div class="site-header-inner mx-auto flex h-[72px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
+      <div class="site-header-inner relative mx-auto flex h-[72px] max-w-[1440px] items-center gap-2 px-4 sm:gap-[34px] sm:px-[clamp(24px,4vw,32px)]">
         {/* El envoltorio ya no es un `<a>`: el wordmark lleva dentro sus dos
             enlaces («Logic2B» → logic2b.com · «Campings» → inicio) y HTML no
             permite anidarlos. */}
@@ -217,10 +219,12 @@ const whatsappContact = logic2bContact(locale, contactContext);
           <button
             type="button"
             class="site-menu-toggle"
-            aria-label="Abrir menú"
+            aria-label={menuOpenLabel}
             aria-controls="site-menu"
             aria-expanded="false"
             data-site-menu-toggle
+            data-open-label={menuOpenLabel}
+            data-close-label={menuCloseLabel}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
               <path d="M4 7h16M4 12h16M4 17h16" />
@@ -374,22 +378,43 @@ const whatsappContact = logic2bContact(locale, contactContext);
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('[data-site-menu-toggle]');
       const menu = document.querySelector<HTMLElement>('[data-site-menu]');
+      const consentBanner = document.querySelector<HTMLElement>('[data-consent-banner]');
+      const suspendConsent = () => {
+        if (!consentBanner || consentBanner.hidden) return;
+        consentBanner.dataset.suspendedByMenu = 'true';
+        consentBanner.hidden = true;
+      };
+      const restoreConsent = () => {
+        if (!consentBanner || consentBanner.dataset.suspendedByMenu !== 'true') return;
+        delete consentBanner.dataset.suspendedByMenu;
+        consentBanner.hidden = false;
+      };
       const closeMenu = () => {
         if (!toggle || !menu) return;
         menu.hidden = true;
         toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', toggle.dataset.openLabel ?? '');
+        restoreConsent();
       };
 
       toggle?.addEventListener('click', () => {
         if (!menu) return;
         const isOpen = menu.hidden;
+        if (isOpen) suspendConsent();
         menu.hidden = !isOpen;
         toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute('aria-label', isOpen ? toggle.dataset.closeLabel ?? '' : toggle.dataset.openLabel ?? '');
+        if (!isOpen) restoreConsent();
       });
 
-      document.querySelectorAll('[data-site-menu-link]').forEach((link) => link.addEventListener('click', closeMenu));
+      document.querySelectorAll('[data-site-menu-link]').forEach((link) =>
+        link.addEventListener('click', () => closeMenu()),
+      );
       document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeMenu();
+        if (event.key === 'Escape' && menu && !menu.hidden) {
+          closeMenu();
+          toggle?.focus({ preventScroll: true });
+        }
       });
       document.addEventListener('click', (event) => {
         if (menu && toggle && !menu.hidden && !menu.contains(event.target as Node) && !toggle.contains(event.target as Node)) {

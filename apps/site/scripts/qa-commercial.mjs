@@ -15,6 +15,10 @@ const variants = [
   { locale: 'en', prefix: '/en', width: 1366, height: 900 },
   { locale: 'en', prefix: '/en', width: 375, height: 812 },
 ];
+const compactDialogVariants = [
+  { width: 320, height: 568, orientation: 'portrait' },
+  { width: 667, height: 375, orientation: 'landscape' },
+];
 const motionLabels = {
   es: {
     pause: 'Pausar el movimiento de los temas',
@@ -160,6 +164,252 @@ async function assertContact(page, { context, label }) {
   }
 }
 
+async function assertTouchTarget(locator, label) {
+  const box = await locator.boundingBox();
+  const dimensions = box ? `${box.width.toFixed(1)}×${box.height.toFixed(1)}px` : 'invisible';
+  assert.ok(
+    box && box.width >= 44 && box.height >= 44,
+    `${label}: objetivo táctil ${dimensions}, mínimo 44×44px`,
+  );
+}
+
+async function assertCompactDialogLayout(page, testCase, variant) {
+  await page.locator(testCase.trigger).first().click();
+  const dialog = page.locator(testCase.dialog);
+  assert.equal(
+    await dialog.count(),
+    1,
+    `${variant.width}×${variant.height}/${testCase.label}: el diálogo no abre`,
+  );
+  assert.ok(
+    await dialog.isVisible(),
+    `${variant.width}×${variant.height}/${testCase.label}: diálogo invisible`,
+  );
+
+  const dialogBox = await dialog.boundingBox();
+  const previewBox = await dialog.locator(testCase.preview).boundingBox();
+  const detailBox = await dialog.locator(testCase.detail).boundingBox();
+  assert.ok(
+    dialogBox && previewBox && detailBox,
+    `${variant.width}×${variant.height}/${testCase.label}: vista o ficha invisible`,
+  );
+
+  if (testCase.inset) {
+    assert.ok(
+      dialogBox.x >= 8 &&
+        dialogBox.y >= 8 &&
+        dialogBox.x + dialogBox.width <= variant.width - 8 &&
+        dialogBox.y + dialogBox.height <= variant.height - 8,
+      `${variant.width}×${variant.height}/${testCase.label}: el fondo no queda visible alrededor del popup`,
+    );
+    assert.equal(
+      await dialog.locator(testCase.popout).count(),
+      0,
+      `${variant.width}×${variant.height}/${testCase.label}: no debe aparecer la acción de pantalla completa`,
+    );
+  }
+
+  if (variant.orientation === 'portrait') {
+    const horizontalOverlap =
+      Math.min(previewBox.x + previewBox.width, detailBox.x + detailBox.width) -
+      Math.max(previewBox.x, detailBox.x);
+    assert.ok(
+      previewBox.height >= 240,
+      `${variant.width}×${variant.height}/${testCase.label}: vista ${previewBox.height.toFixed(1)}px < 240px`,
+    );
+    assert.ok(
+      detailBox.height >= (testCase.minimumPortraitDetail ?? 220),
+      `${variant.width}×${variant.height}/${testCase.label}: ficha ${detailBox.height.toFixed(1)}px demasiado baja`,
+    );
+    if (testCase.minimumPortraitPreviewRatio) {
+      assert.ok(
+        previewBox.height / dialogBox.height >= testCase.minimumPortraitPreviewRatio,
+        `${variant.width}×${variant.height}/${testCase.label}: la web no ocupa suficiente altura`,
+      );
+    }
+    if (testCase.previewPriority) {
+      assert.ok(
+        previewBox.height > detailBox.height,
+        `${variant.width}×${variant.height}/${testCase.label}: la ficha ocupa más altura que la web`,
+      );
+    }
+    assert.ok(
+      previewBox.y + previewBox.height <= detailBox.y + 1 &&
+        horizontalOverlap >= Math.min(previewBox.width, detailBox.width) * 0.8,
+      `${variant.width}×${variant.height}/${testCase.label}: vista y ficha no están apiladas`,
+    );
+  } else {
+    const verticalOverlap =
+      Math.min(previewBox.y + previewBox.height, detailBox.y + detailBox.height) -
+      Math.max(previewBox.y, detailBox.y);
+    assert.ok(
+      previewBox.width >= 240,
+      `${variant.width}×${variant.height}/${testCase.label}: vista ${previewBox.width.toFixed(1)}px < 240px`,
+    );
+    assert.ok(
+      detailBox.width >= (testCase.minimumLandscapeDetail ?? 240),
+      `${variant.width}×${variant.height}/${testCase.label}: ficha ${detailBox.width.toFixed(1)}px demasiado estrecha`,
+    );
+    if (testCase.previewPriority) {
+      assert.ok(
+        previewBox.width > detailBox.width,
+        `${variant.width}×${variant.height}/${testCase.label}: la ficha ocupa más anchura que la web`,
+      );
+    }
+    if (testCase.maximumLandscapeDetailRatio) {
+      assert.ok(
+        detailBox.width / dialogBox.width <= testCase.maximumLandscapeDetailRatio,
+        `${variant.width}×${variant.height}/${testCase.label}: la ficha roba demasiada anchura a la web`,
+      );
+    }
+    assert.ok(
+      previewBox.x + previewBox.width <= detailBox.x + 1 &&
+        verticalOverlap >= Math.min(previewBox.height, detailBox.height) * 0.8,
+      `${variant.width}×${variant.height}/${testCase.label}: el diálogo no está en dos columnas`,
+    );
+  }
+
+  await assertTouchTarget(
+    dialog.locator(testCase.close),
+    `${variant.width}×${variant.height}/${testCase.label}: cierre`,
+  );
+  await assertTouchTarget(
+    dialog.locator(testCase.primary),
+    `${variant.width}×${variant.height}/${testCase.label}: acción principal`,
+  );
+  await assertTouchTarget(
+    dialog.locator(testCase.secondary),
+    `${variant.width}×${variant.height}/${testCase.label}: acción secundaria`,
+  );
+
+  await page.keyboard.press('Escape');
+  assert.equal(
+    await dialog.count(),
+    0,
+    `${variant.width}×${variant.height}/${testCase.label}: Escape no cierra el diálogo`,
+  );
+}
+
+async function assertCompactHomeDialogs() {
+  const testCases = [
+    {
+      label: 'tema',
+      trigger: '[data-theme-showcase] [data-theme-preview-open="theme-preview-olivar"]',
+      dialog: '[data-theme-preview-dialog][open]',
+      preview: '.theme-preview-browser',
+      detail: '.theme-preview-side',
+      close: '[data-theme-preview-close]',
+      primary: '.theme-preview-primary',
+      secondary: '.theme-preview-secondary',
+      popout: '.theme-preview-popout',
+      inset: true,
+      previewPriority: true,
+      minimumPortraitDetail: 60,
+      minimumLandscapeDetail: 188,
+      minimumPortraitPreviewRatio: 0.85,
+      maximumLandscapeDetailRatio: 0.32,
+    },
+    {
+      label: 'panel',
+      trigger:
+        '[data-management-explorer].is-home [data-management-open="management-preview-home-planning"]',
+      dialog: '[data-management-dialog][open]',
+      preview: '.management-preview-browser',
+      detail: '.management-preview-side',
+      close: '[data-management-close]',
+      primary: '.management-preview-primary',
+      secondary: '.management-preview-secondary',
+      popout: '.management-preview-popout',
+      inset: true,
+      previewPriority: true,
+      minimumLandscapeDetail: 220,
+    },
+  ];
+
+  for (const variant of compactDialogVariants) {
+    const context = await browser.newContext({
+      viewport: { width: variant.width, height: variant.height },
+      reducedMotion: 'reduce',
+      colorScheme: 'light',
+    });
+    await context.route('**/demos/**', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'text/html',
+        body: '<!doctype html><html><body style="min-height:1200px"></body></html>',
+      }),
+    );
+    const page = await context.newPage();
+
+    try {
+      await page.goto(`${origin}/`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => document.fonts.ready);
+      const rejectConsent = page.locator('[data-consent-reject]').first();
+      if (await rejectConsent.isVisible()) await rejectConsent.click();
+
+      for (const testCase of testCases) {
+        await assertCompactDialogLayout(page, testCase, variant);
+      }
+      await assertNoOverflow(page, `${variant.width}×${variant.height}: dialogs compactos`);
+      console.log(
+        `${variant.width}×${variant.height} · previews de tema y panel con reparto útil y objetivos táctiles`,
+      );
+    } finally {
+      await context.close();
+    }
+  }
+}
+
+async function assertDesktopSubpageHeaders() {
+  const context = await browser.newContext({
+    viewport: { width: 1920, height: 900 },
+    reducedMotion: 'reduce',
+    colorScheme: 'light',
+  });
+  const page = await context.newPage();
+  const routes = ['/temas/', '/paneles/', '/precios/', '/inteligente/', '/docs/'];
+
+  try {
+    for (const route of routes) {
+      await page.goto(`${origin}${route}`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => document.fonts.ready);
+      const geometry = await page.evaluate(() => {
+        const header = document.querySelector('.site-header-inner')?.getBoundingClientRect();
+        const heroElement = document.querySelector('.botanical-subpage-hero');
+        const hero = heroElement?.getBoundingClientRect();
+        return {
+          header: header ? { x: header.x, width: header.width } : null,
+          hero: hero ? { x: hero.x, width: hero.width } : null,
+          borderTop: heroElement ? getComputedStyle(heroElement).borderTopWidth : null,
+          borderBottom: heroElement ? getComputedStyle(heroElement).borderBottomWidth : null,
+          backgroundWidth: heroElement
+            ? Number.parseFloat(getComputedStyle(heroElement, '::before').width)
+            : 0,
+          viewportWidth: document.documentElement.clientWidth,
+          overflow: document.body.scrollWidth - document.documentElement.clientWidth,
+        };
+      });
+
+      assert.ok(geometry.header && geometry.hero, `${route}: faltan cabecera o hero comercial`);
+      assert.ok(
+        Math.abs(geometry.header.x - geometry.hero.x) <= 1 &&
+          Math.abs(geometry.header.width - geometry.hero.width) <= 1,
+        `${route}: cabecera y hero no comparten alineación`,
+      );
+      assert.equal(geometry.borderTop, '0px', `${route}: línea superior del hero`);
+      assert.equal(geometry.borderBottom, '0px', `${route}: línea inferior del hero`);
+      assert.ok(
+        geometry.backgroundWidth >= geometry.viewportWidth - 1,
+        `${route}: la banda del hero no conserva el fondo completo`,
+      );
+      assert.equal(geometry.overflow, 0, `${route}: la banda del hero provoca desborde`);
+    }
+    console.log('desktop · cabeceras comerciales alineadas y sin líneas divisorias');
+  } finally {
+    await context.close();
+  }
+}
+
 try {
   for (const variant of variants) {
     await assertThemeMotionControls(variant);
@@ -222,6 +472,54 @@ try {
       await consentBanner.isVisible(),
       `${variant.locale}/${variant.width}: banner visible`,
     );
+    if (variant.width < 640) {
+      const menuToggle = page.locator('[data-site-menu-toggle]');
+      await assertTouchTarget(
+        consentBanner.locator('[data-consent-configure]'),
+        `${variant.locale}/${variant.width}: configurar cookies`,
+      );
+      // La toolbar de desarrollo de Astro ocupa la esquina inferior en móvil;
+      // no existe en build y puede interceptar este control del banner.
+      await consentBanner.locator('[data-consent-configure]').click({ force: true });
+      await assertTouchTarget(
+        consentBanner.locator('[data-consent-back]'),
+        `${variant.locale}/${variant.width}: volver de preferencias`,
+      );
+      await assertTouchTarget(
+        consentBanner.locator('.consent__toggle'),
+        `${variant.locale}/${variant.width}: selector de analítica`,
+      );
+      await consentBanner.locator('[data-consent-back]').click();
+      await menuToggle.click();
+      assert.ok(
+        await page.locator('[data-site-menu]').isVisible(),
+        `${variant.locale}/${variant.width}: el menú móvil no abre`,
+      );
+      assert.equal(
+        await consentBanner.isVisible(),
+        false,
+        `${variant.locale}/${variant.width}: menú y cookies se solapan`,
+      );
+      assert.equal(
+        await menuToggle.getAttribute('aria-label'),
+        variant.locale === 'es' ? 'Cerrar menú' : 'Close menu',
+        `${variant.locale}/${variant.width}: el menú no anuncia su estado abierto`,
+      );
+      await page.keyboard.press('Escape');
+      assert.equal(
+        await page.locator('[data-site-menu]').isVisible(),
+        false,
+        `${variant.locale}/${variant.width}: Escape no cierra el menú`,
+      );
+      assert.ok(
+        await consentBanner.isVisible(),
+        `${variant.locale}/${variant.width}: cookies no reaparece al cerrar el menú`,
+      );
+      assert.ok(
+        await menuToggle.evaluate((element) => document.activeElement === element),
+        `${variant.locale}/${variant.width}: el foco no vuelve al botón del menú`,
+      );
+    }
     const acceptsAnalytics = variant.locale === 'es' && variant.width === 1366;
     if (acceptsAnalytics) {
       await consentBanner.locator('[data-consent-accept]').click();
@@ -250,7 +548,10 @@ try {
       websitesHref,
       `${variant.locale}/${variant.width}: Webs no enlaza el portfolio del home`,
     );
-    await page.locator('[data-theme-preview-open]').first().click();
+    await page
+      .locator('[data-theme-showcase] [data-theme-preview-open="theme-preview-olivar"]')
+      .first()
+      .click();
     const themeDialog = page.locator('[data-theme-preview-dialog][open]');
     assert.equal(
       await themeDialog.count(),
@@ -306,11 +607,126 @@ try {
       closeClearance && closeClearance.top <= 20 && closeClearance.right <= 20,
       `${variant.locale}/${variant.width}: la X no está en la esquina superior derecha`,
     );
+    await assertTouchTarget(
+      themeDialog.locator('[data-theme-preview-close]'),
+      `${variant.locale}/${variant.width}: cierre del tema`,
+    );
+    await assertTouchTarget(
+      themeDialog.locator('.theme-preview-primary'),
+      `${variant.locale}/${variant.width}: acción principal del tema`,
+    );
+    await assertTouchTarget(
+      themeDialog.locator('.theme-preview-secondary'),
+      `${variant.locale}/${variant.width}: ficha del tema`,
+    );
     await page.keyboard.press('Escape');
     assert.equal(
       await themeDialog.count(),
       0,
       `${variant.locale}/${variant.width}: Escape no cierra la preview`,
+    );
+
+    const heroThemeRail = page.locator('[data-theme-motion]');
+    const heroThemeTrigger = heroThemeRail
+      .locator(
+        '.camp-theme-card:not([aria-hidden="true"]) [data-theme-preview-open="theme-preview-olivar"]',
+      )
+      .first();
+    await heroThemeTrigger.click();
+    assert.equal(
+      await page.locator('[data-theme-preview-dialog][open]').count(),
+      1,
+      `${variant.locale}/${variant.width}: el carrusel visual del hero no abre el tema`,
+    );
+    assert.equal(
+      await heroThemeRail.getAttribute('data-preview-paused'),
+      'true',
+      `${variant.locale}/${variant.width}: el carrusel visual sigue moviéndose bajo el diálogo`,
+    );
+    await page.keyboard.press('Escape');
+    assert.equal(
+      await page.locator('[data-theme-preview-dialog][open]').count(),
+      0,
+      `${variant.locale}/${variant.width}: el tema del hero no cierra con Escape`,
+    );
+
+    const panelTriggers = page.locator(
+      '[data-management-explorer].is-home [data-management-open="management-preview-home-planning"]',
+    );
+    assert.equal(
+      await panelTriggers.count(),
+      2,
+      `${variant.locale}/${variant.width}: deben existir dos accesos al panel`,
+    );
+    await assertTouchTarget(
+      panelTriggers.first(),
+      `${variant.locale}/${variant.width}: acceso visual al panel`,
+    );
+    await assertTouchTarget(
+      panelTriggers.last(),
+      `${variant.locale}/${variant.width}: acceso secundario al panel`,
+    );
+    await panelTriggers.first().click();
+    const panelDialog = page.locator('[data-management-dialog][open]');
+    assert.equal(
+      await panelDialog.count(),
+      1,
+      `${variant.locale}/${variant.width}: el panel no abre su preview`,
+    );
+    assert.ok(
+      await panelDialog.isVisible(),
+      `${variant.locale}/${variant.width}: preview del panel invisible`,
+    );
+    assert.equal(
+      await panelDialog.locator('[data-management-frame]').getAttribute('src'),
+      '/demos/pinadamar/gestion/#/planning',
+      `${variant.locale}/${variant.width}: el visor no carga el planning completo`,
+    );
+    await page.waitForFunction(() => {
+      const frame = document.querySelector(
+        '[data-management-dialog][open] [data-management-frame]',
+      );
+      return Boolean(
+        frame?.contentDocument?.body && frame.contentDocument.readyState === 'complete',
+      );
+    });
+    assert.equal(
+      await panelDialog.locator('.management-preview-primary').getAttribute('href'),
+      `${variant.prefix}/empezar/?panel=planning`,
+      `${variant.locale}/${variant.width}: el CTA no conserva el panel`,
+    );
+    assert.equal(
+      (await panelDialog.locator('.management-preview-primary').textContent())?.trim(),
+      variant.locale === 'es' ? 'Quiero este panel→' : 'I want this dashboard→',
+      `${variant.locale}/${variant.width}: acción principal del panel`,
+    );
+    assert.equal(
+      await panelDialog.locator('.management-preview-secondary').getAttribute('href'),
+      `${variant.prefix}/paneles/planning/`,
+      `${variant.locale}/${variant.width}: la ficha no corresponde al panel`,
+    );
+    assert.equal(
+      (await panelDialog.locator('.management-preview-secondary').textContent())?.trim(),
+      variant.locale === 'es' ? 'Ver ficha completa↗' : 'View full dashboard page↗',
+      `${variant.locale}/${variant.width}: etiqueta de la ficha del panel`,
+    );
+    await assertTouchTarget(
+      panelDialog.locator('[data-management-close]'),
+      `${variant.locale}/${variant.width}: cierre del panel`,
+    );
+    await assertTouchTarget(
+      panelDialog.locator('.management-preview-primary'),
+      `${variant.locale}/${variant.width}: acción principal del panel`,
+    );
+    await assertTouchTarget(
+      panelDialog.locator('.management-preview-secondary'),
+      `${variant.locale}/${variant.width}: ficha del panel`,
+    );
+    await page.keyboard.press('Escape');
+    assert.equal(
+      await panelDialog.count(),
+      0,
+      `${variant.locale}/${variant.width}: Escape no cierra la preview del panel`,
     );
     if (acceptsAnalytics) {
       await page
@@ -563,7 +979,9 @@ try {
     );
     await page.goto(`${origin}${variant.prefix}/paneles/planning/`, { waitUntil: 'networkidle' });
     assert.equal(
-      await page.locator('.panel-detail-screen iframe[src="/demos/pinadamar/gestion/#/planning"]').count(),
+      await page
+        .locator('.panel-detail-screen iframe[src="/demos/pinadamar/gestion/#/planning"]')
+        .count(),
       1,
       `${variant.locale}/${variant.width}: ficha con panel navegable`,
     );
@@ -670,6 +1088,8 @@ try {
     );
     await context.close();
   }
+  await assertDesktopSubpageHeaders();
+  await assertCompactHomeDialogs();
 } finally {
   await browser.close();
 }

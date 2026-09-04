@@ -98,7 +98,13 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
       <div>
         {related.map((item) => (
           <a class="theme-detail-related-card" href={themePath(item.slug)}>
-            <ThemeMiniature name={item.nombre} style={item.estilo} image={portfolioImage(item.slug, item.imagen)} variant={item.variante} />
+            <ThemeMiniature
+              name={item.nombre}
+              style={item.estilo}
+              image={portfolioImage(item.slug, item.imagen)}
+              variant={item.variante}
+              sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1600px) 30vw, 480px"
+            />
             <span><b>{item.nombre}</b><small>{item.estilo}</small><i aria-hidden="true">→</i></span>
           </a>
         ))}

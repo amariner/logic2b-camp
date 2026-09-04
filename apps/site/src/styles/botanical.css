@@ -78,16 +78,40 @@
 }
 
 .botanical-subpage-hero {
-  width: 100% !important;
-  max-width: none !important;
-  margin-inline: 0 !important;
-  border-block: 1px solid color-mix(in srgb, var(--botanical-ink) 7%, transparent);
-  background: linear-gradient(
+  --botanical-subpage-surface: linear-gradient(
     145deg,
     color-mix(in srgb, var(--botanical-keylime) 72%, var(--botanical-paper)),
     color-mix(in srgb, var(--botanical-mint) 45%, var(--botanical-paper))
   );
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  border: 0;
+  background: var(--botanical-subpage-surface);
   padding-inline: clamp(24px, 5vw, 80px) !important;
+}
+
+@media (min-width: 768px) {
+  .botanical-subpage-hero {
+    position: relative;
+    isolation: isolate;
+    width: calc(100% - clamp(32px, 5vw, 72px)) !important;
+    max-width: 1600px !important;
+    margin-inline: auto !important;
+    background: transparent;
+    padding-inline: 0 !important;
+  }
+
+  .botanical-subpage-hero::before {
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    z-index: -1;
+    width: 100vw;
+    background: var(--botanical-subpage-surface);
+    content: '';
+    transform: translateX(-50%);
+  }
 }
 
 .docs-public-frame {
@@ -188,9 +212,9 @@
 .site-menu {
   position: absolute;
   top: calc(100% + 10px);
-  right: 0;
+  right: clamp(16px, 4vw, 32px);
   z-index: 50;
-  width: min(340px, 100%);
+  width: min(340px, calc(100% - 32px));
   border: 1px solid var(--botanical-border);
   border-radius: 16px;
   background: var(--botanical-paper);
@@ -549,6 +573,7 @@ button.site-menu__link {
 .botanical-hero-shortcuts a,
 .botanical-hero-shortcuts button {
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   gap: 9px;
@@ -1159,6 +1184,7 @@ button.site-menu__link {
 
 .botanical-guide {
   display: flex;
+  min-height: 44px;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
@@ -1190,11 +1216,12 @@ button.site-menu__link {
 
 .botanical-faq-list details {
   border-bottom: 1px solid var(--botanical-border);
-  padding: 22px 0;
+  padding: 14px 0;
 }
 
 .botanical-faq-list summary {
   display: flex;
+  min-height: 44px;
   cursor: pointer;
   align-items: center;
   justify-content: space-between;
@@ -1361,7 +1388,7 @@ button.site-menu__link {
   background: var(--botanical-paper);
   padding: 11px 12px;
   color: var(--botanical-charcoal);
-  font-size: 14px;
+  font-size: 16px;
   outline: 0;
 }
 
@@ -1504,7 +1531,7 @@ button.site-menu__link {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 639px) {
   /* Las dos acciones ya viven dentro del menú móvil. Mantenerlas también en la
      barra dejaba wordmark + 2 CTA + hamburguesa en 351 px útiles: 34 px de
      desborde horizontal a 375. */
@@ -1512,6 +1539,9 @@ button.site-menu__link {
   .site-header-start {
     display: none;
   }
+}
+
+@media (max-width: 560px) {
 
   .botanical-heading {
     font-size: 43px;
@@ -1559,8 +1589,10 @@ button.site-menu__link {
 
   .botanical-hero-email {
     width: 0;
+    min-height: 48px;
+    align-self: stretch;
     padding-left: 12px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .botanical-hero-cta .botanical-button {

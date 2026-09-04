@@ -12,16 +12,17 @@ interface Props {
   image: PortfolioImage;
   variant: string;
   eager?: boolean;
+  sizes?: string;
 }
 
-const { name, style, image, variant, eager = false } = Astro.props;
+const { name, style, image, variant, eager = false, sizes: requestedSizes } = Astro.props;
 const optimized = typeof image !== 'string';
 // El componente vive en dos geometrías distintas sin pedir contexto a sus
 // consumidores: una columna del catálogo y media columna del carril del héroe.
 const catalog = /\/temas\/?$/.test(Astro.url.pathname);
-const sizes = catalog
+const sizes = requestedSizes ?? (catalog
   ? '(max-width: 760px) calc(100vw - 24px), (max-width: 1600px) calc(50vw - 43px), 793px'
-  : '(max-width: 767px) calc(50vw - 42px), (max-width: 1023px) calc(50vw - 60px), (max-width: 1600px) 24vw, 420px';
+  : '(max-width: 767px) calc(50vw - 42px), (max-width: 1023px) calc(50vw - 60px), (max-width: 1600px) 24vw, 420px');
 ---
 
 <div class="theme-miniature" data-theme-variant={variant}>

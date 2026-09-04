@@ -33,6 +33,7 @@ interface Props {
       solicitar: string;
       masInformacion: string;
       notaPreview: string;
+      cargandoPreview: string;
       puntos: string[];
       etiquetas: string[];
     };
@@ -47,7 +48,6 @@ const sliderLabel = locale === 'es' ? 'Doce temas web para campings' : 'Twelve w
 const detail = c.detalle;
 const detailPath = (slug: string) => localePath(locale, `temas/${slug}/`);
 const conversionPath = (slug: string) => `${localePath(locale, 'empezar/')}?theme=${encodeURIComponent(slug)}`;
-const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', theme.nombre);
 ---
 
 <section id="demos" class="theme-showcase botanical-section" aria-labelledby="theme-showcase-title" data-theme-showcase>
@@ -84,6 +84,8 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
                 class="theme-showcase-visual"
                 type="button"
                 aria-label={`${detail.abrirPreview}: ${theme.nombre}`}
+                aria-controls={`theme-preview-${theme.slug}`}
+                aria-haspopup="dialog"
                 data-theme-preview-open={`theme-preview-${theme.slug}`}
               >
                 <ThemeMiniature
@@ -92,6 +94,7 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
                   image={portfolioImage(theme.slug, theme.imagen)}
                   variant={theme.variante}
                   eager={index < 4}
+                  sizes="(max-width: 767px) 82vw, (max-width: 1023px) 46vw, (max-width: 1600px) 24vw, 360px"
                 />
               </button>
             ) : (
@@ -102,6 +105,7 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
                   image={portfolioImage(theme.slug, theme.imagen)}
                   variant={theme.variante}
                   eager={index < 4}
+                  sizes="(max-width: 767px) 82vw, (max-width: 1023px) 46vw, (max-width: 1600px) 24vw, 360px"
                 />
               </div>
             )}
@@ -117,6 +121,8 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
                   class="theme-showcase-open"
                   type="button"
                   aria-label={`${detail.abrirPreview}: ${theme.nombre}`}
+                  aria-controls={`theme-preview-${theme.slug}`}
+                  aria-haspopup="dialog"
                   data-theme-preview-open={`theme-preview-${theme.slug}`}
                 >↗</button>
               )}
@@ -136,38 +142,37 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
         data-theme-preview-dialog
       >
         <div class="theme-preview-layout">
-          <button class="theme-preview-close" type="button" data-theme-preview-close aria-label={detail.cerrarPreview}>×</button>
-          <div class="theme-preview-browser">
+          <button class="theme-preview-close" type="button" data-theme-preview-close aria-label={detail.cerrarPreview}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
+          </button>
+          <div class="theme-preview-browser" data-theme-preview-browser data-loading>
             <div class="theme-preview-bar">
               <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
               <span>{theme.slug}.tudominio.com</span>
             </div>
             <div class="theme-preview-screen">
+              <div class="theme-preview-loading" role="status" aria-live="polite" data-theme-preview-loading>
+                <span aria-hidden="true"></span>
+                <small>{detail.cargandoPreview}</small>
+              </div>
               <iframe
                 src="about:blank"
                 data-theme-preview-frame
                 data-theme-preview-src={theme.href}
                 title={detail.previewAria.replace('{theme}', theme.nombre)}
                 loading="lazy"
+                aria-busy="true"
               ></iframe>
             </div>
           </div>
           <aside class="theme-preview-side">
-            <p class="theme-preview-kicker">{detail.kicker}</p>
             <h2 id={`theme-preview-title-${theme.slug}`}>{theme.nombre}</h2>
-            <p class="theme-preview-description">{describe(theme)}</p>
-            <div class="theme-preview-tags">
-              <span>{theme.estilo.split(' · ')[0]}</span>
-              {detail.etiquetas.slice(0, 2).map((tag) => <span>{tag}</span>)}
-            </div>
-            <ul>
-              {detail.puntos.map((point) => <li><span aria-hidden="true">✓</span>{point}</li>)}
-            </ul>
             <div class="theme-preview-actions">
               <a class="theme-preview-primary" href={conversionPath(theme.slug)}>{detail.solicitar}<span aria-hidden="true">→</span></a>
               <a class="theme-preview-secondary" href={detailPath(theme.slug)}>{detail.masInformacion}<span aria-hidden="true">↗</span></a>
             </div>
-            <p class="theme-preview-note">{detail.notaPreview}</p>
           </aside>
         </div>
       </dialog>
@@ -176,6 +181,8 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
 </section>
 
 <script>
+  import { syncShowcasePreviewScroll } from '../lib/showcasePreview';
+
   document.querySelectorAll<HTMLElement>('[data-theme-showcase]').forEach((root) => {
     const track = root.querySelector<HTMLElement>('[data-theme-showcase-track]');
     const previous = root.querySelector<HTMLButtonElement>('[data-theme-showcase-prev]');
@@ -207,16 +214,43 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     updateControls();
   });
 
+  const themePreviewOpeners = new WeakMap<HTMLDialogElement, HTMLButtonElement>();
+
+  const prepareThemeFrame = (dialog: HTMLDialogElement) => {
+    const frame = dialog.querySelector<HTMLIFrameElement>('[data-theme-preview-frame]');
+    const browser = dialog.querySelector<HTMLElement>('[data-theme-preview-browser]');
+    if (!frame || !browser) return;
+
+    if (frame.dataset.previewLoadBound !== 'true') {
+      frame.dataset.previewLoadBound = 'true';
+      frame.addEventListener('load', () => {
+        if (frame.getAttribute('src') === 'about:blank') return;
+        frame.dataset.previewLoaded = 'true';
+        frame.removeAttribute('aria-busy');
+        browser.removeAttribute('data-loading');
+      });
+    }
+
+    if (frame.dataset.previewLoaded !== 'true') {
+      browser.setAttribute('data-loading', '');
+      frame.setAttribute('aria-busy', 'true');
+    }
+    if (frame.dataset.themePreviewSrc && frame.getAttribute('src') === 'about:blank') {
+      frame.src = frame.dataset.themePreviewSrc;
+    }
+  };
+
   document.querySelectorAll<HTMLButtonElement>('[data-theme-preview-open]').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const id = trigger.dataset.themePreviewOpen;
       const dialog = id ? document.getElementById(id) : null;
       if (dialog instanceof HTMLDialogElement) {
-        const frame = dialog.querySelector<HTMLIFrameElement>('[data-theme-preview-frame]');
-        if (frame?.dataset.themePreviewSrc && frame.src === 'about:blank') {
-          frame.src = frame.dataset.themePreviewSrc;
-        }
-        dialog.showModal();
+        themePreviewOpeners.set(dialog, trigger);
+        trigger.closest<HTMLElement>('[data-theme-motion]')?.setAttribute('data-preview-paused', 'true');
+        dialog.querySelector<HTMLElement>('.theme-preview-side')?.scrollTo(0, 0);
+        prepareThemeFrame(dialog);
+        if (!dialog.open) dialog.showModal();
+        syncShowcasePreviewScroll();
       }
     });
   });
@@ -225,6 +259,36 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     dialog.querySelector<HTMLButtonElement>('[data-theme-preview-close]')?.addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      const frame = dialog.querySelector<HTMLIFrameElement>('[data-theme-preview-frame]');
+      const browser = dialog.querySelector<HTMLElement>('[data-theme-preview-browser]');
+      dialog.querySelector<HTMLElement>('.theme-preview-side')?.scrollTo(0, 0);
+      if (frame) {
+        frame.src = 'about:blank';
+        delete frame.dataset.previewLoaded;
+        frame.setAttribute('aria-busy', 'true');
+      }
+      browser?.setAttribute('data-loading', '');
+      syncShowcasePreviewScroll();
+      const opener = themePreviewOpeners.get(dialog);
+      const rail = opener?.closest<HTMLElement>('[data-theme-motion]');
+      let focusTarget: HTMLElement | undefined = opener;
+      if (opener && rail) {
+        const openerBox = opener.getBoundingClientRect();
+        const railBox = rail.getBoundingClientRect();
+        const isClone = opener.closest('article')?.getAttribute('aria-hidden') === 'true';
+        const isVisible =
+          openerBox.top >= railBox.top &&
+          openerBox.bottom <= railBox.bottom &&
+          openerBox.left >= railBox.left &&
+          openerBox.right <= railBox.right;
+        if (isClone || !isVisible) {
+          focusTarget = rail.querySelector<HTMLElement>('.camp-theme-link') ?? opener;
+        }
+      }
+      focusTarget?.focus({ preventScroll: true });
+      if (rail) requestAnimationFrame(() => rail.removeAttribute('data-preview-paused'));
     });
   });
 </script>
@@ -244,6 +308,7 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
   .theme-showcase-intro { max-width:610px; }
   .theme-showcase-intro a {
     display: inline-flex;
+    min-height: 44px;
     align-items: center;
     gap: 8px;
     margin-top: 18px;
@@ -304,6 +369,7 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
   }
   .theme-showcase-track::-webkit-scrollbar { display:none; }
   .theme-showcase-track:focus-visible { outline:2px solid var(--botanical-ink); outline-offset:6px; }
@@ -316,21 +382,22 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     background: var(--botanical-paper);
     box-shadow: 0 14px 34px color-mix(in srgb,var(--botanical-ink) 6%,transparent);
     scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .theme-showcase-visual { display:block; width:calc(100% - 20px); margin:10px 10px 0; overflow:hidden; border:0; border-radius:15px; padding:0; background:transparent; cursor:zoom-in; text-align:inherit; }
   .theme-showcase-visual :global(.theme-miniature) { aspect-ratio:1.35; }
   .theme-showcase-card-body { position:relative; padding:16px 18px 20px; }
   .theme-showcase-card-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .theme-showcase-card-meta span,.theme-showcase-card-meta small {
-    color: color-mix(in srgb,var(--botanical-ink) 54%,white);
-    font-size: 8px;
+    color: color-mix(in srgb,var(--botanical-ink) 70%,white);
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: .07em;
     text-transform: uppercase;
   }
   .theme-showcase-card-meta small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .theme-showcase-card h3 { margin-top:11px; padding-right:36px; color:var(--botanical-ink); font-size:clamp(20px,1.65vw,25px); letter-spacing:-.035em; line-height:1; }
-  .theme-showcase-card-body > p { min-height:2.8em; margin-top:7px; padding-right:28px; color:color-mix(in srgb,var(--botanical-ink) 62%,white); font-size:11px; line-height:1.4; }
+  .theme-showcase-card h3 { margin-top:11px; padding-right:60px; color:var(--botanical-ink); font-size:clamp(20px,1.65vw,25px); letter-spacing:-.035em; line-height:1; }
+  .theme-showcase-card-body > p { min-height:2.8em; margin-top:7px; padding-right:60px; color:color-mix(in srgb,var(--botanical-ink) 74%,white); font-size:12px; line-height:1.45; }
   .theme-showcase-open {
     position: absolute;
     right: 16px;
@@ -349,6 +416,7 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     transition: transform 160ms ease,background-color 160ms ease;
   }
   .theme-showcase-open:hover { transform:translate(2px,-2px); background:var(--botanical-keylime); }
+  :global(html.showcase-preview-open) { overflow:hidden; overscroll-behavior:none; }
   .theme-preview-dialog {
     width:min(1760px,calc(100vw - 32px));
     max-width:none;
@@ -362,34 +430,36 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     background:var(--botanical-paper);
     color:var(--botanical-ink);
     box-shadow:0 32px 90px rgb(6 33 12 / 32%);
+    overscroll-behavior:contain;
   }
   .theme-preview-dialog::backdrop { background:rgb(6 24 10 / 64%); backdrop-filter:blur(8px); }
-  .theme-preview-layout { position:relative; display:grid; height:100%; grid-template-columns:minmax(0,1fr) clamp(320px,27vw,410px); }
-  .theme-preview-close { position:absolute; top:16px; right:16px; z-index:5; display:grid; width:44px; height:44px; place-items:center; border:1px solid color-mix(in srgb,var(--botanical-ink) 18%,transparent); border-radius:12px; background:color-mix(in srgb,var(--botanical-paper) 94%,transparent); color:var(--botanical-ink); font:300 25px/1 var(--botanical-sans); cursor:pointer; backdrop-filter:blur(10px); }
+  .theme-preview-layout { position:relative; display:grid; height:100%; grid-template-columns:minmax(0,1fr) clamp(240px,19vw,286px); }
+  .theme-preview-close { position:absolute; top:16px; right:16px; z-index:5; display:grid; width:44px; height:44px; place-items:center; border:1px solid color-mix(in srgb,var(--botanical-ink) 18%,transparent); border-radius:12px; background:color-mix(in srgb,var(--botanical-paper) 94%,transparent); color:var(--botanical-ink); cursor:pointer; backdrop-filter:blur(10px); box-shadow:0 8px 24px rgb(6 33 12 / 12%); touch-action:manipulation; transition:background-color 160ms ease,border-color 160ms ease,transform 160ms ease; }
+  .theme-preview-close svg { width:20px; height:20px; }
   .theme-preview-close:hover { background:var(--botanical-mint); }
+  .theme-preview-close:active { transform:scale(.96); }
   .theme-preview-browser { min-width:0; margin:14px 0 14px 14px; overflow:hidden; border:1px solid color-mix(in srgb,var(--botanical-ink) 14%,transparent); border-radius:16px; background:white; box-shadow:0 18px 50px rgb(15 62 23 / 13%); }
   .theme-preview-bar { display:flex; min-height:46px; align-items:center; gap:7px; border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent); padding:0 10px 0 16px; background:#fffefc; }
   .theme-preview-bar>i { width:10px; height:10px; border-radius:50%; background:color-mix(in srgb,var(--botanical-ink) 18%,white); }
-  .theme-preview-bar>span { margin-left:8px; overflow:hidden; color:color-mix(in srgb,var(--botanical-ink) 48%,white); font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
-  .theme-preview-screen { height:calc(100% - 46px); overflow:hidden; background:white; }
-  .theme-preview-screen iframe { display:block; width:100%; height:100%; border:0; background:white; }
-  .theme-preview-side { display:flex; min-height:0; flex-direction:column; overflow-y:auto; padding:clamp(76px,9vh,92px) clamp(24px,2.5vw,38px) clamp(28px,4vh,48px); }
-  .theme-preview-kicker { margin:0; color:color-mix(in srgb,var(--botanical-ink) 54%,white); font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-  .theme-preview-side h2 { margin:13px 0 0; font-family:var(--botanical-serif); font-size:clamp(38px,4vw,58px); font-weight:400; letter-spacing:-.045em; line-height:.95; }
-  .theme-preview-description { margin:20px 0 0; color:color-mix(in srgb,var(--botanical-ink) 67%,white); font-size:15px; line-height:1.55; }
-  .theme-preview-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
-  .theme-preview-tags span { border:1px solid color-mix(in srgb,var(--botanical-ink) 15%,transparent); border-radius:999px; padding:6px 11px; color:color-mix(in srgb,var(--botanical-ink) 68%,white); font-size:11px; }
-  .theme-preview-side ul { display:grid; gap:12px; margin:26px 0 0; padding:0; list-style:none; }
-  .theme-preview-side li { display:grid; grid-template-columns:16px 1fr; gap:8px; color:color-mix(in srgb,var(--botanical-ink) 72%,white); font-size:13px; line-height:1.45; }
-  .theme-preview-side li span { color:#397c49; font-weight:800; }
-  .theme-preview-actions { display:grid; gap:9px; margin-top:auto; padding-top:30px; }
-  .theme-preview-actions a { display:flex; min-height:48px; align-items:center; justify-content:space-between; gap:16px; border-radius:999px; padding:0 18px; font-size:13px; font-weight:800; }
+  .theme-preview-bar>span { min-width:0; flex:1; margin-left:8px; overflow:hidden; color:color-mix(in srgb,var(--botanical-ink) 64%,white); font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
+  .theme-preview-screen { position:relative; height:calc(100% - 46px); overflow:hidden; background:white; }
+  .theme-preview-screen iframe { position:relative; z-index:1; display:block; width:100%; height:100%; border:0; background:white; transition:opacity 180ms ease; }
+  .theme-preview-loading { position:absolute; inset:0; z-index:2; display:grid; place-content:center; justify-items:center; gap:12px; background:color-mix(in srgb,var(--botanical-paper) 94%,white); color:color-mix(in srgb,var(--botanical-ink) 62%,white); opacity:0; visibility:hidden; pointer-events:none; transition:opacity 180ms ease,visibility 180ms ease; }
+  .theme-preview-loading>span { width:28px; height:28px; border:2px solid color-mix(in srgb,var(--botanical-ink) 15%,transparent); border-top-color:var(--botanical-ink); border-radius:50%; animation:theme-preview-spin .8s linear infinite; }
+  .theme-preview-loading small { font-size:11px; font-weight:700; }
+  .theme-preview-browser[data-loading] .theme-preview-loading { opacity:1; visibility:visible; }
+  .theme-preview-browser[data-loading] iframe { opacity:.35; }
+  .theme-preview-side { display:flex; min-height:0; flex-direction:column; padding:78px 18px 20px; }
+  .theme-preview-side h2 { margin:0; font-family:var(--botanical-serif); font-size:clamp(30px,2.5vw,40px); font-weight:400; letter-spacing:-.04em; line-height:.96; }
+  .theme-preview-actions { display:grid; gap:7px; margin-top:20px; }
+  .theme-preview-actions a { display:flex; min-height:44px; align-items:center; justify-content:space-between; gap:10px; border-radius:999px; padding:0 14px; font-size:11px; font-weight:800; }
   .theme-preview-primary { background:var(--botanical-ink); color:white; }
   .theme-preview-secondary { border:1px solid color-mix(in srgb,var(--botanical-ink) 20%,transparent); color:var(--botanical-ink); }
-  .theme-preview-note { margin:14px 0 0; color:color-mix(in srgb,var(--botanical-ink) 51%,white); font-size:11px; line-height:1.45; }
+  @keyframes theme-preview-spin { to { transform:rotate(360deg); } }
   @media (prefers-reduced-motion:reduce) {
     .theme-showcase-track { scroll-behavior:auto; }
-    .theme-showcase-intro a span,.theme-showcase-open { transition:none; }
+    .theme-showcase-intro a span,.theme-showcase-open,.theme-preview-screen iframe,.theme-preview-loading { transition:none; }
+    .theme-preview-loading>span { animation:none; border-color:var(--botanical-ink); }
   }
   @media (max-width:1023px) {
     .theme-showcase-track { grid-auto-columns:calc((100vw - var(--theme-showcase-gutter) - var(--theme-showcase-gutter) - 14px) / 2); }
@@ -398,14 +468,32 @@ const describe = (theme: ThemeItem) => detail.descripcion.replace('{theme}', the
     .theme-showcase-heading { grid-template-columns:1fr; gap:22px; }
     .theme-showcase-track { --theme-showcase-gutter:14px; grid-auto-columns:min(82vw,310px); }
     .theme-showcase-controls button { width:44px; height:44px; }
-    .theme-showcase-card h3 { font-size:24px; }
-    .theme-preview-dialog { width:100vw; height:100dvh; border-radius:0; }
-    .theme-preview-layout { grid-template-columns:1fr; grid-template-rows:minmax(300px,54dvh) minmax(0,1fr); }
+    .theme-showcase-card-body { padding:18px 18px 22px; }
+    .theme-showcase-card-meta span,.theme-showcase-card-meta small { font-size:10px; }
+    .theme-showcase-card h3 { font-size:26px; }
+    .theme-showcase-card-body > p { font-size:13px; }
+    .theme-preview-dialog { width:calc(100vw - 24px); height:calc(100vh - 24px); height:calc(100dvh - 24px); border-radius:18px; }
+    .theme-preview-dialog::backdrop { background:rgb(6 24 10 / 48%); backdrop-filter:blur(4px); }
+    .theme-preview-layout { grid-template-columns:1fr; grid-template-rows:minmax(0,1fr) auto; }
     .theme-preview-browser { margin:0; border-width:0 0 1px; border-radius:0; }
-    .theme-preview-close { top:10px; right:10px; }
-    .theme-preview-side { padding:28px 20px 30px; }
-    .theme-preview-side h2 { font-size:38px; }
-    .theme-preview-side ul { display:none; }
-    .theme-preview-actions { margin-top:22px; padding-top:0; }
+    .theme-preview-bar { min-height:52px; padding-right:58px; }
+    .theme-preview-screen { height:calc(100% - 52px); }
+    .theme-preview-close { top:max(4px,env(safe-area-inset-top)); right:max(4px,env(safe-area-inset-right)); border-color:transparent; box-shadow:none; }
+    .theme-preview-side { display:grid; grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr); gap:10px; align-items:center; padding:8px max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); }
+    .theme-preview-side h2 { min-width:0; overflow:hidden; font-size:clamp(20px,6vw,25px); line-height:1; text-overflow:ellipsis; white-space:nowrap; }
+    .theme-preview-actions { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:0; }
+    .theme-preview-actions a { min-height:44px; gap:5px; padding:0 10px; font-size:10px; line-height:1.05; }
+  }
+  @media (max-width:960px) and (max-height:600px) and (orientation:landscape) {
+    .theme-preview-dialog { width:calc(100vw - 24px); height:calc(100vh - 24px); height:calc(100dvh - 24px); border-radius:18px; }
+    .theme-preview-layout { grid-template-columns:minmax(0,1fr) minmax(188px,30vw); grid-template-rows:1fr; }
+    .theme-preview-browser { margin:0; border-width:0 1px 0 0; border-radius:0; }
+    .theme-preview-bar { min-height:46px; padding-right:16px; }
+    .theme-preview-screen { height:calc(100% - 46px); }
+    .theme-preview-close { top:max(4px,env(safe-area-inset-top)); right:max(4px,env(safe-area-inset-right)); }
+    .theme-preview-side { display:flex; padding:max(52px,calc(env(safe-area-inset-top) + 48px)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) 12px; }
+    .theme-preview-side h2 { font-size:25px; white-space:normal; }
+    .theme-preview-actions { grid-template-columns:1fr; gap:6px; margin-top:14px; }
+    .theme-preview-actions a { min-height:44px; padding-inline:12px; }
   }
 </style>

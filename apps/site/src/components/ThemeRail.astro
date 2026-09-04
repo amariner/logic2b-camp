@@ -9,7 +9,7 @@ interface ThemeItem {
   variante: string;
   estado: string;
   href: string;
-  slug?: string;
+  slug: string;
 }
 
 interface Props {
@@ -18,10 +18,11 @@ interface Props {
   button: string;
   pauseLabel: string;
   resumeLabel: string;
+  openLabel: string;
   href: string;
 }
 
-const { items, status, button, pauseLabel, resumeLabel, href } = Astro.props;
+const { items, status, button, pauseLabel, resumeLabel, openLabel, href } = Astro.props;
 const left = items.filter((_, index) => index % 2 === 0);
 const right = items.filter((_, index) => index % 2 === 1);
 ---
@@ -55,17 +56,27 @@ const right = items.filter((_, index) => index % 2 === 1);
     <div class="camp-theme-track">
       {[...left, ...left].map((theme, index) => (
         <article class="camp-theme-card" aria-hidden={index >= left.length ? 'true' : undefined}>
-          <ThemeMiniature
-            name={theme.nombre}
-            style={theme.estilo}
-            image={portfolioImage(theme.slug, theme.imagen)}
-            variant={theme.variante}
-            eager={index === 0}
-          />
-          <div class="camp-theme-meta">
-            <span><i></i>{theme.nombre}</span>
-            <small>{theme.estado || status}</small>
-          </div>
+          <button
+            class="camp-theme-card-trigger"
+            type="button"
+            aria-label={`${openLabel}: ${theme.nombre}`}
+            aria-controls={`theme-preview-${theme.slug}`}
+            aria-haspopup="dialog"
+            tabindex={index >= left.length ? -1 : undefined}
+            data-theme-preview-open={`theme-preview-${theme.slug}`}
+          >
+            <ThemeMiniature
+              name={theme.nombre}
+              style={theme.estilo}
+              image={portfolioImage(theme.slug, theme.imagen)}
+              variant={theme.variante}
+              eager={index === 0}
+            />
+            <span class="camp-theme-meta">
+              <span><i></i>{theme.nombre}</span>
+              <small>{theme.estado || status}</small>
+            </span>
+          </button>
         </article>
       ))}
     </div>
@@ -74,17 +85,27 @@ const right = items.filter((_, index) => index % 2 === 1);
     <div class="camp-theme-track">
       {[...right, ...right].map((theme, index) => (
         <article class="camp-theme-card" aria-hidden={index >= right.length ? 'true' : undefined}>
-          <ThemeMiniature
-            name={theme.nombre}
-            style={theme.estilo}
-            image={portfolioImage(theme.slug, theme.imagen)}
-            variant={theme.variante}
-            eager={index === 0}
-          />
-          <div class="camp-theme-meta">
-            <span><i></i>{theme.nombre}</span>
-            <small>{theme.estado || status}</small>
-          </div>
+          <button
+            class="camp-theme-card-trigger"
+            type="button"
+            aria-label={`${openLabel}: ${theme.nombre}`}
+            aria-controls={`theme-preview-${theme.slug}`}
+            aria-haspopup="dialog"
+            tabindex={index >= right.length ? -1 : undefined}
+            data-theme-preview-open={`theme-preview-${theme.slug}`}
+          >
+            <ThemeMiniature
+              name={theme.nombre}
+              style={theme.estilo}
+              image={portfolioImage(theme.slug, theme.imagen)}
+              variant={theme.variante}
+              eager={index === 0}
+            />
+            <span class="camp-theme-meta">
+              <span><i></i>{theme.nombre}</span>
+              <small>{theme.estado || status}</small>
+            </span>
+          </button>
         </article>
       ))}
     </div>
@@ -115,12 +136,40 @@ const right = items.filter((_, index) => index % 2 === 1);
         Boolean(active && active !== toggle && rail.contains(active)),
       );
     };
+    let interactionTimer = 0;
+    const pauseForPointerInteraction = (event: PointerEvent) => {
+      if (!(event.target instanceof Element) || !event.target.closest('[data-theme-preview-open]')) return;
+      window.clearTimeout(interactionTimer);
+      rail.dataset.interactionPaused = 'true';
+    };
+    const releasePointerPause = () => {
+      window.clearTimeout(interactionTimer);
+      interactionTimer = window.setTimeout(() => {
+        rail.dataset.interactionPaused = 'false';
+      }, 450);
+    };
 
     toggle.addEventListener('click', () => setPaused(rail.dataset.paused !== 'true'));
+    rail.addEventListener('pointerdown', pauseForPointerInteraction);
+    rail.addEventListener('pointerup', releasePointerPause);
+    rail.addEventListener('pointercancel', releasePointerPause);
     rail.addEventListener('focusin', syncFocusPause);
     rail.addEventListener('focusout', () => requestAnimationFrame(syncFocusPause));
     toggle.hidden = false;
     rail.dataset.motionReady = 'true';
+
+    rail.querySelectorAll<HTMLElement>('.camp-theme-column').forEach((column) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const trigger = entry.target.querySelector<HTMLButtonElement>('.camp-theme-card-trigger');
+            if (trigger) trigger.tabIndex = entry.isIntersecting && entry.intersectionRatio >= 0.96 ? 0 : -1;
+          });
+        },
+        { root: column, threshold: [0, 0.96] },
+      );
+      column.querySelectorAll<HTMLElement>('.camp-theme-card:not([aria-hidden="true"])').forEach((card) => observer.observe(card));
+    });
   });
 </script>
 
@@ -188,11 +237,31 @@ const right = items.filter((_, index) => index % 2 === 1);
   .camp-theme-rail[data-motion-ready='true'] .camp-theme-track { animation-play-state: running; }
   .camp-theme-rail:hover .camp-theme-track { animation-play-state: paused; }
   .camp-theme-rail[data-paused='true'] .camp-theme-track,
-  .camp-theme-rail[data-focus-paused='true'] .camp-theme-track { animation-play-state: paused; }
+  .camp-theme-rail[data-focus-paused='true'] .camp-theme-track,
+  .camp-theme-rail[data-interaction-paused='true'] .camp-theme-track,
+  .camp-theme-rail[data-preview-paused='true'] .camp-theme-track { animation-play-state: paused; }
   .camp-theme-card {
     overflow: hidden;
     border-radius: 14px;
     background: var(--botanical-paper);
+  }
+  .camp-theme-card-trigger {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
+    cursor: zoom-in;
+    touch-action: manipulation;
+  }
+  .camp-theme-card-trigger:focus-visible {
+    outline: 2px solid var(--botanical-ink);
+    outline-offset: -3px;
+  }
+  .camp-theme-rail:has(.camp-theme-card-trigger:active) .camp-theme-track {
+    animation-play-state: paused;
   }
   .camp-theme-meta {
     display: flex;
@@ -253,7 +322,7 @@ const right = items.filter((_, index) => index % 2 === 1);
     to { transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .camp-theme-track { animation-play-state: paused !important; }
+    .camp-theme-track { animation: none !important; animation-play-state: paused !important; }
     .camp-theme-motion-toggle { display: none; }
   }
   @media (max-width: 560px) {

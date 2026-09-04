@@ -23,7 +23,7 @@ interface Props {
 const { copy, policyHref } = Astro.props;
 ---
 
-<aside class="consent" role="dialog" aria-label={copy.aria} data-consent-banner hidden>
+<aside class="consent" role="region" aria-label={copy.aria} data-consent-banner hidden>
   <div data-consent-main>
     <p class="consent__copy">
       {copy.text} <a href={policyHref}>{copy.policy}</a>.
@@ -41,8 +41,8 @@ const { copy, policyHref } = Astro.props;
 
   <div data-consent-preferences hidden>
     <div class="consent__heading">
-      <h2>{copy.preferences}</h2>
       <button type="button" class="consent__back" data-consent-back aria-label={copy.back}>←</button>
+      <h2>{copy.preferences}</h2>
     </div>
     <section class="consent__category">
       <div class="consent__category-heading">
@@ -93,6 +93,7 @@ const { copy, policyHref } = Astro.props;
   const showPreferences = () => {
     main?.setAttribute('hidden', '');
     preferences?.removeAttribute('hidden');
+    banner?.querySelector<HTMLButtonElement>('[data-consent-back]')?.focus();
   };
 
   if (!getConsent()) showBanner();
@@ -114,6 +115,7 @@ const { copy, policyHref } = Astro.props;
   banner?.querySelector('[data-consent-back]')?.addEventListener('click', () => {
     preferences?.setAttribute('hidden', '');
     main?.removeAttribute('hidden');
+    banner?.querySelector<HTMLButtonElement>('[data-consent-configure]')?.focus();
   });
   document.querySelectorAll('[data-consent-reset]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -131,10 +133,13 @@ const { copy, policyHref } = Astro.props;
     position: fixed;
     z-index: 100;
     bottom: clamp(16px, 4vw, 28px);
+    bottom: max(clamp(16px, 4vw, 28px), env(safe-area-inset-bottom));
     left: clamp(16px, 4vw, 28px);
     width: min(430px, calc(100vw - 2 * clamp(16px, 4vw, 28px)));
     max-height: calc(100vh - 2 * clamp(16px, 4vw, 28px));
+    max-height: calc(100dvh - 2 * clamp(16px, 4vw, 28px));
     overflow-y: auto;
+    overscroll-behavior: contain;
     border: 1px solid color-mix(in srgb, var(--botanical-ink) 18%, transparent);
     border-radius: 14px;
     background: var(--botanical-paper);
@@ -142,6 +147,7 @@ const { copy, policyHref } = Astro.props;
     color: var(--botanical-charcoal);
     box-shadow: 0 24px 60px rgb(15 62 23 / 20%), 0 2px 8px rgb(15 62 23 / 12%);
     animation: consent-in 240ms cubic-bezier(.16, 1, .3, 1);
+    -webkit-overflow-scrolling: touch;
   }
   .consent[hidden], [hidden] { display: none; }
   .consent__copy, .consent__category p { margin: 0; line-height: 1.55; }
@@ -162,7 +168,10 @@ const { copy, policyHref } = Astro.props;
   .consent__button--secondary { background: transparent; color: var(--botanical-ink); }
   .consent__button:hover { opacity: .86; }
   .consent__configure {
-    display: block;
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
     margin: 14px auto 0;
     border: 0;
     background: transparent;
@@ -174,26 +183,26 @@ const { copy, policyHref } = Astro.props;
     cursor: pointer;
   }
   .consent__heading, .consent__category-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .consent__heading { margin-bottom: 16px; }
+  .consent__heading { justify-content: flex-start; margin-bottom: 16px; }
   .consent__heading h2, .consent__category h3 { margin: 0; color: var(--botanical-ink); }
   .consent__heading h2 { font-size: 1.3rem; }
   .consent__category h3 { font-size: 1.05rem; }
   .consent__back {
-    width: 36px; height: 36px; flex: 0 0 auto; border: 1px solid var(--botanical-border);
+    width: 44px; height: 44px; flex: 0 0 auto; border: 1px solid var(--botanical-border);
     border-radius: 10px; background: var(--botanical-keylime); color: var(--botanical-ink); cursor: pointer;
   }
   .consent__category { margin-top: 12px; border: 1px solid var(--botanical-border); border-radius: 12px; background: color-mix(in srgb, var(--botanical-keylime) 55%, white); padding: 15px; }
   .consent__category-heading { margin-bottom: 7px; }
   .consent__category-heading > span { border-radius: 999px; background: var(--botanical-mint); padding: 4px 9px; color: var(--botanical-ink); font-size: .72rem; font-weight: 650; }
   .consent__category p { color: color-mix(in srgb, var(--botanical-charcoal) 72%, white); font-size: .86rem; }
-  .consent__toggle { position: relative; width: 48px; height: 28px; flex: 0 0 auto; }
+  .consent__toggle { position: relative; width: 52px; height: 44px; flex: 0 0 auto; cursor: pointer; }
   .consent__toggle input { position: absolute; opacity: 0; }
-  .consent__toggle span { position: absolute; inset: 0; border-radius: 999px; background: #bcc6bd; cursor: pointer; transition: background 160ms ease; }
+  .consent__toggle span { position: absolute; inset: 8px 2px; border-radius: 999px; background: #bcc6bd; cursor: pointer; transition: background 160ms ease; }
   .consent__toggle span::before { content: ''; position: absolute; width: 22px; height: 22px; left: 3px; top: 3px; border-radius: 50%; background: white; box-shadow: 0 1px 3px rgb(0 0 0 / 25%); transition: transform 160ms ease; }
   .consent__toggle input:checked + span { background: var(--botanical-ink); }
   .consent__toggle input:checked + span::before { transform: translateX(20px); }
   .consent__toggle input:focus-visible + span { outline: 2px solid var(--botanical-ink); outline-offset: 3px; }
   @keyframes consent-in { from { opacity: 0; transform: translateY(12px); } }
-  @media (max-width: 480px) { .consent { padding: 20px; } .consent__actions { flex-direction: column-reverse; } }
+  @media (max-width: 480px) { .consent { padding: 20px; } .consent__actions { flex-direction: column; } }
   @media (prefers-reduced-motion: reduce) { .consent { animation: none; } .consent__toggle span, .consent__toggle span::before { transition: none; } }
 </style>

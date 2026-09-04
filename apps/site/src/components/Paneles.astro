@@ -27,7 +27,7 @@ const levelName = (level:'gestion'|'avanzado') => level === 'gestion' ? ui.manag
       </div>
       <div class="panel-catalog-grid" data-panel-grid>
         {views.map((view,index)=><article class:list={['panel-catalog-card',`is-${view.level}`]} data-panel-card data-panel-level={view.level} data-panel-searchable={`${view.name} ${view.eyebrow} ${view.description} ${view.tags.join(' ')}`}>
-          <a class="panel-catalog-visual" href={detailPath(view.id)} aria-label={`${view.name} · ${ui.cardCta}`}><ManagementPanelVisual locale={locale} variant={view.level} label={view.name} ariaLabel={`${ui.open}: ${view.name}`}/><span>{String(index+1).padStart(2,'0')}</span></a>
+          <a class="panel-catalog-visual" href={detailPath(view.id)} aria-label={`${view.name} · ${ui.cardCta}`}><ManagementPanelVisual locale={locale} variant={view.level} label={view.name} ariaLabel={`${ui.open}: ${view.name}`} compact/><span>{String(index+1).padStart(2,'0')}</span></a>
           <div class="panel-catalog-meta"><div class="panel-catalog-meta-top"><h2>{view.name}</h2><span>{levelName(view.level)}</span></div><p>{view.description}</p><div class="panel-catalog-tags">{view.tags.slice(0,2).map(tag=><span>{tag}</span>)}</div><a class="panel-catalog-open" href={detailPath(view.id)}>{ui.cardCta}<span aria-hidden="true">→</span></a></div>
         </article>)}
       </div>
