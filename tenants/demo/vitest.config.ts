@@ -5,6 +5,9 @@ export default defineWorkersConfig(async () => {
   return {
     test: {
       setupFiles: ['./test/apply-migrations.ts'],
+      // seed.test.ts barre ~20 anclas por aserción (3–9 s cada una en un
+      // portátil cargado): el límite por defecto de 5 s daba timeouts aleatorios.
+      testTimeout: 30_000,
       poolOptions: {
         workers: {
           // El pool de Cloudflare no usa fileParallelism: singleWorker agrupa

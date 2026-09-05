@@ -145,3 +145,46 @@ Quedarán preservadas todas las reservas y contactos con `demo_fixture=0`, sus
 huéspedes, pagos y auditoría; también catálogo, actividades/contenido, usuarios,
 cuentas y sesiones. Solo las filas sintéticas marcadas expresamente podrán
 actualizarse semanalmente, y únicamente dentro de sus tablas dependientes.
+
+## Auditoría remota del 05-09-2026: consumo mínimo, refresco bloqueado
+
+Lectura solo-lectura de `logic-camp-demo` con Wrangler (sin SQL de escritura).
+
+| Medida                             |                                                 Valor |
+| ---------------------------------- | ----------------------------------------------------: |
+| Migraciones pendientes             |                             ninguna (`0010` aplicada) |
+| Filas leídas / escritas (24 h)     |                                              233 / 20 |
+| Consulta más costosa (7 d)         | disponibilidad: 30 ejecuciones, 72.243 filas en total |
+| Tamaño de la base                  |                                               5,45 MB |
+| Reservas `demo_fixture=1` / reales |                                             3.491 / 0 |
+| Snapshot vigente (`updated_at`)    |                        `2026-07-28T08` en 3.490 filas |
+| Filas en `meta`                    |                                                     0 |
+
+El consumo real está por debajo del 0,01 % del cupo gratuito diario de D1
+(5 M lecturas, 100 k escrituras). El problema no es de cuota sino de datos:
+
+- El reset nocturno anterior no se ejecutaba desde el 28-07 (Insights ya no lo
+  veía el 25-08 y el snapshot lo confirma). La demo lleva desde entonces con
+  el «hoy» del seed congelado: 42 estancias en curso sin check-in y 52 ya
+  terminadas sin check-out, con la línea de HOY del dashboard avanzando sola.
+- El generador actual produce 3.426 reservas y 2.568 huéspedes; la base tiene
+  3.491 y 2.612 de una versión anterior del seed. El refresco semanal lee las
+  dos consultas de fixtures (Insights: una ejecución cada una, el lunes 31-08),
+  el fusible de universo aborta y borra su candado: por eso `meta` está vacía.
+  El botón «reiniciar demo» del dashboard falla por el mismo motivo.
+
+Operación correctora (una sola vez, con autorización expresa):
+
+1. `pnpm db:seed:remote` para revisar el plan; después
+   `LOGIC_CAMP_ALLOW_REMOTE_SEED=1 pnpm db:seed:remote --apply`. Coste
+   estimado 26–30 k filas escritas y ~13 k leídas, una vez: menos del 30 % del
+   cupo de escritura de ese día y cero recurrente. Borra sesiones (re-login).
+2. Comprobar el lunes siguiente que `meta` contiene `demo-refresh:<lunes>` y
+   que Insights muestra escrituras del refresco (≤800 filas).
+3. Repetir el reseed cada primera semana de enero: la ventana sembrada cambia
+   con el año y el fusible vuelve a abrirse a propósito. Anotarlo en el
+   calendario; no automatizarlo.
+
+Coste de pasar el refresco a diario, si la demo lo necesita: ~13,5 k lecturas y
+100–150 escrituras por día (0,27 % y 0,15 % del cupo), sin cron nuevo porque
+puede colgar del diario. Cabe de sobra; la decisión es de producto, no de cuota.

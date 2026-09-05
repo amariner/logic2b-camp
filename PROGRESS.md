@@ -1,5 +1,24 @@
 # PROGRESS — Logic Camp
 
+## Auditoría de datos demo y cupo D1 · 2026-09-05 (sesión 153)
+
+- Sincronizado `main` con origin (dos commits del sitio comercial). Lectura
+  solo-lectura de la D1 remota: `0010` aplicada, Worker del 01-09 desplegado,
+  consumo 233 lecturas y 20 escrituras en 24 h, base de 5,45 MB.
+- Hallazgo: la demo remota conserva el snapshot del 28-07 con 3.491 reservas de
+  un generador anterior (el actual produce 3.426); el fusible de universo del
+  refresco semanal aborta y `meta` está vacía. El botón «reiniciar demo» falla
+  por lo mismo. Diagnóstico, coste del reseed y calendario anual en
+  `docs/D1-BUDGET.md` y BACKLOG. No se ejecutó ninguna escritura remota.
+- Estabilidad de tests: `testTimeout` 30 s en `tenants/demo` (barridos de ~20
+  anclas de 3–9 s) y 120 s para el build de Astro del test de navegador del
+  héroe; ambos fallaban solo por carga bajo `pnpm check` en paralelo.
+- Verificación: typecheck, lint y build verdes en las tres pasadas de
+  `CI=true pnpm check`; el tenant demo pasó 66/66 y la web 39/39 en solo, pero
+  la pasada completa no cerró verde de una vez: la máquina estaba a load 200–370
+  por sesiones de Codex ajenas al repo y los tests de navegador/CLI vencían por
+  timeout. Pendiente repetir `pnpm check` con la máquina descargada.
+
 ## Gestor y comercial comparten la identidad Logic2B · 2026-09-01 (sesión 152)
 
 - La base neutral de `packages/ui` se volvió a contrastar con el CSS público de

@@ -37,6 +37,13 @@ la historia y los criterios. Un ítem no cambia de gate porque parezca barato.
   cambios de alcance posteriores al portfolio de doce demos. D5-V y D6-V ya
   cuentan con autorización explícita; los demás puntos requieren señal
   observada, no iniciativa técnica.
+- **[infra] Reseed remoto de la demo y calendario anual** (2026-09-05): la D1
+  remota conserva el snapshot del 28-07 con un universo de fixtures anterior al
+  generador actual, así que el refresco semanal y el botón «reiniciar demo»
+  abortan por el fusible de universo (`docs/D1-BUDGET.md`, auditoría 05-09).
+  Requiere `LOGIC_CAMP_ALLOW_REMOTE_SEED=1 pnpm db:seed:remote --apply` con
+  Andreu presente y repetirlo la primera semana de cada enero. Opcional, si la
+  demo lo pide: refresco diario colgado del cron diario (0,27 % del cupo).
 - **Descartado o ya absorbido:** Storybook duplicado, crear bloqueos arrastrando,
   textos originales conservados bajo cierres posteriores y E3-V/E4-V absorbidos
   por D1-V. No se seleccionan como trabajo.

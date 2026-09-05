@@ -108,7 +108,9 @@ before(async () => {
   await run(astroBin, ['build', '--outDir', outputDir], {
     cwd: fixtureRoot,
     env: { ...process.env, HERO_MOTION_FIXTURE_CACHE: join(temporaryRoot, 'cache') },
-    timeout: 30_000,
+    // El build del fixture tarda ~30 s en un portátil; bajo `pnpm check` en
+    // paralelo lo mataba el SIGTERM del límite anterior.
+    timeout: 120_000,
   });
 
   server = createServer(async (request, response) => {
