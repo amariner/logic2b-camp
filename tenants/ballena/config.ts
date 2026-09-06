@@ -15,6 +15,7 @@ export const config: TenantWebConfig = {
   },
   staticHeroImage: 'hero-olas',
   bookingTransport: 'demo-session',
+  enquiryTransport: 'demo',
   demoManagerPath: '/demos/ballena/gestion/',
   demoBookingPolicy: {
     bookingCodePrefix: 'BL',

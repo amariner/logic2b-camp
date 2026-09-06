@@ -2,6 +2,13 @@
 
 > Actualizado el 2026-09-01 durante el cierre de la sesión 152.
 
+## Auditoría posterior del catálogo · 2026-09-05
+
+Cerrada la revisión UI/UX y móvil de los doce temas más Cala Sereno. Evidencias,
+correcciones y comandos en [AUDITORIA-TEMAS-2026-09-05.md](AUDITORIA-TEMAS-2026-09-05.md).
+Cambios locales, sin publicar; no se ha alterado el estado remoto descrito en
+la sesión 153. Se mantiene el siguiente objetivo independiente indicado abajo.
+
 ## Estado en una línea
 
 El gestor y la superficie comercial comparten ya `.theme-logic2b` sobre la base

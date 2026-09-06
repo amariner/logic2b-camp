@@ -190,8 +190,8 @@ export default function FunnelTitular({
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
-      <form onSubmit={submit} noValidate className="flex max-w-xl flex-col gap-4">
-        <label className="flex flex-col gap-1.5">
+      <form onSubmit={submit} noValidate className="flex min-w-0 max-w-xl flex-col gap-4">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.titular.nombre}
           </span>
@@ -199,10 +199,10 @@ export default function FunnelTitular({
             name="name"
             required
             autoComplete="name"
-            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="w-full min-w-0 rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]"
           />
         </label>
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.titular.email}
           </span>
@@ -211,10 +211,10 @@ export default function FunnelTitular({
             type="email"
             required
             autoComplete="email"
-            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="w-full min-w-0 rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]"
           />
         </label>
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.titular.telefono}
           </span>
@@ -222,17 +222,17 @@ export default function FunnelTitular({
             name="phone"
             type="tel"
             autoComplete="tel"
-            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="w-full min-w-0 rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]"
           />
         </label>
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.titular.notas}
           </span>
           <textarea
             name="notes"
             rows={3}
-            className="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[15px]"
+            className="w-full min-w-0 rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]"
           />
         </label>
         {/* ADR 0026 §2.3: el `name` NO es cosmético — sin él la casilla no se
@@ -259,7 +259,7 @@ export default function FunnelTitular({
         )}
       </form>
 
-      <aside className="flex flex-col gap-3 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 lg:sticky lg:top-24 lg:self-start">
+      <aside className="flex flex-col gap-3 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 lg:sticky lg:top-[calc(var(--lc-chrome-h)+1rem)] lg:self-start">
         <p className="font-display text-[17px] font-semibold">{typeName}</p>
         <p className="tnum text-[14px]">
           {fecha(query.from)} → {fecha(query.to)}

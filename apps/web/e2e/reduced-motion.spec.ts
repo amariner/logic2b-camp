@@ -125,7 +125,7 @@ test('dashboard: planning, diálogo, tooltip y menú sin animación', async ({ p
   await esperarQuieto(page, 'dashboard planning');
 
   // alert dialog del banner de demo: overlay + contenido son los que animaban
-  await page.locator('button', { hasText: 'Restablecer datos' }).click();
+  await page.getByRole('button', { name: 'Actualizar demo', exact: true }).click();
   await expect(page.locator('[role=alertdialog]')).toBeVisible();
   await esperarQuieto(page, 'dashboard alert dialog abierto');
 

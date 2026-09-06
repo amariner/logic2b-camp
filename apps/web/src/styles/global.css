@@ -54,6 +54,75 @@ html {
   --lc-chrome-h: 5.5rem;
 }
 
+/* The translated demo banner can occupy several lines. Its measured height
+   also keeps in-page destinations and sticky panels below the navigation. */
+.lc-page-intro {
+  padding-top: calc(var(--lc-chrome-h) + clamp(2rem, 4vw, 3.5rem));
+}
+#contenido,
+#contenido [id] {
+  scroll-margin-top: calc(var(--lc-chrome-h) + 1rem);
+}
+.lc-brand {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+.lc-rate-scroll {
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lc-pino) var(--lc-arena-suave);
+}
+.lc-rate-label {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 8rem;
+  max-width: 11rem;
+  background: var(--lc-hueso);
+  box-shadow: 1px 0 var(--lc-arena);
+}
+.lc-menu > summary {
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  border-radius: var(--lc-radius);
+}
+.lc-menu[open] > summary {
+  background: var(--lc-arena-suave);
+}
+.lc-menu > ul :is(a, button) {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+.lc-menu [aria-current='page'] {
+  color: var(--lc-tinta);
+  background: var(--lc-arena-suave);
+  font-weight: 600;
+}
+@media (max-width: 639px) {
+  [data-demo-banner] {
+    --lc-chrome-h: 8.5rem;
+  }
+  .lc-brand {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+}
+@media (max-width: 1279px) {
+  .lc-menu > ul {
+    position: fixed;
+    top: calc(var(--lc-chrome-h) + 0.5rem);
+    right: 1rem;
+    margin-top: 0;
+    width: min(22rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - var(--lc-chrome-h) - 1.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
 ::selection {
   background: var(--lc-pino);
   color: var(--lc-hueso);

@@ -194,7 +194,7 @@ export default function FunnelDetalle({
       </div>
 
       {/* columna derecha: desglose del servidor */}
-      <div className="flex flex-col gap-5 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 lg:sticky lg:top-24 lg:self-start">
+      <div className="flex flex-col gap-5 rounded-(--lc-radius-lg) border border-arena/60 bg-arena-suave/40 p-6 lg:sticky lg:top-[calc(var(--lc-chrome-h)+1rem)] lg:self-start">
         <h2 className="font-display text-[15px] font-semibold">{labels.detalle.desglose}</h2>
 
         {state === 'invalid' && (

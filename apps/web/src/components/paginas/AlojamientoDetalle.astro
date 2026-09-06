@@ -72,14 +72,24 @@ const showTierSwitch = demoTierSwitch;
   <PageIntro titulo={nombre} intro={a.fichas[tipo.id]} />
 
   <section class="mx-auto max-w-7xl px-5 pb-section md:px-8">
-    <p class="mb-8 -mt-4">
+    <div class="mb-8 -mt-4 flex flex-wrap items-center justify-between gap-3">
       <a
         href={localePath(locale, '/alojamientos')}
-        class="text-[13px] font-medium text-tinta-suave transition-colors hover:text-tinta"
+        class="inline-flex min-h-11 items-center text-[13px] font-medium text-tinta-suave transition-colors hover:text-tinta"
       >
         ← {a.volver}
       </a>
-    </p>
+      {(instant || showTierSwitch) && (
+        <a href="#mostrador" data-hero-nivel={showTierSwitch ? '3' : undefined} class="inline-flex min-h-11 items-center rounded-(--lc-radius) border border-pino px-4 py-2 text-[14px] font-semibold text-pino hover:bg-arena-suave">
+          {c.mostrador.buscar} ↓
+        </a>
+      )}
+      {(!instant || showTierSwitch) && (
+        <a href={enquiry ? '#consulta' : `${localePath(locale, '/contacto')}?stay=${encodeURIComponent(tipo.id)}#consulta`} data-hero-nivel={showTierSwitch ? '1' : undefined} class="inline-flex min-h-11 items-center rounded-(--lc-radius) border border-pino px-4 py-2 text-[14px] font-semibold text-pino hover:bg-arena-suave">
+          {a.consultar} →
+        </a>
+      )}
+    </div>
 
     <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
       {/* galería */}
@@ -100,7 +110,7 @@ const showTierSwitch = demoTierSwitch;
       </div>
 
       {/* ficha + tarifas */}
-      <div class="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
+      <div class="flex flex-col gap-8 lg:sticky lg:top-[calc(var(--lc-chrome-h)+1rem)] lg:self-start">
         <dl class="grid grid-cols-[auto_1fr] gap-x-8 gap-y-2.5 text-[14px]">
           {filas.map(([k, v]) => (
             <Fragment>

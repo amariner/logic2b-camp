@@ -25,7 +25,7 @@ const fixedStayName = fixedStay?.name ?? '';
 
 <form
   id={uid}
-  class="flex flex-col gap-4"
+  class="lc-enquiry-form flex min-w-0 flex-col gap-4"
   novalidate
   data-transport={transport}
   data-summary-stay={f.demoResumenEstancia}
@@ -43,11 +43,11 @@ const fixedStayName = fixedStay?.name ?? '';
   <div class="grid gap-4 sm:grid-cols-2">
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.nombre}</span>
-      <input name="name" required autocomplete={transport === 'demo-session' ? 'off' : 'name'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      <input name="name" required autocomplete={transport === 'demo-session' ? 'off' : 'name'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
     </label>
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.email}</span>
-      <input name="email" type="email" required autocomplete={transport === 'demo-session' ? 'off' : 'email'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+      <input name="email" type="email" required autocomplete={transport === 'demo-session' ? 'off' : 'email'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
     </label>
   </div>
   <div class="grid gap-4 sm:grid-cols-2">
@@ -55,23 +55,23 @@ const fixedStayName = fixedStay?.name ?? '';
       <Fragment>
         <label class="flex flex-col gap-1.5">
           <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.entrada ?? 'Entrada'}</span>
-          <input name="dateFrom" type="date" required value="2026-08-18" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+          <input name="dateFrom" type="date" required value="2026-08-18" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
         </label>
         <label class="flex flex-col gap-1.5">
           <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.salida ?? 'Salida'}</span>
-          <input name="dateTo" type="date" required value="2026-08-24" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+          <input name="dateTo" type="date" required value="2026-08-24" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
         </label>
       </Fragment>
     ) : (
       <label class="flex flex-col gap-1.5">
         <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.fechas}</span>
-        <input name="dates" placeholder={f.fechasEjemplo ?? '12 → 19 ago'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+        <input name="dates" placeholder={f.fechasEjemplo ?? '12 → 19 ago'} class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
       </label>
     )}
     {f.grupo && (
       <label class="flex flex-col gap-1.5">
         <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.grupo}</span>
-        <input name="party" type="number" min="1" max="8" value="2" inputmode="numeric" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]" />
+        <input name="party" type="number" min="1" max="8" value="2" inputmode="numeric" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]" />
       </label>
     )}
   </div>
@@ -86,7 +86,7 @@ const fixedStayName = fixedStay?.name ?? '';
   ) : f.estancia && (
     <label class="flex flex-col gap-1.5">
       <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.estancia}</span>
-      <select name="stay" required class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]">
+      <select name="stay" required class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]">
         <option value="">{f.estanciaVacia}</option>
         {stays.map((stay) => <option value={stay.id}>{stay.name}</option>)}
       </select>
@@ -94,7 +94,7 @@ const fixedStayName = fixedStay?.name ?? '';
   )}
   <label class="flex flex-col gap-1.5">
     <span class="text-[12px] font-medium tracking-wide text-tinta-suave uppercase">{f.mensaje}</span>
-    <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px] sm:text-[15px]"></textarea>
+    <textarea name="message" required rows="4" class="rounded-(--lc-radius) border border-tinta/15 bg-hueso px-3.5 py-2.5 text-[16px]"></textarea>
   </label>
   <button
     type="submit"
@@ -163,9 +163,9 @@ const fixedStayName = fixedStay?.name ?? '';
         if (dateFrom && dateTo && String(dateFrom) >= String(dateTo)) throw new Error('demo-error');
         const shownDates = dateFrom && dateTo ? `${dateFrom} → ${dateTo}` : dates;
         summary.textContent = [
-          `${form.dataset.summaryStay}: ${stay || form.dataset.summaryOpen}`,
+          ...(fixedStayName || form.querySelector('select[name=stay]') ? [`${form.dataset.summaryStay}: ${stay || form.dataset.summaryOpen}`] : []),
           `${form.dataset.summaryDates}: ${shownDates || form.dataset.summaryOpen}`,
-          `${form.dataset.summaryParty}: ${data.get('party') || form.dataset.summaryOpen}`,
+          ...(data.has('party') ? [`${form.dataset.summaryParty}: ${data.get('party') || form.dataset.summaryOpen}`] : []),
           `${form.dataset.summaryMessage}: ${data.get('message')}`,
         ].join('\n');
         if (transport === 'demo-session') {
@@ -227,3 +227,9 @@ const fixedStayName = fixedStay?.name ?? '';
     }
   });
 </script>
+
+<style>
+  /* WebKit retains the intrinsic 20-character input width inside auto grids. */
+  .lc-enquiry-form label { min-width: 0; }
+  .lc-enquiry-form :is(input, select, textarea) { min-width: 0; width: 100%; }
+</style>

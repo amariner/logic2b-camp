@@ -153,13 +153,13 @@ export default function Mostrador({
     <div>
       {/* la barra: un solo objeto, siempre operativo */}
       <form
-        className="flex flex-col gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/15 bg-hueso shadow-[0_24px_60px_-30px_rgba(14,21,18,0.45)] sm:flex-row"
+        className="grid grid-cols-1 gap-px overflow-hidden rounded-(--lc-radius-lg) border border-tinta/15 bg-hueso shadow-[0_24px_60px_-30px_rgba(14,21,18,0.45)] min-[360px]:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.5fr)_auto]"
         onSubmit={(e) => {
           e.preventDefault();
           if (datesOk) void runSearch({ from, to, adults, children });
         }}
       >
-        <label className="flex flex-1 flex-col gap-1 bg-hueso px-4 py-3">
+        <label className="flex min-w-0 flex-col justify-center gap-1 bg-hueso px-4 py-3">
           <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.llegada}
           </span>
@@ -169,10 +169,10 @@ export default function Mostrador({
             value={from}
             min={plus(0)}
             onChange={(e) => setFrom(e.target.value)}
-            className="tnum bg-transparent text-[15px] font-medium outline-none"
+            className="tnum min-h-11 min-w-0 w-full bg-transparent text-[16px] font-medium"
           />
         </label>
-        <label className="flex flex-1 flex-col gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 sm:border-t-0 sm:border-l">
+        <label className="flex min-w-0 flex-col justify-center gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 min-[360px]:border-t-0 min-[360px]:border-l">
           <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.salida}
           </span>
@@ -182,16 +182,18 @@ export default function Mostrador({
             value={to}
             min={from}
             onChange={(e) => setTo(e.target.value)}
-            className="tnum bg-transparent text-[15px] font-medium outline-none"
+            className="tnum min-h-11 min-w-0 w-full bg-transparent text-[16px] font-medium"
           />
         </label>
-        <div className="flex flex-1 flex-col gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 sm:border-t-0 sm:border-l">
+        <div className="flex min-w-0 flex-col gap-1 border-t border-tinta/10 bg-hueso px-4 py-3 min-[360px]:col-span-2 lg:col-span-1 lg:border-t-0 lg:border-l">
           <span className="text-[11px] font-medium tracking-wide text-tinta-suave uppercase">
             {labels.huespedes}
           </span>
-          <div className="flex items-center gap-3 text-[15px] font-medium">
-            <span className="tnum min-w-0 truncate">{guestsLabel}</span>
-            <span className="ml-auto flex items-center gap-1">
+          <div className="flex flex-col gap-2 text-[15px] font-medium">
+            <span className="sr-only" aria-live="polite">
+              {guestsLabel}
+            </span>
+            <span className="flex flex-wrap items-center justify-between gap-2">
               <Stepper
                 value={adults}
                 min={1}
@@ -212,7 +214,7 @@ export default function Mostrador({
         <button
           type="submit"
           disabled={state === 'loading' || !datesOk}
-          className="bg-pino px-7 py-4 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro disabled:opacity-60 sm:min-w-52"
+          className="min-h-12 bg-pino px-5 py-4 text-[15px] font-semibold text-hueso transition-colors hover:bg-pino-oscuro disabled:opacity-60 min-[360px]:col-span-2 lg:col-span-1 lg:max-w-52"
         >
           {state === 'loading' ? labels.buscando : labels.buscar}
         </button>
@@ -310,24 +312,29 @@ function Stepper({
   label: string;
 }) {
   return (
-    <span className="flex items-center rounded-(--lc-radius) border border-tinta/15">
-      <button
-        type="button"
-        aria-label={`− ${label}`}
-        onClick={() => onChange(Math.max(min, value - 1))}
-        className="px-2 py-0.5 text-tinta-suave transition-colors hover:text-tinta"
-      >
-        −
-      </button>
-      <span className="tnum min-w-5 text-center text-[13px]">{value}</span>
-      <button
-        type="button"
-        aria-label={`+ ${label}`}
-        onClick={() => onChange(Math.min(max, value + 1))}
-        className="px-2 py-0.5 text-tinta-suave transition-colors hover:text-tinta"
-      >
-        +
-      </button>
+    <span className="flex flex-col gap-1">
+      <span className="text-[12px] text-tinta-suave">{label}</span>
+      <span className="flex items-center rounded-(--lc-radius) border border-tinta/15">
+        <button
+          type="button"
+          aria-label={`− ${label}`}
+          disabled={value <= min}
+          onClick={() => onChange(Math.max(min, value - 1))}
+          className="min-h-11 min-w-11 text-tinta-suave transition-colors hover:text-tinta disabled:opacity-40"
+        >
+          −
+        </button>
+        <span className="tnum min-w-5 text-center text-[13px]">{value}</span>
+        <button
+          type="button"
+          aria-label={`+ ${label}`}
+          disabled={value >= max}
+          onClick={() => onChange(Math.min(max, value + 1))}
+          className="min-h-11 min-w-11 text-tinta-suave transition-colors hover:text-tinta disabled:opacity-40"
+        >
+          +
+        </button>
+      </span>
     </span>
   );
 }

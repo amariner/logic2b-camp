@@ -15,6 +15,7 @@ export const config: TenantWebConfig = {
   },
   staticHeroImage: 'hero-invierno',
   bookingTransport: 'demo-session',
+  enquiryTransport: 'demo',
   demoManagerPath: '/demos/soldhivern/gestion/',
   demoBookingPolicy: {
     bookingCodePrefix: 'SH',

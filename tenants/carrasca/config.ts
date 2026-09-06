@@ -15,6 +15,7 @@ export const config: TenantWebConfig = {
   },
   staticHeroImage: 'hero-encinar',
   bookingTransport: 'demo-session',
+  enquiryTransport: 'demo',
   demoManagerPath: '/demos/carrasca/gestion/',
   demoBookingPolicy: {
     bookingCodePrefix: 'CR',

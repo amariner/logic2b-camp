@@ -21,7 +21,7 @@ const foto = frontmatter.photo ? images[frontmatter.photo] : undefined;
   title={`${frontmatter.title} | ${config.name}`}
   description={frontmatter.description}
 >
-  <article class="mx-auto max-w-3xl px-5 pt-28 pb-section md:pt-36">
+  <article class="lc-page-intro mx-auto max-w-3xl px-5 pb-section">
     <p class="mb-8">
       <a href={localePath(locale, '/blog')} class="text-[13px] font-medium text-tinta-suave transition-colors hover:text-tinta">
         ← {c.blog.volver}

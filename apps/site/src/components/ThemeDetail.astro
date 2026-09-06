@@ -40,12 +40,12 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
     </header>
 
     <section class="theme-detail-preview botanical-shell" aria-label={detail.previewAria.replace('{theme}', theme.nombre)}>
-      <div class="theme-detail-stage" data-theme-detail-stage>
+      <dialog open class="theme-detail-stage" data-theme-detail-stage aria-label={detail.previewAria.replace('{theme}', theme.nombre)}>
         <div class="theme-detail-browser">
           <div class="theme-detail-bar">
             <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
             <span>{theme.slug}.tudominio.com</span>
-            <button type="button" data-theme-detail-expand aria-expanded="false" aria-label={detail.abrirPreview}>
+            <button type="button" data-theme-detail-expand aria-expanded="false" aria-label={detail.abrirPreview} data-open-label={detail.abrirPreview} data-close-label={detail.cerrarPreview}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>
               <span aria-hidden="true">×</span>
             </button>
@@ -70,7 +70,7 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
           </div>
           <small>{detail.notaPreview}</small>
         </aside>
-      </div>
+      </dialog>
     </section>
 
     <section class="theme-detail-info botanical-shell">
@@ -114,17 +114,46 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
 </Base>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-theme-detail-stage]').forEach((stage) => {
+  document.querySelectorAll<HTMLDialogElement>('[data-theme-detail-stage]').forEach((stage) => {
     const trigger = stage.querySelector<HTMLButtonElement>('[data-theme-detail-expand]');
-    const setExpanded = (expanded: boolean) => {
-      stage.classList.toggle('is-expanded', expanded);
-      document.documentElement.classList.toggle('theme-preview-locked', expanded);
-      trigger?.setAttribute('aria-expanded', String(expanded));
+    const frame = stage.querySelector<HTMLIFrameElement>('iframe');
+    const restorePreview = () => {
+      if (stage.matches(':modal')) return;
+      stage.classList.remove('is-expanded');
+      document.documentElement.classList.remove('theme-preview-locked');
+      stage.show();
+      trigger?.setAttribute('aria-expanded', 'false');
+      trigger?.setAttribute('aria-label', trigger.dataset.openLabel ?? '');
+      trigger?.focus({ preventScroll: true });
     };
-    trigger?.addEventListener('click', () => setExpanded(!stage.classList.contains('is-expanded')));
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && stage.classList.contains('is-expanded')) setExpanded(false);
+    trigger?.addEventListener('click', () => {
+      if (stage.matches(':modal')) {
+        stage.close();
+        return;
+      }
+      // Keep the iframe in place so browsing the preview survives expansion.
+      stage.close();
+      stage.classList.add('is-expanded');
+      stage.showModal();
+      document.documentElement.classList.add('theme-preview-locked');
+      trigger.setAttribute('aria-expanded', 'true');
+      trigger.setAttribute('aria-label', trigger.dataset.closeLabel ?? '');
+      trigger.focus({ preventScroll: true });
     });
+    stage.addEventListener('close', restorePreview);
+    // Keyboard events in the embedded demo do not bubble into its parent.
+    const connectFrame = () => {
+      try {
+        frame?.contentDocument?.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && stage.matches(':modal')) {
+            event.preventDefault();
+            stage.close();
+          }
+        });
+      } catch { /* External previews retain the visible native close control. */ }
+    };
+    frame?.addEventListener('load', connectFrame);
+    connectFrame();
   });
 </script>
 
@@ -137,7 +166,7 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
   .theme-detail-heading h1{margin-top:15px;color:var(--botanical-ink);font-family:var(--botanical-serif);font-size:clamp(68px,9vw,138px);font-weight:400;letter-spacing:-.065em;line-height:.8}
   .theme-detail-heading>p{max-width:600px;color:color-mix(in srgb,var(--botanical-ink) 67%,white);font-size:clamp(16px,1.35vw,20px);line-height:1.6}
   .theme-detail-preview{padding-bottom:clamp(70px,8vw,118px)}
-  .theme-detail-stage{display:grid;grid-template-columns:minmax(0,1fr) clamp(310px,26vw,390px);gap:16px;border-radius:24px;background:color-mix(in srgb,var(--botanical-mint) 46%,white);padding:16px}
+  .theme-detail-stage{position:relative;width:100%;max-width:none;max-height:none;margin:0;border:0;color:inherit;display:grid;grid-template-columns:minmax(0,1fr) clamp(310px,26vw,390px);gap:16px;border-radius:24px;background:color-mix(in srgb,var(--botanical-mint) 46%,white);padding:16px}
   .theme-detail-browser{min-width:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--botanical-ink) 13%,transparent);border-radius:16px;background:white;box-shadow:0 18px 50px rgb(15 62 23 / 13%)}
   .theme-detail-bar{display:flex;min-height:46px;align-items:center;gap:7px;border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent);padding:0 9px 0 16px;background:#fffefc}
   .theme-detail-bar>i{width:10px;height:10px;border-radius:50%;background:color-mix(in srgb,var(--botanical-ink) 18%,white)}
@@ -161,5 +190,5 @@ const conversionHref = `${localePath(locale, 'empezar/')}?theme=${encodeURICompo
   .theme-detail-related{padding-bottom:clamp(85px,10vw,145px)}.theme-detail-related>header{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}.theme-detail-related h2{font-family:var(--botanical-serif);font-size:clamp(36px,4vw,58px);font-weight:400;letter-spacing:-.04em}.theme-detail-related header>a{display:inline-flex;min-height:44px;align-items:center;gap:10px;border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 30%,transparent);font-size:12px;font-weight:800}.theme-detail-related>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.theme-detail-related-card{overflow:hidden;border:1px solid color-mix(in srgb,var(--botanical-ink) 10%,transparent);border-radius:18px;background:white}.theme-detail-related-card :global(.theme-miniature){aspect-ratio:1.45}.theme-detail-related-card>span{display:grid;grid-template-columns:1fr auto;gap:7px 15px;padding:18px 20px}.theme-detail-related-card b{font-size:20px}.theme-detail-related-card small{grid-column:1;color:color-mix(in srgb,var(--botanical-ink) 56%,white);font-size:10px}.theme-detail-related-card i{grid-row:1 / span 2;grid-column:2;align-self:center;font-style:normal}
   @media(prefers-reduced-motion:reduce){.theme-detail-stage,.theme-detail-related-card{transition:none}}
   @media(max-width:1000px){.theme-detail-stage{grid-template-columns:1fr}.theme-detail-side{min-height:540px}.theme-detail-info{grid-template-columns:1fr}.theme-detail-facts{width:100%}}
-  @media(max-width:760px){.theme-detail-heading{grid-template-columns:1fr;gap:28px}.theme-detail-heading h1{font-size:72px}.theme-detail-stage{padding:0}.theme-detail-browser{border-radius:18px 18px 0 0}.theme-detail-screen{height:330px}.theme-detail-side{min-height:0;padding:28px 20px}.theme-detail-side ul{display:none}.theme-detail-stage.is-expanded{display:grid;grid-template-rows:minmax(300px,55dvh) minmax(0,1fr);grid-template-columns:1fr;padding:0}.theme-detail-stage.is-expanded .theme-detail-browser{border-radius:0}.theme-detail-stage.is-expanded .theme-detail-screen{height:calc(55dvh - 46px)}.theme-detail-stage.is-expanded .theme-detail-side{overflow-y:auto}.theme-detail-story ul{grid-template-columns:1fr}.theme-detail-related>header{align-items:flex-start;flex-direction:column}.theme-detail-related>div{grid-template-columns:1fr}}
+  @media(max-width:760px){.theme-detail-heading{grid-template-columns:1fr;gap:28px}.theme-detail-heading h1{font-size:clamp(48px,13vw,72px);overflow-wrap:anywhere}.theme-detail-stage{padding:0}.theme-detail-browser{border-radius:18px 18px 0 0}.theme-detail-screen{height:330px}.theme-detail-side{min-height:0;padding:28px 20px}.theme-detail-side ul{display:none}.theme-detail-stage.is-expanded{display:grid;grid-template-rows:minmax(0,55dvh) minmax(0,1fr);grid-template-columns:1fr;padding:0}.theme-detail-stage.is-expanded .theme-detail-browser{border-radius:0}.theme-detail-stage.is-expanded .theme-detail-screen{height:calc(55dvh - 46px)}.theme-detail-stage.is-expanded .theme-detail-side{overflow-y:auto}.theme-detail-story ul{grid-template-columns:1fr}.theme-detail-related>header{align-items:flex-start;flex-direction:column}.theme-detail-related>div{grid-template-columns:1fr}}
 </style>

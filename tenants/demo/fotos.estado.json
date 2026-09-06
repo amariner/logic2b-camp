@@ -102,6 +102,28 @@
         "sourceExtension": ".png",
         "dimensions": "1536x1024"
       }
+    ],
+    "hero-dia": [
+      {
+        "at": "2026-09-05T15:43:14.786Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "134893885209391e083085eae3804d50c9239d9995c2f4946ccb5a7bb3edcfff",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "tipo-parcela": [
+      {
+        "at": "2026-09-05T15:43:45.577Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "ddbf42d3c535df9ba9b8b38eade8e9102c95e3a7a40b633afd78115166a19f7a",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -119,6 +141,14 @@
     },
     "vida-entorno": {
       "at": "2026-08-18T09:26:08.745Z",
+      "gate": "visual-inspection"
+    },
+    "hero-dia": {
+      "at": "2026-09-05T15:43:16.081Z",
+      "gate": "visual-inspection"
+    },
+    "tipo-parcela": {
+      "at": "2026-09-05T15:43:46.832Z",
       "gate": "visual-inspection"
     }
   },

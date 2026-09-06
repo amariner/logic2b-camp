@@ -24,9 +24,9 @@
   },
   "piezas": {
     "hero-dia": {
-      "aspecto": "21:9",
+      "aspecto": "3:2",
       "papel": "Héroe de nivel 3.",
-      "prompt": "Camping mediterráneo bajo pino carrasco en luz de mañana, lona y arena compactada, fotografía editorial sin personas reconocibles, texto, marcas, HDR o saturación de folleto."
+      "prompt": "Edit target: the supplied seamless Cala Sereno photograph. Reframe into one landscape 3:2 photograph, 1536 by 1024 pixels or larger. Preserve this exact coherent sandy Mediterranean pine grove, the sea glimpsed through the trees, the cream canvas tent and wooden chair on the right. Extend the natural photograph vertically to make the 3:2 composition, with more pine canopy and foreground sand. Single camera view with continuous perspective and soft natural morning light. Keep the central pine grove and sea visible for a narrow mobile crop, while the tent stays on the right of the desktop view. No joins, collage, frames, borders, text, logos, people, new buildings or HDR. Professional realistic camping editorial photography."
     },
     "hero-anochecer": {
       "aspecto": "21:9",
@@ -36,7 +36,7 @@
     "tipo-parcela": {
       "aspecto": "3:2",
       "papel": "Tarjeta de parcela estándar.",
-      "prompt": "Parcela mediterránea realista bajo pinos con suelo de arena compactada y conexión discreta, luz natural, sin personas reconocibles, texto, logos, HDR o saturación."
+      "prompt": "Edit target: supplied Cala Sereno standard pitch photograph. Remove the black and cream rectangular borders from the picture. Deliver an edge-to-edge single natural photograph of this same empty compact-sand camping pitch under mature Mediterranean pine trees, preserving tree arrangement, green hedge, dappled light, depth, neutral natural colours and realistic camping setting. Extend natural sand and vegetation to all four edges. Landscape 3:2, at least 1536 by 1024 pixels. No frame, mat, inset, collage, typography, logos, people, new structures or HDR."
     },
     "tipo-premium": {
       "aspecto": "3:2",

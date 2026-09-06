@@ -1,5 +1,29 @@
 # PROGRESS — Logic Camp
 
+## Auditoría UI/UX del catálogo · 2026-09-05 (sesión 154)
+
+- Revisados los doce temas y Cala Sereno: cabecera medida, títulos y anclas,
+  navegación móvil de 44 px, buscador adaptable, formularios sin desbordamiento
+  en WebKit, tarifas con fila fija y teclado, CTA en fichas y vista ampliada
+  del catálogo con diálogo nativo y foco restaurado.
+- Corregido el transporte de consulta de los cuatro temas de nivel 3: ahora
+  respeta la promesa demo de no enviar ni persistir datos. Copy de confirmación
+  localizada y etiquetas de camas corregidas en los idiomas afectados.
+- Inspección visual de 179 fotografías; sustituidos el héroe con costura y la
+  parcela con marco de Cala Sereno mediante ImageGen + foto-pipeline. Prompts,
+  procedencia y aprobación trazados; miniatura y OG regenerados.
+- Gate global 74/74 con concurrencia y workers acotados, sin ampliar timeouts.
+  Bundle: 580 HTML / 17.334 enlaces internos válidos. Barridos: 1.553 vistas
+  Chromium y 858 WebKit, sin fallos. Interacciones: 133 Chromium y 65 WebKit
+  verdes.
+- Worker con D1 desechable en `/tmp`: 10 E2E verdes y un caso condicionado por
+  disponibilidad omitido por el propio test. Actualizado el selector del botón
+  de demo en la prueba de movimiento reducido al texto vigente.
+- Informe y comandos reproducibles en `docs/AUDITORIA-TEMAS-2026-09-05.md`;
+  capturas/JSON locales en `test-results/theme-catalog/`. Sin despliegue ni
+  escrituras remotas. La auditoría usa navegadores y tamaños emulados.
+
+
 ## Auditoría de datos demo y cupo D1 · 2026-09-05 (sesión 153)
 
 - Sincronizado `main` con origin (dos commits del sitio comercial). Lectura

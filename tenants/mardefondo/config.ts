@@ -16,6 +16,7 @@ export const config: TenantWebConfig = {
   staticHeroImage: 'hero-laguna',
   staticHeroMobileImage: 'hero-mobile',
   bookingTransport: 'demo-session',
+  enquiryTransport: 'demo',
   demoManagerPath: '/demos/mardefondo/gestion/',
   isDemo: true,
   legal: {

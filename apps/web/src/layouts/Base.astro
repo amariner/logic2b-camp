@@ -123,6 +123,8 @@ const tierMenuScript = `
   if (!menu) return;
   var botones = menu.querySelectorAll('button[data-nivel]');
   function marcar(n) {
+    var label = menu.querySelector('[data-level-label]');
+    if (label) label.textContent = n;
     botones.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.nivel === n)); });
   }
   botones.forEach(function (b) {
@@ -397,7 +399,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
     </a>
     {/* header (+ banner de demo, ADR 0013): un único bloque fijo — el banner
        empuja el nav, no lo solapa, sea cual sea su altura (i18n varía) */}
-    <div class="fixed inset-x-0 top-0 z-50">
+    <div class="lc-chrome fixed inset-x-0 top-0 z-50" data-lc-chrome>
       {config.isDemo && c.demo && (
         <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 bg-pino px-4 py-1.5 text-center text-[12px] leading-snug text-hueso">
           <span>{c.demo.banner}</span>
@@ -411,22 +413,22 @@ const demoBookingBootScript = demoBookingCatalog ? `
           )}
         </p>
       )}
-      <header class="bg-hueso/90 backdrop-blur-sm">
-      <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
-        <a href={localePath(locale)} class="font-display text-[15px] font-semibold tracking-[0.14em] uppercase">
+      <header class="bg-hueso/95">
+      <nav class="lc-header-nav mx-auto flex min-h-14 max-w-7xl items-center justify-between gap-2 px-4 md:px-8">
+        <a href={localePath(locale)} class="lc-brand font-display text-[15px] font-semibold tracking-[0.14em] uppercase">
           {config.name.replace('Camping ', '')}
         </a>
 
-        <div class="flex items-center gap-5">
+        <div class="lc-header-controls flex shrink-0 items-center gap-1 sm:gap-3 xl:gap-5">
           {/* nav completa en pantallas grandes */}
-          <div class="hidden items-center gap-5 text-[13px] font-medium text-tinta-suave lg:flex">
+          <div class="hidden items-center gap-5 text-[13px] font-medium text-tinta-suave xl:flex">
             {navLinks.map(([href, label]) => (
-              <a href={localePath(locale, href)} class="transition-colors hover:text-tinta">{label}</a>
+              <a href={localePath(locale, href)} aria-current={path === href || path.startsWith(`${href}/`) ? 'page' : undefined} class="transition-colors hover:text-tinta aria-[current=page]:text-tinta aria-[current=page]:underline aria-[current=page]:underline-offset-4">{label}</a>
             ))}
           </div>
 
           {/* selector de idioma: nativo, accesible, sin JS */}
-          <details class="lc-menu relative">
+          <details class="lc-menu relative" name="lc-header-menu">
             <summary
               class="flex min-h-11 cursor-pointer items-center gap-1 text-[13px] font-medium text-tinta uppercase"
               aria-label={c.nav.idioma}
@@ -453,7 +455,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
 
           {/* selector de temas de demo (ADR 0009): solo con config.demoThemes */}
           {demoThemes.length > 0 && (
-            <details class="lc-menu relative" id="lc-tema" data-default={defaultTheme}>
+            <details class="lc-menu relative" name="lc-header-menu" id="lc-tema" data-default={defaultTheme}>
               <summary
                 class="flex cursor-pointer items-center gap-1.5 text-[13px] font-medium text-tinta"
                 aria-label={c.nav.tema}
@@ -483,12 +485,13 @@ const demoBookingBootScript = demoBookingCatalog ? `
           {/* conmutador de nivel de demo (ADR 0013): solo con config.demoTierSwitch — atrezzo
              comercial, no un segundo build (el motor sigue en el bundle debajo) */}
           {showTierSwitch && c.demo && (
-            <details class="lc-menu relative" id="lc-nivel">
+            <details class="lc-menu relative" name="lc-header-menu" id="lc-nivel">
               <summary
                 class="flex cursor-pointer items-center gap-1.5 text-[13px] font-medium text-tinta"
                 aria-label={c.demo.nivel}
               >
                 <span class="hidden sm:inline">{c.demo.nivel}</span>
+                <span class="sm:hidden" aria-hidden="true" data-level-label>3</span>
                 <span aria-hidden="true" class="text-[10px] text-tinta-suave">▾</span>
               </summary>
               <ul class="absolute right-0 top-full z-50 mt-2 min-w-36 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
@@ -517,13 +520,14 @@ const demoBookingBootScript = demoBookingCatalog ? `
           )}
 
           {/* menú móvil */}
-          <details class="lc-menu relative lg:hidden">
+          <details class="lc-menu relative xl:hidden" name="lc-header-menu" data-mobile-menu>
             <summary class="flex min-h-11 cursor-pointer items-center text-[13px] font-medium text-tinta">{c.nav.menu}</summary>
             <ul class="absolute right-0 top-full z-50 mt-2 min-w-48 rounded-(--lc-radius) border border-arena/70 bg-hueso py-1 shadow-lg">
               {navLinks.map(([href, label]) => (
                 <li>
                   <a
                     href={localePath(locale, href)}
+                    aria-current={path === href || path.startsWith(`${href}/`) ? 'page' : undefined}
                     class="flex min-h-11 items-center px-4 py-2 text-[14px] text-tinta-suave transition-colors hover:bg-arena-suave hover:text-tinta"
                   >
                     {label}
@@ -592,6 +596,29 @@ const demoBookingBootScript = demoBookingCatalog ? `
     <script>
       import { initCampTour } from '@logic-camp/tour';
       initCampTour();
+
+      const chrome = document.querySelector<HTMLElement>('[data-lc-chrome]');
+      if (chrome) {
+        const measure = () => document.body.style.setProperty('--lc-chrome-h', `${chrome.getBoundingClientRect().height}px`);
+        measure();
+        new ResizeObserver(measure).observe(chrome);
+        const menus = [...chrome.querySelectorAll<HTMLDetailsElement>('.lc-menu')];
+        document.addEventListener('click', (event) => {
+          if (!(event.target instanceof Node)) return;
+          for (const menu of menus) if (!menu.contains(event.target)) menu.open = false;
+        });
+        document.addEventListener('keydown', (event) => {
+          if (event.key !== 'Escape') return;
+          const open = menus.find(menu => menu.open);
+          if (open) {
+            open.open = false;
+            open.querySelector('summary')?.focus();
+          }
+        });
+        matchMedia('(min-width: 1280px)').addEventListener('change', (event) => {
+          if (event.matches) chrome.querySelector<HTMLDetailsElement>('[data-mobile-menu]')?.removeAttribute('open');
+        });
+      }
     </script>
   </body>
 </html>
