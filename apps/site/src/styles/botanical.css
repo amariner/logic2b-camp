@@ -54,6 +54,11 @@
   background: color-mix(in srgb, var(--botanical-keylime) 62%, var(--botanical-paper));
 }
 
+/* Las fichas de temas tienen un fondo continuo, también bajo el menú flotante. */
+.theme-botanical.home-mini.theme-detail-layout {
+  background: var(--botanical-paper);
+}
+
 .theme-botanical.home-mini > header {
   border: 0;
   background: transparent;

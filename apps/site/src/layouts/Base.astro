@@ -121,6 +121,7 @@ const headerNav = [
   { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
 ] as const;
 const isHome = ruta === '/';
+const isThemeDetail = ruta.startsWith('temas/') && ruta !== 'temas/';
 const whatsappContact = logic2bContact(locale, contactContext);
 const menuOpenLabel = locale === 'es' ? 'Abrir menú' : 'Open menu';
 const menuCloseLabel = locale === 'es' ? 'Cerrar menú' : 'Close menu';
@@ -202,7 +203,7 @@ const menuCloseLabel = locale === 'es' ? 'Cerrar menú' : 'Close menu';
     </script>
     <slot name="head" />
   </head>
-  <body class:list={['theme-logic2b theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage']}>
+  <body class:list={['theme-logic2b theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage', isThemeDetail && 'theme-detail-layout']}>
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >
