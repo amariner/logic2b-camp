@@ -107,28 +107,28 @@ const unitTypes: WebUnitType[] = [
     capacity_min: 1,
     capacity_max: 6,
     included_persons: 2,
-    features: { m2: 80, electricityAmps: 6, shade: 'partial', pets: true },
-    photos: [],
-    unitCount: 18,
+    features: { m2: 70, electricityAmps: 6, shade: 'partial', pets: true },
+    photos: ['parcela-viva', 'hero-humano'],
+    unitCount: 16,
   },
   {
     id: 'ut_glamp',
     tenant_id: tenantId,
-    kind: 'lodging',
-    name_i18n: { es: 'Tienda premontada' },
+    kind: 'pitch',
+    name_i18n: { es: 'Parcela amplia' },
     capacity_min: 1,
-    capacity_max: 4,
+    capacity_max: 6,
     included_persons: 2,
-    features: { m2: 20, beds: 1, shade: 'total', airCon: false, pets: false },
-    photos: [],
-    unitCount: 4,
+    features: { m2: 100, electricityAmps: 6, shade: 'partial', pets: true },
+    photos: ['parcela-familia', 'vida-atardecer'],
+    unitCount: 6,
   },
 ];
 
 const prices: Record<string, [number, number]> = {
-  sea_primavera: [2800, 6500],
-  sea_verano: [3600, 8200],
-  sea_otono: [3000, 6800],
+  sea_primavera: [2800, 3600],
+  sea_verano: [3600, 4400],
+  sea_otono: [3000, 3800],
 };
 
 const ratePlans: WebRatePlan[] = seasons.flatMap((season) =>

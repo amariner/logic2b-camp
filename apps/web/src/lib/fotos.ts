@@ -44,10 +44,12 @@ export const fotoTipo = (unitTypeId: string): ImageMetadata | undefined =>
 
 /** Galería del detalle: principal + interior/ambiente, sin duplicados. Vacía si no hay ninguna. */
 export const galeriaTipo = (unitTypeId: string): ImageMetadata[] => {
-  const tenantPhotos = data.unitTypes
-    .find((type) => type.id === unitTypeId)
-    ?.photos.map((key) => images[key])
-    .filter((image): image is ImageMetadata => Boolean(image)) ?? [];
+  const tenantPhotos =
+    data.unitTypes
+      .find((type) => type.id === unitTypeId)
+      ?.photos.map((key) => images[key])
+      .filter((image): image is ImageMetadata => Boolean(image)) ?? [];
+  if (tenantPhotos.length > 0) return [...new Set(tenantPhotos)];
   const fotos = [...tenantPhotos, fotoTipo(unitTypeId), resolve(detalle[unitTypeId])].filter(
     (i): i is ImageMetadata => Boolean(i),
   );

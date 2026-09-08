@@ -6,25 +6,25 @@
   "icp": "Propietaria de un camping familiar de 12 a 30 unidades, sin equipo digital ni PMS que quiera sustituir.",
   "objection": "Su web parece antigua, no transmite el lugar y las consultas llegan dispersas.",
   "commercialLevel": "Inicio, sobre el carril técnico estático tier 1.",
-  "story": "Reconocer el olivar, elegir entre parcela y tienda, ganar confianza en el entorno y completar una consulta sin red ni PII.",
-  "tone": "Sereno, honesto y próximo; habla de sombra, piedra y noches frescas, nunca de lujo o paraíso.",
+  "story": "Encontrar un camping pequeño, vivo y ordenado; elegir parcela para la propia tienda y consultar fechas sin red ni PII.",
+  "tone": "Cálido, abierto y próximo: acampar con buenos vecinos, calma y servicios cuidados. Solo tiendas de campaña.",
   "palette": {
-    "tinta": "#272820",
-    "hueso": "#f3efe3",
-    "pino": "#566044",
-    "arena": "#c9bda4",
-    "mar": "#995537"
+    "tinta": "#23382d",
+    "hueso": "#f7f6ef",
+    "pino": "#354e3d",
+    "arena": "#bbc5ad",
+    "mar": "#a33e20"
   },
-  "typography": "Clash Display 500/600 para titulares cortos e Inter para cuerpo; mucho aire y caja normal.",
+  "typography": "Clash Display 500 en titulares editoriales, Inter para lectura, etiquetas pequeñas y contraste de escala.",
   "signatureScreens": [
-    "Héroe móvil entre olivos con CTA",
-    "Ficha de tienda con galería",
-    "Confirmación de consulta marcada como demostración"
+    "Cabecera humana con tiendas ocupadas",
+    "Dos tamaños de parcela",
+    "Vida compartida, entorno y consulta"
   ],
   "photoInventory": [
-    "Héroes de día y anochecer",
-    "Parcela y tienda bajo olivos",
-    "Interior de tienda, balsa, piedra seca y textura de lona"
+    "Escenas de acampada habitadas y ordenadas",
+    "Parcelas para tienda de pareja y familiar",
+    "Cocina compartida, recepción, caminos y atardecer"
   ],
   "successCriterion": "Una captura sin contexto se reconoce como microcamping seco del Maestrat y el build no contiene motor ni dashboard."
 }

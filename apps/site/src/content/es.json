@@ -648,20 +648,20 @@
         "slug": "olivar",
         "nombre": "Camping L'Olivar",
         "nivel": "Inicio",
-        "escala": "22 unidades",
-        "perfil": "Microcamping de interior",
+        "escala": "22 parcelas",
+        "perfil": "Camping pequeño, solo tiendas",
         "promesa": "Una web con identidad propia que convierte visitas en consultas claras para recepción.",
-        "imagenAlt": "Portada de la demo Camping L'Olivar entre olivos y piedra seca",
+        "imagenAlt": "Campistas entre olivos, parcelas ordenadas y caminos de piedra en L’Olivar",
         "href": "/demos/olivar/",
         "momento": "consulta sin motor",
         "momentoHref": "/demos/olivar/contacto/#consulta",
         "recorrido": [
           "Descubrir el camping",
-          "Comparar dos formas de estancia",
+          "Elegir el tamaño de tu parcela",
           "Enviar una consulta de demostración"
         ],
         "comparacion": {
-          "captacion": "Web, alojamientos y consulta guiada",
+          "captacion": "Web, parcelas y consulta guiada",
           "operacion": "La recepción responde por su canal habitual",
           "automatizacion": "No incluida",
           "decision": "Métricas web básicas al activar producción"

@@ -5,6 +5,7 @@ import { getLegalUi } from '../lib/legal';
 import LogoMark from '../components/LogoMark.astro';
 import Logic2BContact from '../components/Logic2BContact.astro';
 import '../styles/global.css';
+import '../styles/outdoor.css';
 
 interface Props {
   locale: string;
@@ -390,7 +391,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
     {demoBookingBootScript && <script is:inline set:html={demoBookingBootScript} />}
     <slot name="head" />
   </head>
-  <body class="min-h-screen bg-hueso text-tinta antialiased" data-demo-banner={config.isDemo && c.demo ? '' : undefined}>
+  <body class="min-h-screen bg-hueso text-tinta antialiased" data-presentation={config.presentation} data-demo-banner={config.isDemo && c.demo ? '' : undefined}>
     <a
       href="#contenido"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100 focus:rounded-(--lc-radius) focus:bg-pino focus:px-4 focus:py-2 focus:text-hueso"
@@ -587,6 +588,13 @@ const demoBookingBootScript = demoBookingCatalog ? `
           </a>
         </div>
       </div>
+      {config.presentation === 'outdoor' && c.outdoor && (
+        <div class="out-footer-sign">
+          <p>{c.outdoor.footer.line}</p>
+          <div class="out-footer-word" aria-hidden="true">{config.name.replace('Camping ', '')}</div>
+          <p>{c.outdoor.footer.small}</p>
+        </div>
+      )}
     </footer>
 
     {logic2bContactEnabled(config) && <Logic2BContact locale={locale} />}

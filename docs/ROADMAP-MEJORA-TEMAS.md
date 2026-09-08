@@ -1,5 +1,11 @@
 # Roadmap de mejora de temas — humanidad, entorno y movimiento
 
+> **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
+> pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22
+> parcelas, nuevas fotografías y vídeos. Este encargo sustituye la dirección
+> anterior de escenas vacías. Ver [rediseño 360](OLIVAR-REDISENO-360-2026-09-08.md)
+> y ADR 0051. Preparado en local; revisión/publicación cuando se solicite.
+
 > Aceptado por Andreu el 2026-08-14. Este frente sucede al cierre de D6-V y no abre una
 > nueva fábrica paralela: amplía la fábrica visual común y la aplica por olas a
 > las doce demos de portfolio más Cala Sereno.
@@ -262,3 +268,17 @@ estar lista para enseñar y aprender antes de consumir el coste de H2 y H3.
 - L'Olivar sigue siendo el único siguiente vídeo. Seedance 2.0 cuesta 21
   créditos para el brief aprobado y el saldo verificado es 1,38; generar con
   menos calidad o lanzar una petición fallida no cuenta como progreso.
+
+## 10. L'Olivar con movimiento · 2026-09-08
+
+- Primer par H1-V integrado localmente: 6 s, 720p, escritorio 16:9 y móvil
+  9:16. Seedance 2.0, una generación por formato, sin audio; 54 créditos según
+  preflight. Los pósteres aprobados respectivos se usaron al inicio y al final.
+- El reproductor permite pausa/reanudación con teclado, conserva la pausa
+  elegida al cambiar preferencias, se detiene fuera de pantalla o con la
+  pestaña oculta y cambia de fuente al cruzar el breakpoint móvil.
+- Cabecera más breve, contexto del Maestrat y enlace a los alojamientos.
+- Dos nuevas fotos integradas de OpenAI: collado y obrador. Las tres rutas
+  de L'Olivar tienen ahora fotografía diferenciada y trazada.
+- Estado: local, pendiente de publicación. No se ha iniciado otro tenant.
+  Ver `OLIVAR-MOVIMIENTO-2026-09-08.md` para bytes, pruebas y evidencias.

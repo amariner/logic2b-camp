@@ -71,6 +71,122 @@
         "sourceExtension": ".png",
         "dimensions": "941x1672"
       }
+    ],
+    "vida-ruta-collado": [
+      {
+        "at": "2026-09-08T13:34:10.234Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "943c7fe471e28d25a83120164ba5f731d1b689594747576be29beb679834a756",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-ruta-obrador": [
+      {
+        "at": "2026-09-08T13:36:32.019Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "f31bb8e6713c2a117ab8896b35e51007e8a1daac1471f6c8235b6bfc36c03e7e",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "hero-humano": [
+      {
+        "at": "2026-09-08T14:41:19.629Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "7d092dc75766f206d8bdc2389b9c55cf4ef528def7e77cc0f53291ff0ec2660b",
+        "sourceExtension": ".png",
+        "dimensions": "1672x941"
+      }
+    ],
+    "hero-humano-mobile": [
+      {
+        "at": "2026-09-08T14:42:58.295Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "c60ecbca200df0bb605c32acba7272095a3ec3a5da36571eb4e0934ccbb73bca",
+        "sourceExtension": ".png",
+        "dimensions": "941x1672"
+      }
+    ],
+    "parcela-viva": [
+      {
+        "at": "2026-09-08T14:44:41.666Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "ebab127ded474a7c1ff86c747890d8227301985a854564c964bf8dde76088a03",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "parcela-familia": [
+      {
+        "at": "2026-09-08T14:51:57.460Z",
+        "provider": "codex-integrated",
+        "model": "openai-image-integrated",
+        "status": "staged",
+        "promptSha256": "4efad880483d43d1bed57325b3c9fb8394f965d1a36aa197f7e3dca10615187f",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-mesa-comun": [
+      {
+        "at": "2026-09-08T14:54:19.797Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "connection_failed",
+        "detail": "image generation failed: connection failed: error sending request"
+      },
+      {
+        "at": "2026-09-08T14:55:46.676Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "connection_failed",
+        "detail": "Second transient image tool request failed before returning an image"
+      },
+      {
+        "at": "2026-09-08T14:57:32.575Z",
+        "provider": "codex-integrated",
+        "status": "failed",
+        "error": "connection_failed",
+        "detail": "Third integrated image request failed before returning an image; continue through the already authorized Higgsfield account"
+      },
+      {
+        "at": "2026-09-08T15:00:34.711Z",
+        "provider": "higgsfield",
+        "status": "failed",
+        "error": "generation_failed",
+        "detail": "GPT Image 2 job failed without an output; Higgsfield job evidence retained in output/olivar-360"
+      },
+      {
+        "at": "2026-09-08T15:03:46.148Z",
+        "provider": "higgsfield",
+        "model": "nano_banana_pro",
+        "status": "staged",
+        "promptSha256": "562618448a06b0af5264f94991e6daac561d2a52b9fa49b03fec8353153e93d5",
+        "sourceExtension": ".png",
+        "dimensions": "2528x1696"
+      }
+    ],
+    "vida-atardecer": [
+      {
+        "at": "2026-09-08T15:06:11.059Z",
+        "provider": "higgsfield",
+        "model": "nano_banana_pro",
+        "status": "staged",
+        "promptSha256": "b1dcb6817662c0fa53625faefa1e414be5eb71dad1ddd7c2698fc0d105b2f436",
+        "sourceExtension": ".png",
+        "dimensions": "2752x1536"
+      }
     ]
   },
   "approvals": {
@@ -92,6 +208,38 @@
     },
     "hero-mobile": {
       "at": "2026-08-18T14:01:23.094Z",
+      "gate": "visual-inspection"
+    },
+    "vida-ruta-collado": {
+      "at": "2026-09-08T13:34:10.280Z",
+      "gate": "visual-inspection"
+    },
+    "vida-ruta-obrador": {
+      "at": "2026-09-08T13:36:32.065Z",
+      "gate": "visual-inspection"
+    },
+    "hero-humano": {
+      "at": "2026-09-08T14:41:25.604Z",
+      "gate": "visual-inspection"
+    },
+    "hero-humano-mobile": {
+      "at": "2026-09-08T14:43:06.802Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-viva": {
+      "at": "2026-09-08T14:44:47.056Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-familia": {
+      "at": "2026-09-08T14:52:14.841Z",
+      "gate": "visual-inspection"
+    },
+    "vida-mesa-comun": {
+      "at": "2026-09-08T15:04:00.344Z",
+      "gate": "visual-inspection"
+    },
+    "vida-atardecer": {
+      "at": "2026-09-08T15:06:21.625Z",
       "gate": "visual-inspection"
     }
   },

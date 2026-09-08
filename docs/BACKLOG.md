@@ -1,5 +1,11 @@
 # BACKLOG
 
+> **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
+> pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22
+> parcelas, nuevas fotografías y vídeos. Este encargo sustituye la dirección
+> anterior de escenas vacías. Ver [rediseño 360](OLIVAR-REDISENO-360-2026-09-08.md)
+> y ADR 0051. Preparado en local; revisión/publicación cuando se solicite.
+
 Ideas y peticiones que NO son de la fase en curso. Aquí, no al código. Formato: `- [fase probable] descripción — fecha`.
 
 ## Índice operativo de pendientes vivos (R13 · 2026-08-11)
@@ -517,7 +523,12 @@ es un gate de producción, no un pendiente local de implementación.
   gate: L'Olivar es íntimo, adulto y cálido; Pinada del Mar es familiar,
   luminoso y verde-azul; Mar de Fondo es amplio, operativo y de última hora.
   No comparten composición, figurantes ni temperatura de color.
-- [H1-V] Prototipar los bucles de vídeo de las tres anclas como subfase
+- [H1-V] **Actualización 2026-09-08: L'Olivar 2/2 integrado localmente**;
+  las otras dos anclas siguen pendientes (2/6 salidas H1-V). Saldo desbloqueado,
+  27 créditos por salida según preflight actual. Cabecera, control de pausa y
+  dos fotos propias de rutas completan este corte. Sin despliegue.
+  Evidencia: `OLIVAR-MOVIMIENTO-2026-09-08.md`.
+  Historial: prototipar los bucles de vídeo de las tres anclas como subfase
   posterior. **Abierta el 2026-08-18 y bloqueada antes de generar bytes:** el
   primer prototipo de L'Olivar queda especificado como un bucle de 6 s, cámara
   fija, sin audio y con el mismo fotograma al principio y al final, pero

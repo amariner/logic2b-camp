@@ -1,6 +1,12 @@
-# Prompt para la siguiente sesión — autogestión segura y H1-V condicionado
+# Prompt para la siguiente sesión — autogestión segura y L'Olivar listo en local
 
-> Actualizado el 2026-09-01 durante el cierre de la sesión 152.
+> **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
+> pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22
+> parcelas, nuevas fotografías y vídeos. Este encargo sustituye la dirección
+> anterior de escenas vacías. Ver [rediseño 360](OLIVAR-REDISENO-360-2026-09-08.md)
+> y ADR 0051. Preparado en local; revisión/publicación cuando se solicite.
+
+> Actualizado el 2026-09-08: primer par de vídeo H1-V integrado en L'Olivar.
 
 ## Auditoría posterior del catálogo · 2026-09-05
 
@@ -14,9 +20,10 @@ la sesión 153. Se mantiene el siguiente objetivo independiente indicado abajo.
 El gestor y la superficie comercial comparten ya `.theme-logic2b` sobre la base
 auditable de `ui.logic2b.com`. El modo oscuro usa una escala bosque casi negra y
 el claro tiene contraste cruzado para texto secundario, controles y foco. La mejora
-fotográfica sigue cerrada en 13/13. H1-V conserva el fallback íntegro y su
-aceptación real de navegador, pero no puede generar L'Olivar: hay 1,38 créditos
-y el brief aprobado cuesta 21. El siguiente P0 local independiente del proveedor
+fotográfica sigue cerrada en 13/13. H1-V tiene el par de L'Olivar integrado localmente: 6 s, 720p, escritorio y
+móvil, con alternativa estática y control de pausa. Las dos generaciones
+salieron al primer intento (54 créditos según preflight); ya no está bloqueado
+por saldo. Publicación pendiente. El siguiente P0 local independiente del proveedor
 sigue siendo endurecer la autogestión pública de reservas.
 
 ## Evidencia nueva cerrada
@@ -58,19 +65,17 @@ capacidad de al menos 80 bits y consultas con cuerpo JSON. El recorrido debe:
 No mezclar en ese corte idempotencia del ledger o reemplazo real de intents: son
 objetivos separados y necesitan sus propias pruebas de concurrencia/proveedor.
 
-## H1-V cuando el saldo alcance 21 créditos
+## H1-V después de este corte
 
-Reintentar solo L'Olivar con Seedance 2.0: 6 s, 16:9, 720p, cámara fija, sin
-audio, `hero-dia.webp` al inicio y al final y movimiento limitado a hojas,
-sombras y lona. Seguir `BRIEF-H1-VIDEO.md` sin rediseñar el prompt.
+L'Olivar tiene las dos fuentes declaradas en `config.ts`, los finales y
+`movimiento.json`, y dos fotos nuevas de rutas. Ver `OLIVAR-MOVIMIENTO-2026-09-08.md`.
+Revisar/publicar los cambios preparados cuando se solicite. Andreu ha limitado
+esta sesión a L'Olivar: no generar aún Pinada ni Mar de Fondo.
 
-- no producir Pinada del Mar ni Mar de Fondo antes de aprobar continuidad,
-  bucle, peso y lectura del titular en L'Olivar;
-- ingerir con `pnpm motion -- stage/approve/reject`, nunca copiar bytes del
-  proveedor directamente a `content/media/`;
-- generar después el recorte móvil propio; no reutilizar el apaisado;
-- conservar el póster como LCP y exigir ≤3 MB escritorio / ≤1,5 MB móvil;
-- repetir la aceptación Chromium ya integrada sobre el primer activo real.
+Para nuevas producciones, seguir `BRIEF-H1-VIDEO.md`, comprobar precio vigente,
+conservar el póster por formato y usar los pipelines de ingestión/aprobación.
+`pnpm check` requiere FFprobe disponible o `FFPROBE_PATH` explícito; CI instala
+FFmpeg. El reproductor ya incluye pausa de usuario y por visibilidad.
 
 ## Verificación mínima al retomar
 
@@ -89,7 +94,7 @@ abortada antes de ejecutar aserciones.
 
 ## Gates que permanecen externos
 
-- vídeo H1-V: saldo ≥21 créditos y revisión visual del primer resultado;
+- resto H1-V: alcance de la siguiente ola y preflight vigente; L'Olivar ya está generado;
 - proveedor real de pagos: credenciales y sandbox autorizado;
 - cliente real, DNS, secrets, reseed remoto o `new:camping --apply`: destino y
   autorización específicos;

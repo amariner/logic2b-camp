@@ -32,3 +32,7 @@ exports/
 # Builds de verificación del escaparate (apps/web/scripts/check-portfolio.mjs)
 dist-portfolio/
 dist-capture/
+
+# Másteres, respuestas del proveedor y QA local de la primera cabecera con vídeo.
+output/olivar-motion/
+/output/olivar-360/

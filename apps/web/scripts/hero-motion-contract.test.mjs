@@ -145,6 +145,33 @@ describe('contrato técnico de hero motion', () => {
           readFile(join(root, 'movimiento.json'), 'utf8'),
         ),
       );
+      writeFileSync(
+        join(root, 'config.ts'),
+        `export const config = {
+        staticHeroImage: 'hero-dia', staticHeroMobileImage: 'hero-mobile',
+        heroMotion: { desktop: 'hero-motion', mobile: 'hero-motion-mobile' },
+      };`,
+      );
+      writeFileSync(join(media, 'hero-motion-mobile.mp4'), fastMp4);
+      manifest.clips['hero-motion-mobile'] = {
+        ...manifest.clips['hero-motion'],
+        poster: 'hero-dia',
+      };
+      writeFileSync(join(root, 'movimiento.json'), JSON.stringify(manifest));
+      const probe = async (file) =>
+        file.includes('mobile')
+          ? {
+              ...validMetadata,
+              streams: [{ ...validMetadata.streams[0], width: 720, height: 1280 }],
+            }
+          : validMetadata;
+      await assert.rejects(
+        auditHeroMotionTenant(root, { probe }),
+        /debe coincidir con hero-mobile/,
+      );
+      manifest.clips['hero-motion-mobile'].poster = 'hero-mobile';
+      writeFileSync(join(root, 'movimiento.json'), JSON.stringify(manifest));
+      assert.equal(await auditHeroMotionTenant(root, { probe }), true);
       manifest.clips['hero-motion'].sha256 = '0'.repeat(64);
       writeFileSync(join(root, 'movimiento.json'), JSON.stringify(manifest));
       await assert.rejects(

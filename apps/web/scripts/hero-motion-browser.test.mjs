@@ -154,6 +154,63 @@ after(async () => {
 });
 
 describe('HeroMedia activo en navegador', { concurrency: 1 }, () => {
+  it('permite pausar con teclado y conserva esa decisión al cambiar preferencias', async () => {
+    const { context, page } = await newPage();
+    try {
+      await page.goto(origin, { waitUntil: 'networkidle' });
+      const control = page.getByRole('button', { name: 'Pausar vídeo' });
+      await control.waitFor({ state: 'visible' });
+      await control.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(() => document.querySelector('video').paused);
+      assert.equal(await page.getByRole('button', { name: 'Reproducir vídeo' }).count(), 1);
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.locator('[data-hero-motion-toggle]').waitFor({ state: 'hidden' });
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.getByRole('button', { name: 'Reproducir vídeo' }).waitFor({ state: 'visible' });
+      assert.equal(await page.locator('video').evaluate((video) => video.paused), true);
+      await page.getByRole('button', { name: 'Reproducir vídeo' }).click();
+      await page.waitForFunction(() => !document.querySelector('video').paused);
+    } finally {
+      await context.close();
+    }
+  });
+
+  it('pausa fuera de pantalla y reanuda al volver a la cabecera', async () => {
+    const { context, page } = await newPage();
+    try {
+      await page.goto(origin, { waitUntil: 'networkidle' });
+      await page.waitForFunction(() => document.querySelector('video')?.hasAttribute('data-ready'));
+      await page.evaluate(() => {
+        document.body.style.height = '3000px';
+        window.scrollTo(0, 1500);
+      });
+      await page.waitForFunction(() => document.querySelector('video').paused);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForFunction(() => !document.querySelector('video').paused);
+    } finally {
+      await context.close();
+    }
+  });
+
+  it('cambia de fuente al cruzar el tamaño móvil sin recargar la página', async () => {
+    const { context, page } = await newPage({ width: 1024 });
+    try {
+      await page.goto(origin, { waitUntil: 'networkidle' });
+      await page.waitForFunction(() => document.querySelector('video').videoWidth === 32);
+      await page.setViewportSize({ width: 375, height: 720 });
+      await page.waitForFunction(() => document.querySelector('video').videoWidth === 18);
+      assert.equal(
+        await page.locator('video').evaluate((video) => new URL(video.currentSrc).pathname),
+        '/fixture/mobile.webm',
+      );
+      await page.setViewportSize({ width: 1024, height: 720 });
+      await page.waitForFunction(() => document.querySelector('video').videoWidth === 32);
+    } finally {
+      await context.close();
+    }
+  });
+
   it('no solicita vídeo con prefers-reduced-motion y conserva el póster', async () => {
     const { context, page, requests } = await newPage({ reducedMotion: 'reduce' });
     try {

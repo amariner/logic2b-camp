@@ -1,0 +1,125 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { config, data, eur, getContent, images, localePath, videos } from '../lib/content';
+import HeroMedia from './HeroMedia.astro';
+import EditorialImage from './EditorialImage.astro';
+import EnquiryForm from './EnquiryForm.astro';
+interface Props { locale: string }
+const { locale } = Astro.props;
+const c = getContent(locale);
+const o = c.outdoor;
+if (!o) throw new Error('La presentación outdoor requiere contenido editorial en el tenant.');
+const image = images[config.staticHeroImage ?? 'hero-dia'];
+const mobileImage = images[config.staticHeroMobileImage ?? ''];
+const hero = image ? await getImage({ src: image, widths: [828, 1280, 1920, 2560], format: 'webp', quality: 75 }) : null;
+const mobileHero = mobileImage ? await getImage({ src: mobileImage, widths: [640, 828, 1024], format: 'webp', quality: 75 }) : null;
+const routes = c.entornoPagina.rutas?.items ?? [];
+const from = (id: string) => Math.min(...data.ratePlans.filter(p => p.unit_type_id === id).map(p => p.base_cents));
+---
+<Base locale={locale} path="/">
+  {hero && <link slot="head" rel="preload" as="image" imagesrcset={hero.srcSet.attribute} imagesizes="100vw" fetchpriority="high" media={mobileHero ? '(min-width: 640px)' : undefined} />}
+  {mobileHero && <link slot="head" rel="preload" as="image" imagesrcset={mobileHero.srcSet.attribute} imagesizes="100vw" fetchpriority="high" media="(max-width: 639px)" />}
+  <div class="out-home">
+    <section class="out-hero" aria-labelledby="out-hero-title" data-tour-medium-web>
+      {image && hero && <HeroMedia image={image} src={hero.src} srcset={hero.srcSet.attribute}
+        mobileImage={mobileImage} mobileSrc={mobileHero?.src} mobileSrcset={mobileHero?.srcSet.attribute}
+        desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined}
+        mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined}
+        motionLabels={c.heroMotion} position="center" />}
+      <div class="out-hero-shade"></div>
+      <p class="out-hero-location"><span aria-hidden="true">✳</span> {c.hero1.lugar}</p>
+      <div class="out-hero-copy">
+        <div>
+          <h1 id="out-hero-title">{o.hero.lines.map(line => <span>{line}</span>)}</h1>
+          <div class="out-actions">
+            <a class="out-button out-button-orange" href="#contacto">{c.hero1.cta}<span aria-hidden="true">↗</span></a>
+            <a class="out-hero-link" href="#alojamientos">{c.hero1.explorar}<span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <p class="out-hero-note">{o.hero.note}</p>
+      </div>
+    </section>
+    <div class="out-hero-facts" aria-label={c.hero3.prueba}>
+      {o.hero.facts.map((fact, i) => <span><i aria-hidden="true">{['◒', '△', '↗'][i]}</i>{fact}</span>)}
+      <a href={localePath(locale, '/instalaciones')}>{c.nav.instalaciones} <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <section class="out-welcome out-wrap out-space" aria-labelledby="out-welcome-title">
+      <div class="out-welcome-copy">
+        <p class="out-eyebrow">{o.welcome.label}</p>
+        <h2 id="out-welcome-title" class="out-title out-title-soft">{o.welcome.title}</h2>
+        <p class="out-text">{o.welcome.text}</p>
+        <a class="out-button out-button-dark" href={localePath(locale, '/instalaciones')}>{o.welcome.link}<span aria-hidden="true">↗</span></a>
+      </div>
+      <figure class="out-welcome-main">
+        <EditorialImage photo={o.welcome.photo} alt={o.welcome.caption} class="out-image" sizes="(min-width: 768px) 33vw, 100vw" />
+        <figcaption>{o.welcome.caption}</figcaption>
+      </figure>
+      <figure class="out-welcome-side">
+        <EditorialImage photo="vida-recepcion" alt={c.vida?.escenas[0]?.titulo ?? c.nav.instalaciones} class="out-image" sizes="(min-width: 768px) 24vw, 50vw" />
+        <figcaption>{c.vida?.escenas[0]?.titulo}</figcaption>
+      </figure>
+    </section>
+
+    <section id="alojamientos" class="out-pitches out-space" aria-labelledby="out-pitches-title">
+      <div class="out-wrap">
+        <p class="out-eyebrow">{o.pitches.label}</p>
+        <header class="out-section-heading">
+          <h2 id="out-pitches-title" class="out-title">{o.pitches.title}</h2>
+          <p class="out-text">{o.pitches.intro}</p>
+        </header>
+        <div class="out-pitch-grid">
+          {c.tipos.cards.map((card, index) => (
+            <article class="out-pitch">
+              <a class="out-pitch-photo" href={localePath(locale, `/alojamientos/${card.id}`)} aria-label={`${o.pitches.details}: ${card.nombre}`}>
+                <EditorialImage photo={card.foto} alt={card.nombre} class="out-image" />
+                <span class="out-photo-label">0{index + 1} / {o.pitches.features[card.id]?.[0]}</span>
+                <span class="out-photo-arrow" aria-hidden="true">↗</span>
+              </a>
+              <div class="out-pitch-heading"><h3>{card.nombre}</h3><p><strong>{eur(from(card.id), locale)}</strong><span>{o.pitches.priceNote}</span></p></div>
+              <p class="out-text">{card.desc}</p>
+              <ul class="out-chips">{o.pitches.features[card.id]?.map(f => <li>{f}</li>)}</ul>
+              <a class="out-text-link" href={localePath(locale, `/alojamientos/${card.id}`)}>{o.pitches.details}<span aria-hidden="true">↗</span></a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="out-wrap out-essentials out-space" aria-labelledby="out-essentials-title">
+      <p class="out-eyebrow">{o.essentials.label}</p>
+      <h2 id="out-essentials-title" class="out-title out-title-soft">{o.essentials.title}</h2>
+      <div class="out-essentials-grid">{o.essentials.items.map(item => (
+        <article><span class="out-number">{item.number}</span><h3>{item.title}</h3><p class="out-text">{item.text}</p></article>
+      ))}</div>
+    </section>
+
+    <section class="out-day" aria-labelledby="out-day-title">
+      <EditorialImage photo={o.day.photo} alt={o.day.text} class="out-image" sizes="100vw" />
+      <div class="out-day-shade"></div>
+      <div class="out-day-copy"><p class="out-eyebrow">{o.day.label}</p><h2 id="out-day-title" class="out-title">{o.day.title}</h2><p>{o.day.text}</p><a class="out-button out-button-orange" href={localePath(locale, '/instalaciones')}>{o.day.link}<span aria-hidden="true">↗</span></a></div>
+    </section>
+
+    <section class="out-wrap out-routes out-space" aria-labelledby="out-routes-title">
+      <p class="out-eyebrow">{o.routes.label}</p>
+      <header class="out-section-heading"><h2 id="out-routes-title" class="out-title">{o.routes.title}</h2><a class="out-button out-button-outline" href={localePath(locale, '/entorno')}>{o.routes.link}<span aria-hidden="true">↗</span></a></header>
+      <div class="out-routes-grid">{routes.map((route, i) => (
+        <a href={`${localePath(locale, '/entorno')}#rutas`} class:list={['out-route', i === 1 && 'out-route-tall']}>
+          <div class="out-route-photo"><EditorialImage photo={route.foto} alt={route.nombre} class="out-image" sizes="(min-width: 768px) 33vw, 100vw" /><span class="out-photo-label">{route.tipo} · {route.duracion}</span><span class="out-photo-arrow" aria-hidden="true">↗</span></div>
+          <h3>{route.nombre}</h3><p class="out-text">{route.resumen}</p>
+        </a>
+      ))}</div>
+    </section>
+
+    <section class="out-faq out-space" aria-labelledby="out-faq-title"><div class="out-wrap out-faq-grid">
+      <div><p class="out-eyebrow">{o.questions.label}</p><h2 id="out-faq-title" class="out-title">{o.questions.title}</h2></div>
+      <div>{o.questions.items.map((item, i) => <details name="camping-questions"><summary><span class="out-faq-number">0{i + 1}</span>{item.question}<span class="out-faq-toggle" aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div>
+    </div></section>
+
+    <section id="contacto" class="out-contact out-space" aria-labelledby="out-contact-title"><div class="out-wrap out-contact-grid">
+      <div class="out-contact-copy"><p class="out-eyebrow">{o.contact.label}</p><h2 id="out-contact-title" class="out-title">{o.contact.title}</h2><p class="out-text">{o.contact.intro}</p><span class="out-sun" aria-hidden="true">✳</span></div>
+      <div class="out-form"><EnquiryForm locale={locale} form={c.form} /></div>
+    </div></section>
+  </div>
+</Base>

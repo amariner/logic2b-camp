@@ -1,8 +1,14 @@
 # Brief H1-V — bucles ambientales de las tres anclas
 
-> Estado: listo para producción; bloqueado antes de generar bytes por saldo
-> insuficiente del proveedor el 2026-08-18. Este documento fija el trabajo, no
-> aprueba ningún vídeo. La fuente de verdad técnica continúa en ADR 0047 y
+> Actualización L’Olivar, 2026-09-08: el encargo posterior de Andreu sustituye
+> las escenas vacías por acampada humana y tranquila. Aplicar el
+> [rediseño 360](OLIVAR-REDISENO-360-2026-09-08.md) y ADR 0051 para este tema.
+
+> Estado al 2026-09-08: L'Olivar tiene sus dos salidas generadas, inspeccionadas
+> e integradas localmente. Pinada y Mar de Fondo siguen pendientes. El bloqueo
+> histórico de saldo quedó superado; el preflight vigente fue 27 créditos por
+> salida, 54 para L'Olivar. Sin despliegue en esta sesión. Evidencia en
+> `OLIVAR-MOVIMIENTO-2026-09-08.md`; contrato técnico en ADR 0047 y
 > `apps/web/scripts/hero-motion-contract.mjs`.
 
 ## 1. Decisión común

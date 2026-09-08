@@ -84,4 +84,18 @@ describe('hero motion progresivo', () => {
     assert.equal(await syncHeroMotion(fixture.video, true), false);
     assert.equal(fixture.attributes.has('data-ready'), false);
   });
+
+  it('no vuelve a mostrar un play pendiente después de pedir menos movimiento', async () => {
+    const fixture = videoFixture();
+    let finishPlay;
+    fixture.video.play = () =>
+      new Promise((resolve) => {
+        finishPlay = resolve;
+      });
+    const pending = syncHeroMotion(fixture.video, true);
+    await syncHeroMotion(fixture.video, false);
+    finishPlay();
+    assert.equal(await pending, false);
+    assert.equal(fixture.attributes.has('data-ready'), false);
+  });
 });

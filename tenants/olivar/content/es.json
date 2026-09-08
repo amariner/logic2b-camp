@@ -1,15 +1,15 @@
 {
   "seo": {
-    "title": "Camping L'Olivar — dormir entre bancales y olivos del Maestrat",
-    "description": "Un camping familiar de 22 unidades entre olivos, piedra seca y una masía encalada. Parcelas y cuatro tiendas premontadas, de marzo a noviembre."
+    "title": "L'Olivar — un pequeño camping para vivir afuera",
+    "description": "22 parcelas para tiendas entre olivos del Maestrat. Sombra, cocina compartida, baños cuidados y caminos desde la puerta. Acampada tranquila, a escala humana."
   },
   "nav": {
-    "alojamientos": "Dónde dormir",
-    "instalaciones": "El camping",
-    "entorno": "El Maestrat",
+    "alojamientos": "Las parcelas",
+    "instalaciones": "La vida aquí",
+    "entorno": "Sal a explorar",
     "tarifas": "Tarifas",
     "blog": "Cuaderno",
-    "contacto": "Consulta tus fechas",
+    "contacto": "Ven a acampar",
     "menu": "Menú",
     "idioma": "Idioma",
     "tema": "Estilo"
@@ -21,19 +21,26 @@
     "nivel3": "Gestión"
   },
   "hero3": {
-    "titulo": "Un bancal tranquilo para quedarse.",
-    "prueba": "22 unidades · atención directa"
+    "titulo": "Tu tienda. Tu sombra. Tu tiempo.",
+    "prueba": "22 parcelas · solo tiendas de campaña"
   },
   "hero1": {
-    "titulo": "Sombra de olivo. Noches frescas. Veintidós maneras de estar a gusto.",
-    "cta": "Consulta tus fechas"
+    "titulo": "Menos prisa. Más afuera.",
+    "cta": "Elige tus fechas",
+    "lugar": "Camping de tiendas · El Maestrat",
+    "intro": "Un pequeño camping entre olivos. Monta tu tienda, conoce a tus vecinos y haz sitio para no hacer nada.",
+    "explorar": "Descubre las parcelas"
+  },
+  "heroMotion": {
+    "pausar": "Pausar vídeo",
+    "reproducir": "Reproducir vídeo"
   },
   "ticker": [
-    "18 parcelas entre olivos",
-    "4 tiendas ya montadas",
-    "piedra seca y caminos a pie",
-    "pan y aceite de la cooperativa",
-    "abierto marzo – noviembre"
+    "22 parcelas, mucho aire",
+    "Solo tiendas de campaña",
+    "Cocina y mesa compartidas",
+    "Caminos desde la puerta",
+    "Marzo — noviembre"
   ],
   "mostrador": {
     "buscar": "Consultar",
@@ -43,45 +50,45 @@
     "ninos": "Niños"
   },
   "tipos": {
-    "titulo": "Dos formas de quedarse",
-    "subtitulo": "Trae tu casa o llega con la cama preparada. El resto es el mismo: suelo firme, sombra y silencio a partir de las once.",
-    "verTodo": "Ver parcelas y tiendas",
+    "titulo": "Tu tienda, tu rincón.",
+    "subtitulo": "Dos tamaños de parcela. La misma sombra de olivos, el mismo cuidado y espacio para estar a tu aire.",
+    "verTodo": "Todas las parcelas",
     "nombres": {
       "ut_std": "Parcela entre olivos",
-      "ut_glamp": "Tienda premontada"
+      "ut_glamp": "Parcela amplia"
     },
     "cards": [
       {
-        "id": "parcelas",
-        "nombre": "Parcelas entre olivos",
-        "desc": "Dieciocho bancales de unos 80 m², suelo firme, sombra natural y electricidad sencilla.",
-        "foto": "tipo-parcela"
+        "id": "ut_std",
+        "nombre": "Entre olivos",
+        "desc": "Para escaparte ligero. Tu tienda, dos sillas y un buen libro.",
+        "foto": "parcela-viva"
       },
       {
-        "id": "tiendas",
-        "nombre": "Tiendas premontadas",
-        "desc": "Cuatro tiendas de lona cruda con cama, lino y una mesa fuera. Baños a pocos pasos.",
-        "foto": "tipo-tienda"
+        "id": "ut_glamp",
+        "nombre": "Un poco más de espacio",
+        "desc": "Para la tienda familiar, la sobremesa y jugar a las cartas.",
+        "foto": "parcela-familia"
       }
     ]
   },
   "entorno": {
-    "titulo": "Aquí el paisaje no está delante: duermes dentro.",
-    "texto": "Los caminos siguen los bancales, las paredes son de piedra colocada sin cemento y los olivos llevan aquí mucho más que nosotros. A pie se llega al horno, al obrador de aceite y a dos rutas cortas."
+    "titulo": "El mejor plan empieza en la puerta.",
+    "texto": "Un paseo entre muros de piedra seca, pan del pueblo o una mañana de olivos hasta el collado. En recepción te ayudamos a elegir según el calor y las ganas."
   },
   "vida": {
-    "titulo": "La vida aquí cabe en gestos pequeños",
-    "intro": "Llegar con tiempo, preparar algo sencillo y encontrar el bancal fresco cuando aprieta el sol. L'Olivar no organiza el día: te ayuda a empezarlo.",
+    "titulo": "Compartir sitio. Respetar el ritmo.",
+    "intro": "Un saludo al llegar. Café en la mesa larga. Los niños aprendiendo a montar la tienda. La vida de camping, sin agenda de animación.",
     "escenas": [
       {
         "foto": "vida-recepcion",
         "titulo": "Primero, saber dónde estás",
-        "texto": "La bienvenida ocurre en el porche de la masía: parcela, baños y dos caminos se explican antes de entregar la llave."
+        "texto": "Al llegar te enseñamos tu parcela, los servicios y los caminos. Una bienvenida de persona a persona."
       },
       {
-        "foto": "vida-servicio-cocina",
-        "titulo": "Desayuno sin prisa",
-        "texto": "La cocina común pone los fuegos y la mesa; el pan, el tomate y el aceite llegan de muy cerca."
+        "foto": "vida-mesa-comun",
+        "titulo": "La mesa siempre hace sitio",
+        "texto": "Pan, café y una conversación que empieza sin planearla. Cocina sencilla y mesa compartida, con todo recogido para el siguiente."
       },
       {
         "foto": "vida-servicio-balsa",
@@ -91,16 +98,16 @@
     ]
   },
   "form": {
-    "titulo": "Consulta tus fechas",
-    "subtitulo": "Cuéntanos cuándo vienes y cómo quieres quedarte. Esta demostración te enseñará la respuesta sin enviar tus datos.",
+    "titulo": "Nos vemos entre olivos.",
+    "subtitulo": "Cuéntanos cuándo vienes, cuántos sois y cómo es tu tienda. Te ayudamos a encontrar vuestro sitio.",
     "nombre": "Nombre",
     "email": "Email",
     "fechas": "Fechas aproximadas",
     "fechasEjemplo": "12 → 16 septiembre",
     "grupo": "Personas",
-    "estancia": "Cómo quieres quedarte",
-    "estanciaVacia": "Elige parcela o tienda",
-    "mensaje": "¿Qué necesitas saber?",
+    "estancia": "Tu parcela",
+    "estanciaVacia": "Elige el tamaño de parcela",
+    "mensaje": "Cuéntanos cómo es tu tienda y qué necesitas",
     "enviar": "Ver respuesta de muestra",
     "enviando": "Preparando respuesta…",
     "ok": "Consulta recibida.",
@@ -120,7 +127,7 @@
     "demoSinConcretar": "Por concretar"
   },
   "footer": {
-    "aviso": "Un camping pequeño entre olivos del Maestrat · demostración ficticia",
+    "aviso": "22 parcelas. Olivos, buenos vecinos y aire libre. · Demostración ficticia",
     "legal": "Aviso legal",
     "privacidad": "Privacidad",
     "cookies": "Cookies",
@@ -128,20 +135,20 @@
   },
   "alojamientos": {
     "seo": {
-      "title": "Parcelas y tiendas | Camping L'Olivar",
-      "description": "Dieciocho parcelas bajo olivos y cuatro tiendas premontadas con cama, sombra y baños cercanos."
+      "title": "Las parcelas | L'Olivar",
+      "description": "Elige entre 16 parcelas de 70 m² y 6 parcelas amplias de 100 m². Solo tiendas de campaña, con sombra, electricidad y baños cerca."
     },
-    "titulo": "Dónde dormir",
-    "intro": "Veintidós unidades y ninguna fila interminable: eliges parcela o tienda y nosotros te proponemos el bancal que mejor encaje.",
+    "titulo": "Aquí cabe tu manera de acampar.",
+    "intro": "Traes tu tienda y nosotros cuidamos lo demás. Veintidós parcelas delimitadas, caminos despejados y vecinos lo bastante cerca para saludar.",
     "desdeNoche": "desde {precio}/noche",
     "verFicha": "Ver ficha",
     "consultar": "Consultar estas fechas",
-    "volver": "Todos los alojamientos",
-    "parcelas": "Parcelas",
-    "alojados": "Tiendas preparadas",
+    "volver": "Todas las parcelas",
+    "parcelas": "Elige tu espacio",
+    "alojados": "",
     "fichas": {
-      "ut_std": "Suelo firme, unos 80 m² y la sombra cambiante de los olivos. Para tienda, caravana o furgoneta sin convertir el bancal en una avenida.",
-      "ut_glamp": "Lona cruda sobre tarima, cama doble, ropa de cama y sombra. El bloque de baños está a menos de un minuto andando."
+      "ut_std": "Un bancal de unos 70 m² bajo olivos, para tu tienda y un rincón de estar. Suelo nivelado, toma eléctrica de 6 A y baños a un paseo corto.",
+      "ut_glamp": "Unos 100 m² para una tienda familiar, la mesa y las sillas. Sombra parcial de olivos, toma eléctrica de 6 A y espacio libre alrededor. El alojamiento es tu propia tienda."
     },
     "ficha": {
       "capacidad": "Capacidad",
@@ -158,7 +165,7 @@
       "mascotas": "Mascotas",
       "si": "sí",
       "no": "no",
-      "unidades": "{n} unidades de este tipo",
+      "unidades": "{n} parcelas de este tamaño",
       "tarifasTitulo": "Tarifa orientativa por noche",
       "estanciaMin": "estancia mínima {n} noches",
       "estanciaMin1": "sin estancia mínima",
@@ -170,10 +177,10 @@
   "instalaciones": {
     "seo": {
       "title": "El camping — lo necesario, a escala humana | L'Olivar",
-      "description": "Balsa restaurada, baños, sombra, una cocina común pequeña y producto local en un camping de 22 unidades."
+      "description": "Balsa restaurada, baños, sombra, una cocina común pequeña y producto local en un camping de 22 parcelas."
     },
-    "titulo": "Lo necesario, bien cuidado",
-    "intro": "No hay animación, piscina de resort ni supermercado. Hay agua caliente, sombra, una balsa restaurada y alguien que sabe dónde comprar buen pan.",
+    "titulo": "Pequeño, pero bien pensado.",
+    "intro": "Sitio para montar la tienda. Caminos para moverse sin invadir al vecino. Baños limpios, cocina común y alguien que te recibe por tu nombre.",
     "items": [
       {
         "id": "balsa",
@@ -188,7 +195,8 @@
       {
         "id": "cocina",
         "nombre": "Cocina común",
-        "desc": "Dos fuegos, fregadero, nevera compartida y una mesa larga bajo cubierta."
+        "desc": "Dos fuegos, fregadero, nevera compartida y una mesa larga bajo cubierta. Deja el espacio listo para quien viene después.",
+        "foto": "vida-mesa-comun"
       },
       {
         "id": "producto",
@@ -259,7 +267,7 @@
           "salida": "Masía de recepción",
           "momento": "Mañana fresca",
           "recomendacion": "Lleva agua y evita el tramo abierto en las horas centrales de verano; te señalamos el desvío de vuelta.",
-          "foto": "vida-entorno"
+          "foto": "vida-ruta-collado"
         },
         {
           "nombre": "Horno y aceite del pueblo",
@@ -270,30 +278,51 @@
           "salida": "12 min en coche",
           "momento": "Viernes por la mañana",
           "recomendacion": "La visita al obrador depende de temporada y aforo. Pregunta antes de ir y reserva si quieres una cata.",
-          "foto": "vida-servicio-cocina"
+          "foto": "vida-ruta-obrador"
         }
       ]
     },
     "distancias": {
       "titulo": "Desde el bancal",
       "items": [
-        { "lugar": "Ruta corta de piedra seca", "valor": "40 min a pie" },
-        { "lugar": "Horno y bar", "valor": "12 min en coche" },
-        { "lugar": "Farmacia", "valor": "12 min en coche" },
-        { "lugar": "Obrador de aceite", "valor": "8 min en coche" },
-        { "lugar": "Morella", "valor": "45 min en coche" },
-        { "lugar": "Costa del Azahar", "valor": "50 min en coche" }
+        {
+          "lugar": "Ruta corta de piedra seca",
+          "valor": "40 min a pie"
+        },
+        {
+          "lugar": "Horno y bar",
+          "valor": "12 min en coche"
+        },
+        {
+          "lugar": "Farmacia",
+          "valor": "12 min en coche"
+        },
+        {
+          "lugar": "Obrador de aceite",
+          "valor": "8 min en coche"
+        },
+        {
+          "lugar": "Morella",
+          "valor": "45 min en coche"
+        },
+        {
+          "lugar": "Costa del Azahar",
+          "valor": "50 min en coche"
+        }
       ]
     }
   },
   "tarifas": {
     "seo": {
-      "title": "Tarifas orientativas | Camping L'Olivar",
-      "description": "Precios orientativos por noche para parcela y tienda premontada, con temporadas y condiciones sencillas."
+      "title": "Tarifas de acampada | L'Olivar",
+      "description": "Tarifas orientativas de parcelas para tiendas, con dos personas incluidas. Temporadas y suplementos claros."
     },
     "titulo": "Tarifas claras, confirmadas al responder",
     "intro": "Estos importes forman parte de la demostración y son orientativos. Una consulta real recibiría disponibilidad, precio final y condiciones antes de confirmar nada.",
-    "tabla": { "tipo": "Cómo te quedas", "noche": "€/noche" },
+    "tabla": {
+      "tipo": "Cómo te quedas",
+      "noche": "€/noche"
+    },
     "temporadas": {
       "sea_primavera": "Primavera",
       "sea_verano": "Verano",
@@ -309,16 +338,24 @@
     },
     "extras": {
       "titulo": "Extras opcionales",
-      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
-      "nombres": { "ext_desayuno": "Cesta de desayuno local", "ext_toallas": "Juego de toallas" }
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
+      "nombres": {
+        "ext_desayuno": "Cesta de desayuno local",
+        "ext_toallas": "Juego de toallas"
+      }
     },
     "condiciones": {
       "titulo": "Bueno saberlo",
       "items": [
-        "Las tiendas piden tres noches en verano; las parcelas, una.",
-        "Las parcelas admiten perros tranquilos; las tiendas no admiten mascotas.",
-        "Llegadas de 17:00 a 20:00. Si vas a llegar más tarde, se acuerda antes.",
-        "No se cobra nada desde esta demostración y ninguna consulta genera una reserva."
+        "Trae tu propia tienda: no hay alojamientos equipados ni alquiler de tiendas.",
+        "Las dos parcelas incluyen dos personas. Electricidad y suplementos se indican por separado.",
+        "Perros tranquilos bienvenidos, con correa en los espacios comunes.",
+        "Llegadas de 17:00 a 20:00; otras horas se acuerdan antes. Silencio a partir de las 23:00.",
+        "Esta es una demostración: no se cobra, no se envían datos y no se confirma una reserva."
       ]
     }
   },
@@ -359,5 +396,104 @@
     "titulo": "Este camino no llega a ningún bancal",
     "texto": "La dirección no existe o ha cambiado. La portada y la consulta siguen a un paso.",
     "cta": "Volver al inicio"
+  },
+  "outdoor": {
+    "hero": {
+      "lines": ["MENOS PRISA.", "MÁS AFUERA."],
+      "note": "Hay gente con la que compartir un café.\nY espacio para estar a tu aire.",
+      "facts": ["22 parcelas", "Solo tiendas", "El Maestrat, Castelló"]
+    },
+    "welcome": {
+      "label": "01 / UN CAMPING DE VERDAD",
+      "title": "Poca gente.\nMucha vida.",
+      "text": "Creemos en las cosas sencillas bien hechas: una parcela con sombra, baños cuidados y una mesa donde siempre cabe alguien más. Aquí vienes a acampar. El resto ocurre solo.",
+      "photo": "vida-mesa-comun",
+      "caption": "Café, pan y buenos días.",
+      "link": "Conoce la vida aquí"
+    },
+    "pitches": {
+      "label": "02 / TU SITIO ENTRE OLIVOS",
+      "title": "Trae tu tienda.\nEncuentra tu rincón.",
+      "intro": "Parcelas delimitadas, suelo cuidado y caminos despejados. Elige cuánto espacio necesitas; la calma viene incluida.",
+      "features": {
+        "ut_std": ["70 m²", "2 personas incluidas", "16 parcelas"],
+        "ut_glamp": ["100 m²", "2 personas incluidas", "6 parcelas"]
+      },
+      "details": "Ver esta parcela",
+      "priceNote": "por noche · precio orientativo"
+    },
+    "essentials": {
+      "label": "ASÍ DA GUSTO ACAMPAR",
+      "title": "Lo esencial. Bien cuidado.",
+      "items": [
+        {
+          "number": "01",
+          "title": "Todo en su sitio",
+          "text": "Parcelas delimitadas y caminos libres. Tu espacio y el de los demás."
+        },
+        {
+          "number": "02",
+          "title": "Baños de los que te fías",
+          "text": "Agua caliente, cabina accesible y limpieza por la mañana y por la tarde."
+        },
+        {
+          "number": "03",
+          "title": "Una mesa en común",
+          "text": "Cocina equipada, sombra y una mesa larga para alargar el desayuno."
+        },
+        {
+          "number": "04",
+          "title": "Noches para descansar",
+          "text": "Sin animación ni altavoces. A las once bajamos la voz y miramos arriba."
+        }
+      ]
+    },
+    "day": {
+      "label": "03 / NO HACE FALTA MUCHO",
+      "title": "El día se alarga.\nLas prisas, no.",
+      "photo": "vida-atardecer",
+      "text": "Vuelve del camino, date una ducha y saca la silla. A veces, el mejor momento del viaje es el rato antes de cenar.",
+      "link": "Así es el camping"
+    },
+    "routes": {
+      "label": "04 / A DOS PASOS",
+      "title": "Sal a explorar.\nVuelve a tu sitio.",
+      "link": "Todos los planes"
+    },
+    "questions": {
+      "label": "ANTES DE VENIR",
+      "title": "Las cosas claras.",
+      "items": [
+        {
+          "question": "¿Tengo que traer mi tienda?",
+          "answer": "Sí. L’Olivar es un camping solo para tiendas de campaña. No ofrecemos bungalows, tiendas equipadas ni alquiler de material."
+        },
+        {
+          "question": "¿Es un camping tranquilo si vengo con niños?",
+          "answer": "Las familias son bienvenidas. Hay vida durante el día y se cuida el descanso por la noche. No tenemos animación: el juego y la conversación van a su ritmo."
+        },
+        {
+          "question": "¿Dónde se deja el coche?",
+          "answer": "En la zona de aparcamiento junto al acceso. El interior de acampada se recorre a pie para mantener los caminos tranquilos y despejados."
+        },
+        {
+          "question": "¿Qué incluyen las parcelas?",
+          "answer": "Espacio para tu tienda y dos personas, acceso a baños, cocina y zonas comunes. La electricidad y las personas adicionales se detallan en las tarifas."
+        },
+        {
+          "question": "¿Puedo reservar desde esta web?",
+          "answer": "Esta web es una demostración ficticia de Logic2B. Puedes probar la consulta: no enviamos ni guardamos datos, no cobramos y no se crea una reserva."
+        }
+      ]
+    },
+    "contact": {
+      "label": "TU PRÓXIMA ESCAPADA",
+      "title": "Haz sitio\npara salir.",
+      "intro": "Dinos tus fechas, cuántos sois y el tamaño de vuestra tienda. Aquí empieza ese fin de semana que os debéis."
+    },
+    "footer": {
+      "line": "Nos vemos afuera.",
+      "small": "Camping de tiendas · El Maestrat · Desde el primer café hasta la última estrella."
+    }
   }
 }

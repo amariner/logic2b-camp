@@ -62,8 +62,10 @@ function sha256(buffer) {
   return createHash('sha256').update(buffer).digest('hex');
 }
 
-function posterFromConfig(source) {
-  const poster = source.match(/\bstaticHeroImage\s*:\s*['"]([^'"]+)['"]/)?.[1];
+function posterFromConfig(source, role) {
+  const mobile =
+    role === 'mobile' && source.match(/\bstaticHeroMobileImage\s*:\s*['"]([^'"]+)['"]/)?.[1];
+  const poster = mobile || source.match(/\bstaticHeroImage\s*:\s*['"]([^'"]+)['"]/)?.[1];
   if (!poster) fail('config.staticHeroImage: falta la clave del póster');
   return safeToken(poster, 'config.staticHeroImage');
 }
@@ -158,7 +160,7 @@ export async function stageClip({
     fail(`${paths.key}: ya hay un candidato en revisión`);
   }
 
-  const poster = posterFromConfig(await readFile(paths.configPath, 'utf8'));
+  const poster = posterFromConfig(await readFile(paths.configPath, 'utf8'), role);
   const evidence = validateEvidence(
     JSON.parse(await readFile(resolve(evidencePath), 'utf8')),
     poster,

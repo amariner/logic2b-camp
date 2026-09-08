@@ -5,6 +5,7 @@ export const config: TenantWebConfig = {
   slug: 'olivar',
   name: "Camping L'Olivar",
   tier: 1,
+  presentation: 'outdoor',
   locales: ['es'],
   defaultLocale: 'es',
   domain: 'https://camp.logic2b.com',
@@ -14,8 +15,13 @@ export const config: TenantWebConfig = {
     address: 'Camí dels Bancals s/n, 12160 el Maestrat, Castelló',
   },
   enquiryTransport: 'demo',
-  staticHeroImage: 'hero-dia',
-  staticHeroMobileImage: 'hero-mobile',
+  staticHeroImage: 'hero-humano',
+  staticHeroMobileImage: 'hero-humano-mobile',
+  heroMotion: {
+    desktop: 'hero-motion',
+    mobile: 'hero-motion-mobile',
+    position: 'center',
+  },
   isDemo: true,
   legal: {
     razonSocial: "Camping L'Olivar — demostración ficticia de Logic2B",

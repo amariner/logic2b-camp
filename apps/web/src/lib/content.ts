@@ -46,7 +46,37 @@ export type Content = {
   /** banner + conmutador de nivel de demo (ADR 0013); solo la demo lo define */
   demo?: { banner: string; mostrador?: string; nivel: string; nivel1: string; nivel3: string };
   hero3: { titulo: string; prueba: string };
-  hero1: { titulo: string; cta: string };
+  hero1: { titulo: string; cta: string; lugar?: string; intro?: string; explorar?: string };
+  heroMotion?: { pausar: string; reproducir: string };
+  outdoor?: {
+    hero: { lines: string[]; note: string; facts: string[] };
+    welcome: {
+      label: string;
+      title: string;
+      text: string;
+      photo: string;
+      caption: string;
+      link: string;
+    };
+    pitches: {
+      label: string;
+      title: string;
+      intro: string;
+      features: Record<string, string[]>;
+      details: string;
+      priceNote: string;
+    };
+    essentials: {
+      label: string;
+      title: string;
+      items: { number: string; title: string; text: string }[];
+    };
+    day: { label: string; title: string; photo: string; text: string; link: string };
+    routes: { label: string; title: string; link: string };
+    questions: { label: string; title: string; items: { question: string; answer: string }[] };
+    contact: { label: string; title: string; intro: string };
+    footer: { line: string; small: string };
+  };
   ticker: string[];
   mostrador: Record<string, string>;
   tipos: {

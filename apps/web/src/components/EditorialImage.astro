@@ -1,0 +1,11 @@
+---
+import { Picture } from 'astro:assets';
+import { images } from '../lib/content';
+import Materia from './Materia.astro';
+interface Props { photo: string; alt: string; class?: string; sizes?: string }
+const { photo, alt, class: className = '', sizes = '(min-width: 768px) 50vw, 100vw' } = Astro.props;
+---
+{images[photo] ? (
+  <Picture src={images[photo]!} alt={alt} widths={[480, 800, 1200, 1600]} sizes={sizes}
+    formats={['avif', 'webp']} fallbackFormat="webp" loading="lazy" class={className} />
+) : <Materia class={className} />}

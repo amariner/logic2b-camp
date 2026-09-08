@@ -14,12 +14,20 @@
     ["vida-recepcion"],
     ["vida-servicio-cocina"],
     ["vida-servicio-balsa"],
-    ["vida-entorno"]
+    ["vida-entorno"],
+    ["vida-ruta-collado"],
+    ["vida-ruta-obrador"],
+    ["hero-humano"],
+    ["hero-humano-mobile"],
+    ["parcela-viva"],
+    ["parcela-familia"],
+    ["vida-mesa-comun"],
+    ["vida-atardecer"]
   ],
   "derivados": {
-    "fuente": "hero-dia",
+    "fuente": "hero-humano",
     "titulo": "L'Olivar",
-    "subtitulo": "22 unidades · Maestrat"
+    "subtitulo": "22 parcelas · Maestrat"
   },
   "piezas": {
     "hero-dia": {
@@ -86,6 +94,46 @@
       "aspecto": "3:2",
       "papel": "H1 · vida-entorno: paseo por bancales y piedra seca.",
       "prompt": "Fotografía documental editorial, horizontal 3:2, de un sendero estrecho del Maestrat que baja entre olivos viejos, bancales y muros de piedra seca. Dos caminantes adultos avanzan de espaldas a cierta distancia, uno se detiene un instante para mirar el muro y el otro sigue despacio; ropa sencilla de entretiempo, mochila pequeña y calzado realista, sin pose deportiva. Las personas ocupan entre el 12 % y el 18 % del encuadre y el paisaje material es protagonista. Mantener la misma tierra seca, olivos retorcidos, piedra clara y luz lateral contenida de las fotografías aprobadas de L'Olivar. Estética documental mediterránea, color natural poco saturado y grano de 35 mm sutil. Sin postal turística, cima dramática, multitudes, rostros reconocibles, texto, señales legibles, marcas, logos, HDR, anatomía extraña ni paisaje imposible."
+    },
+    "vida-ruta-collado": {
+      "aspecto": "3:2",
+      "papel": "Fotografía propia del sendero largo al collado, diferenciada del paseo corto.",
+      "prompt": "Use case: photorealistic-natural. Create one landscape 3:2 documentary photograph for the fictional Camping L'Olivar in the dry Maestrat inland region of Castellon, Spain. A wide limestone hillside footpath climbs gently above a patchwork of small olive terraces and authentic dry-stone walls. Two anonymous middle-aged walkers, seen from behind at a three-quarter distance, pause to look across the valley; muted olive and linen walking clothes, small daypacks, credible relaxed bodies, each person less than 20 percent of the image height. Restrained warm morning light, dusty earth, silvery olive foliage, sparse rosemary, pale limestone, distant low hills under a soft blue sky. Eye-level 35mm documentary framing, landscape dominates, realistic material and scale, quietly lived-in rather than luxurious. No text, logos, watermarks, signs, recognizable faces, crowds, alpine mountains, lush tropical greenery, HDR, over-saturation or heroic hiking poses. This is a fictional illustrative location, not a depiction of a verified real trail."
+    },
+    "vida-ruta-obrador": {
+      "aspecto": "3:2",
+      "papel": "Fotografía propia del plan de pan y aceite: pequeño obrador local con visita humana.",
+      "prompt": "Use case: photorealistic-natural. Create one landscape 3:2 documentary photograph for the fictional Camping L'Olivar local olive-oil visit in dry inland Maestrat, Castellon, Spain. At a modest olive-oil workshop with limewashed stone walls, an open timber doorway with glimpses of olive trees and one small stainless steel oil tank in the shaded background, a local host in a plain muted olive work shirt explains an unlabelled dark glass bottle of olive oil to an anonymous adult visitor in a linen shirt, both seen in side or rear three-quarter view with no recognizable faces. Natural hands resting on a simple wooden counter with a small ceramic dish and a loaf of rustic bread, a quiet practical conversation, not a posed tasting advertisement. People occupy 20 to 30 percent of the frame, the workshop and doorway remain the subject. Restrained warm morning daylight, dry earthy textures, olive green, natural cream and pale stone, eye-level 35mm documentary photograph, real small family-producer scale. No text, labels, logos, watermarks, readable signs, luxury dining, wine bottles, restaurant styling, crowds, HDR, orange colour cast, oversaturation, extra limbs or impossible hands. Fictional illustrative place, no real business represented."
+    },
+    "hero-humano": {
+      "aspecto": "16:9",
+      "papel": "Nueva cabecera humana: camping pequeño organizado y vivo.",
+      "prompt": "Use case: photorealistic-natural. Produce a single high-resolution landscape 16:9 photograph, 2560x1440 if possible, for the hero of a thoughtfully designed camping website. A small thoughtfully organized tent-only campground in the olive terraces of inland Maestrat, Castellon, Spain. Mature olive trees, low pale limestone dry-stone terrace walls, clearly separated spacious level camping pitches, maintained short mixed grass and warm dry earth, tidy gravel footpaths, raw timber picnic furniture, sage-green and warm ochre modern camping tents. Soft warm late-afternoon Mediterranean light, luminous and welcoming rather than dark or desolate, restrained natural colour and authentic outdoor editorial photography. Not a resort, not wilderness survival. No caravans, RVs, campervans, cabins, safari lodges, luxury glamping, vehicles, signage, logos, lettering, watermarks, crowds or people posing at the camera. Wide eye-level 28mm lens, open olive canopy, three well spaced pitches visible across two shallow terraces. On the right half of the frame, an adult in a muted rust shirt sits in a low folding chair outside a sage dome tent talking quietly to another adult; farther back, a parent and a school-age child carry a small picnic basket along the clear central path; at a third distant ochre tent a guest arranges a camping mat. Five anonymous people total, natural anatomy, relaxed candid gestures, people together occupy about 15 percent of the photograph. A small tidy washhouse of white lime and timber glimpsed at the far back. Tent entrances and guy lines stay inside pitches; walkways are unobstructed. Lower-left area is calm shaded lawn and olive-tree texture suitable behind a large white headline; place the human stories in middle-right where they will remain visible. Compose a believable cohesive campground, not a collage. Warm, lived-in and serene, high-end outdoor travel editorial, real canvas texture and gentle grain, no orange filter, no HDR, no grand mountains."
+    },
+    "hero-humano-mobile": {
+      "aspecto": "9:16",
+      "papel": "Versión vertical de la nueva cabecera humana.",
+      "prompt": "Recompose the supplied olive-grove campsite photograph as a natural portrait 9:16 photograph for a mobile website hero. Preserve the same small, organized tent-only campground, tent colours, materials, warm light and real scale. Show the adult campers quietly talking by the sage dome tent in the middle-right, a clear curving path and a distant occupied tent through mature olive trees. Keep the human subjects and full main tent readable in the middle third, leave softly shaded foliage in the upper third and calm ground in the lower third for website typography. Do not create new subjects; preserve anonymous faces, relaxed posture and credible anatomy. No vehicles, glamping structures, cabins, text, signs, logos, watermarks or collage. Full-frame portrait photograph, not a layout."
+    },
+    "parcela-viva": {
+      "aspecto": "3:2",
+      "papel": "Parcela estándar para tienda, habitada y ordenada.",
+      "prompt": "Use case: photorealistic-natural. Single landscape 3:2 editorial photo. A small thoughtfully organized tent-only campground in the olive terraces of inland Maestrat, Castellon, Spain. Mature olive trees, low pale limestone dry-stone terrace walls, clearly separated spacious level camping pitches, maintained short mixed grass and warm dry earth, tidy gravel footpaths, raw timber picnic furniture, sage-green and warm ochre modern camping tents. Soft warm late-afternoon Mediterranean light, luminous and welcoming rather than dark or desolate, restrained natural colour and authentic outdoor editorial photography. Not a resort, not wilderness survival. No caravans, RVs, campervans, cabins, safari lodges, luxury glamping, vehicles, signage, logos, lettering, watermarks, crowds or people posing at the camera. A single sage-green two-person dome camping tent, properly pitched with taut fabric on a spacious flat 70-square-metre pitch. A middle-aged couple quietly reads and pours tea beside two low folding chairs, a small wooden camping table with mugs and a rolled blanket. People seen in side or rear view, anonymous, natural candid gestures. A clearly visible gravel walkway and low stone boundary, another occupied pitch softly visible beyond olives. Close enough to see usable space, wide enough to understand separation between neighbours. The camping tent is brought by its guests, no fixed wooden platform or real bed. Light feels warm, airy and cared for. No luxury furniture, no isolated abandoned landscape."
+    },
+    "parcela-familia": {
+      "aspecto": "3:2",
+      "papel": "Parcela amplia para tienda familiar.",
+      "prompt": "Use case: photorealistic-natural. Single landscape 3:2 editorial photo. A small thoughtfully organized tent-only campground in the olive terraces of inland Maestrat, Castellon, Spain. Mature olive trees, low pale limestone dry-stone terrace walls, clearly separated spacious level camping pitches, maintained short mixed grass and warm dry earth, tidy gravel footpaths, raw timber picnic furniture, sage-green and warm ochre modern camping tents. Soft warm late-afternoon Mediterranean light, luminous and welcoming rather than dark or desolate, restrained natural colour and authentic outdoor editorial photography. Not a resort, not wilderness survival. No caravans, RVs, campervans, cabins, safari lodges, luxury glamping, vehicles, signage, logos, lettering, watermarks, crowds or people posing at the camera. Spacious 100-square-metre family camping pitch under two old olive trees, one modern warm ochre family tunnel tent with zipped mesh entrance and guy ropes safely inside the pitch. One parent and a school-age child sit on a picnic blanket playing a simple card game, another adult stands by a small folding table preparing fruit. No one faces the camera. All fully clothed in casual summer camping clothes, realistic hands. Open maintained ground surrounds the tent, a tidy footpath and lower stone wall mark its edge, a distant small green tent in the next terrace demonstrates the well spaced organized site. Lively domestic detail yet calm, no fixed bed, no luxury deck, no motor vehicles."
+    },
+    "vida-mesa-comun": {
+      "aspecto": "3:2",
+      "papel": "Cocina y mesa común como corazón social tranquilo.",
+      "prompt": "Use case: photorealistic-natural. Single landscape 3:2 editorial photograph. A small thoughtfully organized tent-only campground in the olive terraces of inland Maestrat, Castellon, Spain. Mature olive trees, low pale limestone dry-stone terrace walls, clearly separated spacious level camping pitches, maintained short mixed grass and warm dry earth, tidy gravel footpaths, raw timber picnic furniture, sage-green and warm ochre modern camping tents. Soft warm late-afternoon Mediterranean light, luminous and welcoming rather than dark or desolate, restrained natural colour and authentic outdoor editorial photography. Not a resort, not wilderness survival. No caravans, RVs, campervans, cabins, safari lodges, luxury glamping, vehicles, signage, logos, lettering, watermarks, crowds or people posing at the camera. Under a modest airy timber pergola beside a small limewashed common kitchen, four anonymous adults of mixed ages share a relaxed breakfast around a long clean wooden picnic table. One person passes rustic bread, another holds a mug, local tomatoes and an unlabelled olive-oil bottle on the table. A fifth guest quietly rinses a plate at a practical stone-and-stainless sink in the rear. Olive grove and two neatly pitched camping tents visible through the open side. Warm natural light, genuine small campground hospitality, no restaurant staff uniforms, no tablecloth, no restaurant staging. People around 30 percent of frame, environment remains legible, natural hands and believable scale."
+    },
+    "vida-atardecer": {
+      "aspecto": "16:9",
+      "papel": "Gran escena editorial al caer la tarde en las parcelas.",
+      "prompt": "Use case: photorealistic-natural. Single panoramic landscape 16:9 editorial photograph. A small thoughtfully organized tent-only campground in the olive terraces of inland Maestrat, Castellon, Spain. Mature olive trees, low pale limestone dry-stone terrace walls, clearly separated spacious level camping pitches, maintained short mixed grass and warm dry earth, tidy gravel footpaths, raw timber picnic furniture, sage-green and warm ochre modern camping tents. Soft warm late-afternoon Mediterranean light, luminous and welcoming rather than dark or desolate, restrained natural colour and authentic outdoor editorial photography. Not a resort, not wilderness survival. No caravans, RVs, campervans, cabins, safari lodges, luxury glamping, vehicles, signage, logos, lettering, watermarks, crowds or people posing at the camera. Early evening in this same well-organized small tent campground, sky still softly blue and olive leaves lit by last warm sunlight. Three well spaced sage and ochre camping tents on shallow terraces, subtle warm portable camping lamps by their entrances. A couple quietly chats seated in camping chairs at middle right, another camper returns along the clear path with a towel on a shoulder after a shower. No campfire, no festoon-light wedding venue, no neon. Foreground pale dry-stone wall and olive branches frame the scene, soft natural detail retained in shadows. The scene conveys neighbours nearby, privacy and quiet after a day outside. Leave left side fairly calm for an editorial headline. No tents glowing unnaturally, no resort."
     }
   }
 }

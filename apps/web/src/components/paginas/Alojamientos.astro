@@ -26,7 +26,7 @@ const grupos = [
 <Base locale={locale} path="/alojamientos" title={a.seo.title} description={a.seo.description}>
   <PageIntro titulo={a.titulo} intro={a.intro} />
 
-  {grupos.map((grupo) => (
+  {grupos.filter((grupo) => grupo.tipos.length > 0).map((grupo) => (
     <section class="mx-auto max-w-7xl px-5 pb-20 md:px-8">
       <h2 class="font-display mb-8 text-[13px] font-semibold tracking-[0.14em] text-tinta-suave uppercase">
         {grupo.titulo}
@@ -39,8 +39,8 @@ const grupos = [
                 <Picture
                   src={fotoTipo(t.id)!}
                   alt={c.tipos.nombres[t.id] ?? t.id}
-                  widths={[400, 800]}
-                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  widths={[400, 800, 1200]}
+                  sizes={grupo.tipos.length <= 2 ? '(min-width: 640px) 50vw, 100vw' : '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw'}
                   formats={['avif', 'webp']}
                   fallbackFormat="webp"
                   loading="lazy"

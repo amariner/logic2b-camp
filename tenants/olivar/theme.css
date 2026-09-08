@@ -1,19 +1,19 @@
 :root {
-  --lc-tinta: #272820;
-  --lc-hueso: #f3efe3;
-  --lc-pino: #566044;
-  --lc-arena: #c9bda4;
+  --lc-tinta: #23382d;
+  --lc-hueso: #f7f6ef;
+  --lc-pino: #354e3d;
+  --lc-arena: #bbc5ad;
   /* Barro accesible también como texto de estado (AA sobre hueso). */
-  --lc-mar: #995537;
+  --lc-mar: #a33e20;
 
-  --lc-pino-oscuro: #3e4631;
+  --lc-pino-oscuro: #23382d;
   --lc-tinta-suave: color-mix(in srgb, var(--lc-tinta) 64%, var(--lc-hueso));
   --lc-arena-suave: color-mix(in srgb, var(--lc-arena) 32%, var(--lc-hueso));
 
   --lc-font-display: 'Clash Display', system-ui, sans-serif;
   --lc-font-text: 'Inter', system-ui, sans-serif;
 
-  --lc-radius: 2px;
+  --lc-radius: 16px;
   --lc-radius-sm: max(0px, calc(var(--lc-radius) - 2px));
   --lc-radius-md: var(--lc-radius);
   --lc-radius-lg: calc(var(--lc-radius) + 4px);

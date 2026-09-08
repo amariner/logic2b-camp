@@ -648,20 +648,20 @@
         "slug": "olivar",
         "nombre": "Camping L'Olivar",
         "nivel": "Start",
-        "escala": "22 units",
-        "perfil": "Small inland campsite",
+        "escala": "22 tent pitches",
+        "perfil": "Small tent-only campsite",
         "promesa": "A distinctive website that turns visits into clear enquiries for reception.",
-        "imagenAlt": "Home page of the Camping L'Olivar demo among olive trees and dry-stone walls",
+        "imagenAlt": "Campers among olive trees, tidy pitches and stone paths at L’Olivar",
         "href": "/demos/olivar/",
         "momento": "enquiry without a booking engine",
         "momentoHref": "/demos/olivar/contacto/#consulta",
         "recorrido": [
           "Discover the campsite",
-          "Compare two ways to stay",
+          "Choose your pitch size",
           "Send a demonstration enquiry"
         ],
         "comparacion": {
-          "captacion": "Website, accommodation and guided enquiry",
+          "captacion": "Website, pitches and guided enquiry",
           "operacion": "Reception replies through its usual channel",
           "automatizacion": "Not included",
           "decision": "Basic web metrics when production is activated"

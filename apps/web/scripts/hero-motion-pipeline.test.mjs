@@ -70,6 +70,27 @@ async function missing(path) {
 }
 
 describe('pipeline de hero motion', () => {
+  it('traza el póster vertical real al preparar el vídeo móvil', async () => {
+    const context = await fixture();
+    await writeFile(
+      join(context.repo, 'tenants/olivar/config.ts'),
+      "export const config = { staticHeroImage: 'hero-dia', staticHeroMobileImage: 'hero-mobile' };",
+    );
+    await stageClip({
+      ...context,
+      slug: 'olivar',
+      role: 'mobile',
+      probe: async () => ({
+        ...desktopMetadata,
+        streams: [{ ...desktopMetadata.streams[0], width: 720, height: 1280 }],
+      }),
+    });
+    const evidence = JSON.parse(
+      await readFile(join(context.media, '.motion-staging/hero-motion-mobile.json'), 'utf8'),
+    );
+    assert.equal(evidence.poster, 'hero-mobile');
+  });
+
   it('normaliza a una sola pista H.264 y elimina el audio con faststart', () => {
     const args = ffmpegArgs('/tmp/raw.mov', '/tmp/final.mp4');
     assert.deepEqual(args.slice(args.indexOf('-map'), args.indexOf('-map') + 2), ['-map', '0:v:0']);

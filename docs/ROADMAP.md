@@ -1,5 +1,11 @@
 # ROADMAP — 12 fases, ~28 sesiones
 
+> **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
+> pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22
+> parcelas, nuevas fotografías y vídeos. Este encargo sustituye la dirección
+> anterior de escenas vacías. Ver [rediseño 360](OLIVAR-REDISENO-360-2026-09-08.md)
+> y ADR 0051. Preparado en local; revisión/publicación cuando se solicite.
+
 > **Documento de continuidad** (misma metodología que ecom.logic2b.com). Cada sesión de Claude Code debe:
 >
 > 1. Leer `PROGRESS.md`, `CLAUDE.md` y este fichero al empezar.
@@ -359,7 +365,12 @@ producto real se activa módulo a módulo cuando exista un cliente.
 | H2 · costa, humedal y río               | ✅ Producción | Veinte escenas, cinco bloques de vida, quince rutas, recepción y servicio humano por tema                                                |
 | H3 · interior, montaña y larga estancia | ✅ Producción | Veinte escenas, cinco bloques de vida y quince rutas sin repetir grupo, conflicto operativo, servicio central ni relación con el paisaje |
 
-H1-V continúa diferido sin bloquear el cierre fotográfico: los campos son
+**Actualización 2026-09-08:** H1-V tiene L'Olivar 2/2 integrado localmente,
+con cabecera revisada, controles accesibles y dos fotos de rutas propias.
+Pinada y Mar de Fondo siguen pendientes. No se ha desplegado este corte.
+Ver `OLIVAR-MOVIMIENTO-2026-09-08.md`.
+
+Historial del cierre de agosto: H1-V continúa diferido sin bloquear el cierre fotográfico: los campos son
 opcionales, el póster continúa como LCP y los 13 tenants construyen con fallback.
 Desde la sesión 151, un fixture de navegador prueba sin activar ningún tenant
 la petición cero bajo preferencias restrictivas, la fuente correcta por

@@ -177,7 +177,8 @@ export async function auditHeroMotionTenant(dir, { probe = probeVideo } = {}) {
   if (manifest.version !== 1 || !manifest.clips || typeof manifest.clips !== 'object')
     fail(`${slug}/movimiento.json: requiere version 1 y clips`);
 
-  const poster = configString(configSource, 'staticHeroImage') ?? 'hero-anochecer';
+  const desktopPoster = configString(configSource, 'staticHeroImage') ?? 'hero-anochecer';
+  const mobilePoster = configString(configSource, 'staticHeroMobileImage') ?? desktopPoster;
   const requested = [
     ['desktop', motion.desktop],
     ...(motion.mobile ? [['mobile', motion.mobile]] : []),
@@ -187,6 +188,7 @@ export async function auditHeroMotionTenant(dir, { probe = probeVideo } = {}) {
   if (extra.length > 0) fail(`${slug}/movimiento.json: clips no activados: ${extra.join(', ')}`);
 
   for (const [role, key] of requested) {
+    const poster = role === 'mobile' ? mobilePoster : desktopPoster;
     const file = resolveVideo(join(dir, 'content/media'), key);
     const buffer = readFileSync(file);
     const bytes = statSync(file).size;

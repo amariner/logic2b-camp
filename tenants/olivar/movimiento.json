@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "clips": {
+    "hero-motion": {
+      "poster": "hero-humano",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "Locked-off single six-second documentary shot of this small organized olive-grove campsite. Preserve the same five campers, tents, paths, stone walls and building. The seated couple makes tiny natural relaxed head and hand gestures while quietly chatting; the distant parent and child pause together on the path and the other camper gently adjusts the mat. A very light breeze moves a few olive leaves. Minimal calm human movement, realistic anatomy, stable faces and hands, stable light, no camera motion, no new people or objects. Return naturally to the exact opening composition for a smooth quiet website loop.",
+      "generatedAt": "2026-09-08T14:42:19.785107Z",
+      "approvedAt": "2026-09-08T14:52:14.953Z",
+      "approval": "visual-inspection",
+      "sha256": "35b12befbfad738960f3bf7cf96d5d4723c99707fbde4e0bae120a35a3dfe989"
+    },
+    "hero-motion-mobile": {
+      "poster": "hero-humano-mobile",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "Locked-off single six-second documentary shot of the supplied portrait photograph. Preserve this exact small organized olive-grove campground and these three campers. The seated couple makes tiny natural relaxed head and hand gestures while quietly chatting, and the distant camper gently adjusts the camping mat without changing location. A very light breeze moves a few olive leaves. Minimal calm human movement, realistic anatomy, stable faces and hands, stable light, no camera motion, no new people or objects. Keep the tent, full people and clear path readable. Return naturally to the exact opening composition for a smooth quiet mobile website loop.",
+      "generatedAt": "2026-09-08T14:52:18.502927Z",
+      "approvedAt": "2026-09-08T14:57:12.839Z",
+      "approval": "visual-inspection",
+      "sha256": "07edefc0aa6a5de75b1ec6d1eabdd09f75586d3e015876b8dba662fe214d0042"
+    }
+  }
+}

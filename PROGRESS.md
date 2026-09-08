@@ -1,5 +1,41 @@
 # PROGRESS — Logic Camp
 
+## L’Olivar — rediseño 360 outdoor · 2026-09-08
+
+- Encargo posterior de Andreu, inspirado en tres referencias: camping pequeño,
+  organizado, humano y solo para tiendas propias. ADR 0051 y presentación
+  opcional `outdoor` en componentes comunes, sin condicionales por slug.
+- Portada editorial completa, páginas interiores y navegación coherentes;
+  oliva/crema/naranja, titulares grandes, servicios, rutas, FAQ nativa y
+  consulta demo. 16 parcelas de 70 m² + 6 de 100 m²; fichas, tarifas y portfolio
+  alineados. Conservadas las URLs históricas.
+- Seis imágenes nuevas aprobadas: cuatro con OpenAI integrado y dos con Nano
+  Banana Pro vía Higgsfield tras fallos documentados del proveedor GPT Image 2.
+  Inventario 21/21. Dos vídeos nuevos de 6 s: 1.824.998 y 1.029.988 bytes;
+  sustituyen los anteriores, archivados localmente. Miniatura/OG regenerados.
+- Gate global 74/74. QA final: 60 vistas Chromium, seis escenarios de vídeo,
+  menú, anclas, FAQ, consulta sin envío y alternativa sin JS. Corregidas la
+  compensación de cabecera fija y la separación de palabras en titulares.
+- Previsualización local: `http://127.0.0.1:4328/demos/olivar/`. Informe:
+  `docs/OLIVAR-REDISENO-360-2026-09-08.md`. Sin despliegue.
+
+## L'Olivar con movimiento · 2026-09-08
+
+- Dos vídeos Seedance 2.0 aprobados e integrados: escritorio 1280×720 y móvil
+  720×1280, 6 s sin audio, 1,72/1,41 MiB. Un intento por formato; 54 créditos
+  según preflight. Póster propio y procedencia verificable por salida.
+- Cabecera abreviada, contexto del lugar y acceso a alojamientos. Dos nuevas
+  fotografías de OpenAI integrado para collado y obrador, con ingestión y
+  aprobación trazadas; las tres rutas tienen ahora imagen diferenciada.
+- Pausa con teclado, visibilidad, preferencias restrictivas y cambio de fuente
+  al cruzar el breakpoint. Corrección del póster móvil en el pipeline y
+  protección contra respuestas tardías de `play()`.
+- Gate global 74/74; 25 pruebas específicas; 60 vistas Chromium y seis
+  escenarios con vídeos reales, sin errores. Menú, anclas y consulta demo
+  verificados sin envío. Póster y cero descargas con JS desactivado.
+- Informe: `docs/OLIVAR-MOVIMIENTO-2026-09-08.md`. Cambios locales; sin
+  despliegue. Las otras demos quedan fuera de este corte.
+
 ## Auditoría UI/UX del catálogo · 2026-09-05 (sesión 154)
 
 - Revisados los doce temas y Cala Sereno: cabecera medida, títulos y anclas,

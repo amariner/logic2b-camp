@@ -15,7 +15,11 @@ export function canPlayHeroMotion({ reducedMotion, saveData }) {
  * Sincroniza un vídeo ya renderizado con las preferencias actuales. Las URLs
  * viven en `data-src` para que el navegador no descargue nada antes del gate.
  */
+const playbackRequests = new WeakMap();
+
 export async function syncHeroMotion(video, enabled) {
+  const request = {};
+  playbackRequests.set(video, request);
   if (!enabled) {
     video.pause();
     video.removeAttribute('data-ready');
@@ -32,10 +36,11 @@ export async function syncHeroMotion(video, enabled) {
 
   try {
     await video.play();
+    if (playbackRequests.get(video) !== request) return false;
     video.setAttribute('data-ready', '');
     return true;
   } catch {
-    video.removeAttribute('data-ready');
+    if (playbackRequests.get(video) === request) video.removeAttribute('data-ready');
     return false;
   }
 }

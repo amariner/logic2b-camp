@@ -12,6 +12,7 @@ interface Props {
   desktopVideo?: string;
   mobileVideo?: string;
   position?: string;
+  motionLabels?: { pausar: string; reproducir: string };
   class?: string;
 }
 
@@ -25,6 +26,7 @@ const {
   desktopVideo,
   mobileVideo,
   position = 'center',
+  motionLabels,
   class: className = '',
 } = Astro.props;
 
@@ -48,25 +50,33 @@ const {
     />
   </picture>
   {desktopVideo && (
-    <video
-      class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 data-[ready]:opacity-100"
-      style={`object-position: ${position}`}
-      muted
-      loop
-      playsinline
-      preload="none"
-      aria-hidden="true"
-      data-progressive-hero
-    >
-      {mobileVideo && (
-        <source
-          data-src={mobileVideo}
-          media="(max-width: 639px)"
-          type={heroVideoMimeType(mobileVideo)}
-        />
+    <Fragment>
+      <video
+        class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 data-[ready]:opacity-100"
+        style={`object-position: ${position}`}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        data-progressive-hero
+      >
+        {mobileVideo && (
+          <source
+            data-src={mobileVideo}
+            media="(max-width: 639px)"
+            type={heroVideoMimeType(mobileVideo)}
+          />
+        )}
+        <source data-src={desktopVideo} type={heroVideoMimeType(desktopVideo)} />
+      </video>
+      {motionLabels && (
+        <button type="button" hidden data-hero-motion-toggle
+          data-pause-label={motionLabels.pausar} data-play-label={motionLabels.reproducir}
+          class="absolute right-5 bottom-5 z-20 min-h-11 rounded-(--lc-radius) border border-hueso/50 bg-tinta/80 px-4 text-[12px] font-medium text-hueso hover:bg-tinta md:right-8 md:bottom-8"
+        >{motionLabels.pausar}</button>
       )}
-      <source data-src={desktopVideo} type={heroVideoMimeType(desktopVideo)} />
-    </video>
+    </Fragment>
   )}
 </div>
 
@@ -89,14 +99,46 @@ const {
       });
     };
 
-    heroVideos.forEach((video) => {
+    const controllers = heroVideos.map((video) => {
+      const control = video.closest('[data-hero-media]')?.querySelector<HTMLButtonElement>('[data-hero-motion-toggle]');
+      let userPaused = false;
+      let visible = video.getBoundingClientRect().bottom > 0;
+      const updateControl = () => {
+        if (!control) return;
+        control.hidden = !canLoadMotion() || video.readyState < 2 || Boolean(video.error);
+        control.textContent = video.paused ? control.dataset.playLabel ?? '' : control.dataset.pauseLabel ?? '';
+      };
+      const sync = async () => {
+        await syncHeroMotion(video, canLoadMotion() && !userPaused && visible && !document.hidden);
+        updateControl();
+      };
+      control?.addEventListener('click', () => {
+        userPaused = !video.paused;
+        void sync();
+      });
+      for (const event of ['loadeddata', 'play', 'pause', 'error']) {
+        video.addEventListener(event, updateControl);
+      }
       video.addEventListener('error', () => video.removeAttribute('data-ready'));
-      void syncHeroMotion(video, canLoadMotion());
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        void sync();
+      });
+      observer.observe(video);
+      video.querySelectorAll('source[media]').forEach((source) => {
+        window.matchMedia(source.getAttribute('media')!).addEventListener('change', () => {
+          delete video.dataset.initialized;
+          video.removeAttribute('data-ready');
+          void sync();
+        });
+      });
+      void sync();
+      return sync;
     });
 
-    const syncAllMotion = () =>
-      heroVideos.forEach((video) => void syncHeroMotion(video, canLoadMotion()));
+    const syncAllMotion = () => controllers.forEach((sync) => void sync());
     motionPreference.addEventListener('change', syncAllMotion);
     connection?.addEventListener('change', syncAllMotion);
+    document.addEventListener('visibilitychange', syncAllMotion);
   </script>
 )}
