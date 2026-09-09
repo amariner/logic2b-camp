@@ -3,7 +3,7 @@
     "tipo": "generada",
     "fuente": "Modelo integrado de imagen de Codex, sesión 85 del 2026-08-06, y ampliación humana H1 con el generador integrado de OpenAI.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Pinada del Mar.",
-    "nota": "Once másteres iniciales inspeccionados antes de optimizar; sin URLs externas ni material de otros tenants. Por instrucción del 2026-08-18, las piezas H1 se generan de una en una, con pausa entre solicitudes y sin fallback a Higgsfield."
+    "nota": "Once másteres iniciales inspeccionados antes de optimizar; sin URLs externas ni material de otros tenants. Por instrucción del 2026-08-18, las piezas H1 se generan de una en una, con pausa entre solicitudes y sin fallback a Higgsfield. Rediseño del 2026-09-09: tres nuevos másteres con el generador integrado GPT de esta cuenta, sin API; un recorte vertical. Vídeo Higgsfield documentado en movimiento.json."
   },
   "_": [
     "Encargo de arte y manifiesto de descarga de Camping Pinada del Mar.",
@@ -25,20 +25,59 @@
     "No dependen de URLs externas ni del proveedor usado en sesiones anteriores."
   ],
   "lotes": [
-    ["hero-calle", "hero-anochecer"],
-    ["hero-mobile"],
-    ["parcela", "calle-pinos"],
-    ["bungalow-exterior", "bungalow-interior"],
-    ["mobil-home", "instalacion-recepcion"],
-    ["instalacion-piscina", "textura-lona"],
-    ["entorno"],
-    ["vida-llegada"],
-    ["vida-recepcion"],
-    ["vida-servicio-piscina"],
-    ["vida-entorno"]
+    [
+      "hero-calle",
+      "hero-anochecer"
+    ],
+    [
+      "hero-mobile"
+    ],
+    [
+      "parcela",
+      "calle-pinos"
+    ],
+    [
+      "bungalow-exterior",
+      "bungalow-interior"
+    ],
+    [
+      "mobil-home",
+      "instalacion-recepcion"
+    ],
+    [
+      "instalacion-piscina",
+      "textura-lona"
+    ],
+    [
+      "entorno"
+    ],
+    [
+      "vida-llegada"
+    ],
+    [
+      "vida-recepcion"
+    ],
+    [
+      "vida-servicio-piscina"
+    ],
+    [
+      "vida-entorno"
+    ],
+    [
+      "hero-porche"
+    ],
+    [
+      "verano-desayuno"
+    ],
+    [
+      "verano-orilla"
+    ],
+    [
+      "hero-porche-mobile"
+    ]
   ],
   "derivados": {
-    "fuente": "hero-calle",
+    "fuente": "hero-porche",
     "titulo": "Pinada del Mar",
     "subtitulo": "110 unidades · Costa Daurada"
   },
@@ -122,6 +161,26 @@
       "aspecto": "3:2",
       "papel": "H1 · vida-entorno: preparación familiar de bicicletas antes de salir por la vía verde.",
       "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Pinada del Mar demo website\nPrimary request: Photoreal editorial documentary photograph of a family preparing simple bicycles before leaving the same Mediterranean pine campsite for a coastal greenway.\nInput images: hero-calle.webp is the Aleppo-pine, compacted-sand and morning-light reference; entorno.webp is the restrained coastal landscape reference.\nScene/backdrop: Sandy entrance under tall pines with a modest unmarked greenway disappearing between trees and only a restrained hint of the Mediterranean coast.\nSubject: One adult crouches to check the tyre pressure of an unbranded bicycle while another adult correctly adjusts a child's helmet; the child stands calmly beside a smaller bicycle.\nStyle/medium: Natural editorial documentary photography, 35 mm lens, believable physical contact, restrained coastal colour and subtle film grain.\nComposition/framing: Horizontal 3:2, complete bodies and bicycles within the central 70 percent for mobile crop; people occupy no more than 30 percent.\nLighting/mood: Clear pine shade and calm practical anticipation.\nConstraints: Anonymous family, non-frontal faces, correct helmet fit, physically plausible bicycles and hands, coherent light and terrain with Pinada del Mar.\nAvoid: racing kits, professional cycling, beach postcard, posing, readable signs, road traffic, logos, floating wheels, malformed hands, HDR, tourism-poster saturation, watermark."
+    },
+    "hero-porche": {
+      "aspecto": "16:9",
+      "papel": "Rediseño editorial mediterráneo del 2026-09-09. Generación integrada GPT, sin API externa.",
+      "prompt": "Create a photorealistic editorial travel photograph, wide landscape 16:9, for the hero of fictional Camping Pinada del Mar on Spain's Costa Daurada. View from inside the open shaded veranda of a simple beautiful timber seaside bungalow, looking toward a calm Mediterranean sea and sandy beach beyond a few umbrella pines. Foreground left: weathered wooden breakfast table with two ceramic coffee cups, half eaten bread and casually draped linen; right edge light linen curtain and timber door frame. A distant adult walking barefoot toward the sea, small and natural. Dawn warm sunlight, silver blue sea, sandy neutrals, deep pine shadows, quiet lived-in holiday mood. Wide cinematic composition, sea horizon across upper middle, substantial clean sky and water for oversized website typography. Authentic affordable Mediterranean camping, not luxury resort, no tropical plants, no cliffs, no pool. High-end travel magazine natural analog photography, realistic textures, no text, no logos, no collage."
+    },
+    "verano-desayuno": {
+      "aspecto": "3:2",
+      "papel": "Rediseño editorial mediterráneo del 2026-09-09. Generación integrada GPT, sin API externa.",
+      "prompt": "Photorealistic natural editorial Mediterranean camping travel photograph, landscape 3:2. A candid affectionate family breakfast on the shaded wooden terrace of a modest coastal bungalow among Aleppo pines, Spain Costa Daurada. Two adults in their thirties and one child aged about eight, natural relaxed imperfect gestures, one adult pouring water into a glass while child reaches for bread. Linen tablecloth, peaches, coffee cups, striped towel on chair. Dappled soft morning light, sandy warm neutrals, pale sky blue, weathered timber. Human, intimate, unposed, understated Kinfolk travel magazine analog photography. Realistic faces and hands. Medium wide shot showing veranda and pine grove, no luxury resort, no text or logos, no collage."
+    },
+    "verano-orilla": {
+      "aspecto": "16:9",
+      "papel": "Rediseño editorial mediterráneo del 2026-09-09. Generación integrada GPT, sin API externa.",
+      "prompt": "Photorealistic editorial travel photography, very wide 16:9 landscape. Mediterranean sandy shoreline on Spain Costa Daurada at late afternoon, photographed from slightly elevated dune at a respectful distance. A couple in their thirties walking barefoot at the water edge, backs three-quarter view, holding sandals, candid relaxed gesture. Figures relatively small placed right of center, vast clean soft turquoise and silvery blue sea occupying upper two thirds, lapping white foam sweeps diagonally across pale sand. A hint of soft umbrella pine framing far left. Warm sun, true Mediterranean coastal colors, nostalgic unhurried summer, quiet understated high-end magazine aesthetic, slight film grain, not orange overgraded. Natural anatomy. No buildings, no crowds, no text, no logos, no collage. Use as a full width editorial website photograph with space for text to left."
+    },
+    "hero-porche-mobile": {
+      "aspecto": "69:100",
+      "papel": "Recorte vertical del máster GPT hero-porche.",
+      "prompt": "Create a photorealistic editorial travel photograph, wide landscape 16:9, for the hero of fictional Camping Pinada del Mar on Spain's Costa Daurada. View from inside the open shaded veranda of a simple beautiful timber seaside bungalow, looking toward a calm Mediterranean sea and sandy beach beyond a few umbrella pines. Foreground left: weathered wooden breakfast table with two ceramic coffee cups, half eaten bread and casually draped linen; right edge light linen curtain and timber door frame. A distant adult walking barefoot toward the sea, small and natural. Dawn warm sunlight, silver blue sea, sandy neutrals, deep pine shadows, quiet lived-in holiday mood. Wide cinematic composition, sea horizon across upper middle, substantial clean sky and water for oversized website typography. Authentic affordable Mediterranean camping, not luxury resort, no tropical plants, no cliffs, no pool. High-end travel magazine natural analog photography, realistic textures, no text, no logos, no collage."
     }
   }
 }

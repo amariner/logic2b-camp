@@ -1,0 +1,52 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { config, data, eur, getContent, images, localePath, videos } from '../lib/content';
+import HeroMedia from './HeroMedia.astro';
+import EditorialImage from './EditorialImage.astro';
+import EnquiryForm from './EnquiryForm.astro';
+interface Props { locale: string }
+const { locale } = Astro.props;
+const c = getContent(locale);
+const o = c.coastal;
+if (!o) throw new Error('La presentación coastal requiere contenido editorial.');
+const image = images[config.staticHeroImage ?? ''];
+const mobile = images[config.staticHeroMobileImage ?? ''];
+const hero = image ? await getImage({ src: image, widths: [828, 1280, 1920], format: 'webp', quality: 82 }) : null;
+const mobileHero = mobile ? await getImage({ src: mobile, widths: [480, 828], format: 'webp', quality: 80 }) : null;
+const cards = data.unitTypes.map(unit => ({unit, card: c.tipos.cards.find(card => card.nombre === c.tipos.nombres[unit.id]), price: Math.min(...data.ratePlans.filter(p => p.unit_type_id === unit.id).map(p => p.base_cents))}));
+---
+<Base locale={locale} path="/">
+  {hero && <link slot="head" rel="preload" as="image" imagesrcset={hero.srcSet.attribute} imagesizes="100vw" media="(min-width: 640px)" />}
+  {mobileHero && <link slot="head" rel="preload" as="image" imagesrcset={mobileHero.srcSet.attribute} imagesizes="100vw" media="(max-width: 639px)" />}
+  <div class="sea-home">
+    <section class="sea-hero" aria-labelledby="sea-name" data-tour-medium-web>
+      {image && hero && <HeroMedia image={image} src={hero.src} srcset={hero.srcSet.attribute} mobileImage={mobile} mobileSrc={mobileHero?.src} mobileSrcset={mobileHero?.srcSet.attribute} desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined} mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined} motionLabels={c.heroMotion} position="center" />}
+      <div class="sea-shade"></div>
+      <div class="sea-hero-top"><p class="sea-eyebrow">{c.hero1.lugar}</p><h1 id="sea-name">{o.brand}</h1></div>
+      <div class="sea-hero-bottom"><div><p class="sea-hero-claim">{o.heroLines.map(line => <span>{line}</span>)}</p><a href="#alojamientos" class="sea-button sea-button-light"><span class="sea-disc" aria-hidden="true">↗</span>{c.hero1.cta}</a></div><p class="sea-hero-note">{o.heroNote}</p></div>
+      <a class="sea-scroll" href="#bienvenido">{o.scroll}<span aria-hidden="true">↓</span></a>
+    </section>
+    <div class="sea-facts"><p><span aria-hidden="true">☼</span>{o.label}</p><span>{c.ticker[2]}</span><a href="#contacto">{c.nav.contacto}<span aria-hidden="true">↗</span></a></div>
+
+    <section id="bienvenido" class="sea-welcome sea-wrap sea-space">
+      <div class="sea-welcome-copy"><p class="sea-eyebrow">{o.welcome.label}</p><h2 class="sea-title">{o.welcome.title}</h2><p class="sea-text">{o.welcome.text}</p><a class="sea-text-link" href={localePath(locale, '/instalaciones')}>{o.welcome.link}<span aria-hidden="true">↗</span></a></div>
+      <figure class="sea-welcome-photo"><EditorialImage photo={o.welcome.photo} alt={o.welcome.caption} class="sea-photo" /><figcaption>{o.welcome.caption}<span aria-hidden="true">↗</span></figcaption></figure>
+    </section>
+
+    <section id="alojamientos" class="sea-stays sea-space"><div class="sea-wrap"><p class="sea-eyebrow">{o.stays.label}</p><div class="sea-heading"><h2 class="sea-title">{o.stays.title}</h2><div><p class="sea-text">{o.stays.intro}</p><a class="sea-text-link" href={localePath(locale, '/alojamientos')}>{o.stays.link}<span aria-hidden="true">↗</span></a></div></div>
+      <div class="sea-stay-grid">{cards.map(({unit,card,price}, i) => card && <article class="sea-stay"><a class="sea-stay-image" href={localePath(locale, `/alojamientos/${unit.id}`)} aria-label={`${o.stays.details}: ${card.nombre}`}><EditorialImage photo={card.foto} alt={card.nombre} class="sea-photo" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" /><span class="sea-image-tag">{unit.features.m2} {o.stays.area} · {unit.capacity_max} {o.stays.people}</span><span class="sea-image-arrow" aria-hidden="true">↗</span></a><div class="sea-card-number">0{i+1} / {unit.kind === 'pitch' ? c.alojamientos.parcelas : c.alojamientos.alojados}</div><h3>{card.nombre}</h3><p class="sea-text">{card.desc}</p><div class="sea-card-bottom"><p>{o.stays.price} <strong>{eur(price,locale)}</strong> <span>{o.stays.night}</span></p><a href={localePath(locale, `/alojamientos/${unit.id}`)} aria-label={`${o.stays.details}: ${card.nombre}`}>↗</a></div></article>)}</div><p class="sea-price-note">{o.stays.note}</p>
+    </div></section>
+
+    <section class="sea-day sea-wrap sea-space"><p class="sea-eyebrow">{o.day.label}</p><div class="sea-heading"><h2 class="sea-title">{o.day.title}</h2><p class="sea-text">{o.day.intro}</p></div><div class="sea-day-grid">{o.day.items.map(item => <article><div class="sea-day-image"><EditorialImage photo={item.photo} alt={item.title} class="sea-photo" sizes="(min-width: 768px) 33vw, 100vw" /><span>{item.time}</span></div><h3>{item.title}</h3><p class="sea-text">{item.text}</p></article>)}</div></section>
+
+    <section class="sea-interlude"><EditorialImage photo={o.sea.photo} alt={o.sea.text} class="sea-photo" sizes="100vw" /><div class="sea-interlude-copy"><p class="sea-eyebrow">{o.sea.label}</p><h2 class="sea-title">{o.sea.title}</h2><p>{o.sea.text}</p><a class="sea-button sea-button-light" href={localePath(locale, '/entorno')}>{o.sea.link}<span aria-hidden="true">↗</span></a></div></section>
+
+    <section class="sea-essentials sea-wrap sea-space"><div><p class="sea-eyebrow">{o.essentials.label}</p><h2 class="sea-title">{o.essentials.title}</h2></div><div class="sea-essential-grid">{o.essentials.items.map(item=><article><span>{item.number}</span><h3>{item.title}</h3><p class="sea-text">{item.text}</p></article>)}</div></section>
+
+    <section class="sea-faq sea-wrap sea-space"><div><p class="sea-eyebrow">{o.questions.label}</p><h2 class="sea-title">{o.questions.title}</h2></div><div>{o.questions.items.map((item,i)=><details name="coastal-faq"><summary><span class="sea-faq-number">0{i+1}</span>{item.question}<span class="sea-plus" aria-hidden="true">+</span></summary><p class="sea-text">{item.answer}</p></details>)}</div></section>
+
+    <section id="contacto" class="sea-contact sea-space"><div class="sea-wrap sea-contact-grid"><div><p class="sea-eyebrow">{o.contact.label}</p><h2 class="sea-title">{o.contact.title}</h2><p class="sea-text">{o.contact.text}</p><figure><EditorialImage photo={o.contact.photo} alt={c.contacto.horario.texto} class="sea-photo" /><figcaption>{c.contacto.horario.texto}</figcaption></figure><p class="sea-contact-note">{o.contact.note}</p></div><div class="sea-form"><EnquiryForm locale={locale} form={c.form} /></div></div></section>
+    <div class="sea-signoff"><span aria-hidden="true">☼</span><p>{o.footer}</p><span>{o.brand}</span></div>
+  </div>
+</Base>

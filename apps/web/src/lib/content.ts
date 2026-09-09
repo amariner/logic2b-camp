@@ -48,6 +48,48 @@ export type Content = {
   hero3: { titulo: string; prueba: string };
   hero1: { titulo: string; cta: string; lugar?: string; intro?: string; explorar?: string };
   heroMotion?: { pausar: string; reproducir: string };
+  coastal?: {
+    brand: string;
+    label: string;
+    heroLines: string[];
+    heroNote: string;
+    scroll: string;
+    welcome: {
+      label: string;
+      title: string;
+      text: string;
+      photo: string;
+      caption: string;
+      link: string;
+    };
+    stays: {
+      label: string;
+      title: string;
+      intro: string;
+      link: string;
+      details: string;
+      price: string;
+      night: string;
+      note: string;
+      people: string;
+      area: string;
+    };
+    day: {
+      label: string;
+      title: string;
+      intro: string;
+      items: { time: string; title: string; text: string; photo: string }[];
+    };
+    sea: { label: string; title: string; text: string; link: string; photo: string };
+    essentials: {
+      label: string;
+      title: string;
+      items: { number: string; title: string; text: string }[];
+    };
+    questions: { label: string; title: string; items: { question: string; answer: string }[] };
+    contact: { label: string; title: string; text: string; note: string; photo: string };
+    footer: string;
+  };
   outdoor?: {
     hero: { lines: string[]; note: string; facts: string[] };
     welcome: {

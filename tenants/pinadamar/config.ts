@@ -5,6 +5,7 @@ export const config: TenantWebConfig = {
   slug: 'pinadamar',
   name: 'Camping Pinada del Mar',
   tier: 2,
+  presentation: 'coastal',
   locales: ['es'],
   defaultLocale: 'es',
   domain: 'https://camp.logic2b.com',
@@ -15,8 +16,13 @@ export const config: TenantWebConfig = {
   },
   enquiryTransport: 'demo-session',
   demoManagerPath: '/demos/pinadamar/gestion/',
-  staticHeroImage: 'hero-calle',
-  staticHeroMobileImage: 'hero-mobile',
+  staticHeroImage: 'hero-porche',
+  staticHeroMobileImage: 'hero-porche-mobile',
+  heroMotion: {
+    desktop: 'hero-porche-motion',
+    mobile: 'hero-porche-motion-mobile',
+    position: 'center',
+  },
   isDemo: true,
   legal: {
     razonSocial: 'Camping Pinada del Mar — demostración ficticia de Logic2B',

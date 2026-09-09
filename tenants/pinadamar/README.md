@@ -30,3 +30,15 @@ pnpm fotos -- run pinadamar
 ```
 
 La receta completa está en `docs/FABRICA-IDENTIDADES.md`.
+
+## Presentación mediterránea
+
+Rediseño editorial `coastal` del 2026-09-09: hero con vídeo lento desde un
+porche, tres nuevas fotografías humanas GPT, alojamientos comparables,
+ritmo del día, servicios, preguntas frecuentes y consulta local.
+Ver `docs/PINADAMAR-REDISENO-2026-09-09.md`; los prompts y la procedencia
+están en `fotos.json` y `movimiento.json`.
+
+```bash
+TENANT=pinadamar TIER=2 BASE_PATH=/demos/pinadamar pnpm --filter @logic-camp/web dev --port 4322
+```

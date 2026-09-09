@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "clips": {
+    "hero-porche-motion": {
+      "poster": "hero-porche",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "One continuous serene cinematic shot from this exact bungalow veranda toward the Mediterranean sea. Almost locked camera with an extremely slow subtle forward dolly, dreamy natural slow motion. Linen curtain breathes gently, tiny waves roll softly onto the sandy beach, pine needles move barely in the breeze. The distant adult continues walking slowly toward the shore with anatomically natural movement. Keep the original architecture, table, two cups, trees and sea horizon perfectly stable. Warm early morning natural light. No cuts, no transition, no added objects, no text, no dramatic movement. Quiet premium editorial travel film, tranquil contemplative pace.",
+      "generatedAt": "2026-09-09T07:53:09.350384Z",
+      "approvedAt": "2026-09-09T08:05:06.007Z",
+      "approval": "visual-inspection",
+      "sha256": "956351f019b55da80f74dae0af42f3ea59226e513f90c3585a6116f60ba04fa2"
+    },
+    "hero-porche-motion-mobile": {
+      "poster": "hero-porche-mobile",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "One continuous serene cinematic shot from this exact bungalow veranda toward the Mediterranean sea. Almost locked camera with an extremely slow subtle forward dolly, dreamy natural slow motion. Linen curtain breathes gently, tiny waves roll softly onto the sandy beach, pine needles move barely in the breeze. The distant adult continues walking slowly toward the shore with anatomically natural movement. Keep the original architecture, table, two cups, trees and sea horizon perfectly stable. Warm early morning natural light. No cuts, no transition, no added objects, no text, no dramatic movement. Quiet premium editorial travel film, tranquil contemplative pace.",
+      "generatedAt": "2026-09-09T07:53:09.350384Z",
+      "approvedAt": "2026-09-09T08:05:06.010Z",
+      "approval": "visual-inspection",
+      "sha256": "4c44e6cd1295505864ff771509fb137a3ff27d7344702a6db33f66643997fafe"
+    }
+  }
+}

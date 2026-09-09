@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Camping Pinada del Mar — vacaciones bajo los pinos, cerca del agua",
+    "title": "Pinada del Mar — Más mar. Menos reloj.",
     "description": "Camping costero familiar con 110 parcelas, bungalows y mobil-homes bajo una pinada mediterránea. Demostración ficticia de Logic2B."
   },
   "nav": {
@@ -26,8 +26,10 @@
     "prueba": "110 unidades · recepción coordinada"
   },
   "hero1": {
-    "titulo": "Pinos altos. Mar cerca. Todo listo para llegar.",
-    "cta": "Consulta seis noches"
+    "titulo": "Más mar. Menos reloj.",
+    "cta": "Encuentra tu lugar",
+    "lugar": "Costa Daurada · Mediterráneo",
+    "explorar": "Conoce la pinada"
   },
   "ticker": [
     "84 parcelas con sombra",
@@ -57,25 +59,25 @@
       {
         "id": "pinar",
         "nombre": "Parcela Pinar",
-        "desc": "Ochenta metros cuadrados bajo sombra alta, electricidad de 10 A y calles tranquilas.",
+        "desc": "Monta tu pequeño mundo bajo la sombra alta de la pinada.",
         "foto": "parcela"
       },
       {
         "id": "brisa",
         "nombre": "Parcela Brisa",
-        "desc": "Algo más amplia, próxima al paseo hacia el mar y con luz abierta entre los pinos.",
+        "desc": "Más espacio y la brisa del paseo que te lleva hacia el mar.",
         "foto": "calle-pinos"
       },
       {
         "id": "bungalow",
         "nombre": "Bungalow Familiar",
-        "desc": "Dos dormitorios, porche y cocina para resolver seis noches con espacio de verdad.",
+        "desc": "Dos dormitorios, una cocina y un porche para alargar el desayuno.",
         "foto": "bungalow-exterior"
       },
       {
         "id": "mobil",
         "nombre": "Mobil-home Salina",
-        "desc": "Interior compacto para cinco, aire acondicionado y terraza a la sombra.",
+        "desc": "Tu refugio entre pinos, con terraza a la sombra y sitio para cinco.",
         "foto": "mobil-home"
       }
     ]
@@ -299,12 +301,30 @@
     "distancias": {
       "titulo": "Desde recepción",
       "items": [
-        { "lugar": "Playa", "valor": "4 min a pie" },
-        { "lugar": "Vía verde", "valor": "2 min en bici" },
-        { "lugar": "Mercado", "valor": "15 min en bici" },
-        { "lugar": "Estación", "valor": "12 min en coche" },
-        { "lugar": "Parque natural", "valor": "28 min en coche" },
-        { "lugar": "Tarragona", "valor": "35 min en coche" }
+        {
+          "lugar": "Playa",
+          "valor": "4 min a pie"
+        },
+        {
+          "lugar": "Vía verde",
+          "valor": "2 min en bici"
+        },
+        {
+          "lugar": "Mercado",
+          "valor": "15 min en bici"
+        },
+        {
+          "lugar": "Estación",
+          "valor": "12 min en coche"
+        },
+        {
+          "lugar": "Parque natural",
+          "valor": "28 min en coche"
+        },
+        {
+          "lugar": "Tarragona",
+          "valor": "35 min en coche"
+        }
       ]
     }
   },
@@ -315,7 +335,10 @@
     },
     "titulo": "Tarifas de demostración",
     "intro": "Los importes enseñan cómo se presenta el catálogo. Esta web solo crea una solicitud y no cobra ni confirma una reserva.",
-    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "tabla": {
+      "tipo": "Alojamiento",
+      "noche": "€/noche"
+    },
     "temporadas": {
       "sea_media": "Primavera y otoño",
       "sea_alta": "Verano",
@@ -331,8 +354,15 @@
     },
     "extras": {
       "titulo": "Extras",
-      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
-      "nombres": { "ext_cuna": "Cuna", "ext_mascota": "Mascota en parcela" }
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
+      "nombres": {
+        "ext_cuna": "Cuna",
+        "ext_mascota": "Mascota en parcela"
+      }
     },
     "condiciones": {
       "titulo": "Antes de consultar",
@@ -381,5 +411,124 @@
     "titulo": "Esta calle no existe",
     "texto": "La dirección no corresponde a ninguna zona del camping.",
     "cta": "Volver al inicio"
+  },
+  "heroMotion": {
+    "pausar": "Pausar vídeo",
+    "reproducir": "Reproducir vídeo"
+  },
+  "coastal": {
+    "brand": "Pinada del Mar",
+    "label": "UN CAMPING. MIL PEQUEÑOS VERANOS.",
+    "heroLines": ["Más mar.", "Menos reloj."],
+    "heroNote": "Desayunos que se alargan. Pies llenos de arena. Y ese «un ratito más» antes de volver.",
+    "scroll": "Baja el ritmo",
+    "welcome": {
+      "label": "01 — EL ARTE DE ESTAR A GUSTO",
+      "title": "Lo mejor del verano\nno estaba en el plan.",
+      "text": "Era el primer café en el porche. La sombra que se movía sobre la mesa. Los niños volviendo con un nuevo amigo. En Pinada del Mar hay sitio para esas pequeñas cosas que terminan siendo las grandes.",
+      "photo": "verano-desayuno",
+      "caption": "Sin prisa por recoger la mesa.",
+      "link": "Así se vive aquí"
+    },
+    "stays": {
+      "label": "02 — TU FORMA DE QUEDARTE",
+      "title": "Un lugar para\nllamar tuyo.",
+      "intro": "Con tu casa a cuestas o con las llaves en la mano. Tú eliges cómo llegar; los pinos y la brisa ya están aquí.",
+      "link": "Explora los alojamientos",
+      "details": "Conoce tu estancia",
+      "price": "Desde",
+      "night": "/ noche",
+      "note": "Precios orientativos según temporada.",
+      "people": "personas",
+      "area": "m²"
+    },
+    "day": {
+      "label": "03 — UN DÍA, SIN LISTA DE TAREAS",
+      "title": "Planes pequeños.\nDías enormes.",
+      "intro": "No hace falta llenarlo todo. Deja que el día encuentre su ritmo.",
+      "items": [
+        {
+          "time": "08:30",
+          "title": "El café, mirando al azul.",
+          "text": "Abre la puerta. Saca las tazas. Hoy el desayuno termina cuando tú quieras.",
+          "photo": "verano-desayuno"
+        },
+        {
+          "time": "11:00",
+          "title": "Por el camino de la playa.",
+          "text": "Toalla al hombro y cuatro minutos a pie entre pinos. El primer baño está cerca.",
+          "photo": "vida-entorno"
+        },
+        {
+          "time": "19:30",
+          "title": "La última luz es para todos.",
+          "text": "Una vuelta por la orilla, la piel con sal y ninguna gana de mirar la hora.",
+          "photo": "verano-orilla"
+        }
+      ]
+    },
+    "sea": {
+      "label": "EL MEDITERRÁNEO, A TU RITMO",
+      "title": "Hay días que\nsolo piden esto.",
+      "text": "Una orilla. Una buena compañía. Tiempo para quedarse.",
+      "link": "Descubre mar y alrededores",
+      "photo": "verano-orilla"
+    },
+    "essentials": {
+      "label": "04 — LAS COSAS QUE LO HACEN FÁCIL",
+      "title": "Tú descansa.\nLo cotidiano, resuelto.",
+      "items": [
+        {
+          "number": "01",
+          "title": "Personas al otro lado",
+          "text": "Recepción de 8:00 a 22:00. Para una llegada, una duda o ese plan que no sale en las guías."
+        },
+        {
+          "number": "02",
+          "title": "Un chapuzón más",
+          "text": "Piscina y zona de juegos para alternar los días de playa con tardes dentro del camping."
+        },
+        {
+          "number": "03",
+          "title": "Sombra de verdad",
+          "text": "Una pinada mediterránea, calles tranquilas y espacio para hacer vida fuera."
+        },
+        {
+          "number": "04",
+          "title": "Cada familia, a su manera",
+          "text": "Parcelas, bungalows y mobil-homes. Consulta la capacidad y los detalles antes de elegir."
+        }
+      ]
+    },
+    "questions": {
+      "label": "ANTES DE HACER LA MALETA",
+      "title": "Te lo ponemos fácil.",
+      "items": [
+        {
+          "question": "¿Playa o piscina?",
+          "answer": "Las dos. La playa está a unos cuatro minutos a pie y el camping cuenta con piscina. Consulta en recepción los horarios y las condiciones del día."
+        },
+        {
+          "question": "¿Puedo venir con mi perro?",
+          "answer": "Las parcelas Pinar y Brisa admiten mascotas. Los bungalows y mobil-homes no. Indícalo en tu consulta para preparar bien la estancia."
+        },
+        {
+          "question": "¿Qué alojamiento nos viene mejor?",
+          "answer": "Las parcelas y el Bungalow Familiar tienen capacidad de hasta seis personas; el Mobil-home Salina, hasta cinco. En cada ficha puedes ver el espacio, el equipamiento y las tarifas."
+        },
+        {
+          "question": "¿La consulta confirma mi reserva?",
+          "answer": "No. Primero nos cuentas tus fechas y preferencias. Esta web es una demostración: la solicitud se guarda solo en este navegador, no se envía ni confirma una reserva."
+        }
+      ]
+    },
+    "contact": {
+      "label": "EL VERANO EMPIEZA CON UN «¿Y SI…?»",
+      "title": "Hazle sitio\na unos días aquí.",
+      "text": "Cuéntanos cuándo te gustaría venir y cómo viajas. Encontrar un lugar donde estar a gusto empieza por conocernos.",
+      "note": "Sin pagos ni compromiso.",
+      "photo": "vida-recepcion"
+    },
+    "footer": "Nos vemos donde huele a pino y a sal."
   }
 }

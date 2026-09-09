@@ -1,8 +1,9 @@
 ---
 import ClassicHome from './ClassicHome.astro';
+import CoastalHome from './CoastalHome.astro';
 import OutdoorHome from './OutdoorHome.astro';
 import { config } from '../lib/content';
 interface Props { locale: string }
 const { locale } = Astro.props;
 ---
-{config.presentation === 'outdoor' ? <OutdoorHome locale={locale} /> : <ClassicHome locale={locale} />}
+{config.presentation === 'coastal' ? <CoastalHome locale={locale} /> : config.presentation === 'outdoor' ? <OutdoorHome locale={locale} /> : <ClassicHome locale={locale} />}

@@ -7,16 +7,18 @@
   "objection": "Se pierden solicitudes y el equipo copia datos entre la web, el planning y el mostrador.",
   "commercialLevel": "Gestión, sobre el carril técnico tier 2 y un escenario local reversible.",
   "story": "Una familia envía una solicitud en la web; recepción la abre, la convierte y localiza la estancia en planning y plano.",
-  "tone": "Práctico, familiar y luminoso; resolutivo y con densidad operativa, sin lenguaje corporativo.",
+  "tone": "Editorial mediterráneo, cercano y humano: más mar, menos reloj. Se conserva el recorrido práctico de consulta a recepción.",
   "palette": {
-    "tinta": "#1e2925",
-    "hueso": "#f3f0e8",
-    "pino": "#245845",
-    "arena": "#c8b58f",
-    "mar": "#436f73"
+    "tinta": "#243b3d",
+    "hueso": "#faf9f5",
+    "pino": "#284f50",
+    "arena": "#d6c8ae",
+    "mar": "#36676f"
   },
-  "typography": "Clash Display 600 en titulares compactos; Inter y cifras tabulares en fechas, unidades y ocupación.",
+  "typography": "Georgia en grandes titulares editoriales de peso regular; Inter en navegación, lectura, formularios y cifras.",
   "signatureScreens": [
+    "Hero cinematográfico desde el porche y gran título Pinada del Mar",
+    "Alojamientos comparables y tres momentos humanos del día",
     "Solicitud recién llegada en la portada del gestor",
     "Planning denso con la estancia enfocada",
     "Plano propio con unidad y fecha conservadas"
@@ -24,7 +26,10 @@
   "photoInventory": [
     "Calle y bungalows bajo pinada litoral",
     "Parcela, mobil-home e interiores",
-    "Recepción, piscina, entorno costero y textura de lona"
+    "Recepción, piscina, entorno costero y textura de lona",
+    "Desayuno familiar en el porche",
+    "Paseo en pareja por la orilla",
+    "Vista del mar desde un bungalow con vídeo ambiental"
   ],
   "successCriterion": "El recorrido web a gestor conserva la solicitud sin red y se reconoce una operación costera mediana, no otra Cala Sereno."
 }
