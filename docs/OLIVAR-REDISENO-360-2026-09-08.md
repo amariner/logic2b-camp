@@ -50,7 +50,11 @@ el póster de cada formato como imagen inicial y final. Inspección de siete
 momentos por clip antes de aprobar; salida normalizada H.264/yuv420p/faststart.
 El móvil superó inicialmente el límite de 1,5 MiB; se volvió a normalizar el
 original con CRF 27 (manteniendo resolución y contrato) y quedó en 1.029.988
-bytes. Escritorio: 1.824.998 bytes. No hubo otra generación de vídeo.
+bytes. El 2026-09-09 se sustituyó solo la salida de escritorio, después de una
+revisión visual: las personas del camino hacen un giro breve y la brisa mueve
+con más claridad las ramas finas, manteniendo el plano fijo y el cierre en
+bucle. La variante final de escritorio pesa 2.064.460 bytes; la nueva
+generación consumió 27 créditos. El móvil no cambió.
 Los prompts, fechas y huellas del par vigente están en `movimiento.json`.
 Los controles y reglas de carga del primer corte se mantienen: pausa accesible,
 pausa fuera de pantalla, selección responsive y cero vídeo con movimiento

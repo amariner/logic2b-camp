@@ -11,8 +11,10 @@
   alineados. Conservadas las URLs históricas.
 - Seis imágenes nuevas aprobadas: cuatro con OpenAI integrado y dos con Nano
   Banana Pro vía Higgsfield tras fallos documentados del proveedor GPT Image 2.
-  Inventario 21/21. Dos vídeos nuevos de 6 s: 1.824.998 y 1.029.988 bytes;
-  sustituyen los anteriores, archivados localmente. Miniatura/OG regenerados.
+  Inventario 21/21. Vídeos finales de 6 s: 2.064.460 y 1.029.988 bytes;
+  sustituyen los anteriores. El escritorio se afinó tras revisión para que las
+  personas del camino giren sutilmente y la brisa mueva más ramas y hojas, sin
+  alterar cámara ni ambiente. Miniatura/OG regenerados.
 - Gate global 74/74. QA final: 60 vistas Chromium, seis escenarios de vídeo,
   menú, anclas, FAQ, consulta sin envío y alternativa sin JS. Corregidas la
   compensación de cabecera fija y la separación de palabras en titulares.
