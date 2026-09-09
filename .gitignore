@@ -36,3 +36,7 @@ dist-capture/
 # Másteres, respuestas del proveedor y QA local de la primera cabecera con vídeo.
 output/olivar-motion/
 /output/olivar-360/
+
+# Originales de generación, capturas, logs y previsualizaciones locales.
+/output/mardefondo/
+/output/pinadamar/
