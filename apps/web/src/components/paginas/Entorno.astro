@@ -13,6 +13,7 @@ const c = getContent(locale);
 const p = c.entornoPagina;
 const rutas = p.rutas;
 const fotoEntorno =
+  images[p.foto ?? ''] ??
   images['entorno'] ??
   images['entorno-piedra-seca'] ??
   images[config.staticHeroImage ?? 'hero-dia'];

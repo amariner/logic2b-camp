@@ -46,7 +46,7 @@ export const tenantWebConfigSchema = z
     /** Contacto de soporte Logic2B transversal (ADR 0046). Ausente = activo. */
     logic2bContact: z.boolean().optional(),
     /** Composición editorial opcional; los textos y medios siguen en el tenant. */
-    presentation: z.enum(['outdoor', 'coastal']).optional(),
+    presentation: z.enum(['outdoor', 'coastal', 'resort']).optional(),
     /**
      * Destino del formulario público. Ausente equivale a `persisted` para no
      * cambiar tenants existentes. `demo` nunca hace red ni conserva datos;

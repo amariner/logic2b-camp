@@ -1,0 +1,54 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { config, data, eur, getContent, images, localePath, videos } from '../lib/content';
+import HeroMedia from './HeroMedia.astro';
+import EditorialImage from './EditorialImage.astro';
+import HeroMostrador from '@booking/hero';
+interface Props { locale: string }
+const { locale } = Astro.props;
+const c = getContent(locale);
+const o = c.coastal;
+if (!o) throw new Error('La presentación resort requiere contenido editorial.');
+const image = images[config.staticHeroImage ?? ''];
+const mobileImage = images[config.staticHeroMobileImage ?? ''];
+const mobileHero = mobileImage ? await getImage({ src: mobileImage, widths: [480, 828], format: 'webp', quality: 80 }) : null;
+const hero = image ? await getImage({ src: image, widths: [640, 960, 1440, 1920], format: 'webp', quality: 82 }) : null;
+const cards = data.unitTypes.map(unit => ({ unit, card: c.tipos.cards.find(card => card.nombre === c.tipos.nombres[unit.id]), price: Math.min(...data.ratePlans.filter(p => p.unit_type_id === unit.id).map(p => p.base_cents)) }));
+---
+<Base locale={locale} path="/">
+  {hero && <link slot="head" rel="preload" as="image" imagesrcset={hero.srcSet.attribute} imagesizes="100vw" media="(min-width: 640px)" />}
+  {mobileHero && <link slot="head" rel="preload" as="image" imagesrcset={mobileHero.srcSet.attribute} imagesizes="100vw" media="(max-width: 639px)" />}
+  <div class="resort-home">
+    <section class="resort-hero" aria-labelledby="resort-title" data-tour-medium-web>
+      {image && hero && <HeroMedia mobileImage={mobileImage} mobileSrc={mobileHero?.src} mobileSrcset={mobileHero?.srcSet.attribute} image={image} src={hero.src} srcset={hero.srcSet.attribute} desktopVideo={config.heroMotion ? videos[config.heroMotion.desktop] : undefined} mobileVideo={config.heroMotion?.mobile ? videos[config.heroMotion.mobile] : undefined} motionLabels={c.heroMotion} position="center" />}
+      <div class="resort-shade"></div>
+      <div class="resort-hero-top"><span class="resort-pill">{c.hero1.lugar}</span><span class="resort-coordinate" aria-hidden="true">☼ &nbsp; {o.brand}</span></div>
+      <div class="resort-hero-copy"><p class="resort-kicker">{o.label}</p><h1 id="resort-title" aria-label={c.hero3.titulo}>{o.heroLines.map((line,i) => <span class:list={{'resort-last-line':i===1}}>{line}</span>)}</h1><div class="resort-hero-bottom"><a class="resort-button resort-button-white" href="#disponibilidad">{c.hero1.cta}<span aria-hidden="true">↗</span></a><p>{o.heroNote}</p></div></div>
+      <a class="resort-explore" href="#bienvenido" aria-label={o.scroll}>↓</a>
+    </section>
+    <section class="resort-booking" id="disponibilidad" aria-label={c.mostrador.buscar}>
+      <div class="resort-booking-intro"><span aria-hidden="true">☼</span><p>{o.contact.title}</p></div>
+      <HeroMostrador labels={c.mostrador} typeNames={c.tipos.nombres} locale={locale} reservarBase={localePath(locale, '/reservar')} />
+    </section>
+    <div class="resort-facts">{c.ticker.slice(0,4).map(fact=><span><i aria-hidden="true">✳</i>{fact}</span>)}</div>
+
+    <section id="bienvenido" class="resort-welcome resort-wrap resort-space">
+      <p class="resort-kicker">{o.welcome.label}</p><h2 class="resort-title">{o.welcome.title}</h2><div class="resort-welcome-text"><p>{o.welcome.text}</p><a class="resort-link" href={localePath(locale,'/instalaciones')}>{o.welcome.link}<span aria-hidden="true">↗</span></a></div>
+      <figure class="resort-welcome-photo"><EditorialImage photo={o.welcome.photo} alt={o.welcome.caption} class="resort-photo" sizes="(min-width: 768px) 62vw, 100vw" /><figcaption>{o.welcome.caption}</figcaption></figure>
+      <div class="resort-note"><span class="resort-sun" aria-hidden="true">☼</span><p>{o.footer}</p><a class="resort-circle" href={localePath(locale,'/entorno')} aria-label={o.sea.link}>↗</a></div>
+    </section>
+
+    <section id="alojamientos" class="resort-stays resort-space"><div class="resort-wrap"><p class="resort-kicker">{o.stays.label}</p><div class="resort-heading"><h2 class="resort-title">{o.stays.title}</h2><div><p>{o.stays.intro}</p><a class="resort-link" href={localePath(locale,'/alojamientos')}>{o.stays.link}<span aria-hidden="true">↗</span></a></div></div>
+      <div class="resort-stay-grid">{cards.map(({unit,card,price},i)=>card&&<article class="resort-stay"><a href={localePath(locale,`/alojamientos/${unit.id}`)} class="resort-stay-photo" aria-label={`${o.stays.details}: ${card.nombre}`}><EditorialImage photo={card.foto} alt={card.nombre} class="resort-photo" sizes="(min-width: 768px) 45vw, 100vw" /><span class="resort-pill">{unit.features.m2} {o.stays.area} · {unit.capacity_max} {o.stays.people}</span><span class="resort-circle" aria-hidden="true">↗</span><div class="resort-stay-overlay"><span>0{i+1} / {o.brand}</span><h3>{card.nombre}</h3></div></a><div class="resort-stay-detail"><p>{card.desc}</p><p class="resort-price">{o.stays.price}<br/><strong>{eur(price,locale)}</strong> <small>{o.stays.night}</small></p></div></article>)}</div><p class="resort-price-note">{o.stays.note}</p>
+    </div></section>
+
+    <section class="resort-day resort-wrap resort-space"><p class="resort-kicker">{o.day.label}</p><div class="resort-heading"><h2 class="resort-title">{o.day.title}</h2><p>{o.day.intro}</p></div><div class="resort-day-grid">{o.day.items.map((item,i)=><article><a href={localePath(locale,i===2?'/entorno':'/instalaciones')} class="resort-day-photo"><EditorialImage photo={item.photo} alt={item.title} class="resort-photo" sizes="(min-width: 768px) 30vw, 100vw" /><span class="resort-pill">{item.time}</span><span class="resort-circle" aria-hidden="true">↗</span></a><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
+
+    <section class="resort-sea"><EditorialImage photo={o.sea.photo} alt={o.sea.text} class="resort-photo" sizes="100vw" /><div><p class="resort-kicker">{o.sea.label}</p><h2 class="resort-title">{o.sea.title}</h2><p>{o.sea.text}</p><a class="resort-button resort-button-white" href={localePath(locale,'/entorno')}>{o.sea.link}<span aria-hidden="true">↗</span></a></div><span class="resort-sea-stamp" aria-hidden="true">☼</span></section>
+
+    <section class="resort-essentials resort-wrap resort-space"><div><p class="resort-kicker">{o.essentials.label}</p><h2 class="resort-title">{o.essentials.title}</h2></div><div class="resort-essential-grid">{o.essentials.items.map(item=><article><span>{item.number} /</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
+    <section class="resort-faq resort-wrap resort-space"><div><p class="resort-kicker">{o.questions.label}</p><h2 class="resort-title">{o.questions.title}</h2></div><div>{o.questions.items.map(item=><details name="resort-faq"><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div></section>
+    <section class="resort-closing"><p class="resort-kicker">{o.contact.label}</p><h2>{o.contact.title}</h2><a class="resort-button resort-button-white" href="#disponibilidad">{c.mostrador.buscar}<span aria-hidden="true">↗</span></a><p class="resort-price-note">{o.contact.note}</p><div class="resort-wordmark" aria-hidden="true">{o.brand}<span>☼</span></div></section>
+  </div>
+</Base>

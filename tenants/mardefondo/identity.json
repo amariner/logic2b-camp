@@ -7,17 +7,17 @@
   "objection": "Tiene datos y herramientas, pero no una experiencia unida ni decisiones explicables.",
   "commercialLevel": "Visión, sobre el carril técnico tier 3 con reserva y operación locales.",
   "story": "Una creatividad abre disponibilidad, la reserva termina en recibo y el gestor demuestra escala, automatización supervisada y recomendación explicable.",
-  "tone": "Seguro, preciso y editorial; premium por orden y servicio, nunca por dorados o grandilocuencia.",
+  "tone": "Cercano, luminoso y editorial. Vacaciones mediterráneas contadas desde gestos cotidianos, con servicio profesional.",
   "palette": {
-    "tinta": "#172a2d",
-    "hueso": "#f6f4ee",
-    "pino": "#176b73",
-    "arena": "#d8c7a5",
+    "tinta": "#163344",
+    "hueso": "#ffffff",
+    "pino": "#174d78",
+    "arena": "#d3dfe7",
     "mar": "#a64e3b"
   },
   "typography": "Clash Display e Inter con composiciones abiertas, cifras tabulares y jerarquía editorial contenida.",
   "signatureScreens": [
-    "Portada de piscina laguna con disponibilidad",
+    "Hero cinematográfico con reserva integrada, escenas humanas y alojamientos editoriales",
     "Planning de unas 300 unidades",
     "Recomendación Inteligente con evidencia y aprobación"
   ],

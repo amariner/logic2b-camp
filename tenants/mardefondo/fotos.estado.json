@@ -373,6 +373,149 @@
         "sourceExtension": ".png",
         "dimensions": "941x1672"
       }
+    ],
+    "hero-v2": [
+      {
+        "at": "2026-09-09T10:41:13.433Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "38dd850552419f304cc60351c19d04ee51520e90204a84d5cff84a0512412660",
+        "sourceExtension": ".png",
+        "dimensions": "1672x941"
+      }
+    ],
+    "vida-servicio-mesa-v2": [
+      {
+        "at": "2026-09-09T10:41:13.666Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "47dbc05e846b2becbc7b82552a60fff9a6c9ccbb64f23ff4c66a3be1c5012509",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "parcela-v2": [
+      {
+        "at": "2026-09-09T10:43:00.931Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "454dc50ebf9bd63fe5f3b1fb48ec934d9540d106728c3e01c359409d2c87cc9b",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "bungalow-v2": [
+      {
+        "at": "2026-09-09T10:43:01.179Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "f95fa5c4c018ab297410382052cbd3e744aef8cd3ee3475fabd91c5fc997d411",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "mobil-v2": [
+      {
+        "at": "2026-09-09T10:44:56.767Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "f31a7fcf56a090472ac484cc75f275f099f59f581bd2b74a4f22d2d102a72b63",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "glamping-v2": [
+      {
+        "at": "2026-09-09T10:44:56.998Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "a7277d7c05df6ae79fc6872b3241ce45a268990e91b55834d631afc82026ea33",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "playa-v2": [
+      {
+        "at": "2026-09-09T10:46:27.350Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "2d47170f505ced8786b9fde0ca6100f8a29eb2e411f85f3fc59af97855201def",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "piscina-v2": [
+      {
+        "at": "2026-09-09T10:46:27.562Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "67107787f2e1dddef666658ca49cfab0b2abd5018c9d184fc5d92fd98b2645a4",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "bungalow-interior-v2": [
+      {
+        "at": "2026-09-09T10:48:36.893Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "f00cf327bcebc5609fde3a4e457fc667e618bb2ef653cb47af10a8f78f5828c9",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "mobil-interior-v2": [
+      {
+        "at": "2026-09-09T10:48:37.097Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "c18bd44c8033f64bdf67cffe4c0cfc7dcb8a731ba2fa6be45b4c331d57f909df",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "glamping-interior-v2": [
+      {
+        "at": "2026-09-09T10:50:29.612Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "84742698365ffa2ecd455f5758dffd97df22c91151c9ef950ff3998e64621576",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "vida-recepcion-v2": [
+      {
+        "at": "2026-09-09T10:50:29.817Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "b642bb7ce3d67a831648427bca33c59ae6afa66d9be4e42efa3b1f6bb2656d3f",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "hero-mobile-v2": [
+      {
+        "at": "2026-09-09T10:52:08.132Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "3c5a8f247c7cb894ad2f3cad473a83fa3772524453c760f21fa5e40ada5b69b4",
+        "sourceExtension": ".png",
+        "dimensions": "941x1672"
+      }
     ]
   },
   "approvals": {
@@ -450,6 +593,58 @@
     },
     "hero-mobile": {
       "at": "2026-08-18T14:01:24.519Z",
+      "gate": "visual-inspection"
+    },
+    "hero-v2": {
+      "at": "2026-09-09T10:41:13.713Z",
+      "gate": "visual-inspection"
+    },
+    "vida-servicio-mesa-v2": {
+      "at": "2026-09-09T10:41:13.713Z",
+      "gate": "visual-inspection"
+    },
+    "parcela-v2": {
+      "at": "2026-09-09T10:43:01.229Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-v2": {
+      "at": "2026-09-09T10:43:01.230Z",
+      "gate": "visual-inspection"
+    },
+    "mobil-v2": {
+      "at": "2026-09-09T10:44:57.046Z",
+      "gate": "visual-inspection"
+    },
+    "glamping-v2": {
+      "at": "2026-09-09T10:44:57.047Z",
+      "gate": "visual-inspection"
+    },
+    "playa-v2": {
+      "at": "2026-09-09T10:46:27.605Z",
+      "gate": "visual-inspection"
+    },
+    "piscina-v2": {
+      "at": "2026-09-09T10:46:27.606Z",
+      "gate": "visual-inspection"
+    },
+    "bungalow-interior-v2": {
+      "at": "2026-09-09T10:48:37.144Z",
+      "gate": "visual-inspection"
+    },
+    "mobil-interior-v2": {
+      "at": "2026-09-09T10:48:37.145Z",
+      "gate": "visual-inspection"
+    },
+    "glamping-interior-v2": {
+      "at": "2026-09-09T10:50:29.861Z",
+      "gate": "visual-inspection"
+    },
+    "vida-recepcion-v2": {
+      "at": "2026-09-09T10:50:29.862Z",
+      "gate": "visual-inspection"
+    },
+    "hero-mobile-v2": {
+      "at": "2026-09-09T10:52:08.187Z",
       "gate": "visual-inspection"
     }
   },

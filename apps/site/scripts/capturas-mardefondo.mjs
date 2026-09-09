@@ -72,7 +72,7 @@ try {
   await page.goto(`${origin}/demos/mardefondo/`);
   await settle();
   await page
-    .getByRole('heading', { name: 'Un horizonte amplio. Cada detalle bajo control.' })
+    .getByRole('heading', { name: 'Aquí, la vida va a otro ritmo.' })
     .waitFor();
   await checkImages('portada-reserva');
   await writeWebp('portada-reserva-1366', (path) => page.screenshot({ path }));

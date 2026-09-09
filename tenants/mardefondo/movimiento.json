@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "clips": {
+    "hero-motion-v2": {
+      "poster": "hero-v2",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "A single continuous calm cinematic shot for a Mediterranean resort website hero. Preserve the supplied scene, architecture, people and composition exactly. Very slow subtle camera push forward from the shaded terrace toward the lagoon and sea. Gentle physically realistic ripples sparkle on the pool, pine needles barely sway, the two distant guests stroll slowly along the edge. Natural warm late afternoon light remains constant. Relaxed real holiday atmosphere. No cuts, no transitions, no fast motion, no new people, no text, logos or music.",
+      "generatedAt": "2026-09-09T10:37:29.317515Z",
+      "approvedAt": "2026-09-09T10:45:57.529677+00:00",
+      "approval": "visual-inspection",
+      "sha256": "8217433efd0924550efc812c15feb3c4442de7a839983d8f528a9efb58da36c9"
+    },
+    "hero-motion-mobile-v2": {
+      "poster": "hero-mobile-v2",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "A single continuous calm cinematic shot for a Mediterranean resort website hero. Preserve the supplied scene, architecture, people and composition exactly. Very slow subtle camera push forward from the shaded terrace toward the lagoon and sea. Gentle physically realistic ripples sparkle on the pool, pine needles barely sway, the two distant guests stroll slowly along the edge. Natural warm late afternoon light remains constant. Relaxed real holiday atmosphere. No cuts, no transitions, no fast motion, no new people, no text, logos or music.",
+      "generatedAt": "2026-09-09T10:37:29.317515Z",
+      "approvedAt": "2026-09-09T10:45:57.532528+00:00",
+      "approval": "visual-inspection",
+      "sha256": "13b94bdaa386d8f702216ff9d447275a6d557aaca2992a151ca5eec2d0292d8f"
+    }
+  }
+}

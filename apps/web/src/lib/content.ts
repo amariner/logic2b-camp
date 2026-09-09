@@ -148,6 +148,7 @@ export type Content = {
   };
   instalaciones: { seo: Seo; titulo: string; intro: string; items: NamedItem[] };
   entornoPagina: {
+    foto?: string;
     seo: Seo;
     titulo: string;
     intro: string;

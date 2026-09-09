@@ -108,7 +108,7 @@ const unitTypes: WebUnitType[] = [
     capacity_max: 6,
     included_persons: 2,
     features: { m2: 100, electricityAmps: 16, shade: 'partial', pets: true },
-    photos: ['parcela-atlantica'],
+    photos: ['parcela-v2'],
     unitCount: 150,
   },
   {
@@ -120,7 +120,7 @@ const unitTypes: WebUnitType[] = [
     capacity_max: 6,
     included_persons: 4,
     features: { m2: 46, beds: 3, bathrooms: 2, airCon: true, pets: false },
-    photos: ['bungalow-laguna', 'bungalow-laguna-interior'],
+    photos: ['bungalow-v2', 'bungalow-interior-v2'],
     unitCount: 60,
   },
   {
@@ -132,7 +132,7 @@ const unitTypes: WebUnitType[] = [
     capacity_max: 5,
     included_persons: 4,
     features: { m2: 38, beds: 3, bathrooms: 2, airCon: true, pets: false },
-    photos: ['mobil-horizonte', 'mobil-horizonte-interior'],
+    photos: ['mobil-v2', 'mobil-interior-v2'],
     unitCount: 60,
   },
   {
@@ -144,7 +144,7 @@ const unitTypes: WebUnitType[] = [
     capacity_max: 4,
     included_persons: 2,
     features: { m2: 32, beds: 2, bathrooms: 1, airCon: true, pets: false },
-    photos: ['glamping-duna', 'glamping-duna-interior'],
+    photos: ['glamping-v2', 'glamping-interior-v2'],
     unitCount: 30,
   },
 ];

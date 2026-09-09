@@ -3,7 +3,7 @@
     "tipo": "generada",
     "fuente": "Codex integrado como principal y Higgsfield según el registro verificable fotos.estado.json.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Mar de Fondo.",
-    "nota": "La procedencia histórica por pieza, modelo, trabajo, prompt y aprobación permanece en fotos.estado.json. Por instrucción del 2026-08-18, las piezas humanas H1 se generan de una en una con OpenAI integrado, pausa entre solicitudes y sin fallback a Higgsfield."
+    "nota": "La procedencia histórica por pieza, modelo, trabajo, prompt y aprobación permanece en fotos.estado.json. Por instrucción del 2026-08-18, las piezas humanas H1 se generan de una en una con OpenAI integrado, pausa entre solicitudes y sin fallback a Higgsfield. Rediseño septiembre 2026: todos los nuevos raster v2 con OpenAI integrado; vídeo Seedance 2.0 en Higgsfield."
   },
   "_": [
     "Encargo visual de Camping Resort Mar de Fondo · D3-V.",
@@ -27,12 +27,19 @@
     ["vida-llegada"],
     ["vida-recepcion"],
     ["vida-servicio-restaurante"],
-    ["vida-entorno"]
+    ["vida-entorno"],
+    ["hero-v2", "vida-servicio-mesa-v2"],
+    ["parcela-v2", "bungalow-v2"],
+    ["mobil-v2", "glamping-v2"],
+    ["playa-v2", "piscina-v2"],
+    ["bungalow-interior-v2", "mobil-interior-v2"],
+    ["glamping-interior-v2", "vida-recepcion-v2"],
+    ["hero-mobile-v2"]
   ],
   "derivados": {
-    "fuente": "hero-laguna",
+    "fuente": "hero-v2",
     "titulo": "Mar de Fondo",
-    "subtitulo": "300 unidades · Costa Blanca"
+    "subtitulo": "La vida a otro ritmo · Costa Blanca"
   },
   "piezas": {
     "hero-laguna": {
@@ -129,6 +136,71 @@
       "aspecto": "3:2",
       "papel": "H1 · vida-entorno: huéspedes recorren la pasarela de duna hacia la playa.",
       "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Mar de Fondo demo website\nPrimary request: Photoreal editorial documentary photograph of guests walking along the same timber boardwalk through restrained Mediterranean dunes toward the open beach.\nInput images: entorno.webp is the exact boardwalk, native grasses, calm sea, broad horizon and clean late-golden-hour reference.\nScene/backdrop: Protected-looking dune landscape with low vegetation and an unbranded timber walkway, no private beach equipment.\nSubject: A family of four walks away toward the beach, naturally spaced and carrying plain towels; farther ahead an older couple walks at a slower pace, separated enough to feel incidental rather than staged.\nStyle/medium: Natural editorial documentary photography, 50 mm lens, restrained coastal colour, long natural shadows and subtle film grain.\nComposition/framing: Horizontal 3:2, people secondary to the landscape but held inside the central 70 percent for mobile crop.\nLighting/mood: Clean late golden hour, spacious and unhurried.\nConstraints: Everyone faces away, plausible gait and limbs, coherent shadows, the boardwalk and dune remain the main subject.\nAvoid: looking back, fashion beachwear, private beach setup, logos, readable signs, malformed limbs, tropical vegetation, crowd, extreme orange sunset, HDR, travel-poster saturation, watermark."
+    },
+    "hero-v2": {
+      "aspecto": "16:9",
+      "papel": "Hero cinematográfico y póster",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. Wide elevated view from a shaded timber terrace across a beautiful large curving blue lagoon swimming pool toward low white bungalows and the Mediterranean horizon. Native pines frame the edges. Two distant guests walk by the pool with towels, another rests under a canvas parasol. Sunlight sparkles on gentle water. The sky occupies upper quarter. A tranquil yet lived-in scene, not an empty architectural render. 1920x1080 or larger."
+    },
+    "vida-servicio-mesa-v2": {
+      "aspecto": "3:2",
+      "papel": "Restaurante y bienvenida",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. Close intimate candid lunch at an open-air resort restaurant under a reed pergola: hands of two adults passing a bowl of tomatoes and bread across a linen-covered table, ceramics, glass of water, a plate of grilled fish, background pool softly visible. Crop faces out. Sunlight makes dappled shadows. 1536x1024."
+    },
+    "parcela-v2": {
+      "aspecto": "3:2",
+      "papel": "Parcela",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. One spacious touring pitch with an unbranded cream camper van under mature Mediterranean pines, a canvas awning, two folding chairs, an adult seen from behind hanging a striped towel. Pale gravel and native hedges. Holiday editorial, welcoming lived in details. 1536x1024."
+    },
+    "bungalow-v2": {
+      "aspecto": "3:2",
+      "papel": "Bungalow",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. A contemporary single-storey salt-white family bungalow, timber pergola and inviting terrace, sliding glass door, blue pool glimpse at right. A woman viewed from behind brings breakfast to the outdoor table, bare feet, relaxed linen shirt. Realistic modest holiday architecture. 1536x1024."
+    },
+    "mobil-v2": {
+      "aspecto": "3:2",
+      "papel": "Mobil-home",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. A long low pale timber-clad mobile home with full-length shaded wooden deck among native pines and dune grasses. A couple seen from behind sitting at the deck edge, reading, sandals nearby. Honest compact campsite dimensions. 1536x1024."
+    },
+    "glamping-v2": {
+      "aspecto": "3:2",
+      "papel": "Glamping",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. A sand-coloured safari canvas lodge on a low timber platform, open canvas doorway shows white linen bed, native dune grasses and Mediterranean pines. An adult seated on the porch from behind with morning coffee. Tactile canvas, quiet holiday atmosphere. 1536x1024."
+    },
+    "playa-v2": {
+      "aspecto": "3:2",
+      "papel": "Playa y entorno",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. Wooden boardwalk leading through low protected dunes to a broad quiet Mediterranean beach, blue sea and a clean horizon. A couple walking barefoot away from camera carrying sandals, breeze moves linen clothing, warm afternoon sunlight. Natural documentary composition. 1536x1024."
+    },
+    "piscina-v2": {
+      "aspecto": "3:2",
+      "papel": "Piscina y experiencia",
+      "prompt": "Use case: photorealistic-natural. Premium travel editorial photograph for a fictional Mediterranean camping resort on Costa Blanca, Spain. Salt white low architecture, native pines, pale sand, deep blue sea, clean warm late afternoon light, subtle film texture, candid believable holiday life, unposed people seen from behind or at distance, no identifiable faces. No text, logos, watermark, collage, HDR, tropical scenery or impossible architecture. At water level beside the pale stone edge of a Mediterranean resort lagoon pool. An adult guest seen from behind sitting with feet in water, striped towel and paperback nearby, low white buildings and reed parasols behind. Sparkling deep turquoise water, relaxed real holiday moment. 1536x1024."
+    },
+    "bungalow-interior-v2": {
+      "aspecto": "3:2",
+      "papel": "Fotografía secundaria de ficha y servicios",
+      "prompt": "Photorealistic natural premium Mediterranean travel editorial photograph, landscape 3:2 1536x1024. Interior of a modest white family campsite bungalow: pale timber kitchen, blue linen sofa, dining table, open sliding door to timber pergola and pool. Lived in with a book and folded towel, uncluttered, natural warm daylight, realistic compact space. Costa Blanca Spain, coherent salt white, marine blue, subtle 35mm texture. No text, logos, watermark, HDR, collage or identifiable faces."
+    },
+    "mobil-interior-v2": {
+      "aspecto": "3:2",
+      "papel": "Fotografía secundaria de ficha y servicios",
+      "prompt": "Photorealistic natural premium Mediterranean travel editorial photograph, landscape 3:2 1536x1024. Interior of a compact pale timber-clad campsite mobile home: small practical kitchen and dining nook, navy blue cushions, warm timber floor, sliding door to deck and pines, cup on table and sandals by door. Natural late afternoon light, honest narrow proportions. Costa Blanca Spain, coherent salt white, marine blue, subtle 35mm texture. No text, logos, watermark, HDR, collage or identifiable faces."
+    },
+    "glamping-interior-v2": {
+      "aspecto": "3:2",
+      "papel": "Fotografía secundaria de ficha y servicios",
+      "prompt": "Photorealistic natural premium Mediterranean travel editorial photograph, landscape 3:2 1536x1024. Interior of a sand canvas safari glamping lodge: simple white linen double bed, timber floor, small side table with paperback and ceramic water jug, open tent doorway toward native pines and sea, practical modest proportions. Costa Blanca Spain, coherent salt white, marine blue, subtle 35mm texture. No text, logos, watermark, HDR, collage or identifiable faces."
+    },
+    "vida-recepcion-v2": {
+      "aspecto": "3:2",
+      "papel": "Fotografía secundaria de ficha y servicios",
+      "prompt": "Photorealistic natural premium Mediterranean travel editorial photograph, landscape 3:2 1536x1024. Candid scene of a friendly reception welcome in a Mediterranean campsite: staff member behind a simple pale wood counter explaining a folded blank map to an adult couple seen from behind carrying canvas bags. No readable marks on map. Salt white walls, blue details, native pines through doorway. People at middle distance, not portraits. Costa Blanca Spain, coherent salt white, marine blue, subtle 35mm texture. No text, logos, watermark, HDR, collage or identifiable faces."
+    },
+    "hero-mobile-v2": {
+      "aspecto": "9:16",
+      "papel": "Póster vertical del hero móvil",
+      "prompt": "Recompose the reference resort photograph into a portrait 9:16 1024x1824 mobile hero poster. Preserve the same resort, curving lagoon, salt-white buildings, native pines, warm sunlight and sea horizon. Center the pool and sea, retain a hint of shaded timber veranda foreground. Realistic editorial photograph, no text, no new people, no new architecture, no logo."
     }
   }
 }

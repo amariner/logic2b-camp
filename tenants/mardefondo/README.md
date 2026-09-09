@@ -50,3 +50,20 @@ construible sin reciclar fotos de otro camping.
 
 Brief aprobado en `identity.json`; la receta local completa y sus presupuestos
 están en `docs/FABRICA-IDENTIDADES.md`.
+
+## Rediseño editorial · septiembre 2026
+
+Presentación `resort`: blanco y azul marino, hero de vídeo, reserva integrada,
+alojamientos fotográficos y escenas humanas. Contenido y recursos permanecen en
+este tenant; el layout es una opción reutilizable del frontend.
+
+13 imágenes nuevas con OpenAI integrado, aprobadas en `fotos.estado.json`;
+prompts y papeles en `fotos.json`. Vídeo Seedance 2.0/Higgsfield de 8 s, con
+versiones de escritorio/móvil, pausa y alternativa estática. `movimiento.json`
+conserva las huellas y evidencia. Los originales históricos no se borran.
+
+Validado con `pnpm check` (74/74 tareas), build del tenant y revisión de seis
+rutas a 1440/390 px: cuatro resultados de disponibilidad, menú móvil, FAQ,
+imágenes, overflow, movimiento reducido y pausa/reanudación. En este equipo,
+el contrato de vídeo utiliza `FFPROBE_PATH=/tmp/pinada-tools/package/ffprobe`.
+Evidencia local: `output/mardefondo/`. No publicado remotamente en esta sesión.

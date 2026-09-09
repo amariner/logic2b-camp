@@ -15,26 +15,27 @@
     "tema": "Estilo"
   },
   "demo": {
-    "banner": "Demostración ficticia de Logic2B: datos, reserva y pago son simulados y se restablecen.",
-    "mostrador": "Abrir la reserva en el gestor",
+    "banner": "Resort ficticio · Reserva y pago de demostración.",
+    "mostrador": "Explorar el gestor",
     "nivel": "Visión",
     "nivel1": "Inicio",
     "nivel3": "Visión"
   },
   "hero3": {
-    "titulo": "Un horizonte amplio. Cada detalle bajo control.",
-    "prueba": "300 unidades · cuatro formas de alojarse · reserva directa de demostración"
+    "titulo": "Aquí, la vida va a otro ritmo.",
+    "prueba": "La laguna, el pinar y el Mediterráneo. Lo demás puede esperar."
   },
   "hero1": {
-    "titulo": "La laguna, el mar y espacio para elegir.",
-    "cta": "Explorar estancias"
+    "titulo": "Aquí, la vida va a otro ritmo.",
+    "cta": "Encuentra tu lugar",
+    "lugar": "COSTA BLANCA · MEDITERRÁNEO"
   },
   "ticker": [
-    "300 unidades organizadas por zonas",
-    "piscina laguna y acceso a playa",
-    "cuatro familias de alojamiento",
-    "reserva y pago de demostración",
-    "recepción abierta 24 h en verano"
+    "A un paseo del mar",
+    "Piscina laguna",
+    "Cuatro formas de quedarse",
+    "Tiempo para estar juntos",
+    "Costa Blanca, Mediterráneo"
   ],
   "mostrador": {
     "llegada": "Llegada",
@@ -61,8 +62,8 @@
     "reservar": "Reservar en la demo"
   },
   "tipos": {
-    "titulo": "Cuatro maneras de abrir las vacaciones",
-    "subtitulo": "Desde una parcela amplia hasta un glamping junto a la laguna. Compara capacidad, servicios y precio antes de decidir.",
+    "titulo": "Tu verano, a tu manera.",
+    "subtitulo": "Con tu casa a cuestas, entre sábanas o bajo la lona. Aquí todos los días empiezan al aire libre.",
     "verTodo": "Comparar los cuatro alojamientos",
     "nombres": {
       "ut_parcela_atlantica": "Parcela Atlántica",
@@ -74,70 +75,70 @@
       {
         "id": "atlantica",
         "nombre": "Parcela Atlántica",
-        "desc": "Cien metros cuadrados, 16 A y calles anchas entre sombra y luz.",
-        "foto": "parcela-atlantica"
+        "desc": "Abre el toldo, saca las sillas y haz tuyo un pequeño rincón del pinar.",
+        "foto": "parcela-v2"
       },
       {
         "id": "laguna",
         "nombre": "Bungalow Laguna",
-        "desc": "Dos baños, porche amplio y la piscina laguna a pocos pasos.",
-        "foto": "bungalow-laguna"
+        "desc": "Desayunos en el porche y un chapuzón a unos pasos. Para venir con toda la familia.",
+        "foto": "bungalow-v2"
       },
       {
         "id": "horizonte",
         "nombre": "Mobil-home Horizonte",
-        "desc": "Interior claro, terraza longitudinal y zonas tranquilas para cinco.",
-        "foto": "mobil-horizonte"
+        "desc": "Tu refugio entre pinos, con una terraza para alargar la sobremesa.",
+        "foto": "mobil-v2"
       },
       {
         "id": "duna",
         "nombre": "Glamping Duna",
-        "desc": "Lona, madera y baño propio en el borde más sereno del resort.",
-        "foto": "glamping-duna"
+        "desc": "Dormir bajo la lona. Despertar con el sonido de las hojas. Y tener tu propio baño.",
+        "foto": "glamping-v2"
       }
     ]
   },
   "entorno": {
-    "titulo": "El agua organiza el resort.",
-    "texto": "La laguna ocupa el centro, las calles se abren hacia el mar y cada zona mantiene su ritmo. Escala de resort sin perder recorridos claros ni sombra."
+    "titulo": "Al otro lado de la duna.",
+    "texto": "La pasarela acaba donde empiezan los días de sal. Playa, caminos entre pinos y un horizonte que invita a quedarse."
   },
   "vida": {
-    "titulo": "La escala se nota en el servicio",
-    "intro": "Trescientas unidades pueden sentirse claras cuando llegada, recepción, restaurante y recorridos cuentan la misma historia.",
+    "titulo": "Son las pequeñas cosas.",
+    "intro": "Una bienvenida cercana, un desayuno al sol y tiempo para compartir.",
     "escenas": [
       {
-        "foto": "vida-llegada",
-        "titulo": "Llegar con todo previsto",
-        "texto": "El equipaje sigue un recorrido sencillo y el alojamiento se reconoce antes de abrir la puerta; la escala no obliga a improvisar."
+        "foto": "piscina-v2",
+        "titulo": "Un chapuzón y ya veremos.",
+        "texto": "La laguna despierta contigo. Un baño, un libro y un rato de sombra."
       },
       {
-        "foto": "vida-recepcion",
-        "titulo": "Una explicación, no una cola",
-        "texto": "La recepción reparte el trabajo entre varios puestos, pero cada llegada conserva una conversación clara sobre zona, horarios y acceso."
+        "foto": "vida-servicio-mesa-v2",
+        "titulo": "¿Pedimos algo para compartir?",
+        "texto": "En Sal, el Mediterráneo también se sirve en la mesa. Quédate a la sobremesa."
       },
       {
-        "foto": "vida-servicio-restaurante",
-        "titulo": "El servicio empieza antes de sentarse",
-        "texto": "La terraza se prepara con tiempo y la atención aparece en gestos pequeños, sin convertir la cena en una escena de hotel."
+        "foto": "playa-v2",
+        "titulo": "El último paseo. O el penúltimo.",
+        "texto": "Cruza la duna, quítate las sandalias y deja que la orilla decida el camino."
       }
     ]
   },
   "form": {
-    "titulo": "Diseñemos el alcance de tu resort",
-    "subtitulo": "Esta demostración no envía datos. El recorrido comercial termina en una conversación de discovery.",
+    "titulo": "Vamos pensando en tus vacaciones.",
+    "subtitulo": "Cuéntanos cuándo te gustaría venir y con quién. Formulario de demostración, sin envío de datos.",
     "nombre": "Nombre ficticio",
     "email": "Email de prueba",
     "fechas": "Fechas",
-    "mensaje": "¿Qué operación quieres conectar?",
-    "enviar": "Preparar conversación",
+    "mensaje": "¿Qué te gustaría preguntarnos?",
+    "enviar": "Preparar consulta",
     "enviando": "Preparando…",
     "ok": "Escenario preparado. No se ha enviado ningún dato.",
     "error": "No se ha podido preparar la demostración. Reintenta con datos ficticios.",
     "demoEtiqueta": "Demostración:",
     "demoAviso": "no enviaremos ni guardaremos tus datos.",
     "demoSpam": "La demostración ha detenido la consulta. No se ha enviado ningún dato.",
-    "demoExitoTitulo": "Tu conversación está preparada",
-    "demoExitoTexto": "Este resumen sirve para explorar las necesidades de tu camping. Puedes copiarlo y utilizarlo al contactar con Logic2B; aquí no se ha enviado ni guardado nada.",
+    "demoExitoTitulo": "Tu consulta está preparada",
+    "demoExitoTexto": "Este es el resumen de tu consulta de demostración. No se ha enviado ni guardado ningún dato.",
     "demoCopiar": "Copiar el resumen",
     "demoCopiado": "Resumen copiado",
     "demoCta": "Hablar de mi camping",
@@ -202,23 +203,26 @@
       "title": "Servicios del resort | Mar de Fondo",
       "description": "Piscina laguna, restaurante, club infantil, recepción y acceso a playa en un resort ficticio."
     },
-    "titulo": "Servicios con escala y recorridos claros",
-    "intro": "El resort concentra actividad alrededor de la laguna y protege zonas tranquilas hacia el pinar y la duna.",
+    "titulo": "Lo que hace buenos los días.",
+    "intro": "Un baño temprano, una mesa a la sombra y tiempo para cada uno. Descubre los lugares que dan vida al resort.",
     "items": [
       {
         "id": "laguna",
         "nombre": "Piscina laguna",
-        "desc": "Lámina central con entrada progresiva, zona infantil y sombra perimetral."
+        "desc": "Lámina central con entrada progresiva, zona infantil y sombra perimetral.",
+        "foto": "piscina-v2"
       },
       {
         "id": "restaurante",
         "nombre": "Restaurante Sal",
-        "desc": "Cocina mediterránea, terraza al agua y servicio organizado por turnos en agosto."
+        "desc": "Cocina mediterránea y mesas junto al agua para comer sin mirar la hora.",
+        "foto": "vida-servicio-mesa-v2"
       },
       {
         "id": "recepcion",
         "nombre": "Recepción 24 h",
-        "desc": "Cuatro puestos, llegada digital y acompañamiento presencial para incidencias."
+        "desc": "Una bienvenida, un mapa y alguien que te escucha. Recepción 24 horas en verano.",
+        "foto": "vida-recepcion-v2"
       },
       {
         "id": "club",
@@ -228,7 +232,8 @@
       {
         "id": "playa",
         "nombre": "Acceso a playa",
-        "desc": "Pasarela peatonal a través de la duna, sin cruces de tráfico interno."
+        "desc": "Pasarela peatonal a través de la duna, sin cruces de tráfico interno.",
+        "foto": "playa-v2"
       },
       {
         "id": "deporte",
@@ -283,7 +288,7 @@
           "salida": "Pasarela del resort",
           "momento": "Mañana o tarde",
           "recomendacion": "Comprueba bandera, calor y accesibilidad temporal de la pasarela; el resort no garantiza condiciones del mar.",
-          "foto": "vida-entorno"
+          "foto": "playa-v2"
         },
         {
           "nombre": "Vuelta de la marjal",
@@ -294,7 +299,7 @@
           "salida": "Aparcabicis de recepción",
           "momento": "Primera hora",
           "recomendacion": "Respeta los límites del parque y confirma cierres, obras o nivel de agua en la fuente oficial.",
-          "foto": "vida-entorno"
+          "foto": "playa-v2"
         },
         {
           "nombre": "Puerto al caer la tarde",
@@ -305,21 +310,40 @@
           "salida": "Llegada al puerto",
           "momento": "Última hora",
           "recomendacion": "El traslado y los horarios son de muestra. Una activación real verificará proveedor, calendario y accesibilidad.",
-          "foto": "vida-entorno"
+          "foto": "playa-v2"
         }
       ]
     },
     "distancias": {
       "titulo": "Desde recepción",
       "items": [
-        { "lugar": "Piscina laguna", "valor": "2 min a pie" },
-        { "lugar": "Playa", "valor": "6 min a pie" },
-        { "lugar": "Parque natural", "valor": "12 min en bici" },
-        { "lugar": "Puerto", "valor": "15 min en coche" },
-        { "lugar": "Estación", "valor": "28 min en coche" },
-        { "lugar": "Aeropuerto", "valor": "55 min en coche" }
+        {
+          "lugar": "Piscina laguna",
+          "valor": "2 min a pie"
+        },
+        {
+          "lugar": "Playa",
+          "valor": "6 min a pie"
+        },
+        {
+          "lugar": "Parque natural",
+          "valor": "12 min en bici"
+        },
+        {
+          "lugar": "Puerto",
+          "valor": "15 min en coche"
+        },
+        {
+          "lugar": "Estación",
+          "valor": "28 min en coche"
+        },
+        {
+          "lugar": "Aeropuerto",
+          "valor": "55 min en coche"
+        }
       ]
-    }
+    },
+    "foto": "playa-v2"
   },
   "tarifas": {
     "seo": {
@@ -328,7 +352,10 @@
     },
     "titulo": "Tarifas de demostración",
     "intro": "Importes ficticios con IVA. El total se recalcula al elegir fechas, grupo y extras; ningún pago de esta demo realiza un cargo.",
-    "tabla": { "tipo": "Alojamiento", "noche": "€/noche" },
+    "tabla": {
+      "tipo": "Alojamiento",
+      "noche": "€/noche"
+    },
     "temporadas": {
       "sea_apertura": "Apertura",
       "sea_verano": "Verano",
@@ -344,7 +371,11 @@
     },
     "extras": {
       "titulo": "Extras",
-      "por": { "person": "por persona", "night": "por noche", "stay": "por estancia" },
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
       "nombres": {
         "ext_desayuno": "Desayuno mediterráneo",
         "ext_cabana": "Cabaña de piscina",
@@ -367,8 +398,8 @@
       "title": "Contacto | Camping Resort Mar de Fondo",
       "description": "Datos ficticios y CTA de discovery de la demostración Visión de Logic2B."
     },
-    "titulo": "Diseñemos el alcance de tu resort",
-    "intro": "Mar de Fondo es una demostración. La activación real empieza definiendo una capacidad, tus datos y los proveedores implicados.",
+    "titulo": "Cuéntanos qué te apetece.",
+    "intro": "Una escapada, unos días en familia o todo el verano. Empieza por contarnos tu idea. Este contacto es de demostración y no envía datos.",
     "datos": {
       "titulo": "Datos ficticios",
       "direccion": "Dirección",
@@ -520,5 +551,119 @@
       "reintentando": "Abriendo el pago demo…",
       "error": "No se ha podido volver a abrir el pago de demostración."
     }
+  },
+  "heroMotion": {
+    "pausar": "Pausar vídeo",
+    "reproducir": "Reproducir vídeo"
+  },
+  "coastal": {
+    "brand": "Mar de Fondo",
+    "label": "Un lugar para volver a lo sencillo.",
+    "heroLines": ["Aquí, la vida", "va a otro ritmo."],
+    "heroNote": "La laguna, el pinar y el Mediterráneo. Lo demás puede esperar.",
+    "scroll": "Un poco más abajo",
+    "welcome": {
+      "label": "BIENVENIDOS A MAR DE FONDO",
+      "title": "Menos planes.\nMás de esto.",
+      "text": "El primer café sin mirar la hora. Los pies todavía mojados. Una comida que se convierte en sobremesa. Entre el pinar y el Mediterráneo, las vacaciones se parecen a lo que de verdad te apetecía.",
+      "photo": "vida-servicio-mesa-v2",
+      "caption": "La mejor parte del día no estaba en el plan.",
+      "link": "Así se vive aquí"
+    },
+    "stays": {
+      "label": "01 / ENCUENTRA TU LUGAR",
+      "title": "Tu verano,\na tu manera.",
+      "intro": "Con tu casa a cuestas, entre sábanas o bajo la lona. Aquí todos los días empiezan al aire libre.",
+      "link": "Ver todos los alojamientos",
+      "details": "Descubrir",
+      "price": "Desde",
+      "night": "/ noche",
+      "note": "Precios orientativos de demostración. Consulta fechas y ocupación para ver el total simulado.",
+      "people": "personas",
+      "area": "m²"
+    },
+    "day": {
+      "label": "02 / LOS DÍAS AQUÍ",
+      "title": "Sin prisa.\nCon muchas ganas.",
+      "intro": "No hace falta llenarlo todo. A veces basta con elegir dónde te apetece estar.",
+      "items": [
+        {
+          "time": "09:30 · AL AGUA",
+          "title": "Un chapuzón y ya veremos.",
+          "text": "La laguna despierta contigo. Un baño, un libro y un rato de sombra.",
+          "photo": "piscina-v2"
+        },
+        {
+          "time": "14:00 · A LA MESA",
+          "title": "¿Pedimos algo para compartir?",
+          "text": "En Sal, el Mediterráneo también se sirve en la mesa. Quédate a la sobremesa.",
+          "photo": "vida-servicio-mesa-v2"
+        },
+        {
+          "time": "19:00 · HACIA EL MAR",
+          "title": "El último paseo. O el penúltimo.",
+          "text": "Cruza la duna, quítate las sandalias y deja que la orilla decida el camino.",
+          "photo": "playa-v2"
+        }
+      ]
+    },
+    "sea": {
+      "label": "03 / FUERA DEL RELOJ",
+      "title": "El mar nunca\nqueda lejos.",
+      "text": "Una pasarela entre dunas. Seis minutos a pie. Y todo el horizonte por delante.",
+      "link": "Descubre el entorno",
+      "photo": "playa-v2"
+    },
+    "essentials": {
+      "label": "NOS OCUPAMOS DE LO DEMÁS",
+      "title": "Para que tú\npuedas desconectar.",
+      "items": [
+        {
+          "number": "01",
+          "title": "Te recibimos en persona",
+          "text": "Llegas, te ubicamos y te contamos nuestros rincones favoritos. Recepción 24 h en verano."
+        },
+        {
+          "number": "02",
+          "title": "Cada uno, a su ritmo",
+          "text": "Club infantil, bicicleta, yoga o una tumbona a la sombra. Espacio para compartir y para parar."
+        },
+        {
+          "number": "03",
+          "title": "Todo empieza con tus fechas",
+          "text": "Compara las cuatro estancias y elige la que encaja con vuestra manera de viajar."
+        }
+      ]
+    },
+    "questions": {
+      "label": "ANTES DE HACER LA MALETA",
+      "title": "Es bueno saberlo.",
+      "items": [
+        {
+          "question": "¿Podemos venir con nuestra mascota?",
+          "answer": "Sí, en las parcelas señaladas. Los bungalows, mobil-homes y glamping no admiten mascotas."
+        },
+        {
+          "question": "¿A qué hora podemos llegar?",
+          "answer": "Desde las 16:00 en alojamientos y desde las 13:00 en parcelas. La recepción abre las 24 horas en verano."
+        },
+        {
+          "question": "¿A cuánto está la playa?",
+          "answer": "A unos seis minutos andando por la pasarela que atraviesa la duna, sin cruzar el tráfico interior."
+        },
+        {
+          "question": "¿Esta reserva es real?",
+          "answer": "Mar de Fondo es un resort ficticio creado para mostrar Logic2B. Puedes probar el proceso completo: los precios y el pago son simulados, no se realiza ningún cargo."
+        }
+      ]
+    },
+    "contact": {
+      "label": "EL VERANO EMPIEZA AQUÍ",
+      "title": "Guarda unos días\npara ti.",
+      "text": "Elige cuándo vienes. Del resto, ya iremos hablando.",
+      "note": "Reserva de demostración · Sin cargos reales",
+      "photo": "piscina-v2"
+    },
+    "footer": "Nos vemos donde empieza el mar."
   }
 }
