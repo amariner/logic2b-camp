@@ -1,6 +1,8 @@
-# Prompt para la siguiente sesión — autogestión segura y L'Olivar listo en local
+# Prompt para la siguiente sesión — autogestión segura y producción verificada
 
-> **Último encargo · 2026-09-18:** Riu Clar renovado con presentación outdoor, dos fotografías de OpenAI integrado y hero animado con Higgsfield. Ver [informe](RIUCLAR-REDISENO-2026-09-18.md). Verificado en local; sin despliegue.
+> **Publicación · 2026-09-18:** Todos los cambios vigentes integrados en `main`, subidos a GitHub y desplegados en `https://camp.logic2b.com`. Código `a292534`; versión Cloudflare `ff485298-cc39-42fd-9913-8351cf00b73c`. Gate local 74/74, QA comercial y 34 vistas de producción correctas; cuatro vídeos cotejados por SHA-256 y reproducción. Las referencias a «local» o «sin publicar» de los cortes históricos inferiores quedan superadas por esta publicación. No hay migraciones pendientes.
+
+> **Último encargo visual · 2026-09-18:** Riu Clar renovado con presentación outdoor, dos fotografías de OpenAI integrado y hero animado con Higgsfield. Ver [informe](RIUCLAR-REDISENO-2026-09-18.md). Publicado y verificado en producción.
 
 > **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
 > pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22

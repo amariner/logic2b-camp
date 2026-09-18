@@ -1,11 +1,20 @@
 # PROGRESS — Logic Camp
 
+## Publicación conjunta en producción · 2026-09-18
+
+- Integrados en `main` el rediseño de Riu Clar y el commit remoto `b71b136` con el vídeo actualizado de L'Olivar, sin conflictos. Todas las ramas existentes estaban integradas y no había PR abiertos. El stash histórico de la escalera comercial ya estaba incorporado en `2190aae`; se conserva como respaldo.
+- Código publicado en GitHub: `a292534`. Despliegue manual completado con `pnpm --filter @logic-camp/api deploy:demo` en `https://camp.logic2b.com`. Versión Cloudflare: `ff485298-cc39-42fd-9913-8351cf00b73c`. Sin migraciones pendientes ni reseed.
+- Gate local: 74/74 tareas correctas. Bundle: 580 HTML y 17.357 enlaces internos válidos. Revisión comercial en producción correcta en ES/EN, móvil/escritorio y diálogos compactos.
+- Producción: 34 combinaciones de página/viewport sin imágenes rotas, desbordamientos ni errores JS. Los cuatro vídeos de L'Olivar, Pinada del Mar, Mar de Fondo y Riu Clar coinciden por SHA-256 con los archivos locales y reproducen, pausan y reanudan correctamente.
+- QA canónica actualizada a los titulares vigentes de los rediseños y carga explícita de imágenes ocultas en móvil. Las cuatro portadas pasan a 375/1366 px. Evidencias locales: `output/riuclar/qa-production.json` y `production-{375,1366}.png`.
+- GitHub Actions seguía ejecutándose al registrar estas evidencias; no se confunde con el gate local completado.
+
 ## Riu Clar — mejora editorial y vídeo · 2026-09-18
 
 - Presentación outdoor compartida, hero panorámico, bosque/papel/lima y contenido renovado, traducido íntegramente al castellano por petición posterior. Marca «Riu Clar». Precios y enlaces de parcelas conectados a sus IDs reales.
 - Dos fotografías nuevas con OpenAI integrado y vídeo Higgsfield Seedance 2.0 de 8 s, con versiones escritorio/móvil, póster, pausa y preferencias de movimiento/datos.
 - Pipeline de medios con inspección y procedencia; miniatura y OG actualizados. Comprobación global 74/74 y build de Riu Clar de 13 páginas.
-- Detalle y evidencias: [Riu Clar](docs/RIUCLAR-REDISENO-2026-09-18.md). Cambios locales, sin publicar.
+- Detalle y evidencias: [Riu Clar](docs/RIUCLAR-REDISENO-2026-09-18.md). Publicado el 18 de septiembre en el despliegue conjunto documentado arriba.
 
 ## L’Olivar — rediseño 360 outdoor · 2026-09-08
 

@@ -15,7 +15,7 @@ Vídeo generado en Higgsfield / Seedance 2.0 desde el hero de OpenAI: 8 segundos
 
 Validación: `pnpm check` con ffprobe local, 74/74 tareas correctas; build de Riu Clar, 13 páginas, sin motor. QA de navegador correcto a 320, 375, 768 y 1440 px, 12 enlaces locales, menú, FAQ, consulta sin envío y vídeo con pausa/reanudación; con movimiento reducido o ahorro de datos no se solicita vídeo. Informes y capturas en `output/riuclar/`; el directorio contiene originales, herramientas temporales e informes y está excluido de Git. Previsualización de la build en `http://127.0.0.1:4324/demos/riuclar/`.
 
-Trabajo local, sin despliegue remoto.
+Publicado el 18 de septiembre de 2026 en `https://camp.logic2b.com/demos/riuclar/`, junto con todos los cambios vigentes de `main` (`a292534`). Versión Cloudflare `ff485298-cc39-42fd-9913-8351cf00b73c`. Comprobación global 74/74, revisión canónica a 375/1366 px y verificación real en producción de imágenes, idioma, layout y vídeo (huella SHA-256, reproducción y pausa). Evidencias: `output/riuclar/qa-production.json` y `production-{375,1366}.png`.
 
 Traducción completa: `content/es.json`, idioma `es` único, nombres de datos y temporadas, dirección de muestra y razón social, metadatos e imagen social en castellano. Se conservan identificadores, URLs, fotografías y vídeo.
 
