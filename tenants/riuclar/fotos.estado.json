@@ -297,6 +297,28 @@
         "sourceExtension": ".png",
         "dimensions": "1536x1024"
       }
+    ],
+    "hero-riu-editorial": [
+      {
+        "at": "2026-09-18T09:40:38.805Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "022287a2eec6a827a55fc6a95b65af1a903945dc21ae482dd160885670468c3b",
+        "sourceExtension": ".png",
+        "dimensions": "1672x941"
+      }
+    ],
+    "camins-editorial": [
+      {
+        "at": "2026-09-18T09:40:39.056Z",
+        "provider": "codex-integrated",
+        "model": "integrated",
+        "status": "staged",
+        "promptSha256": "c5031cbd6505daaa2b6c6d7d7b8bd2b75dd81b487ea7e00fcb23aba834ca5edb",
+        "sourceExtension": ".png",
+        "dimensions": "1536x1024"
+      }
     ]
   },
   "approvals": {
@@ -347,6 +369,20 @@
     "vida-entorn": {
       "at": "2026-08-18T10:07:49.818Z",
       "gate": "visual-inspection"
+    },
+    "hero-riu-editorial": {
+      "at": "2026-09-18T09:40:39.103Z",
+      "gate": "visual-inspection"
+    },
+    "camins-editorial": {
+      "at": "2026-09-18T09:40:39.104Z",
+      "gate": "visual-inspection"
+    },
+    "hero-riu-mobile": {
+      "at": "2026-09-18T09:49:51.385851+00:00",
+      "gate": "visual-inspection",
+      "source": "hero-riu-editorial",
+      "operation": "center-cover-crop"
     }
   },
   "rejections": {
@@ -425,5 +461,14 @@
         "reason": "peu_dins_la_safata"
       }
     ]
+  },
+  "derivedAssets": {
+    "hero-riu-mobile": {
+      "source": "hero-riu-editorial",
+      "operation": "center-cover-crop",
+      "width": 720,
+      "height": 1280,
+      "purpose": "Pòster vertical coherent amb el retall mòbil del vídeo"
+    }
   }
 }

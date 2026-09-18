@@ -31,7 +31,7 @@ const from = (id: string) => Math.min(...data.ratePlans.filter(p => p.unit_type_
       <p class="out-hero-location"><span aria-hidden="true">✳</span> {c.hero1.lugar}</p>
       <div class="out-hero-copy">
         <div>
-          <h1 id="out-hero-title">{o.hero.lines.map(line => <span>{line}</span>)}</h1>
+          <h1 id="out-hero-title">{o.hero.lines.map(line => <span>{line}{' '}</span>)}</h1>
           <div class="out-actions">
             <a class="out-button out-button-orange" href="#contacto">{c.hero1.cta}<span aria-hidden="true">↗</span></a>
             <a class="out-hero-link" href="#alojamientos">{c.hero1.explorar}<span aria-hidden="true">↓</span></a>
@@ -57,8 +57,8 @@ const from = (id: string) => Math.min(...data.ratePlans.filter(p => p.unit_type_
         <figcaption>{o.welcome.caption}</figcaption>
       </figure>
       <figure class="out-welcome-side">
-        <EditorialImage photo="vida-recepcion" alt={c.vida?.escenas[0]?.titulo ?? c.nav.instalaciones} class="out-image" sizes="(min-width: 768px) 24vw, 50vw" />
-        <figcaption>{c.vida?.escenas[0]?.titulo}</figcaption>
+        <EditorialImage photo={o.welcome.sidePhoto ?? "vida-recepcion"} alt={o.welcome.sideCaption ?? c.vida?.escenas[0]?.titulo ?? c.nav.instalaciones} class="out-image" sizes="(min-width: 768px) 24vw, 50vw" />
+        <figcaption>{o.welcome.sideCaption ?? c.vida?.escenas[0]?.titulo}</figcaption>
       </figure>
     </section>
 

@@ -1,24 +1,51 @@
 {
   "procedencia": {
     "tipo": "generada",
-    "fuente": "Lote D5-V producido para Logic2B con el generador integrado de Codex; los másteres *-source.png se conservan junto a los finales.",
+    "fuente": "Fotografies generades amb OpenAI integrat a Codex. Llot original D5-V i ampliació editorial del 18-09-2026; màsters *-source.png conservats localment.",
     "licencia": "Uso comercial propio de Logic2B para la demostración ficticia Càmping Riu Clar.",
-    "nota": "Producción en cuatro tandas máximas de dos piezas, con inspección visual antes de avanzar."
+    "nota": "Tandes màximes de dues peces, inspecció visual i aprovació local. El retall hero-riu-mobile deriva del hero-riu-editorial i no és una generació addicional."
   },
   "lotes": [
-    ["hero-boira", "hero-vespre"],
-    ["tipus-parcella-bosc", "tipus-parcella-riu"],
-    ["detall-refugi-comu", "installacio-banys-pedra"],
-    ["entorn-sender-humit", "textura-pissarra-molsa"],
-    ["vida-arribada"],
-    ["vida-recepcio"],
-    ["vida-servei-refugi"],
-    ["vida-entorn"]
+    [
+      "hero-boira",
+      "hero-vespre"
+    ],
+    [
+      "tipus-parcella-bosc",
+      "tipus-parcella-riu"
+    ],
+    [
+      "detall-refugi-comu",
+      "installacio-banys-pedra"
+    ],
+    [
+      "entorn-sender-humit",
+      "textura-pissarra-molsa"
+    ],
+    [
+      "vida-arribada"
+    ],
+    [
+      "vida-recepcio"
+    ],
+    [
+      "vida-servei-refugi"
+    ],
+    [
+      "vida-entorn"
+    ],
+    [
+      "hero-riu-editorial",
+      "camins-editorial"
+    ],
+    [
+      "hero-riu-mobile"
+    ]
   ],
   "derivados": {
-    "fuente": "hero-boira",
-    "titulo": "Càmping Riu Clar",
-    "subtitulo": "24 parcel·les · Prepirineu"
+    "fuente": "hero-riu-editorial",
+    "titulo": "Riu Clar",
+    "subtitulo": "24 parcelas · Prepirineo"
   },
   "piezas": {
     "hero-boira": {
@@ -80,6 +107,23 @@
       "aspecto": "3:2",
       "papel": "H2 · entorn: dos hostes caminen pel sender de ribera practicable.",
       "prompt": "Use case: photorealistic-natural\nAsset type: human editorial scene for the Càmping Riu Clar demo website\nPrimary request: Photoreal editorial documentary photograph of two adult campsite guests walking an authorized wet riparian trail parallel to a clear flowing Pre-Pyrenees river.\nInput images: entorn-sender-humit.webp is the exact narrow wet gravel trail, poplars, pines, ferns, dark stone, visible river and light mist identity reference.\nScene/backdrop: The firm path remains the unmistakable subject and stays safely above the river; a simple low timber footbridge is visible farther ahead but no one is crossing water or leaving the trail.\nSubject: Two adults aged roughly 35–65 walk away at an easy pace in plain rain shells, waterproof boots and small day packs; one uses a single trekking pole correctly.\nStyle/medium: Natural 35 mm editorial documentary photography, cool overcast light after rain, muted slate, moss and blue-green palette, subtle film grain.\nComposition/framing: Horizontal 3:2; trail and river dominate; hikers occupy 10–20 percent and remain central for mobile crop.\nConstraints: Plausible posture, hands, boots, pole and shadows; clothing suited to cool wet weather.\nAvoid: entering river, improvised crossing, dangerous flood, umbrellas, expedition gear, logos, readable signs, malformed limbs, alpine peaks, saturation, HDR, watermark."
+    },
+    "hero-riu-editorial": {
+      "aspecto": "16:9",
+      "papel": "Hero editorial immersiu i fotograma inicial del vídeo ambiental.",
+      "prompt": "Use case: photorealistic-natural. Asset type: full-bleed website hero and first frame for subtle ambient video, 16:9 landscape. Create a beautifully composed natural editorial photograph of a clear blue-green river curving through a lush Catalan Pre-Pyrenees forest in early morning. View from a low stable riverbank: translucent water and dark slate stones in the foreground, river winding toward the center-right, layered forested hills and very light morning mist in the distance. Poplar and pine branches frame the upper right, soft dappled daylight, lush moss, ferns and wet stone. Two very small anonymous adult walkers in muted outdoor clothing on a safe trail high on the far right bank, seen from behind, naturally walking, no faces visible. River and forest dominate, not people. Keep the left 55 percent visually quiet with darker forest for a large white headline; leave clear scenic depth through the central third for a portrait crop. Authentic modest river camping territory, peaceful and inviting, natural muted greens, blue-grey water, restrained golden light, realistic detail and photographic texture. No dramatic alpine peaks, no buildings, no text, no logos, no watermark, no HDR, no oversaturation, no dangerous river crossing."
+    },
+    "camins-editorial": {
+      "aspecto": "3:2",
+      "papel": "Benvinguda editorial i passeig de ribera.",
+      "prompt": "Use case: photorealistic-natural. Asset type: editorial landscape photograph for Riu Clar camping welcome and walking route, 3:2. An intimate documentary photograph of exactly two anonymous adult friends in their thirties to fifties walking away along a firm narrow gravel trail above a clear blue-green Catalan Pre-Pyrenees river. One wears a muted ochre overshirt and small dark daypack, the other a slate-green light jacket, practical hiking boots. Full bodies anatomically plausible, relaxed unposed movement, both in central third. Mossy dark slate, ferns, poplars and pines, soft morning sun passing through leaves after rain, delicate atmospheric depth, natural rich greens, cool water, no snow peaks. Beautiful editorial travel photography, 35mm, tactile real foliage, understated film-like detail, peaceful and human. Path stays safely above water; no crossing. No faces visible, no text, signs, logos, watermark, HDR or advertising poses."
+    },
+    "hero-riu-mobile": {
+      "aspecto": "9:16",
+      "papel": "Pòster mòbil derivat: retall central de hero-riu-editorial, sense generació addicional.",
+      "prompt": "Use case: photorealistic-natural. Asset type: full-bleed website hero and first frame for subtle ambient video, 16:9 landscape. Create a beautifully composed natural editorial photograph of a clear blue-green river curving through a lush Catalan Pre-Pyrenees forest in early morning. View from a low stable riverbank: translucent water and dark slate stones in the foreground, river winding toward the center-right, layered forested hills and very light morning mist in the distance. Poplar and pine branches frame the upper right, soft dappled daylight, lush moss, ferns and wet stone. Two very small anonymous adult walkers in muted outdoor clothing on a safe trail high on the far right bank, seen from behind, naturally walking, no faces visible. River and forest dominate, not people. Keep the left 55 percent visually quiet with darker forest for a large white headline; leave clear scenic depth through the central third for a portrait crop. Authentic modest river camping territory, peaceful and inviting, natural muted greens, blue-grey water, restrained golden light, realistic detail and photographic texture. No dramatic alpine peaks, no buildings, no text, no logos, no watermark, no HDR, no oversaturation, no dangerous river crossing.",
+      "derivadaDe": "hero-riu-editorial",
+      "transformacion": "center-cover-crop 720x1280"
     }
   }
 }

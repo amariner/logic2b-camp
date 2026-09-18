@@ -1,0 +1,502 @@
+{
+  "seo": {
+    "title": "Riu Clar — veinticuatro parcelas entre río y bosque",
+    "description": "Un pequeño camping prepirenaico de 24 parcelas bajo pinos y álamos. Abierto de Semana Santa a mediados de octubre, con el río y los caminos a un paso."
+  },
+  "nav": {
+    "alojamientos": "Parcelas",
+    "instalaciones": "El camping",
+    "entorno": "Río y caminos",
+    "tarifas": "Tarifas",
+    "blog": "Cuaderno",
+    "contacto": "Consulta las fechas",
+    "menu": "Menú",
+    "idioma": "Idioma",
+    "tema": "Estilo"
+  },
+  "demo": {
+    "banner": "Demostración ficticia de Logic2B: ninguna consulta se envía ni se guarda.",
+    "nivel": "Inicio",
+    "nivel1": "Inicio",
+    "nivel3": "Gestión"
+  },
+  "hero3": {
+    "titulo": "El campamento base más pequeño del río.",
+    "prueba": "24 parcelas · trato directo"
+  },
+  "hero1": {
+    "titulo": "Sigue el río. Encuentra tu ritmo.",
+    "cta": "Consulta las fechas",
+    "lugar": "RIU CLAR · CAMPING EN EL PREPIRINEO",
+    "explorar": "Descubre las parcelas"
+  },
+  "ticker": [
+    "24 parcelas bajo los árboles",
+    "abierto de Semana Santa a octubre",
+    "sendero desde la puerta",
+    "noches frescas todo el verano",
+    "acceso final por carretera estrecha"
+  ],
+  "vida": {
+    "titulo": "Estar cerca del río también significa saber cuándo parar",
+    "intro": "La parcela se monta sin tocar el sotobosque, recepción revisa el caudal y la lluvia con cada huésped, y el refugio permite disfrutar de un día húmedo sin convertirlo en una aventura.",
+    "escenas": [
+      {
+        "foto": "vida-arribada",
+        "titulo": "La tienda queda dentro de la parcela",
+        "texto": "Las piquetas, la mesa y el paso seco se sitúan sobre la grava; los helechos, las raíces y la franja de ribera quedan fuera de la instalación."
+      },
+      {
+        "foto": "vida-recepcio",
+        "titulo": "Hasta dónde se puede caminar hoy",
+        "texto": "Recepción combina el caudal, la lluvia reciente y las horas de luz para recomendar una ruta posible, también cuando lo responsable es volver antes."
+      },
+      {
+        "foto": "vida-servei-refugi",
+        "titulo": "Secarse también forma parte del día",
+        "texto": "En el refugio, los impermeables van al perchero y las botas a la bandeja: una pausa sencilla antes de decidir si el bosque permite otro paseo."
+      }
+    ]
+  },
+  "mostrador": {
+    "buscar": "Consultar",
+    "llegada": "Llegada",
+    "salida": "Salida",
+    "adultos": "Adultos",
+    "ninos": "Niños"
+  },
+  "tipos": {
+    "titulo": "Dos maneras de estar cerca del río",
+    "subtitulo": "Todas las parcelas tienen suelo firme, sombra y toma eléctrica. Cambian el espacio, el silencio y la distancia hasta el agua.",
+    "verTodo": "Ver las 24 parcelas",
+    "nombres": {
+      "ut_std": "Parcela de bosque",
+      "ut_conf": "Parcela de ribera"
+    },
+    "cards": [
+      {
+        "id": "ut_std",
+        "nombre": "Parcelas de bosque",
+        "desc": "Dieciséis parcelas de unos 75 m², bajo pinos, con grava compactada, sombra profunda y electricidad de 6 A.",
+        "foto": "tipus-parcella-bosc"
+      },
+      {
+        "id": "ut_conf",
+        "nombre": "Parcelas de ribera",
+        "desc": "Ocho parcelas de unos 90 m², más abiertas y cerca del camino del río, con electricidad de 10 A.",
+        "foto": "tipus-parcella-riu"
+      }
+    ]
+  },
+  "entorno": {
+    "titulo": "Aquí la temporada la marcan el agua, el camino y la primera helada.",
+    "texto": "Abrimos cuando el terreno vuelve a estar firme y cerramos a mediados de octubre. Desde la puerta sale el sendero de ribera; para las rutas altas conviene mirar el tiempo antes de salir."
+  },
+  "form": {
+    "titulo": "Consulta las fechas",
+    "subtitulo": "Dinos cuándo vienes, cuántos sois y qué vehículo traes. Esta demostración muestra la respuesta sin enviar tus datos.",
+    "nombre": "Nombre",
+    "email": "Correo electrónico",
+    "fechas": "Fechas aproximadas",
+    "fechasEjemplo": "12 → 16 septiembre",
+    "grupo": "Personas",
+    "estancia": "Dónde quieres quedarte",
+    "estanciaVacia": "Elige bosque o ribera",
+    "mensaje": "Vehículo, tienda y qué necesitas saber",
+    "enviar": "Ver respuesta de muestra",
+    "enviando": "Preparando la respuesta…",
+    "ok": "Consulta recibida.",
+    "error": "Demostración de error: la consulta no se ha enviado. En una web activa podrías volver a intentarlo o llamar al camping.",
+    "demoEtiqueta": "Demostración:",
+    "demoAviso": "no enviaremos ni guardaremos tus datos.",
+    "demoSpam": "Demostración antispam: la consulta se ha detenido antes de enviar o guardar datos.",
+    "demoExitoTitulo": "La consulta está preparada",
+    "demoExitoTexto": "En una web activa, el camping recibiría ahora estos datos y confirmaría apertura, acceso y parcela. Aquí no se ha enviado ni guardado nada.",
+    "demoCopiar": "Copiar el resumen",
+    "demoCopiado": "Resumen copiado",
+    "demoCta": "Quiero una web así para mi camping",
+    "demoResumenEstancia": "Parcela",
+    "demoResumenFechas": "Fechas",
+    "demoResumenGrupo": "Personas",
+    "demoResumenMensaje": "Consulta",
+    "demoSinConcretar": "Por concretar"
+  },
+  "footer": {
+    "aviso": "Un pequeño camping junto al río en el Prepirineo · demostración ficticia",
+    "legal": "Aviso legal",
+    "privacidad": "Privacidad",
+    "cookies": "Cookies",
+    "poweredBy": "Web de camping por Logic2B"
+  },
+  "alojamientos": {
+    "seo": {
+      "title": "Parcelas de bosque y de ribera | Riu Clar",
+      "description": "Dieciséis parcelas bajo el bosque y ocho de ribera, con sombra, grava firme y electricidad, en un pequeño camping prepirenaico."
+    },
+    "titulo": "Las 24 parcelas",
+    "intro": "No numeramos una calle interminable: cada parcela sigue el relieve y los árboles. Cuando nos consultas, te proponemos la que encaja con el vehículo y el tamaño de la tienda.",
+    "desdeNoche": "desde {precio}/noche",
+    "verFicha": "Ver la ficha",
+    "consultar": "Consultar estas fechas",
+    "volver": "Todas las parcelas",
+    "parcelas": "Parcelas",
+    "alojados": "Alojamientos",
+    "fichas": {
+      "ut_std": "Grava firme, unos 75 m² y sombra de pinos casi todo el día. Para tienda, caravana corta o furgoneta.",
+      "ut_conf": "Unos 90 m², electricidad de 10 A y más espacio de maniobra. El río queda cerca, separado por vegetación y el sendero."
+    },
+    "ficha": {
+      "capacidad": "Capacidad",
+      "personas": "personas",
+      "personasIncluidas": "{n} incluidas en el precio",
+      "superficie": "Superficie",
+      "electricidad": "Electricidad",
+      "sombra": "Sombra",
+      "sombraParcial": "parcial",
+      "sombraTotal": "total",
+      "camas": "Camas",
+      "banos": "Baños privados",
+      "aire": "Aire acondicionado",
+      "mascotas": "Mascotas",
+      "si": "sí",
+      "no": "no",
+      "unidades": "{n} unidades de este tipo",
+      "tarifasTitulo": "Tarifa orientativa por noche",
+      "estanciaMin": "estancia mínima de {n} noches",
+      "estanciaMin1": "sin estancia mínima",
+      "llegadaSabado": "llegada en sábado",
+      "notaPrecios": "Precio orientativo con {n} personas. El camping confirmaría el importe, la apertura y la parcela al responder.",
+      "disponibilidadTitulo": "¿Abierto y disponible para tus fechas?"
+    }
+  },
+  "instalaciones": {
+    "seo": {
+      "title": "El camping — refugio, baños y río | Riu Clar",
+      "description": "Refugio común, baños accesibles, zona de lavado e información de caminos en un camping prepirenaico de 24 parcelas."
+    },
+    "titulo": "Lo esencial, resistente y a cubierto de la lluvia",
+    "intro": "No hay piscina ni animación. Hay ducha caliente, un lugar donde secar el impermeable y alguien que no te recomendará un camino si el río baja demasiado crecido.",
+    "items": [
+      {
+        "id": "refugi",
+        "nombre": "El refugio común",
+        "desc": "Una sala pequeña con mesa, bancos, fregadero y estufa para los días fríos. No es un restaurante ni una sala de animación.",
+        "foto": "vida-servei-refugi"
+      },
+      {
+        "id": "banys",
+        "nombre": "Baños y duchas",
+        "desc": "Un bloque de piedra con agua caliente, cabina accesible y limpieza por la mañana y al anochecer.",
+        "foto": "installacio-banys-pedra"
+      },
+      {
+        "id": "rentat",
+        "nombre": "Agua y zona de lavado",
+        "desc": "Fregaderos cubiertos, lavadora y puntos de agua potable. El caudal del río no se utiliza como servicio del camping."
+      },
+      {
+        "id": "camins",
+        "nombre": "Caminos con criterio",
+        "desc": "Estado de los accesos, previsión básica y recomendaciones según la lluvia, la temperatura y las horas de luz."
+      },
+      {
+        "id": "recepcio",
+        "nombre": "Recepción cercana",
+        "desc": "De 8:00 a 11:30 y de 17:00 a 20:00. Las llegadas tardías se acuerdan antes porque el último tramo es estrecho.",
+        "foto": "vida-recepcio",
+        "recepcion": true
+      }
+    ]
+  },
+  "entornoPagina": {
+    "seo": {
+      "title": "Río, bosque y caminos desde el camping | Riu Clar",
+      "description": "Sendero de ribera, pasarelas, bosque húmedo y rutas prepirenaicas con información clara de acceso y meteorología."
+    },
+    "titulo": "El río no es un decorado: decide el día",
+    "intro": "La ruta fácil sale de la puerta. Para subir más arriba hay que mirar las nubes, el caudal y las horas de luz; aquí una previsión útil vale más que una lista de diez excursiones.",
+    "secciones": [
+      {
+        "titulo": "El sendero de ribera",
+        "texto": "Un camino sombreado sigue el agua durante cuatro kilómetros, con dos pasarelas y una vuelta corta de una hora. Después de una lluvia fuerte, preguntamos antes de cruzar."
+      },
+      {
+        "titulo": "El pueblo",
+        "texto": "A dieciocho minutos en coche hay panadería, tienda, farmacia y dos bares. La gasolinera queda a media hora; conviene llegar con combustible suficiente."
+      },
+      {
+        "titulo": "Caminos altos",
+        "texto": "Dos rutas suben hacia prados y un collado abierto. En verano también refresca rápido cuando se esconde el sol; el calzado firme y una capa seca nunca sobran."
+      },
+      {
+        "titulo": "Cuando llueve",
+        "texto": "El bosque gana color y el río, sonido. El refugio común abre todo el día y proponemos paseos cortos sin vender la lluvia como una aventura."
+      }
+    ],
+    "rutas": {
+      "titulo": "Tres salidas según el agua y la luz",
+      "intro": "Recepción ayuda a elegir entre la vuelta corta, la pasarela y los prados altos según el caudal, el barro y el tiempo disponible.",
+      "aviso": "Los tiempos son orientativos. La lluvia, el caudal, el barro, las pasarelas y las horas de luz pueden cambiar el recorrido; confirma el estado antes de salir.",
+      "etiquetas": {
+        "duracion": "Duración",
+        "dificultad": "Dificultad",
+        "salida": "Salida",
+        "momento": "Mejor momento",
+        "mapa": "Ver mapa verificado"
+      },
+      "items": [
+        {
+          "nombre": "Vuelta corta de ribera",
+          "resumen": "El sendero sombreado acompaña al río por terreno firme y vuelve antes de la primera pasarela baja.",
+          "tipo": "Paseo a pie",
+          "duracion": "1 h · 4 km",
+          "dificultad": "Fácil",
+          "salida": "Puerta del camping",
+          "momento": "Mañana fresca",
+          "recomendacion": "Pregunta por el caudal después de la lluvia, no bajes al cauce y da la vuelta cuando el terreno deje de estar claro.",
+          "foto": "camins-editorial"
+        },
+        {
+          "nombre": "Pasarela baja y alameda",
+          "resumen": "Una vuelta más larga cruza solo por la pasarela abierta y continúa entre álamos hasta el punto de retorno.",
+          "tipo": "Sendero de ribera",
+          "duracion": "2 h 15 min · 8 km",
+          "dificultad": "Moderada",
+          "salida": "Recepción",
+          "momento": "Día seco",
+          "recomendacion": "Confirma que la pasarela está abierta, lleva calzado firme y no improvises ningún vado si el río baja crecido.",
+          "foto": "entorn-sender-humit"
+        },
+        {
+          "nombre": "Prados del collado",
+          "resumen": "Desde el inicio alto, un camino de subida constante lleva hasta los prados abiertos y vuelve por el mismo itinerario señalizado.",
+          "tipo": "Ruta de montaña",
+          "duracion": "3 h 30 min · 9 km",
+          "dificultad": "Media",
+          "salida": "Inicio del collado",
+          "momento": "Mañana estable",
+          "recomendacion": "Revisa las nubes y las horas de luz, lleva una capa seca y renuncia al collado si se cierra la niebla.",
+          "foto": "vida-entorn"
+        }
+      ]
+    },
+    "distancias": {
+      "titulo": "Desde la parcela",
+      "items": [
+        {
+          "lugar": "Sendero de ribera",
+          "valor": "2 min a pie"
+        },
+        {
+          "lugar": "Pasarela baja",
+          "valor": "25 min a pie"
+        },
+        {
+          "lugar": "Panadería y tienda",
+          "valor": "18 min en coche"
+        },
+        {
+          "lugar": "Farmacia",
+          "valor": "18 min en coche"
+        },
+        {
+          "lugar": "Inicio de la ruta del collado",
+          "valor": "12 min en coche"
+        },
+        {
+          "lugar": "Estación de tren",
+          "valor": "42 min en coche"
+        }
+      ]
+    }
+  },
+  "tarifas": {
+    "seo": {
+      "title": "Tarifas orientativas | Riu Clar",
+      "description": "Precios orientativos por noche para parcelas de bosque y ribera, con fechas de apertura y condiciones claras."
+    },
+    "titulo": "Tarifas y temporada, antes de hacer planes",
+    "intro": "Estos importes forman parte de la demostración y son orientativos. Una consulta real recibiría confirmación de apertura, estado del acceso, precio final y condiciones.",
+    "tabla": {
+      "tipo": "Dónde te quedas",
+      "noche": "€/noche"
+    },
+    "temporadas": {
+      "sea_primavera": "Primavera · 4 abril – 20 junio",
+      "sea_estiu": "Verano · 20 junio – 14 septiembre",
+      "sea_tardor": "Otoño · 14 septiembre – 19 octubre"
+    },
+    "suplementos": {
+      "titulo": "Suplementos de parcela orientativos",
+      "personaExtra": "Persona a partir de la {n}.ª",
+      "nino": "Niño de 3 a 12 años",
+      "electricidad": "Electricidad",
+      "vehiculo": "Segundo vehículo",
+      "mascota": "Mascota"
+    },
+    "extras": {
+      "titulo": "Extras opcionales",
+      "por": {
+        "person": "por persona",
+        "night": "por noche",
+        "stay": "por estancia"
+      },
+      "nombres": {
+        "ext_llenya": "Haz de leña local",
+        "ext_esmorzar": "Cesta de desayuno"
+      }
+    },
+    "condiciones": {
+      "titulo": "Antes de venir",
+      "items": [
+        "El camping abre desde Semana Santa hasta el 19 de octubre; en invierno figura como cerrado, no como completo.",
+        "El último kilómetro está asfaltado, pero es estrecho. Los vehículos de más de 8 metros deben consultar antes.",
+        "Las parcelas admiten mascotas tranquilas, siempre atadas cerca del río.",
+        "No se cobra nada desde esta demostración y ninguna consulta genera una reserva."
+      ]
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Consulta las fechas | Riu Clar",
+      "description": "Prueba una consulta de estancia en la demostración de Riu Clar sin enviar ni guardar datos personales."
+    },
+    "titulo": "Hablemos de las fechas y del vehículo",
+    "intro": "Esta pantalla reproduce el canal directo de un pequeño camping de montaña. Puedes probarla: los datos no salen del navegador.",
+    "datos": {
+      "titulo": "Dónde estamos",
+      "direccion": "Dirección",
+      "telefono": "Teléfono",
+      "email": "Correo electrónico"
+    },
+    "horario": {
+      "titulo": "Recepción",
+      "texto": "Horario de muestra: de 8:00 a 11:30 y de 17:00 a 20:00, de Semana Santa a mediados de octubre."
+    },
+    "llegar": {
+      "titulo": "Cómo llegar",
+      "texto": "La ubicación y los datos de contacto de esta demo son ficticios. En una web activa se publicarían la ruta, las limitaciones de acceso y los canales verificados por el camping."
+    }
+  },
+  "blog": {
+    "seo": {
+      "title": "Cuaderno del río | Riu Clar",
+      "description": "Notas sobre el caudal, los caminos, la apertura y la vida en el bosque prepirenaico."
+    },
+    "titulo": "Cuaderno del río",
+    "intro": "Este camping de muestra todavía no publica notas. La sección está preparada para informar sobre la apertura y los caminos, no para rellenar palabras clave.",
+    "leerMas": "Leer",
+    "volver": "Todas las notas",
+    "vacio": "Todavía no hay notas."
+  },
+  "noEncontrada": {
+    "titulo": "Este camino no llega al río",
+    "texto": "La dirección no existe o ha cambiado. La portada y la consulta siguen a un paso.",
+    "cta": "Volver al inicio"
+  },
+  "heroMotion": {
+    "pausar": "Pausa el paisaje",
+    "reproducir": "Anima el paisaje"
+  },
+  "outdoor": {
+    "hero": {
+      "lines": ["Sigue el río.", "Encuentra", "tu ritmo."],
+      "note": "Veinticuatro parcelas.\nUn bosque, un río y todo el tiempo del mundo.",
+      "facts": ["24 parcelas entre árboles", "Semana Santa → octubre", "Caminos desde la puerta"]
+    },
+    "welcome": {
+      "label": "UN LUGAR PEQUEÑO. UNA GRAN PAUSA.",
+      "title": "Menos reloj.\nMás camino.",
+      "text": "Despertar con el sonido del agua. Desayunar a la sombra de los álamos. Salir a caminar sin coger el coche. En Riu Clar, lo mejor del día suele ser lo que no habías planeado.",
+      "photo": "camins-editorial",
+      "caption": "El primer camino empieza en la puerta.",
+      "sidePhoto": "vida-recepcio",
+      "sideCaption": "En recepción, el día se decide con calma.",
+      "link": "Conoce el camping"
+    },
+    "pitches": {
+      "label": "ELIGE TU RINCÓN",
+      "title": "Bajo los pinos.\nCerca del agua.",
+      "intro": "Tienda o camper, sombra profunda o un poco más de cielo. Dos maneras de quedarte, con el mismo ritmo tranquilo.",
+      "features": {
+        "ut_std": ["16 parcelas", "75 m²", "Sombra · 6 A"],
+        "ut_conf": ["8 parcelas", "90 m²", "Ribera · 10 A"]
+      },
+      "details": "Explora la parcela",
+      "priceNote": "desde / noche · orientativo"
+    },
+    "essentials": {
+      "label": "ANTES DE HACER LA MOCHILA",
+      "title": "Pequeño, sencillo.\nCon lo que importa.",
+      "items": [
+        {
+          "number": "01",
+          "title": "Una temporada natural",
+          "text": "De Semana Santa a mediados de octubre. Confirma la apertura cuando nos consultes las fechas."
+        },
+        {
+          "number": "02",
+          "title": "Llegar sin prisas",
+          "text": "El último tramo de carretera es estrecho. Cuéntanos qué vehículo traes y te orientaremos antes de venir."
+        },
+        {
+          "number": "03",
+          "title": "Un refugio cuando llueve",
+          "text": "Una mesa compartida, sitio para secar el impermeable y una pausa con vistas al bosque."
+        },
+        {
+          "number": "04",
+          "title": "Noches de aire fresco",
+          "text": "También en verano. Trae una prenda de abrigo y deja que el sonido del río acompañe la noche."
+        }
+      ]
+    },
+    "day": {
+      "label": "CUANDO EL DÍA PIDE UNA PAUSA",
+      "title": "La lluvia,\nmuy cerca.\nTú, a cubierto.",
+      "photo": "vida-servei-refugi",
+      "text": "Deja las botas, cuelga el impermeable y siéntate un rato. El refugio común también forma parte de la escapada.",
+      "link": "Descubre el refugio"
+    },
+    "routes": {
+      "label": "SAL. RESPIRA. VUELVE.",
+      "title": "El camino también\nes quedarse.",
+      "link": "Todos los caminos"
+    },
+    "questions": {
+      "label": "TE LO PONEMOS FÁCIL",
+      "title": "Antes\nde llegar.",
+      "items": [
+        {
+          "question": "¿Cuándo abre Riu Clar?",
+          "answer": "La temporada va de Semana Santa a mediados de octubre, según las condiciones del terreno. Consulta las fechas antes de preparar la estancia."
+        },
+        {
+          "question": "¿Puedo venir con camper o caravana?",
+          "answer": "Cuéntanos el tamaño del vehículo en la consulta. El acceso final es estrecho y te ayudaremos a valorarlo y a elegir la parcela adecuada."
+        },
+        {
+          "question": "¿Se puede salir a caminar desde el camping?",
+          "answer": "Sí, el sendero de ribera sale de la puerta. Confirma en recepción el estado del terreno y de las pasarelas, especialmente después de la lluvia."
+        },
+        {
+          "question": "¿Y si llueve durante la estancia?",
+          "answer": "El refugio común ofrece un espacio a cubierto. Recepción orienta los paseos según el caudal, el barro y las horas de luz."
+        },
+        {
+          "question": "¿La consulta confirma una reserva?",
+          "answer": "No. En esta demostración no se envían ni se guardan datos. En una web activa, el camping te respondería para confirmar fechas, acceso y parcela."
+        }
+      ]
+    },
+    "contact": {
+      "label": "LA PRÓXIMA PAUSA EMPIEZA AQUÍ",
+      "title": "¿Nos vemos\nen el río?",
+      "intro": "Dinos cuándo te gustaría venir, cuántos sois y cómo viajáis. Nosotros te ayudamos a encontrar tu lugar."
+    },
+    "footer": {
+      "line": "Veinticuatro lugares para parar. Un río para seguir.",
+      "small": "Prepirineo · Cataluña · Demostración ficticia de Logic2B"
+    }
+  }
+}

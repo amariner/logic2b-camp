@@ -1,5 +1,12 @@
 # PROGRESS — Logic Camp
 
+## Riu Clar — mejora editorial y vídeo · 2026-09-18
+
+- Presentación outdoor compartida, hero panorámico, bosque/papel/lima y contenido renovado, traducido íntegramente al castellano por petición posterior. Marca «Riu Clar». Precios y enlaces de parcelas conectados a sus IDs reales.
+- Dos fotografías nuevas con OpenAI integrado y vídeo Higgsfield Seedance 2.0 de 8 s, con versiones escritorio/móvil, póster, pausa y preferencias de movimiento/datos.
+- Pipeline de medios con inspección y procedencia; miniatura y OG actualizados. Comprobación global 74/74 y build de Riu Clar de 13 páginas.
+- Detalle y evidencias: [Riu Clar](docs/RIUCLAR-REDISENO-2026-09-18.md). Cambios locales, sin publicar.
+
 ## L’Olivar — rediseño 360 outdoor · 2026-09-08
 
 - Encargo posterior de Andreu, inspirado en tres referencias: camping pequeño,

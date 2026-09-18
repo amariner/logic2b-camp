@@ -94,7 +94,7 @@ const routes = [
     id: 'riuclar-home',
     path: '/demos/riuclar/',
     noindex: true,
-    texts: ['Boira al riu', 'Vint-i-quatre llocs'],
+    texts: ['Sigue el río', 'Veinticuatro lugares'],
   },
   {
     id: 'duna-home',

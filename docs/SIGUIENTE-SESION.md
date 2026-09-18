@@ -1,5 +1,7 @@
 # Prompt para la siguiente sesión — autogestión segura y L'Olivar listo en local
 
+> **Último encargo · 2026-09-18:** Riu Clar renovado con presentación outdoor, dos fotografías de OpenAI integrado y hero animado con Higgsfield. Ver [informe](RIUCLAR-REDISENO-2026-09-18.md). Verificado en local; sin despliegue.
+
 > **Último corte visual · 2026-09-08:** L’Olivar se rediseña como camping
 > pequeño, humano y solo para tiendas. Presentación outdoor compartida, 22
 > parcelas, nuevas fotografías y vídeos. Este encargo sustituye la dirección
