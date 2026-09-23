@@ -874,7 +874,9 @@ describe('pagos (ADR 0011)', () => {
   it('cancelar desde el dashboard ejecuta el reembolso real según la política, no solo el email', async ({ onTestFinished }) => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-07-19T12:00:00Z'));
-    onTestFinished(() => vi.useRealTimers());
+    onTestFinished(() => {
+      vi.useRealTimers();
+    });
     const create = await createManual('2026-10-20', '2026-10-23');
     const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
     await app.request(
