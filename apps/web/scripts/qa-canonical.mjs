@@ -88,13 +88,13 @@ const routes = [
     id: 'olivar-home',
     path: '/demos/olivar/',
     noindex: true,
-    texts: ['Sombra de olivo', 'Veintidós maneras'],
+    texts: ['MENOS PRISA.', '22 parcelas'],
   },
   {
     id: 'riuclar-home',
     path: '/demos/riuclar/',
     noindex: true,
-    texts: ['Boira al riu', 'Vint-i-quatre llocs'],
+    texts: ['Sigue el río', 'Veinticuatro lugares'],
   },
   {
     id: 'duna-home',
@@ -112,7 +112,7 @@ const routes = [
     id: 'pinada-home',
     path: '/demos/pinadamar/',
     noindex: true,
-    texts: ['Pinos altos', 'Todo listo para llegar'],
+    texts: ['Más mar.', 'Menos reloj.'],
   },
   {
     id: 'pinada-planning',
@@ -210,7 +210,7 @@ const routes = [
     id: 'marde-home',
     path: '/demos/mardefondo/',
     noindex: true,
-    texts: ['Un horizonte amplio', 'Cada detalle bajo control'],
+    texts: ['Aquí, la vida', 'a otro ritmo.'],
   },
   {
     id: 'marde-automatiza',
@@ -277,6 +277,9 @@ try {
       await page.goto(`${origin}${route.path}`, { waitUntil: 'networkidle' });
       await page.evaluate(() => document.fonts.ready);
       await page.evaluate(async () => {
+        // Cargar también las imágenes ocultas por el diseño responsive: el
+        // navegador no activa su lazy loading aunque recorramos toda la página.
+        for (const image of document.images) image.loading = 'eager';
         for (let top = 0; top < document.documentElement.scrollHeight; top += 600) {
           window.scrollTo(0, top);
           await new Promise((resolveScroll) => setTimeout(resolveScroll, 40));

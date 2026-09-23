@@ -1,13 +1,12 @@
-# Càmping Riu Clar
+# Riu Clar
 
-Demo comercial fictícia de **Logic Camp Inici** sobre el carril tècnic `tier: 1`.
+Demo comercial ficticia de **Logic Camp Inicio** sobre el carril técnico `tier: 1`.
 
-- 24 parcel·les: 16 de bosc i 8 de ribera.
-- Català com a llengua d'arrencada; cap motor, dashboard, Worker o D1 propi.
-- El formulari usa `enquiryTransport: 'demo'`: no fa xarxa ni persisteix dades.
-- Ruta prevista: `/demos/riuclar/`, sempre `noindex`.
-- La temporada, l'últim tram d'accés i el temps formen part del recorregut, no
-  d'una nota amagada al peu.
+- 24 parcelas: 16 de bosque y 8 de ribera.
+- Castellano como único idioma; sin motor, dashboard, Worker ni D1 propios.
+- El formulario usa `enquiryTransport: 'demo'`: no hace peticiones ni guarda datos.
+- Ruta: `/demos/riuclar/`, siempre `noindex`.
+- La temporada, el último tramo de acceso y el tiempo forman parte del recorrido.
 
 ## Construir
 
@@ -15,20 +14,31 @@ Demo comercial fictícia de **Logic Camp Inici** sobre el carril tècnic `tier: 
 TENANT=riuclar TIER=1 BASE_PATH=/demos/riuclar pnpm --filter @logic-camp/web build
 ```
 
-Estats QA del formulari: `?demoState=error#contacto` i
+Estados de prueba del formulario: `?demoState=error#contacto` y
 `?demoState=spam#contacto`.
 
-## Fotografia
+## Fotografía y vídeo
 
-El brief aprovat viu a `identity.json`; l'encàrrec, la procedència, les quatre
-tandes i els vuit papers a `fotos.json`. Els finals només entren després de la
-inspecció visual i l'aprovació explícita del pipeline comú.
+El encargo y la procedencia se conservan en `identity.json`, `fotos.json`,
+`fotos.estado.json` y `movimiento.json`. Se inspeccionan las imágenes antes
+de aprobarlas mediante el pipeline común:
 
 ```bash
 pnpm fotos -- status riuclar
-pnpm fotos -- ingest riuclar {peça} /ruta/al/master.png codex-integrated {model}
-pnpm fotos -- approve riuclar {peça}
+pnpm fotos -- ingest riuclar {pieza} /ruta/al/master.png codex-integrated {modelo}
+pnpm fotos -- approve riuclar {pieza}
 pnpm fotos -- derive riuclar
 ```
 
-La recepta completa és a `docs/FABRICA-IDENTIDADES.md`.
+La receta completa está en `docs/FABRICA-IDENTIDADES.md`.
+
+Presentación `outdoor` con fotografías OpenAI integradas y vídeo ambiental
+Higgsfield Seedance 2.0 de 8 segundos, en versiones de escritorio y móvil.
+El póster móvil es un recorte del nuevo hero, sin generación adicional.
+Informe: `docs/RIUCLAR-REDISENO-2026-09-18.md`.
+
+## Idioma · 18 de septiembre de 2026
+
+Todo el contenido público está en `content/es.json`, incluidos títulos SEO,
+formularios y estados, fichas, rutas, tarifas y controles del vídeo. Las páginas
+legales compartidas usan también castellano. El nombre de marca es **Riu Clar**.

@@ -98,6 +98,8 @@ export type Content = {
       text: string;
       photo: string;
       caption: string;
+      sidePhoto?: string;
+      sideCaption?: string;
       link: string;
     };
     pitches: {

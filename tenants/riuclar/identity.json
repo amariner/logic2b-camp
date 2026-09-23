@@ -1,7 +1,7 @@
 {
   "version": 1,
   "id": "riuclar",
-  "name": "Càmping Riu Clar",
+  "name": "Riu Clar",
   "status": "approved-demo",
   "icp": "Propietat d'un microcàmping prepirinenc de 20 a 40 parcel·les que viu de la primavera a la tardor i necessita explicar obertura, accés i clima abans de rebre una consulta.",
   "objection": "Tem que el producte estigui pensat només per a costa i agost i que una web bonica amagui la informació pràctica de temporada i muntanya.",
@@ -26,5 +26,13 @@
     "Parcel·les de bosc i de ribera amb escala real",
     "Refugi comú, banys de pedra, sender humit i textura de pissarra i molsa"
   ],
-  "successCriterion": "Una captura sense context es reconeix com a microcàmping fluvial prepirinenc, la temporada i l'accés es troben en menys d'un minut i el build no conté motor ni dashboard."
+  "successCriterion": "Una captura sense context es reconeix com a microcàmping fluvial prepirinenc, la temporada i l'accés es troben en menys d'un minut i el build no conté motor ni dashboard.",
+  "editorialRefresh": {
+    "date": "2026-09-18",
+    "direction": "Fotografia fluvial immersiva, titulars grans, paper i verd bosc amb accent llima suau. Inspiració de composició, sense copiar textos ni paisatges alpins.",
+    "presentation": "outdoor",
+    "accent": "#d4eb87",
+    "headline": "Sigue el río. Encuentra tu ritmo.",
+    "assets": "hero-riu-editorial i camins-editorial: OpenAI integrat; vídeo ambiental: Higgsfield Seedance 2.0."
+  }
 }

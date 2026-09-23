@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "clips": {
+    "hero-motion": {
+      "poster": "hero-riu-editorial",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "Animate the supplied river photograph as an extremely subtle ambient website hero. Locked tripod camera, absolutely no pan, zoom, tilt, dolly, reframing, scene cut or change in exposure. Preserve the exact composition, geology, forest, water colour and natural morning light. Only gentle slow downstream ripples and tiny leaf movements in a faint breeze, almost imperceptible drifting mist. The distant two hikers pause to look at the view with minimal natural posture movement; do not introduce new people or objects. Meditative realistic nature cinemagraph. Seamless-feeling calm loop, no dramatic movement, no text, no logos, no sound.",
+      "generatedAt": "2026-09-18T09:40:43.508071Z",
+      "approvedAt": "2026-09-18T09:46:00.417Z",
+      "approval": "visual-inspection",
+      "sha256": "8af22e7575be0b8bb5c423f44c14399f9e7fa48fb421c8e65c4e2b3ce3462f0f"
+    },
+    "hero-motion-mobile": {
+      "poster": "hero-riu-mobile",
+      "provider": "higgsfield",
+      "model": "seedance_2_0",
+      "prompt": "Animate the supplied river photograph as an extremely subtle ambient website hero. Locked tripod camera, absolutely no pan, zoom, tilt, dolly, reframing, scene cut or change in exposure. Preserve the exact composition, geology, forest, water colour and natural morning light. Only gentle slow downstream ripples and tiny leaf movements in a faint breeze, almost imperceptible drifting mist. The distant two hikers pause to look at the view with minimal natural posture movement; do not introduce new people or objects. Meditative realistic nature cinemagraph. Seamless-feeling calm loop, no dramatic movement, no text, no logos, no sound.",
+      "generatedAt": "2026-09-18T09:40:43.508071Z",
+      "approvedAt": "2026-09-18T09:46:00.462Z",
+      "approval": "visual-inspection",
+      "sha256": "6c0eac9c0cea74188af30c717f0173c7d3b2ea1ab9cf13ac131b8e3b232821c7"
+    }
+  }
+}

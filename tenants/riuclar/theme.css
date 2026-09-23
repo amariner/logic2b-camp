@@ -23,3 +23,203 @@
   --lc-radius-md: var(--lc-radius);
   --lc-radius-lg: calc(var(--lc-radius) + 4px);
 }
+
+/* Direcció editorial fluvial sobre la presentació outdoor compartida. */
+body[data-presentation='outdoor'] {
+  --out-accent: #d4eb87;
+  --out-sage: #e2e8d9;
+  --out-paper: var(--lc-hueso);
+  --out-dark: var(--lc-tinta);
+}
+body[data-presentation='outdoor'] .lc-chrome > p {
+  background: var(--out-accent);
+  color: var(--lc-tinta);
+}
+body[data-presentation='outdoor'] .lc-header-nav {
+  max-width: 1600px;
+  padding-inline: clamp(20px, 4.6vw, 72px);
+}
+body[data-presentation='outdoor'] .lc-brand {
+  letter-spacing: -0.035em;
+  word-spacing: 0.14em;
+  text-transform: none;
+}
+body[data-presentation='outdoor'] .out-hero {
+  margin: 0;
+  border-radius: 0;
+  max-width: none;
+  height: min(820px, 83svh);
+  min-height: 650px;
+}
+body[data-presentation='outdoor'] .out-hero-location {
+  left: var(--out-gutter);
+  top: 36px;
+  letter-spacing: 0.13em;
+}
+body[data-presentation='outdoor'] .out-hero-location > span {
+  color: var(--out-accent);
+}
+body[data-presentation='outdoor'] .out-hero-shade {
+  background:
+    linear-gradient(90deg, #10231bc2 0%, #10231b38 56%, #10231b08),
+    linear-gradient(0deg, #10231b70, transparent 35%);
+}
+body[data-presentation='outdoor'] .out-hero-copy {
+  inset-inline: var(--out-gutter);
+  bottom: 94px;
+  grid-template-columns: 1fr 230px;
+}
+body[data-presentation='outdoor'] .out-hero h1 {
+  font-size: clamp(62px, 7.9vw, 122px);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  font-weight: 500;
+}
+body[data-presentation='outdoor'] .out-hero-note {
+  border-top: 1px solid #ffffff70;
+  padding-top: 18px;
+}
+body[data-presentation='outdoor'] .out-hero-facts {
+  margin: 0;
+  max-width: none;
+  padding-inline: var(--out-gutter);
+  background: var(--out-dark);
+  color: var(--out-paper);
+  font-size: 12px;
+}
+body[data-presentation='outdoor'] .out-hero-facts i {
+  color: var(--out-accent);
+}
+body[data-presentation='outdoor'] .out-button-orange:hover {
+  background: color-mix(in srgb, var(--out-accent) 80%, white);
+}
+body[data-presentation='outdoor'] .out-eyebrow::before {
+  background: var(--lc-pino);
+}
+body[data-presentation='outdoor'] .out-day .out-eyebrow::before {
+  background: var(--out-accent);
+}
+body[data-presentation='outdoor'] .out-number {
+  color: var(--lc-pino);
+}
+body[data-presentation='outdoor'] .out-welcome {
+  grid-template-columns: 1.35fr 0.8fr;
+  gap: 48px;
+}
+body[data-presentation='outdoor'] .out-welcome-copy {
+  grid-column: 1 / -1;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 20px;
+}
+body[data-presentation='outdoor'] .out-welcome-copy .out-title {
+  font-size: clamp(52px, 6.5vw, 94px);
+  letter-spacing: -0.055em;
+}
+body[data-presentation='outdoor'] .out-welcome-copy .out-text {
+  margin: 28px auto;
+  padding: 0;
+  max-width: 540px;
+  font-size: 16px;
+}
+body[data-presentation='outdoor'] .out-welcome-main picture {
+  height: 520px;
+  border-radius: 2px;
+}
+body[data-presentation='outdoor'] .out-welcome-main img {
+  object-position: center;
+}
+body[data-presentation='outdoor'] .out-welcome-side {
+  display: block;
+  margin-bottom: 0 !important;
+}
+body[data-presentation='outdoor'] .out-welcome-side picture {
+  height: 360px;
+  border-radius: 2px;
+}
+body[data-presentation='outdoor'] .out-pitch-photo,
+body[data-presentation='outdoor'] .out-route-photo {
+  border-radius: 2px;
+}
+body[data-presentation='outdoor'] .out-title {
+  text-transform: none;
+  letter-spacing: -0.045em;
+}
+body[data-presentation='outdoor'] .out-day {
+  margin: 0;
+  max-width: none;
+  border-radius: 0;
+}
+body[data-presentation='outdoor'] .out-day-copy {
+  padding-inline: var(--out-gutter);
+}
+body[data-presentation='outdoor'] .out-faq {
+  background: var(--out-sage);
+}
+body[data-presentation='outdoor'] .out-footer-word {
+  color: var(--out-accent);
+  font-size: clamp(56px, 11.5vw, 180px);
+}
+@media (max-width: 1050px) {
+  body[data-presentation='outdoor'] .out-hero-copy {
+    grid-template-columns: 1fr;
+  }
+  body[data-presentation='outdoor'] .out-hero-note {
+    display: none;
+  }
+  body[data-presentation='outdoor'] .out-welcome {
+    gap: 24px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-main picture {
+    height: 400px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-side picture {
+    height: 300px;
+  }
+}
+@media (max-width: 639px) {
+  body[data-presentation='outdoor'] .out-hero {
+    min-height: 590px;
+    height: 78svh;
+  }
+  body[data-presentation='outdoor'] .out-hero-copy {
+    bottom: 92px;
+  }
+  body[data-presentation='outdoor'] .out-hero h1 {
+    font-size: clamp(43px, 12.8vw, 76px);
+  }
+  body[data-presentation='outdoor'] .out-hero-location {
+    top: 26px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+  body[data-presentation='outdoor'] .out-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  body[data-presentation='outdoor'] .out-hero-facts {
+    font-size: 10px;
+    gap: 12px 20px;
+  }
+  body[data-presentation='outdoor'] .out-welcome {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-copy {
+    margin-bottom: 18px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-main picture {
+    height: 390px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-side picture {
+    height: 240px;
+  }
+  body[data-presentation='outdoor'] .out-welcome-side {
+    width: 80%;
+    margin-left: auto;
+  }
+  body[data-presentation='outdoor'] .out-contact .out-title {
+    font-size: 58px;
+  }
+}

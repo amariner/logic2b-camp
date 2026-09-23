@@ -81,7 +81,7 @@ const seasons: WebSeason[] = [
   {
     id: 'sea_estiu',
     tenant_id: tenantId,
-    name: 'Estiu',
+    name: 'Verano',
     date_from: `${year}-06-20`,
     date_to: `${year}-09-14`,
     priority: 1,
@@ -90,7 +90,7 @@ const seasons: WebSeason[] = [
   {
     id: 'sea_tardor',
     tenant_id: tenantId,
-    name: 'Tardor',
+    name: 'Otoño',
     date_from: `${year}-09-14`,
     date_to: `${year}-10-19`,
     priority: 2,
@@ -103,7 +103,7 @@ const unitTypes: WebUnitType[] = [
     id: 'ut_std',
     tenant_id: tenantId,
     kind: 'pitch',
-    name_i18n: { ca: 'Parcel·la de bosc' },
+    name_i18n: { es: 'Parcela de bosque' },
     capacity_min: 1,
     capacity_max: 6,
     included_persons: 2,
@@ -115,7 +115,7 @@ const unitTypes: WebUnitType[] = [
     id: 'ut_conf',
     tenant_id: tenantId,
     kind: 'pitch',
-    name_i18n: { ca: 'Parcel·la de ribera' },
+    name_i18n: { es: 'Parcela de ribera' },
     capacity_min: 1,
     capacity_max: 5,
     included_persons: 2,
@@ -159,7 +159,7 @@ export const webData: WebData = {
     {
       id: 'ext_llenya',
       tenant_id: tenantId,
-      name_i18n: { ca: 'Feix de llenya local' },
+      name_i18n: { es: 'Haz de leña local' },
       price_cents: 900,
       per: 'stay',
       required: false,
@@ -167,7 +167,7 @@ export const webData: WebData = {
     {
       id: 'ext_esmorzar',
       tenant_id: tenantId,
-      name_i18n: { ca: 'Cistella d’esmorzar' },
+      name_i18n: { es: 'Cesta de desayuno' },
       price_cents: 2200,
       per: 'stay',
       required: false,
