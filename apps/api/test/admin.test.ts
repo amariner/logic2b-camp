@@ -6,7 +6,7 @@
 import { createDb, schema } from '@logic-camp/db';
 import { env } from 'cloudflare:test';
 import { and, eq } from 'drizzle-orm';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { app } from '../src/app';
 import {
   authRateLimitEnabled,
@@ -871,7 +871,10 @@ describe('pagos (ADR 0011)', () => {
     });
   });
 
-  it('cancelar desde el dashboard ejecuta el reembolso real según la política, no solo el email', async () => {
+  it('cancelar desde el dashboard ejecuta el reembolso real según la política, no solo el email', async ({ onTestFinished }) => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-07-19T12:00:00Z'));
+    onTestFinished(() => vi.useRealTimers());
     const create = await createManual('2026-10-20', '2026-10-23');
     const { id, totalCents } = (await create.json()) as { id: string; totalCents: number };
     await app.request(
@@ -891,7 +894,7 @@ describe('pagos (ADR 0011)', () => {
     );
     expect(cancel.status).toBe(200);
 
-    // fechas en noviembre 2026, muy por delante de "hoy" (2026-07-19): reembolso 100%
+    // Llegada en octubre y reloj fijo en julio: antelación suficiente para reembolso 100%.
     const db = createDb(env.DB);
     const booking = (await db.select().from(schema.bookings).where(eq(schema.bookings.id, id)))[0]!;
     expect(booking.paidCents).toBe(0);
