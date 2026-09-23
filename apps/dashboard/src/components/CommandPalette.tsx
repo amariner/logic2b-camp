@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Paleta ⌘K (ADR 0022, C4): buscar reserva por código, cliente por nombre y
  * unidad por código, y saltar a su pantalla. `cmdk` se instaló aquí a propósito
@@ -166,7 +167,7 @@ export default function CommandPalette({
                 value={`u-${u.id}`}
                 onSelect={() =>
                   go(() =>
-                    navigate({ to: '/plano', search: { unit: u.id, date: iso(new Date()) } }),
+                    navigate({ to: '/plano', search: { unit: u.id, date: iso(businessNow()) } }),
                   )
                 }
               >

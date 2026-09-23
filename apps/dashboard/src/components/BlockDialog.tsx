@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Crear un bloqueo de inventario desde la UI (ADR 0022 §3): avería, propietario…
  * El planning y el plano YA los pintan; hasta ahora no había forma de crear uno.
@@ -44,8 +45,8 @@ export default function BlockDialog({
   const [scope, setScope] = useState<'unit' | 'type'>('unit');
   const [unitId, setUnitId] = useState(defaultUnitId ?? '');
   const [unitTypeId, setUnitTypeId] = useState('');
-  const [from, setFrom] = useState(defaultDate ?? iso(new Date()));
-  const [to, setTo] = useState(defaultDate ? defaultDate : iso(new Date()));
+  const [from, setFrom] = useState(defaultDate ?? iso(businessNow()));
+  const [to, setTo] = useState(defaultDate ? defaultDate : iso(businessNow()));
   const [reason, setReason] = useState<(typeof REASONS)[number]>('maintenance');
 
   // El diálogo vive montado (animación de Radix), así que el useState solo capta
@@ -56,7 +57,7 @@ export default function BlockDialog({
     if (!open) return;
     setScope('unit');
     setUnitId(defaultUnitId ?? '');
-    const f = defaultDate ?? iso(new Date());
+    const f = defaultDate ?? iso(businessNow());
     setFrom(f);
     setTo(addDays(f, 1));
     setReason('maintenance');

@@ -2,7 +2,11 @@
 
 SPA de React 19 (Vite + TanStack Router/Query) que en producción se sirve en **`/admin/` del mismo Worker del tenant** (ADR 0008): misma cookie de sesión, cero CORS.
 
-## Desarrollo
+## Demo comercial sin D1
+
+`pnpm --filter @logic-camp/dashboard dev:demo` abre el escenario local de Mar de Fondo con fecha fija del 7 de agosto de 2026. Ver [DEMO-ESTATICA.md](../../docs/DEMO-ESTATICA.md).
+
+## Desarrollo de un gestor con API
 
 Hacen falta **dos procesos**, porque el dashboard no tiene backend propio:
 

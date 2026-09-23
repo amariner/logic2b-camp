@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Portada del gestor de camping (sesión 65).
  *
@@ -40,7 +41,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 
 /** Hoy y mañana en UTC: el sistema va en UTC y las estancias son fechas sin hora. */
 function rangos() {
-  const hoy = new Date();
+  const hoy = businessNow();
   const y = hoy.getUTCFullYear();
   const m = hoy.getUTCMonth();
   const d = hoy.getUTCDate();

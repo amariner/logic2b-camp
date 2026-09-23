@@ -79,6 +79,7 @@ export default defineConfig({
     },
     define: {
       // TIER=1 pnpm dev → previsualizar la demo degradada a nivel 1 (Fase 10 lo hará en runtime)
+      'import.meta.env.DEMO_FIXED_NOW': JSON.stringify(/isDemo\s*:\s*true/.test(tenantConfigSource) ? '2026-08-07T12:00:00.000Z' : ''),
       'import.meta.env.TIER_OVERRIDE': JSON.stringify(process.env.TIER ?? ''),
       'import.meta.env.EXPECTED_TENANT': JSON.stringify(tenant),
       'import.meta.env.BOOKING_ENGINE': JSON.stringify(hasBookingEngine ? 'instant' : 'none'),

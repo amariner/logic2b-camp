@@ -1,3 +1,5 @@
+import { businessNow, DEMO_SEASON } from '../lib/clock';
+import { isPortfolioScenario } from '@demo-scenario';
 /**
  * PLANNING ★ (ADR 0008 · gestos ADR 0023) — el tape chart que recepción mira
  * 200 veces al día. Virtualización de FILAS con @tanstack/react-virtual; las
@@ -211,12 +213,12 @@ export default function Planning() {
   const mobile = useMobilePlanning();
   const [agendaMode, setAgendaMode] = useState<AgendaMode>('day');
   const [zoomId, setZoomId] = useState<(typeof ZOOMS)[number]['id']>('mes');
-  const [anchor, setAnchor] = useState(() => search.date ?? isoDay(new Date()));
+  const [anchor, setAnchor] = useState(() => search.date ?? isoDay(businessNow()));
   const zoom = ZOOMS.find((z) => z.id === zoomId)!;
   const periodDays = mobile ? (agendaMode === 'day' ? 1 : 7) : zoom.days;
   const from = anchor;
   const to = addDaysIso(anchor, periodDays);
-  const today = isoDay(new Date());
+  const today = isoDay(businessNow());
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['planning', from, to],
@@ -1011,7 +1013,7 @@ export default function Planning() {
               >
                 ←
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setAnchor(isoDay(new Date()))}>
+              <Button variant="outline" size="sm" onClick={() => setAnchor(isoDay(businessNow()))}>
                 {t('planning.hoy')}
               </Button>
               <Button
@@ -1037,7 +1039,10 @@ export default function Planning() {
                   key={z.id}
                   variant={z.id === zoomId ? 'primary' : 'outline'}
                   size="sm"
-                  onClick={() => setZoomId(z.id)}
+                  onClick={() => {
+                    setZoomId(z.id);
+                    if (isPortfolioScenario && z.id === 'temporada') setAnchor(DEMO_SEASON.from);
+                  }}
                   className="rounded-none border-0 border-l border-input first:border-l-0"
                   aria-pressed={z.id === zoomId}
                 >

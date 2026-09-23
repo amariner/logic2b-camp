@@ -9,7 +9,10 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { logEvent } from '../errors';
 import { uid } from '../ids';
-import type { Env } from '../tenant';
+import type { Bindings } from '../tenant';
+export type LeadsEnv = {
+  Bindings: Pick<Bindings, 'TENANT_SLUG' | 'LEADS_TRANSPORT' | 'LEADS_RESEND_API_KEY'>;
+};
 
 const leadSchema = z.object({
   name: z.string().trim().min(1).max(120),
@@ -29,7 +32,7 @@ const leadSchema = z.object({
 const LEADS_TO = 'marinerandreu@gmail.com';
 const LEADS_FROM = 'Logic2B Campings <leads@logic2b.com>';
 
-export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
+export const leadsRoutes = new Hono<LeadsEnv>().post('/leads', async (c) => {
   const raw = await c.req.json().catch(() => null);
   const botCheck = z.object({ website: z.string().optional() }).passthrough().safeParse(raw);
   // Honeypot: se responde de forma neutra y no se consume cuota de Resend.
@@ -78,7 +81,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     logEvent({
       level: 'info',
       event: 'lead_demo_simulated',
-      tenant: c.get('tenant').slug,
+      tenant: c.env.TENANT_SLUG ?? 'unknown',
     });
     return c.json({ ok: true as const, outcome: 'demo' as const }, 202);
   }
@@ -99,7 +102,7 @@ export const leadsRoutes = new Hono<Env>().post('/leads', async (c) => {
     logEvent({
       level: 'error',
       event: 'lead_send_failed',
-      tenant: c.get('tenant').slug,
+      tenant: c.env.TENANT_SLUG ?? 'unknown',
       requestId: ref,
       attempts: result.attempts,
       detail: result.error,

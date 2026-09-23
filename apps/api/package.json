@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./commercial": "./src/commercial.ts"
   },
   "scripts": {
     "dev": "wrangler dev",
@@ -14,7 +15,7 @@
     "test:demo-links": "node --test scripts/check-demo-links.node.mjs",
     "build": "wrangler deploy --dry-run --outdir dist",
     "bundle:demo": "bash scripts/bundle-demo.sh",
-    "deploy:demo": "pnpm bundle:demo && wrangler d1 migrations apply logic-camp-demo --config ../../tenants/demo/wrangler.jsonc --remote && wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
+    "deploy:demo": "pnpm bundle:demo && wrangler deploy --config ../../tenants/demo/wrangler.jsonc"
   },
   "dependencies": {
     "@logic-camp/config": "workspace:*",

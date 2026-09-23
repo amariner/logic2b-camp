@@ -90,7 +90,7 @@ export function navGroupsForRole(
     ...group,
     items: group.items.filter(
       (item) =>
-        (item[4] === undefined || tieneRol(role, item[4])) &&
+        (item[4] === undefined || tieneRol(role, item[4]) || (role === 'demo' && !!scenario && item[0] === '/parte')) &&
         (item[5] === undefined || item[5] === scenario),
     ),
   })).filter((group) => group.items.length > 0);

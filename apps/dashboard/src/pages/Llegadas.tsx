@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Llegadas y salidas del día (ADR 0008, sesión 18 — modo lite).
  * La hoja que recepción imprime mentalmente cada mañana: quién entra, quién sale,
@@ -38,7 +39,7 @@ const inHouse = (b: BookingListItem) =>
   b.status === 'confirmed' && Boolean(b.checkedInAt) && !b.checkedOutAt;
 
 const DAY_MS = 86_400_000;
-const hoyIso = () => new Date().toISOString().slice(0, 10);
+const hoyIso = () => businessNow().toISOString().slice(0, 10);
 const addDays = (iso: string, n: number) =>
   new Date(Date.parse(`${iso}T00:00:00Z`) + n * DAY_MS).toISOString().slice(0, 10);
 const eur = (cents: number) =>
@@ -95,7 +96,7 @@ const ACCION = 'flex shrink-0 justify-end';
 
 type FiltroLlegada = 'all' | 'ready' | 'blocked' | 'late';
 const isLate = (b: BookingListItem) =>
-  Boolean(b.arrivalEta && Date.parse(b.arrivalEta) < Date.now() && !b.checkedInAt);
+  Boolean(b.arrivalEta && Date.parse(b.arrivalEta) < businessNow().getTime() && !b.checkedInAt);
 const readiness = (b: BookingListItem) =>
   b.readiness ?? (b.totalCents > b.paidCents ? 'blocked' : 'attention');
 const etaHora = (value?: string | null) =>
@@ -341,9 +342,9 @@ export default function Llegadas() {
   const arrivalDetails = useMutation({
     mutationFn: (b: BookingListItem) => {
       const base =
-        b.arrivalEta && Date.parse(b.arrivalEta) > Date.now()
+        b.arrivalEta && Date.parse(b.arrivalEta) > businessNow().getTime()
           ? Date.parse(b.arrivalEta)
-          : Date.now();
+          : businessNow().getTime();
       return apiPatch(`/api/admin/bookings/${b.id}`, {
         action: 'set_arrival_details',
         vehiclePlate: b.vehiclePlate ?? null,

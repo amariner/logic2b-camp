@@ -43,12 +43,12 @@ const es = {
   'demo.mardefondoBanner':
     'Mar de Fondo es una demostración ficticia de 300 unidades: la reserva, el cobro y la operación son locales, no contactan con proveedores y puedes restablecerlo todo.',
   'demo.verWeb': 'Ver la web del camping',
-  'demo.restablecer': 'Actualizar demo',
-  'demo.restableciendo': 'Actualizando…',
-  'demo.restablecerTitulo': '¿Actualizar las reservas de la demo?',
+  'demo.restablecer': 'Restablecer demo',
+  'demo.restableciendo': 'Restableciendo…',
+  'demo.restablecerTitulo': '¿Volver al verano de demostración?',
   'demo.restablecerCuerpo':
-    'Actualiza como máximo una vez por semana solo las reservas ficticias y sus pagos. No toca reservas, contactos ni catálogo reales.',
-  'demo.restablecerOk': 'La demo ya está en su versión semanal.',
+    'Descarta los cambios de prueba de este navegador y recupera los datos ficticios de junio a agosto de 2026. La fecha seguirá siendo el 7 de agosto.',
+  'demo.restablecerOk': 'La demo vuelve a su estado inicial del 7 de agosto de 2026.',
   'demo.restablecerError': 'No se ha podido actualizar. Inténtalo otra vez.',
   'nav.inicio': 'Inicio',
   'nav.planning': 'Planning',

@@ -11,11 +11,12 @@ export default defineConfig({
       // dev: el endpoint de leads corre en wrangler dev (8787)
       proxy: {
         '/api': 'http://localhost:8787',
+        '/admin': 'http://localhost:8787',
+        '/demo/': 'http://localhost:8787',
         // En producción las demos se publican en este mismo origen. Durante el
-        // desarrollo del catálogo las servimos desde el despliegue vigente para
-        // que los visores puedan navegar la web completa sin componer el bundle.
+        // desarrollo se sirven desde el bundle local: nunca desde la demo remota.
         '/demos': {
-          target: 'https://camp.logic2b.com',
+          target: 'http://localhost:8787',
           changeOrigin: true,
           configure(proxy) {
             proxy.on('proxyRes', (response) => {

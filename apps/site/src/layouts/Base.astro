@@ -107,21 +107,20 @@ const datosEstructurados = {
 // Absolutas (`/#plataforma`, no `#plataforma`) para que el header funcione igual
 // desde la landing y desde cualquier página de guías (ADR 0025).
 const contactContext = ruta === 'docs/' || ruta.startsWith('docs/') ? 'docs' : 'commercial';
-// En producción el Worker monta el gestor en /admin/. En desarrollo se sirve
-// como aplicación Vite independiente, para que los enlaces de la landing sean
-// comprobables sin montar todo el Worker local.
-const managerHref = import.meta.env.DEV ? 'http://localhost:5173/admin/' : '/admin/';
 // La cabecera del home es la cabecera canónica de todo el sitio comercial.
 // Mantener una variante documental aquí fue la causa de que cada ruta pareciera
 // pertenecer a un producto distinto. Los destinos absolutos funcionan desde
 // cualquier página y el recorrido se ocupa de navegar a su primer hito.
 const headerNav = [
   { href: `${localePath(locale)}#demos`, label: c.nav.web, icon: 'demo' },
-  { href: managerHref, label: c.nav.gestor, icon: 'manager' },
+  { href: `${localePath(locale)}#paneles`, label: c.nav.gestor, icon: 'manager' },
   { href: localePath(locale, 'precios/'), label: c.nav.precios, icon: 'pricing' },
 ] as const;
 const isHome = ruta === '/';
-const isThemeDetail = ruta.startsWith('temas/') && ruta !== 'temas/';
+const hasPaperHeader =
+  (ruta.startsWith('temas/') && ruta !== 'temas/') ||
+  (ruta.startsWith('paneles/') && ruta !== 'paneles/') ||
+  ruta === 'empezar/';
 const whatsappContact = logic2bContact(locale, contactContext);
 const menuOpenLabel = locale === 'es' ? 'Abrir menú' : 'Open menu';
 const menuCloseLabel = locale === 'es' ? 'Cerrar menú' : 'Close menu';
@@ -203,7 +202,7 @@ const menuCloseLabel = locale === 'es' ? 'Cerrar menú' : 'Close menu';
     </script>
     <slot name="head" />
   </head>
-  <body class:list={['theme-logic2b theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage', isThemeDetail && 'theme-detail-layout']}>
+  <body class:list={['theme-logic2b theme-botanical home-mini min-h-screen bg-background text-foreground antialiased', !isHome && 'home-subpage', hasPaperHeader && 'paper-header-layout']}>
     <header
       class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
     >

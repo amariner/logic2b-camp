@@ -26,6 +26,9 @@ export const config: TenantWebConfig = {
   demoThemes: ['pinada', 'mar', 'garriga', 'nit'],
   // banner + conmutador de nivel 1/3 en vivo (ADR 0013) — solo esta demo
   isDemo: true,
+  bookingTransport: 'demo-session',
+  demoManagerPath: '/admin/',
+  enquiryTransport: 'demo',
   demoTierSwitch: true,
 };
 

@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * PLANO DEL CAMPING (ADR 0021, Frente C · C7) — el "¿dónde?" que complementa al
  * "¿cuándo?" del planning. Vista cenital con el estado real de cada unidad en una
@@ -63,7 +64,7 @@ export default function Plano() {
   const puedeBloquear = usePuede('block:manage');
   const search = useSearch({ strict: false }) as { date?: string; unit?: string };
   const navigate = useNavigate();
-  const today = iso(new Date());
+  const today = iso(businessNow());
   const date = search.date ?? today;
 
   const setDate = (d: string) =>

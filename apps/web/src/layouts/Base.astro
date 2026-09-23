@@ -216,7 +216,7 @@ const demoBookingBootScript = demoBookingCatalog ? `
     return catalog.seasons.find(function (season) { return season.open && date >= season.from && date < season.to; });
   }
   function cancellationFor(booking) {
-    var daysBefore = Math.max(0, Math.floor((Date.parse(booking.dateFrom + 'T00:00:00Z') - Date.now()) / 86400000));
+    var daysBefore = Math.max(0, Math.floor((Date.parse(booking.dateFrom + 'T00:00:00Z') - Date.parse('2026-08-07T12:00:00.000Z')) / 86400000));
     var tiers = catalog.policy.cancellation.tiers.slice().sort(function (a, b) { return b.minDaysBefore - a.minDaysBefore; });
     var tier = tiers.find(function (item) { return daysBefore >= item.minDaysBefore; }) || { refundPct: 0 };
     return {

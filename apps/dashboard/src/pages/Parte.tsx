@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Parte de viajeros (ADR 0028): SES.Hospedajes / RD 933/2021. Reúne las llegadas de
  * un día, avisa de los datos que faltan (con salto a la ficha para rellenarlos) y,
@@ -144,7 +145,7 @@ function EstanciaRow({ estancia, issues }: { estancia: ParteEstanciaItem; issues
 }
 
 export default function Parte() {
-  const [date, setDate] = useState(() => iso(new Date()));
+  const [date, setDate] = useState(() => iso(businessNow()));
 
   const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['parte', date],

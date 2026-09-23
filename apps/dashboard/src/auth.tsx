@@ -155,6 +155,7 @@ export function useSignOut() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async () => {
+      if (isPortfolioScenario) return;
       await fetch('/api/auth/sign-out', {
         method: 'POST',
         credentials: 'same-origin',

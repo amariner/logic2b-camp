@@ -1,3 +1,5 @@
+> La demo comercial ahora funciona sin D1 ni crons. Véase [DEMO-ESTATICA.md](../../docs/DEMO-ESTATICA.md). Los procedimientos de seed y refresco descritos a continuación son históricos y no se ejecutan en el despliegue comercial.
+
 # Tenant demo — Camping Cala Sereno
 
 - **Qué es**: camping ficticio canónico bajo `/demo/` dentro de la herramienta

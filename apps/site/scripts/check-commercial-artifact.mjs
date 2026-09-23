@@ -199,7 +199,7 @@ for (const locale of locales) {
     );
   }
   assert(home.includes('href="/demo/"'), `${locale.code}: falta el salto a la web demo`);
-  assert(home.includes('href="/admin/"'), `${locale.code}: falta el salto al gestor demo`);
+  assert(home.includes(`href="/${locale.prefix}#paneles"`), `${locale.code}: falta el salto a los gestores del home`);
   assert(home.includes('GTM-TVDWZ9LC'), `${locale.code}: falta el contenedor GTM comercial`);
   assert(home.includes('data-consent-banner'), `${locale.code}: falta el banner de consentimiento`);
   assert(home.includes('data-hero-lead-form'), `${locale.code}: falta la captación principal`);

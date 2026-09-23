@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 import { Button, Input, SelectNative, Skeleton } from '@logic-camp/ui';
 import { Map as MapIcon, Pencil, Search } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
@@ -155,7 +156,7 @@ export default function PlanningAgenda({
             <Button
               variant="outline"
               className="min-h-11 px-3"
-              onClick={() => onAnchorChange(isoDay(new Date()))}
+              onClick={() => onAnchorChange(isoDay(businessNow()))}
             >
               {t('planning.hoy')}
             </Button>

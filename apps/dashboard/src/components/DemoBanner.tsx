@@ -61,7 +61,7 @@ export default function DemoBanner() {
         <SheetContent side="bottom" className="max-h-[85dvh] rounded-t-xl p-0 md:hidden">
           <SheetHeader>
             <SheetTitle>{t('demo.titulo')}</SheetTitle>
-            <SheetDescription className="pr-4 leading-relaxed">{t(bannerKey)}</SheetDescription>
+            <SheetDescription className="pr-4 leading-relaxed">{t(bannerKey)} · 7 agosto 2026 · Temporada junio–agosto · Datos locales</SheetDescription>
           </SheetHeader>
           <div className="grid gap-3 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <Button asChild type="button" variant="outline" className="min-h-11 justify-center">
@@ -108,7 +108,7 @@ export default function DemoBanner() {
 
       <div className="hidden shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground md:flex">
         <Info className="size-3.5 shrink-0" aria-hidden />
-        <p className="min-w-0 flex-1">{t(bannerKey)}</p>
+        <p className="min-w-0 flex-1">{t(bannerKey)} · 7 agosto 2026 · Temporada junio–agosto · Datos locales</p>
         <Button asChild type="button" variant="ghost" size="sm">
           <a href={webHref}>
             <ExternalLink className="size-3.5" aria-hidden />

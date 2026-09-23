@@ -17,6 +17,9 @@
   --botanical-charcoal: var(--logic2b-charcoal);
   --botanical-border: var(--logic2b-border);
   --botanical-serif: var(--logic2b-serif);
+  --site-section-title-size: clamp(34px, 4vw, 60px);
+  --site-page-title-size: clamp(42px, 5.2vw, 80px);
+  --site-header-height: calc(clamp(12px, 1.6vw, 22px) + clamp(68px, 5.4vw, 84px));
 
   background: var(--botanical-paper);
   color: var(--botanical-charcoal);
@@ -54,8 +57,8 @@
   background: color-mix(in srgb, var(--botanical-keylime) 62%, var(--botanical-paper));
 }
 
-/* Las fichas de temas tienen un fondo continuo, también bajo el menú flotante. */
-.theme-botanical.home-mini.theme-detail-layout {
+/* Las fichas y el formulario continúan su fondo de papel bajo el menú flotante. */
+.theme-botanical.home-mini.paper-header-layout {
   background: var(--botanical-paper);
 }
 
@@ -331,6 +334,13 @@ button.site-menu__link {
   scroll-margin-top: 72px;
 }
 
+/* El destino empieza detrás del menú flotante; el título conserva su separación. */
+#demos,
+#paneles {
+  scroll-margin-top: 0;
+  padding-top: calc(var(--site-header-height) + 28px);
+}
+
 .botanical-eyebrow {
   color: var(--botanical-ink);
   font-size: 11px;
@@ -342,14 +352,14 @@ button.site-menu__link {
 
 .botanical-heading {
   max-width: 780px;
-  font-size: clamp(42px, 6vw, 74px);
+  font-size: var(--site-section-title-size);
   line-height: 1.02;
   letter-spacing: -0.035em;
 }
 
 .botanical-heading-sm {
   max-width: 680px;
-  font-size: clamp(34px, 4.3vw, 56px);
+  font-size: clamp(30px, 3.3vw, 48px);
   line-height: 1.08;
   letter-spacing: -0.025em;
 }
@@ -1467,6 +1477,10 @@ button.site-menu__link {
 }
 
 @media (max-width: 767px) {
+  .theme-botanical {
+    --site-header-height: 78px;
+  }
+
   .theme-botanical > header > div,
   .botanical-shell,
   .theme-botanical > footer > div {

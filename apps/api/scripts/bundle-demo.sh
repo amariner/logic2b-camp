@@ -42,7 +42,7 @@ for entry in "${web_demos[@]}"; do
   cp -r "$web_dist" "$site_dist/demos/$slug"
 done
 
-pnpm --filter @logic-camp/dashboard build
+VITE_DEMO_SCENARIO=mardefondo BASE_PATH=/admin pnpm --filter @logic-camp/dashboard build
 cp -r "$dashboard_dist" "$site_dist/admin"
 
 for slug in "${manager_demos[@]}"; do

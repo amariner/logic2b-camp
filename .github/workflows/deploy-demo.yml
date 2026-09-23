@@ -1,13 +1,13 @@
 name: deploy-demo
 # El deploy de la demo vive en UN SOLO SITIO: el script `deploy:demo` de `apps/api`
 # (compone `apps/site/dist` = landing en la raíz + web en /demo/ + dashboard en /admin/,
-# aplica las migraciones en la D1 remota y despliega el Worker). Este workflow NO duplica
+# usa fixtures locales sin D1 y despliega el Worker). Este workflow NO duplica
 # esos pasos: los invoca. Si cambia el bundle, cambia el script y el CI le sigue solo.
 #
 # ESTADO HOY: APAGADO. Sin la variable de repo DEPLOY_DEMO_ENABLED=true el job no corre y
 # el deploy de la demo se hace a mano desde local con ese mismo comando
 # (decisión 2026-07-19, ver docs/ROADMAP.md). Para encenderlo: crear un API token de
-# Cloudflare con permisos Workers Scripts Edit + D1 Edit, guardarlo como secret
+# Cloudflare con permisos Workers Scripts Edit, guardarlo como secret
 # CLOUDFLARE_API_TOKEN junto a CLOUDFLARE_ACCOUNT_ID, y poner DEPLOY_DEMO_ENABLED=true.
 #
 # Producción de tenants reales: SIEMPRE manual (workflow aparte, Fase 9). Esto solo toca la demo.
@@ -27,8 +27,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # site + web(BASE_PATH=/demo) + dashboard → composición del bundle → migraciones → deploy
-      - name: Build, migrar y desplegar la demo (apps/api → deploy:demo)
+      # site + webs + gestores con fixtures → composición del bundle → deploy sin D1
+      - name: Build y desplegar la demo estática (apps/api → deploy:demo)
         run: pnpm --filter @logic-camp/api deploy:demo
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

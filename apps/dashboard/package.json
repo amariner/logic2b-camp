@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:demo": "VITE_DEMO_SCENARIO=mardefondo BASE_PATH=/admin vite --port 5173",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",

@@ -22,7 +22,7 @@ if (scenario && !(portfolioScenarios as readonly string[]).includes(scenario)) {
 const basePath = process.env.BASE_PATH?.replace(/\/$/, '');
 if (scenario) {
   const expectedBase = `/demos/${scenario}/gestion`;
-  if (basePath !== expectedBase) {
+  if (basePath !== expectedBase && !(scenario === 'mardefondo' && basePath === '/admin')) {
     throw new Error(
       `El escenario ${scenario} exige BASE_PATH=${expectedBase}; recibido ${basePath ?? '(vacío)'}.`,
     );

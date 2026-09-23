@@ -1,3 +1,5 @@
+import { isPortfolioScenario } from '@demo-scenario';
+import { DEMO_SEASON, businessNow } from '../lib/clock';
 /**
  * Informes (ADR 0008, sesión 20): los números que gerencia mira cada lunes.
  * Tiles de titular + ocupación por tipo como medidor de un solo tono (magnitud):
@@ -16,7 +18,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 
 /** Rangos con un click: lo que se consulta el 95% de las veces. */
 function rangos(): { id: string; label: string; from: string; to: string }[] {
-  const hoy = new Date();
+  const hoy = businessNow();
   const y = hoy.getUTCFullYear();
   const m = hoy.getUTCMonth();
   return [
@@ -35,8 +37,8 @@ function rangos(): { id: string; label: string; from: string; to: string }[] {
     {
       id: 'temporada',
       label: t('inf.temporada'),
-      from: iso(hoy),
-      to: iso(new Date(Date.UTC(y, m + 3, hoy.getUTCDate()))),
+      from: isPortfolioScenario ? DEMO_SEASON.from : iso(hoy),
+      to: isPortfolioScenario ? DEMO_SEASON.to : iso(new Date(Date.UTC(y, m + 3, hoy.getUTCDate()))),
     },
   ];
 }

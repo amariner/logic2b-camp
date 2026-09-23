@@ -1,3 +1,4 @@
+import { fixtureRead, summerBookings, summerEnquiries } from './season-fixtures';
 /** Escenario operativo local de la demo Visión «Mar de Fondo». */
 import type { PlanoDescriptor } from '@logic-camp/config';
 import type {
@@ -16,7 +17,7 @@ import { resetInteligenteScenario } from './inteligente';
 import { resetControlTotalScenario } from './control-total';
 
 export const isMardefondoScenario = import.meta.env.VITE_DEMO_SCENARIO === 'mardefondo';
-export const MARDEFONDO_STATE_KEY = 'logic2b-demo:mardefondo:manager-state:v1';
+export const MARDEFONDO_STATE_KEY = 'logic2b-demo:mardefondo:manager-state:summer-v3';
 export const MARDEFONDO_PUBLIC_BOOKINGS_KEY = 'logic2b-demo:mardefondo:public-bookings:v1';
 
 const DAY_MS = 86_400_000;
@@ -267,19 +268,26 @@ function signatureBooking(source?: PublicBooking): DemoBooking {
   };
 }
 
-type ScenarioState = { bookings: DemoBooking[] };
+type ScenarioState = { bookings: DemoBooking[]; enquiries: import('../api').EnquiryItem[] };
+let summerBaseline: DemoBooking[] | undefined;
 function initialState(): ScenarioState {
   const publicBooking = readPublicBookings().find((item) => item.code === 'MF-DEMO-001');
-  return {
-    bookings: [
-      signatureBooking(publicBooking),
-      ...Array.from({ length: 239 }, (_, index) => makeBooking(index)),
-    ],
-  };
+  summerBaseline ??= summerBookings(
+    [signatureBooking(), ...Array.from({ length: 239 }, (_, index) => makeBooking(index))],
+    units,
+    [...signatureCodes],
+  );
+  const bookings = structuredClone(summerBaseline);
+  if (publicBooking) bookings[0] = signatureBooking(publicBooking);
+  return { enquiries: summerEnquiries(catalog, 'mardefondo'), bookings };
 }
 function saveState(state: ScenarioState): void {
   if (typeof localStorage !== 'undefined')
-    localStorage.setItem(MARDEFONDO_STATE_KEY, JSON.stringify(state));
+    try {
+      localStorage.setItem(MARDEFONDO_STATE_KEY, JSON.stringify(state));
+    } catch {
+      /* La demo sigue navegable sin almacenamiento persistente. */
+    }
 }
 function loadState(): ScenarioState {
   if (typeof localStorage === 'undefined') return initialState();
@@ -290,7 +298,6 @@ function loadState(): ScenarioState {
     /* Un estado roto vuelve al fixture canónico. */
   }
   const state = initialState();
-  saveState(state);
   return state;
 }
 export function resetMardefondoScenario(): void {
@@ -666,9 +673,29 @@ export async function demoScenarioRequest(
   if (method === 'GET' && forcedState === 'error' && url.pathname.startsWith('/api/admin/'))
     return fail(503, 'scenario_forced_error');
 
+  if (method === 'GET' && forcedState !== 'empty') {
+    const fixture = fixtureRead(url, catalog, state.bookings);
+    if (fixture) return fixture;
+  }
   if (method === 'GET' && url.pathname === '/api/admin/catalog') return ok(catalog);
   if (method === 'GET' && url.pathname === '/api/admin/map') return ok({ plano: mardefondoPlano });
-  if (method === 'GET' && url.pathname === '/api/admin/enquiries') return ok({ items: [] });
+  if (method === 'GET' && url.pathname === '/api/admin/enquiries')
+    return ok({
+      items: state.enquiries.filter(
+        (item) => !url.searchParams.get('status') || item.status === url.searchParams.get('status'),
+      ),
+    });
+  const enquiryMatch = url.pathname.match(/^\/api\/admin\/enquiries\/([^/]+)$/);
+  if (method === 'PATCH' && enquiryMatch) {
+    const enquiry = state.enquiries.find((item) => item.id === enquiryMatch[1]);
+    const status = bodyOf(init).status;
+    if (!enquiry) return fail(404, 'not_found');
+    if (!['new', 'contacted', 'quoted', 'converted', 'lost'].includes(String(status)))
+      return fail(400, 'invalid_status');
+    enquiry.status = status as typeof enquiry.status;
+    saveState(state);
+    return ok(enquiry);
+  }
   if (method === 'GET' && url.pathname === '/api/admin/settings') {
     const settings: TenantSettings = {
       id: 'ten_mardefondo',

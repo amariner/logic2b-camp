@@ -1,3 +1,4 @@
+import { fixtureRead, summerBookings } from './season-fixtures';
 /**
  * Escenario comercial Pinada del Mar.
  *
@@ -26,19 +27,19 @@ export const isCarrascaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'carras
 export const isBallenaScenario = import.meta.env.VITE_DEMO_SCENARIO === 'ballena';
 export const isSoldhivernScenario = import.meta.env.VITE_DEMO_SCENARIO === 'soldhivern';
 
-export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:v1';
+export const PINADA_STATE_KEY = 'logic2b-demo:pinadamar:state:summer-v3';
 export const PINADA_WEB_ENQUIRY_KEY = 'logic2b-demo:pinadamar:submitted-enquiry:v1';
-export const SERRALTA_STATE_KEY = 'logic2b-demo:serralta:state:v1';
+export const SERRALTA_STATE_KEY = 'logic2b-demo:serralta:state:summer-v3';
 export const SERRALTA_WEB_ENQUIRY_KEY = 'logic2b-demo:serralta:submitted-enquiry:v1';
-export const VINYES_STATE_KEY = 'logic2b-demo:vinyes:state:v1';
+export const VINYES_STATE_KEY = 'logic2b-demo:vinyes:state:summer-v3';
 export const VINYES_WEB_ENQUIRY_KEY = 'logic2b-demo:vinyes:submitted-enquiry:v1';
-export const TARONGERS_STATE_KEY = 'logic2b-demo:tarongers:state:v1';
+export const TARONGERS_STATE_KEY = 'logic2b-demo:tarongers:state:summer-v3';
 export const TARONGERS_WEB_ENQUIRY_KEY = 'logic2b-demo:tarongers:submitted-enquiry:v1';
-export const CARRASCA_STATE_KEY = 'logic2b-demo:carrasca:state:v1';
+export const CARRASCA_STATE_KEY = 'logic2b-demo:carrasca:state:summer-v3';
 export const CARRASCA_WEB_ENQUIRY_KEY = 'logic2b-demo:carrasca:submitted-enquiry:v1';
-export const BALLENA_STATE_KEY = 'logic2b-demo:ballena:state:v1';
+export const BALLENA_STATE_KEY = 'logic2b-demo:ballena:state:summer-v3';
 export const BALLENA_WEB_ENQUIRY_KEY = 'logic2b-demo:ballena:submitted-enquiry:v1';
-export const SOLDHIVERN_STATE_KEY = 'logic2b-demo:soldhivern:state:v1';
+export const SOLDHIVERN_STATE_KEY = 'logic2b-demo:soldhivern:state:summer-v3';
 export const SOLDHIVERN_WEB_ENQUIRY_KEY = 'logic2b-demo:soldhivern:submitted-enquiry:v1';
 
 const activeScenario = isSoldhivernScenario
@@ -609,11 +610,21 @@ function readWebEnquiry(): EnquiryItem | null {
   }
 }
 
+let summerBaseline: DemoBooking[] | undefined;
 function initialState(): ScenarioState {
   const enquiry = readWebEnquiry();
   return {
     enquiries: enquiry ? [enquiry, ...baseEnquiries] : [...baseEnquiries],
-    bookings: [...readPublicBookings(), ...baseBookings()],
+    bookings: [
+      ...readPublicBookings(),
+      ...structuredClone(
+        (summerBaseline ??= summerBookings(
+          baseBookings(),
+          isSoldhivernScenario ? [] : units,
+          Object.values(preferredCodeByType),
+        )),
+      ),
+    ],
   };
 }
 
@@ -626,13 +637,16 @@ function loadState(): ScenarioState {
     /* Un almacenamiento corrupto degrada al fixture canónico. */
   }
   const state = initialState();
-  saveState(state);
   return state;
 }
 
 function saveState(state: ScenarioState): void {
   if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(activeStateKey, JSON.stringify(state));
+  try {
+    localStorage.setItem(activeStateKey, JSON.stringify(state));
+  } catch {
+    /* La demo sigue navegable sin almacenamiento persistente. */
+  }
 }
 
 export function resetPinadaScenario(): void {
@@ -1354,7 +1368,24 @@ export async function demoScenarioRequest(
   }
 
   if (method === 'GET' && url.pathname === '/api/admin/enquiries')
-    return ok({ items: forcedState === 'empty' ? [] : state.enquiries });
+    return ok({
+      items:
+        forcedState === 'empty'
+          ? []
+          : state.enquiries.filter(
+              (item) =>
+                (!url.searchParams.get('status') ||
+                  item.status === url.searchParams.get('status')) &&
+                (!url.searchParams.get('q') ||
+                  `${item.contact.name} ${item.contact.email} ${item.message}`
+                    .toLowerCase()
+                    .includes(url.searchParams.get('q')!.toLowerCase())),
+            ),
+    });
+  if (method === 'GET' && forcedState !== 'empty') {
+    const fixture = fixtureRead(url, catalog, state.bookings);
+    if (fixture) return fixture;
+  }
   if (method === 'GET' && url.pathname === '/api/admin/catalog') return ok(catalog);
   if (method === 'GET' && url.pathname === '/api/admin/map') return ok({ plano: activePlano });
   if (method === 'GET' && url.pathname === '/api/admin/settings') {
@@ -1697,7 +1728,11 @@ export async function demoScenarioRequest(
 export const pinadaFixtureCounts = {
   units: units.length,
   enquiries: baseEnquiries.length,
-  bookings: baseBookings().length,
+  bookings: summerBookings(
+    baseBookings(),
+    isSoldhivernScenario ? [] : units,
+    Object.values(preferredCodeByType),
+  ).length,
   locales: new Set(baseEnquiries.map((enquiry) => enquiry.locale)).size,
   inactiveUnits: units.filter((unit) => unit.status !== 'active').length,
 };

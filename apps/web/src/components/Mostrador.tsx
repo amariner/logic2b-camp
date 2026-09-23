@@ -38,7 +38,7 @@ type Props = {
 };
 
 const plus = (days: number) => {
-  const d = new Date();
+  const d = new Date(import.meta.env.DEMO_FIXED_NOW || Date.now());
   d.setDate(d.getDate() + days);
   return d.toISOString().slice(0, 10);
 };
@@ -140,7 +140,7 @@ export default function Mostrador({
   const closedMessage = useMemo(() => {
     if (!opensOn) return labels.cerrado;
     const date = new Date(`${opensOn}T12:00:00Z`);
-    const sameYear = date.getUTCFullYear() === new Date().getFullYear();
+    const sameYear = date.getUTCFullYear() === new Date(import.meta.env.DEMO_FIXED_NOW || Date.now()).getFullYear();
     const texto = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'long',

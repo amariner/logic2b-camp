@@ -1,3 +1,4 @@
+import { businessNow } from '../lib/clock';
 /**
  * Recibo/ticket imprimible del check-out (BACKLOG C4→C4.3): el desglose auditable
  * y los cobros de la ficha en una hoja limpia que la recepcionista imprime y
@@ -29,7 +30,7 @@ export default function BookingReceipt({
   const lead = data.guests.find((g) => g.isLead) ?? data.guests[0] ?? null;
   const currency = data.priceBreakdown.currency;
   // fecha de emisión = hoy (runtime del navegador, no el sandbox de workflows)
-  const emitted = fecha(new Date().toISOString());
+  const emitted = fecha(businessNow().toISOString());
 
   return createPortal(
     <div className="lc-receipt" aria-hidden="true">

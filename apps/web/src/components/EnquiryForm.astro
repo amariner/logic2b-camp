@@ -190,6 +190,7 @@ const fixedStayName = fixedStay?.name ?? '';
           };
           localStorage.setItem(`logic2b-demo:${tenantSlug}:submitted-enquiry:v1`, JSON.stringify(submitted));
           localStorage.removeItem(`logic2b-demo:${tenantSlug}:state:v1`);
+          localStorage.removeItem(`logic2b-demo:${tenantSlug}:state:summer-v3`);
         }
         confirmation.classList.remove('hidden');
         confirmation.focus();

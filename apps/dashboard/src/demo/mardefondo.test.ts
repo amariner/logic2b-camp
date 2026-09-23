@@ -6,9 +6,10 @@ describe('escenario Mar de Fondo', () => {
     expect(mardefondoFixtureCounts).toMatchObject({
       units: 300,
       mapUnits: 300,
-      bookings: 240,
+      bookings: expect.any(Number),
       inactiveUnits: 1,
     });
+    expect(mardefondoFixtureCounts.bookings).toBeGreaterThanOrEqual(700);
   });
 
   it('comparte con la web los cuatro identificadores de producto', async () => {

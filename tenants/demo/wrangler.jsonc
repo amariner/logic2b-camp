@@ -1,18 +1,17 @@
 // Tenant DEMO — Camping Cala Sereno → camp.logic2b.com
 // Un solo Worker sirve web (Workers Assets, dist de Astro) + API. Un deploy = web + API.
-// database_id y kv id reales se rellenan al crear los recursos (wrangler d1 create logic-camp-demo).
 {
   "$schema": "../../apps/api/node_modules/wrangler/config-schema.json",
   "name": "logic-camp-demo",
-  // envuelve apps/api/src/index.ts + el refresco semanal acotado — SOLO este tenant
+  // Worker comercial sin acceso a D1; los gestores usan fixtures en el navegador.
   "main": "./worker.ts",
   "compatibility_date": "2026-07-01",
   "compatibility_flags": ["nodejs_compat"],
   // Solo el lead comercial usa Resend. Su secreto es LEADS_RESEND_API_KEY;
   // RESEND_API_KEY permanece ausente para no activar mensajería interna demo.
   "vars": { "TENANT_SLUG": "demo", "LEADS_TRANSPORT": "resend" },
-  // Diario: holds + avisos. Semanal: RGPD + refresco incremental de reservas demo.
-  "triggers": { "crons": ["17 8 * * *", "37 3 * * 1"] },
+  // Demo estática: no hay crons ni binding D1.
+  "triggers": { "crons": [] },
   "routes": [{ "pattern": "camp.logic2b.com/*", "zone_name": "logic2b.com" }],
   "assets": {
     // Bundle compuesto (ADR 0016): landing de producto en la raíz + web-demo en /demo/ +
@@ -23,12 +22,4 @@
     // la API pasa SIEMPRE por el Worker aunque exista un fichero con esa ruta
     "run_worker_first": ["/api/*"],
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "logic-camp-demo",
-      "database_id": "41a7fe70-6385-445b-b7ae-6133442cf91f",
-      "migrations_dir": "../../packages/db/migrations",
-    },
-  ],
 }
