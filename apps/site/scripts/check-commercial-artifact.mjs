@@ -74,6 +74,12 @@ function assertPricingShowcase(html, content, locale, page) {
   );
 
   content.pricingShowcase.items.forEach((plan, index) => {
+    if (plan.id === 'avanzado') {
+      assert(
+        plan.precio === plan.precioAnual,
+        `${label}: el plan a medida debe mostrar el mismo estado en ambas facturaciones`,
+      );
+    }
     assert(
       attribute(priceTags[index], 'data-monthly') === plan.precio,
       `${label}: precio mensual de ${plan.id}`,
