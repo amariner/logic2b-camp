@@ -117,7 +117,7 @@ function SidebarInner({
 
   return (
     <>
-      <div className="flex h-14 items-center gap-2 px-3">
+      <div className="flex h-12 items-center gap-2 px-3">
         {/* Plegada, la sidebar son 56px: ahí solo cabe «2B» (sesión 59) — y
            plegada no enlaza: lo que se recorta es el dibujo, no la marca. */}
         <Wordmark
@@ -126,6 +126,28 @@ function SidebarInner({
           enlazado={!collapsed}
         />
       </div>
+
+      {onToggleCollapse && (
+        <div className="border-b border-sidebar-border px-2 pb-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleCollapse}
+            title={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
+            aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
+            aria-expanded={!collapsed}
+            className={cn(
+              'h-8 w-full text-muted-foreground',
+              collapsed ? 'px-0' : 'justify-start px-2',
+            )}
+          >
+            <ChevronLeft
+              className={cn('size-4 shrink-0 transition-transform', collapsed && 'rotate-180')}
+            />
+            {!collapsed && <span>{t('nav.colapsar')}</span>}
+          </Button>
+        </div>
+      )}
 
       <nav className="flex-1 overflow-y-auto px-2 pb-2">
         {/* Inicio va suelto y arriba, fuera de los grupos: no es "operación
@@ -185,20 +207,6 @@ function SidebarInner({
         />
         <div className={cn('flex gap-1', collapsed ? 'flex-col items-center' : 'items-center')}>
           <ThemeToggle />
-          {onToggleCollapse && (
-            <Button
-              variant="ghost"
-              size="iconSm"
-              onClick={onToggleCollapse}
-              title={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
-              aria-label={t(collapsed ? 'nav.desplegar' : 'nav.colapsar')}
-              className="size-8"
-            >
-              <ChevronLeft
-                className={cn('size-4 transition-transform', collapsed && 'rotate-180')}
-              />
-            </Button>
-          )}
           <Button
             variant="outline"
             size="sm"

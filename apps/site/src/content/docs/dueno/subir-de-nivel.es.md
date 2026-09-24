@@ -1,47 +1,36 @@
 ---
-title: 'Qué pasa cuando subes de nivel'
-description: 'Qué cambia exactamente, qué NO cambia, y cuánto tarda.'
+title: 'Qué pasa cuando cambias de plan'
+description: 'Qué cambia, qué se conserva y cómo preparamos la ampliación.'
 lang: es
 orden: 2
-updated: '2026-08-05'
+updated: '2026-09-24'
 ---
 
-La pregunta importante antes de empezar por abajo es: **¿tendré que volver a empezar cuando necesite más?** No. La escalera está diseñada para conservar lo que ya funciona y añadir capacidades.
+Si empiezas por Inicial, puedes ampliar la plataforma cuando necesites gestionar reservas o adaptar más procesos. Antes del cambio acordamos el alcance, el coste y la fecha de salida.
 
-## Lo que no cambia
+## Lo que se conserva
 
-- **Tu dominio**: la web sigue en la misma dirección.
-- **Tu marca y contenido**: se conservan diseño, páginas, textos y fotos; pueden ampliarse.
-- **Tus URLs y posicionamiento**: se evita rehacer la estructura sin necesidad.
-- **Los datos ya almacenados en Gestión**: no se abandonan al activar niveles superiores.
+- **Tu dominio y tu marca**: la nueva web parte de la identidad que ya tienes.
+- **El contenido útil**: textos, fotos y páginas pueden reutilizarse o ampliarse.
+- **Tus datos de Gestión**: siguen en tu instancia cuando se añade un alcance Avanzado.
 
-Inicio es la excepción: sus consultas llegan al correo y Logic2B no las guarda. Al pasar a Gestión, el histórico empieza en la nueva plataforma; los correos anteriores siguen en tu buzón.
+Inicial no almacena consultas en Logic2B: llegan al correo de recepción. Al pasar a Gestión, el histórico de reservas empieza en la nueva plataforma; los correos anteriores siguen en tu buzón.
 
-## Lo que aparece
+## Lo que se añade
 
-| Al pasar a      | Aparece                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| **Gestión**     | Disponibilidad, motor, planning, plano, clientes, pagos, tarifas e informes                       |
-| **Automatiza**  | Comunicaciones automáticas e IA supervisada para buscar, redactar, traducir y preparar respuestas |
-| **Inteligente** | Rentabilidad, previsiones, integraciones y copiloto con confirmación humana                       |
+| Al pasar a | Aparece |
+| --- | --- |
+| **Gestión** | Disponibilidad, motor de reservas, planning, clientes, pagos, tarifas e informes. |
+| **Avanzado** | Automatizaciones, comunicaciones, integraciones y recorridos definidos para tu camping. |
 
-## Cuánto tarda
+## Preparar el cambio
 
-Depende del salto. Activar una capacidad ya configurada puede ser rápido; pasar de Inicio a Gestión exige preparar inventario, tarifas, reglas y operativa. Antes de empezar cerramos alcance y fecha.
+Pasar de Inicial a Gestión requiere preparar inventario, tarifas, reglas y operativa. Para activar el motor necesitamos los tipos de alojamiento, las unidades físicas, las temporadas, las tarifas y las políticas de estancia y cancelación.
 
-Para activar el motor necesitamos:
+El cobro online se configura con la pasarela acordada. Se puede añadir después según el alcance contratado.
 
-- Tipos de alojamiento, capacidades y características.
-- Temporadas y tarifas.
-- Reglas de estancia y política de cancelación.
-- Unidades físicas para el planning.
+## Qué se paga al ampliar
 
-## Cobro online
+Gestión tiene una cuota de **399 €/mes** o **4.309 €/año**, más **1.900 € de onboarding y diseño web**. Avanzado se presupuesta a medida. Si ya utilizas Inicial, revisamos qué trabajo y contenido se puede aprovechar y lo reflejamos en la propuesta.
 
-Se activa cuando lo necesites mediante una pasarela acordada. Puedes empezar en Gestión sin cobro online y añadirlo después sin rehacer el resto de la plataforma.
-
-## Qué se paga al subir
-
-No se cobra una segunda alta completa. Se presupuesta la diferencia de activación y el trabajo nuevo real: carga de inventario, migración, integraciones o contenido adicional. Así empezar pequeño no penaliza, pero tampoco oculta el trabajo que requiere el siguiente nivel.
-
-Automatiza e Inteligente siguen marcados como **en desarrollo** y **roadmap** hasta cumplir sus criterios de producto. La página de [precios](/precios/) muestra siempre el estado comercial vigente.
+La página de [precios](/precios/) muestra las condiciones vigentes de cada plan.

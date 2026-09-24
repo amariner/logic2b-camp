@@ -36,7 +36,7 @@
     "ctaComoFunciona": "Ver recorrido",
     "ctaVer": "Ver la web de ejemplo",
     "ctaMostrador": "Probar el gestor de reservas",
-    "nota": "Plan Inicio: alta 0 €, un idioma y compromiso de 12 meses. Sin comisión por reserva.",
+    "nota": "Plan Inicial: un idioma y permanencia de 6 meses. Sin comisión por reserva.",
     "capturaWebAlt": "La web pública de un camping hecha con Logic2B Campings, con su buscador de disponibilidad"
   },
   "conversion": {
@@ -908,185 +908,16 @@
     },
     "nota": "Integraciones previstas en el roadmap; las marcas pertenecen a sus respectivos titulares."
   },
-  "niveles": {
-    "kicker": "Una plataforma que crece contigo",
-    "titulo": "Empieza consiguiendo consultas. Termina decidiendo mejor.",
-    "subtitulo": "Activa solo lo que necesitas hoy. Cuando el camping crece, conservas tu web, tu marca y tus datos: amplías capacidades sin cambiar de proveedor.",
-    "items": [
-      {
-        "nombre": "Inicio",
-        "para": "Consigue consultas",
-        "resultado": "Una presencia profesional que convierte visitas en conversaciones con recepción.",
-        "texto": "Una web atractiva y rápida para empezar a vender directo, sin implantar todavía un programa de gestión.",
-        "precio": "49 €/mes",
-        "alta": "Alta 0 €",
-        "estado": "Plan de lanzamiento",
-        "estadoTipo": "disponible",
-        "cta": "Iniciar web",
-        "href": "#contacto",
-        "destacado": true,
-        "incluye": [
-          "Web responsive con tu marca",
-          "Formulario → email de recepción",
-          "Alojamiento, HTTPS y SEO básico",
-          "1 idioma · compromiso de 12 meses"
-        ]
-      },
-      {
-        "nombre": "Gestión",
-        "para": "Pon orden en el camping",
-        "resultado": "Disponibilidad, llegadas, cobros y clientes bajo control desde un solo lugar.",
-        "texto": "La plataforma operativa completa para dejar atrás hojas de cálculo, agendas y herramientas separadas.",
-        "precio": "149 €/mes",
-        "alta": "Alta desde 2.900 €",
-        "estado": "Disponible",
-        "estadoTipo": "disponible",
-        "cta": "Solicitar plan",
-        "href": "/admin/",
-        "incluye": [
-          "Web y motor de reservas",
-          "Planning y plano del camping",
-          "Clientes, tarifas y pagos",
-          "Check-in, check-out e informes"
-        ]
-      },
-      {
-        "nombre": "Automatiza",
-        "para": "Ahorra tiempo cada día",
-        "resultado": "Recepción responde antes y el sistema se ocupa de lo que hoy depende de acordarse.",
-        "texto": "Automatizaciones y asistencia de IA para reducir seguimiento manual sin ceder el control de las decisiones.",
-        "precio": "A consultar",
-        "alta": "Alta a consultar",
-        "estado": "En desarrollo",
-        "estadoTipo": "desarrollo",
-        "cta": "Solicitar plan",
-        "href": "#contacto",
-        "incluye": [
-          "Correos, recordatorios y reseñas",
-          "Respuestas y traducción con IA",
-          "Búsqueda y resúmenes inteligentes",
-          "Presupuestos supervisados y WhatsApp"
-        ]
-      },
-      {
-        "nombre": "Inteligente",
-        "para": "Decide mejor con tus datos",
-        "resultado": "Detecta riesgos, entiende la rentabilidad y prepara la siguiente acción con contexto real.",
-        "texto": "Inteligencia de negocio, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.",
-        "precio": "A consultar",
-        "alta": "Alta a consultar",
-        "estado": "Roadmap",
-        "estadoTipo": "vision",
-        "cta": "Solicitar plan",
-        "href": "/inteligente/",
-        "incluye": [
-          "Rentabilidad y comparativas",
-          "Previsión de ocupación e ingresos",
-          "Precios, promociones e integraciones",
-          "Copiloto con confirmación humana"
-        ]
-      }
-    ],
-    "nota": "Desde 49 €/mes, sin comisión por reserva. Inicio: alta 0 €, un idioma y compromiso de 12 meses. Importes sin IVA.",
-    "recomendado": "Sin alta",
-    "selector": {
-      "pregunta": "¿Qué quieres resolver ahora?",
-      "opciones": [
-        "Necesito una web",
-        "Quiero controlar las reservas",
-        "Quiero ahorrar tiempo",
-        "Quiero decidir con datos"
-      ],
-      "resultado": "Tu siguiente paso: {nivel}. Cuando lo necesites, amplías capacidades sin cambiar de sistema."
-    }
-  },
   "precios": {
     "seo": {
-      "title": "Precios de Logic2B Campings — de tu primera web al copiloto",
-      "description": "Cuatro niveles claros para campings: web desde 49 €/mes, gestión, automatización e inteligencia de negocio, sin comisión por reserva."
+      "title": "Precios de Logic2B Campings — Inicial, Gestión y Avanzado",
+      "description": "Planes Inicial desde 49 €/mes, Gestión por 399 €/mes y Avanzado a medida. Pago mensual o anual, sin comisión por reserva."
     },
     "kicker": "Precios claros · sin comisión por reserva",
     "titulo": "Empieza pequeño. Escala sin volver a empezar.",
     "intro": "Primero consigues consultas. Después controlas el camping, automatizas trabajo y utilizas tus datos para decidir mejor. La web, la marca y el sistema crecen contigo.",
-    "iva": "Importes sin IVA. El pago anual incluye un 10 % de descuento. Dominio, servicios de terceros e integraciones específicas se facturan aparte cuando apliquen.",
-    "planesTitulo": "Cuatro pasos, una sola plataforma",
-    "altaLabel": "Alta",
-    "cuotaLabel": "Cuota",
-    "planes": [
-      {
-        "nombre": "Inicio",
-        "para": "Consigue consultas",
-        "resultado": "Una web atractiva que pone al camping en marcha online.",
-        "alta": "0 €",
-        "cuota": "49 €/mes",
-        "estado": "Plan de lanzamiento",
-        "estadoTipo": "disponible",
-        "texto": "Web responsive con tu marca y formulario directo al correo de recepción. Sin gestor, motor ni histórico.",
-        "incluye": [
-          "Web, alojamiento y HTTPS",
-          "Formulario → recepción",
-          "SEO básico y 1 idioma",
-          "Compromiso de 12 meses"
-        ],
-        "cta": "Iniciar web",
-        "href": "/#contacto",
-        "destacado": true
-      },
-      {
-        "nombre": "Gestión",
-        "para": "Controla el camping",
-        "resultado": "Toda la operativa diaria en una sola plataforma.",
-        "alta": "desde 2.900 €",
-        "cuota": "149 €/mes",
-        "estado": "Disponible",
-        "estadoTipo": "disponible",
-        "texto": "Web, motor, planning, plano, reservas, clientes, tarifas, cobros e informes.",
-        "incluye": [
-          "Motor de reservas",
-          "Planning y plano",
-          "Clientes, pagos y tarifas",
-          "Check-in e informes"
-        ],
-        "cta": "Solicitar plan",
-        "href": "/admin/"
-      },
-      {
-        "nombre": "Automatiza",
-        "para": "Ahorra tiempo",
-        "resultado": "El sistema se ocupa de tareas repetitivas y recepción responde antes.",
-        "alta": "A consultar",
-        "cuota": "A consultar",
-        "estado": "En desarrollo",
-        "estadoTipo": "desarrollo",
-        "texto": "Todo Gestión más comunicaciones, reseñas, estadísticas y asistencia de IA supervisada.",
-        "incluye": [
-          "Recordatorios y reseñas",
-          "Redacción y traducción IA",
-          "Búsqueda y resúmenes",
-          "Presupuestos y WhatsApp"
-        ],
-        "cta": "Solicitar plan",
-        "href": "/#contacto"
-      },
-      {
-        "nombre": "Inteligente",
-        "para": "Decide mejor",
-        "resultado": "Rentabilidad, previsiones y recomendaciones apoyadas en tus datos.",
-        "alta": "A consultar",
-        "cuota": "A consultar",
-        "estado": "Roadmap",
-        "estadoTipo": "vision",
-        "texto": "Todo Automatiza más inteligencia de negocio, integraciones y copiloto en lenguaje natural.",
-        "incluye": [
-          "Rentabilidad y comparativas",
-          "Previsión y alertas",
-          "Precios e integraciones",
-          "Copiloto supervisado"
-        ],
-        "cta": "Solicitar plan",
-        "href": "/inteligente/"
-      }
-    ],
+    "iva": "Precios sin IVA. Los importes anuales de Inicial y Gestión incluyen un 10 % de descuento frente a 12 cuotas mensuales. Dominio, servicios de terceros e integraciones específicas se facturan aparte cuando apliquen.",
+    "planesTitulo": "Tres planes, una plataforma que crece contigo",
     "incluyeTitulo": "La cuota incluye mantenimiento de verdad",
     "incluye": [
       "Alojamiento, HTTPS y operación de tu web pública",
@@ -1120,7 +951,8 @@
         "texto": "Una entrega acotada con implementación y revisión."
       }
     ],
-    "packsTitulo": "Servicios de lanzamiento",
+    "packsTitulo": "Servicios de lanzamiento opcionales",
+    "packsIntro": "El alta de Gestión (onboarding y diseño web) se muestra junto a su cuota. Los servicios siguientes son opcionales y se presupuestan según el alcance.",
     "packs": [
       {
         "nombre": "Migración",
@@ -1156,7 +988,7 @@
     "items": [
       {
         "q": "¿Qué incluye exactamente el plan Inicio de 49 €?",
-        "a": "Una web responsive con tu marca, alojamiento, HTTPS, SEO básico, un idioma y un formulario que envía cada consulta al correo de recepción. No incluye gestor, motor de reservas ni histórico; es el primer escalón y tiene un compromiso de 12 meses."
+        "a": "Una web responsive con tu marca, alojamiento, HTTPS, SEO básico, un idioma y un formulario que envía cada consulta al correo de recepción. No incluye gestor, motor de reservas ni histórico; es el primer escalón y tiene una permanencia de 6 meses."
       },
       {
         "q": "¿Tengo que cambiar mi dominio?",
@@ -1548,7 +1380,7 @@
       "dueno": {
         "nombre": "Guía del dueño",
         "para": "Para quien decide",
-        "texto": "Los cuatro niveles de Logic2B Campings explicados como una escalera: qué incluye cada uno, qué cambia exactamente cuando subes, y qué tienes que aportar tú."
+        "texto": "Los tres planes de Logic2B Campings: qué incluye cada uno, cómo crece la plataforma y qué necesitas aportar para empezar."
       },
       "tecnica": {
         "nombre": "Ficha técnica",

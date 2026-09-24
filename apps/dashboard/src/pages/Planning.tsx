@@ -1003,7 +1003,7 @@ export default function Planning() {
       ) : (
         <div className="flex min-w-0 flex-1 flex-col">
           {/* barra de mando: fechas, zoom, datos a la vista */}
-          <div className="flex flex-wrap items-center gap-3 border-b border-border/60 px-4 py-2.5">
+          <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-3 py-1.5">
             <div className="flex items-center gap-1">
               <Button
                 variant="outline"
@@ -1030,7 +1030,7 @@ export default function Planning() {
               aria-label={t('planning.fecha')}
               value={anchor}
               onChange={(e) => e.target.value && setAnchor(e.target.value)}
-              className="tnum h-8 w-auto px-2 text-[13px]"
+              className="tnum h-8 w-[136px] px-2 text-[13px]"
             />
             {/* grupo de selección: un solo zoom activo, aspecto segmentado */}
             <div className="flex items-center overflow-hidden rounded-(--lc-radius) border border-input">
@@ -1038,7 +1038,7 @@ export default function Planning() {
                 <Button
                   key={z.id}
                   variant={z.id === zoomId ? 'primary' : 'outline'}
-                  size="sm"
+                  size="xs"
                   onClick={() => {
                     setZoomId(z.id);
                     if (isPortfolioScenario && z.id === 'temporada') setAnchor(DEMO_SEASON.from);
@@ -1052,7 +1052,7 @@ export default function Planning() {
             </div>
             <Button
               variant="outline"
-              size="sm"
+              size="xs"
               onClick={() => navigate({ to: '/plano', search: { date: from, unit: search.unit } })}
               title={t('planning.verEnPlano')}
             >
@@ -1083,9 +1083,14 @@ export default function Planning() {
               </Button>
             )}
             {data && (
-              <p className="tnum ml-auto text-[12px] text-muted-foreground">
-                {t('planning.unidades', { n: data.units.length })} ·{' '}
-                {t('planning.reservas', { n: data.bookings.length })}
+              <p
+                className="tnum sr-only ml-auto whitespace-nowrap text-[12px] text-muted-foreground xl:not-sr-only"
+                title={`${t('planning.unidades', { n: data.units.length })} · ${t('planning.reservas', { n: data.bookings.length })}`}
+              >
+                {t('planning.resumenCorto', {
+                  units: data.units.length,
+                  bookings: data.bookings.length,
+                })}
               </p>
             )}
             <BotonAyuda />
@@ -1093,37 +1098,32 @@ export default function Planning() {
 
           {/* filtros dentro del planning (ADR 0023 §3) */}
           {data && (
-            <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-4 py-1.5">
+            <div className="flex flex-wrap items-center gap-2 border-b border-border/60 px-3 py-1.5">
               <SelectNative
                 aria-label={t('planning.filtro.tipo')}
-                value={tipoFiltro}
-                onChange={(e) => setTipoFiltro(e.target.value)}
+                value={tipoFiltro ? `type:${tipoFiltro}` : kindFiltro ? `kind:${kindFiltro}` : ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setTipoFiltro(value.startsWith('type:') ? value.slice(5) : '');
+                  setKindFiltro(
+                    value.startsWith('kind:') ? (value.slice(5) as 'pitch' | 'lodging') : '',
+                  );
+                }}
+                className="w-44 shrink-0"
               >
                 <option value="">{t('planning.filtro.todos')}</option>
-                {data.unitTypes.map((ut) => (
-                  <option key={ut.id} value={ut.id}>
-                    {ut.nameI18n.es ?? ut.id}
-                  </option>
-                ))}
+                <optgroup label={t('planning.filtro.categorias')}>
+                  <option value="kind:pitch">{t('planning.filtro.parcelas')}</option>
+                  <option value="kind:lodging">{t('planning.filtro.alojamientos')}</option>
+                </optgroup>
+                <optgroup label={t('planning.filtro.especificos')}>
+                  {data.unitTypes.map((ut) => (
+                    <option key={ut.id} value={`type:${ut.id}`}>
+                      {ut.nameI18n.es ?? ut.id}
+                    </option>
+                  ))}
+                </optgroup>
               </SelectNative>
-              <Button
-                type="button"
-                size="xs"
-                variant={kindFiltro === 'pitch' ? 'primary' : 'outline'}
-                aria-pressed={kindFiltro === 'pitch'}
-                onClick={() => setKindFiltro((v) => (v === 'pitch' ? '' : 'pitch'))}
-              >
-                {t('planning.filtro.parcelas')}
-              </Button>
-              <Button
-                type="button"
-                size="xs"
-                variant={kindFiltro === 'lodging' ? 'primary' : 'outline'}
-                aria-pressed={kindFiltro === 'lodging'}
-                onClick={() => setKindFiltro((v) => (v === 'lodging' ? '' : 'lodging'))}
-              >
-                {t('planning.filtro.alojamientos')}
-              </Button>
               <Button
                 type="button"
                 size="xs"
@@ -1137,6 +1137,7 @@ export default function Planning() {
                 aria-label={t('planning.filtro.estado')}
                 value={estadoFiltro}
                 onChange={(e) => setEstadoFiltro(e.target.value)}
+                className="w-40 shrink-0"
               >
                 <option value="">{t('planning.filtro.todas')}</option>
                 {(['confirmed', 'inhouse', 'pending', 'completed', 'no_show'] as const).map((s) => (
@@ -1145,7 +1146,7 @@ export default function Planning() {
                   </option>
                 ))}
               </SelectNative>
-              <div className="relative">
+              <div className="relative min-w-44 flex-1">
                 <Search className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   type="search"
@@ -1156,7 +1157,7 @@ export default function Planning() {
                   }}
                   placeholder={t('planning.buscar')}
                   aria-label={t('planning.buscar')}
-                  className="w-56 pl-7"
+                  className="w-full pl-7"
                 />
               </div>
             </div>

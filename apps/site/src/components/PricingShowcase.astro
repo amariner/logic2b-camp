@@ -61,9 +61,10 @@ interface Props {
   requestHref: string;
   aria: string;
   items: PricingItem[];
+  legalNote?: string;
 }
 
-const { locale, kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items } = Astro.props;
+const { locale, kicker, titulo, texto, billingAria, billingMonthly, billingAnnual, billingDiscount, slideManagerLabel, ctaWeb, ctaGestor, assistText, assistCta, requestCta, requestHref, aria, items, legalNote } = Astro.props;
 const managerDemoHrefs = {
   gestion: '/demos/pinadamar/gestion/#/planning',
   avanzado: '/demos/mardefondo/gestion/#/inteligente',
@@ -110,7 +111,7 @@ const availabilityCopy = locale === 'es'
                     <del class="pricing-annual-original" data-pricing-original hidden>{plan.precioAnualAnterior}</del>
                   )}
                 </div>
-                  {plan.detallePrecio && <small class="pricing-price-detail">{plan.detallePrecio}</small>}
+                  {plan.detallePrecio && <small class="pricing-price-detail" data-pricing-monthly-only>{plan.detallePrecio}</small>}
                   {plan.onboarding && <small>{plan.onboarding}</small>}
                 </div>
               </div>
@@ -232,6 +233,7 @@ const availabilityCopy = locale === 'es'
         ))
       }
     </div>
+    {legalNote && <p class="pricing-legal-note">{legalNote}</p>}
     <div class="pricing-assist lc-reveal">
       <p>{assistText}</p>
       <a href={requestHref}>
@@ -248,6 +250,7 @@ const availabilityCopy = locale === 'es'
   const pricingPriceNodes = document.querySelectorAll('[data-pricing-price]');
   const pricingPeriodNodes = document.querySelectorAll('[data-pricing-period]');
   const pricingOriginalNodes = document.querySelectorAll('[data-pricing-original]');
+  const pricingMonthlyOnlyNodes = document.querySelectorAll('[data-pricing-monthly-only]');
   const pricingRequestLinks = document.querySelectorAll('[data-request-base]');
 
   const applyPricingBilling = (billing: 'monthly' | 'annual') => {
@@ -265,6 +268,9 @@ const availabilityCopy = locale === 'es'
     });
     pricingOriginalNodes.forEach((node) => {
       if (node instanceof HTMLElement) node.hidden = billing !== 'annual';
+    });
+    pricingMonthlyOnlyNodes.forEach((node) => {
+      if (node instanceof HTMLElement) node.hidden = billing !== 'monthly';
     });
     pricingRequestLinks.forEach((link) => {
       const base = link.getAttribute('data-request-base');
@@ -392,6 +398,7 @@ const availabilityCopy = locale === 'es'
   .pricing-request:not(.is-primary):hover { background:white; box-shadow:0 9px 18px color-mix(in srgb,var(--botanical-ink) 9%,transparent); }
   .pricing-request:hover .pricing-request-icon { transform:translate(2px,-2px); }
   .pricing-assist { display:flex; max-width:980px; flex-direction:column; align-items:center; gap:13px; margin:clamp(38px,4.5vw,60px) auto 0; border:0; background:transparent; padding:0; text-align:center; }
+  .pricing-legal-note { max-width:900px; margin:24px auto 0; color:color-mix(in srgb,var(--botanical-ink) 68%,white); font-size:12px; line-height:1.55; text-align:center; }
   .pricing-assist p { max-width:650px; margin-inline:auto; color:var(--botanical-ink); font-size:14px; font-weight:570; letter-spacing:-.01em; line-height:1.4; text-align:center; }
   .pricing-assist a { display:inline-flex; min-height:44px; align-items:center; gap:8px; border-bottom:1px solid color-mix(in srgb,var(--botanical-ink) 34%,transparent); border-radius:0; background:transparent; padding:0 0 3px; color:var(--botanical-ink); font-size:14px; font-weight:740; box-shadow:none; transition:border-color 160ms ease,opacity 160ms ease; }
   .pricing-assist a span { font-size:15px; transition:transform 160ms ease; }

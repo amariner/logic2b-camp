@@ -58,8 +58,8 @@ function tagsWithAttribute(html, name) {
   );
 }
 
-function assertHomePricing(html, content, locale) {
-  const label = `${locale.code}: portada`;
+function assertPricingShowcase(html, content, locale, page) {
+  const label = `${locale.code}: ${page}`;
   const priceTags = tagsWithAttribute(html, 'data-pricing-price');
   const requestTags = tagsWithAttribute(html, 'data-request-base');
   const expectedRequestPath = `/${locale.prefix}empezar/`;
@@ -172,23 +172,19 @@ for (const header of requiredSecurityHeaders) {
 
 for (const locale of locales) {
   const content = JSON.parse(await readFile(path.join(contentDir, `${locale.code}.json`), 'utf8'));
-  const expectedPricing = content.precios.planes.map(({ estadoTipo: state, estado: label }) => ({
-    state,
-    label,
-  }));
-
   const home = await readHtml(`${locale.prefix}index.html`);
   const pricing = await readHtml(`${locale.prefix}precios/index.html`);
   const themes = await readHtml(`${locale.prefix}temas/index.html`);
   const legalPaths = ['aviso-legal', 'privacidad', 'cookies'];
-  assertHomePricing(home, content, locale);
+  assertPricingShowcase(home, content, locale, 'portada');
+  assertPricingShowcase(pricing, content, locale, 'precios');
   assert(
     !/href="\/demos\/[^"#?]*\/en\//i.test(`${home}${themes}`),
     `${locale.code}: una demo enlaza una variante inglesa que el tenant no publica`,
   );
   assert(
-    JSON.stringify(planStatuses(pricing)) === JSON.stringify(expectedPricing),
-    `${locale.code}: precios no muestra exactamente los cuatro estados comerciales`,
+    pricing.includes(content.precios.iva),
+    `${locale.code}: precios no muestra las condiciones del importe`,
   );
 
   for (const guide of guides) {
@@ -366,5 +362,5 @@ for (const locale of locales) {
 }
 
 console.log(
-  `Contrato comercial y cabeceras del sitio verificados: ${locales.length} portadas con tres planes, ${locales.length} páginas de precios con cuatro estados, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
+  `Contrato comercial y cabeceras del sitio verificados: ${locales.length} portadas y ${locales.length} páginas de precios con los mismos tres planes, ${guidePages.length} páginas de guía y ${coveredIndexes.size} índices localizados.`,
 );

@@ -3,7 +3,7 @@ title: 'Qué necesitas para empezar'
 description: 'Lo que tienes que aportar tú, lo que ponemos nosotros, y qué pasa con tus datos.'
 lang: es
 orden: 3
-updated: '2026-08-05'
+updated: '2026-09-24'
 ---
 
 El plazo depende del nivel elegido y de que el material esté reunido antes de empezar. Cerramos por escrito el alcance, el contenido y la fecha de salida.
@@ -17,7 +17,7 @@ El plazo depende del nivel elegido y de que el material esté reunido antes de e
 - **Logotipo**, colores de marca y datos de contacto.
 - El **dominio** —o el contacto de quien lo administre— para apuntarlo a la nueva web.
 
-**Datos de negocio** —para Gestión y superiores—
+**Datos de negocio** —para Gestión y Avanzado—
 
 - Tipos de alojamiento, capacidades y características.
 - Unidades físicas: parcelas y alojamientos con su código.
@@ -26,19 +26,19 @@ El plazo depende del nivel elegido y de que el material esté reunido antes de e
 
 ## Lo que ponemos nosotros
 
-- En Inicio, una **web pública sin gestor ni base de datos**, con el formulario enviado al correo de recepción.
-- En Gestión y superiores, tu **instancia y base de datos aisladas**, separadas de las de cualquier otro camping.
+- En Inicial, una **web pública sin gestor ni base de datos**, con el formulario enviado al correo de recepción.
+- En Gestión y Avanzado, tu **instancia y base de datos aisladas**, separadas de las de cualquier otro camping.
 - Diseño aplicado a tu marca, alojamiento, HTTPS, actualizaciones y mantenimiento técnico.
-- Un idioma en Inicio; ampliación de idiomas en los niveles superiores.
+- Un idioma en Inicial; ampliación de idiomas en Gestión y Avanzado.
 - Formación de recepción cuando el plan incluye gestor.
 
 ## Tus datos son tuyos
 
-- En Gestión y superiores, tus reservas, clientes e histórico **son tuyos**.
+- En Gestión y Avanzado, tus reservas, clientes e histórico **son tuyos**.
 - Puedes pedir una **exportación** completa cuando quieras.
 - No se retienen tus datos para impedir que cambies de proveedor.
 
-Inicio no guarda consultas en Logic2B: llegan directamente al buzón de recepción. Tiene compromiso comercial de 12 meses porque no cobra alta, pero no retiene datos para impedir que te vayas.
+Inicial no guarda consultas en Logic2B: llegan directamente al buzón de recepción. Con pago mensual tiene una permanencia de 6 meses, pero no retiene datos para impedir que te vayas.
 
 ## El siguiente paso
 

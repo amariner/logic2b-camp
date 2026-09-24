@@ -1,46 +1,39 @@
 ---
-title: 'Los cuatro niveles'
-description: 'Qué incluye cada nivel de Logic2B Campings y para qué camping está pensado cada uno.'
+title: 'Los tres planes'
+description: 'Qué incluye cada plan de Logic2B Campings y para qué camping está pensado.'
 lang: es
 orden: 1
-updated: '2026-08-11'
+updated: '2026-09-24'
 ---
 
-Logic2B Campings se ofrece como **una progresión de cuatro resultados**. Puedes empezar resolviendo solo la web y ampliar después sin cambiar de proveedor, dominio o marca.
+Logic2B Campings ofrece **tres planes**. Puedes empezar por la web y ampliar después sin cambiar de proveedor, dominio o marca.
 
-## La escalera
+## Los planes
 
-| Paso | Plan            | Resultado                              | Cuota     | Estado        |
-| ---: | --------------- | -------------------------------------- | --------- | ------------- |
-|   00 | **Inicio**      | Consigue consultas                     | 49 €/mes  | Lanzamiento   |
-|   01 | **Gestión**     | Controla la operativa del camping      | 149 €/mes | Disponible    |
-|   02 | **Automatiza**  | Reduce trabajo repetitivo con ayuda IA | A consultar | En desarrollo |
-|   03 | **Inteligente** | Decide mejor con datos y previsiones   | A consultar | Roadmap       |
+| Plan | Resultado | Pago mensual | Pago anual |
+| --- | --- | ---: | ---: |
+| **Inicial** | Web y consultas por email | 49 €/mes | 529 €/año |
+| **Gestión** | Reservas y operativa diaria | 399 €/mes | 4.309 €/año |
+| **Avanzado** | Automatización e integraciones a medida | A consultar | A consultar |
 
-## Inicio — una web que empieza a trabajar
+Los importes no incluyen IVA. El pago anual de Inicial y Gestión incorpora un 10 % de descuento frente a doce cuotas mensuales.
+
+## Inicial — una web que empieza a trabajar
 
 Web responsive con tu marca, alojamiento, HTTPS, SEO básico, un idioma y un formulario que envía cada consulta al correo de recepción.
 
-No tiene panel, base de datos, histórico, disponibilidad ni motor de reservas. Es la entrada sencilla para un camping que todavía gestiona bien por teléfono y correo. Su alta es de **0 €** con compromiso de 12 meses o pago anual de 490 €.
+No incluye gestor, histórico de consultas, disponibilidad ni motor de reservas. Es la entrada sencilla para un camping que todavía gestiona bien por teléfono y correo. Con pago mensual tiene una **permanencia de 6 meses**.
 
 ## Gestión — todo el camping bajo control
 
 Añade la plataforma operativa completa: web, disponibilidad, motor de reservas, planning, plano, clientes, tarifas, cobros, llegadas, salidas e informes.
 
-Es el nivel para dejar atrás hojas de cálculo y herramientas separadas. Está disponible desde **149 €/mes**, con alta desde **2.900 €** según inventario, material y migración.
+Es el plan para dejar atrás hojas de cálculo y herramientas separadas. Incluye una cuota de **399 €/mes** y **1.900 € de onboarding y diseño web**. El alcance concreto se acuerda antes de empezar.
 
-## Automatiza — menos tareas repetitivas
+## Avanzado — más control a medida
 
-Sobre Gestión incorpora comunicaciones automáticas, recordatorios, solicitud de reseñas y asistencia de IA para buscar, redactar, traducir, resumir y preparar respuestas o presupuestos.
-
-La IA prepara y propone; recepción revisa. Este nivel está **en desarrollo** y su precio es **a consultar**.
-
-## Inteligente — mejores decisiones con tus datos
-
-Añade rentabilidad, comparativas, previsión, alertas, integraciones y un copiloto para consultar y preparar acciones en lenguaje natural.
-
-Precios, cobros, cancelaciones y campañas siempre requieren confirmación humana. Este nivel forma parte del **roadmap** y su precio es **a consultar**.
+Amplía Gestión con automatizaciones, comunicaciones, integraciones y recorridos adaptados al camping. Su precio y calendario se preparan según el proyecto. Las funciones concretas se fijan en la propuesta.
 
 ---
 
-Consulta las [condiciones y altas de cada plan](/precios/) o escríbenos a **hola@logic2b.com** para preparar una propuesta con los datos de tu camping.
+Consulta las [condiciones de cada plan](/precios/) o escríbenos a **hola@logic2b.com** para preparar una propuesta con los datos de tu camping.

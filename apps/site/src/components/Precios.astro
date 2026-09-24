@@ -1,22 +1,18 @@
 ---
 /**
- * Página de precios con la identidad botánica del home: héroe sobre papel,
- * banda mint con los cuatro estados del catálogo (aquí con alta y cuota),
- * dos tarjetas keylime/slate para lo que
- * incluye la cuota y el desarrollo a medida, panel tinta con los packs y
- * cierre centrado hacia #contacto. El contenido es el mismo de siempre
- * (content/{lang}.json); solo cambia la piel y la estructura.
+ * Página de precios: reutiliza las tarjetas y el selector de facturación de la
+ * home para que nombres, importes y condiciones tengan una sola fuente.
+ * Debajo explica mantenimiento y servicios adicionales.
  */
 import type { Locale } from '../lib/i18n';
 import { getContent, localePath } from '../lib/i18n';
 import Base from '../layouts/Base.astro';
-import PlanStatus from './PlanStatus.astro';
+import PricingShowcase from './PricingShowcase.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = getContent(locale);
 const p = c.precios;
-const inicio = localePath(locale);
 ---
 
 <Base locale={locale} content={c} ruta="precios/" seo={p.seo}>
@@ -29,63 +25,13 @@ const inicio = localePath(locale);
       <p class="botanical-copy">{p.intro}</p>
     </section>
 
-    <section class="botanical-plans-wrap botanical-section">
-      <div class="botanical-shell">
-        <div class="lc-reveal">
-          <p class="botanical-eyebrow">{c.niveles.kicker}</p>
-          <h2 class="botanical-heading-sm">{p.planesTitulo}</h2>
-        </div>
-
-        <div class="botanical-plans-grid">
-          {
-            p.planes.map((plan, i) => (
-              <article
-                class:list={['botanical-plan lc-reveal', plan.destacado && 'is-featured']}
-                style={`--lc-delay:${i * 70}ms`}
-              >
-                <div class="botanical-plan-top">
-                  <span class="botanical-plan-index">{String(i).padStart(2, '0')}</span>
-                  <PlanStatus label={plan.estado} state={plan.estadoTipo} />
-                </div>
-                <h3>{plan.nombre}</h3>
-                <p class="botanical-plan-for">{plan.para}</p>
-                <p class="botanical-plan-result-copy">{plan.resultado}</p>
-                <p class="botanical-plan-description">{plan.texto}</p>
-                <div class="botanical-price pricing-price">
-                  <div>
-                    <span>{p.altaLabel}</span>
-                    <strong>{plan.alta}</strong>
-                  </div>
-                  <div>
-                    <span>{p.cuotaLabel}</span>
-                    <strong>{plan.cuota}</strong>
-                  </div>
-                </div>
-                <ul class="botanical-checks">
-                  {plan.incluye.map((item) => (
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  type="button"
-                  class="botanical-button"
-                  data-project-request-open
-                  data-project-request-plan={plan.nombre}
-                >
-                  {i === 0 ? c.contacto.iniciarWeb : c.contacto.solicitarPlan}<span aria-hidden="true">→</span>
-                </button>
-              </article>
-            ))
-          }
-        </div>
-        <p class="botanical-note-wide">{p.iva}</p>
-      </div>
-    </section>
+    <PricingShowcase
+      {...c.pricingShowcase}
+      locale={locale}
+      titulo={p.planesTitulo}
+      requestHref={localePath(locale, 'empezar/')}
+      legalNote={p.iva}
+    />
 
     <section class="botanical-shell botanical-section botanical-aftercare pricing-detalle">
       <article class="botanical-aftercare-card lc-reveal">
@@ -127,6 +73,7 @@ const inicio = localePath(locale);
     <section class="botanical-shell">
       <div class="pricing-packs lc-reveal">
         <h2>{p.packsTitulo}</h2>
+        <p class="pricing-packs-intro">{p.packsIntro}</p>
         <div class="pricing-packs-grid">
           {
             p.packs.map((pack) => (
@@ -145,7 +92,7 @@ const inicio = localePath(locale);
       <div class="botanical-centered-head lc-reveal">
         <h2 class="botanical-heading-sm">{p.ctaTitulo}</h2>
         <p class="botanical-copy">{p.ctaTexto}</p>
-        <a href={`${inicio}#contacto`} class="botanical-button">
+        <a href={localePath(locale, 'empezar/')} class="botanical-button">
           {p.cta}<span aria-hidden="true">→</span>
         </a>
       </div>
@@ -171,32 +118,6 @@ const inicio = localePath(locale);
 
   .pricing-hero .botanical-copy {
     max-width: 560px;
-  }
-
-  /* Alta y cuota conviven en el bloque de precio de la tarjeta: dos cifras
-   * serif más contenidas que la única de la landing. */
-  .pricing-price {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .pricing-price span {
-    display: block;
-    color: color-mix(in srgb, var(--botanical-ink) 60%, white);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .pricing-price strong {
-    margin-top: 4px;
-    font-size: 21px;
-  }
-
-  .pricing-price > div:last-child {
-    text-align: right;
   }
 
   .pricing-detalle .botanical-checks {
@@ -260,6 +181,14 @@ const inicio = localePath(locale);
     color: var(--botanical-paper);
     font-size: clamp(30px, 3.6vw, 44px);
     line-height: 1.1;
+  }
+
+  .pricing-packs-intro {
+    max-width: 650px;
+    margin-top: 14px;
+    color: color-mix(in srgb, var(--botanical-paper) 78%, transparent);
+    font-size: 14px;
+    line-height: 1.55;
   }
 
   .pricing-packs-grid {

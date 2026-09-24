@@ -36,7 +36,7 @@
     "ctaComoFunciona": "View tour",
     "ctaVer": "See the example website",
     "ctaMostrador": "Try the booking manager",
-    "nota": "Start plan: €0 setup, one language and a 12-month commitment. No booking commission.",
+    "nota": "Start plan: one language and a 6-month commitment. No booking commission.",
     "capturaWebAlt": "A campsite's public website built with Logic2B Campings, with its availability search"
   },
   "conversion": {
@@ -325,7 +325,7 @@
         "id": "avanzado",
         "nombre": "Advanced",
         "etiqueta": "Tailored",
-        "precio": "Contact us",
+        "precio": "On request",
         "periodo": "tailored project",
         "precioAnual": "Contact us",
         "periodoAnual": "tailored project",
@@ -908,185 +908,16 @@
     },
     "nota": "Integrations planned on the roadmap; trademarks belong to their respective owners."
   },
-  "niveles": {
-    "kicker": "One platform that grows with you",
-    "titulo": "Start by winning enquiries. Grow into better decisions.",
-    "subtitulo": "Activate only what you need today. As the campsite grows, you keep your website, brand and data: you add capabilities without changing provider.",
-    "items": [
-      {
-        "nombre": "Start",
-        "para": "Win enquiries",
-        "resultado": "A professional presence that turns visits into conversations with reception.",
-        "texto": "An attractive, fast website to start selling direct without implementing management software yet.",
-        "precio": "€49/month",
-        "alta": "€0 setup",
-        "estado": "Launch plan",
-        "estadoTipo": "disponible",
-        "cta": "Start website",
-        "href": "/en/#contacto",
-        "destacado": true,
-        "incluye": [
-          "Responsive website with your brand",
-          "Form → reception email",
-          "Hosting, HTTPS and basic SEO",
-          "1 language · 12-month commitment"
-        ]
-      },
-      {
-        "nombre": "Management",
-        "para": "Bring order to the campsite",
-        "resultado": "Availability, arrivals, payments and guests under control in one place.",
-        "texto": "The complete operating platform to leave spreadsheets, diaries and disconnected tools behind.",
-        "precio": "€149/month",
-        "alta": "Setup from €2,900",
-        "estado": "Available",
-        "estadoTipo": "disponible",
-        "cta": "Request plan",
-        "href": "/admin/",
-        "incluye": [
-          "Website and booking engine",
-          "Planner and campsite map",
-          "Guests, rates and payments",
-          "Check-in, check-out and reports"
-        ]
-      },
-      {
-        "nombre": "Automate",
-        "para": "Save time every day",
-        "resultado": "Reception responds sooner while the system handles what currently depends on someone remembering.",
-        "texto": "Automation and supervised AI assistance reduce manual follow-up while people keep control of every decision.",
-        "precio": "On request",
-        "alta": "Setup on request",
-        "estado": "In development",
-        "estadoTipo": "desarrollo",
-        "cta": "Request plan",
-        "href": "/en/#contacto",
-        "incluye": [
-          "Emails, reminders and reviews",
-          "AI answers and translation",
-          "Smart search and summaries",
-          "Supervised quotes and WhatsApp"
-        ]
-      },
-      {
-        "nombre": "Intelligence",
-        "para": "Decide better with your data",
-        "resultado": "Spot risks, understand profitability and prepare the next action with real context.",
-        "texto": "Business intelligence, integrations and a copilot to query and prepare actions in natural language.",
-        "precio": "On request",
-        "alta": "Setup on request",
-        "estado": "Roadmap",
-        "estadoTipo": "vision",
-        "cta": "Request plan",
-        "href": "/en/inteligente/",
-        "incluye": [
-          "Profitability and comparisons",
-          "Occupancy and revenue forecasting",
-          "Pricing, promotions and integrations",
-          "Copilot with human confirmation"
-        ]
-      }
-    ],
-    "nota": "From €49/month, with no booking commission. Start: €0 setup, one language and a 12-month commitment. Prices exclude VAT.",
-    "recomendado": "No setup fee",
-    "selector": {
-      "pregunta": "What do you need to solve now?",
-      "opciones": [
-        "I need a website",
-        "I want to control bookings",
-        "I want to save time",
-        "I want data-led decisions"
-      ],
-      "resultado": "Your next step: {nivel}. When you need more, add capabilities without changing system."
-    }
-  },
   "precios": {
     "seo": {
-      "title": "Logic2B Campings pricing — from your first website to the copilot",
-      "description": "Four clear levels for campsites: website from €49/month, management, automation and business intelligence, with no booking commission."
+      "title": "Logic2B Campings pricing — Start, Management and Advanced",
+      "description": "Start from €49/month, Management at €399/month and tailored Advanced projects. Monthly or annual billing, with no booking commission."
     },
     "kicker": "Clear pricing · no booking commission",
     "titulo": "Start small. Scale without starting over.",
     "intro": "First you win enquiries. Then you control operations, automate work and use your data to decide better. Your website, brand and system grow with you.",
-    "iva": "Prices exclude VAT. Annual payment includes a 10% discount. Domain, third-party services and specific integrations are billed separately where applicable.",
-    "planesTitulo": "Four steps, one platform",
-    "altaLabel": "Setup",
-    "cuotaLabel": "Subscription",
-    "planes": [
-      {
-        "nombre": "Start",
-        "para": "Win enquiries",
-        "resultado": "An attractive website that gets the campsite moving online.",
-        "alta": "€0",
-        "cuota": "€49/month",
-        "estado": "Launch plan",
-        "estadoTipo": "disponible",
-        "texto": "Responsive website with your brand and a form sent directly to reception. No manager, booking engine or enquiry history.",
-        "incluye": [
-          "Website, hosting and HTTPS",
-          "Form → reception",
-          "Basic SEO and 1 language",
-          "12-month commitment"
-        ],
-        "cta": "Start website",
-        "href": "/en/#contacto",
-        "destacado": true
-      },
-      {
-        "nombre": "Management",
-        "para": "Control the campsite",
-        "resultado": "All day-to-day operations in one platform.",
-        "alta": "from €2,900",
-        "cuota": "€149/month",
-        "estado": "Available",
-        "estadoTipo": "disponible",
-        "texto": "Website, booking engine, guests, visual planner, payments and reports. The operational foundation for reception and management.",
-        "incluye": [
-          "Everything in Start",
-          "Booking engine and availability",
-          "Planner, guests and payments",
-          "Reports and rates"
-        ],
-        "cta": "Request plan",
-        "href": "/admin/"
-      },
-      {
-        "nombre": "Automate",
-        "para": "Save time",
-        "resultado": "Less repetitive work and faster replies from reception.",
-        "alta": "On request",
-        "cuota": "On request",
-        "estado": "In development",
-        "estadoTipo": "desarrollo",
-        "texto": "Adds automatic communication and supervised AI assistance without allowing the system to make sensitive decisions on its own.",
-        "incluye": [
-          "Everything in Management",
-          "Emails and reminders",
-          "AI answers and translation",
-          "Supervised quotes and WhatsApp"
-        ],
-        "cta": "Request plan",
-        "href": "/en/#contacto"
-      },
-      {
-        "nombre": "Intelligence",
-        "para": "Decide better",
-        "resultado": "Turn campsite data into forecasts and recommended actions.",
-        "alta": "On request",
-        "cuota": "On request",
-        "estado": "Roadmap",
-        "estadoTipo": "vision",
-        "texto": "Adds profitability, forecasting, integrations and a natural-language copilot with human confirmation before acting.",
-        "incluye": [
-          "Everything in Automate",
-          "Profitability and comparisons",
-          "Forecasting and pricing",
-          "Integrations and copilot"
-        ],
-        "cta": "Request plan",
-        "href": "/en/inteligente/"
-      }
-    ],
+    "iva": "Prices exclude VAT. Annual prices for Start and Management include a 10% discount compared with 12 monthly payments. Domain, third-party services and specific integrations are billed separately where applicable.",
+    "planesTitulo": "Three plans, one platform that grows with you",
     "incluyeTitulo": "The subscription includes real maintenance",
     "incluye": [
       "Hosting, HTTPS and operation of your public website",
@@ -1120,7 +951,8 @@
         "texto": "A scoped delivery with implementation and review."
       }
     ],
-    "packsTitulo": "Launch services",
+    "packsTitulo": "Optional launch services",
+    "packsIntro": "Management setup (onboarding and website design) is shown alongside its subscription. The services below are optional and priced according to scope.",
     "packs": [
       {
         "nombre": "Migration",
@@ -1156,7 +988,7 @@
     "items": [
       {
         "q": "What exactly is included in the €49 Start plan?",
-        "a": "A responsive website with your brand, hosting, HTTPS, basic SEO, one language and a form that sends each enquiry to reception's email. It does not include the manager, booking engine or enquiry history; it is the first step and requires a 12-month commitment."
+        "a": "A responsive website with your brand, hosting, HTTPS, basic SEO, one language and a form that sends each enquiry to reception's email. It does not include the manager, booking engine or enquiry history; it is the first step and requires a 6-month commitment."
       },
       {
         "q": "Do I have to change my domain?",
@@ -1548,7 +1380,7 @@
       "dueno": {
         "nombre": "Owner's guide",
         "para": "For whoever decides",
-        "texto": "The four Logic2B Campings plans explained as a ladder: what each one includes, what exactly changes when you move up, and what you need to provide."
+        "texto": "The three Logic2B Campings plans: what each includes, how the platform grows, and what you need to provide to get started."
       },
       "tecnica": {
         "nombre": "Technical sheet",

@@ -39,6 +39,7 @@ export default function DemoBanner() {
   if (!esDemo) return null;
   const webHref = activePortfolioScenario?.webHref ?? '/demo/';
   const bannerKey = activePortfolioScenario?.bannerKey ?? 'demo.banner';
+  const fullDescription = `${t(bannerKey)} · 7 agosto 2026 · Temporada junio–agosto · Datos locales`;
 
   return (
     <>
@@ -61,7 +62,7 @@ export default function DemoBanner() {
         <SheetContent side="bottom" className="max-h-[85dvh] rounded-t-xl p-0 md:hidden">
           <SheetHeader>
             <SheetTitle>{t('demo.titulo')}</SheetTitle>
-            <SheetDescription className="pr-4 leading-relaxed">{t(bannerKey)} · 7 agosto 2026 · Temporada junio–agosto · Datos locales</SheetDescription>
+            <SheetDescription className="pr-4 leading-relaxed">{fullDescription}</SheetDescription>
           </SheetHeader>
           <div className="grid gap-3 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <Button asChild type="button" variant="outline" className="min-h-11 justify-center">
@@ -106,10 +107,19 @@ export default function DemoBanner() {
         </SheetContent>
       </Sheet>
 
-      <div className="hidden shrink-0 flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-muted/60 px-3 py-1.5 text-[13px] text-muted-foreground md:flex">
+      <div className="hidden min-w-0 shrink-0 items-center gap-2 border-b border-border bg-muted/60 px-3 py-1 text-xs text-muted-foreground md:flex">
         <Info className="size-3.5 shrink-0" aria-hidden />
-        <p className="min-w-0 flex-1">{t(bannerKey)} · 7 agosto 2026 · Temporada junio–agosto · Datos locales</p>
-        <Button asChild type="button" variant="ghost" size="sm">
+        <p className="min-w-0 flex-1 truncate" title={fullDescription}>
+          <span aria-hidden="true">{t('demo.resumen')}</span>
+          <span className="sr-only">{fullDescription}</span>
+        </p>
+        <Button
+          asChild
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="shrink-0 whitespace-nowrap"
+        >
           <a href={webHref}>
             <ExternalLink className="size-3.5" aria-hidden />
             {t('demo.verWeb')}
@@ -117,7 +127,13 @@ export default function DemoBanner() {
         </Button>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button type="button" variant="outline" size="sm" disabled={reset.isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="shrink-0 whitespace-nowrap"
+              disabled={reset.isPending}
+            >
               {reset.isPending && <Spinner />}
               {reset.isPending ? t('demo.restableciendo') : t('demo.restablecer')}
             </Button>
